@@ -54,6 +54,15 @@ class UtilsMixin(Protocol):
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
+    @run_once_method
+    def set_once_oob_mgmt_vrf(self: StructuredConfigUtilsProtocol) -> None:
+        """Set OOB management VRF once when required."""
+        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
+
+        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
+            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
+        self.structured_config.vrfs.append(vrf_settings)
+
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"

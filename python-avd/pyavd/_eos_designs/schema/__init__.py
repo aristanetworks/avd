@@ -1058,6 +1058,7 @@ class EosDesigns(EosDesignsRootModel):
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1066,6 +1067,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
             "validate_ssh_settings_vrfs_ipv4_acl": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
@@ -1149,6 +1151,34 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        fix_mlag_ibgp_peering_vrfs_address_families: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+        `underlay_ipv6_numbered`.
+        These iBGP sessions run over IPv6, so when enabled:
+        - With
+        `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+        activates the IPv6 address family
+          instead of the IPv4 address family. An error is raised if a VRF
+        with MLAG iBGP peering has IPv4 configured, with either the shared
+          or the dedicated peer group,
+        since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+        -
+        With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+        originate`) and the IPv6
+          address family are activated on the MLAG peer group used for VRFs, either
+        the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+          or the dedicated
+        `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+        using the shared
+          peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+        vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+          This allows dual-stack VRFs over a
+        numbered IPv6 underlay.
+
+        Default value: `False`
+        """
         fix_radius_server_group_tls: bool
         """
         Available from AVD 6.2.0.
@@ -1217,6 +1247,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool
+        """
+        Available from AVD 6.5.0.
+        Configure OOB management VRF and OOB IPv4 static routes only when OOB
+        management is actually used.
+        When enabled:
+        - AVD renders the OOB management VRF only if
+        `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+        - Setting only
+        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+        VRF.
+        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+        route prerequisites are met).
+
+        Default value: `False`
+        """
         validate_ssh_settings_vrfs_ipv4_acl: bool
         """
         Available from AVD 6.5.0.
@@ -1244,6 +1290,7 @@ class EosDesigns(EosDesignsRootModel):
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1252,6 +1299,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
                 validate_ssh_settings_vrfs_ipv4_acl: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1306,6 +1354,30 @@ class EosDesigns(EosDesignsRootModel):
                        MLAG iBGP peering SVI,
                        using `mlag_ibgp_peering_ipv6_pool` when set, and
                        `mlag_ibgp_peering_ipv4_pool` is ignored.
+                    fix_mlag_ibgp_peering_vrfs_address_families:
+                       Available from AVD 6.5.0.
+                       Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       These iBGP sessions run over IPv6, so when enabled:
+                       - With
+                       `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+                       activates the IPv6 address family
+                         instead of the IPv4 address family. An error is raised if a VRF
+                       with MLAG iBGP peering has IPv4 configured, with either the shared
+                         or the dedicated peer group,
+                       since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+                       -
+                       With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+                       originate`) and the IPv6
+                         address family are activated on the MLAG peer group used for VRFs, either
+                       the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+                         or the dedicated
+                       `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+                       using the shared
+                         peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+                       vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+                         This allows dual-stack VRFs over a
+                       numbered IPv6 underlay.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
@@ -1342,6 +1414,18 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+                       Available from AVD 6.5.0.
+                       Configure OOB management VRF and OOB IPv4 static routes only when OOB
+                       management is actually used.
+                       When enabled:
+                       - AVD renders the OOB management VRF only if
+                       `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+                       - Setting only
+                       `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+                       VRF.
+                       - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+                       route prerequisites are met).
                     validate_ssh_settings_vrfs_ipv4_acl:
                        Available from AVD 6.5.0.
                        When this is set to `true`, the presence of access-list
@@ -11733,6 +11817,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -12526,15 +12611,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -12875,6 +12977,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -13465,15 +13568,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -17368,6 +17484,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -18170,15 +18287,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -18520,6 +18654,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -19117,15 +19252,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -33228,6 +33376,164 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Ospfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RedistributeBgp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                    enabled: bool
+                    """
+                    Redistribute BGP into OSPFv3.
+                    Ignored on devices where BGP is not configured for this VRF.
+
+                    Default value: `True`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            RedistributeBgp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled:
+                                   Redistribute BGP into OSPFv3.
+                                   Ignored on devices where BGP is not configured for this VRF.
+
+                            """
+
+                class RedistributeConnected(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                    enabled: bool
+                    """
+                    Redistribute connected routes into OSPFv3.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            RedistributeConnected.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Redistribute connected routes into OSPFv3.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "router_id": {"type": str, "default": "main_router_id"},
+                    "redistribute_bgp": {"type": RedistributeBgp},
+                    "redistribute_connected": {"type": RedistributeConnected},
+                    "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
+                }
+                router_id: str
+                """
+                Router ID to use for OSPFv3 in this VRF.
+                This can be an IPv4 address, "main_router_id", "none" or
+                "diagnostic_loopback".
+                - "main_router_id" will use the IP address of Loopback0 or the common `router
+                general` Router ID if `use_router_general_for_router_id` is set.
+                - "none" will not configure an
+                OSPFv3 Router ID for this VRF.
+                  EOS then uses the `router general` Router ID or an IPv4 address of
+                an interface in the VRF.
+                  If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                does not start.
+                - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                interface.
+
+                Default value: `"main_router_id"`
+                """
+                redistribute_bgp: RedistributeBgp
+                """Subclass of AvdModel."""
+                redistribute_connected: RedistributeConnected
+                """Subclass of AvdModel."""
+                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        router_id: str | UndefinedType = Undefined,
+                        redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                        redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ospfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            router_id:
+                               Router ID to use for OSPFv3 in this VRF.
+                               This can be an IPv4 address, "main_router_id", "none" or
+                               "diagnostic_loopback".
+                               - "main_router_id" will use the IP address of Loopback0 or the common `router
+                               general` Router ID if `use_router_general_for_router_id` is set.
+                               - "none" will not configure an
+                               OSPFv3 Router ID for this VRF.
+                                 EOS then uses the `router general` Router ID or an IPv4 address of
+                               an interface in the VRF.
+                                 If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                               does not start.
+                               - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                               interface.
+                            redistribute_bgp: Subclass of AvdModel.
+                            redistribute_connected: Subclass of AvdModel.
+                            structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+
+                        """
+
+            class RedistributeOspfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                enabled: bool
+                """
+                Redistribute OSPFv3 internal routes into BGP for this VRF.
+                Ignored on devices where BGP is not
+                configured for this VRF or where the VRF has no OSPFv3 instance.
+                OSPFv3 external routes are not
+                redistributed.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                        """
+                        RedistributeOspfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Redistribute OSPFv3 internal routes into BGP for this VRF.
+                               Ignored on devices where BGP is not
+                               configured for this VRF or where the VRF has no OSPFv3 instance.
+                               OSPFv3 external routes are not
+                               redistributed.
+
+                        """
+
             class EvpnL3Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -34289,6 +34595,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Ipv4(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                            enabled: bool | None
+                            """
+                            Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                            The
+                            IPv4 address family is not supported yet, so `true` raises an error.
+                            An SVI with IPv4 addressing
+                            also raises an error unless this is set to `false`.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    Ipv4.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                           The
+                                           IPv4 address family is not supported yet, so `true` raises an error.
+                                           An SVI with IPv4 addressing
+                                           also raises an error unless this is set to `false`.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "area": {"type": str, "default": "0.0.0.0"},
+                            "point_to_point": {"type": bool, "default": False},
+                            "passive": {"type": bool, "default": False},
+                            "ipv4": {"type": Ipv4},
+                        }
+                        enabled: bool | None
+                        area: str
+                        """
+                        OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                        Default value: `"0.0.0.0"`
+                        """
+                        point_to_point: bool
+                        """
+                        Configure the OSPFv3 network type as point-to-point.
+
+                        Default value: `False`
+                        """
+                        passive: bool
+                        """
+                        Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                        By default, OSPFv3-enabled SVIs
+                        are configured with `no ospfv3 passive-interface`.
+
+                        Default value: `False`
+                        """
+                        ipv4: Ipv4
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType | None = Undefined,
+                                area: str | UndefinedType = Undefined,
+                                point_to_point: bool | UndefinedType = Undefined,
+                                passive: bool | UndefinedType = Undefined,
+                                ipv4: Ipv4 | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                    point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                    passive:
+                                       Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                       By default, OSPFv3-enabled SVIs
+                                       are configured with `no ospfv3 passive-interface`.
+                                    ipv4: Subclass of AvdModel.
+
+                                """
+
                     class Bgp(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -34366,6 +34767,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int},
                         "mtu": {"type": int},
                         "ospf": {"type": Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "bgp": {"type": Bgp},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -34604,6 +35006,26 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    ospfv3: Ospfv3
+                    """
+                    OSPFv3 interface configuration.
+                    Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                    configuration for the VRF of the SVI on the device.
+                    Only the IPv6 address family is currently
+                    supported.
+                    SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                    OSPFv3 uses the IPv6
+                    link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                    `ipv6_address` (`ipv6_enable: false` is not supported).
+                    Anycast IPv6 (`ipv6_address_virtuals`) is
+                    not supported.
+                    SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                    VRF
+                    `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                    Subclass of
+                    AvdModel.
+                    """
                     bgp: Bgp
                     """Subclass of AvdModel."""
                     raw_eos_cli: str | None
@@ -34666,6 +35088,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType | None = Undefined,
                             mtu: int | UndefinedType | None = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             raw_eos_cli: str | UndefinedType | None = Undefined,
                             structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -34836,6 +35259,24 @@ class EosDesigns(EosDesignsRootModel):
                                    OSPF interface configuration.
 
                                    Subclass of AvdModel.
+                                ospfv3:
+                                   OSPFv3 interface configuration.
+                                   Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                   configuration for the VRF of the SVI on the device.
+                                   Only the IPv6 address family is currently
+                                   supported.
+                                   SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                   OSPFv3 uses the IPv6
+                                   link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                   `ipv6_address` (`ipv6_enable: false` is not supported).
+                                   Anycast IPv6 (`ipv6_address_virtuals`) is
+                                   not supported.
+                                   SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                   VRF
+                                   `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                   Subclass of
+                                   AvdModel.
                                 bgp: Subclass of AvdModel.
                                 raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                 structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -35719,6 +36160,101 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class Ospfv3(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Ipv4(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                        enabled: bool | None
+                        """
+                        Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                        The
+                        IPv4 address family is not supported yet, so `true` raises an error.
+                        An SVI with IPv4 addressing
+                        also raises an error unless this is set to `false`.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                """
+                                Ipv4.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                       The
+                                       IPv4 address family is not supported yet, so `true` raises an error.
+                                       An SVI with IPv4 addressing
+                                       also raises an error unless this is set to `false`.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "area": {"type": str, "default": "0.0.0.0"},
+                        "point_to_point": {"type": bool, "default": False},
+                        "passive": {"type": bool, "default": False},
+                        "ipv4": {"type": Ipv4},
+                    }
+                    enabled: bool | None
+                    area: str
+                    """
+                    OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                    Default value: `"0.0.0.0"`
+                    """
+                    point_to_point: bool
+                    """
+                    Configure the OSPFv3 network type as point-to-point.
+
+                    Default value: `False`
+                    """
+                    passive: bool
+                    """
+                    Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                    By default, OSPFv3-enabled SVIs
+                    are configured with `no ospfv3 passive-interface`.
+
+                    Default value: `False`
+                    """
+                    ipv4: Ipv4
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            area: str | UndefinedType = Undefined,
+                            point_to_point: bool | UndefinedType = Undefined,
+                            passive: bool | UndefinedType = Undefined,
+                            ipv4: Ipv4 | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Ospfv3.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                passive:
+                                   Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                   By default, OSPFv3-enabled SVIs
+                                   are configured with `no ospfv3 passive-interface`.
+                                ipv4: Subclass of AvdModel.
+
+                            """
+
                 class Bgp(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -35800,6 +36336,7 @@ class EosDesigns(EosDesignsRootModel):
                     "spanning_tree_priority": {"type": int},
                     "mtu": {"type": int},
                     "ospf": {"type": Ospf},
+                    "ospfv3": {"type": Ospfv3},
                     "bgp": {"type": Bgp},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -36072,6 +36609,26 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                ospfv3: Ospfv3
+                """
+                OSPFv3 interface configuration.
+                Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                configuration for the VRF of the SVI on the device.
+                Only the IPv6 address family is currently
+                supported.
+                SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                OSPFv3 uses the IPv6
+                link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                `ipv6_address` (`ipv6_enable: false` is not supported).
+                Anycast IPv6 (`ipv6_address_virtuals`) is
+                not supported.
+                SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                VRF
+                `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                Subclass of
+                AvdModel.
+                """
                 bgp: Bgp
                 """Subclass of AvdModel."""
                 raw_eos_cli: str | None
@@ -36138,6 +36695,7 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_priority: int | UndefinedType | None = Undefined,
                         mtu: int | UndefinedType | None = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
+                        ospfv3: Ospfv3 | UndefinedType = Undefined,
                         bgp: Bgp | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -36334,6 +36892,24 @@ class EosDesigns(EosDesignsRootModel):
                                OSPF interface configuration.
 
                                Subclass of AvdModel.
+                            ospfv3:
+                               OSPFv3 interface configuration.
+                               Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                               configuration for the VRF of the SVI on the device.
+                               Only the IPv6 address family is currently
+                               supported.
+                               SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                               OSPFv3 uses the IPv6
+                               link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                               `ipv6_address` (`ipv6_enable: false` is not supported).
+                               Anycast IPv6 (`ipv6_address_virtuals`) is
+                               not supported.
+                               SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                               VRF
+                               `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                               Subclass of
+                               AvdModel.
                             bgp: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                             structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -37984,6 +38560,11 @@ class EosDesigns(EosDesignsRootModel):
             class LoopbacksItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class Ospf(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -38016,6 +38597,7 @@ class EosDesigns(EosDesignsRootModel):
                     "node": {"type": str},
                     "loopback": {"type": int},
                     "ip_address": {"type": str},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "description": {"type": str},
                     "enabled": {"type": bool, "default": True},
                     "ospf": {"type": Ospf},
@@ -38024,13 +38606,25 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 node: str
                 loopback: int
-                ip_address: str
+                ip_address: str | None
+                """IPv4 address/Mask."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                At least one of `ip_address` or
+                `ipv6_addresses` must be set.
+                The first address in this list is used for the IPv6 virtual source-nat
+                of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
                 ospf: Ospf
                 """
-                OSPF interface configuration.
+                OSPFv2 interface configuration.
+                Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                and this loopback.
 
                 Subclass of AvdModel.
                 """
@@ -38049,7 +38643,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         node: str | UndefinedType = Undefined,
                         loopback: int | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType = Undefined,
+                        ip_address: str | UndefinedType | None = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -38065,11 +38660,20 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             node: node
                             loopback: loopback
-                            ip_address: ip_address
+                            ip_address: IPv4 address/Mask.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               At least one of `ip_address` or
+                               `ipv6_addresses` must be set.
+                               The first address in this list is used for the IPv6 virtual source-nat
+                               of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                               Subclass of AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
-                               OSPF interface configuration.
+                               OSPFv2 interface configuration.
+                               Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                               and this loopback.
 
                                Subclass of AvdModel.
                             hardware_forwarding:
@@ -39896,7 +40500,9 @@ class EosDesigns(EosDesignsRootModel):
                 "mlag_ibgp_peering_vlan": {"type": int},
                 "vtep_diagnostic": {"type": VtepDiagnostic},
                 "ospf": {"type": Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "redistribute_ospf": {"type": bool, "default": True},
+                "redistribute_ospfv3": {"type": RedistributeOspfv3},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "pim_rp_addresses": {"type": PimRpAddresses},
                 "evpn_l2_multi_domain": {"type": bool},
@@ -40094,12 +40700,25 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            ospfv3: Ospfv3
+            """
+            Router OSPFv3 settings for the VRF.
+            The OSPFv3 configuration is created automatically on a device
+            when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+            These settings only
+            override the defaults.
+            VRF `default` is not supported yet.
+
+            Subclass of AvdModel.
+            """
             redistribute_ospf: bool
             """
             Non-selectively enabling or disabling redistribute ospf inside the VRF.
 
             Default value: `True`
             """
+            redistribute_ospfv3: RedistributeOspfv3
+            """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -40265,7 +40884,9 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                     vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     redistribute_ospf: bool | UndefinedType = Undefined,
+                    redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                     evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -40422,7 +41043,17 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
+                        ospfv3:
+                           Router OSPFv3 settings for the VRF.
+                           The OSPFv3 configuration is created automatically on a device
+                           when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                           These settings only
+                           override the defaults.
+                           VRF `default` is not supported yet.
+
+                           Subclass of AvdModel.
                         redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                        redistribute_ospfv3: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -50451,7 +51082,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
-            KeyType: TypeAlias = Literal["disabled", "0", "7"]
+            KeyType: TypeAlias = Literal["disabled", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
@@ -50478,12 +51109,10 @@ class EosDesigns(EosDesignsRootModel):
             `compute_v3_user_localized_key` is `true`.
             Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
             4.36.2F.
-            When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
-            <key>` syntax for both auth and priv.
-            - `disabled`: Use legacy syntax without key type
-            (auth_passphrase rendered directly). Default for backward compatibility.
-            - `0`: Key string is
-            plaintext. AVD renders the raw computed localized key.
+            When set to `7`, AVD renders the computed localized keys using EOS `key <type> <key>`
+            syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type (auth_passphrase
+            rendered directly). Default for backward compatibility.
             - `7`: Type-7 encrypted (HIDDEN) key. AVD
             applies Type-7 obfuscation to the computed localized key before rendering.
 
@@ -50525,12 +51154,10 @@ class EosDesigns(EosDesignsRootModel):
                            `compute_v3_user_localized_key` is `true`.
                            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
                            4.36.2F.
-                           When set to `0` or `7`, AVD renders the computed localized keys using EOS `key <type>
-                           <key>` syntax for both auth and priv.
-                           - `disabled`: Use legacy syntax without key type
-                           (auth_passphrase rendered directly). Default for backward compatibility.
-                           - `0`: Key string is
-                           plaintext. AVD renders the raw computed localized key.
+                           When set to `7`, AVD renders the computed localized keys using EOS `key <type> <key>`
+                           syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type (auth_passphrase
+                           rendered directly). Default for backward compatibility.
                            - `7`: Type-7 encrypted (HIDDEN) key. AVD
                            applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
@@ -52378,6 +53005,101 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Ospfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ipv4(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                    enabled: bool | None
+                    """
+                    Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                    The
+                    IPv4 address family is not supported yet, so `true` raises an error.
+                    An SVI with IPv4 addressing
+                    also raises an error unless this is set to `false`.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                            """
+                            Ipv4.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled:
+                                   Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                   The
+                                   IPv4 address family is not supported yet, so `true` raises an error.
+                                   An SVI with IPv4 addressing
+                                   also raises an error unless this is set to `false`.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "area": {"type": str, "default": "0.0.0.0"},
+                    "point_to_point": {"type": bool, "default": False},
+                    "passive": {"type": bool, "default": False},
+                    "ipv4": {"type": Ipv4},
+                }
+                enabled: bool | None
+                area: str
+                """
+                OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                Default value: `"0.0.0.0"`
+                """
+                point_to_point: bool
+                """
+                Configure the OSPFv3 network type as point-to-point.
+
+                Default value: `False`
+                """
+                passive: bool
+                """
+                Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                By default, OSPFv3-enabled SVIs
+                are configured with `no ospfv3 passive-interface`.
+
+                Default value: `False`
+                """
+                ipv4: Ipv4
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType = Undefined,
+                        point_to_point: bool | UndefinedType = Undefined,
+                        passive: bool | UndefinedType = Undefined,
+                        ipv4: Ipv4 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ospfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                            point_to_point: Configure the OSPFv3 network type as point-to-point.
+                            passive:
+                               Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                               By default, OSPFv3-enabled SVIs
+                               are configured with `no ospfv3 passive-interface`.
+                            ipv4: Subclass of AvdModel.
+
+                        """
+
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -52454,6 +53176,7 @@ class EosDesigns(EosDesignsRootModel):
                 "spanning_tree_priority": {"type": int},
                 "mtu": {"type": int},
                 "ospf": {"type": Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "bgp": {"type": Bgp},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -52682,6 +53405,26 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            ospfv3: Ospfv3
+            """
+            OSPFv3 interface configuration.
+            Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+            configuration for the VRF of the SVI on the device.
+            Only the IPv6 address family is currently
+            supported.
+            SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+            OSPFv3 uses the IPv6
+            link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+            `ipv6_address` (`ipv6_enable: false` is not supported).
+            Anycast IPv6 (`ipv6_address_virtuals`) is
+            not supported.
+            SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+            VRF
+            `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+            Subclass of
+            AvdModel.
+            """
             bgp: Bgp
             """Subclass of AvdModel."""
             raw_eos_cli: str | None
@@ -52743,6 +53486,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                     mtu: int | UndefinedType | None = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -52907,6 +53651,24 @@ class EosDesigns(EosDesignsRootModel):
                            OSPF interface configuration.
 
                            Subclass of AvdModel.
+                        ospfv3:
+                           OSPFv3 interface configuration.
+                           Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                           configuration for the VRF of the SVI on the device.
+                           Only the IPv6 address family is currently
+                           supported.
+                           SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                           OSPFv3 uses the IPv6
+                           link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                           `ipv6_address` (`ipv6_enable: false` is not supported).
+                           Anycast IPv6 (`ipv6_address_virtuals`) is
+                           not supported.
+                           SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                           VRF
+                           `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                           Subclass of
+                           AvdModel.
                         bgp: Subclass of AvdModel.
                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                         structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -53783,6 +54545,101 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                enabled: bool | None
+                """
+                Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                The
+                IPv4 address family is not supported yet, so `true` raises an error.
+                An SVI with IPv4 addressing
+                also raises an error unless this is set to `false`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                               The
+                               IPv4 address family is not supported yet, so `true` raises an error.
+                               An SVI with IPv4 addressing
+                               also raises an error unless this is set to `false`.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "area": {"type": str, "default": "0.0.0.0"},
+                "point_to_point": {"type": bool, "default": False},
+                "passive": {"type": bool, "default": False},
+                "ipv4": {"type": Ipv4},
+            }
+            enabled: bool | None
+            area: str
+            """
+            OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+            Default value: `"0.0.0.0"`
+            """
+            point_to_point: bool
+            """
+            Configure the OSPFv3 network type as point-to-point.
+
+            Default value: `False`
+            """
+            passive: bool
+            """
+            Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+            By default, OSPFv3-enabled SVIs
+            are configured with `no ospfv3 passive-interface`.
+
+            Default value: `False`
+            """
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType | None = Undefined,
+                    area: str | UndefinedType = Undefined,
+                    point_to_point: bool | UndefinedType = Undefined,
+                    passive: bool | UndefinedType = Undefined,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                        point_to_point: Configure the OSPFv3 network type as point-to-point.
+                        passive:
+                           Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                           By default, OSPFv3-enabled SVIs
+                           are configured with `no ospfv3 passive-interface`.
+                        ipv4: Subclass of AvdModel.
+
+                    """
+
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -53861,6 +54718,7 @@ class EosDesigns(EosDesignsRootModel):
             "spanning_tree_priority": {"type": int},
             "mtu": {"type": int},
             "ospf": {"type": Ospf},
+            "ospfv3": {"type": Ospfv3},
             "bgp": {"type": Bgp},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -54109,6 +54967,26 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        ospfv3: Ospfv3
+        """
+        OSPFv3 interface configuration.
+        Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+        configuration for the VRF of the SVI on the device.
+        Only the IPv6 address family is currently
+        supported.
+        SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+        OSPFv3 uses the IPv6
+        link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+        `ipv6_address` (`ipv6_enable: false` is not supported).
+        Anycast IPv6 (`ipv6_address_virtuals`) is
+        not supported.
+        SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+        VRF
+        `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+        Subclass of
+        AvdModel.
+        """
         bgp: Bgp
         """Subclass of AvdModel."""
         raw_eos_cli: str | None
@@ -54172,6 +55050,7 @@ class EosDesigns(EosDesignsRootModel):
                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                 mtu: int | UndefinedType | None = Undefined,
                 ospf: Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 raw_eos_cli: str | UndefinedType | None = Undefined,
                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -54352,6 +55231,24 @@ class EosDesigns(EosDesignsRootModel):
                        OSPF interface configuration.
 
                        Subclass of AvdModel.
+                    ospfv3:
+                       OSPFv3 interface configuration.
+                       Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                       configuration for the VRF of the SVI on the device.
+                       Only the IPv6 address family is currently
+                       supported.
+                       SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                       OSPFv3 uses the IPv6
+                       link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                       `ipv6_address` (`ipv6_enable: false` is not supported).
+                       Anycast IPv6 (`ipv6_address_virtuals`) is
+                       not supported.
+                       SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                       VRF
+                       `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                       Subclass of
+                       AvdModel.
                     bgp: Subclass of AvdModel.
                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                     structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -60418,6 +61315,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -61186,15 +62084,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -61532,6 +62447,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -62104,15 +63020,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -66032,6 +66961,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -66810,15 +67740,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -67158,6 +68105,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -67737,15 +68685,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -71581,6 +72542,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -72362,15 +73324,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -72710,6 +73689,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -73291,15 +74271,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -77210,6 +78203,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -77988,15 +78982,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -78336,6 +79347,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -78915,15 +79927,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -86325,6 +87350,164 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class RedistributeBgp(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                            enabled: bool
+                            """
+                            Redistribute BGP into OSPFv3.
+                            Ignored on devices where BGP is not configured for this VRF.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeBgp.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Redistribute BGP into OSPFv3.
+                                           Ignored on devices where BGP is not configured for this VRF.
+
+                                    """
+
+                        class RedistributeConnected(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """
+                            Redistribute connected routes into OSPFv3.
+
+                            Default value: `False`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeConnected.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Redistribute connected routes into OSPFv3.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "router_id": {"type": str, "default": "main_router_id"},
+                            "redistribute_bgp": {"type": RedistributeBgp},
+                            "redistribute_connected": {"type": RedistributeConnected},
+                            "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
+                        }
+                        router_id: str
+                        """
+                        Router ID to use for OSPFv3 in this VRF.
+                        This can be an IPv4 address, "main_router_id", "none" or
+                        "diagnostic_loopback".
+                        - "main_router_id" will use the IP address of Loopback0 or the common `router
+                        general` Router ID if `use_router_general_for_router_id` is set.
+                        - "none" will not configure an
+                        OSPFv3 Router ID for this VRF.
+                          EOS then uses the `router general` Router ID or an IPv4 address of
+                        an interface in the VRF.
+                          If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                        does not start.
+                        - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                        interface.
+
+                        Default value: `"main_router_id"`
+                        """
+                        redistribute_bgp: RedistributeBgp
+                        """Subclass of AvdModel."""
+                        redistribute_connected: RedistributeConnected
+                        """Subclass of AvdModel."""
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                        """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                router_id: str | UndefinedType = Undefined,
+                                redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                                redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    router_id:
+                                       Router ID to use for OSPFv3 in this VRF.
+                                       This can be an IPv4 address, "main_router_id", "none" or
+                                       "diagnostic_loopback".
+                                       - "main_router_id" will use the IP address of Loopback0 or the common `router
+                                       general` Router ID if `use_router_general_for_router_id` is set.
+                                       - "none" will not configure an
+                                       OSPFv3 Router ID for this VRF.
+                                         EOS then uses the `router general` Router ID or an IPv4 address of
+                                       an interface in the VRF.
+                                         If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                                       does not start.
+                                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                                       interface.
+                                    redistribute_bgp: Subclass of AvdModel.
+                                    redistribute_connected: Subclass of AvdModel.
+                                    structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+
+                                """
+
+                    class RedistributeOspfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                        enabled: bool
+                        """
+                        Redistribute OSPFv3 internal routes into BGP for this VRF.
+                        Ignored on devices where BGP is not
+                        configured for this VRF or where the VRF has no OSPFv3 instance.
+                        OSPFv3 external routes are not
+                        redistributed.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                """
+                                RedistributeOspfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Redistribute OSPFv3 internal routes into BGP for this VRF.
+                                       Ignored on devices where BGP is not
+                                       configured for this VRF or where the VRF has no OSPFv3 instance.
+                                       OSPFv3 external routes are not
+                                       redistributed.
+
+                                """
+
                     class EvpnL3Multicast(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -87399,6 +88582,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class Ospfv3(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Ipv4(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                    enabled: bool | None
+                                    """
+                                    Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                    The
+                                    IPv4 address family is not supported yet, so `true` raises an error.
+                                    An SVI with IPv4 addressing
+                                    also raises an error unless this is set to `false`.
+                                    """
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                            """
+                                            Ipv4.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled:
+                                                   Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                                   The
+                                                   IPv4 address family is not supported yet, so `true` raises an error.
+                                                   An SVI with IPv4 addressing
+                                                   also raises an error unless this is set to `false`.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "area": {"type": str, "default": "0.0.0.0"},
+                                    "point_to_point": {"type": bool, "default": False},
+                                    "passive": {"type": bool, "default": False},
+                                    "ipv4": {"type": Ipv4},
+                                }
+                                enabled: bool | None
+                                area: str
+                                """
+                                OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                                Default value: `"0.0.0.0"`
+                                """
+                                point_to_point: bool
+                                """
+                                Configure the OSPFv3 network type as point-to-point.
+
+                                Default value: `False`
+                                """
+                                passive: bool
+                                """
+                                Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                By default, OSPFv3-enabled SVIs
+                                are configured with `no ospfv3 passive-interface`.
+
+                                Default value: `False`
+                                """
+                                ipv4: Ipv4
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType | None = Undefined,
+                                        area: str | UndefinedType = Undefined,
+                                        point_to_point: bool | UndefinedType = Undefined,
+                                        passive: bool | UndefinedType = Undefined,
+                                        ipv4: Ipv4 | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ospfv3.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                            point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                            passive:
+                                               Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                               By default, OSPFv3-enabled SVIs
+                                               are configured with `no ospfv3 passive-interface`.
+                                            ipv4: Subclass of AvdModel.
+
+                                        """
+
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -87476,6 +88754,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "spanning_tree_priority": {"type": int},
                                 "mtu": {"type": int},
                                 "ospf": {"type": Ospf},
+                                "ospfv3": {"type": Ospfv3},
                                 "bgp": {"type": Bgp},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -87714,6 +88993,26 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            ospfv3: Ospfv3
+                            """
+                            OSPFv3 interface configuration.
+                            Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                            configuration for the VRF of the SVI on the device.
+                            Only the IPv6 address family is currently
+                            supported.
+                            SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                            OSPFv3 uses the IPv6
+                            link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                            `ipv6_address` (`ipv6_enable: false` is not supported).
+                            Anycast IPv6 (`ipv6_address_virtuals`) is
+                            not supported.
+                            SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                            VRF
+                            `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                            Subclass of
+                            AvdModel.
+                            """
                             bgp: Bgp
                             """Subclass of AvdModel."""
                             raw_eos_cli: str | None
@@ -87776,6 +89075,7 @@ class EosDesigns(EosDesignsRootModel):
                                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                                     mtu: int | UndefinedType | None = Undefined,
                                     ospf: Ospf | UndefinedType = Undefined,
+                                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     raw_eos_cli: str | UndefinedType | None = Undefined,
                                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -87946,6 +89246,24 @@ class EosDesigns(EosDesignsRootModel):
                                            OSPF interface configuration.
 
                                            Subclass of AvdModel.
+                                        ospfv3:
+                                           OSPFv3 interface configuration.
+                                           Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                           configuration for the VRF of the SVI on the device.
+                                           Only the IPv6 address family is currently
+                                           supported.
+                                           SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                           OSPFv3 uses the IPv6
+                                           link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                           `ipv6_address` (`ipv6_enable: false` is not supported).
+                                           Anycast IPv6 (`ipv6_address_virtuals`) is
+                                           not supported.
+                                           SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                           VRF
+                                           `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                           Subclass of
+                                           AvdModel.
                                         bgp: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                         structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -88831,6 +90149,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Ospfv3(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Ipv4(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                enabled: bool | None
+                                """
+                                Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                The
+                                IPv4 address family is not supported yet, so `true` raises an error.
+                                An SVI with IPv4 addressing
+                                also raises an error unless this is set to `false`.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        Ipv4.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                               The
+                                               IPv4 address family is not supported yet, so `true` raises an error.
+                                               An SVI with IPv4 addressing
+                                               also raises an error unless this is set to `false`.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "area": {"type": str, "default": "0.0.0.0"},
+                                "point_to_point": {"type": bool, "default": False},
+                                "passive": {"type": bool, "default": False},
+                                "ipv4": {"type": Ipv4},
+                            }
+                            enabled: bool | None
+                            area: str
+                            """
+                            OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                            Default value: `"0.0.0.0"`
+                            """
+                            point_to_point: bool
+                            """
+                            Configure the OSPFv3 network type as point-to-point.
+
+                            Default value: `False`
+                            """
+                            passive: bool
+                            """
+                            Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                            By default, OSPFv3-enabled SVIs
+                            are configured with `no ospfv3 passive-interface`.
+
+                            Default value: `False`
+                            """
+                            ipv4: Ipv4
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    area: str | UndefinedType = Undefined,
+                                    point_to_point: bool | UndefinedType = Undefined,
+                                    passive: bool | UndefinedType = Undefined,
+                                    ipv4: Ipv4 | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ospfv3.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                        point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                        passive:
+                                           Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                           By default, OSPFv3-enabled SVIs
+                                           are configured with `no ospfv3 passive-interface`.
+                                        ipv4: Subclass of AvdModel.
+
+                                    """
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -88912,6 +90325,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_priority": {"type": int},
                             "mtu": {"type": int},
                             "ospf": {"type": Ospf},
+                            "ospfv3": {"type": Ospfv3},
                             "bgp": {"type": Bgp},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -89184,6 +90598,26 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        ospfv3: Ospfv3
+                        """
+                        OSPFv3 interface configuration.
+                        Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                        configuration for the VRF of the SVI on the device.
+                        Only the IPv6 address family is currently
+                        supported.
+                        SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                        OSPFv3 uses the IPv6
+                        link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                        `ipv6_address` (`ipv6_enable: false` is not supported).
+                        Anycast IPv6 (`ipv6_address_virtuals`) is
+                        not supported.
+                        SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                        VRF
+                        `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                        Subclass of
+                        AvdModel.
+                        """
                         bgp: Bgp
                         """Subclass of AvdModel."""
                         raw_eos_cli: str | None
@@ -89250,6 +90684,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                                 mtu: int | UndefinedType | None = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
+                                ospfv3: Ospfv3 | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -89446,6 +90881,24 @@ class EosDesigns(EosDesignsRootModel):
                                        OSPF interface configuration.
 
                                        Subclass of AvdModel.
+                                    ospfv3:
+                                       OSPFv3 interface configuration.
+                                       Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                       configuration for the VRF of the SVI on the device.
+                                       Only the IPv6 address family is currently
+                                       supported.
+                                       SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                       OSPFv3 uses the IPv6
+                                       link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                       `ipv6_address` (`ipv6_enable: false` is not supported).
+                                       Anycast IPv6 (`ipv6_address_virtuals`) is
+                                       not supported.
+                                       SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                       VRF
+                                       `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                       Subclass of
+                                       AvdModel.
                                     bgp: Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                     structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -91100,6 +92553,11 @@ class EosDesigns(EosDesignsRootModel):
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -91132,6 +92590,7 @@ class EosDesigns(EosDesignsRootModel):
                             "node": {"type": str},
                             "loopback": {"type": int},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
@@ -91140,13 +92599,25 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         node: str
                         loopback: int
-                        ip_address: str
+                        ip_address: str | None
+                        """IPv4 address/Mask."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        At least one of `ip_address` or
+                        `ipv6_addresses` must be set.
+                        The first address in this list is used for the IPv6 virtual source-nat
+                        of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                        Subclass of AvdList with `str` items.
+                        """
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
                         ospf: Ospf
                         """
-                        OSPF interface configuration.
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                        and this loopback.
 
                         Subclass of AvdModel.
                         """
@@ -91165,7 +92636,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 node: str | UndefinedType = Undefined,
                                 loopback: int | UndefinedType = Undefined,
-                                ip_address: str | UndefinedType = Undefined,
+                                ip_address: str | UndefinedType | None = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -91181,11 +92653,20 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     node: node
                                     loopback: loopback
-                                    ip_address: ip_address
+                                    ip_address: IPv4 address/Mask.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       At least one of `ip_address` or
+                                       `ipv6_addresses` must be set.
+                                       The first address in this list is used for the IPv6 virtual source-nat
+                                       of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                                       Subclass of AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
-                                       OSPF interface configuration.
+                                       OSPFv2 interface configuration.
+                                       Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                                       and this loopback.
 
                                        Subclass of AvdModel.
                                     hardware_forwarding:
@@ -93025,7 +94506,9 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_ibgp_peering_vlan": {"type": int},
                         "vtep_diagnostic": {"type": VtepDiagnostic},
                         "ospf": {"type": Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "redistribute_ospf": {"type": bool, "default": True},
+                        "redistribute_ospfv3": {"type": RedistributeOspfv3},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
                         "pim_rp_addresses": {"type": PimRpAddresses},
                         "evpn_l2_multi_domain": {"type": bool},
@@ -93223,12 +94706,25 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    ospfv3: Ospfv3
+                    """
+                    Router OSPFv3 settings for the VRF.
+                    The OSPFv3 configuration is created automatically on a device
+                    when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                    These settings only
+                    override the defaults.
+                    VRF `default` is not supported yet.
+
+                    Subclass of AvdModel.
+                    """
                     redistribute_ospf: bool
                     """
                     Non-selectively enabling or disabling redistribute ospf inside the VRF.
 
                     Default value: `True`
                     """
+                    redistribute_ospfv3: RedistributeOspfv3
+                    """Subclass of AvdModel."""
                     evpn_l3_multicast: EvpnL3Multicast
                     """
                     Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -93394,7 +94890,9 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                             vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
+                            redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                             pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -93551,7 +95049,17 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
+                                ospfv3:
+                                   Router OSPFv3 settings for the VRF.
+                                   The OSPFv3 configuration is created automatically on a device
+                                   when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                                   These settings only
+                                   override the defaults.
+                                   VRF `default` is not supported yet.
+
+                                   Subclass of AvdModel.
                                 redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                                redistribute_ospfv3: Subclass of AvdModel.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -98643,6 +100151,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -99411,15 +100920,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -99757,6 +101283,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -100329,15 +101856,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -104257,6 +105797,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -105035,15 +106576,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -105383,6 +106941,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -105962,15 +107521,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -109806,6 +111378,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -110587,15 +112160,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -110935,6 +112525,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -111516,15 +113107,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -115435,6 +117039,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -116213,15 +117818,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -116561,6 +118183,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -117140,15 +118763,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -120324,8 +121960,15 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_mlag_rfc5549: bool
     """
-    IPv6 Unnumbered for MLAG iBGP connections.
-    Requires "underlay_rfc5549: true".
+    Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+    Requires
+    one of:
+    - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+    (unnumbered).
+    - `underlay_ipv6_numbered: true` and
+    `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+      The MLAG iBGP peerings in
+    VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
 
     Default value: `False`
     """
@@ -122416,8 +124059,15 @@ class EosDesigns(EosDesignsRootModel):
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
                 overlay_mlag_rfc5549:
-                   IPv6 Unnumbered for MLAG iBGP connections.
-                   Requires "underlay_rfc5549: true".
+                   Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+                   Requires
+                   one of:
+                   - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+                   (unnumbered).
+                   - `underlay_ipv6_numbered: true` and
+                   `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+                     The MLAG iBGP peerings in
+                   VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
                 overlay_rd_type:
                    Configuration options for the Administrator subfield (first part of RD) and the Assigned Number
                    subfield (second part of RD).

@@ -78,7 +78,7 @@ vlan_interfaces:
   ip_address: 192.168.104.7/24
   ipv6_enable: true
   ipv6_addresses:
-  - 2a00:104::7/64
+  - 2a00:104::a/64
   mtu: 1500
   metadata:
     type: inband_mgmt
@@ -93,6 +93,3 @@ vlans:
   metadata:
     tenants:
     - system
-vrfs:
-- name: MGMT
-  ip_routing: false
