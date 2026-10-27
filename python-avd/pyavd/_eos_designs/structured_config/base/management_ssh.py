@@ -50,6 +50,9 @@ class ManagementSshMixin(Protocol):
                         self.structured_config_utils._validate_ipv4_acl_exclusion(
                             vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
                         )
+                        if self.inputs.avd_design_future.validate_ssh_settings_vrfs_ipv4_acl:
+                            acl = self.shared_utils.get_ipv4_acl(vrf.ipv4_acl, interface_name=vrf_name)
+                            self.structured_config_utils._set_ipv4_acl(acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl, ipv6_access_group_in=vrf.ipv6_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
@@ -63,6 +66,9 @@ class ManagementSshMixin(Protocol):
                         self.structured_config_utils._validate_ipv4_acl_exclusion(
                             vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
                         )
+                        if self.inputs.avd_design_future.validate_ssh_settings_vrfs_ipv4_acl:
+                            acl = self.shared_utils.get_ipv4_acl(vrf.ipv4_acl, interface_name=vrf_name)
+                            self.structured_config_utils._set_ipv4_acl(acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)

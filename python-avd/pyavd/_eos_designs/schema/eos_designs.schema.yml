@@ -575,6 +575,18 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
+      validate_ssh_settings_vrfs_ipv4_acl:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          When this is set to `true`, the presence of access-list `ssh_settings.vrfs[].ipv4_acl`
+          in `ipv4_acls` catalog is validated.
+
+          An error is raised if the ACL is not present in the catalog.
+
+          `ssh_settings.vrfs[].ipv4_standard_acl` are validated by default regardless
+          of this key.'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

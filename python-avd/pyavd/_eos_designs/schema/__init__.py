@@ -1066,6 +1066,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "validate_ssh_settings_vrfs_ipv4_acl": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1216,6 +1217,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        validate_ssh_settings_vrfs_ipv4_acl: bool
+        """
+        Available from AVD 6.5.0.
+        When this is set to `true`, the presence of access-list
+        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+        An error is raised if the ACL is
+        not present in the catalog.
+        `ssh_settings.vrfs[].ipv4_standard_acl` are validated by default
+        regardless of this key.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1239,6 +1252,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                validate_ssh_settings_vrfs_ipv4_acl: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1328,6 +1342,14 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    validate_ssh_settings_vrfs_ipv4_acl:
+                       Available from AVD 6.5.0.
+                       When this is set to `true`, the presence of access-list
+                       `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+                       An error is raised if the ACL is
+                       not present in the catalog.
+                       `ssh_settings.vrfs[].ipv4_standard_acl` are validated by default
+                       regardless of this key.
 
                 """
 

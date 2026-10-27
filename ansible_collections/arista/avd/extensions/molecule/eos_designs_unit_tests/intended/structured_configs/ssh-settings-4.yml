@@ -4,6 +4,14 @@ config_end: true
 enable_password:
   disabled: true
 hostname: ssh-settings-4
+ip_access_lists:
+- name: ACL-SSH
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
@@ -19,6 +27,9 @@ management_ssh:
   vrfs:
   - name: default
     enable: true
+  - name: VRF1
+    enable: true
+    ip_access_group_in: ACL-SSH
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
