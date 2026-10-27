@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.run_once import run_once_method
 from pyavd._utils.undefined import Undefined, UndefinedType
 
@@ -59,3 +59,24 @@ class UtilsMixin(Protocol):
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+
+    def _validate_ipv4_acl_exclusion(
+        self: StructuredConfigUtilsProtocol,
+        ipv4_acl: str | None,
+        ipv4_standard_acl: str | None,
+        context: str,
+        direction: str | None = None,
+    ) -> None:
+        """Raise if both extended and standard IPv4 ACLs are configured together on the same target."""
+        if not (ipv4_acl and ipv4_standard_acl):
+            return
+        suffix = f"_{direction}" if direction is not None else ""
+        target = "interface " if direction is not None else ""
+        direction_label = ""
+        if direction is not None:
+            direction_label = "ingress " if direction == "in" else "egress "
+        msg = (
+            f"'ipv4_acl{suffix}' and 'ipv4_standard_acl{suffix}' are mutually exclusive on {target}'{context}'. "
+            f"Only one {direction_label}IPv4 ACL can be configured."
+        )
+        raise AristaAvdInvalidInputsError(msg)

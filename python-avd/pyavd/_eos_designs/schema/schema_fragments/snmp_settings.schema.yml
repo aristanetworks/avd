@@ -63,6 +63,9 @@ keys:
             ipv4_acl:
               type: str
               description: IPv4 access-list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.
