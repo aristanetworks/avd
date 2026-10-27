@@ -25,4 +25,3 @@ ssh_settings:
     - name: default
       enabled: true
       ipv4_standard_acl: ACL-SSH-STANDARD
-
