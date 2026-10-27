@@ -11795,6 +11795,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -12588,15 +12589,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -12937,6 +12955,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -13527,15 +13546,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -17430,6 +17462,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -18232,15 +18265,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -18582,6 +18632,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -19179,15 +19230,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -20098,13 +20162,19 @@ class EosDesigns(EosDesignsRootModel):
 
             AdditionalGroups._item_type = str
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "port": {"type": int}, "additional_groups": {"type": AdditionalGroups}}
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
             adjust an active client session.
 
             Default value: `True`
+            """
+            port: int | None
+            """
+            UDP port used for RADIUS dynamic authorization requests.
+            Applied only when
+            `dot1x_settings.dynamic_authorization.enabled` is `true`.
             """
             additional_groups: AdditionalGroups
             """
@@ -20119,7 +20189,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    port: int | UndefinedType | None = Undefined,
+                    additional_groups: AdditionalGroups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     DynamicAuthorization.
 
@@ -20130,6 +20206,10 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
+                        port:
+                           UDP port used for RADIUS dynamic authorization requests.
+                           Applied only when
+                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         additional_groups:
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the
@@ -34663,6 +34743,8 @@ class EosDesigns(EosDesignsRootModel):
                         "ipv4_acl_out": {"type": str},
                         "ipv6_acl_in": {"type": str},
                         "ipv6_acl_out": {"type": str},
+                        "ipv4_standard_acl_in": {"type": str},
+                        "ipv4_standard_acl_out": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
                         "static_routes": {"type": StaticRoutes},
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -34780,12 +34862,16 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the IPv4 access-list to be assigned in the ingress direction.
                     The access-list must be
                     defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive
+                    with `ipv4_standard_acl_in`. Setting both raises an error.
                     """
                     ipv4_acl_out: str | None
                     """
                     Name of the IPv4 Access-list to be assigned in the egress direction.
                     The access-list must be defined
                     under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive with
+                    `ipv4_standard_acl_out`. Setting both raises an error.
                     """
                     ipv6_acl_in: str | None
                     """
@@ -34806,6 +34892,22 @@ class EosDesigns(EosDesignsRootModel):
                     `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                     Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                     removed in AVD 7.0.0.
+                    """
+                    ipv4_standard_acl_in: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    """
+                    ipv4_standard_acl_out: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the egress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -34984,6 +35086,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv4_acl_out: str | UndefinedType | None = Undefined,
                             ipv6_acl_in: str | UndefinedType | None = Undefined,
                             ipv6_acl_out: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
                             static_routes: StaticRoutes | UndefinedType = Undefined,
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -35076,10 +35180,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the IPv4 access-list to be assigned in the ingress direction.
                                    The access-list must be
                                    defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive
+                                   with `ipv4_standard_acl_in`. Setting both raises an error.
                                 ipv4_acl_out:
                                    Name of the IPv4 Access-list to be assigned in the egress direction.
                                    The access-list must be defined
                                    under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive with
+                                   `ipv4_standard_acl_out`. Setting both raises an error.
                                 ipv6_acl_in:
                                    Name of the IPv6 access-list to be assigned in the ingress direction.
                                    The access-list must be
@@ -35096,6 +35204,18 @@ class EosDesigns(EosDesignsRootModel):
                                    `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                    Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                    removed in AVD 7.0.0.
+                                ipv4_standard_acl_in:
+                                   Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                ipv4_standard_acl_out:
+                                   Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -36232,6 +36352,8 @@ class EosDesigns(EosDesignsRootModel):
                     "ipv4_acl_out": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
+                    "ipv4_standard_acl_in": {"type": str},
+                    "ipv4_standard_acl_out": {"type": str},
                     "ip_helpers": {"type": IpHelpers},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -36383,12 +36505,16 @@ class EosDesigns(EosDesignsRootModel):
                 Name of the IPv4 access-list to be assigned in the ingress direction.
                 The access-list must be
                 defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive
+                with `ipv4_standard_acl_in`. Setting both raises an error.
                 """
                 ipv4_acl_out: str | None
                 """
                 Name of the IPv4 Access-list to be assigned in the egress direction.
                 The access-list must be defined
                 under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive with
+                `ipv4_standard_acl_out`. Setting both raises an error.
                 """
                 ipv6_acl_in: str | None
                 """
@@ -36409,6 +36535,22 @@ class EosDesigns(EosDesignsRootModel):
                 `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                 Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                 removed in AVD 7.0.0.
+                """
+                ipv4_standard_acl_in: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
+                """
+                ipv4_standard_acl_out: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the egress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
                 """
                 ip_helpers: IpHelpers
                 """
@@ -36591,6 +36733,8 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                         ip_helpers: IpHelpers | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -36709,10 +36853,14 @@ class EosDesigns(EosDesignsRootModel):
                                Name of the IPv4 access-list to be assigned in the ingress direction.
                                The access-list must be
                                defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive
+                               with `ipv4_standard_acl_in`. Setting both raises an error.
                             ipv4_acl_out:
                                Name of the IPv4 Access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive with
+                               `ipv4_standard_acl_out`. Setting both raises an error.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
@@ -36729,6 +36877,18 @@ class EosDesigns(EosDesignsRootModel):
                                `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                removed in AVD 7.0.0.
+                            ipv4_standard_acl_in:
+                               Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            ipv4_standard_acl_out:
+                               Name of the IPv4 standard access-list to be assigned in the egress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
                             ip_helpers:
                                IP helper for DHCP relay.
 
@@ -38474,6 +38634,11 @@ class EosDesigns(EosDesignsRootModel):
             class LoopbacksItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class Ospf(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -38506,6 +38671,7 @@ class EosDesigns(EosDesignsRootModel):
                     "node": {"type": str},
                     "loopback": {"type": int},
                     "ip_address": {"type": str},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "description": {"type": str},
                     "enabled": {"type": bool, "default": True},
                     "ospf": {"type": Ospf},
@@ -38514,13 +38680,25 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 node: str
                 loopback: int
-                ip_address: str
+                ip_address: str | None
+                """IPv4 address/Mask."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                At least one of `ip_address` or
+                `ipv6_addresses` must be set.
+                The first address in this list is used for the IPv6 virtual source-nat
+                of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
                 ospf: Ospf
                 """
-                OSPF interface configuration.
+                OSPFv2 interface configuration.
+                Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                and this loopback.
 
                 Subclass of AvdModel.
                 """
@@ -38539,7 +38717,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         node: str | UndefinedType = Undefined,
                         loopback: int | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType = Undefined,
+                        ip_address: str | UndefinedType | None = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -38555,11 +38734,20 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             node: node
                             loopback: loopback
-                            ip_address: ip_address
+                            ip_address: IPv4 address/Mask.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               At least one of `ip_address` or
+                               `ipv6_addresses` must be set.
+                               The first address in this list is used for the IPv6 virtual source-nat
+                               of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                               Subclass of AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
-                               OSPF interface configuration.
+                               OSPFv2 interface configuration.
+                               Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                               and this loopback.
 
                                Subclass of AvdModel.
                             hardware_forwarding:
@@ -53014,6 +53202,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -53121,12 +53311,16 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 access-list to be assigned in the ingress direction.
             The access-list must be
             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive
+            with `ipv4_standard_acl_in`. Setting both raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive with
+            `ipv4_standard_acl_out`. Setting both raises an error.
             """
             ipv6_acl_in: str | None
             """
@@ -53147,6 +53341,22 @@ class EosDesigns(EosDesignsRootModel):
             `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
             Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
             removed in AVD 7.0.0.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
             """
             ip_helpers: IpHelpers
             """
@@ -53324,6 +53534,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -53410,10 +53622,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 access-list to be assigned in the ingress direction.
                            The access-list must be
                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive
+                           with `ipv4_standard_acl_in`. Setting both raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive with
+                           `ipv4_standard_acl_out`. Setting both raises an error.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -53430,6 +53646,18 @@ class EosDesigns(EosDesignsRootModel):
                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                            removed in AVD 7.0.0.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -54556,6 +54784,8 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ipv6_acl_in": {"type": str},
             "ipv6_acl_out": {"type": str},
+            "ipv4_standard_acl_in": {"type": str},
+            "ipv4_standard_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -54683,12 +54913,16 @@ class EosDesigns(EosDesignsRootModel):
         Name of the IPv4 access-list to be assigned in the ingress direction.
         The access-list must be
         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive
+        with `ipv4_standard_acl_in`. Setting both raises an error.
         """
         ipv4_acl_out: str | None
         """
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive with
+        `ipv4_standard_acl_out`. Setting both raises an error.
         """
         ipv6_acl_in: str | None
         """
@@ -54709,6 +54943,22 @@ class EosDesigns(EosDesignsRootModel):
         `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
         removed in AVD 7.0.0.
+        """
+        ipv4_standard_acl_in: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
+        """
+        ipv4_standard_acl_out: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the egress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
         """
         ip_helpers: IpHelpers
         """
@@ -54888,6 +55138,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -54990,10 +55242,14 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 access-list to be assigned in the ingress direction.
                        The access-list must be
                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive
+                       with `ipv4_standard_acl_in`. Setting both raises an error.
                     ipv4_acl_out:
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive with
+                       `ipv4_standard_acl_out`. Setting both raises an error.
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
@@ -55010,6 +55266,18 @@ class EosDesigns(EosDesignsRootModel):
                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                        removed in AVD 7.0.0.
+                    ipv4_standard_acl_in:
+                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    ipv4_standard_acl_out:
+                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -61171,6 +61439,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -61939,15 +62208,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -62285,6 +62571,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -62857,15 +63144,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -66785,6 +67085,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -67563,15 +67864,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -67911,6 +68229,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -68490,15 +68809,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -72334,6 +72666,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -73115,15 +73448,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -73463,6 +73813,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -74044,15 +74395,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -77963,6 +78327,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -78741,15 +79106,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -79089,6 +79471,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -79668,15 +80051,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -88464,6 +88860,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
                                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -88581,12 +88979,16 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 access-list to be assigned in the ingress direction.
                             The access-list must be
                             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive
+                            with `ipv4_standard_acl_in`. Setting both raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive with
+                            `ipv4_standard_acl_out`. Setting both raises an error.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -88607,6 +89009,22 @@ class EosDesigns(EosDesignsRootModel):
                             `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                             Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                             removed in AVD 7.0.0.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
                             """
                             ip_helpers: IpHelpers
                             """
@@ -88785,6 +89203,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -88877,10 +89297,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
                                            The access-list must be
                                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive
+                                           with `ipv4_standard_acl_in`. Setting both raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive with
+                                           `ipv4_standard_acl_out`. Setting both raises an error.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -88897,6 +89321,18 @@ class EosDesigns(EosDesignsRootModel):
                                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                            removed in AVD 7.0.0.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -90035,6 +90471,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -90186,12 +90624,16 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 access-list to be assigned in the ingress direction.
                         The access-list must be
                         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive
+                        with `ipv4_standard_acl_in`. Setting both raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive with
+                        `ipv4_standard_acl_out`. Setting both raises an error.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -90212,6 +90654,22 @@ class EosDesigns(EosDesignsRootModel):
                         `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                         removed in AVD 7.0.0.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
                         """
                         ip_helpers: IpHelpers
                         """
@@ -90394,6 +90852,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -90512,10 +90972,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
                                        The access-list must be
                                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive
+                                       with `ipv4_standard_acl_in`. Setting both raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive with
+                                       `ipv4_standard_acl_out`. Setting both raises an error.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -90532,6 +90996,18 @@ class EosDesigns(EosDesignsRootModel):
                                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                        removed in AVD 7.0.0.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                                     ip_helpers:
                                        IP helper for DHCP relay.
 
@@ -92281,6 +92757,11 @@ class EosDesigns(EosDesignsRootModel):
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -92313,6 +92794,7 @@ class EosDesigns(EosDesignsRootModel):
                             "node": {"type": str},
                             "loopback": {"type": int},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
@@ -92321,13 +92803,25 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         node: str
                         loopback: int
-                        ip_address: str
+                        ip_address: str | None
+                        """IPv4 address/Mask."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        At least one of `ip_address` or
+                        `ipv6_addresses` must be set.
+                        The first address in this list is used for the IPv6 virtual source-nat
+                        of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                        Subclass of AvdList with `str` items.
+                        """
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
                         ospf: Ospf
                         """
-                        OSPF interface configuration.
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                        and this loopback.
 
                         Subclass of AvdModel.
                         """
@@ -92346,7 +92840,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 node: str | UndefinedType = Undefined,
                                 loopback: int | UndefinedType = Undefined,
-                                ip_address: str | UndefinedType = Undefined,
+                                ip_address: str | UndefinedType | None = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -92362,11 +92857,20 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     node: node
                                     loopback: loopback
-                                    ip_address: ip_address
+                                    ip_address: IPv4 address/Mask.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       At least one of `ip_address` or
+                                       `ipv6_addresses` must be set.
+                                       The first address in this list is used for the IPv6 virtual source-nat
+                                       of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                                       Subclass of AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
-                                       OSPF interface configuration.
+                                       OSPFv2 interface configuration.
+                                       Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                                       and this loopback.
 
                                        Subclass of AvdModel.
                                     hardware_forwarding:
@@ -99851,6 +100355,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -100619,15 +101124,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -100965,6 +101487,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -101537,15 +102060,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -105465,6 +106001,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -106243,15 +106780,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -106591,6 +107145,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -107170,15 +107725,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -111014,6 +111582,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -111795,15 +112364,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -112143,6 +112729,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -112724,15 +113311,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -116643,6 +117243,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -117421,15 +118022,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -117769,6 +118387,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -118348,15 +118967,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
