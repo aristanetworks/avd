@@ -23,4 +23,4 @@ ssh_settings:
       ipv4_acl: ACL-SSH
 
 expected_error_message: >-
-  'ipv4_acl[name=ACL-SSH]' is required but was not found.
+  'ipv4_acls[name=ACL-SSH]' is required but was not found.
