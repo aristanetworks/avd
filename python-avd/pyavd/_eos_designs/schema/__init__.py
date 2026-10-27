@@ -38599,14 +38599,20 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_in: str | None
                 """
                 Name of the IPv4 access-list to be assigned in the ingress direction.
-                Mutually exclusive with
-                `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                The access-list must be
+                defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                Mutually
+                exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises
+                an error.
                 """
                 ipv4_acl_out: str | None
                 """
                 Name of the IPv4 Access-list to be assigned in the egress direction.
-                Mutually exclusive with
-                `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                The access-list must be defined
+                under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                Mutually
+                exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                raises an error.
                 """
                 ipv4_standard_acl_in: str | None
                 """
@@ -38752,12 +38758,18 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: MTU can only be set on the parent Port-Channel.
                             ipv4_acl_in:
                                Name of the IPv4 access-list to be assigned in the ingress direction.
-                               Mutually exclusive with
-                               `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                               The access-list must be
+                               defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                               Mutually
+                               exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises
+                               an error.
                             ipv4_acl_out:
                                Name of the IPv4 Access-list to be assigned in the egress direction.
-                               Mutually exclusive with
-                               `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                               The access-list must be defined
+                               under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                               Mutually
+                               exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                               raises an error.
                             ipv4_standard_acl_in:
                                Name of the IPv4 standard access-list to be assigned in the ingress direction.
                                The access-list must
@@ -92916,14 +92928,20 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_acl_in: str | None
                         """
                         Name of the IPv4 access-list to be assigned in the ingress direction.
-                        Mutually exclusive with
-                        `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                        The access-list must be
+                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises
+                        an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
-                        Mutually exclusive with
-                        `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                        The access-list must be defined
+                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
                         """
                         ipv4_standard_acl_in: str | None
                         """
@@ -93069,12 +93087,18 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: MTU can only be set on the parent Port-Channel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
-                                       Mutually exclusive with
-                                       `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                                       The access-list must be
+                                       defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises
+                                       an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
-                                       Mutually exclusive with
-                                       `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                                       The access-list must be defined
+                                       under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
                                     ipv4_standard_acl_in:
                                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
                                        The access-list must

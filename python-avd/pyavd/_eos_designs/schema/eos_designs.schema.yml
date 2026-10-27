@@ -6862,12 +6862,18 @@ keys:
                       description: 'Name of the IPv4 access-list to be assigned in
                         the ingress direction.
 
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip" and "peer_ip".
+
                         Mutually exclusive with `ipv4_standard_acl_in`, setting both
                         `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
                       description: 'Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip" and "peer_ip".
 
                         Mutually exclusive with `ipv4_standard_acl_out`, setting both
                         `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
