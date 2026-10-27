@@ -30950,7 +30950,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "disabled": {"type": bool},
                 "topic": {"type": str},
                 "monitor_point_identifier": {"type": int},
-                "flow_table_size_entries": {"type": int},
+                "flow_table_size": {"type": int},
                 "ipfix_listener_port": {"type": int},
                 "ndr_application": {"type": NdrApplication},
                 "nucleus": {"type": Nucleus},
@@ -30964,7 +30964,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Topic identifier."""
             monitor_point_identifier: int | None
             """Identifier of this monitor point."""
-            flow_table_size_entries: int | None
+            flow_table_size: int | None
             """Maximum number of entries in the flow table."""
             ipfix_listener_port: int | None
             """UDP port on which the sensor listens for IPFIX records."""
@@ -30986,7 +30986,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     disabled: bool | UndefinedType | None = Undefined,
                     topic: str | UndefinedType | None = Undefined,
                     monitor_point_identifier: int | UndefinedType | None = Undefined,
-                    flow_table_size_entries: int | UndefinedType | None = Undefined,
+                    flow_table_size: int | UndefinedType | None = Undefined,
                     ipfix_listener_port: int | UndefinedType | None = Undefined,
                     ndr_application: NdrApplication | UndefinedType = Undefined,
                     nucleus: Nucleus | UndefinedType = Undefined,
@@ -31003,7 +31003,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            `true` renders `disabled`, `false` renders `no disabled`.
                         topic: Topic identifier.
                         monitor_point_identifier: Identifier of this monitor point.
-                        flow_table_size_entries: Maximum number of entries in the flow table.
+                        flow_table_size: Maximum number of entries in the flow table.
                         ipfix_listener_port: UDP port on which the sensor listens for IPFIX records.
                         ndr_application: Subclass of AvdModel.
                         nucleus:
