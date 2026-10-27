@@ -31,3 +31,13 @@ vrfs:
     ip_routing: true
     ipv6_routing: true
     ip_routing_ipv6_interfaces: true
+  - name: test
+    ip_routing: false
+  - name: Tenant_A
+    ip_routing: false
+  - name: Tenant_B
+    ip_routing: false
+  - name: Tenant_C
+    ip_routing: false
+  - name: Tunnel-VRF
+    ip_routing: false

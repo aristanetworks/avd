@@ -1,0 +1,8 @@
+---
+## AAA Server Groups
+aaa_server_groups:
+  - name: TACACS
+    type: tacacs+
+    servers:
+      - server: 10.10.11.157
+        vrf: MGMT

@@ -401,7 +401,7 @@ agent KernelFib shutdown supervisor standby
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | - | oob | default | 10.1.1.1 | - |
+| Management0 | - | oob | default | 10.1.1.1/24 | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 | Management3 | IPv6 ND new structure test | oob | MGMT | - | - |
 | Management42 | - | oob | default | dhcp | - |
@@ -454,7 +454,7 @@ agent KernelFib shutdown supervisor standby
 !
 interface Management0
    mac-address 00:1c:73:00:00:aa
-   ip address 10.1.1.1
+   ip address 10.1.1.1/24
    redundancy fallback-delay 100 seconds
    redundancy monitor link-state
    redundancy supervisor 1 interface primary Management1/1 backup Management1/2 Management2/1
@@ -4380,7 +4380,7 @@ mlag configuration
 
 | Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
-| False | 192.168.1.1/24 | Management | 30 | 90 | 10 | True |
+| False | Management0 | Management | 30 | 90 | 10 | True |
 
 #### LLDP Explicit TLV Transmit Settings
 
@@ -4414,7 +4414,7 @@ lldp tlv transmit power-via-mdi
 no lldp tlv transmit system-capabilities
 lldp tlv transmit system-description
 no lldp run
-lldp management-address 192.168.1.1/24
+lldp management-address Management0
 lldp management-address vrf Management
 lldp receive packet tagged drop
 ```
@@ -5163,7 +5163,7 @@ interface Dps1
 | Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | - | 192.0.2.1/31 | default | 1500 | - | - | - |
-| Ethernet47 | IP Helper | - | 172.31.255.1/31 | default | - | - | - | - |
+| Ethernet47 | IP Helper | - | 172.31.255.3/31 | default | - | - | - | - |
 | Ethernet63 | DHCP client interface | - | dhcp | default | - | - | - | - |
 | Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
 | Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
@@ -6045,7 +6045,7 @@ interface Ethernet46
 interface Ethernet47
    description IP Helper
    no switchport
-   ip address 172.31.255.1/31
+   ip address 172.31.255.3/31
    ip helper-address 10.10.64.151
    ip helper-address 10.10.96.101 source-interface Loopback0
    ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
@@ -6777,9 +6777,9 @@ interface Ethernet90
 | Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel51 | ipv6_prefix | - | - | default | - | - | - | - | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | caff::b5/64 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
 | Port-Channel109 | Molecule ACLs | - | - | default | - | - | - | - | - | - | - | - | IPV6_ACL_IN | IPV6_ACL_OUT |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
@@ -6926,7 +6926,7 @@ interface Port-Channel8
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
    encapsulation dot1q vlan 101
-   ipv6 address cafe::b4
+   ipv6 address cafe::b4/64
 !
 interface Port-Channel9
    no switchport
@@ -7168,7 +7168,7 @@ interface Port-Channel100.101
    mtu 1500
    logging event link-status
    encapsulation dot1q vlan 101
-   ipv6 address cafe::b4
+   ipv6 address caff::b5/64
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
@@ -8773,12 +8773,17 @@ ip virtual-router mac-address mlag-peer
 | defauls | False |
 | defaulu | False |
 | MGMT | False |
+| Tenant_A | False |
 | TENANT_A_PROJECT01 | True |
 | TENANT_A_PROJECT02 | True |
+| Tenant_B | False |
+| Tenant_C | False |
+| test | False |
 | TEST1 | True |
 | TEST2 | True (ipv6 interfaces) |
 | TEST3 | True |
 | TEST4 | False |
+| Tunnel-VRF | False |
 
 #### IP Routing Device Configuration
 
@@ -8794,6 +8799,11 @@ ip routing vrf TENANT_A_PROJECT02
 ip routing vrf TEST1
 ip routing ipv6 interfaces vrf TEST2
 ip routing vrf TEST3
+no ip routing vrf Tenant_A
+no ip routing vrf Tenant_B
+no ip routing vrf Tenant_C
+no ip routing vrf Tunnel-VRF
+no ip routing vrf test
 ```
 
 ### IPv6 Routing
@@ -8808,12 +8818,17 @@ ip routing vrf TEST3
 | default | True |
 | defaulu | False |
 | MGMT | False |
+| Tenant_A | False |
 | TENANT_A_PROJECT01 | False |
 | TENANT_A_PROJECT02 | False |
+| Tenant_B | False |
+| Tenant_C | False |
+| test | False |
 | TEST1 | True |
 | TEST2 | False |
 | TEST3 | False |
 | TEST4 | False |
+| Tunnel-VRF | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -13308,12 +13323,17 @@ mac access-list TEST5
 | defauls | disabled |
 | defaulu | disabled |
 | MGMT | disabled |
+| Tenant_A | disabled |
 | TENANT_A_PROJECT01 | enabled |
 | TENANT_A_PROJECT02 | enabled |
+| Tenant_B | disabled |
+| Tenant_C | disabled |
+| test | disabled |
 | TEST1 | enabled |
 | TEST2 | enabled (ipv6 interface) |
 | TEST3 | enabled |
 | TEST4 | disabled |
+| Tunnel-VRF | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -13337,9 +13357,19 @@ vrf instance TEST3
 vrf instance TEST4
    rd 10.20.30.40:102
 !
+vrf instance Tenant_A
+!
+vrf instance Tenant_B
+!
+vrf instance Tenant_C
+!
+vrf instance Tunnel-VRF
+!
 vrf instance defauls
 !
 vrf instance defaulu
+!
+vrf instance test
 ```
 
 ## Virtual Source NAT

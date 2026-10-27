@@ -22,6 +22,7 @@
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+  - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
@@ -372,13 +373,13 @@ cvx
 
 ### Enable Password
 
-md5 encrypted enable password is configured
+sha512 encrypted enable password is configured
 
 #### Enable Password Device Configuration
 
 ```eos
 !
-enable password 5 <removed>
+enable password sha512 <removed>
 !
 ```
 
@@ -451,6 +452,22 @@ ip radius vrf abc source-interface Loopback10
 ip radius vrf BLAH source-interface Loopback10
 !
 ip radius vrf MGMT source-interface Management1
+```
+
+### AAA Server Groups
+
+#### AAA Server Groups Summary
+
+| Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
+| ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| TACACS | tacacs+ | MGMT | 10.10.11.157 | - | - |
+
+#### AAA Server Groups Device Configuration
+
+```eos
+!
+aaa group server tacacs+ TACACS
+   server 10.10.11.157 vrf MGMT
 ```
 
 ### AAA Authentication
@@ -2140,7 +2157,7 @@ platform trident mmu headroom-pool limit 557
 
 | Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | - | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
 
 #### Layer 4 Applications
 
@@ -2159,7 +2176,6 @@ application traffic recognition
       destination prefix field-set dest_prefix_set1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
-      protocol 25
       dscp 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62
    !
    application l4 l4-app-1
