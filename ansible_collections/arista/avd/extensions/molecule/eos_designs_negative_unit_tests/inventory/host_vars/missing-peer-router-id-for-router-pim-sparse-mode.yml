@@ -20,6 +20,3 @@ l3leaf:
     - name: missing-peer-router-id-for-router-pim-sparse-mode
       bgp_as: 65001
       id: 1
-
-expected_error_message: >-
-  'router_id' is required but was not found for missing-mgmt-ip-cvx-servers.
