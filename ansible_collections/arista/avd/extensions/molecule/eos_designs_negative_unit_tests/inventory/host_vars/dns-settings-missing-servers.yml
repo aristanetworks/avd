@@ -1,0 +1,32 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    dns_settings_profile: child_dns_profile
+  nodes:
+    - name: dns-settings-missing-servers
+
+dns_settings:
+  domain: global.example.com
+  domain_list:
+    - global.example.com
+
+dns_settings_profiles:
+  - profile: common_dns_profile
+    domain: common.example.com
+    vrfs:
+      - name: default
+        source_interface: Loopback0
+  - profile: regional_dns_profile
+    parent_profile: common_dns_profile
+    domain_list:
+      - regional.example.com
+  - profile: child_dns_profile
+    parent_profile: regional_dns_profile
+    ip_hosts:
+      - hostname: child-host
+        ipv4_addresses:
+          - 192.0.2.10
+
+expected_error_message: >-
+  At least one server must be provided in DNS configuration

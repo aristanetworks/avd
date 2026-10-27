@@ -139,7 +139,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 44b5042edab9382aba712eed4f9c7bab7a3d6a3e  # frozen: v0.17.0
+    rev: f368fb366ff7f2f808dd324b83a6d32267799e19  # frozen: v0.17.2
     hooks:
       # Run the linter.
       - id: ruff
@@ -170,7 +170,7 @@ repos:
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.16.8'
+          - 'ruff==0.17.2'
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
@@ -214,7 +214,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
+    rev: c92afdf2c6ca336aaa8f39e2bd8d48f62dbd8e1f  # frozen: v1.31.1
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -223,7 +223,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "5c0dbc466ebc62637ced3863ece094349699ef2f"  # frozen: 2.29.2
+    rev: "31d2b5ecbc143eaddfb31edd0e3dae2530bd936a"  # frozen: 2.29.3
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -313,7 +313,7 @@ repos:
           - pyavd-utils-gen==0.0.13
           - jsonschema-rs>=0.24
           - referencing>=0.35.0
-          - ruff==0.16.8
+          - ruff==0.17.2
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -347,7 +347,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.13', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3
+    rev: 341e2a331ba578029e66c2e01183e7a6b5ca9ab4  # frozen: v0.24.0
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
