@@ -1,0 +1,106 @@
+---
+- name: Verify check mode on an empty directory
+  when: test_check_mode | default(false)
+  block:
+    - name: Test folder creation in check mode
+      ansible.builtin.include_role:
+        name: arista.avd.build_output_folders
+        apply:
+          check_mode: true
+
+    - name: Inspect test directory after check mode
+      ansible.builtin.find:
+        paths: "{{ test_directory.path }}"
+        file_type: any
+        hidden: true
+      register: check_mode_entries
+
+    - name: Verify check mode did not create directories
+      ansible.builtin.assert:
+        that: check_mode_entries.matched == 0
+
+- name: Create output folders
+  ansible.builtin.include_role:
+    name: arista.avd.build_output_folders
+
+- name: Verify directory creation
+  ansible.builtin.include_tasks: verify_directories.yml
+
+- name: Create nested stale output and user catalog directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ expected_output }}/obsolete/nested"
+    - "{{ expected_anta }}/obsolete/nested"
+    - "{{ expected_user_catalogs }}/nested"
+
+- name: Seed generated outputs to clean
+  ansible.builtin.copy:
+    dest: "{{ item }}"
+    content: "stale output\n"
+    mode: "0644"
+  loop: "{{ stale_files }}"
+
+- name: Seed files to preserve
+  ansible.builtin.copy:
+    dest: "{{ item }}"
+    content: "keep this content\n"
+    mode: "0644"
+  loop: "{{ preserved_files | unique }}"
+
+- name: Verify check mode on populated directories
+  when: test_check_mode | default(false)
+  block:
+    - name: Test cleanup in check mode
+      ansible.builtin.include_role:
+        name: arista.avd.build_output_folders
+        apply:
+          check_mode: true
+
+    - name: Read stale output after check mode
+      ansible.builtin.slurp:
+        src: "{{ item }}"
+      loop: "{{ stale_files }}"
+      register: stale_contents
+
+    - name: Verify check mode preserved stale output contents
+      ansible.builtin.assert:
+        that: item.content | b64decode == 'stale output\n'
+      loop: "{{ stale_contents.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+- name: Clean and recreate output folders
+  ansible.builtin.include_role:
+    name: arista.avd.build_output_folders
+
+- name: Verify recreated directories
+  ansible.builtin.include_tasks: verify_directories.yml
+
+- name: Inspect cleaned paths
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop: "{{ stale_files + [expected_output ~ '/obsolete', expected_anta ~ '/obsolete'] }}"
+  register: cleaned_paths
+
+- name: Verify stale files and obsolete directories were removed
+  ansible.builtin.assert:
+    that: not item.stat.exists
+  loop: "{{ cleaned_paths.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Read preserved files
+  ansible.builtin.slurp:
+    src: "{{ item }}"
+  loop: "{{ preserved_files | unique }}"
+  register: preserved_contents
+
+- name: Verify preserved file contents
+  ansible.builtin.assert:
+    that: item.content | b64decode == 'keep this content\n'
+  loop: "{{ preserved_contents.results }}"
+  loop_control:
+    label: "{{ item.item }}"
