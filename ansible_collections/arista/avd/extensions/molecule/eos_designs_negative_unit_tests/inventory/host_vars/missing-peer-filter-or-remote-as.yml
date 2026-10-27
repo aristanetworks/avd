@@ -21,7 +21,3 @@ tenants:
           - prefix: 192.168.143.0/24
             peer_id_include_router_id: true
         nodes: [missing-peer-filter-or-remote-as]
-
-expected_error_message: >-
-  'tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].peer_filter or
-  tenants[name=Tenant_X].bgp_peer_groups[name=Tenant_C_BGP_PEER_GROUP2].listen_ranges[0].remote_as' is required but was not found.

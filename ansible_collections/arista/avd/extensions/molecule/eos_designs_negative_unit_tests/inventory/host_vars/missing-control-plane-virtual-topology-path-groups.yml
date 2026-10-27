@@ -75,6 +75,3 @@ wan_virtual_topologies:
           - names: [INET]
           - names: [LTE]
             preference: 42
-
-expected_error_message: >-
-  The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy

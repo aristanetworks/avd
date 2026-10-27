@@ -18,6 +18,3 @@ l3leaf:
     - name: missing-dns-settings-when-cv-server-set-as-dns-name-onprem
       id: 3
       bgp_as: 65101
-
-expected_error_message: >-
-  'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name.

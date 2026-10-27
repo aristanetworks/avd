@@ -20184,13 +20184,19 @@ class EosDesigns(EosDesignsRootModel):
 
             AdditionalGroups._item_type = str
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "port": {"type": int}, "additional_groups": {"type": AdditionalGroups}}
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
             adjust an active client session.
 
             Default value: `True`
+            """
+            port: int | None
+            """
+            UDP port used for RADIUS dynamic authorization requests.
+            Applied only when
+            `dot1x_settings.dynamic_authorization.enabled` is `true`.
             """
             additional_groups: AdditionalGroups
             """
@@ -20205,7 +20211,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    port: int | UndefinedType | None = Undefined,
+                    additional_groups: AdditionalGroups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     DynamicAuthorization.
 
@@ -20216,6 +20228,10 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
+                        port:
+                           UDP port used for RADIUS dynamic authorization requests.
+                           Applied only when
+                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         additional_groups:
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the
@@ -34749,6 +34765,8 @@ class EosDesigns(EosDesignsRootModel):
                         "ipv4_acl_out": {"type": str},
                         "ipv6_acl_in": {"type": str},
                         "ipv6_acl_out": {"type": str},
+                        "ipv4_standard_acl_in": {"type": str},
+                        "ipv4_standard_acl_out": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
                         "static_routes": {"type": StaticRoutes},
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -34866,12 +34884,16 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the IPv4 access-list to be assigned in the ingress direction.
                     The access-list must be
                     defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive
+                    with `ipv4_standard_acl_in`. Setting both raises an error.
                     """
                     ipv4_acl_out: str | None
                     """
                     Name of the IPv4 Access-list to be assigned in the egress direction.
                     The access-list must be defined
                     under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive with
+                    `ipv4_standard_acl_out`. Setting both raises an error.
                     """
                     ipv6_acl_in: str | None
                     """
@@ -34892,6 +34914,22 @@ class EosDesigns(EosDesignsRootModel):
                     `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                     Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                     removed in AVD 7.0.0.
+                    """
+                    ipv4_standard_acl_in: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    """
+                    ipv4_standard_acl_out: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the egress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -35070,6 +35108,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv4_acl_out: str | UndefinedType | None = Undefined,
                             ipv6_acl_in: str | UndefinedType | None = Undefined,
                             ipv6_acl_out: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
                             static_routes: StaticRoutes | UndefinedType = Undefined,
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -35162,10 +35202,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the IPv4 access-list to be assigned in the ingress direction.
                                    The access-list must be
                                    defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive
+                                   with `ipv4_standard_acl_in`. Setting both raises an error.
                                 ipv4_acl_out:
                                    Name of the IPv4 Access-list to be assigned in the egress direction.
                                    The access-list must be defined
                                    under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive with
+                                   `ipv4_standard_acl_out`. Setting both raises an error.
                                 ipv6_acl_in:
                                    Name of the IPv6 access-list to be assigned in the ingress direction.
                                    The access-list must be
@@ -35182,6 +35226,18 @@ class EosDesigns(EosDesignsRootModel):
                                    `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                    Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                    removed in AVD 7.0.0.
+                                ipv4_standard_acl_in:
+                                   Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                ipv4_standard_acl_out:
+                                   Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -36318,6 +36374,8 @@ class EosDesigns(EosDesignsRootModel):
                     "ipv4_acl_out": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
+                    "ipv4_standard_acl_in": {"type": str},
+                    "ipv4_standard_acl_out": {"type": str},
                     "ip_helpers": {"type": IpHelpers},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -36469,12 +36527,16 @@ class EosDesigns(EosDesignsRootModel):
                 Name of the IPv4 access-list to be assigned in the ingress direction.
                 The access-list must be
                 defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive
+                with `ipv4_standard_acl_in`. Setting both raises an error.
                 """
                 ipv4_acl_out: str | None
                 """
                 Name of the IPv4 Access-list to be assigned in the egress direction.
                 The access-list must be defined
                 under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive with
+                `ipv4_standard_acl_out`. Setting both raises an error.
                 """
                 ipv6_acl_in: str | None
                 """
@@ -36495,6 +36557,22 @@ class EosDesigns(EosDesignsRootModel):
                 `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                 Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                 removed in AVD 7.0.0.
+                """
+                ipv4_standard_acl_in: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
+                """
+                ipv4_standard_acl_out: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the egress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
                 """
                 ip_helpers: IpHelpers
                 """
@@ -36677,6 +36755,8 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                         ip_helpers: IpHelpers | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -36795,10 +36875,14 @@ class EosDesigns(EosDesignsRootModel):
                                Name of the IPv4 access-list to be assigned in the ingress direction.
                                The access-list must be
                                defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive
+                               with `ipv4_standard_acl_in`. Setting both raises an error.
                             ipv4_acl_out:
                                Name of the IPv4 Access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive with
+                               `ipv4_standard_acl_out`. Setting both raises an error.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
@@ -36815,6 +36899,18 @@ class EosDesigns(EosDesignsRootModel):
                                `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                removed in AVD 7.0.0.
+                            ipv4_standard_acl_in:
+                               Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            ipv4_standard_acl_out:
+                               Name of the IPv4 standard access-list to be assigned in the egress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
                             ip_helpers:
                                IP helper for DHCP relay.
 
@@ -53158,6 +53254,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -53265,12 +53363,16 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 access-list to be assigned in the ingress direction.
             The access-list must be
             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive
+            with `ipv4_standard_acl_in`. Setting both raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive with
+            `ipv4_standard_acl_out`. Setting both raises an error.
             """
             ipv6_acl_in: str | None
             """
@@ -53291,6 +53393,22 @@ class EosDesigns(EosDesignsRootModel):
             `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
             Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
             removed in AVD 7.0.0.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
             """
             ip_helpers: IpHelpers
             """
@@ -53468,6 +53586,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -53554,10 +53674,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 access-list to be assigned in the ingress direction.
                            The access-list must be
                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive
+                           with `ipv4_standard_acl_in`. Setting both raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive with
+                           `ipv4_standard_acl_out`. Setting both raises an error.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -53574,6 +53698,18 @@ class EosDesigns(EosDesignsRootModel):
                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                            removed in AVD 7.0.0.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -54700,6 +54836,8 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ipv6_acl_in": {"type": str},
             "ipv6_acl_out": {"type": str},
+            "ipv4_standard_acl_in": {"type": str},
+            "ipv4_standard_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -54827,12 +54965,16 @@ class EosDesigns(EosDesignsRootModel):
         Name of the IPv4 access-list to be assigned in the ingress direction.
         The access-list must be
         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive
+        with `ipv4_standard_acl_in`. Setting both raises an error.
         """
         ipv4_acl_out: str | None
         """
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive with
+        `ipv4_standard_acl_out`. Setting both raises an error.
         """
         ipv6_acl_in: str | None
         """
@@ -54853,6 +54995,22 @@ class EosDesigns(EosDesignsRootModel):
         `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
         removed in AVD 7.0.0.
+        """
+        ipv4_standard_acl_in: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
+        """
+        ipv4_standard_acl_out: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the egress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
         """
         ip_helpers: IpHelpers
         """
@@ -55032,6 +55190,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -55134,10 +55294,14 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 access-list to be assigned in the ingress direction.
                        The access-list must be
                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive
+                       with `ipv4_standard_acl_in`. Setting both raises an error.
                     ipv4_acl_out:
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive with
+                       `ipv4_standard_acl_out`. Setting both raises an error.
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
@@ -55154,6 +55318,18 @@ class EosDesigns(EosDesignsRootModel):
                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                        removed in AVD 7.0.0.
+                    ipv4_standard_acl_in:
+                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    ipv4_standard_acl_out:
+                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -88736,6 +88912,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
                                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -88853,12 +89031,16 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 access-list to be assigned in the ingress direction.
                             The access-list must be
                             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive
+                            with `ipv4_standard_acl_in`. Setting both raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive with
+                            `ipv4_standard_acl_out`. Setting both raises an error.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -88879,6 +89061,22 @@ class EosDesigns(EosDesignsRootModel):
                             `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                             Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                             removed in AVD 7.0.0.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
                             """
                             ip_helpers: IpHelpers
                             """
@@ -89057,6 +89255,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -89149,10 +89349,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
                                            The access-list must be
                                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive
+                                           with `ipv4_standard_acl_in`. Setting both raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive with
+                                           `ipv4_standard_acl_out`. Setting both raises an error.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -89169,6 +89373,18 @@ class EosDesigns(EosDesignsRootModel):
                                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                            removed in AVD 7.0.0.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -90307,6 +90523,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -90458,12 +90676,16 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 access-list to be assigned in the ingress direction.
                         The access-list must be
                         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive
+                        with `ipv4_standard_acl_in`. Setting both raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive with
+                        `ipv4_standard_acl_out`. Setting both raises an error.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -90484,6 +90706,22 @@ class EosDesigns(EosDesignsRootModel):
                         `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                         Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                         removed in AVD 7.0.0.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
                         """
                         ip_helpers: IpHelpers
                         """
@@ -90666,6 +90904,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -90784,10 +91024,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
                                        The access-list must be
                                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive
+                                       with `ipv4_standard_acl_in`. Setting both raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive with
+                                       `ipv4_standard_acl_out`. Setting both raises an error.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -90804,6 +91048,18 @@ class EosDesigns(EosDesignsRootModel):
                                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
                                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
                                        removed in AVD 7.0.0.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                                     ip_helpers:
                                        IP helper for DHCP relay.
 

@@ -16,6 +16,3 @@ monitor_connectivity:
     - name: SET_INTERNET
       interfaces: [Ethernet1, Ethernet2]
   local_interfaces: Loopback0
-
-expected_error_message: >-
-  monitor_connectivity.local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.

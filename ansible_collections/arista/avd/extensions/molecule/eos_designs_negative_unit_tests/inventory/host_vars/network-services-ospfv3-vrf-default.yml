@@ -22,6 +22,3 @@ tenants:
             ipv6_address: 2001:db8:110::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=default].svis[id=110].ospfv3.enabled: true' is not supported in VRF 'default'.

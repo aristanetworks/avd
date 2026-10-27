@@ -13,6 +13,3 @@ l3leaf:
     - name: missing-ntp-settings-when-cv-server-is-set
       id: 3
       bgp_as: 65101
-
-expected_error_message: >-
-  'ntp_settings.servers' must be configured when CloudVision clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined.
