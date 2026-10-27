@@ -47,17 +47,23 @@ class ManagementSshMixin(Protocol):
                 self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
                 if vrf.enabled:
                     if vrf.ipv4_acl:
-                        self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None)
+                        self.structured_config_utils._validate_ipv4_acl_exclusion(
+                            vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
+                        )
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl, ipv6_access_group_in=vrf.ipv6_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_standard_acl, ipv6_access_group_in=vrf.ipv6_acl)
             else:
-                management_ssh_vrf = EosCliConfigGen.ManagementSsh.VrfsItem(name=vrf_name, enable=vrf.enabled, ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None)
+                management_ssh_vrf = EosCliConfigGen.ManagementSsh.VrfsItem(
+                    name=vrf_name, enable=vrf.enabled, ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None
+                )
                 if vrf.enabled:
                     if vrf.ipv4_acl:
-                        self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None)
-                        management_ssh_vrf.ip_access_group_in=vrf.ipv4_acl
+                        self.structured_config_utils._validate_ipv4_acl_exclusion(
+                            vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
+                        )
+                        management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_standard_acl
