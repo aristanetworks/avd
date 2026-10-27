@@ -3,6 +3,15 @@
 # This tests the general snmp_settings, excluding the tests for location, localize, engine id since that is tested in other files.
 # This tests the SNMP hosts ignoring inband management VRF.
 
+# An unused extended ACL may share the name of an applied standard ACL.
+ipv4_acls:
+  - name: SNMP-MGMT
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+
 ipv4_standard_acls:
   - name: acl1
     entries:
