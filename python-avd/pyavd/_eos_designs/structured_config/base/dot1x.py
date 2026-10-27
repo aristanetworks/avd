@@ -52,10 +52,7 @@ class Dot1xMixin(Protocol):
         if not dyn_authorization_settings.enabled:
             return
 
-        self.structured_config.radius_server.dynamic_authorization._update(
-            port=dyn_authorization_settings.port,
-            tls_ssl_profile=dyn_authorization_settings.tls_ssl_profile,
-        )
+        self.structured_config.radius_server.dynamic_authorization.port = dyn_authorization_settings.port
 
         if not dyn_authorization_settings.additional_groups:
             return

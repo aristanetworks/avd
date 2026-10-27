@@ -24,7 +24,6 @@
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x_settings.dynamic_authorization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.dynamic_authorization.enabled") | Boolean |  | `True` |  | Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "dot1x_settings.dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | UDP port used for RADIUS dynamic authorization requests.<br>Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tls_ssl_profile</samp>](## "dot1x_settings.dynamic_authorization.tls_ssl_profile") | String |  |  |  | SSL profile used for TLS-secured RADIUS dynamic authorization requests.<br>Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_groups</samp>](## "dot1x_settings.dynamic_authorization.additional_groups") | List, items: String |  |  |  | List of additional RADIUS server groups for dynamic authorization purposes only.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on any server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.dynamic_authorization.additional_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x_settings.mac_based_authentication") | Dictionary |  |  |  |  |
@@ -120,10 +119,6 @@
         # UDP port used for RADIUS dynamic authorization requests.
         # Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
         port: <int; 0-65535>
-
-        # SSL profile used for TLS-secured RADIUS dynamic authorization requests.
-        # Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
-        tls_ssl_profile: <str>
 
         # List of additional RADIUS server groups for dynamic authorization purposes only.
         # The order of the list defines the server group priority.

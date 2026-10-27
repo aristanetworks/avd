@@ -32,7 +32,6 @@ dot1x_settings:
   dynamic_authorization:
     additional_groups: [coa-server-group]
     port: 100
-    tls_ssl_profile: SSL_PROFILE
   mac_based_authentication:
     username_format:
       delimiter: colon

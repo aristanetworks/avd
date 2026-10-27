@@ -90,7 +90,6 @@ metadata:
 radius_server:
   dynamic_authorization:
     port: 100
-    tls_ssl_profile: SSL_PROFILE
   vrfs:
   - name: MGMT
     servers:

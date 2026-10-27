@@ -89,11 +89,6 @@ keys:
             description: |-
               UDP port used for RADIUS dynamic authorization requests.
               Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
-          tls_ssl_profile:
-            type: str
-            description: |-
-              SSL profile used for TLS-secured RADIUS dynamic authorization requests.
-              Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
           additional_groups:
             type: list
             description: |-

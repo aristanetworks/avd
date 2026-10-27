@@ -15,9 +15,8 @@ dot1x_settings:
   bypass_lldp: false
   dynamic_authorization:
     enabled: false
-    # Won't render port and ssl profile without CoA feature enabled
+    # Without CoA feature enabled it won't render the radius server dynamic authorization udp port
     port: 100
-    tls_ssl_profile: SSL_PROFILE
   device_profiling:
     enabled: true
     dhcp:

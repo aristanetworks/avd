@@ -20044,12 +20044,7 @@ class EosDesigns(EosDesignsRootModel):
 
             AdditionalGroups._item_type = str
 
-            _fields: ClassVar[dict] = {
-                "enabled": {"type": bool, "default": True},
-                "port": {"type": int},
-                "tls_ssl_profile": {"type": str},
-                "additional_groups": {"type": AdditionalGroups},
-            }
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "port": {"type": int}, "additional_groups": {"type": AdditionalGroups}}
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
@@ -20060,12 +20055,6 @@ class EosDesigns(EosDesignsRootModel):
             port: int | None
             """
             UDP port used for RADIUS dynamic authorization requests.
-            Applied only when
-            `dot1x_settings.dynamic_authorization.enabled` is `true`.
-            """
-            tls_ssl_profile: str | None
-            """
-            SSL profile used for TLS-secured RADIUS dynamic authorization requests.
             Applied only when
             `dot1x_settings.dynamic_authorization.enabled` is `true`.
             """
@@ -20087,7 +20076,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     enabled: bool | UndefinedType = Undefined,
                     port: int | UndefinedType | None = Undefined,
-                    tls_ssl_profile: str | UndefinedType | None = Undefined,
                     additional_groups: AdditionalGroups | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -20102,10 +20090,6 @@ class EosDesigns(EosDesignsRootModel):
                            adjust an active client session.
                         port:
                            UDP port used for RADIUS dynamic authorization requests.
-                           Applied only when
-                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
-                        tls_ssl_profile:
-                           SSL profile used for TLS-secured RADIUS dynamic authorization requests.
                            Applied only when
                            `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         additional_groups:
