@@ -1068,7 +1068,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
-            "validate_monitor_session_acls": {"type": bool, "default": False},
+            "raise_for_missing_monitor_session_acls": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1263,15 +1263,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        validate_monitor_session_acls: bool
+        raise_for_missing_monitor_session_acls: bool
         """
         Available from AVD 6.5.0.
-        Validate monitor-session access groups of type `ip`, `ipv6`, and `mac`
-        against `ipv4_acls`, `ipv6_acls`, and `mac_acls`, respectively,
-        and configure the referenced ACL
-        definitions. When disabled, these ACLs may be defined outside these catalogs.
-        IPv4 standard monitor-
-        session ACLs are always validated and configured.
+        When enabled, raise an error if a monitor-session access group of type
+        `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+        and configure the
+        referenced ACL definition from that catalog.
+        When disabled (default), skip catalog validation and
+        automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
+        IPv4
+        standard monitor-session ACLs are always validated and configured.
 
         Default value: `False`
         """
@@ -1300,7 +1302,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
-                validate_monitor_session_acls: bool | UndefinedType = Undefined,
+                raise_for_missing_monitor_session_acls: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1426,14 +1428,16 @@ class EosDesigns(EosDesignsRootModel):
                        VRF.
                        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
-                    validate_monitor_session_acls:
+                    raise_for_missing_monitor_session_acls:
                        Available from AVD 6.5.0.
-                       Validate monitor-session access groups of type `ip`, `ipv6`, and `mac`
-                       against `ipv4_acls`, `ipv6_acls`, and `mac_acls`, respectively,
-                       and configure the referenced ACL
-                       definitions. When disabled, these ACLs may be defined outside these catalogs.
-                       IPv4 standard monitor-
-                       session ACLs are always validated and configured.
+                       When enabled, raise an error if a monitor-session access group of type
+                       `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+                       and configure the
+                       referenced ACL definition from that catalog.
+                       When disabled (default), skip catalog validation and
+                       automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
+                       IPv4
+                       standard monitor-session ACLs are always validated and configured.
 
                 """
 
@@ -4069,7 +4073,7 @@ class EosDesigns(EosDesignsRootModel):
                         IPv4 standard ACLs must exist in
                         `ipv4_standard_acls` and their definitions are configured.
                         For `ip`, `ipv6`, and `mac`, catalog
-                        validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                        validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                         """
                         name: str
                         """ACL name."""
@@ -4097,7 +4101,7 @@ class EosDesigns(EosDesignsRootModel):
                                        IPv4 standard ACLs must exist in
                                        `ipv4_standard_acls` and their definitions are configured.
                                        For `ip`, `ipv6`, and `mac`, catalog
-                                       validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                       validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     name: ACL name.
                                     priority: priority
 
@@ -4147,7 +4151,7 @@ class EosDesigns(EosDesignsRootModel):
                         IPv4 standard ACLs must exist in
                         `ipv4_standard_acls` and their definitions are configured.
                         For `ip`, `ipv6`, and `mac`, catalog
-                        validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                        validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                         """
                         name: str
                         """ACL name."""
@@ -4168,7 +4172,7 @@ class EosDesigns(EosDesignsRootModel):
                                        IPv4 standard ACLs must exist in
                                        `ipv4_standard_acls` and their definitions are configured.
                                        For `ip`, `ipv6`, and `mac`, catalog
-                                       validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                       validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     name: ACL name.
 
                                 """
@@ -30173,7 +30177,7 @@ class EosDesigns(EosDesignsRootModel):
                     IPv4 standard ACLs must exist in
                     `ipv4_standard_acls` and their definitions are configured.
                     For `ip`, `ipv6`, and `mac`, catalog
-                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                     """
                     name: str
                     """ACL name."""
@@ -30201,7 +30205,7 @@ class EosDesigns(EosDesignsRootModel):
                                    IPv4 standard ACLs must exist in
                                    `ipv4_standard_acls` and their definitions are configured.
                                    For `ip`, `ipv6`, and `mac`, catalog
-                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
                                 priority: priority
 
@@ -30251,7 +30255,7 @@ class EosDesigns(EosDesignsRootModel):
                     IPv4 standard ACLs must exist in
                     `ipv4_standard_acls` and their definitions are configured.
                     For `ip`, `ipv6`, and `mac`, catalog
-                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                     """
                     name: str
                     """ACL name."""
@@ -30272,7 +30276,7 @@ class EosDesigns(EosDesignsRootModel):
                                    IPv4 standard ACLs must exist in
                                    `ipv4_standard_acls` and their definitions are configured.
                                    For `ip`, `ipv6`, and `mac`, catalog
-                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
 
                             """
@@ -37296,7 +37300,7 @@ class EosDesigns(EosDesignsRootModel):
                             IPv4 standard ACLs must exist in
                             `ipv4_standard_acls` and their definitions are configured.
                             For `ip`, `ipv6`, and `mac`, catalog
-                            validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                            validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                             """
                             name: str
                             """ACL name."""
@@ -37324,7 +37328,7 @@ class EosDesigns(EosDesignsRootModel):
                                            IPv4 standard ACLs must exist in
                                            `ipv4_standard_acls` and their definitions are configured.
                                            For `ip`, `ipv6`, and `mac`, catalog
-                                           validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                           validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                         name: ACL name.
                                         priority: priority
 
@@ -37374,7 +37378,7 @@ class EosDesigns(EosDesignsRootModel):
                             IPv4 standard ACLs must exist in
                             `ipv4_standard_acls` and their definitions are configured.
                             For `ip`, `ipv6`, and `mac`, catalog
-                            validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                            validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                             """
                             name: str
                             """ACL name."""
@@ -37395,7 +37399,7 @@ class EosDesigns(EosDesignsRootModel):
                                            IPv4 standard ACLs must exist in
                                            `ipv4_standard_acls` and their definitions are configured.
                                            For `ip`, `ipv6`, and `mac`, catalog
-                                           validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                           validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                         name: ACL name.
 
                                     """
@@ -49425,7 +49429,7 @@ class EosDesigns(EosDesignsRootModel):
                     IPv4 standard ACLs must exist in
                     `ipv4_standard_acls` and their definitions are configured.
                     For `ip`, `ipv6`, and `mac`, catalog
-                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                     """
                     name: str
                     """ACL name."""
@@ -49453,7 +49457,7 @@ class EosDesigns(EosDesignsRootModel):
                                    IPv4 standard ACLs must exist in
                                    `ipv4_standard_acls` and their definitions are configured.
                                    For `ip`, `ipv6`, and `mac`, catalog
-                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
                                 priority: priority
 
@@ -49503,7 +49507,7 @@ class EosDesigns(EosDesignsRootModel):
                     IPv4 standard ACLs must exist in
                     `ipv4_standard_acls` and their definitions are configured.
                     For `ip`, `ipv6`, and `mac`, catalog
-                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                     """
                     name: str
                     """ACL name."""
@@ -49524,7 +49528,7 @@ class EosDesigns(EosDesignsRootModel):
                                    IPv4 standard ACLs must exist in
                                    `ipv4_standard_acls` and their definitions are configured.
                                    For `ip`, `ipv6`, and `mac`, catalog
-                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
 
                             """
@@ -81670,7 +81674,7 @@ class EosDesigns(EosDesignsRootModel):
                                 IPv4 standard ACLs must exist in
                                 `ipv4_standard_acls` and their definitions are configured.
                                 For `ip`, `ipv6`, and `mac`, catalog
-                                validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 """
                                 name: str
                                 """ACL name."""
@@ -81698,7 +81702,7 @@ class EosDesigns(EosDesignsRootModel):
                                                IPv4 standard ACLs must exist in
                                                `ipv4_standard_acls` and their definitions are configured.
                                                For `ip`, `ipv6`, and `mac`, catalog
-                                               validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
                                             priority: priority
 
@@ -81748,7 +81752,7 @@ class EosDesigns(EosDesignsRootModel):
                                 IPv4 standard ACLs must exist in
                                 `ipv4_standard_acls` and their definitions are configured.
                                 For `ip`, `ipv6`, and `mac`, catalog
-                                validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 """
                                 name: str
                                 """ACL name."""
@@ -81769,7 +81773,7 @@ class EosDesigns(EosDesignsRootModel):
                                                IPv4 standard ACLs must exist in
                                                `ipv4_standard_acls` and their definitions are configured.
                                                For `ip`, `ipv6`, and `mac`, catalog
-                                               validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
 
                                         """
@@ -84269,7 +84273,7 @@ class EosDesigns(EosDesignsRootModel):
                                 IPv4 standard ACLs must exist in
                                 `ipv4_standard_acls` and their definitions are configured.
                                 For `ip`, `ipv6`, and `mac`, catalog
-                                validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 """
                                 name: str
                                 """ACL name."""
@@ -84297,7 +84301,7 @@ class EosDesigns(EosDesignsRootModel):
                                                IPv4 standard ACLs must exist in
                                                `ipv4_standard_acls` and their definitions are configured.
                                                For `ip`, `ipv6`, and `mac`, catalog
-                                               validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
                                             priority: priority
 
@@ -84347,7 +84351,7 @@ class EosDesigns(EosDesignsRootModel):
                                 IPv4 standard ACLs must exist in
                                 `ipv4_standard_acls` and their definitions are configured.
                                 For `ip`, `ipv6`, and `mac`, catalog
-                                validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 """
                                 name: str
                                 """ACL name."""
@@ -84368,7 +84372,7 @@ class EosDesigns(EosDesignsRootModel):
                                                IPv4 standard ACLs must exist in
                                                `ipv4_standard_acls` and their definitions are configured.
                                                For `ip`, `ipv6`, and `mac`, catalog
-                                               validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
 
                                         """
@@ -91239,7 +91243,7 @@ class EosDesigns(EosDesignsRootModel):
                                     IPv4 standard ACLs must exist in
                                     `ipv4_standard_acls` and their definitions are configured.
                                     For `ip`, `ipv6`, and `mac`, catalog
-                                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     """
                                     name: str
                                     """ACL name."""
@@ -91267,7 +91271,7 @@ class EosDesigns(EosDesignsRootModel):
                                                    IPv4 standard ACLs must exist in
                                                    `ipv4_standard_acls` and their definitions are configured.
                                                    For `ip`, `ipv6`, and `mac`, catalog
-                                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                                 name: ACL name.
                                                 priority: priority
 
@@ -91317,7 +91321,7 @@ class EosDesigns(EosDesignsRootModel):
                                     IPv4 standard ACLs must exist in
                                     `ipv4_standard_acls` and their definitions are configured.
                                     For `ip`, `ipv6`, and `mac`, catalog
-                                    validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     """
                                     name: str
                                     """ACL name."""
@@ -91338,7 +91342,7 @@ class EosDesigns(EosDesignsRootModel):
                                                    IPv4 standard ACLs must exist in
                                                    `ipv4_standard_acls` and their definitions are configured.
                                                    For `ip`, `ipv6`, and `mac`, catalog
-                                                   validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                                 name: ACL name.
 
                                             """

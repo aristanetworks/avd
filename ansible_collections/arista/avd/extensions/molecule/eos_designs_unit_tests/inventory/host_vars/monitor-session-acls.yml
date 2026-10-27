@@ -1,8 +1,8 @@
 ---
-# Test IPv4 extended, IPv4 standard and IPv6 ACLs at monitor-session source and session scope.
+# Test IPv4 extended, IPv4 standard, IPv6 and MAC ACLs at monitor-session source and session scope.
 type: l2leaf
 avd_design_future:
-  validate_monitor_session_acls: true
+  raise_for_missing_monitor_session_acls: true
 l2leaf:
   nodes:
     - name: monitor-session-acls
@@ -46,6 +46,19 @@ ipv6_acls:
     entries:
       - action: deny
         protocol: ipv6
+        source: any
+        destination: any
+
+mac_acls:
+  - name: MONITOR-MAC
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+        destination: any
+  - name: UNUSED-MAC
+    entries:
+      - action: deny
         source: any
         destination: any
 
@@ -106,6 +119,10 @@ network_ports:
         role: destination
       - name: IPV6-SESSION
         role: destination
+      - name: MAC-SOURCE
+        role: destination
+      - name: MAC-SESSION
+        role: destination
   - switches: [monitor-session-acls]
     switch_ports: [Ethernet7]
     monitor_sessions:
@@ -126,3 +143,23 @@ network_ports:
           access_group:
             type: ipv6
             name: MONITOR-IPV6
+  - switches: [monitor-session-acls]
+    switch_ports: [Ethernet9]
+    monitor_sessions:
+      - name: MAC-SOURCE
+        role: source
+        source_settings:
+          direction: rx
+          access_group:
+            type: mac
+            name: MONITOR-MAC
+            priority: 20
+  - switches: [monitor-session-acls]
+    switch_ports: [Ethernet10]
+    monitor_sessions:
+      - name: MAC-SESSION
+        role: source
+        session_settings:
+          access_group:
+            type: mac
+            name: MONITOR-MAC

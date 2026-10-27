@@ -60,6 +60,20 @@ ethernet_interfaces:
     peer_key: network_ports
   switchport:
     enabled: true
+- name: Ethernet9
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet10
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: monitor-session-acls
 ip_access_lists:
 - name: MONITOR-IPV4
@@ -79,6 +93,11 @@ ipv6_access_lists:
     destination: any
     sequence: 10
     action: permit
+mac_access_lists:
+- name: MONITOR-MAC
+  entries:
+  - sequence: 10
+    action: permit any any
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -148,6 +167,24 @@ monitor_sessions:
       type: ipv6
       name: MONITOR-IPV6
       priority: 15
+  destinations:
+  - Ethernet6
+- name: MAC-SESSION
+  sources:
+  - name: Ethernet10
+  destinations:
+  - Ethernet6
+  access_group:
+    type: mac
+    name: MONITOR-MAC
+- name: MAC-SOURCE
+  sources:
+  - name: Ethernet9
+    direction: rx
+    access_group:
+      type: mac
+      name: MONITOR-MAC
+      priority: 20
   destinations:
   - Ethernet6
 service_routing_protocols_model: multi-agent

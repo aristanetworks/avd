@@ -27,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
-    | [<samp>&nbsp;&nbsp;validate_monitor_session_acls</samp>](## "avd_design_future.validate_monitor_session_acls") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Validate monitor-session access groups of type `ip`, `ipv6`, and `mac` against `ipv4_acls`, `ipv6_acls`, and `mac_acls`, respectively,<br>and configure the referenced ACL definitions. When disabled, these ACLs may be defined outside these catalogs.<br>IPv4 standard monitor-session ACLs are always validated and configured. |
+    | [<samp>&nbsp;&nbsp;raise_for_missing_monitor_session_acls</samp>](## "avd_design_future.raise_for_missing_monitor_session_acls") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,<br>and configure the referenced ACL definition from that catalog.<br>When disabled (default), skip catalog validation and automatic ACL configuration for these types, so their definitions can be supplied elsewhere.<br>IPv4 standard monitor-session ACLs are always validated and configured. |
 
 === "YAML"
 
@@ -134,8 +134,9 @@
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: <bool; default=False>
 
       # Available from AVD 6.5.0.
-      # Validate monitor-session access groups of type `ip`, `ipv6`, and `mac` against `ipv4_acls`, `ipv6_acls`, and `mac_acls`, respectively,
-      # and configure the referenced ACL definitions. When disabled, these ACLs may be defined outside these catalogs.
+      # When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+      # and configure the referenced ACL definition from that catalog.
+      # When disabled (default), skip catalog validation and automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
       # IPv4 standard monitor-session ACLs are always validated and configured.
-      validate_monitor_session_acls: <bool; default=False>
+      raise_for_missing_monitor_session_acls: <bool; default=False>
     ```

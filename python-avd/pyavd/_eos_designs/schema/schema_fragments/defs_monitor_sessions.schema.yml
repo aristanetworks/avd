@@ -40,7 +40,7 @@ $defs:
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
                     `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
                     IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.
-                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                   valid_values:
                     - "ip"
                     - "ipv4_standard"
@@ -73,7 +73,7 @@ $defs:
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
                     `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
                     IPv4 standard ACLs must exist in `ipv4_standard_acls` and their definitions are configured.
-                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.validate_monitor_session_acls`.
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                   valid_values:
                     - "ip"
                     - "ipv4_standard"

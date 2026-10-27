@@ -2,7 +2,7 @@
 # The ACL exists only in the other IPv4 catalog; the selected catalog must be used.
 type: l2leaf
 avd_design_future:
-  validate_monitor_session_acls: true
+  raise_for_missing_monitor_session_acls: true
 l2leaf:
   nodes:
     - name: monitor-session-missing-ipv4-session-acl
