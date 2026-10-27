@@ -43,7 +43,7 @@ ipv4_standard_acls:
     entries:
       - action: permit
         source: 192.0.2.0/24
-  # Duplicate names in the catalogs are allowed when only one ACL type is rendered.
+  # Unused standard ACL sharing the name of the referenced extended ACL.
   - name: ACL_EAPI_IPv4_4
     entries:
       - action: deny

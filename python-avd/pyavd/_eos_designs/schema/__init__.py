@@ -1069,7 +1069,6 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
             "raise_for_missing_management_eapi_acls": {"type": bool, "default": False},
-            "raise_for_duplicate_ipv4_acl_names": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1268,22 +1267,13 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.5.0.
         Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl`
-        is not defined under `ipv4_acls`.
-        When enabled, configure the referenced extended ACL on devices
-        where the eAPI VRF is enabled.
-        When disabled, only configure the ACL reference without requiring or
-        configuring an ACL definition from the catalog.
-        `management_eapi.vrfs[].ipv4_standard_acl` always
-        requires an entry in `ipv4_standard_acls`, regardless of this setting.
-
-        Default value: `False`
-        """
-        raise_for_duplicate_ipv4_acl_names: bool
-        """
-        Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the
-        ACLs are not used on the device.
-        When disabled, the same name may be defined in both catalogs,
-        provided both ACL types are not configured on the same device.
+        is not defined under `ipv4_acls` for an enabled eAPI VRF.
+        When enabled, configure the referenced
+        extended ACL on devices where the eAPI VRF is enabled.
+        When disabled, only configure the ACL
+        reference without requiring or configuring an ACL definition from the catalog.
+        `management_eapi.vrfs[].ipv4_standard_acl` requires an entry in `ipv4_standard_acls` for an enabled
+        eAPI VRF, regardless of this setting.
 
         Default value: `False`
         """
@@ -1313,7 +1303,6 @@ class EosDesigns(EosDesignsRootModel):
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
                 raise_for_missing_management_eapi_acls: bool | UndefinedType = Undefined,
-                raise_for_duplicate_ipv4_acl_names: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1442,18 +1431,13 @@ class EosDesigns(EosDesignsRootModel):
                     raise_for_missing_management_eapi_acls:
                        Available from AVD 6.5.0.
                        Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl`
-                       is not defined under `ipv4_acls`.
-                       When enabled, configure the referenced extended ACL on devices
-                       where the eAPI VRF is enabled.
-                       When disabled, only configure the ACL reference without requiring or
-                       configuring an ACL definition from the catalog.
-                       `management_eapi.vrfs[].ipv4_standard_acl` always
-                       requires an entry in `ipv4_standard_acls`, regardless of this setting.
-                    raise_for_duplicate_ipv4_acl_names:
-                       Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the
-                       ACLs are not used on the device.
-                       When disabled, the same name may be defined in both catalogs,
-                       provided both ACL types are not configured on the same device.
+                       is not defined under `ipv4_acls` for an enabled eAPI VRF.
+                       When enabled, configure the referenced
+                       extended ACL on devices where the eAPI VRF is enabled.
+                       When disabled, only configure the ACL
+                       reference without requiring or configuring an ACL definition from the catalog.
+                       `management_eapi.vrfs[].ipv4_standard_acl` requires an entry in `ipv4_standard_acls` for an enabled
+                       eAPI VRF, regardless of this setting.
 
                 """
 
@@ -28543,17 +28527,21 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_acl: str | None
             """
             IPv4 extended access list name.
-            When `avd_design_future.raise_for_missing_management_eapi_acls` is
-            enabled, the access-list must be defined under `ipv4_acls`.
+            For an enabled eAPI VRF, when
+            `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be
+            defined under `ipv4_acls`.
             Otherwise, no catalog entry is required.
-            An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
-            Field substitution is not supported for eAPI references.
+            An error will be raised if both
+            `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+            Field substitution is not
+            supported for eAPI references.
             """
             ipv4_standard_acl: str | None
             """
-            IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
-            An error
-            will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+            IPv4 standard access list name. For an enabled eAPI VRF, the access-list must be defined under
+            `ipv4_standard_acls`.
+            An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for
+            an enabled eAPI VRF.
             """
             ipv6_acl: str | None
             """IPv6 access-list name."""
@@ -28594,15 +28582,19 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: Enable/disable Management eAPI for this VRF.
                         ipv4_acl:
                            IPv4 extended access list name.
-                           When `avd_design_future.raise_for_missing_management_eapi_acls` is
-                           enabled, the access-list must be defined under `ipv4_acls`.
+                           For an enabled eAPI VRF, when
+                           `avd_design_future.raise_for_missing_management_eapi_acls` is enabled, the access-list must be
+                           defined under `ipv4_acls`.
                            Otherwise, no catalog entry is required.
-                           An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
-                           Field substitution is not supported for eAPI references.
+                           An error will be raised if both
+                           `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+                           Field substitution is not
+                           supported for eAPI references.
                         ipv4_standard_acl:
-                           IPv4 standard access list name. The access-list must be defined under `ipv4_standard_acls`.
-                           An error
-                           will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+                           IPv4 standard access list name. For an enabled eAPI VRF, the access-list must be defined under
+                           `ipv4_standard_acls`.
+                           An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for
+                           an enabled eAPI VRF.
                         ipv6_acl: IPv6 access-list name.
 
                     """

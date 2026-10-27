@@ -151,14 +151,8 @@ keys:
         type: bool
         description: |-
           Available from AVD 6.5.0.
-          Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
+          Raise an error if an ACL referenced by `management_eapi.vrfs[].ipv4_acl` is not defined under `ipv4_acls` for an enabled eAPI VRF.
           When enabled, configure the referenced extended ACL on devices where the eAPI VRF is enabled.
           When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
-          `management_eapi.vrfs[].ipv4_standard_acl` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
-        default: false
-      raise_for_duplicate_ipv4_acl_names:
-        type: bool
-        description: |-
-          Raise an error if an ACL name is defined in both `ipv4_acls` and `ipv4_standard_acls`, even if the ACLs are not used on the device.
-          When disabled, the same name may be defined in both catalogs, provided both ACL types are not configured on the same device.
+          `management_eapi.vrfs[].ipv4_standard_acl` requires an entry in `ipv4_standard_acls` for an enabled eAPI VRF, regardless of this setting.
         default: false

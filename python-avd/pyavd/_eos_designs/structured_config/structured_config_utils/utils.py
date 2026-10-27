@@ -70,28 +70,6 @@ class UtilsMixin(Protocol):
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
 
-    def _validate_ipv4_acl_catalog_names(self: StructuredConfigUtilsProtocol) -> None:
-        """Raise if an IPv4 ACL name is defined in both extended and standard catalogs when the future knob is enabled."""
-        if not self.inputs.avd_design_future.raise_for_duplicate_ipv4_acl_names:
-            return
-        for ipv4_acl in self.inputs.ipv4_acls:
-            if ipv4_acl.name in self.inputs.ipv4_standard_acls:
-                msg = (
-                    f"ACL '{ipv4_acl.name}' is defined in both 'ipv4_acls' and 'ipv4_standard_acls'. Only one IPv4 ACL type can be defined with the same name."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
-    def _validate_ipv4_acl_names(self: StructuredConfigUtilsProtocol) -> None:
-        """Raise if an IPv4 ACL name is configured as both extended and standard on the device."""
-        standard_access_lists = self.structured_config._get("standard_access_lists", ())
-        for ipv4_acl in self.structured_config._get("ip_access_lists", ()):
-            if ipv4_acl.name in standard_access_lists:
-                msg = (
-                    f"ACL '{ipv4_acl.name}' is configured in both 'ip_access_lists' and 'standard_access_lists'. "
-                    "Only one IPv4 ACL type can be configured with the same name."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
     def _validate_ipv4_acl_exclusion(
         self: StructuredConfigUtilsProtocol,
         ipv4_acl: str | None,
