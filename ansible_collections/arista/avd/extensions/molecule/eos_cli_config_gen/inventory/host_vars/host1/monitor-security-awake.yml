@@ -2,7 +2,7 @@
 monitor_security:
   awake:
     disabled: false
-    flow_table_size_entries: 16000
+    flow_table_size: 16000
     ipfix_listener_port: 4739
     monitor_point_identifier: 25
     ndr_application:
