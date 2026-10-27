@@ -30,7 +30,7 @@ keys:
             min: 0
             max: 2147483647
             description: Identifier of this monitor point.
-          flow_table_size_entries:
+          flow_table_size:
             type: int
             min: 1
             max: 614400
