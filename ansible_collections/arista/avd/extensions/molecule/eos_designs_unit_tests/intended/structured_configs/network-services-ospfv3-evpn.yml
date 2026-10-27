@@ -1,0 +1,839 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospfv3-evpn
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.1/32
+- name: Loopback12
+  description: DIAG_VRF_VRF_C
+  shutdown: false
+  vrf: VRF_C
+  ip_address: 10.255.12.1/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.101/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 117
+    metadata:
+      tenants:
+      - TENANT_A
+    rd: 192.168.255.1:10117
+    route_targets:
+      both:
+      - 10117:10117
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: VRF_A
+    rd: 192.168.255.1:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: VRF_B
+    rd: 192.168.255.1:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: VRF_C
+    rd: 192.168.255.1:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_D
+    rd: 192.168.255.1:13
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+        match_external:
+          enabled: true
+  - name: VRF_DUAL_STACK_1
+    rd: 192.168.255.1:14
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: VRF_DUAL_STACK_2
+    rd: 192.168.255.1:15
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '15:15'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '15:15'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+  - name: VRF_LINK_LOCAL
+    rd: 192.168.255.1:18
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '18:18'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '18:18'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: VRF_SHARED
+    rd: 192.168.255.1:17
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+router_ospf:
+  process_ids:
+  - id: 14
+    vrf: VRF_DUAL_STACK_1
+    passive_interface_default: true
+    router_id: 192.168.255.1
+    no_passive_interfaces:
+    - Vlan214
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 15
+    vrf: VRF_DUAL_STACK_2
+    passive_interface_default: true
+    router_id: 192.168.255.1
+    no_passive_interfaces:
+    - Vlan215
+    redistribute:
+      bgp:
+        enabled: true
+router_ospfv3:
+  vrfs:
+  - name: VRF_A
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_B
+    router_id: 10.255.11.1
+    passive_interface_default: true
+    auto_cost_reference_bandwidth: 100000
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+        connected:
+          enabled: true
+      enabled: true
+    eos_cli: log-adjacency-changes detail
+  - name: VRF_C
+    router_id: 10.255.12.1
+    passive_interface_default: true
+    address_family_ipv6:
+      enabled: true
+  - name: VRF_D
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_DUAL_STACK_1
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_DUAL_STACK_2
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_LINK_LOCAL
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_NO_BGP
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      enabled: true
+  - name: VRF_SHARED
+    router_id: 10.255.17.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF_C
+  ip_address: 10.255.12.1
+vlan_interfaces:
+- name: Vlan110
+  description: MINIMAL
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:110::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan111
+  description: AREA_INTEGER
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:111::1/64
+  ospfv3:
+    ipv6:
+      area: '10'
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan112
+  description: AREA_DOTTED_P2P
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:112::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.10
+    no_passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan113
+  description: PASSIVE
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:113::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan114
+  description: LINK_LOCAL_ONLY
+  shutdown: false
+  vrf: VRF_A
+  ipv6_enable: true
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan115
+  description: VARPV6
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:115::2/64
+  ipv6_virtual_router_addresses:
+  - 2001:db8:115::1
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan116
+  description: DUAL_STACK_IPV4_OPT_OUT
+  shutdown: false
+  vrf: VRF_A
+  ip_address_virtual: 10.1.116.1/24
+  ipv6_addresses:
+  - 2001:db8:116::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan117
+  description: NO_OSPFV3_VXLAN
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:117::1/64
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan118
+  description: PROFILE
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:118::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan119
+  description: PARENT_PROFILE
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:119::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.20
+    passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan120
+  description: NODE_ENABLED
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:120::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan121
+  description: NODE_DISABLED
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:121::1/64
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan122
+  description: SVI_STRUCTURED_CONFIG
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:122::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.99
+    no_passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan123
+  description: LINK_LOCAL_VARPV6
+  shutdown: false
+  vrf: VRF_A
+  ipv6_enable: true
+  ipv6_virtual_router_addresses:
+  - 2001:db8:123::1
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan124
+  description: IPV4_ONLY_IPV4_AF_FALSE
+  shutdown: false
+  vrf: VRF_A
+  ip_address: 10.1.124.1/24
+  ipv6_enable: true
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan211
+  description: VRF_B_TRANSIT
+  shutdown: false
+  vrf: VRF_B
+  ipv6_addresses:
+  - 2001:db8:211::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan212
+  description: VRF_C_TRANSIT
+  shutdown: false
+  vrf: VRF_C
+  ipv6_addresses:
+  - 2001:db8:212::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan213
+  description: VRF_D_TRANSIT
+  shutdown: false
+  vrf: VRF_D
+  ipv6_addresses:
+  - 2001:db8:213::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan214
+  description: VRF_DUAL_STACK_1_TRANSIT
+  shutdown: false
+  vrf: VRF_DUAL_STACK_1
+  ip_address: 10.1.214.1/24
+  ipv6_addresses:
+  - 2001:db8:214::1/64
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan215
+  description: VRF_DUAL_STACK_2_TRANSIT
+  shutdown: false
+  vrf: VRF_DUAL_STACK_2
+  ip_address: 10.1.215.1/24
+  ipv6_addresses:
+  - 2001:db8:215::1/64
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan219
+  description: VRF_LINK_LOCAL_TRANSIT
+  shutdown: false
+  vrf: VRF_LINK_LOCAL
+  ipv6_enable: true
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan216
+  description: VRF_NO_BGP_TRANSIT
+  shutdown: false
+  vrf: VRF_NO_BGP
+  ipv6_addresses:
+  - 2001:db8:216::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan217
+  description: VRF_SHARED_TENANT_A
+  shutdown: false
+  vrf: VRF_SHARED
+  ipv6_addresses:
+  - 2001:db8:217::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan218
+  description: VRF_SHARED_TENANT_B
+  shutdown: false
+  vrf: VRF_SHARED
+  ipv6_addresses:
+  - 2001:db8:218::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_B
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: MINIMAL
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 111
+  name: AREA_INTEGER
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 112
+  name: AREA_DOTTED_P2P
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 113
+  name: PASSIVE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 114
+  name: LINK_LOCAL_ONLY
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 115
+  name: VARPV6
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 116
+  name: DUAL_STACK_IPV4_OPT_OUT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 117
+  name: NO_OSPFV3_VXLAN
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 118
+  name: PROFILE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 119
+  name: PARENT_PROFILE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 120
+  name: NODE_ENABLED
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 121
+  name: NODE_DISABLED
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 122
+  name: SVI_STRUCTURED_CONFIG
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 123
+  name: LINK_LOCAL_VARPV6
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 124
+  name: IPV4_ONLY_IPV4_AF_FALSE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 211
+  name: VRF_B_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 212
+  name: VRF_C_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 213
+  name: VRF_D_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 214
+  name: VRF_DUAL_STACK_1_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 215
+  name: VRF_DUAL_STACK_2_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 219
+  name: VRF_LINK_LOCAL_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 216
+  name: VRF_NO_BGP_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 217
+  name: VRF_SHARED_TENANT_A
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 218
+  name: VRF_SHARED_TENANT_B
+  metadata:
+    tenants:
+    - TENANT_B
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_A
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_B
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_C
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_D
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_DUAL_STACK_1
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_DUAL_STACK_2
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_LINK_LOCAL
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_NO_BGP
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_SHARED
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+    - TENANT_B
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospfv3-evpn_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 117
+        vni: 10117
+      vrfs:
+      - name: VRF_A
+        vni: 10
+      - name: VRF_B
+        vni: 11
+      - name: VRF_C
+        vni: 12
+      - name: VRF_D
+        vni: 13
+      - name: VRF_DUAL_STACK_1
+        vni: 14
+      - name: VRF_DUAL_STACK_2
+        vni: 15
+      - name: VRF_LINK_LOCAL
+        vni: 18
+      - name: VRF_NO_BGP
+        vni: 16
+      - name: VRF_SHARED
+        vni: 17
