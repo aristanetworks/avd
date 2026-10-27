@@ -8,7 +8,7 @@
 !
 #### Monitor security awake
 {%     set disabled = monitor_security.awake.disabled | arista.avd.default('-') %}
-{%     set flow_table_size_entries = monitor_security.awake.flow_table_size_entries | arista.avd.default('-') %}
+{%     set flow_table_size = monitor_security.awake.flow_table_size | arista.avd.default('-') %}
 {%     set ipfix_listener_port = monitor_security.awake.ipfix_listener_port | arista.avd.default('4739') %}
 {%     set monitor_point_identifier = monitor_security.awake.monitor_point_identifier | arista.avd.default('-') %}
 {%     set unknown_udp = monitor_security.awake.ndr_application.unknown_udp | arista.avd.default('-') %}
@@ -16,7 +16,7 @@
 
 | Disabled | flow table size entries | ipfix listener port | monitor point identifier | unknown udp ndr application | topic |
 | -------- | ----------------------- | ------------------- | ------------------------ | --------------------------- | ----- |
-| {{ disabled }} | {{ flow_table_size_entries }} | {{ ipfix_listener_port }} | {{ monitor_point_identifier }} | {{ unknown_udp }} | {{ topic }} |
+| {{ disabled }} | {{ flow_table_size }} | {{ ipfix_listener_port }} | {{ monitor_point_identifier }} | {{ unknown_udp }} | {{ topic }} |
 {%     if monitor_security.awake.nucleus is arista.avd.defined %}
 #### Nucleus
 | Name | Local Interface | Destination IP | Port | SSL Profile |
