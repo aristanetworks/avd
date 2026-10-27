@@ -51279,7 +51279,13 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+            }
             name: str
             """
             VRF name.
@@ -51300,7 +51306,20 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             """Enable SSH in VRF."""
             ipv4_acl: str | None
-            """IPv4 access-list name."""
+            """
+            IPv4 extended access-list name.
+            Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
+            error.
+            """
+            ipv4_standard_acl: str | None
+            """
+            IPv4 standard access-list name.
+            This ACL must be defined in `ipv4_standard_acls` catalog. When it is
+            defined in catalog,
+            it will be automatically generated in the device configuration.
+            Mutually
+            exclusive with `ipv4_acl`. Setting both raises an error.
+            """
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -51312,6 +51331,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -51337,7 +51357,17 @@ class EosDesigns(EosDesignsRootModel):
                            - Any other string will be used directly as the VRF
                            name.
                         enabled: Enable SSH in VRF.
-                        ipv4_acl: IPv4 access-list name.
+                        ipv4_acl:
+                           IPv4 extended access-list name.
+                           Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
+                           error.
+                        ipv4_standard_acl:
+                           IPv4 standard access-list name.
+                           This ACL must be defined in `ipv4_standard_acls` catalog. When it is
+                           defined in catalog,
+                           it will be automatically generated in the device configuration.
+                           Mutually
+                           exclusive with `ipv4_acl`. Setting both raises an error.
                         ipv6_acl: IPv6 access-list name.
 
                     """
