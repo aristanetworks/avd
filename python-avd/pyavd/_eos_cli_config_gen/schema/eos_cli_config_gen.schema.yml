@@ -14995,7 +14995,7 @@ keys:
             type: int
             min: 0
             max: 65535
-            description: TCP Port.
+            description: UDP port used for RADIUS dynamic authorization requests.
           tls_ssl_profile:
             type: str
             description: Name of TLS profile.
