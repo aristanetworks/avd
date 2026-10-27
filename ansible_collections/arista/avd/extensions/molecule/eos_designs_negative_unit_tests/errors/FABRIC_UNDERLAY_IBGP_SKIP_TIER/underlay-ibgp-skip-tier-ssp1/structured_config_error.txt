@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires all clients of a route reflector to have the same uplink switches, but 'underlay-ibgp-skip-tier-leaf1' has ['underlay-ibgp-skip-tier-spine1', 'underlay-ibgp-skip-tier-ssp1'] and 'underlay-ibgp-skip-tier-spine1' has ['underlay-ibgp-skip-tier-ssp1'].

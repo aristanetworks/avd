@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_filter_peer_as: true' is not supported with 'underlay_routing_protocol: ibgp'; set it to false.

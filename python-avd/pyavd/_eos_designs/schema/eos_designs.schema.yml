@@ -858,6 +858,83 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      rr_underlay_peers:
+        type: dict
+        description: 'Only used with `underlay_routing_protocol: ibgp`.
+
+          Sessions towards uplink switches (route reflectors), with `next-hop-self`.'
+        keys:
+          name:
+            type: str
+            default: RR-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      rr_clients_underlay_peers:
+        type: dict
+        description: 'Only used with `underlay_routing_protocol: ibgp`.
+
+          Sessions towards downlink switches (route reflector clients), with `route-reflector-client`
+          and `next-hop-self`.'
+        keys:
+          name:
+            type: str
+            default: RR-CLIENTS-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: 'BGP peer group Type 7 encrypted password.
+
+              Takes precedence over `cleartext_password`.'
+          cleartext_password:
+            type: str
+            description: 'BGP peer group cleartext password.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_vrfs_peer:
         type: dict
         description: 'Set this peer group name to use a different peer-group for MLAG
@@ -11397,7 +11474,7 @@ keys:
       table: fabric-settings
     description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 
-      Requires "underlay_routing_protocol: ebgp".
+      Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".
 
       '
     type: bool
@@ -11408,12 +11485,16 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
+      (default for l3ls-evpn)\n  - IBGP: single-AS fabric with route reflection derived
+      from uplinks.\n    Requires `underlay_rfc5549: true` and `overlay_routing_protocol:
+      none`.\n    See the [iBGP underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md)
+      for the restrictions.\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
       \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
       The variables should be applied to all devices in the fabric.\n*Only supported
       with core_interfaces data model.\n"
     valid_values:
     - ebgp
+    - ibgp
     - ospf
     - ospf-ldp
     - isis
@@ -14752,7 +14833,12 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: str
-            description: Set BGP cluster id.
+            description: 'Set BGP cluster id.
+
+              With `underlay_routing_protocol: ibgp`, must be identical on all route
+              reflectors sharing the same clients.
+
+              Defaults to the lowest router ID among them.'
           kernel_ecmp_cli:
             documentation_options:
               table: node-type-common-configuration

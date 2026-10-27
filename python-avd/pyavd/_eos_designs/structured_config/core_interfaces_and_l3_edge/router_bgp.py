@@ -28,6 +28,17 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
+            if self.shared_utils.underlay_ibgp and (p2p_link.include_in_underlay_protocol or p2p_link.routing_protocol == "ebgp"):
+                offending_input = (
+                    "'routing_protocol: ebgp'" if p2p_link.routing_protocol == "ebgp" else "'include_in_underlay_protocol: true', which is the default"
+                )
+                msg = (
+                    f"Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support BGP on {self.data_model}.p2p_links, "
+                    f"but the link between '{self.shared_utils.hostname}' {p2p_link_data['interface']} and '{p2p_link_data['peer']}' "
+                    f"{p2p_link_data['peer_interface']} has {offending_input}; set 'include_in_underlay_protocol: false' and remove 'routing_protocol'."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
             if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue
 

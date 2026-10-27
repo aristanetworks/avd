@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires all uplink and downlink switches to be 'ibgp' underlay routers with 'uplink_type: p2p', but downlink switch 'underlay-ibgp-ebgp-downlink-leaf1' uses 'underlay_routing_protocol: ebgp'.

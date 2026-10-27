@@ -1,0 +1,32 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_SKIP_TIER
+
+super_spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.10.0/24
+  nodes:
+    - name: underlay-ibgp-skip-tier-ssp1
+      id: 1
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-skip-tier-spine1
+      id: 1
+      uplink_switches: [underlay-ibgp-skip-tier-ssp1]
+      uplink_interfaces: [Ethernet7]
+      uplink_switch_interfaces: [Ethernet1]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    # Connected to both the spine and the super-spine.
+    - name: underlay-ibgp-skip-tier-leaf1
+      id: 1
+      uplink_switches: [underlay-ibgp-skip-tier-spine1, underlay-ibgp-skip-tier-ssp1]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet2]

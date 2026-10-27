@@ -14,6 +14,9 @@ keys:
     description: |
       - The following underlay routing protocols are supported:
         - EBGP (default for l3ls-evpn)
+        - IBGP: single-AS fabric with route reflection derived from uplinks.
+          Requires `underlay_rfc5549: true` and `overlay_routing_protocol: none`.
+          See the [iBGP underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md) for the restrictions.
         - OSPF.
         - OSPF-LDP*.
         - ISIS.
@@ -25,6 +28,7 @@ keys:
       *Only supported with core_interfaces data model.
     valid_values:
       - "ebgp"
+      - "ibgp"
       - "ospf"
       - "ospf-ldp"
       - "isis"

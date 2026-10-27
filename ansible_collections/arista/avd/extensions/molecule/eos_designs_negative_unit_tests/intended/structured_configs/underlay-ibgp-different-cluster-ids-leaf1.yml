@@ -1,0 +1,92 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_underlay-ibgp-different-cluster-ids-spine1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-different-cluster-ids-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_underlay-ibgp-different-cluster-ids-spine2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-different-cluster-ids-spine2
+    peer_interface: Ethernet1
+    peer_type: spine
+  switchport:
+    enabled: false
+hostname: underlay-ibgp-different-cluster-ids-leaf1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.254.1.1/32
+metadata:
+  is_deployed: true
+  fabric_name: FABRIC_UNDERLAY_IBGP_DIFFERENT_CLUSTER_IDS
+router_bgp:
+  as: '65000'
+  router_id: 10.254.1.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: RR-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+  neighbor_interfaces:
+  - name: Ethernet1
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-different-cluster-ids-spine1
+    peer_group: RR-UNDERLAY-PEERS
+    description: underlay-ibgp-different-cluster-ids-spine1_Ethernet1
+  - name: Ethernet2
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-different-cluster-ids-spine2
+    peer_group: RR-UNDERLAY-PEERS
+    description: underlay-ibgp-different-cluster-ids-spine2_Ethernet1
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: RR-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

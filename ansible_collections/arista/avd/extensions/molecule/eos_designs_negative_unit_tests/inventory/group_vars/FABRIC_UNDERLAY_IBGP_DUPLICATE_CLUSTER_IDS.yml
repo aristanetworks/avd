@@ -1,0 +1,40 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_DUPLICATE_CLUSTER_IDS
+
+# Two PODs below one super-spine, with the same cluster ID on both POD spines.
+super_spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.10.0/24
+  nodes:
+    - name: underlay-ibgp-duplicate-cluster-ids-ssp1
+      id: 1
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+    bgp_cluster_id: 2.2.2.2
+    uplink_switches: [underlay-ibgp-duplicate-cluster-ids-ssp1]
+    uplink_interfaces: [Ethernet7]
+  nodes:
+    - name: underlay-ibgp-duplicate-cluster-ids-pod1-spine1
+      id: 1
+      uplink_switch_interfaces: [Ethernet1]
+    - name: underlay-ibgp-duplicate-cluster-ids-pod2-spine1
+      id: 2
+      uplink_switch_interfaces: [Ethernet2]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: underlay-ibgp-duplicate-cluster-ids-pod1-leaf1
+      id: 1
+      uplink_switches: [underlay-ibgp-duplicate-cluster-ids-pod1-spine1]
+      uplink_switch_interfaces: [Ethernet1]
+    - name: underlay-ibgp-duplicate-cluster-ids-pod2-leaf1
+      id: 2
+      uplink_switches: [underlay-ibgp-duplicate-cluster-ids-pod2-spine1]
+      uplink_switch_interfaces: [Ethernet1]

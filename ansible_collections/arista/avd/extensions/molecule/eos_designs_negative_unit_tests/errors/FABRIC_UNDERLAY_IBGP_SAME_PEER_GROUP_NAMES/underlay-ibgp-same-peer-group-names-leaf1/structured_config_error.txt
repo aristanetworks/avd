@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'bgp_peer_groups.rr_underlay_peers.name' and 'bgp_peer_groups.rr_clients_underlay_peers.name' must be different, but both are 'UNDERLAY-PEERS'.

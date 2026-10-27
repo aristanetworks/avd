@@ -1299,7 +1299,10 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: str
-            description: Set BGP cluster id.
+            description: |-
+              Set BGP cluster id.
+              With `underlay_routing_protocol: ibgp`, must be identical on all route reflectors sharing the same clients.
+              Defaults to the lowest router ID among them.
           kernel_ecmp_cli:
             documentation_options:
               table: node-type-common-configuration

@@ -1,0 +1,108 @@
+---
+# Testing 'underlay_routing_protocol: ibgp' with route reflection derived from the uplinks.
+# Three tiers: super-spines, then two PODs of spines and leaves.
+# - POD1 spines use an explicit 'bgp_cluster_id'.
+# - POD2 spines and super-spines use the derived cluster ID, which is the lowest router ID of the group.
+#   The IDs are chosen so the lowest router ID is neither the first node nor the lowest string.
+# - underlay-ibgp-pod1-leaf3 is not deployed.
+
+default_node_types:
+  - node_type: super-spine
+    match_hostnames:
+      - underlay-ibgp-ssp\d
+  - node_type: spine
+    match_hostnames:
+      - underlay-ibgp-pod\d-spine\d
+  - node_type: l3leaf
+    match_hostnames:
+      - underlay-ibgp-pod\d-leaf\d
+
+underlay_routing_protocol: ibgp
+underlay_rfc5549: true
+overlay_routing_protocol: none
+bgp_as: "65000"
+
+bgp_peer_groups:
+  rr_underlay_peers:
+    name: RR-UPLINK-PEERS
+    structured_config:
+      description: Towards uplink route reflectors
+  rr_clients_underlay_peers:
+    maximum_routes: 0
+    cleartext_password: arista123
+    bfd: true
+
+bgp_maximum_paths: 128
+bgp_ecmp: 128
+
+super_spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-ssp1
+      id: 2
+    - name: underlay-ibgp-ssp2
+      id: 1
+
+spine:
+  defaults:
+    uplink_switches: [underlay-ibgp-ssp1, underlay-ibgp-ssp2]
+    uplink_interfaces: [Ethernet7, Ethernet8]
+  node_groups:
+    - group: UNDERLAY_IBGP_POD1_SPINES
+      loopback_ipv4_pool: 10.254.1.0/24
+      bgp_cluster_id: 2.2.2.2
+      nodes:
+        - name: underlay-ibgp-pod1-spine1
+          id: 1
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: underlay-ibgp-pod1-spine2
+          id: 2
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    - group: UNDERLAY_IBGP_POD2_SPINES
+      loopback_ipv4_pool: 10.254.2.0/24
+      nodes:
+        - name: underlay-ibgp-pod2-spine1
+          id: 10
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: underlay-ibgp-pod2-spine2
+          id: 9
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+
+l3leaf:
+  defaults:
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    vtep_loopback_ipv4_pool: 10.254.21.0/24
+    mlag: false
+  node_groups:
+    - group: UNDERLAY_IBGP_POD1_LEAVES
+      loopback_ipv4_pool: 10.254.11.0/24
+      uplink_switches: [underlay-ibgp-pod1-spine1, underlay-ibgp-pod1-spine2]
+      nodes:
+        - name: underlay-ibgp-pod1-leaf1
+          id: 1
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: underlay-ibgp-pod1-leaf2
+          id: 2
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+        - name: underlay-ibgp-pod1-leaf3
+          id: 3
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+    - group: UNDERLAY_IBGP_POD2_LEAVES
+      loopback_ipv4_pool: 10.254.12.0/24
+      uplink_switches: [underlay-ibgp-pod2-spine1, underlay-ibgp-pod2-spine2]
+      nodes:
+        - name: underlay-ibgp-pod2-leaf1
+          id: 1
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: underlay-ibgp-pod2-leaf2
+          id: 2
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+# Connected subnet towards a host, redistributed into the underlay.
+l3_edge:
+  p2p_links:
+    - nodes: [underlay-ibgp-pod1-leaf1, underlay-ibgp-gpu1]
+      interfaces: [Ethernet10, eth0]
+      subnet: 10.10.10.0/31
+      include_in_underlay_protocol: false

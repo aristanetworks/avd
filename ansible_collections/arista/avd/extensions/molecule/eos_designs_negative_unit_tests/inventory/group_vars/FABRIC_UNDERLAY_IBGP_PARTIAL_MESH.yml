@@ -1,0 +1,29 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_PARTIAL_MESH
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-partial-mesh-spine1
+      id: 1
+    - name: underlay-ibgp-partial-mesh-spine2
+      id: 2
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-partial-mesh-leaf1
+      id: 1
+      uplink_switches: [underlay-ibgp-partial-mesh-spine1, underlay-ibgp-partial-mesh-spine2]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]
+    # Only connected to spine1.
+    - name: underlay-ibgp-partial-mesh-leaf2
+      id: 2
+      uplink_switches: [underlay-ibgp-partial-mesh-spine1]
+      uplink_interfaces: [Ethernet1]
+      uplink_switch_interfaces: [Ethernet2]

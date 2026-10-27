@@ -70,6 +70,11 @@ keys:
     type: str
   router_id:
     type: str
+  bgp_cluster_id:
+    type: str
+    description: |-
+      Only set with `underlay_routing_protocol: ibgp`.
+      Used to resolve the shared cluster ID of underlay route reflectors.
   inband_mgmt_ip:
     type: str
     description: Used for fabric docs.

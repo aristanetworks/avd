@@ -1126,6 +1126,7 @@ class EosDesignsFactsProtocol(Protocol):
         "dc_name": {"type": str},
         "group": {"type": str},
         "router_id": {"type": str},
+        "bgp_cluster_id": {"type": str},
         "inband_mgmt_ip": {"type": str},
         "inband_mgmt_interface": {"type": str},
         "pod": {"type": str},
@@ -1193,6 +1194,12 @@ class EosDesignsFactsProtocol(Protocol):
     dc_name: str | None
     group: str | None
     router_id: str | None
+    bgp_cluster_id: str | None
+    """
+    Only set with `underlay_routing_protocol: ibgp`.
+    Used to resolve the shared cluster ID of underlay
+    route reflectors.
+    """
     inband_mgmt_ip: str | None
     """Used for fabric docs."""
     inband_mgmt_interface: str | None
@@ -1358,6 +1365,7 @@ class EosDesignsFactsProtocol(Protocol):
             dc_name: str | UndefinedType | None = Undefined,
             group: str | UndefinedType | None = Undefined,
             router_id: str | UndefinedType | None = Undefined,
+            bgp_cluster_id: str | UndefinedType | None = Undefined,
             inband_mgmt_ip: str | UndefinedType | None = Undefined,
             inband_mgmt_interface: str | UndefinedType | None = Undefined,
             pod: str | UndefinedType = Undefined,
@@ -1430,6 +1438,10 @@ class EosDesignsFactsProtocol(Protocol):
                 dc_name: dc_name
                 group: group
                 router_id: router_id
+                bgp_cluster_id:
+                   Only set with `underlay_routing_protocol: ibgp`.
+                   Used to resolve the shared cluster ID of underlay
+                   route reflectors.
                 inband_mgmt_ip: Used for fabric docs.
                 inband_mgmt_interface: Used for fabric docs.
                 pod: Used for fabric docs.

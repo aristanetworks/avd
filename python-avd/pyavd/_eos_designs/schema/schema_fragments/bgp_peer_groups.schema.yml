@@ -47,6 +47,78 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
+      rr_underlay_peers:
+        type: dict
+        description: |-
+          Only used with `underlay_routing_protocol: ibgp`.
+          Sessions towards uplink switches (route reflectors), with `next-hop-self`.
+        keys:
+          name:
+            type: str
+            default: RR-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: |-
+              BGP peer group Type 7 encrypted password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
+      rr_clients_underlay_peers:
+        type: dict
+        description: |-
+          Only used with `underlay_routing_protocol: ibgp`.
+          Sessions towards downlink switches (route reflector clients), with `route-reflector-client` and `next-hop-self`.
+        keys:
+          name:
+            type: str
+            default: RR-CLIENTS-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: |-
+              BGP peer group Type 7 encrypted password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+          bfd:
+            type: bool
+            default: false
+          maximum_routes:
+            type: int
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
       mlag_ipv4_vrfs_peer:
         type: dict
         description: |-

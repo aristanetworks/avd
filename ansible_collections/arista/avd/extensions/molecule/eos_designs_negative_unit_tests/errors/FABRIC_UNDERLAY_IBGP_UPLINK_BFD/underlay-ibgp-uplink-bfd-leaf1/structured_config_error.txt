@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'uplink_bfd: true' is not supported with 'underlay_routing_protocol: ibgp'; use 'bgp_peer_groups.rr_underlay_peers.bfd' and 'bgp_peer_groups.rr_clients_underlay_peers.bfd' instead.

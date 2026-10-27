@@ -1,0 +1,12 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_INBAND_ZTP
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-inband-ztp-leaf1
+      id: 1
+      inband_ztp: true

@@ -22,6 +22,8 @@ class RouterBgpMixin(Protocol):
     @structured_config_contributor
     def router_bgp(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for router_bgp."""
+        self.shared_utils.validate_underlay_ibgp()
+
         if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.redistribute.connected.enabled = True
             if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
@@ -36,6 +38,13 @@ class RouterBgpMixin(Protocol):
         # Set BGP peer group only when underlay link is present.
         if not self._underlay_p2p_links:
             return
+
+        if self.shared_utils.underlay_ibgp:
+            self._set_underlay_ibgp_neighbor_interfaces()
+            if (cluster_id := self.shared_utils.underlay_ibgp_cluster_id) is not None:
+                self.structured_config.router_bgp.bgp_cluster_id = cluster_id
+            return
+
         # Adding the peer-group as we know we either have neighbors or neighbor_interfaces to configure
         self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
 
@@ -107,3 +116,25 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
+
+    def _set_underlay_ibgp_neighbor_interfaces(self: AvdStructuredConfigUnderlayProtocol) -> None:
+        """
+        Set RFC5549 neighbor interfaces for 'underlay_routing_protocol: ibgp'.
+
+        Uses one peer group towards uplink switches and one towards downlink switches.
+        """
+        for link in self._underlay_p2p_links:
+            if link.peer in self.facts.uplink_peers:
+                self.structured_config_utils.set_once_peer_group_rr_underlay_peers()
+                peer_group = self.inputs.bgp_peer_groups.rr_underlay_peers.name
+            else:
+                self.structured_config_utils.set_once_peer_group_rr_clients_underlay_peers()
+                peer_group = self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name
+
+            self.structured_config.router_bgp.neighbor_interfaces.append_new(
+                name=link.interface,
+                peer_group=peer_group,
+                remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
+                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=link.peer),
+                description=f"{link.peer}_{link.peer_interface}",
+            )

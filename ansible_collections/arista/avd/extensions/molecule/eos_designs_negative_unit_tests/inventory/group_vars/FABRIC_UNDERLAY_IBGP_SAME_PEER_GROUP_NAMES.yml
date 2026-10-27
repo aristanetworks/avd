@@ -1,0 +1,17 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_SAME_PEER_GROUP_NAMES
+
+bgp_peer_groups:
+  rr_underlay_peers:
+    name: UNDERLAY-PEERS
+  rr_clients_underlay_peers:
+    name: UNDERLAY-PEERS
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-same-peer-group-names-leaf1
+      id: 1
