@@ -446,6 +446,45 @@ $defs:
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
                   min_length: 1
                   max_length: 16
+      ospfv3:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: |-
+          OSPFv3 interface configuration.
+          Enabling OSPFv3 on an SVI automatically creates the OSPFv3 configuration for the VRF of the SVI on the device.
+          Only the IPv6 address family is currently supported.
+          SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+          OSPFv3 uses the IPv6 link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without `ipv6_address` (`ipv6_enable: false` is not supported).
+          Anycast IPv6 (`ipv6_address_virtuals`) is not supported.
+          SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+          VRF `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+        keys:
+          enabled:
+            type: bool
+          area:
+            type: str
+            default: "0.0.0.0"
+            description: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+          point_to_point:
+            type: bool
+            default: false
+            description: Configure the OSPFv3 network type as point-to-point.
+          passive:
+            type: bool
+            default: false
+            description: |-
+              Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+              By default, OSPFv3-enabled SVIs are configured with `no ospfv3 passive-interface`.
+          ipv4:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: |-
+                  Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                  The IPv4 address family is not supported yet, so `true` raises an error.
+                  An SVI with IPv4 addressing also raises an error unless this is set to `false`.
       bgp:
         type: dict
         keys:
