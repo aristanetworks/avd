@@ -63,3 +63,19 @@ class ProfiledDataMixin(Protocol):
             self.node_config.ntp_settings_profile,
             target_name="ntp_settings",
         )
+
+    def cv_settings(self: SharedUtilsProtocol) -> EosDesigns.CvSettings:
+        """
+        CloudVision settings with the node's `cv_settings_profile` resolved and merged in.
+
+        If `cv_settings_profile` is not defined, the root-level `cv_settings` is returned.
+        """
+        if not self.node_config.cv_settings_profile:
+            return self.inputs.cv_settings
+
+        return resolve_profile(
+            self.inputs.cv_settings,
+            self.inputs.cv_settings_profiles,
+            self.node_config.cv_settings_profile,
+            target_name="cv_settings",
+        )
