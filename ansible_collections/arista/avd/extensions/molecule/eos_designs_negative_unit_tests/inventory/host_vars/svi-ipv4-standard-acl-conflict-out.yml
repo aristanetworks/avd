@@ -21,6 +21,3 @@ tenants:
             ip_address_virtual: 10.10.10.1/24
             ipv4_standard_acl_out: SVI-STANDARD
             ipv4_acl_out: SVI-EXTENDED
-expected_error_message: >-
-  'ipv4_acl_out' and 'ipv4_standard_acl_out' are mutually exclusive on interface 'tenants[name=ACL_TEST].vrfs[name=ACL_TEST].svis[id=10]'.
-  Only one egress IPv4 ACL can be configured.

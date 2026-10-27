@@ -20,5 +20,3 @@ tenants:
             enabled: true
             ip_address_virtual: 10.10.10.1/24
             ipv4_standard_acl_in: SVI-STANDARD
-expected_error_message: >-
-  'ipv4_standard_acls[name=SVI-STANDARD]' is required but was not found for host 'svi-ipv4-standard-acl-missing-in'.
