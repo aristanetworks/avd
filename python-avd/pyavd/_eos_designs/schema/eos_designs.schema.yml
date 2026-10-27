@@ -6982,7 +6982,21 @@ keys:
                       max: 8191
                     ip_address:
                       type: str
-                      required: true
+                      description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      min_length: 1
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                        The first address in this list is used for the IPv6 virtual
+                        source-nat of the VRF, unless the VTEP diagnostic loopback
+                        or an earlier loopback in the VRF already sets it.'
+                      items:
+                        type: str
+                        description: IPv6 address/Mask.
+                        min_length: 1
                     description:
                       type: str
                     enabled:
@@ -6990,7 +7004,10 @@ keys:
                       default: true
                     ospf:
                       type: dict
-                      description: OSPF interface configuration.
+                      description: 'OSPFv2 interface configuration.
+
+                        Requires `ip_address` to be set when OSPF is enabled on both
+                        the VRF and this loopback.'
                       keys:
                         enabled:
                           type: bool
