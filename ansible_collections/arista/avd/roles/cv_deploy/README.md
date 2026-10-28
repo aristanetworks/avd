@@ -639,6 +639,10 @@ The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [H
 
 To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
 
+!!! note
+
+    The role ignores proxy-related environment variables, including lowercase and uppercase variants of `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`. Use the `proxy_host`, `proxy_port`, `proxy_username`, and `proxy_password` role inputs to configure a proxy server for CloudVision connections.
+
 !!! Warning
 
     Authentication credentials (when used) are sent to the proxy server using ***HTTP Basic authentication*** over non-encrypted HTTP transport (credentials are only `Base64` encoded, not encrypted). Credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and Proxy server.
