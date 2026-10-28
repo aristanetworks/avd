@@ -1,0 +1,1 @@
+The 'parent_profile' set under 'port_profiles[profile=profile2]' is ignored because the profile is itself used as a parent profile. Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile'. for host 'dc1.l2leaf6a'

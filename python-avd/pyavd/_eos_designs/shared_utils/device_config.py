@@ -56,7 +56,7 @@ class DeviceConfigMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if parent_profile_item.parent_profile:
-                self.raise_warning_for_grandparent_profile(parent_profile_item.name, context="device_profiles")
+                self.raise_warning_for_grandparent_profile(parent_profile_item.name, context=f"device_profiles[name={parent_profile_item.name}]")
             resolved_profile._deepinherit(parent_profile_item)
 
         device_config._deepinherit(resolved_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))

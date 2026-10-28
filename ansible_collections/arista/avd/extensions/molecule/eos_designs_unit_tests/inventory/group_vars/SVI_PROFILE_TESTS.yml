@@ -37,6 +37,7 @@ svi_profiles:
       description: "set from structured_config on svi_parent_profile.structured_config"
       mtu: 1200
       no_autostate: true
+    parent_profile: ignored_profile
     nodes:
       - node: svi-profile-node-1
         structured_config:
@@ -181,6 +182,9 @@ svi_profiles:
   - profile: ospf_enabled_child_profile_3
     parent_profile: ospf_enabled_parent_profile_2
 
+  - profile: ignore-profile
+    ospf:
+      enabled: true
 ### --- Network Services Generic base config--- ###
 
 tenants:

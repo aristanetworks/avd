@@ -139,7 +139,7 @@ class UtilsMixin(Protocol):
 
             parent_profile_item = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
             if parent_profile_item.parent_profile:
-                self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context="port_profiles")
+                self.raise_warning_for_grandparent_profile(parent_profile_item.profile, context=f"port_profiles[profile={parent_profile_item.profile}]")
             # Warn if parent profile has a parent profile set.
             # Notice reuse of the same variable with the merged content.
             port_profile._deepinherit(parent_profile_item)
@@ -390,7 +390,7 @@ class UtilsMixin(Protocol):
         This function emits the warning unconditionally so it is the responsibility of the caller to consider the toggle.
         """
         msg = (
-            f"The 'parent_profile' set under '{context}[profile={parent_profile}]' is ignored because the profile is itself used as a parent profile."
+            f"The 'parent_profile' set under '{context}' is ignored because the profile is itself used as a parent profile."
             " Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile'."
         )
         AristaAvdWarning.emit(msg, host=self.hostname)
