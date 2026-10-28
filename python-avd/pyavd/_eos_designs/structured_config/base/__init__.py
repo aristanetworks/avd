@@ -427,14 +427,18 @@ class AvdStructuredConfigBaseProtocol(
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
 
-        queue_monitor_streaming_input = self.inputs.queue_monitor_streaming
-        ip_access_group = queue_monitor_streaming_input.ip_access_group
-        ip_standard_access_group = queue_monitor_streaming_input.ip_standard_access_group
-        if ip_access_group is not None and ip_standard_access_group is not None:
-            msg = "'queue_monitor_streaming.ip_access_group' and 'queue_monitor_streaming.ip_standard_access_group' are mutually exclusive."
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
+        ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            ip_access_group,
+            ip_standard_access_group,
+            None,
+            ipv4_acl_key="ip_access_group",
+            ipv4_standard_acl_key="ip_standard_access_group",
+            target="queue-monitor streaming",
+        )
 
-        queue_monitor_streaming = queue_monitor_streaming_input._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
+        queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
         if ip_standard_access_group is not None:
             if ip_standard_access_group not in self.inputs.ipv4_standard_acls:
                 msg = f"ipv4_standard_acls[name={ip_standard_access_group}]"
