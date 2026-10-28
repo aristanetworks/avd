@@ -427,18 +427,17 @@ class AvdStructuredConfigBaseProtocol(
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
 
-        ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
-        ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            ip_access_group,
-            ip_standard_access_group,
-            None,
-            ipv4_acl_key="ip_access_group",
-            ipv4_standard_acl_key="ip_standard_access_group",
-            target="queue-monitor streaming",
+            {
+                "ip_access_group": self.inputs.queue_monitor_streaming.ip_access_group,
+                "ip_standard_access_group": self.inputs.queue_monitor_streaming.ip_standard_access_group,
+            },
+            "queue-monitor streaming",
         )
 
         queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
+        ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
+        ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
         if ip_standard_access_group is not None:
             if ip_standard_access_group not in self.inputs.ipv4_standard_acls:
                 msg = f"ipv4_standard_acls[name={ip_standard_access_group}]"

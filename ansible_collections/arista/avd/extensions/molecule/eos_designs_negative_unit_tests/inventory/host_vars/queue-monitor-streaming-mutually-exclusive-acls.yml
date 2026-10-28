@@ -11,4 +11,4 @@ queue_monitor_streaming:
   ip_standard_access_group: QMS-STANDARD
 
 expected_error_message: >-
-  'ip_access_group' and 'ip_standard_access_group' are mutually exclusive on queue-monitor streaming. Only one IPv4 ACL can be configured.
+  'ip_access_group' and 'ip_standard_access_group' are mutually exclusive on 'queue-monitor streaming'. Only one IPv4 ACL can be configured.
