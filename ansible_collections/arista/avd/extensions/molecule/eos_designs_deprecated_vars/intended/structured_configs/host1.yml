@@ -286,6 +286,14 @@ router_multicast:
   ipv4:
     routing: true
     software_forwarding: sfe
+router_pim_sparse_mode:
+  vrfs:
+  - name: IGMP_QUERIER_TEST_3
+    ipv4:
+      rp_addresses:
+      - address: 10.20.20.30
+        access_lists:
+        - RP_ACL_VRF_OVERRIDE
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
@@ -303,6 +311,11 @@ snmp_server:
     view: VW-READ
   - name: SNMP-COMMUNITY-3
 standard_access_lists:
+- name: RP_ACL_VRF_OVERRIDE
+  entries:
+  - sequence: 10
+    action: permit
+    source: 232.1.0.0/21
 - name: acl1
   entries:
   - sequence: 10

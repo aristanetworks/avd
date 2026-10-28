@@ -39,6 +39,14 @@ tenants:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST"
         vrf_vni: 41
+        # Test deprecated pim_rp_addresses.access_list_name
+        pim_rp_addresses:
+          - rps:
+              - 10.20.20.30
+            nodes: [host1]
+            groups:
+              - 232.1.0.0/21
+            access_list_name: RP_ACL_VRF_OVERRIDE
         svis:
           - id: 22
             name: "VLAN_22"

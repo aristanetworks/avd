@@ -502,12 +502,12 @@ tenants:
         groups:
           - 232.0.120.0/21
           - 232.0.128.0/21
-        access_list_name: RPS_ACL_VRF_Tenant_E_1
+        ipv4_standard_acl: RPS_ACL_VRF_Tenant_E_1
       - rps:
           - 10.1.50.150
         groups:
           - 232.0.136.0/21
-        access_list_name: RPS_ACL_VRF_Tenant_E_2
+        ipv4_standard_acl: RPS_ACL_VRF_Tenant_E_2
 
     vrfs:
       # This VRF inherits from Tenant
@@ -573,7 +573,7 @@ tenants:
             nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             groups:
               - 232.1.0.0/21
-            access_list_name: RP_ACL_VRF_OVERRIDE
+            ipv4_standard_acl: RP_ACL_VRF_OVERRIDE
         vrf_vni: 55
         svis:
           - id: 550

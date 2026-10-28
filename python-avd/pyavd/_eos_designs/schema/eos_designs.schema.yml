@@ -5686,6 +5686,20 @@ keys:
                   Otherwise the groups are configured directly on the RP command.
 
                   '
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: ipv4_standard_acl
+              ipv4_standard_acl:
+                type: str
+                description: 'List of groups to associate with the RP addresses set
+                  in ''rps''.
+
+                  If ipv4_standard_acl is set, a standard access-list will be configured
+                  matching these groups.
+
+                  Otherwise the groups are configured directly on the RP command.'
         igmp_snooping_querier:
           documentation_options:
             table: network-services-multicast-settings
@@ -6362,6 +6376,20 @@ keys:
                         Otherwise the groups are configured directly on the RP command.
 
                         '
+                      deprecation:
+                        warning: true
+                        removed: false
+                        remove_in_version: 7.0.0
+                        new_key: ipv4_standard_acl
+                    ipv4_standard_acl:
+                      type: str
+                      description: 'List of groups to associate with the RP addresses
+                        set in ''rps''.
+
+                        If ipv4_standard_acl is set, a standard access-list will be
+                        configured matching these groups.
+
+                        Otherwise the groups are configured directly on the RP command.'
               evpn_l2_multi_domain:
                 type: bool
                 description: 'Explicitly extend all VLANs/VLAN-Aware Bundles inside

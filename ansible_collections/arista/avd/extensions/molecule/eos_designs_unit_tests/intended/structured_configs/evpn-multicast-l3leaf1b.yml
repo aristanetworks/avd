@@ -968,8 +968,8 @@ router_pim_sparse_mode:
         - 232.0.0.0/21
       - address: 10.40.40.40
       - address: 10.20.20.30
-        access_lists:
-        - RP_ACL_VRF_OVERRIDE
+        groups:
+        - 232.1.0.0/21
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
     ipv4:
       rp_addresses:
@@ -987,14 +987,16 @@ router_pim_sparse_mode:
       - address: 10.1.51.130
       - address: 10.1.52.130
       - address: 10.1.51.140
-        access_lists:
-        - RPS_ACL_VRF_Tenant_E_1
+        groups:
+        - 232.0.120.0/21
+        - 232.0.128.0/21
       - address: 10.1.52.140
-        access_lists:
-        - RPS_ACL_VRF_Tenant_E_1
+        groups:
+        - 232.0.120.0/21
+        - 232.0.128.0/21
       - address: 10.1.50.150
-        access_lists:
-        - RPS_ACL_VRF_Tenant_E_2
+        groups:
+        - 232.0.136.0/21
 service_routing_protocols_model: multi-agent
 sflow:
   vrfs:

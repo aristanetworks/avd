@@ -32742,7 +32742,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Groups._item_type = str
 
-            _fields: ClassVar[dict] = {"rps": {"type": Rps}, "nodes": {"type": Nodes}, "groups": {"type": Groups}, "access_list_name": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "rps": {"type": Rps},
+                "nodes": {"type": Nodes},
+                "groups": {"type": Groups},
+                "access_list_name": {"type": str},
+                "ipv4_standard_acl": {"type": str},
+            }
             rps: Rps
             """
             List of Rendevouz Points.
@@ -32765,6 +32771,14 @@ class EosDesigns(EosDesignsRootModel):
             Otherwise the groups are configured directly
             on the RP command.
             """
+            ipv4_standard_acl: str | None
+            """
+            List of groups to associate with the RP addresses set in 'rps'.
+            If ipv4_standard_acl is set, a
+            standard access-list will be configured matching these groups.
+            Otherwise the groups are configured
+            directly on the RP command.
+            """
 
             if TYPE_CHECKING:
 
@@ -32775,6 +32789,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     groups: Groups | UndefinedType = Undefined,
                     access_list_name: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     PimRpAddressesItem.
@@ -32798,6 +32813,12 @@ class EosDesigns(EosDesignsRootModel):
                            access-list will be configured matching these groups.
                            Otherwise the groups are configured directly
                            on the RP command.
+                        ipv4_standard_acl:
+                           List of groups to associate with the RP addresses set in 'rps'.
+                           If ipv4_standard_acl is set, a
+                           standard access-list will be configured matching these groups.
+                           Otherwise the groups are configured
+                           directly on the RP command.
 
                     """
 
@@ -33647,7 +33668,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"rps": {"type": Rps}, "nodes": {"type": Nodes}, "groups": {"type": Groups}, "access_list_name": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "rps": {"type": Rps},
+                    "nodes": {"type": Nodes},
+                    "groups": {"type": Groups},
+                    "access_list_name": {"type": str},
+                    "ipv4_standard_acl": {"type": str},
+                }
                 rps: Rps
                 """
                 A minimum of one RP must be specified.
@@ -33670,6 +33697,14 @@ class EosDesigns(EosDesignsRootModel):
                 Otherwise the groups are configured
                 directly on the RP command.
                 """
+                ipv4_standard_acl: str | None
+                """
+                List of groups to associate with the RP addresses set in 'rps'.
+                If ipv4_standard_acl is set, a
+                standard access-list will be configured matching these groups.
+                Otherwise the groups are configured
+                directly on the RP command.
+                """
 
                 if TYPE_CHECKING:
 
@@ -33680,6 +33715,7 @@ class EosDesigns(EosDesignsRootModel):
                         nodes: Nodes | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         access_list_name: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         PimRpAddressesItem.
@@ -33700,6 +33736,12 @@ class EosDesigns(EosDesignsRootModel):
                             access_list_name:
                                List of groups to associate with the RP addresses set in 'rps'.
                                If access_list_name is set, a
+                               standard access-list will be configured matching these groups.
+                               Otherwise the groups are configured
+                               directly on the RP command.
+                            ipv4_standard_acl:
+                               List of groups to associate with the RP addresses set in 'rps'.
+                               If ipv4_standard_acl is set, a
                                standard access-list will be configured matching these groups.
                                Otherwise the groups are configured
                                directly on the RP command.
@@ -86838,7 +86880,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Groups._item_type = str
 
-                    _fields: ClassVar[dict] = {"rps": {"type": Rps}, "nodes": {"type": Nodes}, "groups": {"type": Groups}, "access_list_name": {"type": str}}
+                    _fields: ClassVar[dict] = {
+                        "rps": {"type": Rps},
+                        "nodes": {"type": Nodes},
+                        "groups": {"type": Groups},
+                        "access_list_name": {"type": str},
+                        "ipv4_standard_acl": {"type": str},
+                    }
                     rps: Rps
                     """
                     List of Rendevouz Points.
@@ -86861,6 +86909,14 @@ class EosDesigns(EosDesignsRootModel):
                     Otherwise the groups are configured directly
                     on the RP command.
                     """
+                    ipv4_standard_acl: str | None
+                    """
+                    List of groups to associate with the RP addresses set in 'rps'.
+                    If ipv4_standard_acl is set, a
+                    standard access-list will be configured matching these groups.
+                    Otherwise the groups are configured
+                    directly on the RP command.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -86871,6 +86927,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             groups: Groups | UndefinedType = Undefined,
                             access_list_name: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             PimRpAddressesItem.
@@ -86894,6 +86951,12 @@ class EosDesigns(EosDesignsRootModel):
                                    access-list will be configured matching these groups.
                                    Otherwise the groups are configured directly
                                    on the RP command.
+                                ipv4_standard_acl:
+                                   List of groups to associate with the RP addresses set in 'rps'.
+                                   If ipv4_standard_acl is set, a
+                                   standard access-list will be configured matching these groups.
+                                   Otherwise the groups are configured
+                                   directly on the RP command.
 
                             """
 
@@ -87756,6 +87819,7 @@ class EosDesigns(EosDesignsRootModel):
                             "nodes": {"type": Nodes},
                             "groups": {"type": Groups},
                             "access_list_name": {"type": str},
+                            "ipv4_standard_acl": {"type": str},
                         }
                         rps: Rps
                         """
@@ -87779,6 +87843,14 @@ class EosDesigns(EosDesignsRootModel):
                         Otherwise the groups are configured
                         directly on the RP command.
                         """
+                        ipv4_standard_acl: str | None
+                        """
+                        List of groups to associate with the RP addresses set in 'rps'.
+                        If ipv4_standard_acl is set, a
+                        standard access-list will be configured matching these groups.
+                        Otherwise the groups are configured
+                        directly on the RP command.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -87789,6 +87861,7 @@ class EosDesigns(EosDesignsRootModel):
                                 nodes: Nodes | UndefinedType = Undefined,
                                 groups: Groups | UndefinedType = Undefined,
                                 access_list_name: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 PimRpAddressesItem.
@@ -87809,6 +87882,12 @@ class EosDesigns(EosDesignsRootModel):
                                     access_list_name:
                                        List of groups to associate with the RP addresses set in 'rps'.
                                        If access_list_name is set, a
+                                       standard access-list will be configured matching these groups.
+                                       Otherwise the groups are configured
+                                       directly on the RP command.
+                                    ipv4_standard_acl:
+                                       List of groups to associate with the RP addresses set in 'rps'.
+                                       If ipv4_standard_acl is set, a
                                        standard access-list will be configured matching these groups.
                                        Otherwise the groups are configured
                                        directly on the RP command.

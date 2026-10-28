@@ -40,7 +40,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].groups.[]") | String |  |  |  | Group_prefix/mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].access_list_name") | String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].access_list_name") <span style="color:red">deprecated</span> | String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "<network_services_keys.name>.[].pim_rp_addresses.[].ipv4_standard_acl") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "<network_services_keys.name>.[].igmp_snooping_querier") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.<br>When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>igmp_snooping.querier</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if "evpn_l2_multicast" is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].igmp_snooping_querier.source_address") | String |  | `main_router_id` |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- `diagnostic_loopback` will configure the VRF Diagnostic Loopback.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address. |
@@ -61,7 +62,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].groups.[]") | String |  |  |  | Group_prefix/mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].access_list_name") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].access_list_name") <span style="color:red">deprecated</span> | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "<network_services_keys.name>.[].vrfs.[].pim_rp_addresses.[].ipv4_standard_acl") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -181,7 +183,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].pim_rp_addresses.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "network_services.[].pim_rp_addresses.[].groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].pim_rp_addresses.[].groups.[]") | String |  |  |  | Group_prefix/mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "network_services.[].pim_rp_addresses.[].access_list_name") | String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "network_services.[].pim_rp_addresses.[].access_list_name") <span style="color:red">deprecated</span> | String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "network_services.[].pim_rp_addresses.[].ipv4_standard_acl") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "network_services.[].igmp_snooping_querier") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.<br>When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>igmp_snooping.querier</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if "evpn_l2_multicast" is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "network_services.[].igmp_snooping_querier.source_address") | String |  | `main_router_id` |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- `diagnostic_loopback` will configure the VRF Diagnostic Loopback.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address. |
@@ -202,7 +205,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].groups.[]") | String |  |  |  | Group_prefix/mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].access_list_name") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].access_list_name") <span style="color:red">deprecated</span> | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_standard_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "network_services.[].vrfs.[].pim_rp_addresses.[].ipv4_standard_acl") | String |  |  |  | List of groups to associate with the RP addresses set in 'rps'.<br>If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -435,7 +439,15 @@
             # List of groups to associate with the RP address set in 'rp'.
             # If access_list_name is set, a standard access-list will be configured matching these groups.
             # Otherwise the groups are configured directly on the RP command.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `ipv4_standard_acl` instead.
             access_list_name: <str>
+
+            # List of groups to associate with the RP addresses set in 'rps'.
+            # If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.
+            # Otherwise the groups are configured directly on the RP command.
+            ipv4_standard_acl: <str>
 
         # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
         # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
@@ -510,7 +522,15 @@
                 # List of groups to associate with the RP addresses set in 'rps'.
                 # If access_list_name is set, a standard access-list will be configured matching these groups.
                 # Otherwise the groups are configured directly on the RP command.
+                # This key is deprecated.
+                # Support will be removed in AVD version 7.0.0.
+                # Use `ipv4_standard_acl` instead.
                 access_list_name: <str>
+
+                # List of groups to associate with the RP addresses set in 'rps'.
+                # If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.
+                # Otherwise the groups are configured directly on the RP command.
+                ipv4_standard_acl: <str>
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
@@ -919,7 +939,15 @@
             # List of groups to associate with the RP address set in 'rp'.
             # If access_list_name is set, a standard access-list will be configured matching these groups.
             # Otherwise the groups are configured directly on the RP command.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `ipv4_standard_acl` instead.
             access_list_name: <str>
+
+            # List of groups to associate with the RP addresses set in 'rps'.
+            # If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.
+            # Otherwise the groups are configured directly on the RP command.
+            ipv4_standard_acl: <str>
 
         # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
         # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
@@ -994,7 +1022,15 @@
                 # List of groups to associate with the RP addresses set in 'rps'.
                 # If access_list_name is set, a standard access-list will be configured matching these groups.
                 # Otherwise the groups are configured directly on the RP command.
+                # This key is deprecated.
+                # Support will be removed in AVD version 7.0.0.
+                # Use `ipv4_standard_acl` instead.
                 access_list_name: <str>
+
+                # List of groups to associate with the RP addresses set in 'rps'.
+                # If ipv4_standard_acl is set, a standard access-list will be configured matching these groups.
+                # Otherwise the groups are configured directly on the RP command.
+                ipv4_standard_acl: <str>
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
