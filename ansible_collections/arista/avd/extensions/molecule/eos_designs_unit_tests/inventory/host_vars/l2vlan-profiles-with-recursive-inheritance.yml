@@ -37,7 +37,6 @@ l3leaf:
       filter:
         tags: [research]
 
-
 tenants:
   - name: research
     vlan_aware_bundle_number_base: 400
