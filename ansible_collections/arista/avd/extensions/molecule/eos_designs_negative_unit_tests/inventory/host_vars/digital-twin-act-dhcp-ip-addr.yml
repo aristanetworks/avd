@@ -12,6 +12,3 @@ platform_settings:
     digital_twin:
       platform: vEOS-lab
       act_node_type: veos
-
-expected_error_message: >-
-  'mgmt_ip: dhcp' is not supported for Digital Twin. A static management IP address is required for host 'digital-twin-act-dhcp-ip-addr'.

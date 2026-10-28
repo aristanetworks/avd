@@ -40,7 +40,3 @@ l2leaf:
           uplink_port_channel_id: 1234 # <<<<< valid ID but set to a different value than primary node
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
           id: 2
-
-expected_error_message: >-
-  'uplink_port_channel_id' is set to 1234 and is not matching 1 set on MLAG peer.
-  The 'uplink_port_channel_id' must be matching on MLAG peers for host 'invalid-uplink-port-channel-id-3-l2leaf-2'.

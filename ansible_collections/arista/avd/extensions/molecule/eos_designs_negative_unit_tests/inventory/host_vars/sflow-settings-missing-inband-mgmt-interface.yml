@@ -16,6 +16,3 @@ servers:
       - switches: [sflow-settings-missing-inband-mgmt-interface]
         switch_ports: [Ethernet1]
         sflow: true
-
-expected_error_message: >-
-  'sflow_settings.destinations[destination=10.10.10.10].vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.

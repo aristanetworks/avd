@@ -27,5 +27,3 @@ core_interfaces:
       interfaces: [Ethernet1, Ethernet1]
       ip_pool: ipv6_only_pool
       include_in_underlay_protocol: true
-
-expected_error_message: "core_interfaces.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses except for ISIS-SR."

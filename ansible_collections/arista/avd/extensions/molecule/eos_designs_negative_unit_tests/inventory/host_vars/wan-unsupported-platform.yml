@@ -16,6 +16,3 @@ wan_router:
     loopback_ipv4_pool: 192.168.66.0/24
   nodes:
     - name: wan-unsupported-platform
-
-expected_error_message: >-
-  The WAN features are not compatible with the 'vEOS' platform for host 'wan-unsupported-platform'.

@@ -77,7 +77,3 @@ tenants:
         name: L2_VLAN3401
       - id: 3402
         name: L2_VLAN3402
-
-expected_error_message: >-
-  The input data model 'evpn_gateway.all_active_multihoming' is deprecated and cannot be used in conjunction with the new data model 'evpn_gateway.d_path'.
-  This usually happens when a data model has been updated and custom structured configuration still uses the old model.

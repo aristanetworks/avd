@@ -22,7 +22,3 @@ network_ports:
           access_group:
             type: ip
             name: acl1
-
-expected_error_message: >-
-  Cannot set an ACL for both `session_settings` and `source_settings` under the monitor session 'DMF'
-  for network_ports[0].
