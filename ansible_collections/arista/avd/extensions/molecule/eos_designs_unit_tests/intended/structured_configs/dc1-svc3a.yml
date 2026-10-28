@@ -561,7 +561,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     peer_key: servers
-    port_profile: p1
+    port_profile: profile1
   switchport:
     enabled: true
     mode: trunk

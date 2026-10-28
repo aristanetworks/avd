@@ -10,6 +10,8 @@ l2vlan_profiles:
     private_vlan:
       type: community
       primary_vlan: 120
+    # This parent_profile is ignored as allow_recursive_profile_inheritance is false.
+    parent_profile: research1
   - profile: child_profile
     parent_profile: parent_profile
 
