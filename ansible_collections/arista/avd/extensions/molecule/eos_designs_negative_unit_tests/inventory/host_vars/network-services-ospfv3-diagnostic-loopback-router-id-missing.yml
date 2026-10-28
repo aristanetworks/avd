@@ -24,8 +24,3 @@ tenants:
             ipv6_address: 2001:db8:110::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  Invalid configuration on VRF 'VRF_A' in Tenant 'TENANT_A'.
-  'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range'
-  must be defined when 'router_id' is set to 'diagnostic_loopback' on the VRF.

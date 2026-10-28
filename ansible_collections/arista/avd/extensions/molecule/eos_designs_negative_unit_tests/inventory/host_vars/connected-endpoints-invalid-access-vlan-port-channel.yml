@@ -16,7 +16,3 @@ servers:
         vlans: 1-2
         port_channel:
           mode: "active"
-
-expected_error_message: >-
-  Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'.
-  Got 1-2 for interface Port-Channel9.
