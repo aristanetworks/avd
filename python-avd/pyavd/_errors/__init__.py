@@ -23,7 +23,7 @@ class AristaAvdError(Exception):
         self._host_context_added = False
         super().__init__(self.message)
 
-    def add_host_context(self, host: str) -> None:
+    def _add_host_context(self, host: str) -> None:
         """Add host context once, preserving an existing host and the exception instance."""
         if not self.host:
             self.host = host
