@@ -104,10 +104,10 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             for connected_endpoint in connected_endpoints_key.value:
                 for index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
-                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if self.shared_utils.hostname not in adapter_settings.switches:
+                    if self.shared_utils.hostname not in adapter.switches:
                         # This switch is not connected to this endpoint. Skipping.
                         continue
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
 
                     adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                     vlans.update(adapter_vlans)
