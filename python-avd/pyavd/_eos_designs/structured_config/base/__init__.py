@@ -457,19 +457,17 @@ class AvdStructuredConfigBaseProtocol(
 
             context = f"management_eapi.vrfs[name={vrf.name}]"
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.{context}")
-            ipv4_acl = vrf.ipv4_acl
-            ipv4_standard_acl = vrf.ipv4_standard_acl
-            self.structured_config_utils._validate_ipv4_acl_exclusion(ipv4_acl, ipv4_standard_acl, context)
+            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context)
 
-            if ipv4_standard_acl is not None:
-                self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
-            elif ipv4_acl is not None and self.inputs.avd_design_future.raise_for_missing_management_eapi_acls:
-                acl = self.shared_utils.get_ipv4_acl(name=ipv4_acl, interface_name=vrf_name)
+            if vrf.ipv4_standard_acl is not None:
+                self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
+            elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.raise_for_missing_management_eapi_acls:
+                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name)
                 self.structured_config_utils._set_ipv4_acl(acl)
 
             self.structured_config.management_api_http.enable_vrfs.append_new(
                 name=vrf_name,
-                access_group=default(ipv4_standard_acl, ipv4_acl),
+                access_group=default(vrf.ipv4_standard_acl, vrf.ipv4_acl),
                 ipv6_access_group=vrf.ipv6_acl,
             )
 
