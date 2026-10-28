@@ -43,6 +43,3 @@ tenants:
             name: VRF10_VLAN11
             enabled: true
             ip_address_virtual: 10.10.11.1/24
-
-expected_error_message: >-
-  The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled.

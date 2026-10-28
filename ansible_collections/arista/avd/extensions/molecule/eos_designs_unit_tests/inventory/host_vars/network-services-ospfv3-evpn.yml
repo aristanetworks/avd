@@ -1,0 +1,321 @@
+---
+# OSPFv3 in network services on an EVPN VTEP (VRFs with BGP).
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65101
+  nodes:
+    - name: network-services-ospfv3-evpn
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+
+svi_profiles:
+  - profile: OSPFV3_TRANSIT
+    vxlan: false
+    ospfv3:
+      enabled: true
+      point_to_point: true
+  - profile: OSPFV3_PARENT
+    vxlan: false
+    ospfv3:
+      enabled: true
+      area: 0.0.0.20
+  - profile: OSPFV3_CHILD
+    parent_profile: OSPFV3_PARENT
+    ospfv3:
+      passive: true
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # Default VRF settings with many SVI variants.
+      - name: VRF_A
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: MINIMAL
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
+          - id: 111
+            name: AREA_INTEGER
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:111::1/64
+            ospfv3:
+              enabled: true
+              area: 10
+          - id: 112
+            name: AREA_DOTTED_P2P
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:112::1/64
+            ospfv3:
+              enabled: true
+              area: 0.0.0.10
+              point_to_point: true
+          - id: 113
+            name: PASSIVE
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:113::1/64
+            ospfv3:
+              enabled: true
+              passive: true
+          - id: 114
+            name: LINK_LOCAL_ONLY
+            enabled: true
+            vxlan: false
+            ipv6_enable: true
+            ospfv3:
+              enabled: true
+          - id: 115
+            name: VARPV6
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:115::2/64
+            ipv6_virtual_router_addresses:
+              - 2001:db8:115::1
+            ospfv3:
+              enabled: true
+          - id: 116
+            name: DUAL_STACK_IPV4_OPT_OUT
+            enabled: true
+            vxlan: false
+            ip_address_virtual: 10.1.116.1/24
+            ipv6_address: 2001:db8:116::1/64
+            ospfv3:
+              enabled: true
+              ipv4:
+                enabled: false
+          - id: 117
+            name: NO_OSPFV3_VXLAN
+            enabled: true
+            ipv6_address: 2001:db8:117::1/64
+          - id: 118
+            name: PROFILE
+            profile: OSPFV3_TRANSIT
+            enabled: true
+            ipv6_address: 2001:db8:118::1/64
+          - id: 119
+            name: PARENT_PROFILE
+            profile: OSPFV3_CHILD
+            enabled: true
+            ipv6_address: 2001:db8:119::1/64
+          - id: 120
+            name: NODE_ENABLED
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:120::1/64
+            nodes:
+              - node: network-services-ospfv3-evpn
+                ospfv3:
+                  enabled: true
+          - id: 121
+            name: NODE_DISABLED
+            profile: OSPFV3_TRANSIT
+            enabled: true
+            ipv6_address: 2001:db8:121::1/64
+            nodes:
+              - node: network-services-ospfv3-evpn
+                ospfv3:
+                  enabled: false
+          - id: 122
+            name: SVI_STRUCTURED_CONFIG
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:122::1/64
+            ospfv3:
+              enabled: true
+            structured_config:
+              ospfv3:
+                network_point_to_point: true
+                ipv6:
+                  area: 0.0.0.99
+          # VARPv6 is rendered with the automatic 'ipv6 enable'.
+          - id: 123
+            name: LINK_LOCAL_VARPV6
+            enabled: true
+            vxlan: false
+            ipv6_virtual_router_addresses:
+              - 2001:db8:123::1
+            ospfv3:
+              enabled: true
+          - id: 124
+            name: IPV4_ONLY_IPV4_AF_FALSE
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.124.1/24
+            ospfv3:
+              enabled: true
+              ipv4:
+                enabled: false
+
+      # Explicit router ID, redistribute connected and VRF structured_config.
+      - name: VRF_B
+        vrf_id: 11
+        ospfv3:
+          router_id: 10.255.11.1
+          redistribute_connected:
+            enabled: true
+          structured_config:
+            auto_cost_reference_bandwidth: 100000
+            eos_cli: |-
+              log-adjacency-changes detail
+        svis:
+          - id: 211
+            name: VRF_B_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:211::1/64
+            ospfv3:
+              enabled: true
+
+      # Diagnostic loopback router ID and redistribution disabled in both directions.
+      - name: VRF_C
+        vrf_id: 12
+        vtep_diagnostic:
+          loopback: 12
+          loopback_ip_range: 10.255.12.0/24
+        ospfv3:
+          router_id: diagnostic_loopback
+          redistribute_bgp:
+            enabled: false
+        redistribute_ospfv3:
+          enabled: false
+        svis:
+          - id: 212
+            name: VRF_C_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:212::1/64
+            ospfv3:
+              enabled: true
+
+      # No router ID and the documented workaround to redistribute OSPFv3 external routes into BGP.
+      - name: VRF_D
+        vrf_id: 13
+        ospfv3:
+          router_id: none
+        bgp:
+          structured_config:
+            redistribute:
+              ospfv3:
+                match_external:
+                  enabled: true
+        svis:
+          - id: 213
+            name: VRF_D_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:213::1/64
+            ospfv3:
+              enabled: true
+
+      # Dual-stack SVI with OSPFv2 for IPv4 and OSPFv3 for IPv6. OSPFv2 is not redistributed into BGP.
+      - name: VRF_DUAL_STACK_1
+        vrf_id: 14
+        ospf:
+          enabled: true
+        redistribute_ospf: false
+        svis:
+          - id: 214
+            name: VRF_DUAL_STACK_1_TRANSIT
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.214.1/24
+            ipv6_address: 2001:db8:214::1/64
+            ospf:
+              enabled: true
+            ospfv3:
+              enabled: true
+              ipv4:
+                enabled: false
+
+      # Dual-stack SVI with OSPFv2 for IPv4 and OSPFv3 for IPv6. OSPFv3 is not redistributed into BGP.
+      - name: VRF_DUAL_STACK_2
+        vrf_id: 15
+        ospf:
+          enabled: true
+        redistribute_ospfv3:
+          enabled: false
+        svis:
+          - id: 215
+            name: VRF_DUAL_STACK_2_TRANSIT
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.215.1/24
+            ipv6_address: 2001:db8:215::1/64
+            ospf:
+              enabled: true
+            ospfv3:
+              enabled: true
+              ipv4:
+                enabled: false
+
+      # Only an SVI without IP addressing: 'ipv6 enable' is added automatically, and IPv6 routing is enabled for the VRF.
+      - name: VRF_LINK_LOCAL
+        vrf_id: 18
+        svis:
+          - id: 219
+            name: VRF_LINK_LOCAL_TRANSIT
+            enabled: true
+            vxlan: false
+            ospfv3:
+              enabled: true
+
+      # VRF without BGP on a VTEP: no redistribution in either direction, even when enabled explicitly.
+      - name: VRF_NO_BGP
+        vrf_id: 16
+        bgp:
+          enabled: false
+        ospfv3:
+          redistribute_bgp:
+            enabled: true
+        redistribute_ospfv3:
+          enabled: true
+        svis:
+          - id: 216
+            name: VRF_NO_BGP_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:216::1/64
+            ospfv3:
+              enabled: true
+
+      # Same VRF in two tenants with identical OSPFv3 settings.
+      - name: VRF_SHARED
+        vrf_id: 17
+        ospfv3:
+          router_id: 10.255.17.1
+        svis:
+          - id: 217
+            name: VRF_SHARED_TENANT_A
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:217::1/64
+            ospfv3:
+              enabled: true
+
+  - name: TENANT_B
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: VRF_SHARED
+        vrf_id: 17
+        ospfv3:
+          router_id: 10.255.17.1
+        svis:
+          - id: 218
+            name: VRF_SHARED_TENANT_B
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:218::1/64
+            ospfv3:
+              enabled: true

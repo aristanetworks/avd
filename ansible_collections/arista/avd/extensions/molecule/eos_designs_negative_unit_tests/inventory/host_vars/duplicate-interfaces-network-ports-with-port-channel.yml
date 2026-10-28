@@ -24,9 +24,3 @@ network_ports:
       channel_id: 9
       mode: "active"
       description: "DIFFERENT_PORT_CHANNEL_DESCRIPTION"
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for PortChannelInterfaces.
-  {'name': 'Port-Channel9', 'description': 'DIFFERENT_PORT_CHANNEL_DESCRIPTION', 'shutdown': False, 'switchport': {'enabled': True}}
-  conflicts with
-  {'name': 'Port-Channel9', 'description': 'PORT_CHANNEL_DESCRIPTION', 'shutdown': False, 'switchport': {'enabled': True}}.

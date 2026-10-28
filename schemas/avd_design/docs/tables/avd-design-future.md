@@ -17,6 +17,7 @@
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
     | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_ipv6_pool</samp>](## "avd_design_future.fix_mlag_ibgp_peering_ipv6_pool") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.<br>When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,<br>using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored. |
+    | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_vrfs_address_families</samp>](## "avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the BGP address families of the MLAG iBGP peerings in VRFs when using `underlay_ipv6_numbered`.<br>These iBGP sessions run over IPv6, so when enabled:<br>- With `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group activates the IPv6 address family<br>  instead of the IPv4 address family. An error is raised if a VRF with MLAG iBGP peering has IPv4 configured, with either the shared<br>  or the dedicated peer group, since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.<br>- With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6 originate`) and the IPv6<br>  address family are activated on the MLAG peer group used for VRFs, either the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`<br>  or the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when using the shared<br>  peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are configured for VRFs with MLAG iBGP peering.<br>  This allows dual-stack VRFs over a numbered IPv6 underlay. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
@@ -26,6 +27,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;raise_for_missing_snmp_server_vrf_acls</samp>](## "avd_design_future.raise_for_missing_snmp_server_vrf_acls") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended ACL on the device.<br>When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
+    | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
 
 === "YAML"
 
@@ -74,6 +76,19 @@
       # using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored.
       fix_mlag_ibgp_peering_ipv6_pool: <bool; default=False>
 
+      # Available from AVD 6.5.0.
+      # Fix the BGP address families of the MLAG iBGP peerings in VRFs when using `underlay_ipv6_numbered`.
+      # These iBGP sessions run over IPv6, so when enabled:
+      # - With `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group activates the IPv6 address family
+      #   instead of the IPv4 address family. An error is raised if a VRF with MLAG iBGP peering has IPv4 configured, with either the shared
+      #   or the dedicated peer group, since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+      # - With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6 originate`) and the IPv6
+      #   address family are activated on the MLAG peer group used for VRFs, either the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+      #   or the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when using the shared
+      #   peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+      #   This allows dual-stack VRFs over a numbered IPv6 underlay.
+      fix_mlag_ibgp_peering_vrfs_address_families: <bool; default=False>
+
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
       fix_radius_server_group_tls: <bool; default=False>
@@ -115,4 +130,12 @@
       # Available from AVD 6.1.0.
       # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
       remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.
+      # When enabled:
+      # - AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+      # - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
+      # - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met).
+      only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: <bool; default=False>
     ```
