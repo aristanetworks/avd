@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires the same 'bfd' on 'bgp_peer_groups.rr_underlay_peers' and 'bgp_peer_groups.rr_clients_underlay_peers', since every session uses one on each end, but got 'False' and 'True'.

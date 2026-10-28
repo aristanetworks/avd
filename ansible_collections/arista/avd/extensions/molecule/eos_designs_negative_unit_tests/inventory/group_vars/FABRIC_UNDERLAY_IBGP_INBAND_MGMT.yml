@@ -10,6 +10,7 @@ l3leaf:
     - name: underlay-ibgp-inband-mgmt-leaf1
       id: 1
 
+# leaf1 has no inband management settings, and raises as the inband management parent of l2leaf1.
 l2leaf:
   defaults:
     mlag: false

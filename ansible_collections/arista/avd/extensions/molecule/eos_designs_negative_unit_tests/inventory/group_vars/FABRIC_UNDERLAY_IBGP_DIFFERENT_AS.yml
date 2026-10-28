@@ -4,6 +4,7 @@ fabric_name: FABRIC_UNDERLAY_IBGP_DIFFERENT_AS
 spine:
   defaults:
     loopback_ipv4_pool: 10.254.0.0/24
+    bgp_cluster_id: 2.2.2.2
   nodes:
     - name: underlay-ibgp-different-as-spine1
       id: 1

@@ -1,0 +1,139 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_underlay-ibgp-ai-pod1-sp1_Ethernet8
+  shutdown: false
+  mtu: 9394
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ai-pod1-sp1
+    peer_interface: Ethernet8
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_underlay-ibgp-ai-pod1-sp2_Ethernet8
+  shutdown: false
+  mtu: 9394
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ai-pod1-sp2
+    peer_interface: Ethernet8
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_underlay-ibgp-ai-pod2-sp1_Ethernet8
+  shutdown: false
+  mtu: 9394
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ai-pod2-sp1
+    peer_interface: Ethernet8
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_underlay-ibgp-ai-pod2-sp2_Ethernet8
+  shutdown: false
+  mtu: 9394
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ai-pod2-sp2
+    peer_interface: Ethernet8
+    peer_type: spine
+  switchport:
+    enabled: false
+hostname: underlay-ibgp-ai-ssp2
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.102.250/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_bgp:
+  as: '65000.0'
+  as_notation: asdot
+  router_id: 192.168.102.250
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  graceful_restart:
+    enabled: true
+    restart_time: 300
+  maximum_paths:
+    paths: 128
+    ecmp: 128
+  updates:
+    wait_install: true
+  bgp_cluster_id: 1.1.1.1
+  bgp_defaults:
+  - neighbor default send-community
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: RR-CLIENTS-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    route_reflector_client: true
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 0
+  neighbor_interfaces:
+  - name: Ethernet1
+    remote_as: '65000.0'
+    metadata:
+      peer: underlay-ibgp-ai-pod1-sp1
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-ai-pod1-sp1_Ethernet8
+  - name: Ethernet2
+    remote_as: '65000.0'
+    metadata:
+      peer: underlay-ibgp-ai-pod1-sp2
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-ai-pod1-sp2_Ethernet8
+  - name: Ethernet3
+    remote_as: '65000.0'
+    metadata:
+      peer: underlay-ibgp-ai-pod2-sp1
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-ai-pod2-sp1_Ethernet8
+  - name: Ethernet4
+    remote_as: '65000.0'
+    metadata:
+      peer: underlay-ibgp-ai-pod2-sp2
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-ai-pod2-sp2_Ethernet8
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: RR-CLIENTS-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

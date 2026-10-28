@@ -54,7 +54,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[]") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List.<br> |
     | [<samp>underlay_multicast_static</samp>](## "underlay_multicast_static") | Boolean |  | `False` |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces |
-    | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".<br> |
+    | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".<br> |
     | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ibgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - IBGP: single-AS fabric with route reflection derived from uplinks.<br>    Requires `underlay_rfc5549: true` and `overlay_routing_protocol: none`.<br>    See the [iBGP underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md) for the restrictions.<br>  - OSPF.<br>  - OSPF-LDP*.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - No underlay routing protocol (none)<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | `False` |  |  |
@@ -354,7 +354,7 @@
     #   - l3_edge and core interfaces
     underlay_multicast_static: <bool; default=False>
 
-    # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
+    # Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.
     # Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".
     underlay_rfc5549: <bool; default=False>
 

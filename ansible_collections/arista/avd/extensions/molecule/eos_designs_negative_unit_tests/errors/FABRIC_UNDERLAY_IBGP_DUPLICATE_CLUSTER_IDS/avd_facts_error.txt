@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires a unique 'bgp_cluster_id' per group of route reflectors, but ['underlay-ibgp-duplicate-cluster-ids-pod1-spine1'] and ['underlay-ibgp-duplicate-cluster-ids-pod2-spine1'] both use '2.2.2.2'.

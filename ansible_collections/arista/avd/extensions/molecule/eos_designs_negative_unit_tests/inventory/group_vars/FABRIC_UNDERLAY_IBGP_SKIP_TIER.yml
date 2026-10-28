@@ -4,6 +4,7 @@ fabric_name: FABRIC_UNDERLAY_IBGP_SKIP_TIER
 super_spine:
   defaults:
     loopback_ipv4_pool: 10.254.10.0/24
+    bgp_cluster_id: 1.1.1.1
   nodes:
     - name: underlay-ibgp-skip-tier-ssp1
       id: 1
@@ -11,6 +12,7 @@ super_spine:
 spine:
   defaults:
     loopback_ipv4_pool: 10.254.0.0/24
+    bgp_cluster_id: 2.2.2.2
   nodes:
     - name: underlay-ibgp-skip-tier-spine1
       id: 1

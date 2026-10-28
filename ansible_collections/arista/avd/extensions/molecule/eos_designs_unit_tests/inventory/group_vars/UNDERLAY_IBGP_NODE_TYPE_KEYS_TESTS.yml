@@ -1,0 +1,52 @@
+---
+# Testing 'underlay_routing_protocol: ibgp' set with 'node_type_keys[].default_underlay_routing_protocol', over four tiers.
+# Every tier with downlink switches is a route reflector with its own 'bgp_cluster_id':
+# super-spine, then spines, then leaf1 which has tor1 below it.
+
+node_type_keys:
+  - key: ibgp_router
+    type: ibgp-router
+    default_underlay_routing_protocol: ibgp
+    default_overlay_routing_protocol: none
+    default_evpn_role: none
+
+type: ibgp-router
+
+underlay_rfc5549: true
+bgp_as: "65000"
+
+ibgp_router:
+  defaults:
+    loopback_ipv4_pool: 10.254.50.0/24
+  node_groups:
+    - group: UNDERLAY_IBGP_NODE_TYPE_KEYS_SUPER_SPINES
+      bgp_cluster_id: 10.255.2.1
+      nodes:
+        - name: underlay-ibgp-node-type-keys-ssp1
+          id: 1
+    - group: UNDERLAY_IBGP_NODE_TYPE_KEYS_SPINES
+      bgp_cluster_id: 10.255.2.2
+      uplink_switches: [underlay-ibgp-node-type-keys-ssp1]
+      uplink_interfaces: [Ethernet7]
+      nodes:
+        - name: underlay-ibgp-node-type-keys-spine1
+          id: 2
+          uplink_switch_interfaces: [Ethernet1]
+        - name: underlay-ibgp-node-type-keys-spine2
+          id: 3
+          uplink_switch_interfaces: [Ethernet2]
+    - group: UNDERLAY_IBGP_NODE_TYPE_KEYS_LEAVES
+      uplink_switches: [underlay-ibgp-node-type-keys-spine1, underlay-ibgp-node-type-keys-spine2]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      nodes:
+        - name: underlay-ibgp-node-type-keys-leaf1
+          id: 4
+          bgp_cluster_id: 10.255.2.3
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+    - group: UNDERLAY_IBGP_NODE_TYPE_KEYS_TORS
+      uplink_switches: [underlay-ibgp-node-type-keys-leaf1]
+      uplink_interfaces: [Ethernet1]
+      nodes:
+        - name: underlay-ibgp-node-type-keys-tor1
+          id: 5
+          uplink_switch_interfaces: [Ethernet10]

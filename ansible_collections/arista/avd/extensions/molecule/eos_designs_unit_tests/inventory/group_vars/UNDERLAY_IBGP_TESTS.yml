@@ -1,9 +1,9 @@
 ---
 # Testing 'underlay_routing_protocol: ibgp' with route reflection derived from the uplinks.
-# Three tiers: super-spines, then two PODs of spines and leaves.
-# - POD1 spines use an explicit 'bgp_cluster_id'.
-# - POD2 spines and super-spines use the derived cluster ID, which is the lowest router ID of the group.
-#   The IDs are chosen so the lowest router ID is neither the first node nor the lowest string.
+# Three tiers: super-spines, then two PODs of spines and leaves, each route reflector group with its own 'bgp_cluster_id'.
+# - The cluster ID is set at node group level for the POD1 spines, and at node type level for the POD2 spines and the super-spines.
+# - The same password is set as type 7 on one peer group and as cleartext on the other.
+#   The type 7 strings differ since EOS encrypts them with the peer group name.
 # - underlay-ibgp-pod1-leaf3 is not deployed.
 
 default_node_types:
@@ -25,6 +25,9 @@ bgp_as: "65000"
 bgp_peer_groups:
   rr_underlay_peers:
     name: RR-UPLINK-PEERS
+    # arista123
+    password: DXSzy3wx6R+lZX+VX+pgMw==
+    bfd: true
     structured_config:
       description: Towards uplink route reflectors
   rr_clients_underlay_peers:
@@ -38,6 +41,7 @@ bgp_ecmp: 128
 super_spine:
   defaults:
     loopback_ipv4_pool: 10.254.0.0/24
+    bgp_cluster_id: 10.255.0.1
   nodes:
     - name: underlay-ibgp-ssp1
       id: 2
@@ -48,10 +52,11 @@ spine:
   defaults:
     uplink_switches: [underlay-ibgp-ssp1, underlay-ibgp-ssp2]
     uplink_interfaces: [Ethernet7, Ethernet8]
+    bgp_cluster_id: 10.255.0.3
   node_groups:
     - group: UNDERLAY_IBGP_POD1_SPINES
       loopback_ipv4_pool: 10.254.1.0/24
-      bgp_cluster_id: 2.2.2.2
+      bgp_cluster_id: 10.255.0.2
       nodes:
         - name: underlay-ibgp-pod1-spine1
           id: 1

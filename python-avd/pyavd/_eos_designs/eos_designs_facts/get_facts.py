@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts.generator import EosDesignsFactsGenerator
+from pyavd._eos_designs.eos_designs_facts.underlay_ibgp import validate_underlay_ibgp_route_reflectors
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
@@ -72,6 +73,8 @@ def get_facts(
 
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
+
+    validate_underlay_ibgp_route_reflectors(peer_facts_generators)
 
     for hostname, generator in peer_facts_generators.items():
         try:

@@ -37,7 +37,6 @@
     | [<samp>dc_name</samp>](## "dc_name") | String |  |  |  |  |
     | [<samp>group</samp>](## "group") | String |  |  |  |  |
     | [<samp>router_id</samp>](## "router_id") | String |  |  |  |  |
-    | [<samp>bgp_cluster_id</samp>](## "bgp_cluster_id") | String |  |  |  | Only set with `underlay_routing_protocol: ibgp`.<br>Used to resolve the shared cluster ID of underlay route reflectors. |
     | [<samp>inband_mgmt_ip</samp>](## "inband_mgmt_ip") | String |  |  |  | Used for fabric docs. |
     | [<samp>inband_mgmt_interface</samp>](## "inband_mgmt_interface") | String |  |  |  | Used for fabric docs. |
     | [<samp>pod</samp>](## "pod") | String | Required |  |  | Used for fabric docs. |
@@ -219,10 +218,6 @@
     dc_name: <str>
     group: <str>
     router_id: <str>
-
-    # Only set with `underlay_routing_protocol: ibgp`.
-    # Used to resolve the shared cluster ID of underlay route reflectors.
-    bgp_cluster_id: <str>
 
     # Used for fabric docs.
     inband_mgmt_ip: <str>

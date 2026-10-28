@@ -78,7 +78,7 @@ router_bgp:
     ecmp: 128
   updates:
     wait_install: true
-  bgp_cluster_id: 2.2.2.2
+  bgp_cluster_id: 10.255.0.2
   bgp:
     default:
       ipv4_unicast: false
@@ -96,7 +96,9 @@ router_bgp:
     metadata:
       type: ipv4
     description: Towards uplink route reflectors
+    bfd: true
     next_hop_self: true
+    password: DXSzy3wx6R+lZX+VX+pgMw==
     send_community: all
     maximum_routes: 256000
   neighbor_interfaces:

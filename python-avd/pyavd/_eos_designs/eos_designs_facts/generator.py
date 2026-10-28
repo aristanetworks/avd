@@ -261,18 +261,6 @@ class EosDesignsFactsGeneratorProtocol(
 
     @remove_cached_property_type
     @cached_property
-    def bgp_cluster_id(self) -> str | None:
-        """
-        Exposed in avd_switch_facts.
-
-        Only set with 'underlay_routing_protocol: ibgp', where it is used to resolve the shared cluster ID of the route reflectors.
-        """
-        if self.shared_utils.underlay_ibgp:
-            return self.shared_utils.node_config.bgp_cluster_id
-        return None
-
-    @remove_cached_property_type
-    @cached_property
     def inband_mgmt_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts.

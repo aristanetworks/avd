@@ -11472,7 +11472,7 @@ keys:
   underlay_rfc5549:
     documentation_options:
       table: fabric-settings
-    description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
+    description: 'Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.
 
       Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".
 
@@ -14831,14 +14831,18 @@ $defs:
               description: Inventory_hostname_of_mpls_route_reflectors.
           bgp_cluster_id:
             documentation_options:
-              table: node-type-mpls-configuration
+              table: node-type-bgp-configuration
             type: str
             description: 'Set BGP cluster id.
 
-              With `underlay_routing_protocol: ibgp`, must be identical on all route
-              reflectors sharing the same clients.
+              For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp`
+              and for WAN route servers, defaults to the router ID.
 
-              Defaults to the lowest router ID among them.'
+              With `underlay_routing_protocol: ibgp`, required on all route reflectors,
+              which are the nodes with downlink switches.
+
+              It must be the same on all the route reflectors sharing the same clients,
+              and unique per group of route reflectors.'
           kernel_ecmp_cli:
             documentation_options:
               table: node-type-common-configuration

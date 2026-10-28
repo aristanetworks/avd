@@ -67,7 +67,7 @@ router_bgp:
     ecmp: 128
   updates:
     wait_install: true
-  bgp_cluster_id: 10.254.0.1
+  bgp_cluster_id: 10.255.0.1
   bgp:
     default:
       ipv4_unicast: false

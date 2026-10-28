@@ -43,6 +43,10 @@ bgp_peer_groups:
 Both peer groups support the same keys as `ipv4_underlay_peers`: `name`, `password`, `cleartext_password`, `bfd`, `maximum_routes` and `structured_config`.
 `bgp_peer_groups.ipv4_underlay_peers` is not used with `ibgp`, and AVD raises an error if it is set.
 
+Every session uses `rr_underlay_peers` on the client and `rr_clients_underlay_peers` on the route reflector, so both groups must have the same password and the same `bfd` value.
+AVD compares the cleartext passwords. A type 7 `password` must be encrypted with the name of its own peer group, since EOS decrypts it with that name.
+The same password therefore renders different type 7 strings on the two groups.
+
 !!! info "Why two peer groups"
     RFC 5549 `neighbor interface` statements only accept a peer group, a remote AS, a peer filter and a description.
     The route reflector attributes must therefore live on peer groups, and a spine needs one per direction.
@@ -62,20 +66,34 @@ Both peer groups support the same keys as `ipv4_underlay_peers`: `name`, `passwo
 
 The route reflectors that serve the same clients form an RR group, and share one cluster ID:
 
-- `bgp_cluster_id` if set. It must then be the same on all the route reflectors of the group.
-- Otherwise the lowest router ID in the group.
+- `bgp_cluster_id` is required on every route reflector, which is any node with downlink switches.
+- It must be the same on all the route reflectors of the group, and unique across RR groups.
 
-Cluster IDs must be unique across RR groups. Leaves have no downlink switches, so they render no cluster ID.
+Leaves have no downlink switches, so they render no cluster ID and must not set `bgp_cluster_id`.
+
+```yaml title="Cluster IDs in a three-tier fabric"
+super_spine:
+  defaults:
+    bgp_cluster_id: 1.1.1.1
+
+spine:
+  node_groups:
+    - group: POD1_SPINES
+      bgp_cluster_id: 2.2.2.2
+    - group: POD2_SPINES
+      bgp_cluster_id: 3.3.3.3
+```
+
+AVD checks the RR groups and their cluster IDs once for the whole fabric while generating facts, so these errors stop the build of the whole fabric.
 
 ### Example
 
-Spine of POD2 in a three-tier fabric, with leaves below and super-spines above.
-The cluster ID is derived from the router ID of the other POD2 spine, which is lower.
+Spine of POD2 in a three-tier fabric, with leaves below and super-spines above, using the cluster IDs above.
 
 ```eos
 router bgp 65000
    router-id 10.254.2.10
-   bgp cluster-id 10.254.2.9
+   bgp cluster-id 3.3.3.3
    maximum-paths 128 ecmp 128
    neighbor RR-CLIENTS-UNDERLAY-PEERS peer group
    neighbor RR-CLIENTS-UNDERLAY-PEERS next-hop-self
@@ -118,8 +136,13 @@ For example, with two spines per POD below two super-spines:
 3. That spine sees a cluster list that does not contain its own cluster ID, so it accepts the reflected routes.
 4. The spine installs three ECMP paths to its own directly connected leaf: the direct one, and two through the super-spines.
 
-When both spines of the POD share one cluster ID, the spine drops the routes reflected through the other POD spine, so only the direct path remains.
+When both spines of the POD share one cluster ID, the spine drops the routes reflected through the other POD spine, so only the direct path to the leaf loopback remains.
 On a leaf-to-spine link failure, the spine then has no path to the leaf and withdraws it, which matches eBGP behavior.
+
+This only applies to prefixes learned from clients. A route reflector does not add its own cluster ID to the prefixes it originates, like its loopback.
+For example, spine 2 advertises its loopback to the super-spines without a cluster list. A super-spine reflects it to spine 1 with the super-spine cluster ID only, so spine 1 accepts it and reflects it to its leaves.
+A leaf of the POD then has ECMP paths to the spine 2 loopback, directly and through spine 1, a super-spine and spine 2 (cluster list `2.2.2.2 1.1.1.1` with the IDs above).
+The impact is limited to the prefixes originated by route reflectors, which are the spine and super-spine loopbacks.
 
 !!! warning "Never enable `bgp route-reflector preserve-attributes always`"
     `preserve-attributes always` silently suppresses reflected routes with IPv6 link-local next hops.
@@ -136,16 +159,17 @@ These keys apply to all the nodes that read them. Set them in inventory group va
 
 AVD raises an error on an `ibgp` underlay router when one of the following is true.
 Each restriction can be relaxed later as needed.
+The topology and cluster ID checks of the route reflector groups run once for the whole fabric while generating facts. The others run per device while generating structured config.
 
 | Condition | Reason |
 | --------- | ------ |
 | `underlay_rfc5549` is not `true` | IPv4 numbered sessions are not supported yet. |
 | `underlay_ipv6` or `underlay_ipv6_numbered` is set | Not tested. |
-| `overlay_routing_protocol` is not `none` (EVPN, HER, CVX, MPLS) | A derived cluster ID would change the overlay route reflector value. Not tested. |
+| `overlay_routing_protocol` is not `none` (EVPN, HER, CVX, MPLS) | Not tested. `bgp cluster-id` is shared with the overlay route reflectors. |
 | `uplink_type` is not `p2p`, or the node type has `mpls_lsr: true` | Not tested. `lan` would render `router bgp` without sessions. |
 | MLAG | iBGP split horizon breaks the MLAG backup path. |
 | WAN router (`wan_role` set) | WAN logic lives on the underlay peer group. |
-| An uplink or downlink switch is not an `ibgp` underlay router with `p2p` uplinks (L2 switches, other protocols, subinterfaces) | Keeps the route reflector client sets clean. |
+| An uplink or downlink switch is not an `ibgp` underlay router with `p2p` uplinks (L2 switches, other protocols) | Keeps the route reflector client sets clean. |
 | Local and peer BGP AS differ on a fabric link, also with AS ranges | Strict iBGP. |
 | An `l3_edge` or `core_interfaces` link has `include_in_underlay_protocol: true` (the default) or `routing_protocol: ebgp` | These links have no up or down direction, and external routes are not tested. |
 | Node `l3_interfaces` or `l3_port_channels` with BGP peers | External routes are not tested. |
@@ -157,6 +181,8 @@ Each restriction can be relaxed later as needed.
 | `underlay_filter_peer_as: true` | Not used with RFC 5549, and meaningless with one AS. |
 | `bgp_cluster_id` is set on a node without downlink switches | It would be silently ignored. |
 | The clients of a route reflector don't all have the same uplink switches, or those don't all have the same downlink switches | A shared cluster ID would drop routes. |
-| `bgp_cluster_id` differs, or is only set on some of the route reflectors of a group | A shared cluster ID would drop routes. |
-| Two RR groups resolve to the same cluster ID | Cluster list loop detection would drop routes between them. |
+| `bgp_cluster_id` is missing on a route reflector, or differs between the route reflectors of a group | A shared cluster ID would drop routes. |
+| Two RR groups use the same `bgp_cluster_id` | Cluster list loop detection would drop routes between them. |
 | `rr_underlay_peers.name` equals `rr_clients_underlay_peers.name` | The attributes of both directions would merge. |
+| The password or `bfd` of `rr_underlay_peers` and `rr_clients_underlay_peers` differ | Each session uses one group on each end. |
+| A type 7 `password` can't be decrypted with the name of its peer group | EOS decrypts it with that name. |

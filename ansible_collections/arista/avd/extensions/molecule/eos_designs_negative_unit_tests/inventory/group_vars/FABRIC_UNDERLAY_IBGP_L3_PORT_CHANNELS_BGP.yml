@@ -1,0 +1,19 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_L3_PORT_CHANNELS_BGP
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-l3-port-channels-bgp-leaf1
+      id: 1
+      l3_port_channels:
+        - name: Port-Channel10
+          member_interfaces:
+            - name: Ethernet10
+          ip_address: 10.10.10.0/31
+          peer_ip: 10.10.10.1
+          bgp:
+            peer_as: "65100"
