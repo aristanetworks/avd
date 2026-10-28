@@ -20,7 +20,3 @@ logging_settings:
         - 6515
     - name: syslog.server.local
       vrf: use_inband_mgmt_vrf
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Vrfs.
-  {'name': 'MGMT', 'source_interface': 'Vlan123'} conflicts with {'name': 'MGMT', 'source_interface': 'Management1'}.

@@ -223,7 +223,7 @@ class RouterInternetExitMixin(Protocol):
         if internet_exit_policy.fallback_to_system_default:
             policy_exit_groups.append_new(name="system-default-exit-group")
 
-        self._set_zscaler_ie_policy_ip_nat()
+        self.set_once_zscaler_ie_policy_ip_nat()
         self._set_zscaler_internet_exit_policy_ip_security(internet_exit_policy)
         self.set_cv_pathfinder_metadata_zscaler_internet_exit_policy(internet_exit_policy, metadata_tunnels)
 

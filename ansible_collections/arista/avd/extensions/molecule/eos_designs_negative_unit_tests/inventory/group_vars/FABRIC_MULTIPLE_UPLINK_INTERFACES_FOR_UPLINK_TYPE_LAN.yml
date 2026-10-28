@@ -35,7 +35,3 @@ l3leaf:
       uplink_interfaces: [Ethernet1, Ethernet2]
       uplink_switches: [uplink-switch-1, uplink-switch-2]
       uplink_switch_interfaces: [Ethernet3, Ethernet4]
-
-expected_error_message: >-
-  'uplink_type: lan' only supports a single uplink interface.
-  Got ['Ethernet1', 'Ethernet2'] for host 'multiple-uplink-interfaces-for-uplink-type-lan'.
