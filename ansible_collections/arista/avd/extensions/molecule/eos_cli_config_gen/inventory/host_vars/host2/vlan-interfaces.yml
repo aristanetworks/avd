@@ -26,14 +26,18 @@ vlan_interfaces:
     ospfv3:
       ipv4:
         area: 0.0.0.0
+        bfd: true
       ipv6:
         area: 1000
+        bfd: true
+      bfd: true
       passive_interface: true
       network_point_to_point: true
 
   - name: Vlan1000
     description: Vlan with minimal ospfv3 configurations
     ospfv3:
+      bfd: true
       ipv4:
         area: 1000
       ipv6:

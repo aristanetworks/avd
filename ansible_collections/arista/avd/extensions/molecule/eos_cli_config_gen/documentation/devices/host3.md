@@ -382,11 +382,21 @@ router ospf 702
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | True |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -403,6 +413,8 @@ router ospf 702
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -419,8 +431,11 @@ router ospf 702
 ```eos
 !
 router ospfv3
+   bfd adjacency state any
+   !
    address-family ipv4
       router-id 2.2.2.2
+      bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal route-map map1

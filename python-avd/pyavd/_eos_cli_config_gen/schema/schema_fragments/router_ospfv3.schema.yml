@@ -16,6 +16,12 @@ keys:
       router_id:
         type: str
         description: 32-bit OSPF router ID as an IP address.
+      bfd_enable:
+        type: bool
+        description: Enable BFD for all OSPFv3 address families.
+      bfd_adjacency_state_any:
+        type: bool
+        description: Allow BFD sessions to be established in any OSPFv3 adjacency state.
       passive_interface_default:
         type: bool
       auto_cost_reference_bandwidth:
@@ -37,6 +43,12 @@ keys:
           router_id:
             type: str
             description: 32-bit OSPF router ID as an IP address.
+          bfd_enable:
+            type: bool
+            description: Enable BFD for this OSPFv3 address family.
+          bfd_adjacency_state_any:
+            type: bool
+            description: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
           passive_interface_default:
             type: bool
           auto_cost_reference_bandwidth:
@@ -164,6 +176,12 @@ keys:
             router_id:
               type: str
               description: 32-bit OSPF router ID as an IP address.
+            bfd_enable:
+              type: bool
+              description: Enable BFD for all OSPFv3 address families in this VRF.
+            bfd_adjacency_state_any:
+              type: bool
+              description: Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
             passive_interface_default:
               type: bool
             auto_cost_reference_bandwidth:
