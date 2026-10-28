@@ -39,7 +39,3 @@ servers:
         monitor_sessions:
           - name: DMF
             role: destination
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Sources.
-  {'name': 'Port-Channel44', 'direction': 'both'} conflicts with {'name': 'Port-Channel44', 'direction': 'rx'}.

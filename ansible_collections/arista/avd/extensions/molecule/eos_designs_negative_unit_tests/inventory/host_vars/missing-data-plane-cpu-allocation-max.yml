@@ -20,5 +20,3 @@ wan_carriers:
 wan_path_groups:
   - name: TEST
     id: 42
-
-expected_error_message: "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"

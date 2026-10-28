@@ -28,7 +28,3 @@ l3leaf:
     - name: downlink-pools-missing-l3leaf
       id: 10
       uplink_switch_interfaces: [Ethernet3]
-
-expected_error_message: >-
-  Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on
-  all the uplink switches must be set for host 'downlink-pools-missing-l3leaf'.

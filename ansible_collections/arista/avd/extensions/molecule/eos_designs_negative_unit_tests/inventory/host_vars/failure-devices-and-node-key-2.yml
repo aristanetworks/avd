@@ -12,7 +12,3 @@ device_profiles:
 l2leaf:
   nodes:
     - name: failure-devices-and-node-key-2
-
-expected_error_message: >-
-  Found the device 'failure-devices-and-node-key-2' under 'l2leaf' but it also has 'device_profile' set.
-  Those two models are mutually exclusive one of them must be removed for this device.

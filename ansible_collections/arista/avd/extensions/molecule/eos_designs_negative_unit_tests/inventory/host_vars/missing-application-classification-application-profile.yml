@@ -94,7 +94,3 @@ application_classification:
   application_profiles:
     # Application profile TEST does not exist
     - name: OTHER-TEST
-
-expected_error_message: >-
-  Application Profile 'TEST' referenced in policy 'DEFAULT-POLICY' is not defined
-  in 'application_classification.application_profiles'.

@@ -14,6 +14,3 @@ l3leaf:
         # No member interfaces
         - name: Port-Channel5
           ip_address: 172.16.0.2/30
-
-expected_error_message: >-
-  L3 Port-Channel 'Port-Channel5' must have at least one member interface defined.

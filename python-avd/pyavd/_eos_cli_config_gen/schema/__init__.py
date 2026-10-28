@@ -43266,7 +43266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"port": {"type": int}, "tls_ssl_profile": {"type": str}}
             port: int | None
-            """TCP Port."""
+            """UDP port used for RADIUS dynamic authorization requests."""
             tls_ssl_profile: str | None
             """Name of TLS profile."""
 
@@ -43280,7 +43280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        port: TCP Port.
+                        port: UDP port used for RADIUS dynamic authorization requests.
                         tls_ssl_profile: Name of TLS profile.
 
                     """
