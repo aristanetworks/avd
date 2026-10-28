@@ -225,8 +225,6 @@ molecule converge -s ansible_only -- -vvv
 
 The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
 
-The [`eos_designs_role` integration target](e2e-test/using-the-tool.md#ansible-role-integration-coverage) exercises both configuration-generation roles, including output files, documentation, cleanup, and idempotence. It also runs with the lowest direct Python dependencies in CI.
-
 The `eos_designs_facts` and `eos_designs_structured_config` integration targets exercise the Ansible action plugins, including failed results. CI runs these targets against stable Ansible releases and the Ansible `milestone` branch. Exhaustive negative design cases run directly through PyAVD in E2E tests, while action-plugin unit tests cover exception propagation and conversion to Ansible failures.
 
 Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
@@ -247,6 +245,21 @@ make unit-tests
 # Run integration test cases using ansible-test with docker.
 make integration-tests ANSIBLE_TEST_MODE=docker
 ```
+
+### Role integration tests
+
+The `eos_designs_role` integration target runs `eos_designs` and `eos_cli_config_gen` on a two-device fabric. It checks cross-device topology, generated configuration and documentation, and temporary-file cleanup, then repeats both roles to verify idempotence. The larger `eos_designs_unit_tests` inventory runs separately through [PyAVD E2E](e2e-test/using-the-tool.md#run-selected-projects).
+
+Run the role integration target from the collection directory:
+
+```shell
+cd ansible_collections/arista/avd
+ansible-test integration eos_designs_role --requirements -vv
+```
+
+Role dependencies must be installed in `~/.ansible/collections`; CI restores them from the shared collection cache. CI runs the target across supported Ansible versions and the `milestone` branch.
+
+The minimum-requirements CI job runs the same target with Python 3.10, Ansible 2.16.0, and PyAVD's lowest resolvable direct dependency versions. It installs the built PyAVD wheel and runs without `--requirements` so `ansible-test` does not upgrade the prepared environment. Minimum versions come from `python-avd/pyproject.toml`; the integration target does not need a separate minimum-requirements file.
 
 ## Tox
 
