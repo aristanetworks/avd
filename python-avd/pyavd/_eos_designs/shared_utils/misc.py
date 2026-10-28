@@ -197,7 +197,7 @@ class MiscMixin(Protocol):
         """
         if name not in self.inputs.ipv4_acls:
             msg = f"ipv4_acls[name={name}]"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         org_ipv4_acl = self.inputs.ipv4_acls[name]
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv4_acl = org_ipv4_acl._deepcopy()

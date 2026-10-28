@@ -289,9 +289,8 @@ class SnmpServerMixin(Protocol):
             if vrf.enable is None:
                 continue
 
-            context = f"snmp_settings.vrfs[name={vrf.name}]"
-            vrf_name = self.shared_utils.get_vrf(vrf.name, context=context)
-            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context)
+            vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
+            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, f"snmp_settings.vrfs[name={vrf.name}]")
 
             vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
