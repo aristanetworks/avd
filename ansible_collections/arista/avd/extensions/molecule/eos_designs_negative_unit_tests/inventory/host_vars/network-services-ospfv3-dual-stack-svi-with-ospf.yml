@@ -1,0 +1,30 @@
+---
+# OSPFv2 on the SVI does not opt out of the OSPFv3 IPv4 address family.
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-services-ospfv3-dual-stack-svi-with-ospf
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        ospf:
+          enabled: true
+        svis:
+          - id: 110
+            name: DUAL_STACK
+            vxlan: false
+            ip_address: 10.1.110.1/24
+            ipv6_address: 2001:db8:110::1/64
+            ospf:
+              enabled: true
+            ospfv3:
+              enabled: true

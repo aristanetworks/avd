@@ -6737,6 +6737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "new_bgp_peer_group_cli_order": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6826,6 +6827,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_bgp_peer_group_cli_order: bool
+        """
+        Available from AVD 6.5.0.
+        When `true`, renders BGP peer groups globally and under address families
+        in case-sensitive natural order, matching EOS CLI ordering.
+        When `false` (default), preserves the
+        legacy case-insensitive natural order for BGP peer groups globally and under address families.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6840,6 +6851,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                new_bgp_peer_group_cli_order: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6904,6 +6916,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    new_bgp_peer_group_cli_order:
+                       Available from AVD 6.5.0.
+                       When `true`, renders BGP peer groups globally and under address families
+                       in case-sensitive natural order, matching EOS CLI ordering.
+                       When `false` (default), preserves the
+                       legacy case-insensitive natural order for BGP peer groups globally and under address families.
 
                 """
 
@@ -43248,7 +43266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"port": {"type": int}, "tls_ssl_profile": {"type": str}}
             port: int | None
-            """TCP Port."""
+            """UDP port used for RADIUS dynamic authorization requests."""
             tls_ssl_profile: str | None
             """Name of TLS profile."""
 
@@ -43262,7 +43280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        port: TCP Port.
+                        port: UDP port used for RADIUS dynamic authorization requests.
                         tls_ssl_profile: Name of TLS profile.
 
                     """
@@ -77926,13 +77944,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}}
+            class Qos(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"input": {"type": str}}
+                input: str | None
+                """Quality of Service Policy-map name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Qos.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            input: Quality of Service Policy-map name.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}, "qos": {"type": Qos}}
             pbr: Pbr
+            """Subclass of AvdModel."""
+            qos: Qos
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined) -> None:
+                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined, qos: Qos | UndefinedType = Undefined) -> None:
                     """
                     ServicePolicy.
 
@@ -77941,6 +77982,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         pbr: Subclass of AvdModel.
+                        qos: Subclass of AvdModel.
 
                     """
 

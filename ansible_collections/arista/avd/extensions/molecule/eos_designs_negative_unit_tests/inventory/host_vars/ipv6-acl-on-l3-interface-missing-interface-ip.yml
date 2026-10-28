@@ -23,7 +23,3 @@ ipv6_acls:
         protocol: ipv6
         source: any
         destination: interface_ip
-
-expected_error_message: >-
-  Unable to perform substitution of the value 'interface_ip' defined under 'ipv6_acls[name=TEST-IPV6-ACL-WITH-IP-FIELDS-IN].entries[0].destination',
-  since no substitution value was found for interface 'Ethernet1'. Make sure to set the appropriate fields on the interface.

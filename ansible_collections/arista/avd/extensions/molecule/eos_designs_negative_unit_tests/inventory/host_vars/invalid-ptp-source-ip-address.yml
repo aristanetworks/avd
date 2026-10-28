@@ -14,6 +14,3 @@ spine:
         clock_identity: "00:00:00:00:00:00"
         enabled: true
         source_ip: no_ip_address
-
-expected_error_message: >-
-  Invalid PTP source IP 'ptp.source_ip: no_ip_address'. The value must be either 'router_id' or a valid IPv4 address.

@@ -1,0 +1,47 @@
+---
+# Testing 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families' with numbered IPv6 underlay,
+# a dedicated MLAG peer group for VRFs and IPv6-only VRFs.
+# The dedicated peer group activates the IPv6 address family instead of the IPv4 address family.
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+avd_design_future:
+  fix_match_ipv6_prefix_list_on_mlag_route_map: true
+  fix_mlag_ibgp_peering_ipv6_pool: true
+  fix_mlag_ibgp_peering_vrfs_address_families: true
+
+bgp_peer_groups:
+  mlag_ipv4_vrfs_peer:
+    name: MLAG-IPv6-VRFS-PEER
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    router_id_pool: 10.10.70.0/24
+    loopback_ipv6_pool: 2001:DB8:70::/48
+    vtep_loopback_ipv6_pool: 2001:DB8:71::/48
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.10.72.0/24
+    mlag_peer_l3_ipv6_pool: 2001:DB8:73::/48
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: MLAG_VRFS_IPV6_NUMBERED_DEDICATED
+      bgp_as: 65170
+      nodes:
+        - name: mlag-vrfs-ipv6-numbered-dedicated-l3leaf1a
+          id: 1
+          mgmt_ip: 192.168.201.124/24
+        - name: mlag-vrfs-ipv6-numbered-dedicated-l3leaf1b
+          id: 2
+          mgmt_ip: 192.168.201.125/24
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            ipv6_address_virtuals: [2001:DB8:11::1/64]

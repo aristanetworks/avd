@@ -57,14 +57,6 @@ class AristaAvdMissingVariableError(AristaAvdError):
         self._host_context_added = bool(host)
 
 
-class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
-        if path is not None:
-            self.path = json_path_to_string(path)
-            message = f"'Validation Error: {self.path}': {message}"
-        super().__init__(message)
-
-
 class AvdValidationError(AristaAvdError):
     path: str
     violation: str
