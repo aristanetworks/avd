@@ -171,7 +171,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
     }
 
     pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
-    if any(pathfinder_location):
+    if any(pathfinder_location.values()):
         if is_pathfinder_location_supported(studio_schema):
             pathfinder_metadata["inputs"]["value"].update(pathfinder_location)
         else:
