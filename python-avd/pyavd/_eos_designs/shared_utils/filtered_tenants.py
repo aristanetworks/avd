@@ -288,7 +288,9 @@ class FilteredTenantsMixin(Protocol):
                             for rp_ip in rp_entry.rps:
                                 rp_address: dict[str, Any] = {"address": rp_ip}
                                 if rp_entry.groups:
-                                    if rp_entry.access_list_name:
+                                    if rp_entry.ipv4_standard_acl:
+                                        rp_address["access_lists"] = [rp_entry.ipv4_standard_acl]
+                                    elif rp_entry.access_list_name:
                                         rp_address["access_lists"] = [rp_entry.access_list_name]
                                     else:
                                         rp_address["groups"] = rp_entry.groups._as_list()

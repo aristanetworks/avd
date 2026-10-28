@@ -936,8 +936,8 @@ router_pim_sparse_mode:
         groups:
         - 232.0.112.0/21
       - address: 10.1.50.150
-        groups:
-        - 232.0.136.0/21
+        access_lists:
+        - RPS_ACL_VRF_Tenant_E_2
 service_routing_protocols_model: multi-agent
 sflow:
   vrfs:
