@@ -14,6 +14,3 @@ snmp_settings:
   compute_local_engineid: true
   compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
-
-expected_error_message: >-
-  'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set.

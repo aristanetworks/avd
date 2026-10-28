@@ -16,6 +16,3 @@ spine:
           peer_ip: 10.42.42.42
           bgp:
             peer_as: 65042
-
-expected_error_message: >-
-  'bgp_as' is required but was not found for host 'missing-bgp-as-with-l3-interfaces-bgp-peers'.

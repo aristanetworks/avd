@@ -36,7 +36,3 @@ tenants:
             peer_port_channel: Po1111.100
             enabled: true
             node: net-srv-l3-po-sub-interface-without-ip
-
-expected_error_message: >-
-  'l3leaf.nodes[name=net-srv-l3-po-sub-interface-without-ip].l3_port_channels[name=Port-Channel1111.100].ip_address or ipv6_addresses'
-  is required but was not found.

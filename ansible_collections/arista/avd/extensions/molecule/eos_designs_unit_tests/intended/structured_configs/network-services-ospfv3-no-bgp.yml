@@ -1,0 +1,96 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospfv3-no-bgp
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+  ospf_area: 0.0.0.0
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_ospf:
+  process_ids:
+  - id: 100
+    passive_interface_default: true
+    router_id: 192.168.255.1
+    bfd_enable: false
+    max_lsa: 12000
+    redistribute:
+      connected:
+        enabled: true
+    graceful_restart:
+      enabled: true
+router_ospfv3:
+  vrfs:
+  - name: VRF_A
+    router_id: 192.168.255.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        connected:
+          enabled: true
+      enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan110
+  description: TRANSIT
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:110::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan111
+  description: LAN
+  shutdown: false
+  vrf: VRF_A
+  ipv6_addresses:
+  - 2001:db8:111::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 111
+  name: LAN
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_A
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A

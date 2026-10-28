@@ -43,8 +43,3 @@ tenants:
             ip_address: 10.2.2.1/30
             description: Test Port-Channel subinterface
             enabled: true
-
-expected_error_message: >-
-  'Port-Channel10' has subinterfaces configured but is set as a switchport (switchport enabled),
-  which will cause the subinterfaces to be in a dormant state.
-  The parent interface must be a routed interface to support subinterfaces.

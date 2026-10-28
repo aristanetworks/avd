@@ -1,0 +1,29 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: net-srv-vrf-loopback-ospf-missing-ipv4
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: LOOPBACKS
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        ospf:
+          enabled: true
+          process_id: 100
+        loopbacks:
+          - node: net-srv-vrf-loopback-ospf-missing-ipv4
+            loopback: 101
+            ipv6_addresses:
+              - '2001:db8:1::1/128'
+            ospf:
+              enabled: true

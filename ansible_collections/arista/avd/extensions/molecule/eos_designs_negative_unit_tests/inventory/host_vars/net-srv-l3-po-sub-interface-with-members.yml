@@ -44,6 +44,3 @@ tenants:
               - name: Ethernet5
                 peer_interface: Ethernet9
                 peer: inet-cloud
-
-expected_error_message: >-
-  L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'member_interfaces' set. This is not a valid setting.

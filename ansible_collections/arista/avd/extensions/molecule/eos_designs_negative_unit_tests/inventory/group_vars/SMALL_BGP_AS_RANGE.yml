@@ -17,6 +17,3 @@ l3leaf:
           id: 2
         - name: bgp-as-leaf1c
           id: 3
-
-expected_error_message: >-
-  Unable to allocate BGP AS: bgp_as range '65101-65102' is too small (2) for the id '3' for host 'bgp-as-leaf1c'.

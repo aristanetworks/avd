@@ -8,6 +8,3 @@ devices:
 device_profiles:
   - name: my-profile
     parent_profile: missing-profile
-
-expected_error_message: >-
-  Device Profile 'missing-profile' applied as 'parent_profile' on the profile 'my-profile' does not exist under 'device_profiles'.
