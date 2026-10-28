@@ -900,9 +900,10 @@ def build_validate_and_render_for_one_device(
         avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
 
         # Phase 1: Build structured config
-        with warnings.catch_warnings(record=True) as captured_warnings:
-            warnings.simplefilter("always", AristaAvdWarning)
-            try:
+        captured_warnings = []
+        try:
+            with warnings.catch_warnings(record=True) as captured_warnings:
+                warnings.simplefilter("always", AristaAvdWarning)
                 eos_config = get_structured_config(
                     hostname=device,
                     inputs=device_avd_validated_inputs,
@@ -911,16 +912,28 @@ def build_validate_and_render_for_one_device(
                     templar=get_avd_templar(config),
                     digital_twin=config.digital_twin,
                 )._as_dict()
-            except Exception as e:
-                dump_exception(e, config, "structured_config", device)
-                return False
-            finally:
-                avd_warnings = [warning for warning in captured_warnings if warning.category is AristaAvdWarning]
-                if avd_warnings:
-                    dump_warnings(avd_warnings, config, "structured_config", device)
+        except Exception as e:
+            dump_exception(e, config, "structured_config", device)
+            return False
+        finally:
+            avd_warnings = []
+            for warning in captured_warnings:
+                if issubclass(warning.category, AristaAvdWarning):
+                    avd_warnings.append(warning)
+                else:
+                    warnings.showwarning(
+                        warning.message,
+                        warning.category,
+                        warning.filename,
+                        warning.lineno,
+                        file=warning.file,
+                        line=warning.line,
+                    )
 
-                # Free device_avd_validated_inputs - no longer needed after structured config is built
-                del device_avd_validated_inputs
+            if avd_warnings:
+                dump_warnings(avd_warnings, config, "structured_config", device)
+            # Free device_avd_validated_inputs - no longer needed after structured config is built
+            del device_avd_validated_inputs
 
         # Phase 2: Serialize structured config
         # TODO: Honor the config.structured_config_suffix setting

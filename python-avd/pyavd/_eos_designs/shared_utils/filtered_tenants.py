@@ -398,12 +398,10 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
-            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
-            # Handle svi_profile inheritance
-            merged_svi = self.get_merged_svi_config(svi)
-            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
+            # Handle svi_profile inheritance
+            merged_svi = self.get_merged_svi_config(svi)
 
             merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 

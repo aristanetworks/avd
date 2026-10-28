@@ -383,7 +383,7 @@ class UtilsMixin(Protocol):
             delattr(resolved_profile, "parent_profile")
         return resolved_profile
 
-    def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, parent_profile: str, context: str) -> None:
+    def raise_warning_for_grandparent_profile(self: SharedUtilsProtocol, context: str) -> None:
         """
         Raise warning when parent_profile is mentioned for a parent profile but 'avd_design_future.allow_recursive_profile_inheritance' is not set.
 
