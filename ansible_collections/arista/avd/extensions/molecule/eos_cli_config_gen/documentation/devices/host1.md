@@ -5267,8 +5267,8 @@ interface Dps1
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Ethernet1 | True | True | 10.10.10.10 | 144778 |
-| Ethernet2 | False | - | - | - |
+| Loopback91 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Loopback92 | False | - | - | 0.0.9.13 |
 
 ##### ISIS
 
@@ -5429,10 +5429,6 @@ interface Ethernet1
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
-   ospfv3 passive-interface
-   ospfv3 network point-to-point
-   ospfv3 ipv4 area 10.10.10.10
-   ospfv3 ipv6 area 144778
    switchport port-security
    switchport port-security mac-address maximum disabled
    service-policy type qos input pmap_test1
@@ -5476,7 +5472,6 @@ interface Ethernet2
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
-   no ospfv3 passive-interface
    switchport port-security violation protect log
    switchport port-security mac-address maximum 100
    priority-flow-control on
@@ -6594,6 +6589,18 @@ interface Ethernet90
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:90::/64 200 100 no-autoconfig
+!
+interface Loopback91
+   description OSPFv3 passive + AF area coverage
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
+!
+interface Loopback92
+   description OSPFv3 no passive coverage
+   no ospfv3 passive-interface
+   ospfv3 ipv6 area 0.0.9.13
 ```
 
 ### Port-Channel Interfaces
@@ -7686,6 +7693,8 @@ interface Port-Channel902
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Loopback0 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Loopback1 | False | - | - | 0.0.9.13 |
 | Loopback901 | True | True | 0.0.9.11 | 0.0.9.12 |
 | Loopback902 | False | - | - | 0.0.9.13 |
 
@@ -7705,6 +7714,10 @@ interface Loopback0
    description EVPN_Overlay_Peering
    ip address 192.168.255.3/32
    mpls ldp interface
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
    comment
    Comment created from eos_cli under loopback_interfaces.Loopback0
    EOF
@@ -7714,6 +7727,8 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
    no mpls ldp interface
+   no ospfv3 passive-interface
+   ospfv3 ipv6 area 0.0.9.13
 !
 interface Loopback2
    shutdown

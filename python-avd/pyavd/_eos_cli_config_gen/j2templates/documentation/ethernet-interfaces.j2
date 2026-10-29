@@ -641,15 +641,6 @@
 | {{ ethernet_interface.name }} | {{ passive_intf }} | {{ ethernet_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ ethernet_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ ethernet_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
-{# ISIS #}
-{%     set vlan_interface_isis = namespace() %}
-{%     set vlan_interface_isis.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%         if vlan_interface.isis_enable is defined %}
-{%             set vlan_interface_isis.configured = true %}
-{%             break %}
-{%         endif %}
-{%     endfor %}
 {%     if ethernet_interfaces_isis | length > 0 or port_channel_interfaces_isis | length > 0 %}
 
 ##### ISIS

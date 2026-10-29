@@ -157,13 +157,6 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    ospfv3:
-      passive_interface: true
-      network_point_to_point: true
-      ipv4:
-        area: 10.10.10.10
-      ipv6:
-        area: 144778
 
   - name: Ethernet2
     ip_address: 10.1.255.3/24
@@ -236,8 +229,6 @@ ethernet_interfaces:
       ipv4: true
       ipv6: true
     loop_protection: true
-    ospfv3:
-      no_passive_interface: true
 
   - name: Ethernet3
     metadata:
@@ -2340,3 +2331,20 @@ ethernet_interfaces:
           valid_lifetime: 200
           preferred_lifetime: 100
           no_autoconfig_flag: true
+   # OSPFv3 coverage
+  - name: Loopback91
+    description: OSPFv3 passive + AF area coverage
+    ospfv3:
+      passive_interface: true
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.11"
+      ipv6:
+        area: "0.0.9.12"
+
+  - name: Loopback92
+    description: OSPFv3 no passive coverage
+    ospfv3:
+      no_passive_interface: true
+      ipv6:
+        area: "0.0.9.13"
