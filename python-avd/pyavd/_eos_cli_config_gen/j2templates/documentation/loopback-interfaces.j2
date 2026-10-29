@@ -44,6 +44,24 @@
 {%         set description = loopback_interface.description | arista.avd.default('-') %}
 | {{ loopback_interface.name }} | {{ description }} | {{ ip }} | {{ ipv6_address }} |
 {%     endfor %}
+{# OSPF #}
+{%     set ospfv3_loopback_interfaces = [] %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
+{%         if loopback_interface.ospfv3 is arista.avd.defined %}
+{%             do ospfv3_loopback_interfaces.append(loopback_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ospfv3_loopback_interfaces %}
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+{%         for loopback_interface in ospfv3_loopback_interfaces %}
+{%             set passive_intf = True if loopback_interface.ospfv3.passive_interface is arista.avd.defined(true) else (False if loopback_interface.ospfv3.no_passive_interface is arista.avd.defined(true) else "-") %}
+| {{ loopback_interface.name }} | {{ passive_intf }} | {{ loopback_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
 {%     set loopback_interface_isis = namespace() %}
 {%     set loopback_interface_isis.configured = false %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}

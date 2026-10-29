@@ -61,3 +61,21 @@ loopback_interfaces:
     node_segment:
       ipv4_index: 34
       ipv6_index: 23
+
+  # OSPFv3 coverage
+  - name: Loopback901
+    description: OSPFv3 passive + AF area coverage
+    ospfv3:
+      passive_interface: true
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.11"
+      ipv6:
+        area: "0.0.9.12"
+
+  - name: Loopback902
+    description: OSPFv3 no passive coverage
+    ospfv3:
+      no_passive_interface: true
+      ipv6:
+        area: "0.0.9.13"

@@ -440,6 +440,24 @@
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
+{# OSPF #}
+{%     set ospfv3_port_channel_interfaces = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%         if port_channel_interface.ospfv3 is arista.avd.defined %}
+{%             do ospfv3_port_channel_interfaces.append(port_channel_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ospfv3_port_channel_interfaces %}
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+{%         for port_channel_interface in ospfv3_port_channel_interfaces %}
+{%             set passive_intf = True if port_channel_interface.ospfv3.passive_interface is arista.avd.defined(true) else (False if port_channel_interface.ospfv3.no_passive_interface is arista.avd.defined(true) else "-") %}
+| {{ port_channel_interface.name }} | {{ passive_intf }} | {{ port_channel_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ port_channel_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ port_channel_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
 {# ISIS #}
 {%     set port_channel_interfaces_isis = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}

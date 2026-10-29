@@ -321,6 +321,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "port_channel_interfaces.[].ospf_message_digest_keys.[].hash_algorithm") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "port_channel_interfaces.[].ospf_message_digest_keys.[].key") | String |  |  |  | Encrypted password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "port_channel_interfaces.[].ospf_message_digest_keys.[].key_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> | Authentication key type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "port_channel_interfaces.[].ospfv3") | Dictionary |  |  |  | OSPFv3 configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].ospfv3.ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "port_channel_interfaces.[].ospfv3.ipv4.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].ospfv3.ipv6") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "port_channel_interfaces.[].ospfv3.ipv6.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "port_channel_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interface</samp>](## "port_channel_interfaces.[].ospfv3.no_passive_interface") | Boolean |  |  |  | Disable passive interface mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "port_channel_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker</samp>](## "port_channel_interfaces.[].flow_tracker") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled</samp>](## "port_channel_interfaces.[].flow_tracker.sampled") | String |  |  |  | Sampled flow tracker name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "port_channel_interfaces.[].flow_tracker.hardware") | String |  |  |  | Hardware flow tracker name. |
@@ -1188,6 +1196,24 @@
 
             # Authentication key type.
             key_type: <str; "7" | "8a"; default="7">
+
+        # OSPFv3 configuration.
+        ospfv3:
+          ipv4:
+
+            # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            area: <str; required>
+          ipv6:
+
+            # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+            area: <str; required>
+
+          # Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+          passive_interface: <bool>
+
+          # Disable passive interface mode.
+          no_passive_interface: <bool>
+          network_point_to_point: <bool>
         flow_tracker:
 
           # Sampled flow tracker name.

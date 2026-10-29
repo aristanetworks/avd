@@ -50,6 +50,22 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ loopback_interface.ospf_area }}
 {%     endif %}
+{%     if loopback_interface.ospfv3 is arista.avd.defined %}
+{%         if loopback_interface.ospfv3.passive_interface is arista.avd.defined(true) %}
+   ospfv3 passive-interface
+{%         elif loopback_interface.ospfv3.no_passive_interface is arista.avd.defined(true) %}
+   no ospfv3 passive-interface
+{%         endif %}
+{%         if loopback_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
+   ospfv3 network point-to-point
+{%         endif %}
+{%         if loopback_interface.ospfv3.ipv4 is arista.avd.defined %}
+   ospfv3 ipv4 area {{ loopback_interface.ospfv3.ipv4.area }}
+{%         endif %}
+{%         if loopback_interface.ospfv3.ipv6 is arista.avd.defined %}
+   ospfv3 ipv6 area {{ loopback_interface.ospfv3.ipv6.area }}
+{%         endif %}
+{%     endif %}
 {%     if loopback_interface.node_segment.ipv4_index is arista.avd.defined %}
    node-segment ipv4 index {{ loopback_interface.node_segment.ipv4_index }}
 {%     endif %}

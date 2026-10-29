@@ -56,6 +56,10 @@ keys:
           type: bool
         ospf_area:
           type: str
+        ospfv3:
+          type: dict
+          description: OSPFv3 configuration.
+          $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ospfv3"
         mpls:
           type: dict
           keys:
