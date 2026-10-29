@@ -202,7 +202,7 @@ class CVClientProtocol(
         # Internal Requests logic stops processing env variables proxy settings when
         # destination matches the provided no_proxy value. Empty proxy settings
         # prevent Requests from selecting environment proxy values after redirects.
-        return {"http": "", "https": "", "all": "", "no_proxy": self._servers[0]}
+        return {"http": "", "https": "", "all": "", "no_proxy": ",".join(self._servers)}
 
     def _set_token(self) -> None:
         """

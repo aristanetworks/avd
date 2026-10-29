@@ -19,6 +19,7 @@ from pyavd._cv.client.exceptions import CVClientException
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 PROXY_ENV_VARS = ("http_proxy", "HTTP_PROXY", "https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY", "no_proxy", "NO_PROXY")
+CVP_CLUSTER_SERVERS = ["cvp.cluster.local", "cvp1a.cluster.local", "cvp1b.cluster.local", "cvp1c.cluster.local"]
 PROXY_ENV_SETTINGS = (
     pytest.param("http_proxy", "http://http-connect-proxy.local:3128", id="HTTP_PROXY_LOWER"),
     pytest.param("HTTP_PROXY", "http://http-connect-proxy.local:3128", id="HTTP_PROXY_UPPER"),
@@ -47,9 +48,13 @@ def _set_proxy_environment_variable(monkeypatch: pytest.MonkeyPatch, env_var: st
 
 
 def _get_proxy_managers(url: str, proxies: dict[str, str], verify: bool | str) -> dict[str, Any]:
-    """Return proxy managers selected by Requests' HTTP adapter without connecting to the URL."""
+    """Return proxy manager selected without a connection across supported Requests versions."""
     adapter = HTTPAdapter()
-    adapter.get_connection_with_tls_context(Request("GET", url).prepare(), verify=verify, proxies=proxies)
+    # Requests added get_connection_with_tls_context in 2.32.2.
+    if hasattr(adapter, "get_connection_with_tls_context"):
+        adapter.get_connection_with_tls_context(Request("GET", url).prepare(), verify=verify, proxies=proxies)
+    else:
+        adapter.get_connection(url, proxies=proxies)
     return adapter.proxy_manager
 
 
@@ -72,6 +77,27 @@ def test_cv_client_ignores_proxy_environment_variables(env_var: str, value: str,
         "no_proxy": "www.arista.io",
     }
     assert _get_proxy_managers("https://www.arista.io", proxies, cv_client._tls.requests_verify) == {}
+
+
+@pytest.mark.parametrize("cv_server", CVP_CLUSTER_SERVERS)
+def test_cv_client_ignores_proxy_environment_variables_for_all_cluster_servers(cv_server: str, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that every configured CloudVision server bypasses proxy environment lookup."""
+    _unset_proxy_environment_variables(monkeypatch)
+    _set_proxy_environment_variable(monkeypatch, "https_proxy", "http://http-connect-proxy.local:3128")
+    cv_client = CVClient(servers=CVP_CLUSTER_SERVERS, token="secret_access_token")  # noqa: S106
+
+    with patch("requests.utils.getproxies") as getproxies:
+        settings = Session().merge_environment_settings(f"https://{cv_server}", cv_client._requests_proxies, None, cv_client._tls.requests_verify, None)
+
+    getproxies.assert_not_called()
+    proxies = settings["proxies"]
+    assert proxies == {
+        "http": "",
+        "https": "",
+        "all": "",
+        "no_proxy": ",".join(CVP_CLUSTER_SERVERS),
+    }
+    assert _get_proxy_managers(f"https://{cv_server}", proxies, cv_client._tls.requests_verify) == {}
 
 
 @pytest.mark.parametrize(("env_var", "value"), PROXY_ENV_SETTINGS + NO_PROXY_ENV_SETTINGS)
