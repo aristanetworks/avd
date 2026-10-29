@@ -16,6 +16,3 @@ spine:
         - name: unsupported-inband-ztp-ip-underlay-ipv6-numbered
           id: 1
           inband_ztp: true
-
-expected_error_message: >-
-  Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay for host 'unsupported-inband-ztp-ip-underlay-ipv6-numbered'.

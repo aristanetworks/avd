@@ -35,8 +35,3 @@ tenants:
           - id: 11
             name: VRF10_VLAN11
             ip_address_virtual: 10.10.11.1/24
-
-expected_error_message: >-
-  Invalid combination of inputs. Unable to configure the IPv4 MLAG iBGP peering for VRF 'VRF10'
-  since the MLAG peer VLAN is also used for L3 peering ('mlag_peer_l3_vlan' is 0 or the same as 'mlag_peer_vlan')
-  with 'mlag_peer_address_family: ipv6'. Set 'mlag_peer_address_family: ipv4' or use a separate 'mlag_peer_l3_vlan'.

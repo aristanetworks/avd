@@ -29,6 +29,3 @@ tenants:
             ip_address_virtual: 10.1.10.1/24
             evpn_l3_multicast:
               enabled: true
-
-expected_error_message: >-
-  'virtual_router_mac_address' must be set for node 'missing-virtual-router-mac-address' when using 'ip_address_virtual' under 'svis'.

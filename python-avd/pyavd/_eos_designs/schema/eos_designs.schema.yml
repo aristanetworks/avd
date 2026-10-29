@@ -2721,6 +2721,14 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          port:
+            type: int
+            min: 0
+            max: 65535
+            description: 'UDP port used for RADIUS dynamic authorization requests.
+
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is
+              `true`.'
           additional_groups:
             type: list
             description: 'List of additional RADIUS server groups for dynamic authorization
@@ -7907,8 +7915,6 @@ keys:
       network_services:
         l3: true
   ntp_settings:
-    documentation_options:
-      table: time-configuration
     type: dict
     description: NTP settings
     keys:
@@ -8018,6 +8024,26 @@ keys:
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
+  ntp_settings_profiles:
+    type: list
+    primary_key: profile
+    description: NTP settings
+    items:
+      type: dict
+      $ref: eos_designs#/keys/ntp_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: NTP settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   only_local_vlan_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -11010,7 +11036,7 @@ keys:
       remove_in_version: 6.0.0
   timezone:
     documentation_options:
-      table: time-configuration
+      table: ntp-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
@@ -14589,7 +14615,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -14605,6 +14631,26 @@ $defs:
               '
             type: str
             format: ipv6_cidr
+          inband_mgmt_ipv6_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IPv6 address within the subnet.
+
+              The assigned IPv6 address will be computed by adding this offset to
+              the device ID.
+
+              Choose an IPv6 subnet large enough to contain all calculated addresses.
+
+              The highest L2 leaf address is:
+
+              <subnet> + 3 + <highest l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+
+              If the calculated address falls outside the subnet, address allocation
+
+              fails with "address out of range".'
           inband_mgmt_ipv6_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -15263,6 +15309,13 @@ $defs:
               The profile must be defined under `dns_settings_profiles`.
 
               The selected profile settings will be merged over the general `dns_settings`.'
+          ntp_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the NTP settings profile to apply to this device.
+
+              The profile must be defined under `ntp_settings_profiles`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -17451,13 +17504,18 @@ $defs:
         description: 'Name of the IPv4 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_in`. Setting both raises an error.'
         type: str
       ipv4_acl_out:
         description: 'Name of the IPv4 Access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_out`. Setting both raises an
+          error.'
         type: str
       ipv6_acl_in:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -17482,6 +17540,25 @@ $defs:
 
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
           and will be removed in AVD 7.0.0.'
+        type: str
+      ipv4_standard_acl_in:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          ingress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field
+          substitution for "interface_ip" is required, setting both raises an error.'
+        type: str
+      ipv4_standard_acl_out:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          egress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when
+          field substitution for "interface_ip" is required, setting both raises an
+          error.'
         type: str
       ip_helpers:
         type: list

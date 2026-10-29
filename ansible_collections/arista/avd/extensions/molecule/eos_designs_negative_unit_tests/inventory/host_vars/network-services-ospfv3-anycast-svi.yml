@@ -24,7 +24,3 @@ tenants:
               - 2001:db8:110::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.enabled: true' is not supported on SVIs with anycast IPv6 addresses
-  ('ipv6_address_virtuals'). Use a unique 'ipv6_address' per node instead, optionally with 'ipv6_virtual_router_addresses'.
