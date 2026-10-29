@@ -7379,10 +7379,14 @@ class EosDesigns(EosDesignsRootModel):
             """Short name for the cluster. Required here, but only used when configuring multiple clusters."""
             servers: Servers
             """
-            CloudVision servers that makes up one cluster.
+            CloudVision servers that make up one cluster.
+            May be omitted when inherited from a parent
+            CloudVision settings profile or global `cv_settings`.
+            After resolving profile and global settings,
+            each on-prem cluster must have at least one server.
 
-            Subclass of AvdIndexedList with `ServersItem` items.
-            Primary key is `name` (`str`).
+            Subclass of AvdIndexedList with `ServersItem`
+            items. Primary key is `name` (`str`).
             """
             vrf: str
             """
@@ -7440,10 +7444,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Short name for the cluster. Required here, but only used when configuring multiple clusters.
                         servers:
-                           CloudVision servers that makes up one cluster.
+                           CloudVision servers that make up one cluster.
+                           May be omitted when inherited from a parent
+                           CloudVision settings profile or global `cv_settings`.
+                           After resolving profile and global settings,
+                           each on-prem cluster must have at least one server.
 
-                           Subclass of AvdIndexedList with `ServersItem` items.
-                           Primary key is `name` (`str`).
+                           Subclass of AvdIndexedList with `ServersItem`
+                           items. Primary key is `name` (`str`).
                         vrf:
                            The VRF used to connect to CloudVision.
                            The value will be interpreted according to these rules:
@@ -7933,7 +7941,18 @@ class EosDesigns(EosDesignsRootModel):
             """Short name for the cluster. Required here, but only used when configuring multiple clusters."""
             servers: Servers
             """
-            CloudVision servers that makes up one cluster.
+            CloudVision servers that make up one cluster.
+            May be omitted when inherited from a parent
+            CloudVision settings profile or global `cv_settings`.
+            After resolving profile and global settings,
+            each on-prem cluster must have at least one server.
+
+            Note: Servers from this profile are merged with
+            servers for the same cluster from the parent profile and global
+            `cv_settings`, so the combined list
+            must not exceed three servers.
+            If a server has the same `name` as an inherited server, values from
+            this profile override the inherited values.
 
             Subclass of AvdIndexedList with `ServersItem` items.
             Primary key is `name` (`str`).
@@ -7994,7 +8013,18 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Short name for the cluster. Required here, but only used when configuring multiple clusters.
                         servers:
-                           CloudVision servers that makes up one cluster.
+                           CloudVision servers that make up one cluster.
+                           May be omitted when inherited from a parent
+                           CloudVision settings profile or global `cv_settings`.
+                           After resolving profile and global settings,
+                           each on-prem cluster must have at least one server.
+
+                           Note: Servers from this profile are merged with
+                           servers for the same cluster from the parent profile and global
+                           `cv_settings`, so the combined list
+                           must not exceed three servers.
+                           If a server has the same `name` as an inherited server, values from
+                           this profile override the inherited values.
 
                            Subclass of AvdIndexedList with `ServersItem` items.
                            Primary key is `name` (`str`).
@@ -13452,16 +13482,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_settings_profile: str | None
         """
-        Name of the NTP settings profile to apply to this device.
-        The profile must be defined under
-        `ntp_settings_profiles`.
-        """
-        ntp_settings_profile: str | None
-        """
         Name of the CloudVision settings profile to apply to this device.
         The profile must be defined under
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
+        """
+        ntp_settings_profile: str | None
+        """
+        Name of the NTP settings profile to apply to this device.
+        The profile must be defined under
+        `ntp_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `ntp_settings`.
         """
 
         if TYPE_CHECKING:
@@ -14342,14 +14374,16 @@ class EosDesigns(EosDesignsRootModel):
                        The selected profile settings will be merged over the general
                        `dns_settings`.
                     cv_settings_profile:
-                       Name of the NTP settings profile to apply to this device.
-                       The profile must be defined under
-                       `ntp_settings_profiles`.
-                    ntp_settings_profile:
                        Name of the CloudVision settings profile to apply to this device.
                        The profile must be defined under
                        `cv_settings_profiles`.
                        The selected profile settings will be merged over the general `cv_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -19154,16 +19188,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_settings_profile: str | None
         """
-        Name of the NTP settings profile to apply to this device.
-        The profile must be defined under
-        `ntp_settings_profiles`.
-        """
-        ntp_settings_profile: str | None
-        """
         Name of the CloudVision settings profile to apply to this device.
         The profile must be defined under
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
+        """
+        ntp_settings_profile: str | None
+        """
+        Name of the NTP settings profile to apply to this device.
+        The profile must be defined under
+        `ntp_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `ntp_settings`.
         """
 
         if TYPE_CHECKING:
@@ -20052,14 +20088,16 @@ class EosDesigns(EosDesignsRootModel):
                        The selected profile settings will be merged over the general
                        `dns_settings`.
                     cv_settings_profile:
-                       Name of the NTP settings profile to apply to this device.
-                       The profile must be defined under
-                       `ntp_settings_profiles`.
-                    ntp_settings_profile:
                        Name of the CloudVision settings profile to apply to this device.
                        The profile must be defined under
                        `cv_settings_profiles`.
                        The selected profile settings will be merged over the general `cv_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -63429,16 +63467,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -64298,14 +64338,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -69111,16 +69153,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         cv_settings_profile: str | None
                         """
-                        Name of the NTP settings profile to apply to this device.
-                        The profile must be defined under
-                        `ntp_settings_profiles`.
-                        """
-                        ntp_settings_profile: str | None
-                        """
                         Name of the CloudVision settings profile to apply to this device.
                         The profile must be defined under
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
+                        """
+                        ntp_settings_profile: str | None
+                        """
+                        Name of the NTP settings profile to apply to this device.
+                        The profile must be defined under
+                        `ntp_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `ntp_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -69989,14 +70033,16 @@ class EosDesigns(EosDesignsRootModel):
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
                                     cv_settings_profile:
-                                       Name of the NTP settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `ntp_settings_profiles`.
-                                    ntp_settings_profile:
                                        Name of the CloudVision settings profile to apply to this device.
                                        The profile must be defined under
                                        `cv_settings_profiles`.
                                        The selected profile settings will be merged over the general `cv_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -74721,16 +74767,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -75601,14 +75649,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -80405,16 +80455,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -81283,14 +81335,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -102449,16 +102503,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -103318,14 +103374,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -108131,16 +108189,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         cv_settings_profile: str | None
                         """
-                        Name of the NTP settings profile to apply to this device.
-                        The profile must be defined under
-                        `ntp_settings_profiles`.
-                        """
-                        ntp_settings_profile: str | None
-                        """
                         Name of the CloudVision settings profile to apply to this device.
                         The profile must be defined under
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
+                        """
+                        ntp_settings_profile: str | None
+                        """
+                        Name of the NTP settings profile to apply to this device.
+                        The profile must be defined under
+                        `ntp_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `ntp_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -109009,14 +109069,16 @@ class EosDesigns(EosDesignsRootModel):
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
                                     cv_settings_profile:
-                                       Name of the NTP settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `ntp_settings_profiles`.
-                                    ntp_settings_profile:
                                        Name of the CloudVision settings profile to apply to this device.
                                        The profile must be defined under
                                        `cv_settings_profiles`.
                                        The selected profile settings will be merged over the general `cv_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -113741,16 +113803,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -114621,14 +114685,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -119425,16 +119491,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     cv_settings_profile: str | None
                     """
-                    Name of the NTP settings profile to apply to this device.
-                    The profile must be defined under
-                    `ntp_settings_profiles`.
-                    """
-                    ntp_settings_profile: str | None
-                    """
                     Name of the CloudVision settings profile to apply to this device.
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -120303,14 +120371,16 @@ class EosDesigns(EosDesignsRootModel):
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
                                 cv_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                ntp_settings_profile:
                                    Name of the CloudVision settings profile to apply to this device.
                                    The profile must be defined under
                                    `cv_settings_profiles`.
                                    The selected profile settings will be merged over the general `cv_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 

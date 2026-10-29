@@ -1,0 +1,13 @@
+---
+devices:
+  - name: cv-settings-profile-empty-servers
+    type: l2leaf
+    cv_settings_profile: empty_servers
+
+cv_settings_profiles:
+  - profile: empty_servers
+    onprem_clusters:
+      - name: onprem
+
+expected_error_message: >-
+  At least 1 server must be provided for on-prem CVP cluster onprem

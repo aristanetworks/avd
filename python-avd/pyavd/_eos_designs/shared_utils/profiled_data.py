@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.profiles import resolve_profile
 
 if TYPE_CHECKING:
@@ -64,6 +65,7 @@ class ProfiledDataMixin(Protocol):
             target_name="ntp_settings",
         )
 
+    @cached_property
     def cv_settings(self: SharedUtilsProtocol) -> EosDesigns.CvSettings:
         """
         CloudVision settings with the node's `cv_settings_profile` resolved and merged in.
@@ -73,9 +75,23 @@ class ProfiledDataMixin(Protocol):
         if not self.node_config.cv_settings_profile:
             return self.inputs.cv_settings
 
-        return resolve_profile(
+        cv_settings = resolve_profile(
             self.inputs.cv_settings,
             self.inputs.cv_settings_profiles,
             self.node_config.cv_settings_profile,
             target_name="cv_settings",
         )
+
+        if cv_settings.onprem_clusters:
+            # Enforce validation after _deepinherit
+            for cl in cv_settings.onprem_clusters:
+                servers = [server.name for server in cl.servers]
+
+                if not servers:
+                    msg = f"At least 1 server must be provided for on-prem CVP cluster {cl.name}"
+                    raise AristaAvdInvalidInputsError(msg)
+                if len(servers) > 3:
+                    msg = f"Max 3 servers allowed for on-prem CVP cluster {cl.name}, provided: {sorted(servers)}"
+                    raise AristaAvdInvalidInputsError(msg)
+
+        return cv_settings

@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp>](## "cv_settings_profiles.[].cvaas.clusters.[].token_file") | String |  | `/tmp/cv-onboarding-token` |  | Path to the onboarding token used for certificate based authentication.<br>The path is on the EOS device and the token file must be copied to the device first. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "cv_settings_profiles.[].cvaas.clusters.[].source_interface") | String |  |  |  | Source-interface used to connect to CloudVision.<br>If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;onprem_clusters</samp>](## "cv_settings_profiles.[].onprem_clusters") | List, items: Dictionary |  |  |  | On-premise CloudVision clusters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;servers</samp>](## "cv_settings_profiles.[].onprem_clusters.[].servers") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that makes up one cluster. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;servers</samp>](## "cv_settings_profiles.[].onprem_clusters.[].servers") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that make up one cluster.<br>May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.<br>After resolving profile and global settings, each on-prem cluster must have at least one server.<br><br>Note: Servers from this profile are merged with servers for the same cluster from the parent profile and global<br>`cv_settings`, so the combined list must not exceed three servers.<br>If a server has the same `name` as an inherited server, values from this profile override the inherited values. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings_profiles.[].onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server IP address or FQDN.<br>Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "cv_settings_profiles.[].onprem_clusters.[].servers.[].port") | Integer |  | `9910` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cv_settings_profiles.[].onprem_clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the cluster. Required here, but only used when configuring multiple clusters. |
@@ -89,7 +89,13 @@
         # On-premise CloudVision clusters.
         onprem_clusters:
 
-            # CloudVision servers that makes up one cluster.
+            # CloudVision servers that make up one cluster.
+            # May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.
+            # After resolving profile and global settings, each on-prem cluster must have at least one server.
+            #
+            # Note: Servers from this profile are merged with servers for the same cluster from the parent profile and global
+            # `cv_settings`, so the combined list must not exceed three servers.
+            # If a server has the same `name` as an inherited server, values from this profile override the inherited values.
           - servers: # 1-3 items
 
                 # Server IP address or FQDN.
