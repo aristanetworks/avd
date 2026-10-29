@@ -269,6 +269,8 @@ snmp-server enable traps {{ snmp_trap.name }}
 snmp-server vrf {{ vrf.name }}
 {%             elif vrf.enable is arista.avd.defined(false) %}
 no snmp-server vrf {{ vrf.name }}
+{%             else %}
+no snmp-server vrf {{ vrf.name }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
