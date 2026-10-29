@@ -29,6 +29,8 @@ env:
 jobs:
   required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
+      - file-changes
+      - build_pyavd
       - build_collection
       - python_type_checking
       - python_requirements
@@ -47,12 +49,31 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - env:
+      - name: Check required job results
+        env:
           NEEDS_JSON: ${{ toJSON(needs) }}
-        run: echo "$NEEDS_JSON" | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
+          EVENT_NAME: ${{ github.event_name }}
+          REQUIREMENTS_CHANGED: ${{ needs.file-changes.outputs.requirements }}
+        # Only path-filtered jobs may skip; merge groups force the main test suites to run.
+        run: |
+          echo "$NEEDS_JSON" | jq 'map_values(.result)'
+          echo "$NEEDS_JSON" | jq -e --arg event "$EVENT_NAME" --arg requirements "$REQUIREMENTS_CHANGED" '
+            to_entries | all(
+              .value.result == "success" or
+              (.value.result == "skipped" and (
+                (.key == "python_requirements" and $requirements == "false") or
+                ($event != "merge_group" and (.key | IN(
+                  "molecule_eos_cli_config_gen",
+                  "molecule_eos_designs",
+                  "molecule_eos_designs_minimum_requirements",
+                  "molecule_anta_runner",
+                  "e2e",
+                  "e2e_coverage",
+                  "test_pyavd",
+                  "generate_pyavd_coverage_report"
+                )))
+              ))
+            )'
 
   file-changes:
     runs-on: ubuntu-latest
