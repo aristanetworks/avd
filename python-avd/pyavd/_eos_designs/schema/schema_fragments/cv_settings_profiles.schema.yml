@@ -45,3 +45,11 @@ keys:
               servers:
                 type: list
                 required: false
+                description: |-
+                  CloudVision servers that make up one cluster.
+                  May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.
+                  After resolving profile and global settings, each on-prem cluster must have at least one server.
+
+                  Note: Servers from this profile are merged with servers for the same cluster from the parent profile and global
+                  `cv_settings`, so the combined list must not exceed three servers.
+                  If a server has the same `name` as an inherited server, values from this profile override the inherited values.

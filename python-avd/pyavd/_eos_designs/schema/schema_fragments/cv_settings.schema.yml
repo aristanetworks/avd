@@ -99,11 +99,14 @@ keys:
               pattern: "[a-zA-Z0-9-_]+"
             servers:
               type: list
-              required: true
+              required: false
               min_length: 1
               max_length: 3
               primary_key: name
-              description: CloudVision servers that makes up one cluster.
+              description: |-
+                CloudVision servers that make up one cluster.
+                May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.
+                After resolving profile and global settings, each on-prem cluster must have at least one server.
               items:
                 type: dict
                 keys:

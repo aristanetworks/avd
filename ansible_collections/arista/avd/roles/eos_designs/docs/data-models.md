@@ -1275,12 +1275,15 @@ schemas/avd_design/docs/tables/cloudvision-settings.md
 
 CloudVision settings profiles can be selected from node type defaults, node groups, or nodes using `cv_settings_profile`. A profile inherits the global `cv_settings` values, and profiles can inherit from a `parent_profile`.
 
-In this example, `leaf1` uses `europe_cv_profile`, which inherits TerminAttr settings from `common_cv_profile` and overrides the CVaaS region. The remaining values come from the global `cv_settings`. The fabric also provides NTP and DNS settings globally, as required for CVaaS.
+In this example, `leaf1` uses `europe_cv_profile`, which inherits TerminAttr settings from `common_cv_profile` and overrides the CVaaS region. The remaining values come from the global `cv_settings`.
 
 ```yaml
 fabric_name: CV_SETTINGS_PROFILE_EXAMPLE
 type: l2leaf
 default_mgmt_method: oob
+
+# CVaaS requires DNS and NTP settings. Omitting them for demonstration purposes
+# ...
 
 cv_settings:
   cvaas:

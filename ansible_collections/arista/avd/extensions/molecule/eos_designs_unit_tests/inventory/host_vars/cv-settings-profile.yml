@@ -23,6 +23,8 @@ cv_settings:
     clusters:
       - name: cvaas
         region: auto
+  onprem_clusters:
+    - name: onprem
 
 cv_settings_profiles:
   - profile: common_cv_profile
@@ -34,3 +36,7 @@ cv_settings_profiles:
       clusters:
         - name: cvaas
           region: eu-3
+    onprem_clusters:
+      - name: onprem
+        servers:
+          - name: 192.0.2.11

@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "cv_settings.cvaas.clusters.[].source_interface") | String |  |  |  | Source-interface used to connect to CloudVision.<br>If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`. |
     | [<samp>&nbsp;&nbsp;onprem_clusters</samp>](## "cv_settings.onprem_clusters") | List, items: Dictionary |  |  |  | On-premise CloudVision clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the cluster. Required here, but only used when configuring multiple clusters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "cv_settings.onprem_clusters.[].servers") | List, items: Dictionary | Required |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that makes up one cluster. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "cv_settings.onprem_clusters.[].servers") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that make up one cluster.<br>May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.<br>After resolving profile and global settings, each on-prem cluster must have at least one server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server IP address or FQDN.<br>Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "cv_settings.onprem_clusters.[].servers.[].port") | Integer |  | `9910` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.onprem_clusters.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
@@ -89,8 +89,10 @@
           # Short name for the cluster. Required here, but only used when configuring multiple clusters.
         - name: <str; required; unique>
 
-          # CloudVision servers that makes up one cluster.
-          servers: # 1-3 items; required
+          # CloudVision servers that make up one cluster.
+          # May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.
+          # After resolving profile and global settings, each on-prem cluster must have at least one server.
+          servers: # 1-3 items
 
               # Server IP address or FQDN.
               # Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.

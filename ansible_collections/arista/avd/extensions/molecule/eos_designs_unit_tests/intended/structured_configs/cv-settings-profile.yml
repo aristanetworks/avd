@@ -2,13 +2,23 @@ aaa_root:
   disabled: true
 config_end: true
 daemon_terminattr:
-  cvaddrs:
-  - apiserver.cv-prod-eu-3.arista.io:443
-  cvauth:
-    method: token-secure
-    token_file: /tmp/cv-onboarding-token
-  cvsourceintf: Management1
-  cvvrf: MGMT
+  clusters:
+  - name: cvaas
+    cvaddrs:
+    - apiserver.cv-prod-eu-3.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Management1
+    cvvrf: MGMT
+  - name: onprem
+    cvaddrs:
+    - 192.0.2.11:9910
+    cvauth:
+      method: token
+      token_file: /tmp/token
+    cvsourceintf: Management1
+    cvvrf: MGMT
   disable_aaa: true
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dns_domain: example.com

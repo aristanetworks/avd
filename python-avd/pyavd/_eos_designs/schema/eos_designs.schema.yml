@@ -1931,11 +1931,17 @@ keys:
               pattern: '[a-zA-Z0-9-_]+'
             servers:
               type: list
-              required: true
+              required: false
               min_length: 1
               max_length: 3
               primary_key: name
-              description: CloudVision servers that makes up one cluster.
+              description: 'CloudVision servers that make up one cluster.
+
+                May be omitted when inherited from a parent CloudVision settings profile
+                or global `cv_settings`.
+
+                After resolving profile and global settings, each on-prem cluster
+                must have at least one server.'
               items:
                 type: dict
                 keys:
@@ -2053,6 +2059,22 @@ keys:
               servers:
                 type: list
                 required: false
+                description: 'CloudVision servers that make up one cluster.
+
+                  May be omitted when inherited from a parent CloudVision settings
+                  profile or global `cv_settings`.
+
+                  After resolving profile and global settings, each on-prem cluster
+                  must have at least one server.
+
+
+                  Note: Servers from this profile are merged with servers for the
+                  same cluster from the parent profile and global
+
+                  `cv_settings`, so the combined list must not exceed three servers.
+
+                  If a server has the same `name` as an inherited server, values from
+                  this profile override the inherited values.'
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -15350,19 +15372,21 @@ $defs:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: 'Name of the NTP settings profile to apply to this device.
-
-              The profile must be defined under `ntp_settings_profiles`.'
-          ntp_settings_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
             description: 'Name of the CloudVision settings profile to apply to this
               device.
 
               The profile must be defined under `cv_settings_profiles`.
 
               The selected profile settings will be merged over the general `cv_settings`.'
+          ntp_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the NTP settings profile to apply to this device.
+
+              The profile must be defined under `ntp_settings_profiles`.
+
+              The selected profile settings will be merged over the general `ntp_settings`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
