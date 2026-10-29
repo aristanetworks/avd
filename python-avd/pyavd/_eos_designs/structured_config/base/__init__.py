@@ -428,11 +428,11 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            {
-                "ip_access_group": self.inputs.queue_monitor_streaming.ip_access_group,
-                "ip_standard_access_group": self.inputs.queue_monitor_streaming.ip_standard_access_group,
-            },
+            self.inputs.queue_monitor_streaming.ip_access_group,
+            self.inputs.queue_monitor_streaming.ip_standard_access_group,
             "queue-monitor streaming",
+            ipv4_acl_key="ip_access_group",
+            ipv4_standard_acl_key="ip_standard_access_group",
         )
 
         queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)

@@ -71,13 +71,16 @@ class UtilsMixin(Protocol):
 
     def _validate_ipv4_acl_exclusion(
         self: StructuredConfigUtilsProtocol,
-        acl_values: dict[str, str | None],
+        ipv4_acl: str | None,
+        ipv4_standard_acl: str | None,
         context: str,
         direction: str | None = None,
+        *,
+        ipv4_acl_key: str,
+        ipv4_standard_acl_key: str,
     ) -> None:
         """Raise if both IPv4 ACL types are set for the same target and direction."""
-        defined_acl_keys = [key for key, value in acl_values.items() if value]
-        if len(defined_acl_keys) < 2:
+        if not (ipv4_acl and ipv4_standard_acl):
             return
         suffix = f"_{direction}" if direction is not None else ""
         target = "interface " if direction is not None else ""
@@ -85,7 +88,7 @@ class UtilsMixin(Protocol):
         if direction is not None:
             direction_label = "ingress " if direction == "in" else "egress "
         msg = (
-            f"'{defined_acl_keys[0]}{suffix}' and '{defined_acl_keys[1]}{suffix}' are mutually exclusive on {target}'{context}'. "
+            f"'{ipv4_acl_key}{suffix}' and '{ipv4_standard_acl_key}{suffix}' are mutually exclusive on {target}'{context}'. "
             f"Only one {direction_label}IPv4 ACL can be configured."
         )
         raise AristaAvdInvalidInputsError(msg)
