@@ -11,7 +11,7 @@ l2leaf:
 
 avd_design_future:
   # Test this setting for VRF default.
-  validate_ssh_settings_vrfs_ipv4_acl: true
+  raise_for_missing_ssh_settings_vrfs_ipv4_acl: true
 
 ipv4_acls:
   - name: ACL-SSH
