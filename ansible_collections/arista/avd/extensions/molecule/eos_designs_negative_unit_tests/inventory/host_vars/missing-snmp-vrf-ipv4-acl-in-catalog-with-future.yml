@@ -12,7 +12,7 @@ mgmt_interface_settings:
 mgmt_gateway: 10.10.10.1
 
 avd_design_future:
-  raise_for_missing_snmp_server_vrf_acls: true
+  raise_for_missing_snmp_server_vrf_ipv4_acl: true
 
 snmp_settings:
   vrfs:

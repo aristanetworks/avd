@@ -587,7 +587,7 @@ keys:
 
           since this combination is not supported.'
         default: false
-      raise_for_missing_snmp_server_vrf_acls:
+      raise_for_missing_snmp_server_vrf_ipv4_acl:
         type: bool
         description: 'Available from AVD 6.5.0.
 

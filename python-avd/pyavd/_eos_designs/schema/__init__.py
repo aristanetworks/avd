@@ -1066,7 +1066,7 @@ class EosDesigns(EosDesignsRootModel):
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
-            "raise_for_missing_snmp_server_vrf_acls": {"type": bool, "default": False},
+            "raise_for_missing_snmp_server_vrf_ipv4_acl": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
@@ -1239,7 +1239,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        raise_for_missing_snmp_server_vrf_acls: bool
+        raise_for_missing_snmp_server_vrf_ipv4_acl: bool
         """
         Available from AVD 6.5.0.
         Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
@@ -1297,7 +1297,7 @@ class EosDesigns(EosDesignsRootModel):
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
-                raise_for_missing_snmp_server_vrf_acls: bool | UndefinedType = Undefined,
+                raise_for_missing_snmp_server_vrf_ipv4_acl: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
             ) -> None:
@@ -1409,7 +1409,7 @@ class EosDesigns(EosDesignsRootModel):
                        Raise an error if a node has both 'underlay_router: true' and
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
-                    raise_for_missing_snmp_server_vrf_acls:
+                    raise_for_missing_snmp_server_vrf_ipv4_acl:
                        Available from AVD 6.5.0.
                        Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
                        not defined under `ipv4_acls`.
