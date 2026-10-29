@@ -17,7 +17,3 @@ servers:
         vlans: 10
         address_locking:
           ipv4: true
-
-expected_error_message: >-
-  Address locking is enabled under 'servers[name=server].adapters[0]' but 'address_locking_settings' is not configured.
-  Configure the required global address locking settings before enabling address locking on an interface or VLAN.

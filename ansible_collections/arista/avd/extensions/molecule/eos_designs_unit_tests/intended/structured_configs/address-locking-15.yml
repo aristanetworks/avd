@@ -66,6 +66,16 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
+  - id: 102
+    metadata:
+      tenants:
+      - TENANT0
+    rd: 192.168.255.109:10103
+    route_targets:
+      both:
+      - 10103:10103
+    redistribute_routes:
+    - learned
   - id: 101
     metadata:
       tenants:
@@ -74,16 +84,6 @@ router_bgp:
     route_targets:
       both:
       - 10101:10101
-    redistribute_routes:
-    - learned
-  - id: 102
-    metadata:
-      tenants:
-      - TENANT2
-    rd: 192.168.255.109:10103
-    route_targets:
-      both:
-      - 10103:10103
     redistribute_routes:
     - learned
   vrfs:
@@ -111,13 +111,21 @@ vlan_interfaces:
   vrf: TEST_ADDRESS_LOCKING
   metadata:
     tenants:
-    - TENANT2
+    - TENANT0
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
 vlans:
+- id: 102
+  name: test-address-locking-2
+  address_locking:
+    address_family:
+      ipv6: true
+  metadata:
+    tenants:
+    - TENANT0
 - id: 101
   name: test-address-locking-1
   address_locking:
@@ -126,14 +134,6 @@ vlans:
   metadata:
     tenants:
     - TENANT1
-- id: 102
-  name: test-address-locking-2
-  address_locking:
-    address_family:
-      ipv6: true
-  metadata:
-    tenants:
-    - TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -141,7 +141,7 @@ vrfs:
   ip_routing: true
   metadata:
     tenants:
-    - TENANT2
+    - TENANT0
 vxlan_interface:
   vxlan1:
     description: address-locking-15_VTEP
@@ -149,10 +149,10 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 101
-        vni: 10101
       - id: 102
         vni: 10103
+      - id: 101
+        vni: 10101
       vrfs:
       - name: TEST_ADDRESS_LOCKING
         vni: 789655

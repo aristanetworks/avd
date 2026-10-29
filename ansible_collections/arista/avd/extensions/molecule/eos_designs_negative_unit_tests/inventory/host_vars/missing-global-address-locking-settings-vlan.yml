@@ -22,7 +22,3 @@ tenants:
         name: address-locking
         address_locking:
           ipv4: true
-
-expected_error_message: >-
-  Address locking is enabled under 'vlan 101 in Tenant 'TENANT1'' but 'address_locking_settings' is not configured.
-  Configure the required global address locking settings before enabling address locking on an interface or VLAN.

@@ -105,10 +105,10 @@ keys:
           When `false` (the default), render global Address Locking settings whenever `address_locking_settings` has at least one setting.
           When `true`, render global Address Locking settings only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
           When `true`, IPv4 Address Locking requires one of the following global configurations:
-            - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`.
-            - LeaseQuery mode with `address_locking_settings.dhcp_servers_ipv4` and `address_locking_settings.local_interface`. If `local_interface` is not set, AVD uses the default management interface, which must resolve to an interface.
-            - Server-interface mode with `address_locking_settings.dhcp_server_interfaces` and `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.
-          When `true`, IPv6 Address Locking requires `address_locking_settings.locked_address.ipv6_enforcement_disabled: true`.
+            - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`. AVD raises a validation error if the platform does not support this setting.
+            - `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`. If `local_interface` is not set, AVD uses the default management interface, which must resolve to an interface.
+            - `address_locking_settings.dhcp_server_interfaces` with `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.
+          When `true`, IPv6 Address Locking automatically configures `address_locking_settings.locked_address.ipv6_enforcement_disabled: true`. Explicitly setting `address_locking_settings.locked_address.ipv6_enforcement_disabled: false` raises a validation error.
       only_configure_mlag_vrfs_peer_group_when_used:
         type: bool
         description: |-

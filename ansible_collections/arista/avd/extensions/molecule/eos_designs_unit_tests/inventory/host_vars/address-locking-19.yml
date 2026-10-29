@@ -1,0 +1,27 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-19
+      id: 101
+      bgp_as: 101
+      platform: no_ipv4_enforcement_disabled_platform
+
+custom_platform_settings:
+  - platforms:
+      - no_ipv4_enforcement_disabled_platform
+    feature_support:
+      address_locking:
+        ipv4_enforcement_disabled: false
+
+# Test legacy capability filtering for unsupported IPv4 enforcement-disabled
+address_locking_settings:
+  disabled: true
+  locked_address:
+    ipv4_enforcement_disabled: true

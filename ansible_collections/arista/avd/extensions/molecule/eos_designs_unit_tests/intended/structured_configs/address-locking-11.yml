@@ -3,6 +3,107 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet2
+  description: ADDRESS_LOCKING_11_SERVER_UNSET_MEMBER
+  shutdown: false
+  channel_group:
+    id: 2
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_SERVER_UNSET
+    peer_type: server
+    peer_key: servers
+- name: Ethernet3
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE_MEMBER
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE
+    peer_type: server
+    peer_key: servers
+- name: Ethernet4
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE_MEMBER
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE
+    peer_type: server
+    peer_key: servers
+- name: Ethernet5
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED_MEMBER
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED
+    peer_type: server
+    peer_key: servers
+- name: Ethernet6
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED_MEMBER
+  shutdown: false
+  channel_group:
+    id: 6
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED
+    peer_type: server
+    peer_key: servers
+- name: Ethernet7
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET_MEMBER
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet8
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE_MEMBER
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet9
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE_MEMBER
+  shutdown: false
+  channel_group:
+    id: 9
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet10
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED_MEMBER
+  shutdown: false
+  channel_group:
+    id: 10
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet11
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED_MEMBER
+  shutdown: false
+  channel_group:
+    id: 11
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED
+    peer_type: network_port
+    peer_key: network_ports
 hostname: address-locking-11
 ip_igmp_snooping:
   globally_enabled: true
@@ -27,6 +128,97 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel2
+  description: ADDRESS_LOCKING_11_SERVER_UNSET
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel3
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel4
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel5
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv6: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel6
+  description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel7
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel8
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel9
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel10
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv6: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
+- name: Port-Channel11
+  description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 101
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

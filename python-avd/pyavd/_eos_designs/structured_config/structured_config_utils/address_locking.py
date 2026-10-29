@@ -67,29 +67,29 @@ class AddressLockingMixin(Protocol):
 
         feature_support = self.shared_utils.platform_settings.feature_support.address_locking
 
+        if address_locking_settings.locked_address.ipv4_enforcement_disabled and not feature_support.ipv4_enforcement_disabled:
+            msg = (
+                f"IPv4 address locking is enabled under '{context}' with `ipv4_enforcement_disabled: true`, but the platform does not support "
+                "`locked-address ipv4 enforcement disabled`. Remove `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`. "
+                "Instead, configure `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`, or configure "
+                "`address_locking_settings.dhcp_server_interfaces` and set `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
         # IPv4 Address Locking can operate without lease learning when enforcement is disabled.
-        if address_locking_settings.locked_address.ipv4_enforcement_disabled and feature_support.ipv4_enforcement_disabled:
+        if address_locking_settings.locked_address.ipv4_enforcement_disabled:
             self.set_once_address_locking()
             return
 
-        # Server-interface mode learns leases from DHCP server interfaces.
+        # dhcp_server_interfaces provides the interfaces connected to DHCP servers.
         if self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces and address_locking_settings.dhcp_server_interfaces:
             self.set_once_address_locking()
             return
 
-        # LeaseQuery mode needs DHCP servers and a source interface to reach them.
+        # dhcp_servers_ipv4 requires a source interface to reach the DHCP servers.
         if address_locking_settings.dhcp_servers_ipv4 and self.shared_utils.get_local_interface(address_locking_settings.local_interface):
             self.set_once_address_locking()
             return
-
-        if address_locking_settings.locked_address.ipv4_enforcement_disabled and not feature_support.ipv4_enforcement_disabled:
-            msg = (
-                f"IPv4 address locking is enabled under '{context}' with `ipv4_enforcement_disabled: true`, but the platform does not support "
-                "`locked-address ipv4 enforcement disabled`. "
-                "Configure `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`, or "
-                "`address_locking_settings.dhcp_server_interfaces` with `avd_design_future.fix_address_locking_dhcp_server_interfaces: true` instead."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # None of the EOS-supported IPv4 operating modes are configured.
         msg = (
