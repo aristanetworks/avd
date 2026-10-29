@@ -4,6 +4,21 @@ config_end: true
 enable_password:
   disabled: true
 hostname: snmp-settings-vrf-ipv4-acl-future
+ip_access_lists:
+- name: acl-for-vrf-default
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+- name: acl-for-vrf-MGMT
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
