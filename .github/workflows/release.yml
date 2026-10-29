@@ -51,11 +51,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
+
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
 
       - name: Install PyAVD from TestPyPI
         env:
