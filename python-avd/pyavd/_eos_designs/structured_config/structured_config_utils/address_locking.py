@@ -106,6 +106,10 @@ class AddressLockingMixin(Protocol):
 
         IPv6 Address Locking can only operate in enforcement-disabled mode, therefore AVD will auto-configure `locked_address.ipv6_enforcement_disabled: true`
         when any connected endpoint, network port, VLAN, or SVI has IPv6 Address Locking enabled.
+
+        Only `locked_address.ipv6_enforcement_disabled` and `disabled` are applied from `address_locking_settings` in this path.
+        All other settings (local_interface, dhcp_servers_ipv4, dhcp_server_interfaces, leases, logging) are IPv4-specific and are only
+        rendered when an IPv4 locking consumer triggers set_once_address_locking() via set_once_address_locking_ipv4().
         """
         address_locking_settings = self.inputs.address_locking_settings
         feature_support = self.shared_utils.platform_settings.feature_support.address_locking
@@ -130,6 +134,9 @@ class AddressLockingMixin(Protocol):
                     "IPv6 Address Locking can only operate in enforcement-disabled mode."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+            if address_locking_settings.disabled:
+                self.structured_config.address_locking.disabled = True
 
         # IPv6 Address Locking only needs locked_address.ipv6_enforcement_disabled: true.
         self.structured_config.address_locking.locked_address.ipv6_enforcement_disabled = True
