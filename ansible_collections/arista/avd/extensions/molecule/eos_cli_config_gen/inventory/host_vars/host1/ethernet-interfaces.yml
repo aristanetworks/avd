@@ -2332,7 +2332,7 @@ ethernet_interfaces:
           preferred_lifetime: 100
           no_autoconfig_flag: true
    # OSPFv3 coverage
-  - name: Loopback91
+  - name: Ethernet91
     description: OSPFv3 passive + AF area coverage
     ospfv3:
       passive_interface: true
@@ -2342,7 +2342,7 @@ ethernet_interfaces:
       ipv6:
         area: "0.0.9.12"
 
-  - name: Loopback92
+  - name: Ethernet92
     description: OSPFv3 no passive coverage
     ospfv3:
       no_passive_interface: true

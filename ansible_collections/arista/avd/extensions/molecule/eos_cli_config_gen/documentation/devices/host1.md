@@ -5267,8 +5267,8 @@ interface Dps1
 
 | Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
 | --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Loopback91 | True | True | 0.0.9.11 | 0.0.9.12 |
-| Loopback92 | False | - | - | 0.0.9.13 |
+| Ethernet91 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Ethernet92 | False | - | - | 0.0.9.13 |
 
 ##### ISIS
 
@@ -6590,14 +6590,14 @@ interface Ethernet90
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:90::/64 200 100 no-autoconfig
 !
-interface Loopback91
+interface Ethernet91
    description OSPFv3 passive + AF area coverage
    ospfv3 passive-interface
    ospfv3 network point-to-point
    ospfv3 ipv4 area 0.0.9.11
    ospfv3 ipv6 area 0.0.9.12
 !
-interface Loopback92
+interface Ethernet92
    description OSPFv3 no passive coverage
    no ospfv3 passive-interface
    ospfv3 ipv6 area 0.0.9.13
