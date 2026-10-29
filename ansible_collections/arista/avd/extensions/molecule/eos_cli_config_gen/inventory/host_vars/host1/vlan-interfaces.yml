@@ -230,6 +230,13 @@ vlan_interfaces:
           algorithm: sha-256
         rx_disabled: true
 
+  - name: Vlan93
+    description: QoS Description
+    shutdown: true
+    service_policy:
+      qos:
+        input: MyQosPolicy
+
   - name: Vlan4092
     description: MLAG_PEER
     ip_address: 10.255.252.0/31
