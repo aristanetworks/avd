@@ -1068,7 +1068,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
-            "validate_ssh_settings_vrfs_ipv4_acl": {"type": bool, "default": False},
+            "raise_for_missing_ssh_settings_vrfs_ipv4_acl": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1263,7 +1263,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        validate_ssh_settings_vrfs_ipv4_acl: bool
+        raise_for_missing_ssh_settings_vrfs_ipv4_acl: bool
         """
         Available from AVD 6.5.0.
         When this is set to `true`, the presence of access-list
@@ -1300,7 +1300,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
-                validate_ssh_settings_vrfs_ipv4_acl: bool | UndefinedType = Undefined,
+                raise_for_missing_ssh_settings_vrfs_ipv4_acl: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1426,7 +1426,7 @@ class EosDesigns(EosDesignsRootModel):
                        VRF.
                        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
-                    validate_ssh_settings_vrfs_ipv4_acl:
+                    raise_for_missing_ssh_settings_vrfs_ipv4_acl:
                        Available from AVD 6.5.0.
                        When this is set to `true`, the presence of access-list
                        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
