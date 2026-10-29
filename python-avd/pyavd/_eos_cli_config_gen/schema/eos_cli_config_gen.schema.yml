@@ -15769,6 +15769,9 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path.
+            received_attribute_discard:
+              type: dict
+              $ref: eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard
             remove_private_as:
               type: dict
               description: Remove private AS numbers in outbound AS path.
@@ -16107,6 +16110,19 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            received_attribute_discard:
+              type: dict
+              description: Received path attribute configuration.
+              keys:
+                disabled:
+                  type: bool
+                  description: Explicitly disable this configuration.
+                type_codes:
+                  type: str
+                  description: 'BGP attribute type code(s) and/or range(s) of BGP
+                    attribute type codes.
+
+                    Supported range 4-255.'
             peer_tag_in:
               type: str
               description: Inbound peer tag name.
@@ -19625,6 +19641,9 @@ keys:
                         type: bool
                       replace_as:
                         type: bool
+                  received_attribute_discard:
+                    type: dict
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard
                   weight:
                     type: int
                     min: 0

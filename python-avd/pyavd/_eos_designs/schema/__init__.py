@@ -32113,6 +32113,7 @@ class EosDesigns(EosDesignsRootModel):
                 "description": {"type": str},
                 "shutdown": {"type": bool},
                 "as_path": {"type": AsPath},
+                "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                 "remove_private_as": {"type": RemovePrivateAs},
                 "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                 "next_hop_unchanged": {"type": bool},
@@ -32207,6 +32208,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+            """Received path attribute configuration."""
             remove_private_as: RemovePrivateAs
             """
             Remove private AS numbers in outbound AS path.
@@ -32306,6 +32309,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
+                    received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                     next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -32389,6 +32393,7 @@ class EosDesigns(EosDesignsRootModel):
                            BGP AS-PATH options.
 
                            Subclass of AvdModel.
+                        received_attribute_discard: Received path attribute configuration.
                         remove_private_as:
                            Remove private AS numbers in outbound AS path.
 
@@ -40082,6 +40087,7 @@ class EosDesigns(EosDesignsRootModel):
                     "description": {"type": str},
                     "shutdown": {"type": bool},
                     "as_path": {"type": AsPath},
+                    "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                     "next_hop_unchanged": {"type": bool},
@@ -40180,6 +40186,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                """Received path attribute configuration."""
                 remove_private_as: RemovePrivateAs
                 """
                 Remove private AS numbers in outbound AS path.
@@ -40279,6 +40287,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: str | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
                         as_path: AsPath | UndefinedType = Undefined,
+                        received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                         next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -40366,6 +40375,7 @@ class EosDesigns(EosDesignsRootModel):
                                BGP AS-PATH options.
 
                                Subclass of AvdModel.
+                            received_attribute_discard: Received path attribute configuration.
                             remove_private_as:
                                Remove private AS numbers in outbound AS path.
 
@@ -86559,6 +86569,7 @@ class EosDesigns(EosDesignsRootModel):
                         "description": {"type": str},
                         "shutdown": {"type": bool},
                         "as_path": {"type": AsPath},
+                        "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                         "remove_private_as": {"type": RemovePrivateAs},
                         "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                         "next_hop_unchanged": {"type": bool},
@@ -86653,6 +86664,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                    """Received path attribute configuration."""
                     remove_private_as: RemovePrivateAs
                     """
                     Remove private AS numbers in outbound AS path.
@@ -86752,6 +86765,7 @@ class EosDesigns(EosDesignsRootModel):
                             description: str | UndefinedType | None = Undefined,
                             shutdown: bool | UndefinedType | None = Undefined,
                             as_path: AsPath | UndefinedType = Undefined,
+                            received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                             remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                             remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                             next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -86835,6 +86849,7 @@ class EosDesigns(EosDesignsRootModel):
                                    BGP AS-PATH options.
 
                                    Subclass of AvdModel.
+                                received_attribute_discard: Received path attribute configuration.
                                 remove_private_as:
                                    Remove private AS numbers in outbound AS path.
 
@@ -94567,6 +94582,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "shutdown": {"type": bool},
                             "as_path": {"type": AsPath},
+                            "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                             "remove_private_as": {"type": RemovePrivateAs},
                             "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                             "next_hop_unchanged": {"type": bool},
@@ -94665,6 +94681,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                        """Received path attribute configuration."""
                         remove_private_as: RemovePrivateAs
                         """
                         Remove private AS numbers in outbound AS path.
@@ -94764,6 +94782,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | UndefinedType | None = Undefined,
                                 shutdown: bool | UndefinedType | None = Undefined,
                                 as_path: AsPath | UndefinedType = Undefined,
+                                received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                                 remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                                 remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                                 next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -94851,6 +94870,7 @@ class EosDesigns(EosDesignsRootModel):
                                        BGP AS-PATH options.
 
                                        Subclass of AvdModel.
+                                    received_attribute_discard: Received path attribute configuration.
                                     remove_private_as:
                                        Remove private AS numbers in outbound AS path.
 

@@ -45328,6 +45328,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """Explicitly disable this configuration."""
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Explicitly disable this configuration.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
+
+                        """
+
             class RemovePrivateAs(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -45733,6 +45762,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "description": {"type": str},
                 "shutdown": {"type": bool},
                 "as_path": {"type": AsPath},
+                "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                 "remove_private_as": {"type": RemovePrivateAs},
                 "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                 "next_hop_unchanged": {"type": bool},
@@ -45792,6 +45822,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             as_path: AsPath
             """
             BGP AS-PATH options.
+
+            Subclass of AvdModel.
+            """
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
 
             Subclass of AvdModel.
             """
@@ -45889,6 +45925,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                     next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -45948,6 +45985,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         shutdown: shutdown
                         as_path:
                            BGP AS-PATH options.
+
+                           Subclass of AvdModel.
+                        received_attribute_discard:
+                           Received path attribute configuration.
 
                            Subclass of AvdModel.
                         remove_private_as:
@@ -46094,6 +46135,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             interval: Interval in milliseconds.
                             min_rx: Rate in milliseconds.
                             multiplier: multiplier
+
+                        """
+
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """Explicitly disable this configuration."""
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Explicitly disable this configuration.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
 
                         """
 
@@ -46483,6 +46553,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "timers": {"type": str},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                 "peer_tag_in": {"type": str},
                 "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
@@ -46555,6 +46626,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
+
+            Subclass of AvdModel.
+            """
             peer_tag_in: str | None
             """Inbound peer tag name."""
             peer_tag_out_discard: str | None
@@ -46638,6 +46715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timers: str | UndefinedType | None = Undefined,
                     route_map_in: str | UndefinedType | None = Undefined,
                     route_map_out: str | UndefinedType | None = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                     peer_tag_in: str | UndefinedType | None = Undefined,
                     peer_tag_out_discard: str | UndefinedType | None = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
@@ -46702,6 +46780,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        received_attribute_discard:
+                           Received path attribute configuration.
+
+                           Subclass of AvdModel.
                         peer_tag_in: Inbound peer tag name.
                         peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
@@ -57406,6 +57488,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class ReceivedAttributeDiscard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                    disabled: bool | None
+                    """Explicitly disable this configuration."""
+                    type_codes: str | None
+                    """
+                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                    Supported range 4-255.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                            """
+                            ReceivedAttributeDiscard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                disabled: Explicitly disable this configuration.
+                                type_codes:
+                                   BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                                   Supported range 4-255.
+
+                            """
+
                 class AsPath(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -57697,6 +57808,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "passive": {"type": bool},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
+                    "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                     "weight": {"type": int},
                     "local_as": {"type": str},
                     "as_path": {"type": AsPath},
@@ -57749,6 +57861,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 remove_private_as_ingress: RemovePrivateAsIngress
                 """Subclass of AvdModel."""
+                received_attribute_discard: ReceivedAttributeDiscard
+                """
+                Received path attribute configuration.
+
+                Subclass of AvdModel.
+                """
                 weight: int | None
                 local_as: str | None
                 """
@@ -57829,6 +57947,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive: bool | UndefinedType | None = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
+                        received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                         weight: int | UndefinedType | None = Undefined,
                         local_as: str | UndefinedType | None = Undefined,
                         as_path: AsPath | UndefinedType = Undefined,
@@ -57881,6 +58000,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                Subclass of AvdModel.
                             remove_private_as_ingress: Subclass of AvdModel.
+                            received_attribute_discard:
+                               Received path attribute configuration.
+
+                               Subclass of AvdModel.
                             weight: weight
                             local_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
