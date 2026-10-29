@@ -7,7 +7,7 @@ from re import fullmatch
 from .constants import CVAAS_VERSION_STRING
 
 # The double braces are escaping braces for the f-string. The regex pattern will get a single brace.
-VERSION_PATTERN = re_compile(rf"(\d{{4}}\.\d{{1,2}}\.\d{{1,2}}|{CVAAS_VERSION_STRING})")
+VERSION_PATTERN = re_compile(rf"(\d{{4}}\.\d{{1,2}}\.\d{{1,2}}(?:\.\d{{1,2}})?|{CVAAS_VERSION_STRING})")
 
 
 class CvVersion:
@@ -32,11 +32,17 @@ class CvVersion:
         return self.version_value
 
     def _version_as_value(self) -> int:
+        """
+        Return the CloudVision version as an integer.
+
+        Used for API selection.
+        CloudVision releases may use a fourth component, which is ignored for API compatibility comparisons.
+        """
         if self.version == CVAAS_VERSION_STRING:
             return 99999999
 
-        elements = self.version.split(".", maxsplit=2)
-        return int(f"{elements[0]:04}{elements[1]:02}{elements[2]:02}")
+        elements = self.version.split(".", maxsplit=3)
+        return int(f"{elements[0]:0>4}{elements[1]:0>2}{elements[2]:0>2}")
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CvVersion):
