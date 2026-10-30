@@ -11,3 +11,19 @@ keys:
       table: latency-analyzer
     type: dict
     $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming"
+    keys:
+      enable:
+        type: bool
+      ip_access_group:
+        type: str
+        description: |-
+          IPv4 extended access-list name.
+          When `avd_design_future.raise_for_missing_queue_monitor_streaming_acls` is enabled, the access-list must be defined under `ipv4_acls`.
+          Otherwise, no catalog entry is required.
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.
+          Field substitution is not supported for queue-monitor streaming references.
+      ip_standard_access_group:
+        type: str
+        description: |-
+          IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.

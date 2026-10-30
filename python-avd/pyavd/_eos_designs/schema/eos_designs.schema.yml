@@ -493,6 +493,22 @@ keys:
 
           When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface`
           are mutually exclusive.'
+      raise_for_missing_queue_monitor_streaming_acls:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
+          under `ipv4_acls`.
+
+          When enabled, configure the referenced extended access-list on devices where
+          queue-monitor streaming is enabled.
+
+          When disabled, only configure the access-group reference without requiring
+          or configuring an access-list definition from the catalog.
+
+          `queue_monitor_streaming.ip_standard_access_group` always requires an entry
+          in `ipv4_standard_acls`, regardless of this setting.'
       fix_match_ipv6_prefix_list_on_mlag_route_map:
         type: bool
         default: false
@@ -10278,6 +10294,27 @@ keys:
       table: latency-analyzer
     type: dict
     $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
+    keys:
+      enable:
+        type: bool
+      ip_access_group:
+        type: str
+        description: 'IPv4 extended access-list name.
+
+          When `avd_design_future.raise_for_missing_queue_monitor_streaming_acls`
+          is enabled, the access-list must be defined under `ipv4_acls`.
+
+          Otherwise, no catalog entry is required.
+
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.
+
+          Field substitution is not supported for queue-monitor streaming references.'
+      ip_standard_access_group:
+        type: str
+        description: 'IPv4 standard access-list name. The access-list must be defined
+          under `ipv4_standard_acls`.
+
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.'
   redundancy:
     documentation_options:
       table: system-settings

@@ -45,10 +45,18 @@ unsupported_transceiver:
 # Testing queue_monitor_streaming
 queue_monitor_streaming:
   enable: true
-  ip_access_group: ACL-QMS
+  ip_standard_access_group: ACL-QMS
   ipv6_access_group: ACLv6-QMS
   max_connections: 8
   vrf: vrf1
+
+# Queue-monitor streaming IPv4 ACL is resolved from the AVD ACL catalogs.
+ipv4_standard_acls:
+  - name: ACL-QMS
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
 
 # Testing event_handlers
 event_handlers:
