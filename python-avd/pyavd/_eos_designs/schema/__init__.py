@@ -1068,6 +1068,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "sort_snmp_acls_and_local_interfaces_by_vrf": {"type": bool},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
@@ -1259,6 +1260,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        sort_snmp_acls_and_local_interfaces_by_vrf: bool | None
+        """
+        Available from AVD 6.5.0.
+        Sort SNMP ACLs and local interfaces by VRF name in the generated
+        configuration.
+        """
         only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool
         """
         Available from AVD 6.5.0.
@@ -1300,6 +1307,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                sort_snmp_acls_and_local_interfaces_by_vrf: bool | UndefinedType | None = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1422,6 +1430,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    sort_snmp_acls_and_local_interfaces_by_vrf:
+                       Available from AVD 6.5.0.
+                       Sort SNMP ACLs and local interfaces by VRF name in the generated
+                       configuration.
                     only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
                        Available from AVD 6.5.0.
                        Configure OOB management VRF and OOB IPv4 static routes only when OOB
