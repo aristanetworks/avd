@@ -168,10 +168,13 @@ class FilteredTenantsMixin(Protocol):
                 msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
                 raise AristaAvdInvalidInputsError(msg)
 
-            parent_profile = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
-
+            parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
+            if parent_profile_item.parent_profile:
+                self.emit_warning_for_grandparent_profile(
+                    parent_profile=parent_profile_item.parent_profile, context=f"l2vlan_profiles[profile={parent_profile_item.profile}]"
+                )
             # Notice reuse of the same variable with the merged content.
-            resolved_profile._deepinherit(parent_profile)
+            resolved_profile._deepinherit(parent_profile_item)
 
         delattr(resolved_profile, "parent_profile")
 
@@ -347,8 +350,13 @@ class FilteredTenantsMixin(Protocol):
                         f"Profile '{resolved_profile.parent_profile}' applied under SVI Profile '{resolved_profile.profile}' does not exist in 'svi_profiles'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
+                parent_profile_item = self.inputs.svi_profiles[resolved_profile.parent_profile]
+                if parent_profile_item.parent_profile:
+                    self.emit_warning_for_grandparent_profile(
+                        parent_profile=parent_profile_item.parent_profile, context=f"svi_profiles[profile={parent_profile_item.profile}]"
+                    )
                 # Inherit from the parent profile
-                resolved_profile._deepinherit(self.inputs.svi_profiles[resolved_profile.parent_profile])
+                resolved_profile._deepinherit(parent_profile_item)
                 # Inherit from the profile
                 merged_svi = svi._deepinherited(
                     resolved_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True)
@@ -394,12 +402,10 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
-            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
-            # Handle svi_profile inheritance
-            merged_svi = self.get_merged_svi_config(svi)
-            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
+            # Handle svi_profile inheritance
+            merged_svi = self.get_merged_svi_config(svi)
 
             merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
