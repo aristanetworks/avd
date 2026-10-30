@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'management_eapi.vrfs[name=management]'. Only one IPv4 ACL can be configured.
