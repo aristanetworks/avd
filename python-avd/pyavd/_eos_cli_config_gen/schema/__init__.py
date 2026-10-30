@@ -45276,7 +45276,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
-                Mutally exclusive with `disabled`.
+                Mutually exclusive with `disabled`.
                 """
 
                 if TYPE_CHECKING:
@@ -45296,7 +45296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             type_codes:
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
-                               Mutally exclusive with `disabled`.
+                               Mutually exclusive with `disabled`.
 
                         """
 
@@ -45396,7 +45396,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
-                Mutally exclusive with `disabled`.
+                Mutually exclusive with `disabled`.
                 """
 
                 if TYPE_CHECKING:
@@ -45416,7 +45416,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             type_codes:
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
-                               Mutally exclusive with `disabled`.
+                               Mutually exclusive with `disabled`.
 
                         """
 
@@ -46215,7 +46215,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
-                Mutally exclusive with `disabled`.
+                Mutually exclusive with `disabled`.
                 """
 
                 if TYPE_CHECKING:
@@ -46235,7 +46235,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             type_codes:
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
-                               Mutally exclusive with `disabled`.
+                               Mutually exclusive with `disabled`.
 
                         """
 
@@ -57574,7 +57574,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
                     BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                     Supported range 4-255.
-                    Mutally exclusive with `disabled`.
+                    Mutually exclusive with `disabled`.
                     """
 
                     if TYPE_CHECKING:
@@ -57594,7 +57594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 type_codes:
                                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                    Supported range 4-255.
-                                   Mutally exclusive with `disabled`.
+                                   Mutually exclusive with `disabled`.
 
                             """
 

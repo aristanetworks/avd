@@ -16128,7 +16128,7 @@ keys:
                   description: 'BGP attribute type code(s) and/or range(s) of BGP
                     attribute type codes.
 
-                    Supported range 4-255. Mutally exclusive with `disabled`.'
+                    Supported range 4-255. Mutually exclusive with `disabled`.'
             peer_tag_in:
               type: str
               description: Inbound peer tag name.
