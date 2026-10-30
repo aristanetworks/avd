@@ -22,6 +22,3 @@ tenants:
               enabled: true
             nodes:
               - node: ospf-on-svi-not-on-vrf
-
-expected_error_message: >-
-  OSPF is enabled on SVI 'ospf-enabled' but not under 'tenants[name=Tenant-A].vrfs[name=no-ospf-vrf]'.

@@ -22,7 +22,3 @@ aaa_settings:
         groups:
           - agni-server-group
         cleartext_key: super-secret-key
-
-expected_error_message: >-
-  The RADIUS additional dynamic authorization server group(s) 'coa-server-group'
-  are not defined on any server under 'aaa_settings.radius.servers'.

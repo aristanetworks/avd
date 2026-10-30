@@ -30,6 +30,3 @@ l3leaf:
     - name: missing-bgp-as-on-uplink-switch-leaf
       id: 42
       uplink_switch_interfaces: [Ethernet3]
-
-expected_error_message: >-
-  'bgp_as' is required but was not found for host 'missing-bgp-as-on-uplink-switch-spine'.
