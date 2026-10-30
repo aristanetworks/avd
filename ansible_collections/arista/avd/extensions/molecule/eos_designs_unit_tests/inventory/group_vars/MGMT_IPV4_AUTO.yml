@@ -1,0 +1,24 @@
+---
+fabric_name: MGMT_IPV4_AUTO
+type: l2leaf
+mgmt_interface_settings:
+  ipv4_subnet: OOB
+  vrf: MGMT
+mgmt_gateway: 192.0.2.1
+ipv4_subnets:
+  - name: OOB
+    subnet: 192.0.2.0/24
+    range: 192.0.2.10-192.0.2.20
+fabric_ip_addressing:
+  management:
+    ipv4_subnet:
+      algorithm: auto
+l2leaf:
+  nodes:
+    - name: mgmt-ipv4-auto-a
+    - name: mgmt-ipv4-auto-b
+      mgmt_ip: 192.0.2.10/24
+    - name: mgmt-ipv4-auto-c
+      mgmt_ip: dhcp
+    - name: mgmt-ipv4-auto-d
+      id: 3

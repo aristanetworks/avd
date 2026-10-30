@@ -1,0 +1,13 @@
+---
+fabric_name: MGMT_IPV4_INVALID_RANGE
+type: l2leaf
+mgmt_interface_settings:
+  ipv4_subnet: OOB
+ipv4_subnets:
+  - name: OOB
+    subnet: 192.0.2.0/24
+    range: 192.0.2.20-192.0.2.10
+l2leaf:
+  nodes:
+    - name: mgmt-ipv4-invalid-range
+      id: 1

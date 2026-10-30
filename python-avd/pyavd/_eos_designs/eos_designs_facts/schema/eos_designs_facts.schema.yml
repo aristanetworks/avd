@@ -27,6 +27,9 @@ keys:
     type: str
   mgmt_ip:
     type: str
+  regular_mgmt_ip:
+    type: str
+    description: Regular OOB management IPv4 address before ACT Digital Twin overrides.
   mpls_lsr:
     type: bool
     required: true

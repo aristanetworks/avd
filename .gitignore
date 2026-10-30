@@ -92,3 +92,5 @@ Cargo.lock
 
 # Git
 .worktrees
+
+**/data/*-ipv4-allocations.yml.lock

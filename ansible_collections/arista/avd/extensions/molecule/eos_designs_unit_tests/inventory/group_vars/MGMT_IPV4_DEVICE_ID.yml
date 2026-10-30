@@ -1,0 +1,20 @@
+---
+fabric_name: MGMT_IPV4_DEVICE_ID
+type: l2leaf
+mgmt_interface_settings:
+  ipv4_subnet: OOB
+ipv4_subnets:
+  - name: OOB
+    subnet: 198.51.100.0/24
+    range: 198.51.100.10-198.51.100.20
+    allocation_policy:
+      algorithm: descend
+l2leaf:
+  nodes:
+    - name: mgmt-ipv4-id-a
+      id: 1
+    - name: mgmt-ipv4-id-b
+      id: 2
+      mgmt_ip: 198.51.100.50/24
+    - name: mgmt-ipv4-id-c
+      mgmt_ip: dhcp
