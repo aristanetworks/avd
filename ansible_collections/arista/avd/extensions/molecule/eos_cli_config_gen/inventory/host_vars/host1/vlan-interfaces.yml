@@ -517,7 +517,7 @@ vlan_interfaces:
     ospf_message_digest_keys:
       - id: 55
         hash_algorithm: md5
-        key: "dRx9sULvl+hzkCMYJLEQCw=="
+        key: "gajUPbVXkkQGHldGdajxZg=="
       - id: 56
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo

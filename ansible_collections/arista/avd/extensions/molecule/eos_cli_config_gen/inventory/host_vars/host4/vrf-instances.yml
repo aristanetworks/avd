@@ -1,4 +1,6 @@
 ---
 vrfs:
+  - name: MGMT
+    ip_routing: false
   - name: FUTURE_IPV4
     ip_routing: true
