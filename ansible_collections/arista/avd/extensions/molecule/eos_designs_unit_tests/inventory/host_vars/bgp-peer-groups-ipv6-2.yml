@@ -1,0 +1,5 @@
+---
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+avd_design_future:
+  remove_mpls_lsr_dependency_for_mpls_overlay_role_server: true
