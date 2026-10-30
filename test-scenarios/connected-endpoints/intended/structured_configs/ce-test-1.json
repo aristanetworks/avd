@@ -1,0 +1,135 @@
+{
+  "ethernet_interfaces": [
+    {
+      "name": "Ethernet1",
+      "description": "CUSTOM_single-attached-server",
+      "shutdown": false,
+      "spanning_tree_portfast": "edge",
+      "metadata": {
+        "peer": "single-attached-server",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "ACCESS_PROFILE"
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      }
+    },
+    {
+      "name": "Ethernet2",
+      "description": "SERVER_port-channel-server_eth0",
+      "shutdown": false,
+      "channel_group": {
+        "id": 23,
+        "mode": "active"
+      },
+      "metadata": {
+        "peer": "port-channel-server",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "TRUNK_PROFILE"
+      }
+    },
+    {
+      "name": "Ethernet3",
+      "description": "SERVER_port-channel-server_eth1",
+      "shutdown": false,
+      "channel_group": {
+        "id": 23,
+        "mode": "active"
+      },
+      "metadata": {
+        "peer": "port-channel-server",
+        "peer_interface": "eth1",
+        "peer_type": "server",
+        "peer_key": "servers",
+        "port_profile": "TRUNK_PROFILE"
+      }
+    },
+    {
+      "name": "Ethernet4",
+      "description": "SERVER_subinterface-router_eth0",
+      "shutdown": false,
+      "metadata": {
+        "peer": "subinterface-router",
+        "peer_interface": "eth0",
+        "peer_type": "server",
+        "peer_key": "servers"
+      },
+      "switchport": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Ethernet4.100",
+      "description": "subinterface-router_Ethernet4.100",
+      "encapsulation_vlan": {
+        "client": {
+          "encapsulation": "dot1q",
+          "vlan": 100
+        },
+        "network": {
+          "encapsulation": "client"
+        }
+      },
+      "vlan_id": 10
+    },
+    {
+      "name": "Ethernet10",
+      "description": "network-port-range",
+      "shutdown": false,
+      "spanning_tree_portfast": "edge",
+      "metadata": {
+        "peer": "network-port-range",
+        "peer_type": "network_port",
+        "peer_key": "network_ports",
+        "port_profile": "ACCESS_PROFILE"
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      }
+    },
+    {
+      "name": "Ethernet11",
+      "description": "network-port-range",
+      "shutdown": false,
+      "spanning_tree_portfast": "edge",
+      "metadata": {
+        "peer": "network-port-range",
+        "peer_type": "network_port",
+        "peer_key": "network_ports",
+        "port_profile": "ACCESS_PROFILE"
+      },
+      "switchport": {
+        "enabled": true,
+        "mode": "access",
+        "access_vlan": 10
+      }
+    }
+  ],
+  "port_channel_interfaces": [
+    {
+      "name": "Port-Channel23",
+      "description": "SERVER_port-channel-server",
+      "shutdown": false,
+      "switchport": {
+        "enabled": true,
+        "mode": "trunk",
+        "trunk": {
+          "allowed_vlan": "10-12",
+          "groups": [
+            "BASE",
+            "SHARED",
+            "CUSTOM"
+          ]
+        }
+      }
+    }
+  ]
+}
