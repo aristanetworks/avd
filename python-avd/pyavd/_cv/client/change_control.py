@@ -121,7 +121,7 @@ class ChangeControlMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ApproveConfig:
         """
-        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API.
+        Approve a Change Control using arista.changecontrol.v1.ApproveConfigService.Set API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -138,6 +138,41 @@ class ChangeControlMixin(Protocol):
             value=ApproveConfig(
                 key=ChangeControlKey(id=change_control_id),
                 approve=FlagConfig(value=True, notes=description),
+                version=timestamp,
+            ),
+        )
+        client = ApproveConfigServiceStub(self._channel)
+
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+
+        return response.value
+
+    @GRPCRequestHandler()
+    async def unapprove_change_control(
+        self: CVClientProtocol,
+        change_control_id: str,
+        timestamp: _DateTime,
+        description: str | None = None,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> ApproveConfig:
+        """
+        Unapprove a Change Control using arista.changecontrol.v1.ApproveConfigService.Set API.
+
+        Parameters:
+            change_control_id: Unique identifier of the Change Control.
+            timestamp: Timestamp for the change control information to be unapproved. \
+                This must be using the aristaproto._DateTime subclass which contains nanosecond information.
+            description: Description to set on the unapproval.
+            timeout: Timeout in seconds.
+
+        Returns:
+            ApproveConfig object carrying all the values given in the ApproveConfigSetRequest as well
+            as any server-generated values.
+        """
+        request = ApproveConfigSetRequest(
+            value=ApproveConfig(
+                key=ChangeControlKey(id=change_control_id),
+                approve=FlagConfig(value=False, notes=description),
                 version=timestamp,
             ),
         )
