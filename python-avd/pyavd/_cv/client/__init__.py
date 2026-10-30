@@ -193,6 +193,17 @@ class CVClientProtocol(
 
         return CVTLSSettings(grpc_ssl=True, requests_verify=True)
 
+    @property
+    def _requests_proxies(self) -> dict[str, str]:
+        """Return the proxy configuration for Requests library."""
+        if self._proxy_manager is not None:
+            return self._proxy_manager.get_requests_proxies()
+
+        # Internal Requests logic stops processing env variables proxy settings when
+        # destination matches the provided no_proxy value. Empty proxy settings
+        # prevent Requests from selecting environment proxy values after redirects.
+        return {"http": "", "https": "", "all": "", "no_proxy": ",".join(self._servers)}
+
     def _set_token(self) -> None:
         """
         Uses username/password for authenticating via REST.
@@ -213,7 +224,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
                 verify=self._tls.requests_verify,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -244,7 +255,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
                 verify=self._tls.requests_verify,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()

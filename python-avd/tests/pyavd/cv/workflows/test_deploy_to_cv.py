@@ -286,6 +286,48 @@ async def test_deploy_to_cv_grpc_channel_configuration(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
+    ("proxy_host", "proxy_port", "proxy_username", "proxy_password"),
+    [
+        pytest.param("http-connect-proxy.local", 3128, None, None, id="EXPLICIT_PORT_WITHOUT_CREDENTIALS"),
+        pytest.param("http-connect-proxy.local", 8080, None, None, id="DEFAULT_PORT_WITHOUT_CREDENTIALS"),
+        pytest.param("http-connect-proxy.local", 3128, "avd_user", "avd_password", id="EXPLICIT_PORT_WITH_CREDENTIALS"),
+        pytest.param("http-connect-proxy.local", 3128, "avd%40user", "avd%3Apassword", id="URL_ENCODED_CREDENTIALS"),
+    ],
+)
+async def test_deploy_to_cv_proxy_settings(
+    proxy_host: str,
+    proxy_port: int,
+    proxy_username: str | None,
+    proxy_password: str | None,
+) -> None:
+    """Test that deploy_to_cv passes the normalized proxy settings to CVClient."""
+    mock_cv_client = AsyncMock()
+    cloudvision = CloudVision(
+        servers="www.arista.io",
+        token="test-token",  # noqa: S106
+        username=None,
+        password=None,
+        verify_certs=True,
+        proxy_host=proxy_host,
+        proxy_port=proxy_port,
+        proxy_username=proxy_username,
+        proxy_password=proxy_password,
+    )
+
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(cloudvision=cloudvision)
+
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert {key: kwargs[key] for key in ("proxy_host", "proxy_port", "proxy_username", "proxy_password")} == {
+        "proxy_host": proxy_host,
+        "proxy_port": proxy_port,
+        "proxy_username": proxy_username,
+        "proxy_password": proxy_password,
+    }
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
     ("deploy_future", "expected_use_system_certs"),
     [
         pytest.param(CVDeployFuture(), False, id="DEPLOY_FUTURE_DEFAULTS"),
