@@ -1,0 +1,96 @@
+---
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+- name: Exercise the complete design and CLI roles
+  hosts: ROLE_TEST_FABRIC
+  connection: local
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    # The milestone branch is deliberately tested before its Ansible version is supported.
+    avd_ignore_requirements: "{{ 'dev' in ansible_version.full }}"
+    expect_changed: true
+    fabric_name: ROLE_TEST_FABRIC
+    eos_designs_documentation:
+      enable: true
+      topology_csv: true
+      p2p_links_csv: true
+    spine:
+      defaults:
+        platform: vEOS-lab
+        bgp_as: 65000
+        loopback_ipv4_pool: 192.0.2.0/24
+      nodes:
+        - name: spine1
+          id: 1
+          mgmt_ip: 192.0.2.101/24
+    l3leaf:
+      defaults:
+        platform: vEOS-lab
+        bgp_as: 65101
+        loopback_ipv4_pool: 192.0.2.0/24
+        loopback_ipv4_offset: 10
+        vtep_loopback_ipv4_pool: 198.51.100.0/24
+        uplink_ipv4_pool: 10.0.0.0/24
+        uplink_interfaces: [Ethernet1]
+        uplink_switches: [spine1]
+        uplink_switch_interfaces: [Ethernet1]
+      nodes:
+        - name: leaf1
+          id: 1
+          mgmt_ip: 192.0.2.102/24
+  tasks:
+    - name: Run eos_designs with its default output paths and cleanup
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Check structured configuration and cross-device topology
+      ansible.builtin.assert:
+        that:
+          - avd_requirements is succeeded
+          - not (avd_requirements.skipped | default(false))
+          - structured_config.changed == expect_changed
+          - device_config.hostname == inventory_hostname
+          - device_config.ethernet_interfaces[0].metadata.peer == peer
+          - device_config.router_bgp.as | string == expected_as | string
+      vars:
+        device_config: "{{ lookup('file', root_dir ~ '/intended/structured_configs/' ~ inventory_hostname ~ '.yml') | from_yaml }}"
+        peer: "{{ 'leaf1' if inventory_hostname == 'spine1' else 'spine1' }}"
+        expected_as: "{{ 65000 if inventory_hostname == 'spine1' else 65101 }}"
+
+    - name: Consume the structured configuration through eos_cli_config_gen
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+    - name: Check device configuration and documentation contents
+      ansible.builtin.assert:
+        that:
+          - "('hostname ' ~ inventory_hostname) in lookup('file', root_dir ~ '/intended/configs/' ~ inventory_hostname ~ '.cfg')"
+          - "('router bgp ' ~ expected_as) in lookup('file', root_dir ~ '/intended/configs/' ~ inventory_hostname ~ '.cfg')"
+          - "inventory_hostname in lookup('file', root_dir ~ '/documentation/devices/' ~ inventory_hostname ~ '.md')"
+      vars:
+        expected_as: "{{ 65000 if inventory_hostname == 'spine1' else 65101 }}"
+
+    - name: Check fabric documentation and topology contents
+      ansible.builtin.assert:
+        that:
+          - "'spine1' in lookup('file', root_dir ~ '/documentation/fabric/ROLE_TEST_FABRIC-documentation.md')"
+          - "'leaf1' in lookup('file', root_dir ~ '/documentation/fabric/ROLE_TEST_FABRIC-documentation.md')"
+          - "'spine1' in lookup('file', root_dir ~ '/documentation/fabric/ROLE_TEST_FABRIC-topology.csv')"
+          - "'leaf1' in lookup('file', root_dir ~ '/documentation/fabric/ROLE_TEST_FABRIC-p2p-links.csv')"
+      run_once: true
+
+    - name: Inspect temporary directories after both roles
+      ansible.builtin.stat:
+        path: "{{ root_dir }}/intended/{{ item }}"
+      loop:
+        - tmp_eos_designs
+        - tmp_eos_cli_config_gen
+      register: temporary_directories
+      run_once: true
+
+    - name: Verify both roles cleaned up their temporary files
+      ansible.builtin.assert:
+        that: temporary_directories.results | selectattr('stat.exists') | list | length == 0
+      run_once: true

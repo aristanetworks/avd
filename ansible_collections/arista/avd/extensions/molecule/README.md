@@ -27,7 +27,6 @@ Current molecule implementation provides the following scenarios:
 - eos_designs-l2ls
 - eos_designs-mpls-isis-sr-ldp
 - eos_designs-twodc-5stage-clos
-- eos_designs_unit_tests
 - evpn_underlay_ebgp_overlay_ebgp
 - evpn_underlay_isis_overlay_ibgp
 - evpn_underlay_ospf_overlay_ebgp
@@ -45,6 +44,7 @@ The following projects retain their location under this directory during the tra
 
 - [eos_cli_config_gen_negative_unit_tests](./eos_cli_config_gen_negative_unit_tests/): EOS structured configuration validation and CLI rendering failures.
 - [eos_designs_negative_unit_tests](./eos_designs_negative_unit_tests/): AVD design validation and generation failures.
+- [eos_designs_unit_tests](./eos_designs_unit_tests/): AVD design facts, structured configuration, EOS configuration, and documentation artifacts.
 
 When migrating another project to E2E-only execution, move its entry from the Molecule scenario list above to this list.
 
