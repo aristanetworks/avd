@@ -1077,6 +1077,7 @@ class EosDesigns(EosDesignsRootModel):
             "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
+            "fix_virtual_source_nat_address_families": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_address_locking_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
@@ -1204,6 +1205,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        fix_virtual_source_nat_address_families: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the selection of the addresses used for the IPv4 and IPv6 virtual
+        source-nat of a VRF.
+        When enabled, each address family uses the first loopback in the VRF with an
+        address of that family.
+        The VTEP diagnostic loopback is used first, followed by the VRF loopbacks in
+        input order.
+
+        Default value: `False`
+        """
         only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool
         """
         Available from AVD 6.2.0.
@@ -1322,6 +1335,7 @@ class EosDesigns(EosDesignsRootModel):
                 fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
+                fix_virtual_source_nat_address_families: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_address_locking_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
@@ -1412,6 +1426,14 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
                        RADIUS server configurations.
+                    fix_virtual_source_nat_address_families:
+                       Available from AVD 6.5.0.
+                       Fix the selection of the addresses used for the IPv4 and IPv6 virtual
+                       source-nat of a VRF.
+                       When enabled, each address family uses the first loopback in the VRF with an
+                       address of that family.
+                       The VTEP diagnostic loopback is used first, followed by the VRF loopbacks in
+                       input order.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used:
                        Available from AVD 6.2.0.
                        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
