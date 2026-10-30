@@ -30,7 +30,7 @@ class DaemonTerminattrMixin(Protocol):
         flow_tracking_settings = self.inputs.flow_tracking_settings
         first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), None)
 
-        if not (cv_settings := self.inputs.cv_settings):
+        if not (cv_settings := self.shared_utils.cv_settings):
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
 
@@ -127,7 +127,7 @@ class DaemonTerminattrMixin(Protocol):
         """
         Verifies that when cv_settings is **not** configured no Sflow or flow tracking configuration expects export to CloudVision.
 
-        Expected to be called when self.inputs.cv_settings is not set.
+        Expected to be called when the resolved cv_settings are not set.
         """
         if first_tracker_exporting_to_cloudvision is not None:
             msg = (

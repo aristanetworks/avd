@@ -1273,6 +1273,63 @@ schemas/avd_design/docs/tables/system-settings.md
 schemas/avd_design/docs/tables/cloudvision-settings.md
 --8<--
 
+CloudVision settings profiles can be selected from node type defaults, node groups, or nodes using `cv_settings_profile`. A profile inherits the global `cv_settings` values, and profiles can inherit from a `parent_profile`.
+
+In this example, `leaf1` uses `europe_cv_profile`, which inherits TerminAttr settings from `common_cv_profile` and overrides the CVaaS region. The remaining values come from the global `cv_settings`.
+
+```yaml
+fabric_name: CV_SETTINGS_PROFILE_EXAMPLE
+type: l2leaf
+default_mgmt_method: oob
+
+# CVaaS requires DNS and NTP settings. Omitting them for demonstration purposes
+# ...
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        region: auto
+
+cv_settings_profiles:
+  - profile: common_cv_profile
+    terminattr:
+      disable_aaa: true
+  - profile: europe_cv_profile
+    parent_profile: common_cv_profile
+    cvaas:
+      clusters:
+        - name: cvaas
+          region: eu-3
+
+l2leaf:
+  defaults:
+    cv_settings_profile: europe_cv_profile
+  nodes:
+    - name: leaf1
+      mgmt_ip: 192.0.2.10/24
+```
+
+The CloudVision-related structured configuration generated for `leaf1` is:
+
+```yaml
+daemon_terminattr:
+  cvaddrs:
+    - apiserver.cv-prod-eu-3.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+```
+
+--8<--
+schemas/avd_design/docs/tables/cloudvision-settings-profiles.md
+--8<--
+
 ## CloudVision Tags Settings
 
 --8<--
