@@ -1123,6 +1123,65 @@ schemas/avd_design/docs/tables/management-eapi.md
 
 ### Management interface
 
+Named IPv4 subnets can supply OOB management addresses. Management interface settings select a named subnet, while `fabric_ip_addressing` selects the allocation mode:
+
+```yaml
+ipv4_subnets:
+  - name: DC1_OOB
+    subnet: 192.0.2.0/24
+    range: 192.0.2.10-192.0.2.200
+    allocation_policy:
+      algorithm: ascend
+
+mgmt_interface_settings:
+  ipv4_subnet: DC1_OOB
+
+fabric_ip_addressing:
+  management:
+    ipv4_subnet:
+      algorithm: auto  # device_id | auto
+
+mgmt_gateway: 192.0.2.1
+
+devices:
+  - name: leaf1
+    type: l2leaf
+  - name: leaf2
+    type: l2leaf
+    mgmt_ip: 192.0.2.50/24
+```
+
+An explicit node `mgmt_ip`, including `dhcp`, takes precedence and creates no new generated assignment.
+Static addresses and configured gateways are reserved before allocating new automatic addresses.
+Gateway configuration and existing node/profile inheritance are unchanged.
+
+The default `device_id` mode selects the address at offset `id - 1` in the allowed range's ascending or descending order.
+Repeated IDs are allowed when their resulting addresses differ; conflicting addresses in the same fabric and VRF fail with both owners.
+Changing an ID, subnet, range boundary, or ordering can change a calculated address.
+
+The `auto` mode is independent of node ID. It retains valid assignments and allocates new endpoints in natural hostname order.
+Assignments are stored in `data/<fabric_name>-ipv4-allocations.yml` under the output directory.
+PyAVD callers must pass a `PoolManager` to `get_avd_facts` and call `save_updated_pools()` after success.
+Configuration workers consume the completed facts and do not allocate again.
+The existing `mgmt_ip` fact contains the effective address for the build, including any applicable ACT Digital Twin override.
+Retain the state file to preserve addresses; deleting it loses assignment history.
+Previously automatic endpoints, including devices switched to explicit addressing, remain reserved to protect partial builds.
+Static and `device_id` claims are discovered from the current inputs, so include those devices when allocating new automatic addresses.
+To reclaim a reservation, stop concurrent builds, remove its allocation entry from the state file, and rebuild.
+Invalid retained assignments fail rather than silently changing addresses. Switching allocation mode or subnet is a migration that may require deliberate reclamation.
+Concurrent changes to state are rejected; re-run against the updated state.
+If a terminated writer leaves a `.yml.lock` file, confirm no build is writing that state before removing the lock and retrying.
+
+Use a separate output directory for Digital Twin builds, such as `output_dir_name: digital_twin/intended`, following the Digital Twin build setup.
+The Pool Manager stores allocations under the selected output directory; the Digital Twin flag does not change that location automatically.
+PyAVD callers supply a separate PoolManager rooted in the twin output directory.
+Twin builds use the same allocation logic and retain their own reservations. An applicable explicit `digital_twin.mgmt_ip` takes precedence over allocation.
+
+Conflict checks cover participating OOB addresses and loaded reservations in the same fabric and VRF.
+They do not discover DHCP leases, external devices, or allocations from other AVD features.
+Automatic addressing generates static EOS configuration; it does not provision DHCP/ZTP or update Ansible connection addresses.
+Existing in-band management behavior is unchanged. Parent-pool subnet allocation and external IPAM integration are not included.
+
 --8<--
 schemas/avd_design/docs/tables/management-interface-settings.md
 --8<--

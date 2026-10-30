@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, ClassVar, Literal
 
 from yaml import CSafeDumper
 
+from .ipv4_allocations import Ipv4AllocationCollection
 from .node_id_pools import NodeIdPoolCollection
 
 if TYPE_CHECKING:
@@ -36,17 +37,28 @@ class PoolManager:
         self._output_dir = output_dir
         self._pool_collections = {}
         self._changed_pool_files = {}
+        self._ipv4_allocation_collections: dict[str, Ipv4AllocationCollection] = {}
+
+    def get_ipv4_allocation_collection(self, fabric_name: str) -> Ipv4AllocationCollection:
+        """Return fabric-scoped persistent IPv4 reservations without node-ID pruning semantics."""
+        if fabric_name not in self._ipv4_allocation_collections:
+            path = self._output_dir / "data" / f"{fabric_name}-ipv4-allocations.yml"
+            self._ipv4_allocation_collections[fabric_name] = Ipv4AllocationCollection(path)
+        return self._ipv4_allocation_collections[fabric_name]
 
     def save_updated_pools(self, dumper_cls: type = CSafeDumper) -> bool:
         """
         Save data if anything changed. Returns a boolean telling if anything was changed.
 
-        Note that this will also prune any unused/stale allocations (not requested for since initialization) and remove empty pools.
+        Node-ID pools prune unaccessed assignments and empty pools. IPv4 reservations retain absent owners.
         """
         any_changes = False
         for pools_files_map in self._pool_collections.values():
             changes_for_this_pool_type = [pool_collection.save_updates(dumper_cls) for pool_collection in pools_files_map.values()]
             any_changes = any_changes or any(changes_for_this_pool_type)
+        for collection in self._ipv4_allocation_collections.values():
+            changed = collection.save_updates(dumper_cls)
+            any_changes = any_changes or changed
         return any_changes
 
     def get_pool(self, pool_type: PoolType, shared_utils: SharedUtilsProtocol) -> Pool:
