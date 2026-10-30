@@ -96,6 +96,18 @@ This also means that a poorly written schema could have conflicting schema optio
 
 The `deprecation.new_key` field is used for detecting conflicts with old and new data models. To properly detect conflicts the `new_key` must be a relative path to the new data model or multiple relative paths separated by `" or "`. Conflict detection only works if the new data model in or below the same dict as the deprecated model.
 
+The meta-schema is generated from the source-schema models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) and committed to this repository.
+When bumping `pyavd-utils-gen`, update the pinned version in `.pre-commit-config.yaml` alongside the other dependency declarations.
+The `metaschema` pre-commit hook regenerates the JSON when that configuration changes, catching a forgotten refresh during dependency bumps.
+Stage any generated changes with the dependency update. To regenerate it explicitly, run `pre-commit run metaschema --all-files`.
+The `check-schema-fragments` pre-commit hook validates changed YAML schema fragments and the standalone EOS Designs facts schema
+against the meta-schema before the `schemas` hook builds them. It uses `jsonschema-rs` and skips generated combined schemas to avoid
+validating the same content twice. This enforces authoring conventions such as nonempty descriptions in addition to providing
+editor assistance. Changes to the meta-schema or `.pre-commit-config.yaml` trigger validation of all source schemas, including
+when the preceding `metaschema` hook regenerates the JSON. To validate all source schemas explicitly, run
+`pre-commit run check-schema-fragments --all-files`.
+Schema builds rely on source-model loading and compilation in `pyavd-utils-gen`, without a separate JSON Schema validation pass.
+
 ### Schema Options for type `int` (Integer)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
