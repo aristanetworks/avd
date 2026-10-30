@@ -14,6 +14,7 @@ dev = [
     "codespell>=2.4.2",
     "docker>=7.1.0",
     "identify>=2.6.18",
+    "jsonschema-rs>=0.24", # for pyright check of the schema-fragment pre-commit script
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
