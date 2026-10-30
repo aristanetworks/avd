@@ -1130,7 +1130,61 @@ schemas/avd_design/docs/tables/management-interface-settings.md
 ### Time configuration
 
 --8<--
-schemas/avd_design/docs/tables/time-configuration.md
+schemas/avd_design/docs/tables/ntp-settings.md
+--8<--
+
+NTP settings profiles can be selected from node type defaults, node groups, or nodes using `ntp_settings_profile`.
+
+In this example, `leaf1` uses `leaf1_ntp_profile`, which inherits the NTP server and VRF from `common_ntp_profile`. Both profiles inherit the global `authenticate` and `set_first_ntp_server_as_preferred` settings from `ntp_settings`.
+
+```yaml
+fabric_name: FABRIC
+type: l2leaf
+
+ntp_settings:
+  authenticate: true
+  set_first_ntp_server_as_preferred: false
+
+ntp_settings_profiles:
+  - profile: common_ntp_profile
+    server_vrf: default
+    trusted_keys: "1"
+    servers:
+      - name: 192.0.2.123
+        iburst: true
+
+  - profile: leaf1_ntp_profile
+    parent_profile: common_ntp_profile
+    authenticate_servers_only: true
+    servers:
+      - name: 192.0.2.124
+        burst: true
+
+l2leaf:
+  defaults:
+    ntp_settings_profile: common_ntp_profile
+  nodes:
+    - name: leaf1
+      ntp_settings_profile: leaf1_ntp_profile
+```
+
+The NTP-related structured configuration generated for `leaf1` is:
+
+```yaml
+ntp:
+  servers:
+    - name: 192.0.2.124
+      burst: true
+    - name: 192.0.2.123
+      iburst: true
+  vrf: default
+  authenticate: true
+  authenticate_servers_only: true
+  trusted_keys: "1"
+```
+
+--8<--
+schemas/avd_design/docs/tables/ntp-settings-profiles.md
 --8<--
 
 ### sFlow
@@ -1693,6 +1747,12 @@ schemas/avd_design/docs/tables/network-services-vrfs-bgp-settings.md
 
 --8<--
 schemas/avd_design/docs/tables/network-services-vrfs-ospf-settings.md
+--8<--
+
+#### Network services VRF OSPFv3 configuration
+
+--8<--
+schemas/avd_design/docs/tables/network-services-vrfs-ospfv3-settings.md
 --8<--
 
 #### Network services L2 VLANs configuration

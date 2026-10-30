@@ -540,6 +540,19 @@ keys:
 
           Fix to configure TLS on RADIUS server group members to match their global
           RADIUS server configurations.'
+      fix_virtual_source_nat_address_families:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Fix the selection of the addresses used for the IPv4 and IPv6 virtual source-nat
+          of a VRF.
+
+          When enabled, each address family uses the first loopback in the VRF with
+          an address of that family.
+
+          The VTEP diagnostic loopback is used first, followed by the VRF loopbacks
+          in input order.'
       only_configure_ipv6_inband_mgmt_prefix_list_when_used:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -2787,6 +2800,14 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          port:
+            type: int
+            min: 0
+            max: 65535
+            description: 'UDP port used for RADIUS dynamic authorization requests.
+
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is
+              `true`.'
           additional_groups:
             type: list
             description: 'List of additional RADIUS server groups for dynamic authorization
@@ -6265,6 +6286,58 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
+              ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: 'Router OSPFv3 settings for the VRF.
+
+                  The OSPFv3 configuration is created automatically on a device when
+                  at least one OSPFv3-enabled SVI in this VRF is configured on that
+                  device.
+
+                  These settings only override the defaults.
+
+                  VRF `default` is not supported yet.'
+                keys:
+                  router_id:
+                    type: str
+                    default: main_router_id
+                    description: "Router ID to use for OSPFv3 in this VRF.\nThis can
+                      be an IPv4 address, \"main_router_id\", \"none\" or \"diagnostic_loopback\".\n-
+                      \"main_router_id\" will use the IP address of Loopback0 or the
+                      common `router general` Router ID if `use_router_general_for_router_id`
+                      is set.\n- \"none\" will not configure an OSPFv3 Router ID for
+                      this VRF.\n  EOS then uses the `router general` Router ID or
+                      an IPv4 address of an interface in the VRF.\n  If neither exists,
+                      for example in an IPv6-only VRF, the OSPFv3 instance does not
+                      start.\n- \"diagnostic_loopback\" will use the IP address of
+                      the VRF Diagnostic Loopback interface."
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                        description: 'Redistribute BGP into OSPFv3.
+
+                          Ignored on devices where BGP is not configured for this
+                          VRF.'
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                        description: Redistribute connected routes into OSPFv3.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/vrfs/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -6272,6 +6345,21 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
+              redistribute_ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: 'Redistribute OSPFv3 internal routes into BGP for
+                      this VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.
+
+                      OSPFv3 external routes are not redistributed.'
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -6986,7 +7074,21 @@ keys:
                       max: 8191
                     ip_address:
                       type: str
-                      required: true
+                      description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      min_length: 1
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        At least one of `ip_address` or `ipv6_addresses` must be set.
+
+                        The first address in this list is used for the IPv6 virtual
+                        source-nat of the VRF, unless the VTEP diagnostic loopback
+                        or an earlier loopback in the VRF already sets it.'
+                      items:
+                        type: str
+                        description: IPv6 address/Mask.
+                        min_length: 1
                     description:
                       type: str
                     enabled:
@@ -6994,7 +7096,10 @@ keys:
                       default: true
                     ospf:
                       type: dict
-                      description: OSPF interface configuration.
+                      description: 'OSPFv2 interface configuration.
+
+                        Requires `ip_address` to be set when OSPF is enabled on both
+                        the VRF and this loopback.'
                       keys:
                         enabled:
                           type: bool
@@ -7889,8 +7994,6 @@ keys:
       network_services:
         l3: true
   ntp_settings:
-    documentation_options:
-      table: time-configuration
     type: dict
     description: NTP settings
     keys:
@@ -8000,6 +8103,26 @@ keys:
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
+  ntp_settings_profiles:
+    type: list
+    primary_key: profile
+    description: NTP settings
+    items:
+      type: dict
+      $ref: eos_designs#/keys/ntp_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: NTP settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   only_local_vlan_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -10539,7 +10662,6 @@ keys:
               type: str
               valid_values:
               - disabled
-              - '0'
               - '7'
               default: disabled
               description: 'Key type for the computed localized SNMPv3 auth and priv
@@ -10549,14 +10671,11 @@ keys:
 
                 Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
 
-                When set to `0` or `7`, AVD renders the computed localized keys using
-                EOS `key <type> <key>` syntax for both auth and priv.
+                When set to `7`, AVD renders the computed localized keys using EOS
+                `key <type> <key>` syntax for both auth and priv.
 
                 - `disabled`: Use legacy syntax without key type (auth_passphrase
                 rendered directly). Default for backward compatibility.
-
-                - `0`: Key string is plaintext. AVD renders the raw computed localized
-                key.
 
                 - `7`: Type-7 encrypted (HIDDEN) key. AVD applies Type-7 obfuscation
                 to the computed localized key before rendering.'
@@ -10996,7 +11115,7 @@ keys:
       remove_in_version: 6.0.0
   timezone:
     documentation_options:
-      table: time-configuration
+      table: ntp-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
@@ -14575,7 +14694,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -14591,6 +14710,26 @@ $defs:
               '
             type: str
             format: ipv6_cidr
+          inband_mgmt_ipv6_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IPv6 address within the subnet.
+
+              The assigned IPv6 address will be computed by adding this offset to
+              the device ID.
+
+              Choose an IPv6 subnet large enough to contain all calculated addresses.
+
+              The highest L2 leaf address is:
+
+              <subnet> + 3 + <highest l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+
+              If the calculated address falls outside the subnet, address allocation
+
+              fails with "address out of range".'
           inband_mgmt_ipv6_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -15303,6 +15442,13 @@ $defs:
               The profile must be defined under `dns_settings_profiles`.
 
               The selected profile settings will be merged over the general `dns_settings`.'
+          ntp_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the NTP settings profile to apply to this device.
+
+              The profile must be defined under `ntp_settings_profiles`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -17491,13 +17637,18 @@ $defs:
         description: 'Name of the IPv4 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_in`. Setting both raises an error.'
         type: str
       ipv4_acl_out:
         description: 'Name of the IPv4 Access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_out`. Setting both raises an
+          error.'
         type: str
       ipv6_acl_in:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -17522,6 +17673,25 @@ $defs:
 
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
           and will be removed in AVD 7.0.0.'
+        type: str
+      ipv4_standard_acl_in:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          ingress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field
+          substitution for "interface_ip" is required, setting both raises an error.'
+        type: str
+      ipv4_standard_acl_out:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          egress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when
+          field substitution for "interface_ip" is required, setting both raises an
+          error.'
         type: str
       ip_helpers:
         type: list
@@ -17842,6 +18012,60 @@ $defs:
                     make use of a vault or similar.'
                   min_length: 1
                   max_length: 16
+      ospfv3:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: 'OSPFv3 interface configuration.
+
+          Enabling OSPFv3 on an SVI automatically creates the OSPFv3 configuration
+          for the VRF of the SVI on the device.
+
+          Only the IPv6 address family is currently supported.
+
+          SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+
+          OSPFv3 uses the IPv6 link-local address of the SVI, so `ipv6_enable: true`
+          is set automatically on SVIs without `ipv6_address` (`ipv6_enable: false`
+          is not supported).
+
+          Anycast IPv6 (`ipv6_address_virtuals`) is not supported.
+
+          SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+
+          VRF `default` and SVIs deployed as subinterfaces with `uplink_type: lan`
+          are not supported.'
+        keys:
+          enabled:
+            type: bool
+          area:
+            type: str
+            default: 0.0.0.0
+            description: OSPFv3 area ID in IPv4 address or decimal format (range 0
+              to 4294967295).
+          point_to_point:
+            type: bool
+            default: false
+            description: Configure the OSPFv3 network type as point-to-point.
+          passive:
+            type: bool
+            default: false
+            description: 'Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+
+              By default, OSPFv3-enabled SVIs are configured with `no ospfv3 passive-interface`.'
+          ipv4:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: 'Set to `false` to exclude the IPv4 address family from
+                  OSPFv3 on an SVI with IPv4 addressing.
+
+                  The IPv4 address family is not supported yet, so `true` raises an
+                  error.
+
+                  An SVI with IPv4 addressing also raises an error unless this is
+                  set to `false`.'
       bgp:
         type: dict
         keys:

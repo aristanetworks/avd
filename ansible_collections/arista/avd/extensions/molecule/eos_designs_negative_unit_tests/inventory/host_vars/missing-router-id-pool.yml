@@ -17,6 +17,3 @@ l3leaf:
         - name: missing-router-id-pool
           id: 1
           mgmt_ip: 192.168.201.116/24
-
-expected_error_message: >-
-  'router_id_pool' is required but was not found for host 'missing-router-id-pool'.

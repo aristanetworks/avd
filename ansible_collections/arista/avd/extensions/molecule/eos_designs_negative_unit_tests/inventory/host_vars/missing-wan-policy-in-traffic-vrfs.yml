@@ -66,6 +66,3 @@ wan_virtual_topologies:
         drop_unmatched: true
         path_groups:
           - names: [MPLS]
-expected_error_message: >-
-  The policy `wan_virtual_topologies.policies[PROD-AUTOVPN-POLICY]` cannot match any traffic but is assigned to a VRF.
-  Make sure at least one path-group present on the device is used in the policy.

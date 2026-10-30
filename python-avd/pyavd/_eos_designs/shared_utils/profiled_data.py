@@ -46,3 +46,20 @@ class ProfiledDataMixin(Protocol):
         Read without inserting a default empty list into the resolved DNS settings.
         """
         return self.dns_settings._get("servers") or None
+
+    @cached_property
+    def ntp_settings(self: SharedUtilsProtocol) -> EosDesigns.NtpSettings:
+        """
+        NTP settings with the node's `ntp_settings_profile` resolved and merged in.
+
+        If `ntp_settings_profile` is not defined, the root-level `ntp_settings` is returned.
+        """
+        if not self.node_config.ntp_settings_profile:
+            return self.inputs.ntp_settings
+
+        return resolve_profile(
+            self.inputs.ntp_settings,
+            self.inputs.ntp_settings_profiles,
+            self.node_config.ntp_settings_profile,
+            target_name="ntp_settings",
+        )

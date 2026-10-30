@@ -8,6 +8,6 @@ type: dict
 keys:
   timezone:
     documentation_options:
-      table: time-configuration
+      table: ntp-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".

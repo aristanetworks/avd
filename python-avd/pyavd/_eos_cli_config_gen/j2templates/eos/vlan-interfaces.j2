@@ -414,6 +414,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.pim.ipv4.local_interface is arista.avd.defined %}
    pim ipv4 local-interface {{ vlan_interface.pim.ipv4.local_interface }}
 {%     endif %}
+{%     if vlan_interface.service_policy.qos.input is arista.avd.defined %}
+   service-policy type qos input {{ vlan_interface.service_policy.qos.input }}
+{%     endif %}
 {%     if vlan_interface.isis_enable is arista.avd.defined %}
    isis enable {{ vlan_interface.isis_enable }}
 {%     endif %}
