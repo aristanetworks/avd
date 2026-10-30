@@ -12,7 +12,8 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ssh_settings.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ssh_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ssh_settings.vrfs.[].enabled") | Boolean | Required |  |  | Enable SSH in VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "ssh_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "ssh_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 extended access-list name.<br>Mutually exclusive with `ipv4_standard_acl`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "ssh_settings.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access-list name.<br>This ACL must be defined in `ipv4_standard_acls` catalog. When it is defined in catalog,<br>it will be automatically generated in the device configuration.<br>Mutually exclusive with `ipv4_acl`. Setting both raises an error. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "ssh_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "ssh_settings.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
     | [<samp>&nbsp;&nbsp;client_vrfs</samp>](## "ssh_settings.client_vrfs") | List, items: Dictionary |  |  |  |  |
@@ -41,8 +42,15 @@
           # Enable SSH in VRF.
           enabled: <bool; required>
 
-          # IPv4 access-list name.
+          # IPv4 extended access-list name.
+          # Mutually exclusive with `ipv4_standard_acl`. Setting both raises an error.
           ipv4_acl: <str>
+
+          # IPv4 standard access-list name.
+          # This ACL must be defined in `ipv4_standard_acls` catalog. When it is defined in catalog,
+          # it will be automatically generated in the device configuration.
+          # Mutually exclusive with `ipv4_acl`. Setting both raises an error.
+          ipv4_standard_acl: <str>
 
           # IPv6 access-list name.
           ipv6_acl: <str>
