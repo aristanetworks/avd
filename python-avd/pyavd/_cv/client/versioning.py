@@ -7,7 +7,7 @@ from re import fullmatch
 from .constants import CVAAS_VERSION_STRING
 
 # The double braces are escaping braces for the f-string. The regex pattern will get a single brace.
-VERSION_PATTERN = re_compile(rf"(\d{{4}}\.\d{{1,2}}\.\d{{1,2}}(?:\.\d{{1,2}})?|{CVAAS_VERSION_STRING})")
+VERSION_PATTERN = re_compile(rf"(\d{{4}}\.\d{{1,2}}\.\d{{1,2}}(?:\.\d+)?|{CVAAS_VERSION_STRING})")
 
 
 class CvVersion:
