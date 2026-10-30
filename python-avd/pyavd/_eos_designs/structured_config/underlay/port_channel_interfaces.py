@@ -141,7 +141,7 @@ class PortChannelInterfacesMixin(Protocol):
             if self.inputs.avd_design_future.raise_for_port_channels_without_members:
                 raise AristaAvdInvalidInputsError(msg)
             warnings.warn(
-                f"{msg} This configuration will be rejected in AVD 7.0.",
+                f"{msg} Set 'avd_design_future.raise_for_port_channels_without_members: true' to opt in to the future behavior.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )

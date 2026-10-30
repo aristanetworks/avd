@@ -241,7 +241,7 @@ class RouterBgpMixin(Protocol):
                         if self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families:
                             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         warnings.warn(
-                            f"{msg} This configuration will be rejected in AVD 7.0.",
+                            f"{msg} Set 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to opt in to the future behavior.",
                             AvdFutureBehaviorWarning,
                             stacklevel=2,
                         )

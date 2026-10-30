@@ -29,13 +29,16 @@ class AddressLockingMixin(Protocol):
             return
 
         if address_locking_settings.local_interface and address_locking_settings.dhcp_server_interfaces:
-            msg = "'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive."
+            msg = (
+                "Setting both 'address_locking_settings.local_interface' and "
+                "'address_locking_settings.dhcp_server_interfaces' is not supported. "
+                "Only one of these settings should be configured. "
+                "The configuration will be rejected in AVD 7.0."
+            )
             if self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces:
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             warnings.warn(
-                "Setting both 'address_locking_settings.local_interface' and "
-                "'address_locking_settings.dhcp_server_interfaces' is not supported and will be rejected in AVD 7.0. "
-                "Ignoring 'address_locking_settings.dhcp_server_interfaces'.",
+                f"{msg} Ignoring 'address_locking_settings.dhcp_server_interfaces'.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
