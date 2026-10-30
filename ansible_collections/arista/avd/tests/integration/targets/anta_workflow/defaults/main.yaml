@@ -1,0 +1,14 @@
+---
+testcase: '*'
+collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
+actual_output_dir: "{{ collection_path }}/output/anta_workflow"
+anta_test_devices:
+  - anta-leaf1
+  - anta-leaf2
+anta_test_catalog:
+  anta.tests.software:
+    - VerifyEOSVersion:
+        versions: [4.32.3M]
+    - VerifyEOSExtensions:
+        filters:
+          tags: [border_leaf]
