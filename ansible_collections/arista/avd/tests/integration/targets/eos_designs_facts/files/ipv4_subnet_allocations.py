@@ -203,12 +203,75 @@ def facts_to_configuration(directory: Path) -> None:
     assert config["management_interfaces"][0]["ip_address"] == "192.0.2.10/24"
     assert config["ntp"]["servers"][0]["source_address"] == "192.0.2.10"
 
-    twin = inputs({"leaf": {"digital_twin": {"mgmt_ip": "198.51.100.10/24"}}}, digital_twin={"environment": "act"})
-    twin_facts = get_avd_facts(twin, pool_manager=PoolManager(directory), digital_twin=True)
-    assert twin_facts["leaf"].mgmt_ip == "198.51.100.10/24"
-    assert twin_facts["leaf"].regular_mgmt_ip == "192.0.2.10/24"
-    twin_config = get_device_structured_config("leaf", twin["leaf"], twin_facts, digital_twin=True)._dump()
-    assert twin_config["management_interfaces"][0]["ip_address"] == "198.51.100.10/24"
+    for algorithm in ("auto", "device_id"):
+        # An explicit twin address needs neither an allocator nor a device ID.
+        twin = inputs(
+            {"leaf": {"digital_twin": {"mgmt_ip": "198.51.100.10/24", "mgmt_gateway": "198.51.100.1"}}},
+            algorithm,
+            digital_twin={"environment": "act"},
+            ntp_settings=data["leaf"]["ntp_settings"],
+        )
+        twin_facts = get_avd_facts(twin, digital_twin=True)
+        assert twin_facts["leaf"].mgmt_ip == "198.51.100.10/24"
+        serialized = json.dumps({name: fact._dump() for name, fact in twin_facts.items()})
+        restored = {name: EosDesignsFacts._from_dict(fact) for name, fact in json.loads(serialized).items()}
+        twin_config = get_device_structured_config("leaf", twin["leaf"], restored, digital_twin=True)._dump()
+        assert twin_config["management_interfaces"][0]["ip_address"] == "198.51.100.10/24"
+        assert twin_config["ntp"]["servers"][0]["source_address"] == "198.51.100.10"
+        assert twin_config["static_routes"][0]["next_hop"] == "198.51.100.1"
+        assert twin_config["metadata"]["digital_twin"]["ip_addr"] == "198.51.100.10/24"
+
+
+def digital_twin_allocations(directory: Path) -> None:
+    """The caller's output directories isolate production and twin state, including retained reservations."""
+    production_dir = directory / "intended"
+    twin_dir = directory / "digital_twin/intended"
+    production = inputs({"leaf": {}, "spare": {}})
+    manager = PoolManager(production_dir)
+    production_addresses = addresses(get_avd_facts(production, pool_manager=manager))
+    assert manager.save_updated_pools()
+    production_path = production_dir / "data/MGMT_TEST-ipv4-allocations.yml"
+    production_state = production_path.read_bytes()
+    production_mtime = production_path.stat().st_mtime_ns
+
+    twin_settings = {
+        "digital_twin": {"environment": "act"},
+        "mgmt_gateway": "192.0.2.1",
+        "ipv4_subnets": [{"name": "OOB", "subnet": "198.51.100.0/24", "range": "198.51.100.10-198.51.100.20"}],
+    }
+    twin = inputs(
+        {
+            "leaf": {"digital_twin": {"mgmt_ip": "198.51.100.10/24", "mgmt_gateway": "198.51.100.11"}},
+            "auto1": {"digital_twin": {"mgmt_gateway": "198.51.100.11"}},
+            "auto2": {"digital_twin": {"mgmt_gateway": "198.51.100.11"}},
+        },
+        **twin_settings,
+    )
+    manager = PoolManager(twin_dir)
+    twin_facts = get_avd_facts(twin, pool_manager=manager, digital_twin=True)
+    assert addresses(twin_facts) == {"leaf": "198.51.100.10/24", "auto1": "198.51.100.12/24", "auto2": "198.51.100.13/24"}
+    assert manager.save_updated_pools()
+    twin_path = twin_dir / "data/MGMT_TEST-ipv4-allocations.yml"
+    twin_state = twin_path.read_bytes()
+    twin_config = get_device_structured_config("auto1", twin["auto1"], twin_facts, digital_twin=True)._dump()
+    assert twin_config["management_interfaces"][0]["ip_address"] == "198.51.100.12/24"
+    assert twin_config["static_routes"][0]["next_hop"] == "198.51.100.11"
+    assert twin_config["metadata"]["digital_twin"]["ip_addr"] == "198.51.100.12/24"
+
+    # An overridden owner and an absent owner both retain their twin reservations.
+    manager = PoolManager(twin_dir)
+    overridden = inputs({"auto1": {"digital_twin": {"mgmt_ip": "198.51.100.50/24"}}}, **twin_settings)
+    assert get_avd_facts(overridden, pool_manager=manager, digital_twin=True)["auto1"].mgmt_ip == "198.51.100.50/24"
+    assert not manager.save_updated_pools()
+    assert twin_path.read_bytes() == twin_state
+
+    # Returning to production reuses its assignments without touching either state file.
+    manager = PoolManager(production_dir)
+    assert addresses(get_avd_facts(production, pool_manager=manager)) == production_addresses
+    assert not manager.save_updated_pools()
+    assert production_path.read_bytes() == production_state
+    assert production_path.stat().st_mtime_ns == production_mtime
+    assert twin_path.read_bytes() == twin_state
 
 
 def state_safety(directory: Path) -> None:
@@ -284,7 +347,7 @@ def main() -> None:
     schema_contract()
     with TemporaryDirectory(prefix="avd-ipv4-allocation-tests-") as temporary:
         root = Path(temporary)
-        for test in (persistent_builds, overrides_and_collisions, subnet_boundaries, facts_to_configuration, state_safety):
+        for test in (persistent_builds, overrides_and_collisions, subnet_boundaries, facts_to_configuration, digital_twin_allocations, state_safety):
             test(root / test.__name__)
     print("IPv4 management allocation integration checks passed.")  # noqa: T201
 

@@ -1163,6 +1163,7 @@ The `auto` mode is independent of node ID. It retains valid assignments and allo
 Assignments are stored in `data/<fabric_name>-ipv4-allocations.yml` under the output directory.
 PyAVD callers must pass a `PoolManager` to `get_avd_facts` and call `save_updated_pools()` after success.
 Configuration workers consume the completed facts and do not allocate again.
+The existing `mgmt_ip` fact contains the effective address for the build, including any applicable ACT Digital Twin override.
 Retain the state file to preserve addresses; deleting it loses assignment history.
 Previously automatic endpoints, including devices switched to explicit addressing, remain reserved to protect partial builds.
 Static and `device_id` claims are discovered from the current inputs, so include those devices when allocating new automatic addresses.
@@ -1170,6 +1171,11 @@ To reclaim a reservation, stop concurrent builds, remove its allocation entry fr
 Invalid retained assignments fail rather than silently changing addresses. Switching allocation mode or subnet is a migration that may require deliberate reclamation.
 Concurrent changes to state are rejected; re-run against the updated state.
 If a terminated writer leaves a `.yml.lock` file, confirm no build is writing that state before removing the lock and retrying.
+
+Use a separate output directory for Digital Twin builds, such as `output_dir_name: digital_twin/intended`, following the Digital Twin build setup.
+The Pool Manager stores allocations under the selected output directory; the Digital Twin flag does not change that location automatically.
+PyAVD callers supply a separate PoolManager rooted in the twin output directory.
+Twin builds use the same allocation logic and retain their own reservations. An applicable explicit `digital_twin.mgmt_ip` takes precedence over allocation.
 
 Conflict checks cover participating OOB addresses and loaded reservations in the same fabric and VRF.
 They do not discover DHCP leases, external devices, or allocations from other AVD features.

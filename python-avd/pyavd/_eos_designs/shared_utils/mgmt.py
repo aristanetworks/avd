@@ -75,27 +75,21 @@ class MgmtMixin(Protocol):
         return self.inputs.mgmt_interface_vrf
 
     @cached_property
-    def regular_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
-        """Explicit or allocated regular address; configuration workers consume the completed fact."""
-        if self.node_config.mgmt_ip is not None:
-            return self.node_config.mgmt_ip
-        if self.inputs.mgmt_interface_settings.ipv4_subnet is None:
-            return None
-        if isinstance(self.switch_facts, EosDesignsFacts):
-            return self.switch_facts.regular_mgmt_ip
-        return self._allocated_mgmt_ip
-
-    @cached_property
     def oob_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
         """
         Management IPv4 address used for the generated OOB management interface.
 
-        In ACT Digital Twin mode, `digital_twin.mgmt_ip` takes precedence over the regular node `mgmt_ip`.
+        An ACT Digital Twin override takes precedence when OOB management is configured explicitly or through a named subnet.
         """
-        if self.is_act_digital_twin and self.regular_mgmt_ip is not None:
-            return default(self.node_config.digital_twin.mgmt_ip, self.regular_mgmt_ip)
+        # Configuration workers consume the effective address already resolved during facts generation.
+        if self.inputs.mgmt_interface_settings.ipv4_subnet is not None and isinstance(self.switch_facts, EosDesignsFacts):
+            return self.switch_facts.mgmt_ip
 
-        return self.regular_mgmt_ip
+        mgmt_ip = default(self.node_config.mgmt_ip, self._allocated_mgmt_ip)
+        if self.is_act_digital_twin and (mgmt_ip is not None or self.inputs.mgmt_interface_settings.ipv4_subnet is not None):
+            return default(self.node_config.digital_twin.mgmt_ip, mgmt_ip)
+
+        return mgmt_ip
 
     @cached_property
     def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:
@@ -112,7 +106,7 @@ class MgmtMixin(Protocol):
         """
         regular_mgmt_gateway = default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
 
-        if self.is_act_digital_twin and self.regular_mgmt_ip is not None:
+        if self.is_act_digital_twin and (self.node_config.mgmt_ip is not None or self.inputs.mgmt_interface_settings.ipv4_subnet is not None):
             return default(self.node_config.digital_twin.mgmt_gateway, regular_mgmt_gateway)
 
         return regular_mgmt_gateway
