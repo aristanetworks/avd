@@ -1,0 +1,30 @@
+---
+# A session-level ACL with interface-specific substitution cannot be resolved for multiple sources.
+type: l2leaf
+avd_design_future:
+  raise_for_missing_monitor_session_acls: true
+l2leaf:
+  nodes:
+    - name: monitor-session-ambiguous-ipv4-session-acl
+ipv4_acls:
+  - name: MONITOR-ACL
+    entries:
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+network_ports:
+  - switches:
+      - monitor-session-ambiguous-ipv4-session-acl
+    switch_ports:
+      - Ethernet1-2
+    monitor_sessions:
+      - name: CAPTURE
+        role: source
+        session_settings:
+          access_group:
+            type: ip
+            name: MONITOR-ACL
+expected_error_message: >-
+  Cannot substitute fields in the ACL 'MONITOR-ACL' configured under `session_settings.access_group` for monitor session 'CAPTURE'.
+  Session-level ACL substitution requires exactly one source interface, but found 2.

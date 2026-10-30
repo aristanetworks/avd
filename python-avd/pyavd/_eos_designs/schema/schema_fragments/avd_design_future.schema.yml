@@ -155,3 +155,12 @@ keys:
           - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
           - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met).
         default: false
+      raise_for_missing_monitor_session_acls:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+          and configure the referenced ACL definition from that catalog.
+          When disabled (default), skip catalog validation and automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
+          IPv4 standard monitor-session ACLs are always validated and configured.

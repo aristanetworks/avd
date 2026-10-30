@@ -214,6 +214,7 @@ tenant_a:
           # Test monitor session on subinterface
           - interfaces: [Ethernet7.7]
             ip_addresses: [10.10.20.27/24]
+            ipv6_addresses: [2001:db8:20::27/64]
             nodes: [dc1-bl1b]
             mtu: 9000
             enabled: true
@@ -223,6 +224,17 @@ tenant_a:
                 role: source
                 source_settings:
                   direction: rx
+                  access_group:
+                    type: ip
+                    name: MONITOR-IPV4-INTERFACE
+              - name: Monitor_session_on_sub_interface_ipv6
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    type: ipv6
+                    name: MONITOR-IPV6-INTERFACE
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
@@ -446,6 +458,27 @@ tenant_a:
         # ID defined both in L2VLAN and SVI, making sure this does not raise a conflict.
 
 ipv4_acls:
+  # ACLs referenced by monitor sessions in tenant interfaces and DC1_SERVERS.
+  # avd_design_future.raise_for_missing_monitor_session_acls is intentionally unset to test the default behavior:
+  # monitor sessions render ACL references without validating or configuring their catalog definitions.
+  - name: ip_acl
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+  - name: myIpAVL
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+  - name: myIpAL
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
   - name: ACL1
     entries:
       - sequence: 10
@@ -464,6 +497,13 @@ ipv4_acls:
     entries:
       - remark: Some remark will not require source and destination fields.
       - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+  - name: MONITOR-IPV4-INTERFACE
+    entries:
+      - sequence: 10
+        action: permit
         protocol: ip
         source: interface_ip
         destination: any
@@ -497,4 +537,20 @@ ipv6_acls:
       - action: permit
         protocol: ipv6
         source: 2001:db8::/32
+        destination: any
+  - name: MONITOR-IPV6-INTERFACE
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: interface_ipv6
+        destination: any
+
+# ACL referenced by the MAC monitor session in DC1_SERVERS.
+# With avd_design_future.raise_for_missing_monitor_session_acls unset, this catalog entry is not validated or configured by the monitor session.
+mac_acls:
+  - name: mac_acl
+    entries:
+      - action: permit
+        source: any
         destination: any
