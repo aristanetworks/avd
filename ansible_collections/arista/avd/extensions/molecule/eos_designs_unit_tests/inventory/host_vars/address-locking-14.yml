@@ -1,0 +1,31 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-14
+      id: 101
+      bgp_as: 101
+
+# Testing LeaseQuery mode from a network port.
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+address_locking_settings:
+  local_interface: Management1
+  dhcp_servers_ipv4:
+    - 192.0.2.1
+
+network_ports:
+  - switches: [address-locking-14]
+    switch_ports: [Ethernet2]
+    endpoint: ADDRESS_LOCKING_14_NETWORK_PORT
+    mode: access
+    vlans: 101
+    address_locking:
+      ipv4: true
