@@ -289,8 +289,8 @@ keys:
               - standard extended
               - standard extended large
           received_attribute_discard:
-             type: dict
-             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
       peer_groups:
         type: list
         primary_key: name
