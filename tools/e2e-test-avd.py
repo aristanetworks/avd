@@ -88,6 +88,8 @@ class DocumentationConfigOverrides:
     device_docs_toc: bool | None = None
     fabric_doc: bool | None = None
     include_connected_endpoints: bool | None = None
+    include_vrf_summary: bool | None = None
+    include_bgp_peer_groups: bool | None = None
     p2p_links_csv: bool | None = None
     toc: bool | None = None
     topology_csv: bool | None = None
@@ -99,6 +101,8 @@ class DocumentationConfig:
     device_docs_toc: bool
     fabric_doc: bool
     include_connected_endpoints: bool
+    include_vrf_summary: bool
+    include_bgp_peer_groups: bool
     p2p_links_csv: bool
     toc: bool
     topology_csv: bool
@@ -116,6 +120,8 @@ class DocumentationConfig:
             device_docs_toc=default(overrides.device_docs_toc, parent.device_docs_toc),
             fabric_doc=default(overrides.fabric_doc, parent.fabric_doc),
             include_connected_endpoints=default(overrides.include_connected_endpoints, parent.include_connected_endpoints),
+            include_vrf_summary=default(overrides.include_vrf_summary, parent.include_vrf_summary),
+            include_bgp_peer_groups=default(overrides.include_bgp_peer_groups, parent.include_bgp_peer_groups),
             p2p_links_csv=default(overrides.p2p_links_csv, parent.p2p_links_csv),
             toc=default(overrides.toc, parent.toc),
             topology_csv=default(overrides.topology_csv, parent.topology_csv),
@@ -130,6 +136,8 @@ class ProjectDocumentationConfig(DocumentationConfig):
     device_docs_toc: bool = True
     fabric_doc: bool = True
     include_connected_endpoints: bool = False
+    include_vrf_summary: bool = False
+    include_bgp_peer_groups: bool = False
     topology_csv: bool = False
     p2p_links_csv: bool = False
     toc: bool = True
@@ -745,6 +753,8 @@ class AvdV6Build:
             fabric_name=fabric_name,
             fabric_documentation=doc_config.fabric_doc,
             include_connected_endpoints=doc_config.include_connected_endpoints,
+            include_vrf_summary=doc_config.include_vrf_summary,
+            include_bgp_peer_groups=doc_config.include_bgp_peer_groups,
             topology_csv=doc_config.topology_csv,
             p2p_links_csv=doc_config.p2p_links_csv,
             toc=doc_config.toc,
