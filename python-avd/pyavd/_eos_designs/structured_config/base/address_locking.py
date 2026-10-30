@@ -33,7 +33,9 @@ class AddressLockingMixin(Protocol):
             if self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces:
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             warnings.warn(
-                f"{msg} Set 'avd_design_future.fix_address_locking_dhcp_server_interfaces: true' to opt in to the future behavior.",
+                "Setting both 'address_locking_settings.local_interface' and "
+                "'address_locking_settings.dhcp_server_interfaces' is not supported and will be rejected in AVD 7.0. "
+                "Ignoring 'address_locking_settings.dhcp_server_interfaces'.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
