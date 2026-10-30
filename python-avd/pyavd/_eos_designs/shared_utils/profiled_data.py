@@ -72,26 +72,37 @@ class ProfiledDataMixin(Protocol):
 
         If `cv_settings_profile` is not defined, the root-level `cv_settings` is returned.
         """
-        if not self.node_config.cv_settings_profile:
-            return self.inputs.cv_settings
+        cv_settings = self.inputs.cv_settings
+        if self.node_config.cv_settings_profile:
+            cv_settings = resolve_profile(
+                self.inputs.cv_settings,
+                self.inputs.cv_settings_profiles,
+                self.node_config.cv_settings_profile,
+                target_name="cv_settings",
+            )
 
-        cv_settings = resolve_profile(
-            self.inputs.cv_settings,
-            self.inputs.cv_settings_profiles,
-            self.node_config.cv_settings_profile,
-            target_name="cv_settings",
-        )
+        # The global schema requires `cvaas.enabled`; profiles may omit it while being defined.
+        cvaas = cv_settings._get("cvaas")
+        if cvaas is not None and cvaas._get("enabled") is None:
+            msg = "The 'enabled' setting must be configured when CVaaS settings are provided."
+            raise AristaAvdInvalidInputsError(msg)
 
-        if cv_settings.onprem_clusters:
-            # Enforce validation after _deepinherit
-            for cl in cv_settings.onprem_clusters:
-                servers = [server.name for server in cl.servers]
-
+        if onprem_clusters := cv_settings._get("onprem_clusters", default=[]):
+            server_names = set()
+            for cluster in onprem_clusters:
+                servers = [server.name for server in cluster.servers]
+                # The global schema requires at least one server after profile inheritance is resolved.
                 if not servers:
-                    msg = f"At least 1 server must be provided for on-prem CVP cluster {cl.name}"
+                    msg = f"At least 1 server must be provided for on-prem CVP cluster {cluster.name}"
                     raise AristaAvdInvalidInputsError(msg)
+                # The global schema caps each resolved cluster's server list at three.
                 if len(servers) > 3:
-                    msg = f"Max 3 servers allowed for on-prem CVP cluster {cl.name}, provided: {sorted(servers)}"
+                    msg = f"Max 3 servers allowed for on-prem CVP cluster {cluster.name}, provided: {sorted(servers)}"
                     raise AristaAvdInvalidInputsError(msg)
-
+                for server_name in servers:
+                    # Mirrors `onprem_clusters.unique_keys: [servers.name]` across cluster entries.
+                    if server_name in server_names:
+                        msg = f"Duplicate on-prem CVP server name '{server_name}'. Server names must be unique across clusters."
+                        raise AristaAvdInvalidInputsError(msg)
+                    server_names.add(server_name)
         return cv_settings
