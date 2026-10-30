@@ -10,7 +10,8 @@ from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException, CVWorkspaceSynchronizationAttemptsExhausted
 
 from .create_workspace_on_cv import create_workspace_on_cv
-from .deploy_configs_to_cv import delete_configs_from_cv, deploy_configs_to_cv
+from .decommission_devices_on_cv import stage_devices_for_decommission_on_cv, wait_for_device_decommission_staging_on_cv
+from .deploy_configs_to_cv import delete_configs_from_cv, delete_decommissioned_device_configlets_from_cv, deploy_configs_to_cv
 from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv
 from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
@@ -27,11 +28,11 @@ from .models import (
     DeployToCvResult,
 )
 from .utils import extract_from_device_deployments
-from .verify_devices_on_cv import verify_devices_on_cv
+from .verify_devices_on_cv import verify_devices_in_cloudvision_inventory, verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .models import AvdManifest, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
+    from .models import AvdManifest, CVDevice, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVPathfinderMetadata
 
 LOGGER = getLogger(__name__)
 
@@ -47,9 +48,34 @@ async def _execute_deployment_steps(
     device_deployments: list[CVDeviceDeployment],
     strict_tags: bool,
     cv_client: CVClient,
+    decommission_devices: list[CVDevice],
+    existing_decommission_devices: list[CVDevice],
 ) -> None:
     """Execute all deployment sub-workflows which rely on the state of the CloudVision mainline."""
     try:
+        # Stage decommission before reconciling configs and containers. CloudVision removes device-specific containers and their parent references.
+        if existing_decommission_devices:
+            staged_decommission_devices = await stage_devices_for_decommission_on_cv(
+                devices=existing_decommission_devices,
+                workspace_id=result.workspace.id,
+                result=result,
+                cv_client=cv_client,
+            )
+            if staged_decommission_devices:
+                await wait_for_device_decommission_staging_on_cv(
+                    devices=staged_decommission_devices,
+                    workspace_id=result.workspace.id,
+                    result=result,
+                    cv_client=cv_client,
+                )
+
+            successfully_staged_decommission_serials = {device.serial_number for device in result.removed_devices}
+            await delete_decommissioned_device_configlets_from_cv(
+                devices=[device for device in decommission_devices if device.serial_number in successfully_staged_decommission_serials],
+                result=result,
+                cv_client=cv_client,
+            )
+
         # Deploy device tags
         await deploy_tags_to_cv(
             tags=device_tags,
@@ -76,7 +102,7 @@ async def _execute_deployment_steps(
         # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
         #       by building a hierarchy from the CVEosConfig objects.
         await deploy_configs_to_cv(
-            configs=configs,
+            configs=[config for config in configs if config.device.action != "decommission"],
             result=result,
             cv_client=cv_client,
         )
@@ -124,6 +150,8 @@ async def _rebase_workspace_on_cv_or_raise(
     """Rebase the Workspace unless synchronization attempts are exhausted."""
     LOGGER.info("deploy_to_cv: Workspace %s (%s) requires synchronization/rebase.", result.workspace.name, result.workspace.id)
     if workspace_sync_attempt >= result.workspace.max_sync_retries:
+        await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+        result.workspace.state = "abandoned"
         raise CVWorkspaceSynchronizationAttemptsExhausted(result.workspace.max_sync_retries, result.workspace.name, result.workspace.id)
     LOGGER.info(
         "deploy_to_cv: Performing synchronization/rebase attempt %d/%d for Workspace %s (%s).",
@@ -192,7 +220,6 @@ async def deploy_to_cv(
         strict_tags: If `True` other tags associated with the devices will get removed. \
             Otherwise other tags will be left as-is. \
             Other Tags with the same label are always removed.
-
     TODO: Consider implementing "strict configs".
           Very hard to implement since configs can now come from various studios and tag queries we have little control over.
             strict_configs: If `True` other configs associated with the devices will get removed. \
@@ -216,17 +243,24 @@ async def deploy_to_cv(
         + Verify that device inputs have no overlapping serial numbers or System MAC addresses.
         + On CV Identify all devices based on hostname, serial number or System MAC address.
             + In-place update device objects.
+        + On CV verify that decommission devices (device.action="decommission") exist in the CV inventory.
+            + In-place update device objects. Devices not found are silently skipped (nothing to decommission).
         + On CV Create or update existing Workspace with name and description.
             + In-place update workspace object.
         The following steps are executed inside the sync retry loop and repeated if CloudVision requires Workspace synchronization:
+        + Stage decommission for decommission devices that exist on CV.
+        + Wait for decommission staging to reach terminal state.
+        + Delete flat-layout configlets left behind for successfully staged decommission devices. CloudVision removes device-specific containers.
         + On CV in "Inventory & Topology Studio" set/verify hostnames.
         + On CV in "Static Configlet Studio" upload configlets and assign to devices.
             - TODO: Consider if we should create a hierarchy of configuration containers.
                     For now a single folder "AVD Configurations".
-        + On CV add and assign device tags.
-        + On CV add and assign interface tags.
+        + On CV deploy device tags. Tags for decommission devices are excluded because CloudVision removes their assignments automatically.
+          Tag definitions are retained and are not deleted by AVD.
+        + On CV deploy interface tags. The same behavior applies.
         + On CV deploy studio inputs
         + On CV deploy cv_pathfinder_metadata
+        + On CV delete flat-layout configlets and containers for devices transitioning to the manifest layout.
         + On CV build, submit, abandon, delete the Workspace as applicable based on requested state.
             + In-place update workspace and result object.
         + If not submitting the Workspace return the result object. Otherwise continue.
@@ -245,9 +279,12 @@ async def deploy_to_cv(
     if studio_inputs is None:
         studio_inputs = []
 
+    # Split device_deployments into deploy and decommission sub-lists.
+    deploy_devices = [device_deployment.device for device_deployment in device_deployments if device_deployment.device.action != "decommission"]
+    decommission_devices = [device_deployment.device for device_deployment in device_deployments if device_deployment.device.action == "decommission"]
+
     # Extract sub-lists from device deployments.
     # TODO: Refactor sub-workflows to accept list[CVDeviceDeployment] directly and extract what they need internally.
-    devices = [device_deployment.device for device_deployment in device_deployments]
     configs, device_tags, interface_tags, cv_pathfinder_metadata = extract_from_device_deployments(device_deployments)
 
     # Warn if devices are opted into the manifest but no manifest is provided.
@@ -275,19 +312,32 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-            verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+            # Check all targeted devices for overlapping `serial_number`s or `system_mac_address`es.
+            verify_device_inputs([*deploy_devices, *decommission_devices], result.warnings, strict_system_mac_address=strict_system_mac_address)
 
-            # Verify devices exist and update CVDevice objects with exists_on_cv.
-            # Depending on skip_missing_devices we will raise or skip missing devices.
             try:
+                # Verify that devices targeted for deployment exist and update CVDevice objects with exists_on_cv.
+                # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
-                    devices=devices,
+                    devices=deploy_devices,
                     workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
                     cv_client=cv_client,
                 )
+
+                # Verify that decommission devices exist on CV (inventory lookup only).
+                if decommission_devices:
+                    await verify_devices_in_cloudvision_inventory(
+                        devices=decommission_devices,
+                        # If a device is already gone from CV there is nothing to decommission.
+                        skip_missing_devices=True,
+                        warnings=result.warnings,
+                        cv_client=cv_client,
+                        warn_on_missing_devices=False,
+                    )
+                existing_decommission_devices = [decommission_device for decommission_device in decommission_devices if decommission_device.exists_on_cv]
+
             except CVClientException as e:
                 result.errors.append(e)
                 result.failed = True
@@ -315,6 +365,8 @@ async def deploy_to_cv(
                     device_deployments=device_deployments,
                     strict_tags=strict_tags,
                     cv_client=cv_client,
+                    decommission_devices=decommission_devices,
+                    existing_decommission_devices=existing_decommission_devices,
                 )
 
                 # Build, submit or abandon Workspace. If failed, we always abandon.
@@ -323,7 +375,7 @@ async def deploy_to_cv(
                     result.workspace.state = "abandoned"
                     return result
 
-                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
+                await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=deploy_devices, warnings=result.warnings)
 
                 if result.workspace.synchronization_required:
                     await _rebase_workspace_on_cv_or_raise(
