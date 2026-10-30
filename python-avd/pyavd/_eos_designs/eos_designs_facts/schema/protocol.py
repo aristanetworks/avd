@@ -1107,7 +1107,6 @@ class EosDesignsFactsProtocol(Protocol):
         "serial_number": {"type": str},
         "mgmt_interface": {"type": str},
         "mgmt_ip": {"type": str},
-        "regular_mgmt_ip": {"type": str},
         "mpls_lsr": {"type": bool},
         "evpn_multicast": {"type": bool},
         "loopback_ipv4_pool": {"type": str},
@@ -1168,8 +1167,6 @@ class EosDesignsFactsProtocol(Protocol):
     serial_number: str | None
     mgmt_interface: str | None
     mgmt_ip: str | None
-    regular_mgmt_ip: str | None
-    """Regular OOB management IPv4 address before ACT Digital Twin overrides."""
     mpls_lsr: bool
     evpn_multicast: bool | None
     loopback_ipv4_pool: str | None
@@ -1342,7 +1339,6 @@ class EosDesignsFactsProtocol(Protocol):
             serial_number: str | UndefinedType | None = Undefined,
             mgmt_interface: str | UndefinedType | None = Undefined,
             mgmt_ip: str | UndefinedType | None = Undefined,
-            regular_mgmt_ip: str | UndefinedType | None = Undefined,
             mpls_lsr: bool | UndefinedType = Undefined,
             evpn_multicast: bool | UndefinedType | None = Undefined,
             loopback_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -1410,7 +1406,6 @@ class EosDesignsFactsProtocol(Protocol):
                 serial_number: serial_number
                 mgmt_interface: mgmt_interface
                 mgmt_ip: mgmt_ip
-                regular_mgmt_ip: Regular OOB management IPv4 address before ACT Digital Twin overrides.
                 mpls_lsr: mpls_lsr
                 evpn_multicast: evpn_multicast
                 loopback_ipv4_pool: loopback_ipv4_pool

@@ -14,7 +14,6 @@
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  |  |  |  |
     | [<samp>mgmt_ip</samp>](## "mgmt_ip") | String |  |  |  |  |
-    | [<samp>regular_mgmt_ip</samp>](## "regular_mgmt_ip") | String |  |  |  | Regular OOB management IPv4 address before ACT Digital Twin overrides. |
     | [<samp>mpls_lsr</samp>](## "mpls_lsr") | Boolean | Required |  |  |  |
     | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  |  |  |  |
     | [<samp>loopback_ipv4_pool</samp>](## "loopback_ipv4_pool") | String |  |  |  |  |
@@ -186,9 +185,6 @@
     serial_number: <str>
     mgmt_interface: <str>
     mgmt_ip: <str>
-
-    # Regular OOB management IPv4 address before ACT Digital Twin overrides.
-    regular_mgmt_ip: <str>
     mpls_lsr: <bool; required>
     evpn_multicast: <bool>
     loopback_ipv4_pool: <str>

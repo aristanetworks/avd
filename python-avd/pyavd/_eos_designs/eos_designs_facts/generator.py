@@ -94,12 +94,6 @@ class EosDesignsFactsGeneratorProtocol(
 
     @remove_cached_property_type
     @cached_property
-    def regular_mgmt_ip(self) -> str | None:
-        """Carry generated regular addressing separately from an ACT-effective management IP."""
-        return self.shared_utils._allocated_mgmt_ip
-
-    @remove_cached_property_type
-    @cached_property
     def mpls_lsr(self) -> bool:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.mpls_lsr

@@ -130,7 +130,7 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
     # Gateways and explicit IPs are collected before any generated requests, independent of input order.
     for device in devices:
         fabric, vrf = device.fabric_name, device.mgmt_interface_vrf
-        gateway = default(device.node_config.mgmt_gateway, device.inputs.mgmt_gateway)
+        gateway = device.oob_mgmt_gateway
         if gateway is not None:
             try:
                 registry.gateways.add((fabric, vrf, IPv4Address(gateway)))
@@ -142,12 +142,15 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
         if device.pool_manager is not None and device.fabric_name not in collections:
             collection = device.pool_manager.get_ipv4_allocation_collection(device.fabric_name)
             collections[device.fabric_name] = (collection, collection.assignments.copy())
-        if device.node_config.mgmt_ip is not None:
-            if device.node_config.mgmt_ip != "dhcp":
+        mgmt_ip = device.node_config.mgmt_ip
+        if device.is_act_digital_twin and (mgmt_ip is not None or device.inputs.mgmt_interface_settings.ipv4_subnet is not None):
+            mgmt_ip = default(device.node_config.digital_twin.mgmt_ip, mgmt_ip)
+        if mgmt_ip is not None:
+            if mgmt_ip != "dhcp":
                 try:
-                    address = IPv4Interface(device.node_config.mgmt_ip).ip
+                    address = IPv4Interface(mgmt_ip).ip
                 except ValueError as error:
-                    msg = f"Invalid explicit management IPv4 address '{device.node_config.mgmt_ip}' for host '{device.hostname}': {error}"
+                    msg = f"Invalid explicit management IPv4 address '{mgmt_ip}' for host '{device.hostname}': {error}"
                     raise AristaAvdInvalidInputsError(msg) from error
                 registry.claim(device.fabric_name, device.mgmt_interface_vrf, address, device.hostname, "explicit mgmt_ip")
             continue
