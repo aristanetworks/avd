@@ -170,7 +170,7 @@ class FilteredTenantsMixin(Protocol):
 
             parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
             if parent_profile_item.parent_profile:
-                self.emit_warning_for_grandparent_profile(context=f"l2vlan_profiles[profile={parent_profile_item.profile}]")
+                self.emit_warning_for_grandparent_profile(parent_profile=parent_profile_item.parent_profile, context=f"l2vlan_profiles[profile={parent_profile_item.profile}]")
             # Notice reuse of the same variable with the merged content.
             resolved_profile._deepinherit(parent_profile_item)
 
@@ -350,7 +350,7 @@ class FilteredTenantsMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
                 parent_profile_item = self.inputs.svi_profiles[resolved_profile.parent_profile]
                 if parent_profile_item.parent_profile:
-                    self.emit_warning_for_grandparent_profile(context=f"svi_profiles[profile={parent_profile_item.profile}]")
+                    self.emit_warning_for_grandparent_profile(parent_profile=parent_profile_item.parent_profile, context=f"svi_profiles[profile={parent_profile_item.profile}]")
                 # Inherit from the parent profile
                 resolved_profile._deepinherit(parent_profile_item)
                 # Inherit from the profile
