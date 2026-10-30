@@ -75128,6 +75128,672 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         TunnelMode: TypeAlias = Literal["gre", "ipsec"]
+
+        class Mpls(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interface": {"type": bool}, "igp_sync": {"type": bool}}
+                interface: bool | None
+                igp_sync: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interface: bool | UndefinedType | None = Undefined, igp_sync: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interface: interface
+                            igp_sync: igp_sync
+
+                        """
+
+            _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}}
+            ip: bool | None
+            ldp: Ldp
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: bool | UndefinedType | None = Undefined, ldp: Ldp | UndefinedType = Undefined) -> None:
+                    """
+                    Mpls.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: ip
+                        ldp: Subclass of AvdModel.
+
+                    """
+
+        OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
+
+        class OspfMessageDigestKeysItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
+            id: int
+            hash_algorithm: HashAlgorithm | None
+            key: str | None
+            """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    id: int | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | UndefinedType | None = Undefined,
+                    key: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    OspfMessageDigestKeysItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: id
+                        hash_algorithm: hash_algorithm
+                        key: Encrypted password.
+                        key_type: Authentication key type.
+
+                    """
+
+        class OspfMessageDigestKeys(AvdIndexedList[int, OspfMessageDigestKeysItem]):
+            """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
+
+        IsisCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+        class IsisAuthentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Both(AvdModel):
+                """Subclass of AvdModel."""
+
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
+                class KeyIdsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "algorithm": {"type": str},
+                        "key_type": {"type": str},
+                        "key": {"type": str},
+                        "rfc_5310": {"type": bool},
+                    }
+                    id: int
+                    """Configure authentication key-id."""
+                    algorithm: Algorithm
+                    key_type: KeyType
+                    """Configure authentication key type."""
+                    key: str
+                    """Password string."""
+                    rfc_5310: bool | None
+                    """SHA digest computation according to rfc5310."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
+                            key: str | UndefinedType = Undefined,
+                            rfc_5310: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            KeyIdsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: Configure authentication key-id.
+                                algorithm: algorithm
+                                key_type: Configure authentication key type.
+                                key: Password string.
+                                rfc_5310: SHA digest computation according to rfc5310.
+
+                            """
+
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
+                    """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                KeyIds._item_type = KeyIdsItem
+
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
+                class Sha(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"key_id": {"type": int}}
+                    key_id: int
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, key_id: int | UndefinedType = Undefined) -> None:
+                            """
+                            Sha.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                key_id: key_id
+
+                            """
+
+                class SharedSecret(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
+                    profile: str
+                    algorithm: Algorithm
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
+                            """
+                            SharedSecret.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                profile: profile
+                                algorithm: algorithm
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "key_type": {"type": str},
+                    "key": {"type": str},
+                    "key_ids": {"type": KeyIds},
+                    "mode": {"type": str},
+                    "sha": {"type": Sha},
+                    "shared_secret": {"type": SharedSecret},
+                    "rx_disabled": {"type": bool},
+                }
+                key_type: KeyType | None
+                """Configure authentication key type."""
+                key: str | None
+                """Password string. `key_type` is required for this setting."""
+                key_ids: KeyIds
+                """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+                mode: Mode | None
+                """Authentication mode."""
+                sha: Sha
+                """
+                Required settings for authentication mode 'sha'.
+
+                Subclass of AvdModel.
+                """
+                shared_secret: SharedSecret
+                """
+                Required settings for authentication mode 'shared_secret'.
+
+                Subclass of AvdModel.
+                """
+                rx_disabled: bool | None
+                """Disable authentication check on the receive side."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key: str | UndefinedType | None = Undefined,
+                        key_ids: KeyIds | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        sha: Sha | UndefinedType = Undefined,
+                        shared_secret: SharedSecret | UndefinedType = Undefined,
+                        rx_disabled: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Both.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            key_type: Configure authentication key type.
+                            key: Password string. `key_type` is required for this setting.
+                            key_ids: Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`).
+                            mode: Authentication mode.
+                            sha:
+                               Required settings for authentication mode 'sha'.
+
+                               Subclass of AvdModel.
+                            shared_secret:
+                               Required settings for authentication mode 'shared_secret'.
+
+                               Subclass of AvdModel.
+                            rx_disabled: Disable authentication check on the receive side.
+
+                        """
+
+            class Level1(AvdModel):
+                """Subclass of AvdModel."""
+
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
+                class KeyIdsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "algorithm": {"type": str},
+                        "key_type": {"type": str},
+                        "key": {"type": str},
+                        "rfc_5310": {"type": bool},
+                    }
+                    id: int
+                    """Configure authentication key-id."""
+                    algorithm: Algorithm
+                    key_type: KeyType
+                    """Configure authentication key type."""
+                    key: str
+                    """Password string."""
+                    rfc_5310: bool | None
+                    """SHA digest computation according to rfc5310."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
+                            key: str | UndefinedType = Undefined,
+                            rfc_5310: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            KeyIdsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: Configure authentication key-id.
+                                algorithm: algorithm
+                                key_type: Configure authentication key type.
+                                key: Password string.
+                                rfc_5310: SHA digest computation according to rfc5310.
+
+                            """
+
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
+                    """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                KeyIds._item_type = KeyIdsItem
+
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
+                class Sha(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"key_id": {"type": int}}
+                    key_id: int
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, key_id: int | UndefinedType = Undefined) -> None:
+                            """
+                            Sha.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                key_id: key_id
+
+                            """
+
+                class SharedSecret(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
+                    profile: str
+                    algorithm: Algorithm
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
+                            """
+                            SharedSecret.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                profile: profile
+                                algorithm: algorithm
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "key_type": {"type": str},
+                    "key": {"type": str},
+                    "key_ids": {"type": KeyIds},
+                    "mode": {"type": str},
+                    "sha": {"type": Sha},
+                    "shared_secret": {"type": SharedSecret},
+                    "rx_disabled": {"type": bool},
+                }
+                key_type: KeyType | None
+                """Configure authentication key type."""
+                key: str | None
+                """Password string. `key_type` is required for this setting."""
+                key_ids: KeyIds
+                """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+                mode: Mode | None
+                """Authentication mode."""
+                sha: Sha
+                """
+                Required settings for authentication mode 'sha'.
+
+                Subclass of AvdModel.
+                """
+                shared_secret: SharedSecret
+                """
+                Required settings for authentication mode 'shared_secret'.
+
+                Subclass of AvdModel.
+                """
+                rx_disabled: bool | None
+                """Disable authentication check on the receive side."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key: str | UndefinedType | None = Undefined,
+                        key_ids: KeyIds | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        sha: Sha | UndefinedType = Undefined,
+                        shared_secret: SharedSecret | UndefinedType = Undefined,
+                        rx_disabled: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Level1.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            key_type: Configure authentication key type.
+                            key: Password string. `key_type` is required for this setting.
+                            key_ids: Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`).
+                            mode: Authentication mode.
+                            sha:
+                               Required settings for authentication mode 'sha'.
+
+                               Subclass of AvdModel.
+                            shared_secret:
+                               Required settings for authentication mode 'shared_secret'.
+
+                               Subclass of AvdModel.
+                            rx_disabled: Disable authentication check on the receive side.
+
+                        """
+
+            class Level2(AvdModel):
+                """Subclass of AvdModel."""
+
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
+                class KeyIdsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "algorithm": {"type": str},
+                        "key_type": {"type": str},
+                        "key": {"type": str},
+                        "rfc_5310": {"type": bool},
+                    }
+                    id: int
+                    """Configure authentication key-id."""
+                    algorithm: Algorithm
+                    key_type: KeyType
+                    """Configure authentication key type."""
+                    key: str
+                    """Password string."""
+                    rfc_5310: bool | None
+                    """SHA digest computation according to rfc5310."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
+                            key: str | UndefinedType = Undefined,
+                            rfc_5310: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            KeyIdsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: Configure authentication key-id.
+                                algorithm: algorithm
+                                key_type: Configure authentication key type.
+                                key: Password string.
+                                rfc_5310: SHA digest computation according to rfc5310.
+
+                            """
+
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
+                    """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                KeyIds._item_type = KeyIdsItem
+
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
+                class Sha(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"key_id": {"type": int}}
+                    key_id: int
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, key_id: int | UndefinedType = Undefined) -> None:
+                            """
+                            Sha.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                key_id: key_id
+
+                            """
+
+                class SharedSecret(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
+                    profile: str
+                    algorithm: Algorithm
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
+                            """
+                            SharedSecret.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                profile: profile
+                                algorithm: algorithm
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "key_type": {"type": str},
+                    "key": {"type": str},
+                    "key_ids": {"type": KeyIds},
+                    "mode": {"type": str},
+                    "sha": {"type": Sha},
+                    "shared_secret": {"type": SharedSecret},
+                    "rx_disabled": {"type": bool},
+                }
+                key_type: KeyType | None
+                """Configure authentication key type."""
+                key: str | None
+                """Password string. `key_type` is required for this setting."""
+                key_ids: KeyIds
+                """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
+                mode: Mode | None
+                """Authentication mode."""
+                sha: Sha
+                """
+                Required settings for authentication mode 'sha'.
+
+                Subclass of AvdModel.
+                """
+                shared_secret: SharedSecret
+                """
+                Required settings for authentication mode 'shared_secret'.
+
+                Subclass of AvdModel.
+                """
+                rx_disabled: bool | None
+                """Disable authentication check on the receive side."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        key_type: KeyType | UndefinedType | None = Undefined,
+                        key: str | UndefinedType | None = Undefined,
+                        key_ids: KeyIds | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        sha: Sha | UndefinedType = Undefined,
+                        shared_secret: SharedSecret | UndefinedType = Undefined,
+                        rx_disabled: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Level2.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            key_type: Configure authentication key type.
+                            key: Password string. `key_type` is required for this setting.
+                            key_ids: Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`).
+                            mode: Authentication mode.
+                            sha:
+                               Required settings for authentication mode 'sha'.
+
+                               Subclass of AvdModel.
+                            shared_secret:
+                               Required settings for authentication mode 'shared_secret'.
+
+                               Subclass of AvdModel.
+                            rx_disabled: Disable authentication check on the receive side.
+
+                        """
+
+            _fields: ClassVar[dict] = {"both": {"type": Both}, "level_1": {"type": Level1}, "level_2": {"type": Level2}}
+            both: Both
+            """
+            Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and
+            'level_2' settings.
+
+            Subclass of AvdModel.
+            """
+            level_1: Level1
+            """
+            Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            Subclass of AvdModel.
+            """
+            level_2: Level2
+            """
+            Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, both: Both | UndefinedType = Undefined, level_1: Level1 | UndefinedType = Undefined, level_2: Level2 | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    IsisAuthentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        both:
+                           Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and
+                           'level_2' settings.
+
+                           Subclass of AvdModel.
+                        level_1:
+                           Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+                           Subclass of AvdModel.
+                        level_2:
+                           Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
@@ -75153,6 +75819,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "path_mtu_discovery": {"type": bool},
             "ipsec_profile": {"type": str},
             "nat_profile": {"type": str},
+            "mpls": {"type": Mpls},
+            "ospf_network_point_to_point": {"type": bool},
+            "ospf_area": {"type": str},
+            "ospf_cost": {"type": int},
+            "ospf_authentication": {"type": str},
+            "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
+            "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
+            "isis_enable": {"type": str},
+            "isis_bfd": {"type": bool},
+            "isis_passive": {"type": bool},
+            "isis_metric": {"type": int},
+            "isis_network_point_to_point": {"type": bool},
+            "isis_circuit_type": {"type": str},
+            "isis_hello_padding": {"type": bool},
+            "isis_authentication": {"type": IsisAuthentication},
             "eos_cli": {"type": str},
         }
         name: str
@@ -75223,6 +75905,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         nat_profile: str | None
         """NAT interface profile."""
+        mpls: Mpls
+        """Subclass of AvdModel."""
+        ospf_network_point_to_point: bool | None
+        ospf_area: str | None
+        ospf_cost: int | None
+        ospf_authentication: OspfAuthentication | None
+        ospf_authentication_key: str | None
+        """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
+        ospf_message_digest_keys: OspfMessageDigestKeys
+        """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+        isis_enable: str | None
+        """ISIS instance."""
+        isis_bfd: bool | None
+        """Enable BFD for ISIS."""
+        isis_passive: bool | None
+        isis_metric: int | None
+        isis_network_point_to_point: bool | None
+        isis_circuit_type: IsisCircuitType | None
+        isis_hello_padding: bool | None
+        isis_authentication: IsisAuthentication
+        """Subclass of AvdModel."""
         eos_cli: str | None
         """
         Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS
@@ -75258,6 +75967,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 path_mtu_discovery: bool | UndefinedType | None = Undefined,
                 ipsec_profile: str | UndefinedType | None = Undefined,
                 nat_profile: str | UndefinedType | None = Undefined,
+                mpls: Mpls | UndefinedType = Undefined,
+                ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
+                ospf_area: str | UndefinedType | None = Undefined,
+                ospf_cost: int | UndefinedType | None = Undefined,
+                ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
+                ospf_authentication_key: str | UndefinedType | None = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
+                ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
+                isis_enable: str | UndefinedType | None = Undefined,
+                isis_bfd: bool | UndefinedType | None = Undefined,
+                isis_passive: bool | UndefinedType | None = Undefined,
+                isis_metric: int | UndefinedType | None = Undefined,
+                isis_network_point_to_point: bool | UndefinedType | None = Undefined,
+                isis_circuit_type: IsisCircuitType | UndefinedType | None = Undefined,
+                isis_hello_padding: bool | UndefinedType | None = Undefined,
+                isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 eos_cli: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
@@ -75309,6 +76034,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Used only when `tunnel_mode` is set to `ipsec`.
                        It must target a defined IPsec profile.
                     nat_profile: NAT interface profile.
+                    mpls: Subclass of AvdModel.
+                    ospf_network_point_to_point: ospf_network_point_to_point
+                    ospf_area: ospf_area
+                    ospf_cost: ospf_cost
+                    ospf_authentication: ospf_authentication
+                    ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
+                    ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
+                    isis_enable: ISIS instance.
+                    isis_bfd: Enable BFD for ISIS.
+                    isis_passive: isis_passive
+                    isis_metric: isis_metric
+                    isis_network_point_to_point: isis_network_point_to_point
+                    isis_circuit_type: isis_circuit_type
+                    isis_hello_padding: isis_hello_padding
+                    isis_authentication: Subclass of AvdModel.
                     eos_cli:
                        Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS
                        configuration.
