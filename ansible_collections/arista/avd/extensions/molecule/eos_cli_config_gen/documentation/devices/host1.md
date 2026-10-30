@@ -5263,6 +5263,13 @@ interface Dps1
 | Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
 | Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Ethernet91 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Ethernet92 | False | - | - | 0.0.9.13 |
+
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -6582,6 +6589,18 @@ interface Ethernet90
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:90::/64 200 100 no-autoconfig
+!
+interface Ethernet91
+   description OSPFv3 passive + AF area coverage
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
+!
+interface Ethernet92
+   description OSPFv3 no passive coverage
+   no ospfv3 passive-interface
+   ospfv3 ipv6 area 0.0.9.13
 ```
 
 ### Port-Channel Interfaces
@@ -6794,6 +6813,13 @@ interface Ethernet90
 | Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 | Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
 | Port-Channel667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Port-Channel901 | True | True | 0.0.9.1 | 0.0.9.2 |
+| Port-Channel902 | False | - | 0.0.9.3 | - |
 
 ##### ISIS
 
@@ -7617,6 +7643,20 @@ interface Port-Channel667
    vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
+!
+interface Port-Channel901
+   description OSPFv3 passive + AF area coverage
+   no switchport
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.1
+   ospfv3 ipv6 area 0.0.9.2
+!
+interface Port-Channel902
+   description OSPFv3 no passive coverage
+   no switchport
+   no ospfv3 passive-interface
+   ospfv3 ipv4 area 0.0.9.3
 ```
 
 ### Loopback Interfaces
@@ -7633,6 +7673,8 @@ interface Port-Channel667
 | Loopback10 | Test_Node_Segment | default | 10.2.255.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
+| Loopback901 | OSPFv3 passive + AF area coverage | default | - |
+| Loopback902 | OSPFv3 no passive coverage | default | - |
 
 ##### IPv6
 
@@ -7644,6 +7686,17 @@ interface Port-Channel667
 | Loopback10 | Test_Node_Segment | default | 2002::CAFE/128 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | auto-config |
+| Loopback901 | OSPFv3 passive + AF area coverage | default | - |
+| Loopback902 | OSPFv3 no passive coverage | default | - |
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Loopback0 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Loopback1 | False | - | - | 0.0.9.13 |
+| Loopback901 | True | True | 0.0.9.11 | 0.0.9.12 |
+| Loopback902 | False | - | - | 0.0.9.13 |
 
 ##### ISIS
 
@@ -7661,6 +7714,10 @@ interface Loopback0
    description EVPN_Overlay_Peering
    ip address 192.168.255.3/32
    mpls ldp interface
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
    comment
    Comment created from eos_cli under loopback_interfaces.Loopback0
    EOF
@@ -7670,6 +7727,8 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
    no mpls ldp interface
+   no ospfv3 passive-interface
+   ospfv3 ipv6 area 0.0.9.13
 !
 interface Loopback2
    shutdown
@@ -7708,6 +7767,18 @@ interface Loopback100
    ipv6 address auto-config
    hardware forwarding id
    isis enable ISIS_MODE_FALLBACK
+!
+interface Loopback901
+   description OSPFv3 passive + AF area coverage
+   ospfv3 passive-interface
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
+!
+interface Loopback902
+   description OSPFv3 no passive coverage
+   no ospfv3 passive-interface
+   ospfv3 ipv6 area 0.0.9.13
 ```
 
 ### Tunnel Interfaces
