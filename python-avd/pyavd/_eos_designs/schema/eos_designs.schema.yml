@@ -1850,6 +1850,7 @@ keys:
           clusters:
             type: list
             primary_key: name
+            min_length: 1
             default:
             - name: cvaas
             items:
@@ -2058,7 +2059,6 @@ keys:
             keys:
               servers:
                 type: list
-                required: false
                 description: 'CloudVision servers that make up one cluster.
 
                   May be omitted when inherited from a parent CloudVision settings

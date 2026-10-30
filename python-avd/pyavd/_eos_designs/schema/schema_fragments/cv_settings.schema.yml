@@ -27,6 +27,7 @@ keys:
           clusters:
             type: list
             primary_key: name
+            min_length: 1
             default:
               - name: cvaas
             items:

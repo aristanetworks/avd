@@ -87,22 +87,35 @@ class ProfiledDataMixin(Protocol):
             msg = "The 'enabled' setting must be configured when CVaaS settings are provided."
             raise AristaAvdInvalidInputsError(msg)
 
-        if onprem_clusters := cv_settings._get("onprem_clusters", default=[]):
-            server_names = set()
-            for cluster in onprem_clusters:
-                servers = [server.name for server in cluster.servers]
-                # The global schema requires at least one server after profile inheritance is resolved.
-                if not servers:
-                    msg = f"At least 1 server must be provided for on-prem CVP cluster {cluster.name}"
-                    raise AristaAvdInvalidInputsError(msg)
-                # The global schema caps each resolved cluster's server list at three.
-                if len(servers) > 3:
-                    msg = f"Max 3 servers allowed for on-prem CVP cluster {cluster.name}, provided: {sorted(servers)}"
-                    raise AristaAvdInvalidInputsError(msg)
-                for server_name in servers:
-                    # Mirrors `onprem_clusters.unique_keys: [servers.name]` across cluster entries.
-                    if server_name in server_names:
-                        msg = f"Duplicate on-prem CVP server name '{server_name}'. Server names must be unique across clusters."
-                        raise AristaAvdInvalidInputsError(msg)
-                    server_names.add(server_name)
+        self._validate_cv_onprem_clusters(cv_settings)
+
         return cv_settings
+
+    def _validate_cv_onprem_clusters(self, cv_settings: EosDesigns.CvSettings) -> None:
+        """
+        Validates if profile resolution does not produce an invalid `EosDesigns.CvSettings` object.
+
+        Some of the schema validations had to be relaxed in order to support profiles. To keep the
+        existing behaviours, the error paths should now be validated in the runtime.
+        """
+        onprem_clusters = cv_settings._get("onprem_clusters")
+        if not onprem_clusters:
+            return
+
+        server_names = set()
+        for cluster in onprem_clusters:
+            servers = [server.name for server in cluster.servers]
+            # The global schema requires at least one server after profile inheritance is resolved.
+            if not servers:
+                msg = f"At least 1 server must be provided for on-prem CVP cluster {cluster.name}"
+                raise AristaAvdInvalidInputsError(msg)
+            # The global schema caps each resolved cluster's server list at three.
+            if len(servers) > 3:
+                msg = f"Max 3 servers allowed for on-prem CVP cluster {cluster.name}, provided: {sorted(servers)}"
+                raise AristaAvdInvalidInputsError(msg)
+            for server_name in servers:
+                # Mirrors `onprem_clusters.unique_keys: [servers.name]` across cluster entries.
+                if server_name in server_names:
+                    msg = f"Duplicate on-prem CVP server name '{server_name}'. Server names must be unique across clusters."
+                    raise AristaAvdInvalidInputsError(msg)
+                server_names.add(server_name)
