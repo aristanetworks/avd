@@ -35,6 +35,17 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet13
+  description: std-acl-test
+  shutdown: false
+  vrf: L3INTF_TEST
+  ip_address: 10.13.0.1/31
+  access_group_in: STD-L3INTF-ACL-IN
+  access_group_out: STD-L3INTF-ACL-OUT
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: network-services-l3-interfaces
 ip_igmp_snooping:
   globally_enabled: true
@@ -118,6 +129,17 @@ router_bgp:
       connected:
         enabled: true
 service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: STD-L3INTF-ACL-IN
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.0/8
+- name: STD-L3INTF-ACL-OUT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 192.168.0.0/16
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

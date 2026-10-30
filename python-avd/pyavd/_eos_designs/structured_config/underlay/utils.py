@@ -346,6 +346,14 @@ class UtilsMixin(Protocol):
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
         """Apply IPv4 and IPv6 ACLs to an L3 interface or L3 port-channel."""
+        schema_key = (
+            "l3_port_channels"
+            if isinstance(l3_interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem)
+            else "l3_interfaces"
+        )
+        context = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}[name={l3_interface.name}]"
+        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, context, "in")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, context, "out")
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name
@@ -355,6 +363,14 @@ class UtilsMixin(Protocol):
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
             interface.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
+
+        if l3_interface.ipv4_standard_acl_in:
+            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
+            interface.access_group_in = l3_interface.ipv4_standard_acl_in
+
+        if l3_interface.ipv4_standard_acl_out:
+            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_out)
+            interface.access_group_out = l3_interface.ipv4_standard_acl_out
 
         if l3_interface.ipv6_acl_in:
             acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_in, l3_interface)
