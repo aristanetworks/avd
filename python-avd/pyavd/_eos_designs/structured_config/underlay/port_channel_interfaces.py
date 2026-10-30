@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.default import default
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -142,7 +142,7 @@ class PortChannelInterfacesMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             warnings.warn(
                 f"{msg} Set 'avd_design_future.raise_for_port_channels_without_members: true' to opt in to the future behavior.",
-                DeprecationWarning,
+                AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
 

@@ -9,7 +9,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.remove_cached_property_type import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
@@ -134,7 +134,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                         raise AristaAvdInvalidInputsError(msg)
                     warnings.warn(
                         f"{msg} Set 'avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel: true' to opt in to the future behavior.",
-                        DeprecationWarning,
+                        AvdFutureBehaviorWarning,
                         stacklevel=2,
                     )
                 get_uplink = self._get_port_channel_uplink

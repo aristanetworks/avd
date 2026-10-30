@@ -47,6 +47,8 @@ from ansible.vars.hostvars import HostVars
 from ansible.vars.manager import VariableManager
 from yaml import CLoader as YamlLoader
 
+from pyavd._errors import AvdFutureBehaviorWarning
+
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
     from typing import TypeVar
@@ -1042,7 +1044,7 @@ def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], co
 
 def dump_runtime_deprecations(deprecations: list[warnings.WarningMessage], config: FabricConfig, stage: str, device: str | None = None) -> None:
     """Write Python deprecation warnings to the E2E diagnostics directory."""
-    deprecations = [warning for warning in deprecations if warning.category is DeprecationWarning]
+    deprecations = [warning for warning in deprecations if warning.category is AvdFutureBehaviorWarning]
     if not deprecations:
         return
 

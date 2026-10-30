@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.undefined import Undefined
 
 if TYPE_CHECKING:
@@ -34,7 +34,7 @@ class AddressLockingMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             warnings.warn(
                 f"{msg} Set 'avd_design_future.fix_address_locking_dhcp_server_interfaces: true' to opt in to the future behavior.",
-                DeprecationWarning,
+                AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
 

@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError, AvdFutureBehaviorWarning
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.strip_empties import strip_empties_from_dict
@@ -242,7 +242,7 @@ class RouterBgpMixin(Protocol):
                             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         warnings.warn(
                             f"{msg} Set 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to opt in to the future behavior.",
-                            DeprecationWarning,
+                            AvdFutureBehaviorWarning,
                             stacklevel=2,
                         )
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)

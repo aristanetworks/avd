@@ -98,6 +98,10 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         super().__init__(self.message)
 
 
+class AvdFutureBehaviorWarning(DeprecationWarning):
+    """Warning for behavior that will change when a future-behavior knob becomes the default."""
+
+
 class AristaAvdDuplicateDataError(AristaAvdError):
     def __init__(self, context: str, context_item_a: str, context_item_b: str, host: str | None = None) -> None:
         self.message = (
