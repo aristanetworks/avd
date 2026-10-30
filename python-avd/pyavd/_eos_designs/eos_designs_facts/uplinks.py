@@ -4,11 +4,12 @@
 from __future__ import annotations
 
 import re
+import warnings
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.remove_cached_property_type import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
@@ -127,9 +128,15 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         """
         match self.shared_utils.uplink_type:
             case "port-channel":
-                if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel and self.shared_utils.underlay_router is True:
+                if self.shared_utils.underlay_router is True:
                     msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel:
+                        raise AristaAvdInvalidInputsError(msg)
+                    warnings.warn(
+                        f"{msg} Set 'avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel: true' to opt in to the future behavior.",
+                        AvdFutureBehaviorWarning,
+                        stacklevel=2,
+                    )
                 get_uplink = self._get_port_channel_uplink
             case "l2-ethernet":
                 if self.shared_utils.underlay_router is True:

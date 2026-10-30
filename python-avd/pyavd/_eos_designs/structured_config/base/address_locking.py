@@ -3,11 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.undefined import Undefined
 
 if TYPE_CHECKING:
@@ -27,12 +28,24 @@ class AddressLockingMixin(Protocol):
         if not (address_locking_settings := self.inputs.address_locking_settings) or not feature_support.address_locking.supported:
             return
 
+        if address_locking_settings.local_interface and address_locking_settings.dhcp_server_interfaces:
+            msg = (
+                "Setting both 'address_locking_settings.local_interface' and "
+                "'address_locking_settings.dhcp_server_interfaces' is not supported. "
+                "Only one of these settings should be configured. "
+                "The configuration will be rejected in AVD 7.0."
+            )
+            if self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces:
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            warnings.warn(
+                f"{msg} Ignoring 'address_locking_settings.dhcp_server_interfaces'.",
+                AvdFutureBehaviorWarning,
+                stacklevel=2,
+            )
+
         if not self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces:
             local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
             dhcp_server_interfaces = Undefined
-        elif address_locking_settings.local_interface and address_locking_settings.dhcp_server_interfaces:
-            msg = "'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive."
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         else:
             dhcp_server_interfaces = address_locking_settings.dhcp_server_interfaces
             local_interface = None if dhcp_server_interfaces else self.shared_utils.get_local_interface(address_locking_settings.local_interface)

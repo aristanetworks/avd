@@ -25,6 +25,7 @@ import shutil
 import sys
 import traceback
 import typing
+import warnings
 import weakref
 from concurrent.futures import Executor, ProcessPoolExecutor, ThreadPoolExecutor
 from functools import cached_property, lru_cache
@@ -45,6 +46,8 @@ from ansible.template import Templar
 from ansible.vars.hostvars import HostVars
 from ansible.vars.manager import VariableManager
 from yaml import CLoader as YamlLoader
+
+from pyavd._errors import AvdFutureBehaviorWarning
 
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
@@ -667,17 +670,25 @@ class AvdV6Build:
 
         pool_manager = PoolManager(self.config.full_output_dir)
         # Get avd_facts from PyAVD
+        captured_warnings: list[warnings.WarningMessage] = []
         try:
-            avd_facts = get_facts(
-                self._loaded_avd_designs,
-                all_hostvars=self._validated_inputs_dict,
-                pool_manager=pool_manager,
-                templar=get_avd_templar(self.config),
-                digital_twin=self.config.digital_twin,
-            )
+            with warnings.catch_warnings(record=True) as captured_warnings:
+                warnings.simplefilter("always", DeprecationWarning)
+                avd_facts = get_facts(
+                    self._loaded_avd_designs,
+                    all_hostvars=self._validated_inputs_dict,
+                    pool_manager=pool_manager,
+                    templar=get_avd_templar(self.config),
+                    digital_twin=self.config.digital_twin,
+                )
         except Exception as e:
+            if captured_warnings:
+                dump_runtime_deprecations(captured_warnings, self.config, "avd_facts")
             dump_exception(e, self.config, "avd_facts")
             return False
+
+        if captured_warnings:
+            dump_runtime_deprecations(captured_warnings, self.config, "avd_facts")
 
         # Save poolmanager data
         pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)  # pyright: ignore[reportArgumentType]
@@ -898,21 +909,29 @@ def build_validate_and_render_for_one_device(
         avd_facts = _load_avd_facts_from_shm(avd_facts_metadata.name, avd_facts_metadata.size)
 
         # Phase 1: Build structured config
+        captured_warnings: list[warnings.WarningMessage] = []
         try:
-            eos_config = get_structured_config(
-                hostname=device,
-                inputs=device_avd_validated_inputs,
-                hostvars=device_avd_validated_inputs_dict,
-                all_facts=avd_facts,
-                templar=get_avd_templar(config),
-                digital_twin=config.digital_twin,
-            )._as_dict()
+            with warnings.catch_warnings(record=True) as captured_warnings:
+                warnings.simplefilter("always", DeprecationWarning)
+                eos_config = get_structured_config(
+                    hostname=device,
+                    inputs=device_avd_validated_inputs,
+                    hostvars=device_avd_validated_inputs_dict,
+                    all_facts=avd_facts,
+                    templar=get_avd_templar(config),
+                    digital_twin=config.digital_twin,
+                )._as_dict()
         except Exception as e:
+            if captured_warnings:
+                dump_runtime_deprecations(captured_warnings, config, "structured_config", device)
             dump_exception(e, config, "structured_config", device)
             return False
         finally:
             # Free device_avd_validated_inputs - no longer needed after structured config is built
             del device_avd_validated_inputs
+
+        if captured_warnings:
+            dump_runtime_deprecations(captured_warnings, config, "structured_config", device)
 
         # Phase 2: Serialize structured config
         # TODO: Honor the config.structured_config_suffix setting
@@ -1021,6 +1040,19 @@ def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], co
     error_dir.mkdir(parents=True, exist_ok=True)
     err_lines = [f"[{deprecation.path}]: '{deprecation.message}'" for deprecation in deprecations]
     error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines))
+
+
+def dump_runtime_deprecations(deprecations: list[warnings.WarningMessage], config: FabricConfig, stage: str, device: str | None = None) -> None:
+    """Write Python deprecation warnings to the E2E diagnostics directory."""
+    deprecations = [warning for warning in deprecations if warning.category is AvdFutureBehaviorWarning]
+    if not deprecations:
+        return
+
+    error_dir = config.full_error_dir.joinpath(config.fabric_name)
+    error_dir = error_dir.joinpath(device) if device else error_dir
+    error_dir.mkdir(parents=True, exist_ok=True)
+    err_lines = [f"{warning.category.__module__}.{warning.category.__name__}: {warning.message}" for warning in deprecations]
+    error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines) + "\n")
 
 
 def dump_violations(violations: list[pyavd_utils.validation.Violation], config: FabricConfig, stage: str, device: str) -> None:
