@@ -1,0 +1,49 @@
+---
+type: l3leaf
+underlay_multicast_pim_sm: true
+igmp_snooping_enabled: true
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    bgp_as: 65000
+    loopback_ipv4_pool: 192.168.0.0/24
+    vtep_loopback_ipv4_pool: 192.168.1.0/24
+  nodes:
+    - name: ipv4-acl-duplicate-names-cross-vrf
+      id: 1
+
+tenants:
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: EXTENDED
+        vrf_id: 1
+        svis:
+          - id: 100
+            name: EXTENDED
+            ip_address: 10.1.0.1/24
+            ipv4_acl_in: FILTER
+      - name: STANDARD
+        vrf_id: 2
+        # The RP group filter generates a standard ACL in a different VRF from the SVI extended ACL.
+        pim_rp_addresses:
+          - rps: [192.0.2.1]
+            groups: [239.0.0.0/8]
+            access_list_name: FILTER
+        svis:
+          - id: 200
+            name: STANDARD
+            ip_address: 10.2.0.1/24
+
+ipv4_acls:
+  - name: FILTER
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+expected_error_message: >-
+  ACL 'FILTER' is configured in both 'ip_access_lists' and 'standard_access_lists'.
+  Only one IPv4 ACL type can be configured with the same name.

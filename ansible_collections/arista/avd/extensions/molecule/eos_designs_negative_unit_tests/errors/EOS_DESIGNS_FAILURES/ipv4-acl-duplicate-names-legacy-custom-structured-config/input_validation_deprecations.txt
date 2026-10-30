@@ -1,0 +1,1 @@
+[['l2leaf', 'nodes', '0', 'structured_config', 'access_lists']]: 'The input data model 'l2leaf.nodes[0].structured_config.access_lists' is deprecated and will be removed in AVD version 7.0.0. Use 'ip_access_lists' instead.'
