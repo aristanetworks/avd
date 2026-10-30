@@ -1042,6 +1042,10 @@ def dump_deprecations(deprecations: list[pyavd_utils.validation.Deprecation], co
 
 def dump_runtime_deprecations(deprecations: list[warnings.WarningMessage], config: FabricConfig, stage: str, device: str | None = None) -> None:
     """Write Python deprecation warnings to the E2E diagnostics directory."""
+    deprecations = [warning for warning in deprecations if warning.category is DeprecationWarning]
+    if not deprecations:
+        return
+
     error_dir = config.full_error_dir.joinpath(config.fabric_name)
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
