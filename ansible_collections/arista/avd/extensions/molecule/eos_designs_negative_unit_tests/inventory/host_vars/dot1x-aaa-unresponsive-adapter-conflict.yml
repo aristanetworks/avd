@@ -1,0 +1,31 @@
+---
+# Both ACL types are rejected even with the future knob unset.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dot1x-aaa-unresponsive-adapter-conflict
+      mgmt_ip: 192.0.2.2/24
+dot1x_settings:
+  enabled: true
+aaa_settings:
+  radius:
+    servers:
+      - host: 192.0.2.10
+        cleartext_key: test-key
+connected_endpoints:
+  - name: server1
+    adapters:
+      - switches:
+          - dot1x-aaa-unresponsive-adapter-conflict
+        switch_ports:
+          - Ethernet1
+        dot1x:
+          aaa:
+            unresponsive:
+              action:
+                traffic_allow_access_list: AAA-EXTENDED
+                traffic_allow_standard_access_list: AAA-STANDARD
+
+expected_error_message: >-
+  'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive
+  under 'connected_endpoints[name=server1].adapters[0].dot1x.aaa.unresponsive.action'.

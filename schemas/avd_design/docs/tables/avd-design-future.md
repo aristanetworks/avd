@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_design_future</samp>](## "avd_design_future") | Dictionary |  |  |  | Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version. |
+    | [<samp>&nbsp;&nbsp;validate_dot1x_aaa_unresponsive_acl</samp>](## "avd_design_future.validate_dot1x_aaa_unresponsive_acl") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under connected endpoint adapters, network ports, and port profiles<br>against `ipv4_acls`, and configure the referenced IPv4 extended access-list definitions.<br>When disabled, only the interface ACL reference is configured, allowing ACL definitions outside the catalog.<br>`traffic_allow_standard_access_list` is always validated against `ipv4_standard_acls` and configured. |
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;accept_ra_default_route_for_ipv6_mgmt_ip_auto_config</samp>](## "avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Configure management interface to accept Router Advertisement default route when the IPv6 management IP is set to 'auto-config'. |
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
@@ -34,6 +35,13 @@
     ```yaml
     # Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     avd_design_future:
+
+      # Available from AVD 6.5.0.
+      # Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under connected endpoint adapters, network ports, and port profiles
+      # against `ipv4_acls`, and configure the referenced IPv4 extended access-list definitions.
+      # When disabled, only the interface ACL reference is configured, allowing ACL definitions outside the catalog.
+      # `traffic_allow_standard_access_list` is always validated against `ipv4_standard_acls` and configured.
+      validate_dot1x_aaa_unresponsive_acl: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.

@@ -17,3 +17,113 @@ aaa_settings:
     servers:
       - host: agni.arista.com
         cleartext_key: super-secret-key
+
+# Test AAA timeout ACLs on adapters, network ports, and inherited port profiles.
+# With validation enabled, both ACL types must resolve to their own catalog. Reuse must render each definition only once.
+avd_design_future:
+  validate_dot1x_aaa_unresponsive_acl: true
+ipv4_acls:
+  - name: AAA-EXTENDED
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: 192.0.2.0/24
+        destination: any
+  - name: AAA-EXTENDED-UNUSED
+    entries:
+      - action: deny
+        protocol: ip
+        source: any
+        destination: any
+ipv4_standard_acls:
+  - name: AAA-STANDARD
+    entries:
+      - sequence: 10
+        action: permit
+        source: 192.0.2.0/24
+  - name: AAA-STANDARD-UNUSED
+    entries:
+      - action: deny
+        source: any
+port_profiles:
+  - profile: AAA-EXTENDED-PROFILE
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: AAA-EXTENDED
+  - profile: AAA-STANDARD-PROFILE
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_standard_access_list: AAA-STANDARD
+connected_endpoints:
+  - name: aaa-timeout-test
+    adapters:
+      - switches:
+          - dot1x-settings-7
+        switch_ports:
+          - Ethernet1
+        description: AAA extended ACL on adapter, configured directly
+        dot1x:
+          aaa:
+            unresponsive:
+              action:
+                traffic_allow_access_list: AAA-EXTENDED
+      - switches:
+          - dot1x-settings-7
+        switch_ports:
+          - Ethernet2
+        description: AAA standard ACL on adapter, configured directly
+        dot1x:
+          aaa:
+            unresponsive:
+              action:
+                traffic_allow_standard_access_list: AAA-STANDARD
+      - switches:
+          - dot1x-settings-7
+        switch_ports:
+          - Ethernet3
+        description: AAA extended ACL on adapter, inherited from profile
+        profile: AAA-EXTENDED-PROFILE
+      - switches:
+          - dot1x-settings-7
+        switch_ports:
+          - Ethernet4
+        description: AAA standard ACL on adapter, inherited from profile
+        profile: AAA-STANDARD-PROFILE
+network_ports:
+  - switches:
+      - dot1x-settings-7
+    switch_ports:
+      - Ethernet5
+    description: AAA extended ACL on network port, configured directly
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: AAA-EXTENDED
+  - switches:
+      - dot1x-settings-7
+    switch_ports:
+      - Ethernet6
+    description: AAA standard ACL on network port, configured directly
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_standard_access_list: AAA-STANDARD
+  - switches:
+      - dot1x-settings-7
+    switch_ports:
+      - Ethernet7
+    description: AAA extended ACL on network port, inherited from profile
+    profile: AAA-EXTENDED-PROFILE
+  - switches:
+      - dot1x-settings-7
+    switch_ports:
+      - Ethernet8
+    description: AAA standard ACL on network port, inherited from profile
+    profile: AAA-STANDARD-PROFILE

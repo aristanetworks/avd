@@ -1049,6 +1049,7 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {
+            "validate_dot1x_aaa_unresponsive_acl": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
@@ -1070,6 +1071,20 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
+        validate_dot1x_aaa_unresponsive_acl: bool
+        """
+        Available from AVD 6.5.0.
+        Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under
+        connected endpoint adapters, network ports, and port profiles
+        against `ipv4_acls`, and configure the
+        referenced IPv4 extended access-list definitions.
+        When disabled, only the interface ACL reference is
+        configured, allowing ACL definitions outside the catalog.
+        `traffic_allow_standard_access_list` is
+        always validated against `ipv4_standard_acls` and configured.
+
+        Default value: `False`
+        """
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
         Available from AVD 6.2.0.
@@ -1281,6 +1296,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                validate_dot1x_aaa_unresponsive_acl: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
@@ -1309,6 +1325,16 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    validate_dot1x_aaa_unresponsive_acl:
+                       Available from AVD 6.5.0.
+                       Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under
+                       connected endpoint adapters, network ports, and port profiles
+                       against `ipv4_acls`, and configure the
+                       referenced IPv4 extended access-list definitions.
+                       When disabled, only the interface ACL reference is
+                       configured, allowing ACL definitions outside the catalog.
+                       `traffic_allow_standard_access_list` is
+                       always validated against `ipv4_standard_acls` and configured.
                     accept_dhcp_default_route_for_mgmt_ip_dhcp:
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
@@ -3347,6 +3373,212 @@ class EosDesigns(EosDesignsRootModel):
             class Dot1x(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Aaa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Unresponsive(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Action(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class CachedResultsTimeout(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                time_duration: int
+                                """
+                                Enable caching for a specific duration -
+                                <1-10000>      duration in days
+                                <1-14400000>   duration in
+                                minutes
+                                <1-240000>     duration in hours
+                                <1-864000000>  duration in seconds
+                                """
+                                time_duration_unit: TimeDurationUnit
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        time_duration: int | UndefinedType = Undefined,
+                                        time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        CachedResultsTimeout.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            time_duration:
+                                               Enable caching for a specific duration -
+                                               <1-10000>      duration in days
+                                               <1-14400000>   duration in
+                                               minutes
+                                               <1-240000>     duration in hours
+                                               <1-864000000>  duration in seconds
+                                            time_duration_unit: time_duration_unit
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "traffic_allow_access_list": {"type": str},
+                                "traffic_allow_standard_access_list": {"type": str},
+                                "apply_alternate": {"type": bool},
+                                "traffic_allow_vlan": {"type": int},
+                                "apply_cached_results": {"type": bool},
+                                "cached_results_timeout": {"type": CachedResultsTimeout},
+                                "traffic_allow": {"type": bool},
+                            }
+                            traffic_allow_access_list: str | None
+                            """
+                            Name of the IPv4 extended access-list to apply when AAA times out.
+                            When
+                            `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                            under
+                            `ipv4_acls` and its definition is configured on devices where it is referenced.
+                            Otherwise,
+                            only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                            Mutually
+                            exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                            """
+                            traffic_allow_standard_access_list: str | None
+                            """
+                            Name of the IPv4 standard access-list to apply when AAA times out.
+                            The access-list must be defined
+                            under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                            Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                            """
+                            apply_alternate: bool | None
+                            """
+                            Apply alternate action if primary action fails.
+                            e.g. aaa unresponsive action apply cached-results
+                            else traffic allow
+                            """
+                            traffic_allow_vlan: int | None
+                            apply_cached_results: bool | None
+                            """Use results from a previous AAA response."""
+                            cached_results_timeout: CachedResultsTimeout
+                            """Subclass of AvdModel."""
+                            traffic_allow: bool | None
+                            """Set action for supplicant traffic when AAA times out."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                    traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
+                                    apply_alternate: bool | UndefinedType | None = Undefined,
+                                    traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                    apply_cached_results: bool | UndefinedType | None = Undefined,
+                                    cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                    traffic_allow: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Action.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        traffic_allow_access_list:
+                                           Name of the IPv4 extended access-list to apply when AAA times out.
+                                           When
+                                           `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                           under
+                                           `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                           Otherwise,
+                                           only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                           Mutually
+                                           exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                        traffic_allow_standard_access_list:
+                                           Name of the IPv4 standard access-list to apply when AAA times out.
+                                           The access-list must be defined
+                                           under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                           Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                        apply_alternate:
+                                           Apply alternate action if primary action fails.
+                                           e.g. aaa unresponsive action apply cached-results
+                                           else traffic allow
+                                        traffic_allow_vlan: traffic_allow_vlan
+                                        apply_cached_results: Use results from a previous AAA response.
+                                        cached_results_timeout: Subclass of AvdModel.
+                                        traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                    """
+
+                        EapResponse: TypeAlias = Literal["success", "disabled"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": Action},
+                            "eap_response": {"type": str},
+                            "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                        }
+                        action: Action
+                        """
+                        Set action for supplicant when AAA times out.
+
+                        Subclass of AvdModel.
+                        """
+                        eap_response: EapResponse | None
+                        """EAP response to send. EOS default is `success`."""
+                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                        """Set action for supplicant when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                eap_response: EapResponse | UndefinedType | None = Undefined,
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Unresponsive.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action:
+                                       Set action for supplicant when AAA times out.
+
+                                       Subclass of AvdModel.
+                                    eap_response: EAP response to send. EOS default is `success`.
+                                    phone_action: Set action for supplicant when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                    unresponsive: Unresponsive
+                    """
+                    Configure AAA timeout options.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                            """
+                            Aaa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                unresponsive:
+                                   Configure AAA timeout options.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 class AuthenticationFailure(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -3593,181 +3825,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class Aaa(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class Unresponsive(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        EapResponse: TypeAlias = Literal["success", "disabled"]
-
-                        class Action(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class CachedResultsTimeout(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
-                                _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
-                                time_duration: int
-                                """
-                                Enable caching for a specific duration -
-                                <1-10000>      duration in days
-                                <1-14400000>   duration in
-                                minutes
-                                <1-240000>     duration in hours
-                                <1-864000000>  duration in seconds
-                                """
-                                time_duration_unit: TimeDurationUnit
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        time_duration: int | UndefinedType = Undefined,
-                                        time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        CachedResultsTimeout.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            time_duration:
-                                               Enable caching for a specific duration -
-                                               <1-10000>      duration in days
-                                               <1-14400000>   duration in
-                                               minutes
-                                               <1-240000>     duration in hours
-                                               <1-864000000>  duration in seconds
-                                            time_duration_unit: time_duration_unit
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "traffic_allow_access_list": {"type": str},
-                                "apply_alternate": {"type": bool},
-                                "traffic_allow_vlan": {"type": int},
-                                "apply_cached_results": {"type": bool},
-                                "cached_results_timeout": {"type": CachedResultsTimeout},
-                                "traffic_allow": {"type": bool},
-                            }
-                            traffic_allow_access_list: str | None
-                            """Name of standard access-list to apply when AAA times out."""
-                            apply_alternate: bool | None
-                            """
-                            Apply alternate action if primary action fails.
-                            e.g. aaa unresponsive action apply cached-results
-                            else traffic allow
-                            """
-                            traffic_allow_vlan: int | None
-                            apply_cached_results: bool | None
-                            """Use results from a previous AAA response."""
-                            cached_results_timeout: CachedResultsTimeout
-                            """Subclass of AvdModel."""
-                            traffic_allow: bool | None
-                            """Set action for supplicant traffic when AAA times out."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                    apply_alternate: bool | UndefinedType | None = Undefined,
-                                    traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                    apply_cached_results: bool | UndefinedType | None = Undefined,
-                                    cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                    traffic_allow: bool | UndefinedType | None = Undefined,
-                                ) -> None:
-                                    """
-                                    Action.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                        apply_alternate:
-                                           Apply alternate action if primary action fails.
-                                           e.g. aaa unresponsive action apply cached-results
-                                           else traffic allow
-                                        traffic_allow_vlan: traffic_allow_vlan
-                                        apply_cached_results: Use results from a previous AAA response.
-                                        cached_results_timeout: Subclass of AvdModel.
-                                        traffic_allow: Set action for supplicant traffic when AAA times out.
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "eap_response": {"type": str},
-                            "action": {"type": Action},
-                            "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
-                        }
-                        eap_response: EapResponse | None
-                        """EAP response to send. EOS default is `success`."""
-                        action: Action
-                        """
-                        Set action for supplicant when AAA times out.
-
-                        Subclass of AvdModel.
-                        """
-                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
-                        """Set action for supplicant when AAA times out."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                eap_response: EapResponse | UndefinedType | None = Undefined,
-                                action: Action | UndefinedType = Undefined,
-                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                Unresponsive.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    eap_response: EAP response to send. EOS default is `success`.
-                                    action:
-                                       Set action for supplicant when AAA times out.
-
-                                       Subclass of AvdModel.
-                                    phone_action: Set action for supplicant when AAA times out.
-
-                                """
-
-                    _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
-                    unresponsive: Unresponsive
-                    """
-                    Configure AAA timeout options.
-
-                    Subclass of AvdModel.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
-                            """
-                            Aaa.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                unresponsive:
-                                   Configure AAA timeout options.
-
-                                   Subclass of AvdModel.
-
-                            """
-
                 _fields: ClassVar[dict] = {
+                    "aaa": {"type": Aaa},
                     "authentication_failure": {"type": AuthenticationFailure},
                     "port_control": {"type": str},
                     "port_control_force_authorized_phone": {"type": bool},
@@ -3780,8 +3839,9 @@ class EosDesigns(EosDesignsRootModel):
                     "reauthorization_request_limit": {"type": int},
                     "unauthorized": {"type": Unauthorized},
                     "eapol": {"type": Eapol},
-                    "aaa": {"type": Aaa},
                 }
+                aaa: Aaa
+                """Subclass of AvdModel."""
                 authentication_failure: AuthenticationFailure
                 """Subclass of AvdModel."""
                 port_control: PortControl | None
@@ -3802,14 +3862,13 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 eapol: Eapol
                 """Subclass of AvdModel."""
-                aaa: Aaa
-                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
+                        aaa: Aaa | UndefinedType = Undefined,
                         authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                         port_control: PortControl | UndefinedType | None = Undefined,
                         port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
@@ -3822,7 +3881,6 @@ class EosDesigns(EosDesignsRootModel):
                         reauthorization_request_limit: int | UndefinedType | None = Undefined,
                         unauthorized: Unauthorized | UndefinedType = Undefined,
                         eapol: Eapol | UndefinedType = Undefined,
-                        aaa: Aaa | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Dot1x.
@@ -3831,6 +3889,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            aaa: Subclass of AvdModel.
                             authentication_failure: Subclass of AvdModel.
                             port_control: port_control
                             port_control_force_authorized_phone: port_control_force_authorized_phone
@@ -3843,7 +3902,6 @@ class EosDesigns(EosDesignsRootModel):
                             reauthorization_request_limit: reauthorization_request_limit
                             unauthorized: Subclass of AvdModel.
                             eapol: Subclass of AvdModel.
-                            aaa: Subclass of AvdModel.
 
                         """
 
@@ -29532,6 +29590,209 @@ class EosDesigns(EosDesignsRootModel):
         class Dot1x(AvdModel):
             """Subclass of AvdModel."""
 
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "traffic_allow_standard_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """
+                        Name of the IPv4 extended access-list to apply when AAA times out.
+                        When
+                        `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                        under
+                        `ipv4_acls` and its definition is configured on devices where it is referenced.
+                        Otherwise,
+                        only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                        Mutually
+                        exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                        """
+                        traffic_allow_standard_access_list: str | None
+                        """
+                        Name of the IPv4 standard access-list to apply when AAA times out.
+                        The access-list must be defined
+                        under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                        Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                        """
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list:
+                                       Name of the IPv4 extended access-list to apply when AAA times out.
+                                       When
+                                       `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                       under
+                                       `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                       Otherwise,
+                                       only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                       Mutually
+                                       exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    traffic_allow_standard_access_list:
+                                       Name of the IPv4 standard access-list to apply when AAA times out.
+                                       The access-list must be defined
+                                       under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                       Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+                    _fields: ClassVar[dict] = {
+                        "action": {"type": Action},
+                        "eap_response": {"type": str},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            action: Action | UndefinedType = Undefined,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                eap_response: EAP response to send. EOS default is `success`.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class AuthenticationFailure(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -29776,178 +30037,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Aaa(AvdModel):
-                """Subclass of AvdModel."""
-
-                class Unresponsive(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    EapResponse: TypeAlias = Literal["success", "disabled"]
-
-                    class Action(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        class CachedResultsTimeout(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
-                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
-                            time_duration: int
-                            """
-                            Enable caching for a specific duration -
-                            <1-10000>      duration in days
-                            <1-14400000>   duration in
-                            minutes
-                            <1-240000>     duration in hours
-                            <1-864000000>  duration in seconds
-                            """
-                            time_duration_unit: TimeDurationUnit
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    CachedResultsTimeout.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        time_duration:
-                                           Enable caching for a specific duration -
-                                           <1-10000>      duration in days
-                                           <1-14400000>   duration in
-                                           minutes
-                                           <1-240000>     duration in hours
-                                           <1-864000000>  duration in seconds
-                                        time_duration_unit: time_duration_unit
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "traffic_allow_access_list": {"type": str},
-                            "apply_alternate": {"type": bool},
-                            "traffic_allow_vlan": {"type": int},
-                            "apply_cached_results": {"type": bool},
-                            "cached_results_timeout": {"type": CachedResultsTimeout},
-                            "traffic_allow": {"type": bool},
-                        }
-                        traffic_allow_access_list: str | None
-                        """Name of standard access-list to apply when AAA times out."""
-                        apply_alternate: bool | None
-                        """
-                        Apply alternate action if primary action fails.
-                        e.g. aaa unresponsive action apply cached-results
-                        else traffic allow
-                        """
-                        traffic_allow_vlan: int | None
-                        apply_cached_results: bool | None
-                        """Use results from a previous AAA response."""
-                        cached_results_timeout: CachedResultsTimeout
-                        """Subclass of AvdModel."""
-                        traffic_allow: bool | None
-                        """Set action for supplicant traffic when AAA times out."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                apply_alternate: bool | UndefinedType | None = Undefined,
-                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                apply_cached_results: bool | UndefinedType | None = Undefined,
-                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                traffic_allow: bool | UndefinedType | None = Undefined,
-                            ) -> None:
-                                """
-                                Action.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                    apply_alternate:
-                                       Apply alternate action if primary action fails.
-                                       e.g. aaa unresponsive action apply cached-results
-                                       else traffic allow
-                                    traffic_allow_vlan: traffic_allow_vlan
-                                    apply_cached_results: Use results from a previous AAA response.
-                                    cached_results_timeout: Subclass of AvdModel.
-                                    traffic_allow: Set action for supplicant traffic when AAA times out.
-
-                                """
-
-                    _fields: ClassVar[dict] = {
-                        "eap_response": {"type": str},
-                        "action": {"type": Action},
-                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
-                    }
-                    eap_response: EapResponse | None
-                    """EAP response to send. EOS default is `success`."""
-                    action: Action
-                    """
-                    Set action for supplicant when AAA times out.
-
-                    Subclass of AvdModel.
-                    """
-                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
-                    """Set action for supplicant when AAA times out."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            eap_response: EapResponse | UndefinedType | None = Undefined,
-                            action: Action | UndefinedType = Undefined,
-                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Unresponsive.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                eap_response: EAP response to send. EOS default is `success`.
-                                action:
-                                   Set action for supplicant when AAA times out.
-
-                                   Subclass of AvdModel.
-                                phone_action: Set action for supplicant when AAA times out.
-
-                            """
-
-                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
-                unresponsive: Unresponsive
-                """
-                Configure AAA timeout options.
-
-                Subclass of AvdModel.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
-                        """
-                        Aaa.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            unresponsive:
-                               Configure AAA timeout options.
-
-                               Subclass of AvdModel.
-
-                        """
-
             _fields: ClassVar[dict] = {
+                "aaa": {"type": Aaa},
                 "authentication_failure": {"type": AuthenticationFailure},
                 "port_control": {"type": str},
                 "port_control_force_authorized_phone": {"type": bool},
@@ -29960,8 +30051,9 @@ class EosDesigns(EosDesignsRootModel):
                 "reauthorization_request_limit": {"type": int},
                 "unauthorized": {"type": Unauthorized},
                 "eapol": {"type": Eapol},
-                "aaa": {"type": Aaa},
             }
+            aaa: Aaa
+            """Subclass of AvdModel."""
             authentication_failure: AuthenticationFailure
             """Subclass of AvdModel."""
             port_control: PortControl | None
@@ -29982,14 +30074,13 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             eapol: Eapol
             """Subclass of AvdModel."""
-            aaa: Aaa
-            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    aaa: Aaa | UndefinedType = Undefined,
                     authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                     port_control: PortControl | UndefinedType | None = Undefined,
                     port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
@@ -30002,7 +30093,6 @@ class EosDesigns(EosDesignsRootModel):
                     reauthorization_request_limit: int | UndefinedType | None = Undefined,
                     unauthorized: Unauthorized | UndefinedType = Undefined,
                     eapol: Eapol | UndefinedType = Undefined,
-                    aaa: Aaa | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Dot1x.
@@ -30011,6 +30101,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        aaa: Subclass of AvdModel.
                         authentication_failure: Subclass of AvdModel.
                         port_control: port_control
                         port_control_force_authorized_phone: port_control_force_authorized_phone
@@ -30023,7 +30114,6 @@ class EosDesigns(EosDesignsRootModel):
                         reauthorization_request_limit: reauthorization_request_limit
                         unauthorized: Subclass of AvdModel.
                         eapol: Subclass of AvdModel.
-                        aaa: Subclass of AvdModel.
 
                     """
 
@@ -49114,6 +49204,209 @@ class EosDesigns(EosDesignsRootModel):
         class Dot1x(AvdModel):
             """Subclass of AvdModel."""
 
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "traffic_allow_standard_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """
+                        Name of the IPv4 extended access-list to apply when AAA times out.
+                        When
+                        `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                        under
+                        `ipv4_acls` and its definition is configured on devices where it is referenced.
+                        Otherwise,
+                        only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                        Mutually
+                        exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                        """
+                        traffic_allow_standard_access_list: str | None
+                        """
+                        Name of the IPv4 standard access-list to apply when AAA times out.
+                        The access-list must be defined
+                        under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                        Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                        """
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list:
+                                       Name of the IPv4 extended access-list to apply when AAA times out.
+                                       When
+                                       `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                       under
+                                       `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                       Otherwise,
+                                       only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                       Mutually
+                                       exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    traffic_allow_standard_access_list:
+                                       Name of the IPv4 standard access-list to apply when AAA times out.
+                                       The access-list must be defined
+                                       under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                       Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+                    _fields: ClassVar[dict] = {
+                        "action": {"type": Action},
+                        "eap_response": {"type": str},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            action: Action | UndefinedType = Undefined,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                eap_response: EAP response to send. EOS default is `success`.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class AuthenticationFailure(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -49358,178 +49651,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Aaa(AvdModel):
-                """Subclass of AvdModel."""
-
-                class Unresponsive(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    EapResponse: TypeAlias = Literal["success", "disabled"]
-
-                    class Action(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        class CachedResultsTimeout(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
-                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
-                            time_duration: int
-                            """
-                            Enable caching for a specific duration -
-                            <1-10000>      duration in days
-                            <1-14400000>   duration in
-                            minutes
-                            <1-240000>     duration in hours
-                            <1-864000000>  duration in seconds
-                            """
-                            time_duration_unit: TimeDurationUnit
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    CachedResultsTimeout.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        time_duration:
-                                           Enable caching for a specific duration -
-                                           <1-10000>      duration in days
-                                           <1-14400000>   duration in
-                                           minutes
-                                           <1-240000>     duration in hours
-                                           <1-864000000>  duration in seconds
-                                        time_duration_unit: time_duration_unit
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "traffic_allow_access_list": {"type": str},
-                            "apply_alternate": {"type": bool},
-                            "traffic_allow_vlan": {"type": int},
-                            "apply_cached_results": {"type": bool},
-                            "cached_results_timeout": {"type": CachedResultsTimeout},
-                            "traffic_allow": {"type": bool},
-                        }
-                        traffic_allow_access_list: str | None
-                        """Name of standard access-list to apply when AAA times out."""
-                        apply_alternate: bool | None
-                        """
-                        Apply alternate action if primary action fails.
-                        e.g. aaa unresponsive action apply cached-results
-                        else traffic allow
-                        """
-                        traffic_allow_vlan: int | None
-                        apply_cached_results: bool | None
-                        """Use results from a previous AAA response."""
-                        cached_results_timeout: CachedResultsTimeout
-                        """Subclass of AvdModel."""
-                        traffic_allow: bool | None
-                        """Set action for supplicant traffic when AAA times out."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                apply_alternate: bool | UndefinedType | None = Undefined,
-                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                apply_cached_results: bool | UndefinedType | None = Undefined,
-                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                traffic_allow: bool | UndefinedType | None = Undefined,
-                            ) -> None:
-                                """
-                                Action.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                    apply_alternate:
-                                       Apply alternate action if primary action fails.
-                                       e.g. aaa unresponsive action apply cached-results
-                                       else traffic allow
-                                    traffic_allow_vlan: traffic_allow_vlan
-                                    apply_cached_results: Use results from a previous AAA response.
-                                    cached_results_timeout: Subclass of AvdModel.
-                                    traffic_allow: Set action for supplicant traffic when AAA times out.
-
-                                """
-
-                    _fields: ClassVar[dict] = {
-                        "eap_response": {"type": str},
-                        "action": {"type": Action},
-                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
-                    }
-                    eap_response: EapResponse | None
-                    """EAP response to send. EOS default is `success`."""
-                    action: Action
-                    """
-                    Set action for supplicant when AAA times out.
-
-                    Subclass of AvdModel.
-                    """
-                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
-                    """Set action for supplicant when AAA times out."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            eap_response: EapResponse | UndefinedType | None = Undefined,
-                            action: Action | UndefinedType = Undefined,
-                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Unresponsive.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                eap_response: EAP response to send. EOS default is `success`.
-                                action:
-                                   Set action for supplicant when AAA times out.
-
-                                   Subclass of AvdModel.
-                                phone_action: Set action for supplicant when AAA times out.
-
-                            """
-
-                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
-                unresponsive: Unresponsive
-                """
-                Configure AAA timeout options.
-
-                Subclass of AvdModel.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
-                        """
-                        Aaa.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            unresponsive:
-                               Configure AAA timeout options.
-
-                               Subclass of AvdModel.
-
-                        """
-
             _fields: ClassVar[dict] = {
+                "aaa": {"type": Aaa},
                 "authentication_failure": {"type": AuthenticationFailure},
                 "port_control": {"type": str},
                 "port_control_force_authorized_phone": {"type": bool},
@@ -49542,8 +49665,9 @@ class EosDesigns(EosDesignsRootModel):
                 "reauthorization_request_limit": {"type": int},
                 "unauthorized": {"type": Unauthorized},
                 "eapol": {"type": Eapol},
-                "aaa": {"type": Aaa},
             }
+            aaa: Aaa
+            """Subclass of AvdModel."""
             authentication_failure: AuthenticationFailure
             """Subclass of AvdModel."""
             port_control: PortControl | None
@@ -49564,14 +49688,13 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             eapol: Eapol
             """Subclass of AvdModel."""
-            aaa: Aaa
-            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    aaa: Aaa | UndefinedType = Undefined,
                     authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                     port_control: PortControl | UndefinedType | None = Undefined,
                     port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
@@ -49584,7 +49707,6 @@ class EosDesigns(EosDesignsRootModel):
                     reauthorization_request_limit: int | UndefinedType | None = Undefined,
                     unauthorized: Unauthorized | UndefinedType = Undefined,
                     eapol: Eapol | UndefinedType = Undefined,
-                    aaa: Aaa | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Dot1x.
@@ -49593,6 +49715,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        aaa: Subclass of AvdModel.
                         authentication_failure: Subclass of AvdModel.
                         port_control: port_control
                         port_control_force_authorized_phone: port_control_force_authorized_phone
@@ -49605,7 +49728,6 @@ class EosDesigns(EosDesignsRootModel):
                         reauthorization_request_limit: reauthorization_request_limit
                         unauthorized: Subclass of AvdModel.
                         eapol: Subclass of AvdModel.
-                        aaa: Subclass of AvdModel.
 
                     """
 
@@ -81577,6 +81699,212 @@ class EosDesigns(EosDesignsRootModel):
                     class Dot1x(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "traffic_allow_standard_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """
+                                    Name of the IPv4 extended access-list to apply when AAA times out.
+                                    When
+                                    `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                    under
+                                    `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                    Otherwise,
+                                    only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                    Mutually
+                                    exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    """
+                                    traffic_allow_standard_access_list: str | None
+                                    """
+                                    Name of the IPv4 standard access-list to apply when AAA times out.
+                                    The access-list must be defined
+                                    under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                    Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    """
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list:
+                                                   Name of the IPv4 extended access-list to apply when AAA times out.
+                                                   When
+                                                   `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                                   under
+                                                   `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                                   Otherwise,
+                                                   only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                                   Mutually
+                                                   exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                                traffic_allow_standard_access_list:
+                                                   Name of the IPv4 standard access-list to apply when AAA times out.
+                                                   The access-list must be defined
+                                                   under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                                   Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+                                _fields: ClassVar[dict] = {
+                                    "action": {"type": Action},
+                                    "eap_response": {"type": str},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        action: Action | UndefinedType = Undefined,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
                         class AuthenticationFailure(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -81828,181 +82156,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Aaa(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class Unresponsive(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                EapResponse: TypeAlias = Literal["success", "disabled"]
-
-                                class Action(AvdModel):
-                                    """Subclass of AvdModel."""
-
-                                    class CachedResultsTimeout(AvdModel):
-                                        """Subclass of AvdModel."""
-
-                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
-                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
-                                        time_duration: int
-                                        """
-                                        Enable caching for a specific duration -
-                                        <1-10000>      duration in days
-                                        <1-14400000>   duration in
-                                        minutes
-                                        <1-240000>     duration in hours
-                                        <1-864000000>  duration in seconds
-                                        """
-                                        time_duration_unit: TimeDurationUnit
-
-                                        if TYPE_CHECKING:
-
-                                            def __init__(
-                                                self,
-                                                *,
-                                                time_duration: int | UndefinedType = Undefined,
-                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
-                                            ) -> None:
-                                                """
-                                                CachedResultsTimeout.
-
-
-                                                Subclass of AvdModel.
-
-                                                Args:
-                                                    time_duration:
-                                                       Enable caching for a specific duration -
-                                                       <1-10000>      duration in days
-                                                       <1-14400000>   duration in
-                                                       minutes
-                                                       <1-240000>     duration in hours
-                                                       <1-864000000>  duration in seconds
-                                                    time_duration_unit: time_duration_unit
-
-                                                """
-
-                                    _fields: ClassVar[dict] = {
-                                        "traffic_allow_access_list": {"type": str},
-                                        "apply_alternate": {"type": bool},
-                                        "traffic_allow_vlan": {"type": int},
-                                        "apply_cached_results": {"type": bool},
-                                        "cached_results_timeout": {"type": CachedResultsTimeout},
-                                        "traffic_allow": {"type": bool},
-                                    }
-                                    traffic_allow_access_list: str | None
-                                    """Name of standard access-list to apply when AAA times out."""
-                                    apply_alternate: bool | None
-                                    """
-                                    Apply alternate action if primary action fails.
-                                    e.g. aaa unresponsive action apply cached-results
-                                    else traffic allow
-                                    """
-                                    traffic_allow_vlan: int | None
-                                    apply_cached_results: bool | None
-                                    """Use results from a previous AAA response."""
-                                    cached_results_timeout: CachedResultsTimeout
-                                    """Subclass of AvdModel."""
-                                    traffic_allow: bool | None
-                                    """Set action for supplicant traffic when AAA times out."""
-
-                                    if TYPE_CHECKING:
-
-                                        def __init__(
-                                            self,
-                                            *,
-                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                            apply_alternate: bool | UndefinedType | None = Undefined,
-                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                            apply_cached_results: bool | UndefinedType | None = Undefined,
-                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                            traffic_allow: bool | UndefinedType | None = Undefined,
-                                        ) -> None:
-                                            """
-                                            Action.
-
-
-                                            Subclass of AvdModel.
-
-                                            Args:
-                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                                apply_alternate:
-                                                   Apply alternate action if primary action fails.
-                                                   e.g. aaa unresponsive action apply cached-results
-                                                   else traffic allow
-                                                traffic_allow_vlan: traffic_allow_vlan
-                                                apply_cached_results: Use results from a previous AAA response.
-                                                cached_results_timeout: Subclass of AvdModel.
-                                                traffic_allow: Set action for supplicant traffic when AAA times out.
-
-                                            """
-
-                                _fields: ClassVar[dict] = {
-                                    "eap_response": {"type": str},
-                                    "action": {"type": Action},
-                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
-                                }
-                                eap_response: EapResponse | None
-                                """EAP response to send. EOS default is `success`."""
-                                action: Action
-                                """
-                                Set action for supplicant when AAA times out.
-
-                                Subclass of AvdModel.
-                                """
-                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
-                                """Set action for supplicant when AAA times out."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        eap_response: EapResponse | UndefinedType | None = Undefined,
-                                        action: Action | UndefinedType = Undefined,
-                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Unresponsive.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            eap_response: EAP response to send. EOS default is `success`.
-                                            action:
-                                               Set action for supplicant when AAA times out.
-
-                                               Subclass of AvdModel.
-                                            phone_action: Set action for supplicant when AAA times out.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
-                            unresponsive: Unresponsive
-                            """
-                            Configure AAA timeout options.
-
-                            Subclass of AvdModel.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
-                                    """
-                                    Aaa.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        unresponsive:
-                                           Configure AAA timeout options.
-
-                                           Subclass of AvdModel.
-
-                                    """
-
                         _fields: ClassVar[dict] = {
+                            "aaa": {"type": Aaa},
                             "authentication_failure": {"type": AuthenticationFailure},
                             "port_control": {"type": str},
                             "port_control_force_authorized_phone": {"type": bool},
@@ -82015,8 +82170,9 @@ class EosDesigns(EosDesignsRootModel):
                             "reauthorization_request_limit": {"type": int},
                             "unauthorized": {"type": Unauthorized},
                             "eapol": {"type": Eapol},
-                            "aaa": {"type": Aaa},
                         }
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
                         authentication_failure: AuthenticationFailure
                         """Subclass of AvdModel."""
                         port_control: PortControl | None
@@ -82037,14 +82193,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         eapol: Eapol
                         """Subclass of AvdModel."""
-                        aaa: Aaa
-                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
+                                aaa: Aaa | UndefinedType = Undefined,
                                 authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                                 port_control: PortControl | UndefinedType | None = Undefined,
                                 port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
@@ -82057,7 +82212,6 @@ class EosDesigns(EosDesignsRootModel):
                                 reauthorization_request_limit: int | UndefinedType | None = Undefined,
                                 unauthorized: Unauthorized | UndefinedType = Undefined,
                                 eapol: Eapol | UndefinedType = Undefined,
-                                aaa: Aaa | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Dot1x.
@@ -82066,6 +82220,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    aaa: Subclass of AvdModel.
                                     authentication_failure: Subclass of AvdModel.
                                     port_control: port_control
                                     port_control_force_authorized_phone: port_control_force_authorized_phone
@@ -82078,7 +82233,6 @@ class EosDesigns(EosDesignsRootModel):
                                     reauthorization_request_limit: reauthorization_request_limit
                                     unauthorized: Subclass of AvdModel.
                                     eapol: Subclass of AvdModel.
-                                    aaa: Subclass of AvdModel.
 
                                 """
 
@@ -84148,6 +84302,212 @@ class EosDesigns(EosDesignsRootModel):
                     class Dot1x(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "traffic_allow_standard_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """
+                                    Name of the IPv4 extended access-list to apply when AAA times out.
+                                    When
+                                    `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                    under
+                                    `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                    Otherwise,
+                                    only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                    Mutually
+                                    exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    """
+                                    traffic_allow_standard_access_list: str | None
+                                    """
+                                    Name of the IPv4 standard access-list to apply when AAA times out.
+                                    The access-list must be defined
+                                    under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                    Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    """
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list:
+                                                   Name of the IPv4 extended access-list to apply when AAA times out.
+                                                   When
+                                                   `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
+                                                   under
+                                                   `ipv4_acls` and its definition is configured on devices where it is referenced.
+                                                   Otherwise,
+                                                   only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                                   Mutually
+                                                   exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                                traffic_allow_standard_access_list:
+                                                   Name of the IPv4 standard access-list to apply when AAA times out.
+                                                   The access-list must be defined
+                                                   under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
+                                                   Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+                                _fields: ClassVar[dict] = {
+                                    "action": {"type": Action},
+                                    "eap_response": {"type": str},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        action: Action | UndefinedType = Undefined,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
                         class AuthenticationFailure(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -84399,181 +84759,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Aaa(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class Unresponsive(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                EapResponse: TypeAlias = Literal["success", "disabled"]
-
-                                class Action(AvdModel):
-                                    """Subclass of AvdModel."""
-
-                                    class CachedResultsTimeout(AvdModel):
-                                        """Subclass of AvdModel."""
-
-                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
-                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
-                                        time_duration: int
-                                        """
-                                        Enable caching for a specific duration -
-                                        <1-10000>      duration in days
-                                        <1-14400000>   duration in
-                                        minutes
-                                        <1-240000>     duration in hours
-                                        <1-864000000>  duration in seconds
-                                        """
-                                        time_duration_unit: TimeDurationUnit
-
-                                        if TYPE_CHECKING:
-
-                                            def __init__(
-                                                self,
-                                                *,
-                                                time_duration: int | UndefinedType = Undefined,
-                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
-                                            ) -> None:
-                                                """
-                                                CachedResultsTimeout.
-
-
-                                                Subclass of AvdModel.
-
-                                                Args:
-                                                    time_duration:
-                                                       Enable caching for a specific duration -
-                                                       <1-10000>      duration in days
-                                                       <1-14400000>   duration in
-                                                       minutes
-                                                       <1-240000>     duration in hours
-                                                       <1-864000000>  duration in seconds
-                                                    time_duration_unit: time_duration_unit
-
-                                                """
-
-                                    _fields: ClassVar[dict] = {
-                                        "traffic_allow_access_list": {"type": str},
-                                        "apply_alternate": {"type": bool},
-                                        "traffic_allow_vlan": {"type": int},
-                                        "apply_cached_results": {"type": bool},
-                                        "cached_results_timeout": {"type": CachedResultsTimeout},
-                                        "traffic_allow": {"type": bool},
-                                    }
-                                    traffic_allow_access_list: str | None
-                                    """Name of standard access-list to apply when AAA times out."""
-                                    apply_alternate: bool | None
-                                    """
-                                    Apply alternate action if primary action fails.
-                                    e.g. aaa unresponsive action apply cached-results
-                                    else traffic allow
-                                    """
-                                    traffic_allow_vlan: int | None
-                                    apply_cached_results: bool | None
-                                    """Use results from a previous AAA response."""
-                                    cached_results_timeout: CachedResultsTimeout
-                                    """Subclass of AvdModel."""
-                                    traffic_allow: bool | None
-                                    """Set action for supplicant traffic when AAA times out."""
-
-                                    if TYPE_CHECKING:
-
-                                        def __init__(
-                                            self,
-                                            *,
-                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                            apply_alternate: bool | UndefinedType | None = Undefined,
-                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
-                                            apply_cached_results: bool | UndefinedType | None = Undefined,
-                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                            traffic_allow: bool | UndefinedType | None = Undefined,
-                                        ) -> None:
-                                            """
-                                            Action.
-
-
-                                            Subclass of AvdModel.
-
-                                            Args:
-                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                                apply_alternate:
-                                                   Apply alternate action if primary action fails.
-                                                   e.g. aaa unresponsive action apply cached-results
-                                                   else traffic allow
-                                                traffic_allow_vlan: traffic_allow_vlan
-                                                apply_cached_results: Use results from a previous AAA response.
-                                                cached_results_timeout: Subclass of AvdModel.
-                                                traffic_allow: Set action for supplicant traffic when AAA times out.
-
-                                            """
-
-                                _fields: ClassVar[dict] = {
-                                    "eap_response": {"type": str},
-                                    "action": {"type": Action},
-                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
-                                }
-                                eap_response: EapResponse | None
-                                """EAP response to send. EOS default is `success`."""
-                                action: Action
-                                """
-                                Set action for supplicant when AAA times out.
-
-                                Subclass of AvdModel.
-                                """
-                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
-                                """Set action for supplicant when AAA times out."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        eap_response: EapResponse | UndefinedType | None = Undefined,
-                                        action: Action | UndefinedType = Undefined,
-                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Unresponsive.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            eap_response: EAP response to send. EOS default is `success`.
-                                            action:
-                                               Set action for supplicant when AAA times out.
-
-                                               Subclass of AvdModel.
-                                            phone_action: Set action for supplicant when AAA times out.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
-                            unresponsive: Unresponsive
-                            """
-                            Configure AAA timeout options.
-
-                            Subclass of AvdModel.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
-                                    """
-                                    Aaa.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        unresponsive:
-                                           Configure AAA timeout options.
-
-                                           Subclass of AvdModel.
-
-                                    """
-
                         _fields: ClassVar[dict] = {
+                            "aaa": {"type": Aaa},
                             "authentication_failure": {"type": AuthenticationFailure},
                             "port_control": {"type": str},
                             "port_control_force_authorized_phone": {"type": bool},
@@ -84586,8 +84773,9 @@ class EosDesigns(EosDesignsRootModel):
                             "reauthorization_request_limit": {"type": int},
                             "unauthorized": {"type": Unauthorized},
                             "eapol": {"type": Eapol},
-                            "aaa": {"type": Aaa},
                         }
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
                         authentication_failure: AuthenticationFailure
                         """Subclass of AvdModel."""
                         port_control: PortControl | None
@@ -84608,14 +84796,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         eapol: Eapol
                         """Subclass of AvdModel."""
-                        aaa: Aaa
-                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
+                                aaa: Aaa | UndefinedType = Undefined,
                                 authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
                                 port_control: PortControl | UndefinedType | None = Undefined,
                                 port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
@@ -84628,7 +84815,6 @@ class EosDesigns(EosDesignsRootModel):
                                 reauthorization_request_limit: int | UndefinedType | None = Undefined,
                                 unauthorized: Unauthorized | UndefinedType = Undefined,
                                 eapol: Eapol | UndefinedType = Undefined,
-                                aaa: Aaa | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Dot1x.
@@ -84637,6 +84823,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    aaa: Subclass of AvdModel.
                                     authentication_failure: Subclass of AvdModel.
                                     port_control: port_control
                                     port_control_force_authorized_phone: port_control_force_authorized_phone
@@ -84649,7 +84836,6 @@ class EosDesigns(EosDesignsRootModel):
                                     reauthorization_request_limit: reauthorization_request_limit
                                     unauthorized: Subclass of AvdModel.
                                     eapol: Subclass of AvdModel.
-                                    aaa: Subclass of AvdModel.
 
                                 """
 

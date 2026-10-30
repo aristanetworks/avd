@@ -274,6 +274,21 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
+        action = adapter.dot1x.aaa.unresponsive.action
+        if action.traffic_allow_access_list and action.traffic_allow_standard_access_list:
+            msg = (
+                "'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive under "
+                f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+        if acl_name := action.traffic_allow_standard_access_list:
+            self.structured_config_utils._set_ipv4_standard_acl(acl_name)
+            dot1x.aaa.unresponsive.action.traffic_allow_access_list = acl_name
+        elif self.inputs.avd_design_future.validate_dot1x_aaa_unresponsive_acl and (acl_name := action.traffic_allow_access_list):
+            if acl_name not in self.inputs.ipv4_acls:
+                msg = f"ipv4_acls[name={acl_name}]"
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
         if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
             acl_found = False
             if acl_name in self.inputs.ipv4_acls:

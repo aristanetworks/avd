@@ -440,6 +440,22 @@ keys:
     description: Opt-in to future AVD behaviors which will become default behaviors
       in a future AVD major version.
     keys:
+      validate_dot1x_aaa_unresponsive_acl:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under
+          connected endpoint adapters, network ports, and port profiles
+
+          against `ipv4_acls`, and configure the referenced IPv4 extended access-list
+          definitions.
+
+          When disabled, only the interface ACL reference is configured, allowing
+          ACL definitions outside the catalog.
+
+          `traffic_allow_standard_access_list` is always validated against `ipv4_standard_acls`
+          and configured.'
       accept_dhcp_default_route_for_mgmt_ip_dhcp:
         type: bool
         default: false
@@ -12373,6 +12389,42 @@ $defs:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
         keys:
+          aaa:
+            type: dict
+            keys:
+              unresponsive:
+                type: dict
+                keys:
+                  action:
+                    type: dict
+                    keys:
+                      traffic_allow_access_list:
+                        type: str
+                        description: 'Name of the IPv4 extended access-list to apply
+                          when AAA times out.
+
+                          When `avd_design_future.validate_dot1x_aaa_unresponsive_acl`
+                          is enabled, the access-list must be defined under
+
+                          `ipv4_acls` and its definition is configured on devices
+                          where it is referenced.
+
+                          Otherwise, only the interface ACL reference is configured,
+                          allowing the ACL to be defined elsewhere.
+
+                          Mutually exclusive with `traffic_allow_standard_access_list`.
+                          Setting both raises an error.'
+                      traffic_allow_standard_access_list:
+                        type: str
+                        description: 'Name of the IPv4 standard access-list to apply
+                          when AAA times out.
+
+                          The access-list must be defined under `ipv4_standard_acls`
+                          and its definition is configured on devices where it is
+                          referenced.
+
+                          Mutually exclusive with `traffic_allow_access_list`. Setting
+                          both raises an error.'
           authentication_failure:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x/keys/authentication_failure
