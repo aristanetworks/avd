@@ -1052,7 +1052,7 @@ def dump_runtime_deprecations(deprecations: list[warnings.WarningMessage], confi
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
     err_lines = [f"{warning.category.__module__}.{warning.category.__name__}: {warning.message}" for warning in deprecations]
-    error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines))
+    error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines) + "\n")
 
 
 def dump_violations(violations: list[pyavd_utils.validation.Violation], config: FabricConfig, stage: str, device: str) -> None:
