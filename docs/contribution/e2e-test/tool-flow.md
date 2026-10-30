@@ -8,7 +8,8 @@
 
 This document describes the responsibilities and runtime flow of the AVD end-to-end test tool. It is intended for developers changing or debugging the tool itself. For configuration and invocation, see [Using the AVD End-to-End Test Tool](using-the-tool.md).
 
-The implementation is currently a single script, but the concepts described here are behavioral boundaries rather than a proposed package layout.
+The implementation lives in the importable `tools/e2e_test_avd.py` module. The `tools/e2e-test-avd.py` script is a thin command-line wrapper. The concepts
+described here are behavioral boundaries rather than a proposed package layout.
 
 ## Responsibilities
 
@@ -85,7 +86,10 @@ The context owns:
 
 The inventory is loaded once per scenario. `extra_vars` are installed on Ansible's variable manager before host variables are evaluated. Devices and their resolved variables can therefore be reused across fabric builds.
 
-The process pool uses the `forkserver` multiprocessing context. Each worker runs `initialize_worker` to initialize its own PyAVD schema store and, when custom templates are enabled, its own Ansible plugin loader. Main-process initialization is separate because initialized Python state does not implicitly cross the forkserver boundary.
+Normal runs use a process pool with the `forkserver` multiprocessing context. Each worker runs `initialize_worker` to initialize its own PyAVD schema store
+and, when custom templates are enabled, its own Ansible plugin loader. Main-process initialization is separate because initialized Python state does not
+implicitly cross the forkserver boundary. Callers such as the CodSpeed suite can inject an inline executor to exercise the same preparation and build stages
+in the current process without changing the normal command-line behavior.
 
 If `custom_path` is configured, it is inserted at the front of `sys.path` for the scenario. During context teardown, the original path is restored and modules loaded from the custom directory are evicted from the import cache.
 
