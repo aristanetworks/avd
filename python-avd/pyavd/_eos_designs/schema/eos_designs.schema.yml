@@ -9616,6 +9616,10 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        address_locking:
+          ipv6_enforcement_disabled: false
+          ipv6_ethernet_interface: false
+          ipv6_vlan: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
@@ -9698,6 +9702,8 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        address_locking:
+          supported: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
