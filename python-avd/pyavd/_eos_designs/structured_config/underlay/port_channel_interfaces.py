@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -135,9 +136,15 @@ class PortChannelInterfacesMixin(Protocol):
                 msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
                 raise AristaAvdInvalidInputsError(msg)
         # Validation: Non-subinterface port-channels must have at least one member interface
-        elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+        elif not l3_port_channel.member_interfaces:
             msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
-            raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.avd_design_future.raise_for_port_channels_without_members:
+                raise AristaAvdInvalidInputsError(msg)
+            warnings.warn(
+                f"{msg} Set 'avd_design_future.raise_for_port_channels_without_members: true' to opt in to the future behavior.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)

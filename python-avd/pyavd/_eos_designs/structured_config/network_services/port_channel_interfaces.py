@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import warnings
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -70,10 +71,16 @@ class PortChannelInterfacesMixin(Protocol):
                         # implies 'mtu' is set when not applicable for a sub-interface
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mtu' set. This is not a valid setting."
                         raise AristaAvdInvalidInputsError(msg)
-                elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+                elif not l3_port_channel.member_interfaces:
                     # Validation: Non-subinterface port-channels must have at least one member interface
                     msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
-                    raise AristaAvdInvalidInputsError(msg)
+                    if self.inputs.avd_design_future.raise_for_port_channels_without_members:
+                        raise AristaAvdInvalidInputsError(msg)
+                    warnings.warn(
+                        f"{msg} Set 'avd_design_future.raise_for_port_channels_without_members: true' to opt in to the future behavior.",
+                        DeprecationWarning,
+                        stacklevel=2,
+                    )
 
                 if not (interface_description := l3_port_channel.description):
                     interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
