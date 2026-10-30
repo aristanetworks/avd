@@ -1721,6 +1721,7 @@ router bgp 65101
    bgp route-reflector preserve-attributes
    no bgp additional-paths receive
    no bgp additional-paths send
+   neighbor default received attribute discard 10-23
    neighbor default send-community large
    bgp redistribute-internal
    redistribute connected include leaked route-map RM-CONN-2-BGP

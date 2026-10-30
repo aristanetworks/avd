@@ -56,6 +56,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutually exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].remove_private_as.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].remove_private_as.all") | Boolean |  |  |  |  |
@@ -205,6 +208,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutually exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].remove_private_as.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].remove_private_as.all") | Boolean |  |  |  |  |
@@ -322,6 +328,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "network_services.[].bgp_peer_groups.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "network_services.[].bgp_peer_groups.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "network_services.[].bgp_peer_groups.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "network_services.[].bgp_peer_groups.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "network_services.[].bgp_peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "network_services.[].bgp_peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutually exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "network_services.[].bgp_peer_groups.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].bgp_peer_groups.[].remove_private_as.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "network_services.[].bgp_peer_groups.[].remove_private_as.all") | Boolean |  |  |  |  |
@@ -471,6 +480,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutually exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].remove_private_as.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "network_services.[].vrfs.[].bgp_peer_groups.[].remove_private_as.all") | Boolean |  |  |  |  |
@@ -674,6 +686,17 @@
 
               # Disable prepending own AS number to AS path.
               prepend_own_disabled: <bool>
+
+            # Received path attribute configuration.
+            received_attribute_discard:
+
+              # Explicitly disable this configuration.
+              # Mutually exclusive with `type_codes` and takes precedence over it.
+              disabled: <bool>
+
+              # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+              # Supported range 4-255. Mutually exclusive with `disabled`.
+              type_codes: <str>
 
             # Remove private AS numbers in outbound AS path.
             remove_private_as:
@@ -1052,6 +1075,17 @@
 
                   # Disable prepending own AS number to AS path.
                   prepend_own_disabled: <bool>
+
+                # Received path attribute configuration.
+                received_attribute_discard:
+
+                  # Explicitly disable this configuration.
+                  # Mutually exclusive with `type_codes` and takes precedence over it.
+                  disabled: <bool>
+
+                  # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                  # Supported range 4-255. Mutually exclusive with `disabled`.
+                  type_codes: <str>
 
                 # Remove private AS numbers in outbound AS path.
                 remove_private_as:
@@ -1334,6 +1368,17 @@
               # Disable prepending own AS number to AS path.
               prepend_own_disabled: <bool>
 
+            # Received path attribute configuration.
+            received_attribute_discard:
+
+              # Explicitly disable this configuration.
+              # Mutually exclusive with `type_codes` and takes precedence over it.
+              disabled: <bool>
+
+              # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+              # Supported range 4-255. Mutually exclusive with `disabled`.
+              type_codes: <str>
+
             # Remove private AS numbers in outbound AS path.
             remove_private_as:
               enabled: <bool>
@@ -1711,6 +1756,17 @@
 
                   # Disable prepending own AS number to AS path.
                   prepend_own_disabled: <bool>
+
+                # Received path attribute configuration.
+                received_attribute_discard:
+
+                  # Explicitly disable this configuration.
+                  # Mutually exclusive with `type_codes` and takes precedence over it.
+                  disabled: <bool>
+
+                  # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                  # Supported range 4-255. Mutually exclusive with `disabled`.
+                  type_codes: <str>
 
                 # Remove private AS numbers in outbound AS path.
                 remove_private_as:

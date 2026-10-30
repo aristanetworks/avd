@@ -149,6 +149,11 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
    bgp bestpath d-path
 {%     endif %}
+{%     if router_bgp.neighbor_default.received_attribute_discard.disabled is arista.avd.defined(true) %}
+   neighbor default received attribute discard disabled
+{%     elif router_bgp.neighbor_default.received_attribute_discard.type_codes is arista.avd.defined %}
+   neighbor default received attribute discard {{ router_bgp.neighbor_default.received_attribute_discard.type_codes }}
+{%     endif %}
 {%     if router_bgp.neighbor_default.send_community is arista.avd.defined('all') %}
    neighbor default send-community
 {%     elif router_bgp.neighbor_default.send_community is arista.avd.defined %}
@@ -275,6 +280,11 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group.name }} enforce-first-as
 {%         elif peer_group.enforce_first_as is arista.avd.defined(false) %}
    no neighbor {{ peer_group.name }} enforce-first-as
+{%         endif %}
+{%         if peer_group.received_attribute_discard.disabled is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} received attribute discard disabled
+{%         elif peer_group.received_attribute_discard.type_codes is arista.avd.defined %}
+   neighbor {{ peer_group.name }} received attribute discard {{ peer_group.received_attribute_discard.type_codes }}
 {%         endif %}
 {%         if peer_group.send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group.name }} send-community
@@ -472,6 +482,11 @@ router bgp {{ router_bgp.as }}
    neighbor {{ neighbor.ip_address }} enforce-first-as
 {%         elif neighbor.enforce_first_as is arista.avd.defined(false) %}
    no neighbor {{ neighbor.ip_address }} enforce-first-as
+{%         endif %}
+{%         if neighbor.received_attribute_discard.disabled is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} received attribute discard disabled
+{%         elif neighbor.received_attribute_discard.type_codes is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} received attribute discard {{ neighbor.received_attribute_discard.type_codes }}
 {%         endif %}
 {%         if neighbor.send_community is arista.avd.defined('all') %}
    neighbor {{ neighbor.ip_address }} send-community
@@ -3124,6 +3139,11 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} enforce-first-as
 {%             elif neighbor.enforce_first_as is arista.avd.defined(false) %}
       no neighbor {{ neighbor.ip_address }} enforce-first-as
+{%             endif %}
+{%             if neighbor.received_attribute_discard.disabled is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} received attribute discard disabled
+{%             elif neighbor.received_attribute_discard.type_codes is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} received attribute discard {{ neighbor.received_attribute_discard.type_codes }}
 {%             endif %}
 {%             if neighbor.send_community is arista.avd.defined('all') %}
       neighbor {{ neighbor.ip_address }} send-community

@@ -401,6 +401,8 @@ router_bgp:
   - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
     remote_as: '666'
     description: Tenant C peer group
+    received_attribute_discard:
+      type_codes: 10-20
   neighbors:
   - ip_address: 172.31.254.160
     peer_group: UNDERLAY-PEERS
