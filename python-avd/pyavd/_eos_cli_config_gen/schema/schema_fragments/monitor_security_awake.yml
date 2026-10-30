@@ -1,0 +1,76 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_security:
+    type: dict
+    keys:
+      awake:
+        type: dict
+        documentation_options:
+          table: monitor-security-awake
+        description: |-
+          Configuration of the Arista NDR (Awake) sensor.
+          Renders `monitor security awake`.
+        keys:
+          disabled:
+            type: bool
+            description: |-
+              Disable the NDR sensor.
+              `true` renders `disabled`, `false` renders `no disabled`.
+          topic:
+            type: str
+            description: Topic identifier.
+          monitor_point_identifier:
+            type: int
+            min: 0
+            max: 2147483647
+            description: Identifier of this monitor point.
+          flow_table_size:
+            type: int
+            min: 1
+            max: 614400
+            description: Maximum number of entries in the flow table.
+          ipfix_listener_port:
+            type: int
+            min: 1
+            max: 65535
+            description: UDP port on which the sensor listens for IPFIX records.
+          ndr_application:
+            type: dict
+            keys:
+              unknown_udp:
+                type: bool
+                description: Enable handling of unknown UDP applications.
+          nucleus:
+            type: list
+            primary_key: name
+            min_length: 1
+            max_length: 2
+            required: true
+            description: NDR Nucleus servers (minimum 1, maximum 2).
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Hostname of the Nucleus.
+                destination:
+                  type: str
+                  required: true
+                  description: IPv4 or IPv6 address or FQDN of the Nucleus.
+                port:
+                  type: int
+                  min: 1
+                  max: 65535
+                  description: TCP port of the Nucleus.
+                local_interface:
+                  type: str
+                  description: Source interface for the connection to the Nucleus, e.g. `Loopback0`.
+                ssl_profile:
+                  type: str
+                  description: Name of the SSL profile used for the connection to the Nucleus.
