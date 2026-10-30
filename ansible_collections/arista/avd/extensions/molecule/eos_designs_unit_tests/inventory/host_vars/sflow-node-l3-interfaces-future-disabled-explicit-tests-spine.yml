@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  fix_sflow_parent_subinterface_conflicts: false

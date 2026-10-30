@@ -59,6 +59,9 @@ class ParentInterfacesTracker:
         self.required_ethernet_parents: set[str] = set()
         """Set of Ethernet parent interface names required by subinterfaces."""
 
+        self.required_ethernet_parents_to_disable_sflow: set[str] = set()
+        """Set of Ethernet parent interface names required by subinterfaces that must have sFlow disabled when auto-created."""
+
         self.existing_ethernet_parents: set[str] = set()
         """Set of Ethernet parent interface names that already exist."""
 
@@ -80,6 +83,10 @@ class ParentInterfacesTracker:
     def register_ethernet_parent(self, parent_name: str) -> None:
         """Register an existing Ethernet parent interface."""
         self.existing_ethernet_parents.add(parent_name)
+
+    def mark_required_ethernet_parent_to_disable_sflow(self, parent_name: str) -> None:
+        """Mark a required Ethernet parent interface to have sFlow disabled when auto-created."""
+        self.required_ethernet_parents_to_disable_sflow.add(parent_name)
 
     def register_port_channel_subinterface(self, subinterface_name: str) -> None:
         """Register a Port-Channel subinterface and track its required parent."""
@@ -188,6 +195,8 @@ class AvdStructuredConfigParentInterfacesProtocol(
             )
             interface.metadata.peer_type = "l3_interface"
             interface.switchport.enabled = False
+            if interface_name in self.structured_config_utils.parent_interfaces_tracker.required_ethernet_parents_to_disable_sflow:
+                interface.sflow.enable = False
             self.structured_config.ethernet_interfaces.append(interface)
 
     @structured_config_contributor
