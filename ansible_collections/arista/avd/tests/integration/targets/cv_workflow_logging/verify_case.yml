@@ -10,20 +10,20 @@
   register: cv_probe_result
   ignore_errors: true
 
-- name: "Verify retained diagnostics and deployment failure policy - {{ probe_case }}"
+- name: "Verify workflow results and Ansible warning capture - {{ probe_case }}"
   ansible.builtin.assert:
     that:
       - cv_probe_result.changed
       - cv_probe_result.failed == probe_case.startswith('failure')
-      - cv_probe_result.warnings | length == 3
-      - "('CV_LOGGING_PROBE_pyavd_' ~ probe_case) in cv_probe_result.warnings"
-      - "('CV_LOGGING_PROBE_urllib3_' ~ probe_case) in cv_probe_result.warnings"
-      - "('CV_WORKFLOW_WARNING_' ~ probe_case) in cv_probe_result.warnings"
-      - cv_probe_result.stderr_lines == expected_logged_errors
-      - cv_probe_result.stderr == (expected_logged_errors | join('\n')) ~ '\n'
+      - cv_probe_result.warnings | sort == expected_warnings | sort
+      - cv_probe_result.stderr_lines is not defined
+      - cv_probe_result.stderr is not defined
+      - cv_probe_result.logs is not defined
       - cv_probe_result.errors == expected_workflow_errors
   vars:
-    expected_logged_errors:
-      - "CV_LOGGING_PROBE_ERROR_{{ probe_case }}"
-      - "CV_LOGGING_PROBE_CRITICAL_{{ probe_case }}"
+    # Ansible 2.19+ also captures Display.warning() in the registered task result.
+    expected_log_warnings: >-
+      {{ ['CV_LOGGING_PROBE_pyavd_' ~ probe_case, 'CV_LOGGING_PROBE_urllib3_' ~ probe_case]
+         if ansible_version.full is version('2.19', '>=') else [] }}
+    expected_warnings: "{{ ['CV_WORKFLOW_WARNING_' ~ probe_case] + expected_log_warnings }}"
     expected_workflow_errors: "{{ ['Workflow rejected deployment'] if probe_case.startswith('failure') else [] }}"
