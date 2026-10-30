@@ -8,6 +8,9 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>fabric_ip_addressing</samp>](## "fabric_ip_addressing") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;management</samp>](## "fabric_ip_addressing.management") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_subnet</samp>](## "fabric_ip_addressing.management.ipv4_subnet") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "fabric_ip_addressing.management.ipv4_subnet.algorithm") | String |  | `device_id` | Valid Values:<br>- <code>device_id</code><br>- <code>auto</code> | Allocation mode for `mgmt_interface_settings.ipv4_subnet`.<br>`device_id` selects the host at offset `id - 1` in the subnet's address ordering and fails on conflicts.<br>`auto` retains an existing assignment or allocates the next free address independently of node ID.<br>Automatic assignments are persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`<br>under the output directory. PyAVD callers must supply a PoolManager and save it after successful facts generation.<br>Keep the state file to preserve assignments. Absent owners remain reserved until explicitly removed from state.<br>Invalid existing assignments fail instead of silently renumbering a device. |
     | [<samp>&nbsp;&nbsp;loopback</samp>](## "fabric_ip_addressing.loopback") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_length</samp>](## "fabric_ip_addressing.loopback.ipv6_prefix_length") | Integer |  | `128` | Valid Values:<br>- <code>64</code><br>- <code>128</code> | IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks. |
     | [<samp>&nbsp;&nbsp;mlag</samp>](## "fabric_ip_addressing.mlag") | Dictionary |  |  |  |  |
@@ -24,6 +27,17 @@
 
     ```yaml
     fabric_ip_addressing:
+      management:
+        ipv4_subnet:
+
+          # Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
+          # `device_id` selects the host at offset `id - 1` in the subnet's address ordering and fails on conflicts.
+          # `auto` retains an existing assignment or allocates the next free address independently of node ID.
+          # Automatic assignments are persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`
+          # under the output directory. PyAVD callers must supply a PoolManager and save it after successful facts generation.
+          # Keep the state file to preserve assignments. Absent owners remain reserved until explicitly removed from state.
+          # Invalid existing assignments fail instead of silently renumbering a device.
+          algorithm: <str; "device_id" | "auto"; default="device_id">
       loopback:
 
         # IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks.

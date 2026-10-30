@@ -1,0 +1,13 @@
+---
+fabric_name: MGMT_IPV4_UNKNOWN
+type: l2leaf
+ipv4_subnets:
+  - name: OOB
+    subnet: 192.0.2.0/24
+    range: 192.0.2.10-192.0.2.20
+mgmt_interface_settings:
+  ipv4_subnet: MISSING
+l2leaf:
+  nodes:
+    - name: mgmt-ipv4-unknown
+      id: 1

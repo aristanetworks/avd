@@ -11,6 +11,13 @@ keys:
       These settings override the corresponding global variables where applicable.
     type: dict
     keys:
+      ipv4_subnet:
+        type: str
+        description: |-
+          Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+          An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
+          Allocation mode is selected with `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+          Gateway settings are unchanged; the gateway is not inferred from the subnet.
       description:
         type: str
         description: |-

@@ -1,0 +1,41 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+type: dict
+keys:
+  ipv4_subnets:
+    type: list
+    primary_key: name
+    documentation_options:
+      table: management-interface-settings
+    description: |-
+      Named IPv4 subnets used for address allocation.
+      Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.
+      Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          min_length: 1
+        subnet:
+          type: str
+          required: true
+          description: Canonical IPv4 network in CIDR notation. Host bits must be zero.
+        range:
+          type: str
+          description: |-
+            Optional inclusive host range within the subnet, for example `192.0.2.10-192.0.2.200`.
+            Defaults to all usable hosts. Network and broadcast addresses are excluded except for /31 and /32 subnets.
+        allocation_policy:
+          type: dict
+          keys:
+            algorithm:
+              type: str
+              default: ascend
+              valid_values: [ascend, descend]
+              description: |-
+                Address ordering within the allowed range.
+                With `device_id`, ID 1 selects the first or last allowed host respectively.
+                With `auto`, ordering selects new assignments; existing valid assignments are retained.

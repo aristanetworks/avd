@@ -1,0 +1,5 @@
+---
+fabric_ip_addressing:
+  management:
+    ipv4_subnet:
+      algorithm: device_id

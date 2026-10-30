@@ -1,0 +1,6 @@
+---
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 203.0.113.123
+      source_address: use_mgmt_interface_ipv4

@@ -9,6 +9,24 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
+      management:
+        type: dict
+        keys:
+          ipv4_subnet:
+            type: dict
+            keys:
+              algorithm:
+                type: str
+                default: device_id
+                valid_values: [device_id, auto]
+                description: |-
+                  Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
+                  `device_id` selects the host at offset `id - 1` in the subnet's address ordering and fails on conflicts.
+                  `auto` retains an existing assignment or allocates the next free address independently of node ID.
+                  Automatic assignments are persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`
+                  under the output directory. PyAVD callers must supply a PoolManager and save it after successful facts generation.
+                  Keep the state file to preserve assignments. Absent owners remain reserved until explicitly removed from state.
+                  Invalid existing assignments fail instead of silently renumbering a device.
       loopback:
         type: dict
         keys:

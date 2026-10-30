@@ -3457,6 +3457,36 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
+      management:
+        type: dict
+        keys:
+          ipv4_subnet:
+            type: dict
+            keys:
+              algorithm:
+                type: str
+                default: device_id
+                valid_values:
+                - device_id
+                - auto
+                description: 'Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
+
+                  `device_id` selects the host at offset `id - 1` in the subnet''s
+                  address ordering and fails on conflicts.
+
+                  `auto` retains an existing assignment or allocates the next free
+                  address independently of node ID.
+
+                  Automatic assignments are persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`
+
+                  under the output directory. PyAVD callers must supply a PoolManager
+                  and save it after successful facts generation.
+
+                  Keep the state file to preserve assignments. Absent owners remain
+                  reserved until explicitly removed from state.
+
+                  Invalid existing assignments fail instead of silently renumbering
+                  a device.'
       loopback:
         type: dict
         keys:
@@ -4219,6 +4249,52 @@ keys:
               mirror_session:
                 type: str
                 description: Mirror session to mirror matches against this rule.
+  ipv4_subnets:
+    type: list
+    primary_key: name
+    documentation_options:
+      table: management-interface-settings
+    description: 'Named IPv4 subnets used for address allocation.
+
+      Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB
+      management addresses.
+
+      Address conflicts are checked across participating OOB management endpoints
+      in the same fabric and VRF.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          min_length: 1
+        subnet:
+          type: str
+          required: true
+          description: Canonical IPv4 network in CIDR notation. Host bits must be
+            zero.
+        range:
+          type: str
+          description: 'Optional inclusive host range within the subnet, for example
+            `192.0.2.10-192.0.2.200`.
+
+            Defaults to all usable hosts. Network and broadcast addresses are excluded
+            except for /31 and /32 subnets.'
+        allocation_policy:
+          type: dict
+          keys:
+            algorithm:
+              type: str
+              default: ascend
+              valid_values:
+              - ascend
+              - descend
+              description: 'Address ordering within the allowed range.
+
+                With `device_id`, ID 1 selects the first or last allowed host respectively.
+
+                With `auto`, ordering selects new assignments; existing valid assignments
+                are retained.'
   ipv6_acls:
     type: list
     primary_key: name
@@ -4796,6 +4872,16 @@ keys:
       These settings override the corresponding global variables where applicable.'
     type: dict
     keys:
+      ipv4_subnet:
+        type: str
+        description: 'Name of an `ipv4_subnets` entry used to generate the OOB management
+          IPv4 address.
+
+          An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
+
+          Allocation mode is selected with `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+
+          Gateway settings are unchanged; the gateway is not inferred from the subnet.'
       description:
         type: str
         description: Interface description configured on the management interface.

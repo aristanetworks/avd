@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv4 address '192.0.2.10' conflicts between 'mgmt-ipv4-collision-b' (subnet 'explicit mgmt_ip') and 'mgmt-ipv4-collision-a' (subnet 'OOB') in fabric 'MGMT_IPV4_COLLISION', VRF 'MGMT'.

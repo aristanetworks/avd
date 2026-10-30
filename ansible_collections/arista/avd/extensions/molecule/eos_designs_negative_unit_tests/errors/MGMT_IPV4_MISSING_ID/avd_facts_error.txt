@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: A positive device 'id' is required for management allocation from IPv4 subnet 'OOB' using 'device_id'.
