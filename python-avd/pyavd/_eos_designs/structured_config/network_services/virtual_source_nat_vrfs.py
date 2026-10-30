@@ -54,8 +54,14 @@ class VirtualSourceNatVrfsMixin(Protocol):
             ignore_fields=("ip_address", "ipv6_address"),
         )
 
-        # Only tenant loopbacks may set a missing IPv6 address, to preserve the configuration for existing inputs.
-        if fill_missing_ipv6 and ipv6:
-            virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs[vrf]
-            if not virtual_source_nat_vrf.ipv6_address:
-                virtual_source_nat_vrf.ipv6_address = ipv6
+        # With the future knob, any loopback may set a missing IPv4 or IPv6 address.
+        # Without it, only tenant loopbacks may set a missing IPv6 address, to preserve the configuration for existing inputs.
+        fix_address_families = self.inputs.avd_design_future.fix_virtual_source_nat_address_families
+        if not (fix_address_families or fill_missing_ipv6):
+            return
+
+        virtual_source_nat_vrf = self.structured_config.virtual_source_nat_vrfs[vrf]
+        if fix_address_families and ipv4 and not virtual_source_nat_vrf.ip_address:
+            virtual_source_nat_vrf.ip_address = ipv4
+        if ipv6 and not virtual_source_nat_vrf.ipv6_address:
+            virtual_source_nat_vrf.ipv6_address = ipv6
