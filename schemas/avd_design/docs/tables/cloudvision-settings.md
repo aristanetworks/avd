@@ -10,7 +10,7 @@
     | [<samp>cv_settings</samp>](## "cv_settings") | Dictionary |  |  |  | Settings for CloudVision telemetry streaming and provisioning. |
     | [<samp>&nbsp;&nbsp;cvaas</samp>](## "cv_settings.cvaas") | Dictionary |  |  |  | State streaming to CloudVision-as-a-Service. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "cv_settings.cvaas.enabled") | Boolean | Required |  |  | Enable streaming to CVaaS.<br>When enabled it will stream to 'apiserver.arista.io:443' using the VRF obtained from `default_mgmt_method` unless overridden under `clusters`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clusters</samp>](## "cv_settings.cvaas.clusters") | List, items: Dictionary |  | `[{'name': 'cvaas'}]` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clusters</samp>](## "cv_settings.cvaas.clusters") | List, items: Dictionary |  | `[{'name': 'cvaas'}]` | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.cvaas.clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "cv_settings.cvaas.clusters.[].region") | String |  | `auto` | Valid Values:<br>- <code>auto</code><br>- <code>us-central1-a</code><br>- <code>us-central1-b</code><br>- <code>us-central1-c</code><br>- <code>us-4</code><br>- <code>apnortheast-1</code><br>- <code>euwest-2</code><br>- <code>eu-3</code><br>- <code>ausoutheast-1</code><br>- <code>na-northeast1-b</code><br>- <code>uk-1</code><br>- <code>india-1</code><br>- <code>staging</code><br>- <code>dev</code><br>- <code>play</code> | Optionally set the region to stream to.<br>The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.<br>"staging", "dev" and "play" are for internal Arista use. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.cvaas.clusters.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
@@ -55,7 +55,7 @@
         # Enable streaming to CVaaS.
         # When enabled it will stream to 'apiserver.arista.io:443' using the VRF obtained from `default_mgmt_method` unless overridden under `clusters`.
         enabled: <bool; required>
-        clusters: # default=[{'name': 'cvaas'}]
+        clusters: # >=1 items; default=[{'name': 'cvaas'}]
 
             # Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
           - name: <str; required; unique>

@@ -44,7 +44,6 @@ keys:
             keys:
               servers:
                 type: list
-                required: false
                 description: |-
                   CloudVision servers that make up one cluster.
                   May be omitted when inherited from a parent CloudVision settings profile or global `cv_settings`.
