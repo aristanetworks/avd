@@ -1,0 +1,22 @@
+---
+- name: Test empty user catalog directory
+  arista.avd.anta_workflow:
+    device_list: "{{ anta_test_devices }}"
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/empty_catalogs"
+    runner:
+      dry_run: true
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - not result.changed
+      - result.anta_tests_summary is not defined

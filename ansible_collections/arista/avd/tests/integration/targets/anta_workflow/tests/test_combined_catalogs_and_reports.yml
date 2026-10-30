@@ -1,0 +1,69 @@
+---
+- name: Test combined catalogs and all report formats
+  arista.avd.anta_workflow:
+    device_list: "{{ anta_test_devices }}"
+    avd_catalogs:
+      structured_config_dir: "{{ actual_output_dir }}/structured_configs"
+      extra_fabric_validation: true
+      filters:
+        - run_tests: [VerifyNTP]
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/json"
+    runner:
+      dry_run: true
+    report:
+      csv_output: "{{ actual_output_dir }}/combined.csv"
+      md_output: "{{ actual_output_dir }}/combined.md"
+      json_output: "{{ actual_output_dir }}/combined.json"
+      expand_results: true
+      generate_custom_field: true
+      sorting:
+        sort_fields: [test, device]
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result and report content
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.anta_tests_summary.total_tests == 6
+      - result.anta_tests_summary.tests_unset == 6
+      - report_data | length == 6
+      - >-
+        report_data | map(attribute='test') | list ==
+        ['VerifyEOSExtensions', 'VerifyEOSExtensions', 'VerifyEOSVersion', 'VerifyEOSVersion', 'VerifyNTP', 'VerifyNTP']
+      - "'VerifyNTP' in lookup('file', actual_output_dir ~ '/combined.csv')"
+      - "'VerifyEOSVersion' in lookup('file', actual_output_dir ~ '/combined.md')"
+  vars:
+    report_data: "{{ lookup('file', actual_output_dir ~ '/combined.json') | from_json }}"
+
+- name: Test report filtering without changing the summary
+  arista.avd.anta_workflow:
+    device_list: "{{ anta_test_devices }}"
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/json"
+    runner:
+      dry_run: true
+      tags: [border_leaf]
+    report:
+      json_output: "{{ actual_output_dir }}/filtered.json"
+      filters:
+        exclude_statuses: [unset]
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate filtered result and summary
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.anta_tests_summary.total_tests == 2
+      - result.anta_tests_summary.tests_unset == 2
+      - lookup('file', actual_output_dir ~ '/filtered.json') | from_json == []

@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import json
 import logging
 import os
 import re
@@ -655,6 +656,13 @@ def test_load_one_structured_config_raises_for_missing_file(tmp_path: Path) -> N
             id="no-tests",
         ),
         pytest.param(
+            {"total_tests": 0},
+            True,
+            True,
+            "Errors detected during ANTA workflow execution. No ANTA tests were run.",
+            id="workflow-error-with-no-tests",
+        ),
+        pytest.param(
             {"total_tests": 2, "tests_failed": 1},
             False,
             True,
@@ -780,6 +788,30 @@ def test_build_reports_aggregates_results_and_device_statistics() -> None:
         "devices_with_test_failures": ["leaf1"],
         "devices_with_test_errors": ["leaf2"],
     }
+
+
+def test_build_reports_filters_report_without_hiding_test_failures(tmp_path: Path) -> None:
+    """Report filters hide individual results without changing summary counts or failing devices."""
+    manager = anta_module.ResultManager()
+    for device, status in [("leaf1", "failure"), ("leaf2", "success")]:
+        manager.add(anta_module.TestResult(name=device, test="VerifyNTP", categories=["system"], description="Verify NTP", result=status))
+
+    report_path = tmp_path / "report.json"
+    summary = build_reports(
+        iter([manager]),
+        {
+            "json_output": str(report_path),
+            "filters": {"exclude_statuses": ["failure"]},
+            "sorting": {"sort_fields": ["device"], "status_priority": ["failure", "success"]},
+        },
+    )
+
+    results = json.loads(report_path.read_text(encoding="UTF-8"))
+    assert [(result["name"], result["result"]) for result in results] == [("leaf2", "success")]
+    assert summary["total_tests"] == 2
+    assert summary["tests_passed"] == 1
+    assert summary["tests_failed"] == 1
+    assert summary["devices_with_test_failures"] == ["leaf1"]
 
 
 def test_build_anta_runner_objects_builds_catalog_and_inventory_without_connecting(

@@ -1,0 +1,62 @@
+---
+- name: Create ANTA test devices
+  ansible.builtin.add_host:
+    name: "{{ item }}"
+    ansible_host: "192.0.2.{{ device_index + 1 }}"
+    ansible_user: anta
+    ansible_password: anta
+    anta_tags: [border_leaf]
+  loop: "{{ anta_test_devices }}"
+  loop_control:
+    index_var: device_index
+
+- name: Create undeployed ANTA test device
+  ansible.builtin.add_host:
+    name: anta-undeployed
+    is_deployed: false
+
+- name: Create ANTA test device without credentials
+  ansible.builtin.add_host:
+    name: anta-no-credentials
+
+- name: Create test directories
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - structured_configs
+    - catalogs
+    - empty_catalogs
+    - catalogs/yml
+    - catalogs/yaml
+    - catalogs/json
+    - catalogs/yml/ignored_directory
+    - generated_catalogs
+
+- name: Create structured configuration fixtures
+  ansible.builtin.copy:
+    content: "{{ structured_config | to_json if item.1 == 'json' else structured_config | to_nice_yaml }}"
+    dest: "{{ actual_output_dir }}/structured_configs/{{ item.0 }}.{{ item.1 }}"
+    mode: '0644'
+  vars:
+    structured_config:
+      hostname: "{{ item.0 }}"
+      metadata:
+        is_deployed: true
+      management_api_http:
+        enable_https: true
+  loop: "{{ anta_test_devices | product(['yml', 'yaml', 'json']) | list }}"
+
+- name: Create user catalog fixtures
+  ansible.builtin.copy:
+    content: "{{ anta_test_catalog | to_json if item == 'json' else anta_test_catalog | to_nice_yaml }}"
+    dest: "{{ actual_output_dir }}/catalogs/{{ item }}/tests.{{ item }}"
+    mode: '0644'
+  loop: [yml, yaml, json]
+
+- name: Create unsupported catalog file
+  ansible.builtin.copy:
+    content: "This file is not an ANTA catalog.\n"
+    dest: "{{ actual_output_dir }}/catalogs/yml/ignored.txt"
+    mode: '0644'
