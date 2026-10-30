@@ -1,0 +1,27 @@
+---
+- name: Test ANTA debug mode with default Ansible verbosity
+  hosts: localhost
+  gather_facts: false
+  vars:
+    anta_user: anta
+    anta_password: anta
+    anta_tags: [border_leaf]
+  tasks:
+    - name: Run user catalog with ANTA debug enabled
+      arista.avd.anta_workflow:
+        device_list: [localhost]
+        avd_catalogs:
+          enabled: false
+        user_catalogs:
+          enabled: true
+          input_dir: "{{ catalog_dir }}"
+        runner:
+          dry_run: true
+      register: result
+
+    - name: Validate successful execution with ANTA debug enabled
+      ansible.builtin.assert:
+        that:
+          - result is succeeded
+          - result.anta_tests_summary.total_tests == 2
+          - result.anta_tests_summary.tests_unset == 2

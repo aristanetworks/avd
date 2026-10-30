@@ -8,6 +8,7 @@
       output_dir: "{{ actual_output_dir }}/generated_catalogs"
       filters:
         - run_tests: [VerifyNTP, VerifyCoredump]
+          skip_tests: [VerifyCoredump]
         - device_list: [anta-leaf1]
           run_tests: [VerifyNTP]
         - device_list: [anta-leaf2]

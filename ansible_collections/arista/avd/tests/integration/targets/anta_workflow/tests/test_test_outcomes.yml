@@ -1,0 +1,56 @@
+---
+- name: Test simulated ANTA failures and errors with partial report filtering
+  anta_workflow_probe:
+    device_list: [anta-leaf1]
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/yml"
+    report:
+      json_output: "{{ actual_output_dir }}/outcomes.json"
+      filters:
+        exclude_statuses: [failure]
+  ignore_errors: true
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result and unfiltered summary
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == 'Errors detected during ANTA workflow execution. ANTA tests reported failures/errors.'
+      - result.anta_tests_summary.total_tests == 3
+      - result.anta_tests_summary.tests_passed == 1
+      - result.anta_tests_summary.tests_failed == 1
+      - result.anta_tests_summary.tests_error == 1
+      - result.anta_tests_summary.devices_with_test_failures == ['anta-leaf1']
+      - result.anta_tests_summary.devices_with_test_errors == ['anta-leaf1']
+      - report_data | map(attribute='result') | list == ['error', 'success']
+  vars:
+    report_data: "{{ lookup('file', actual_output_dir ~ '/outcomes.json') | from_json }}"
+
+- name: Test simulated workflow error when no tests run
+  anta_workflow_probe:
+    device_list: [anta-leaf1]
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/yml"
+    runner:
+      tags: [workflow-error]
+  ignore_errors: true
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate workflow error and empty summary
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == 'Errors detected during ANTA workflow execution. No ANTA tests were run.'
+      - result.anta_tests_summary.total_tests == 0
