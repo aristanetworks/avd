@@ -182,7 +182,7 @@ svi_profiles:
   - profile: ospf_enabled_child_profile_3
     parent_profile: ospf_enabled_parent_profile_2
 
-  - profile: ignored-profile
+  - profile: ignored_profile
     ospf:
       enabled: true
 ### --- Network Services Generic base config--- ###
