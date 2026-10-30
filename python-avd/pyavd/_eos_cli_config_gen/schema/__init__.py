@@ -45261,12 +45261,62 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             SendCommunity: TypeAlias = Literal[
                 "all", "large", "extended", "standard", "extended large", "standard large", "standard extended", "standard extended large"
             ]
-            _fields: ClassVar[dict] = {"send_community": {"type": str}}
+
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                Mutally exclusive with `disabled`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
+                               Mutally exclusive with `disabled`.
+
+                        """
+
+            _fields: ClassVar[dict] = {"send_community": {"type": str}, "received_attribute_discard": {"type": ReceivedAttributeDiscard}}
             send_community: SendCommunity | None
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, send_community: SendCommunity | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    send_community: SendCommunity | UndefinedType | None = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
+                ) -> None:
                     """
                     NeighborDefault.
 
@@ -45275,6 +45325,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         send_community: send_community
+                        received_attribute_discard:
+                           Received path attribute configuration.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -45333,11 +45387,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
                 disabled: bool | None
-                """Explicitly disable this configuration."""
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
                 type_codes: str | None
                 """
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
+                Mutally exclusive with `disabled`.
                 """
 
                 if TYPE_CHECKING:
@@ -45350,10 +45409,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            disabled: Explicitly disable this configuration.
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
                             type_codes:
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
+                               Mutally exclusive with `disabled`.
 
                         """
 
@@ -46143,11 +46206,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
                 disabled: bool | None
-                """Explicitly disable this configuration."""
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
                 type_codes: str | None
                 """
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
+                Mutally exclusive with `disabled`.
                 """
 
                 if TYPE_CHECKING:
@@ -46160,10 +46228,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            disabled: Explicitly disable this configuration.
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
                             type_codes:
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
+                               Mutally exclusive with `disabled`.
 
                         """
 
@@ -57493,11 +57565,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
                     disabled: bool | None
-                    """Explicitly disable this configuration."""
+                    """
+                    Explicitly disable this configuration.
+                    Mutually exclusive with `type_codes` and takes precedence
+                    over it.
+                    """
                     type_codes: str | None
                     """
                     BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                     Supported range 4-255.
+                    Mutally exclusive with `disabled`.
                     """
 
                     if TYPE_CHECKING:
@@ -57510,10 +57587,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                disabled: Explicitly disable this configuration.
+                                disabled:
+                                   Explicitly disable this configuration.
+                                   Mutually exclusive with `type_codes` and takes precedence
+                                   over it.
                                 type_codes:
                                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                    Supported range 4-255.
+                                   Mutally exclusive with `disabled`.
 
                             """
 

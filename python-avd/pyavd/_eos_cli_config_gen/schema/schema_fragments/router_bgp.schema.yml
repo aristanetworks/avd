@@ -288,6 +288,9 @@ keys:
               - standard large
               - standard extended
               - standard extended large
+          received_attribute_discard:
+             type: dict
+             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
       peer_groups:
         type: list
         primary_key: name
@@ -656,12 +659,14 @@ keys:
               keys:
                 disabled:
                   type: bool
-                  description: Explicitly disable this configuration.
+                  description: |-
+                    Explicitly disable this configuration.
+                    Mutually exclusive with `type_codes` and takes precedence over it.
                 type_codes:
                   type: str
                   description: |-
                     BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
-                    Supported range 4-255.
+                    Supported range 4-255. Mutally exclusive with `disabled`.
             peer_tag_in:
               type: str
               description: Inbound peer tag name.

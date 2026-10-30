@@ -36,6 +36,8 @@ router_bgp:
     send_failure_hold_time: 300
   neighbor_default:
     send_community: all
+    received_attribute_discard:
+      disabled: true
   bgp:
     convergence: # Issue 7390
       slow_peer_time: 500

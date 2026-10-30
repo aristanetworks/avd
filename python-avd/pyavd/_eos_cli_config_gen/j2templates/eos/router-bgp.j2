@@ -479,9 +479,9 @@ router bgp {{ router_bgp.as }}
    no neighbor {{ neighbor.ip_address }} enforce-first-as
 {%         endif %}
 {%         if neighbor.received_attribute_discard.disabled is arista.avd.defined(true) %}
-  neighbor {{ neighbor.ip_address }} received attribute discard disabled
+   neighbor {{ neighbor.ip_address }} received attribute discard disabled
 {%         elif neighbor.received_attribute_discard.type_codes is arista.avd.defined %}
-  neighbor {{ neighbor.ip_address }} received attribute discard {{ neighbor.received_attribute_discard.type_codes }}
+   neighbor {{ neighbor.ip_address }} received attribute discard {{ neighbor.received_attribute_discard.type_codes }}
 {%         endif %}
 {%         if neighbor.send_community is arista.avd.defined('all') %}
    neighbor {{ neighbor.ip_address }} send-community
