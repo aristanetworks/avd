@@ -1067,6 +1067,7 @@ class EosDesigns(EosDesignsRootModel):
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
+            "raise_for_missing_snmp_server_vrf_ipv4_acl": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
@@ -1251,6 +1252,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_missing_snmp_server_vrf_ipv4_acl: bool
+        """
+        Available from AVD 6.5.0.
+        Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
+        not defined under `ipv4_acls`.
+        When enabled, configure the referenced extended ACL on the device.
+        When disabled, only configure the ACL reference without requiring or configuring an ACL definition
+        from the catalog.
+
+        Default value: `False`
+        """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
         Available from AVD 6.1.0.
@@ -1299,6 +1311,7 @@ class EosDesigns(EosDesignsRootModel):
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
+                raise_for_missing_snmp_server_vrf_ipv4_acl: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
             ) -> None:
@@ -1418,6 +1431,13 @@ class EosDesigns(EosDesignsRootModel):
                        Raise an error if a node has both 'underlay_router: true' and
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
+                    raise_for_missing_snmp_server_vrf_ipv4_acl:
+                       Available from AVD 6.5.0.
+                       Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
+                       not defined under `ipv4_acls`.
+                       When enabled, configure the referenced extended ACL on the device.
+                       When disabled, only configure the ACL reference without requiring or configuring an ACL definition
+                       from the catalog.
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
@@ -51415,6 +51435,7 @@ class EosDesigns(EosDesignsRootModel):
                 "enable": {"type": bool},
                 "source_interface": {"type": str},
                 "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
                 "ipv6_acl": {"type": str},
             }
             name: str
@@ -51446,6 +51467,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ipv4_acl: str | None
             """IPv4 access-list name."""
+            ipv4_standard_acl: str | None
+            """IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`."""
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -51458,6 +51481,7 @@ class EosDesigns(EosDesignsRootModel):
                     enable: bool | UndefinedType | None = Undefined,
                     source_interface: str | UndefinedType | None = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -51490,6 +51514,7 @@ class EosDesigns(EosDesignsRootModel):
                            If set for the VRFs defined by `mgmt_interface_vrf` or
                            `inband_mgmt_vrf`, this setting will take precedence.
                         ipv4_acl: IPv4 access-list name.
+                        ipv4_standard_acl: IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
                         ipv6_acl: IPv6 access-list name.
 
                     """

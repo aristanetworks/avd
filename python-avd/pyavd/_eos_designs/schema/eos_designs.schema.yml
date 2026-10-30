@@ -600,6 +600,18 @@ keys:
 
           since this combination is not supported.'
         default: false
+      raise_for_missing_snmp_server_vrf_ipv4_acl:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
+          not defined under `ipv4_acls`.
+
+          When enabled, configure the referenced extended ACL on the device.
+
+          When disabled, only configure the ACL reference without requiring or configuring
+          an ACL definition from the catalog.'
+        default: false
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: 'Available from AVD 6.1.0.
@@ -10498,6 +10510,10 @@ keys:
             ipv4_acl:
               type: str
               description: IPv4 access-list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access-list name. The access-list must be
+                defined under `ipv4_standard_acls`.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.
