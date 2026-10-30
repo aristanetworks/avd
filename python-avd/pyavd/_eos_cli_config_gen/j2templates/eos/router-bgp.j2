@@ -149,6 +149,11 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
    bgp bestpath d-path
 {%     endif %}
+{%     if router_bgp.neighbor_default.received_attribute_discard.disabled is arista.avd.defined(true) %}
+   neighbor default received attribute discard disabled
+{%     elif router_bgp.neighbor_default.received_attribute_discard.type_codes is arista.avd.defined %}
+   neighbor default received attribute discard {{ router_bgp.neighbor_default.received_attribute_discard.type_codes }}
+{%     endif %}
 {%     if router_bgp.neighbor_default.send_community is arista.avd.defined('all') %}
    neighbor default send-community
 {%     elif router_bgp.neighbor_default.send_community is arista.avd.defined %}
