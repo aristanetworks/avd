@@ -18,8 +18,8 @@ async def simulate_runner(
     **kwargs: Any,
 ) -> None:
     """Emit controlled results and diagnostics without opening an EOS connection."""
-    anta_workflow.LOGGER.error("ANTA_WORKFLOW_PROBE_ERROR")
     if "workflow-error" in (kwargs.get("tags") or set()):
+        anta_workflow.LOGGER.error("ANTA_WORKFLOW_PROBE_ERROR")
         return
 
     for status in ("success", "failure", "error"):

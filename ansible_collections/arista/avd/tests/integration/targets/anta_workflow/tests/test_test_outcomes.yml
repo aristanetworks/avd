@@ -21,7 +21,7 @@
   ansible.builtin.assert:
     that:
       - result is failed
-      - result.msg == 'Errors detected during ANTA workflow execution. ANTA tests reported failures/errors.'
+      - result.msg == 'Task failed due to ANTA test failures/errors.'
       - result.anta_tests_summary.total_tests == 3
       - result.anta_tests_summary.tests_passed == 1
       - result.anta_tests_summary.tests_failed == 1
