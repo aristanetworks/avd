@@ -11,6 +11,12 @@
 {%     set default_router_id = router_ospfv3.router_id is arista.avd.defined
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined) %}
+{%     set default_bfd_enable = router_ospfv3.bfd_enable is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_enable is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+{%     set default_bfd_adjacency_state_any = router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is not arista.avd.defined) %}
 {%     set default_passive_interface_default = router_ospfv3.passive_interface_default is arista.avd.defined(true)
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
@@ -20,6 +26,8 @@
 {%     set default_address_family_ipv4 = router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%     set default_address_family_ipv6 = router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%     if default_router_id
+           or default_bfd_enable
+           or default_bfd_adjacency_state_any
            or default_passive_interface_default
            or default_auto_cost_reference_bandwidth
            or default_address_family_ipv4
@@ -27,15 +35,21 @@
 
 #### VRF: default
 {%         if default_router_id
+               or default_bfd_enable
+               or default_bfd_adjacency_state_any
                or default_passive_interface_default
                or default_auto_cost_reference_bandwidth %}
 {%             set default_vrf_router_id = router_ospfv3.router_id | arista.avd.default('-') %}
+{%             set default_vrf_bfd_enable = router_ospfv3.bfd_enable | arista.avd.default('-') %}
+{%             set default_vrf_bfd_adjacency_state_any = router_ospfv3.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%             set default_vrf_passive_interface_default = router_ospfv3.passive_interface_default | arista.avd.default('-') %}
 {%             set default_vrf_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ default_vrf_router_id if default_router_id else '-' }} |
+| BFD Default | {{ default_vrf_bfd_enable if default_bfd_enable else '-' }} |
+| BFD Adjacency State Any | {{ default_vrf_bfd_adjacency_state_any if default_bfd_adjacency_state_any else '-' }} |
 | Passive Interface Default | {{ default_vrf_passive_interface_default if default_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ default_vrf_auto_cost_reference_bandwidth if default_auto_cost_reference_bandwidth else '-' }} |
 {%         endif %}
@@ -43,15 +57,21 @@
 
 ##### Address Family IPv4
 {%             if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.bfd_enable is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
+{%                 set af_bfd_enable = router_ospfv3.address_family_ipv4.bfd_enable | arista.avd.default('-') %}
+{%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%                 set af_passive_interface_default = router_ospfv3.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
 {%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ af_router_id }} |
+| BFD Default | {{ af_bfd_enable }} |
+| BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%             endif %}
@@ -105,15 +125,21 @@
 
 ##### Address Family IPv6
 {%             if router_ospfv3.address_family_ipv6.router_id is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.bfd_enable is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
+{%                 set af_bfd_enable = router_ospfv3.address_family_ipv6.bfd_enable | arista.avd.default('-') %}
+{%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%                 set af_passive_interface_default = router_ospfv3.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
 {%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ af_router_id }} |
+| BFD Default | {{ af_bfd_enable }} |
+| BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%             endif %}
@@ -173,6 +199,12 @@
 {%         set vrf_router_id = vrf.router_id is arista.avd.defined
                and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.router_id is not arista.avd.defined)
                and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.router_id is not arista.avd.defined) %}
+{%         set vrf_bfd_enable = vrf.bfd_enable is arista.avd.defined(true)
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_enable is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+{%         set vrf_bfd_adjacency_state_any = vrf.bfd_adjacency_state_any is arista.avd.defined(true)
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_adjacency_state_any is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_adjacency_state_any is not arista.avd.defined) %}
 {%         set vrf_passive_interface_default = vrf.passive_interface_default is arista.avd.defined(true)
                and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined)
                and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
@@ -182,6 +214,8 @@
 {%         set vrf_address_family_ipv4 = vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set vrf_address_family_ipv6 = vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         if vrf_router_id
+               or vrf_bfd_enable
+               or vrf_bfd_adjacency_state_any
                or vrf_passive_interface_default
                or vrf_auto_cost_reference_bandwidth
                or vrf_address_family_ipv4
@@ -189,15 +223,21 @@
 
 #### VRF: {{ vrf.name }}
 {%             if vrf_router_id
+                   or vrf_bfd_enable
+                   or vrf_bfd_adjacency_state_any
                    or vrf_passive_interface_default
                    or vrf_auto_cost_reference_bandwidth %}
 {%                 set vrf_summary_router_id = vrf.router_id | arista.avd.default('-') %}
+{%                 set vrf_summary_bfd_enable = vrf.bfd_enable | arista.avd.default('-') %}
+{%                 set vrf_summary_bfd_adjacency_state_any = vrf.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%                 set vrf_summary_passive_interface_default = vrf.passive_interface_default | arista.avd.default('-') %}
 {%                 set vrf_summary_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ vrf_summary_router_id if vrf_router_id else '-' }} |
+| BFD Default | {{ vrf_summary_bfd_enable if vrf_bfd_enable else '-' }} |
+| BFD Adjacency State Any | {{ vrf_summary_bfd_adjacency_state_any if vrf_bfd_adjacency_state_any else '-' }} |
 | Passive Interface Default | {{ vrf_summary_passive_interface_default if vrf_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ vrf_summary_auto_cost_reference_bandwidth if vrf_auto_cost_reference_bandwidth else '-' }} |
 {%             endif %}
@@ -205,15 +245,21 @@
 
 ##### Address Family IPv4
 {%                 if vrf.address_family_ipv4.router_id is arista.avd.defined
+                       or vrf.address_family_ipv4.bfd_enable is arista.avd.defined
+                       or vrf.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv4.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
+{%                     set af_bfd_enable = vrf.address_family_ipv4.bfd_enable | arista.avd.default('-') %}
+{%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%                     set af_passive_interface_default = vrf.address_family_ipv4.passive_interface_default | arista.avd.default('-') %}
 {%                     set af_auto_cost_reference_bandwidth = vrf.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ af_router_id }} |
+| BFD Default | {{ af_bfd_enable }} |
+| BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%                 endif %}
@@ -267,15 +313,21 @@
 
 ##### Address Family IPv6
 {%                 if vrf.address_family_ipv6.router_id is arista.avd.defined
+                       or vrf.address_family_ipv6.bfd_enable is arista.avd.defined
+                       or vrf.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv6.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
+{%                     set af_bfd_enable = vrf.address_family_ipv6.bfd_enable | arista.avd.default('-') %}
+{%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
 {%                     set af_passive_interface_default = vrf.address_family_ipv6.passive_interface_default | arista.avd.default('-') %}
 {%                     set af_auto_cost_reference_bandwidth = vrf.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | {{ af_router_id }} |
+| BFD Default | {{ af_bfd_enable }} |
+| BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 {%                 endif %}

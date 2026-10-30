@@ -133,6 +133,8 @@ router_ospfv3:
     # address_family_ipv4.enabled and address_family_ipv6.enabled is false, will generate global configurations
     - name: TEST_VRF2
       router_id: 2.2.2.2
+      bfd_enable: true
+      bfd_adjacency_state_any: true
       auto_cost_reference_bandwidth: 100
       passive_interface_default: true
       address_family_ipv4:

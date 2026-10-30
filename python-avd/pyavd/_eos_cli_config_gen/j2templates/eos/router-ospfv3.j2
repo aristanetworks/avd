@@ -14,6 +14,18 @@ router ospfv3 vrf {{ vrf.name }}
    router-id {{ vrf.router_id }}
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.bfd_enable is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_enable is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+   bfd default
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if vrf.bfd_adjacency_state_any is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_adjacency_state_any is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_adjacency_state_any is not arista.avd.defined) %}
+   bfd adjacency state any
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if vrf.auto_cost_reference_bandwidth is arista.avd.defined
            and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
            and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
@@ -38,6 +50,12 @@ router ospfv3 vrf {{ vrf.name }}
 {%         set use_delimiter = true %}
 {%         if vrf.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ vrf.address_family_ipv4.router_id }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.bfd_enable is arista.avd.defined(true) %}
+      bfd default
+{%         endif %}
+{%         if vrf.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined(true) %}
+      bfd adjacency state any
 {%         endif %}
 {%         if vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
       auto-cost reference-bandwidth {{ vrf.address_family_ipv4.auto_cost_reference_bandwidth }}
@@ -120,6 +138,12 @@ router ospfv3 vrf {{ vrf.name }}
    address-family ipv6
 {%         if vrf.address_family_ipv6.router_id is arista.avd.defined %}
       router-id {{ vrf.address_family_ipv6.router_id }}
+{%         endif %}
+{%         if vrf.address_family_ipv6.bfd_enable is arista.avd.defined(true) %}
+      bfd default
+{%         endif %}
+{%         if vrf.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined(true) %}
+      bfd adjacency state any
 {%         endif %}
 {%         if vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
       auto-cost reference-bandwidth {{ vrf.address_family_ipv6.auto_cost_reference_bandwidth }}
@@ -204,6 +228,8 @@ router ospfv3 vrf {{ vrf.name }}
 {%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
+      or router_ospfv3.bfd_enable is arista.avd.defined(true)
+      or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
@@ -216,6 +242,18 @@ router ospfv3
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.router_id is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.router_id is not arista.avd.defined) %}
    router-id {{ router_ospfv3.router_id }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.bfd_enable is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_enable is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+   bfd default
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is not arista.avd.defined) %}
+   bfd adjacency state any
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
@@ -242,6 +280,12 @@ router ospfv3
 {%         set use_delimiter = true %}
 {%         if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ router_ospfv3.address_family_ipv4.router_id }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.bfd_enable is arista.avd.defined(true) %}
+      bfd default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined(true) %}
+      bfd adjacency state any
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined %}
       auto-cost reference-bandwidth {{ router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth }}
@@ -324,6 +368,12 @@ router ospfv3
    address-family ipv6
 {%         if router_ospfv3.address_family_ipv6.router_id is arista.avd.defined %}
       router-id {{ router_ospfv3.address_family_ipv6.router_id }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.bfd_enable is arista.avd.defined(true) %}
+      bfd default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined(true) %}
+      bfd adjacency state any
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined %}
       auto-cost reference-bandwidth {{ router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth }}

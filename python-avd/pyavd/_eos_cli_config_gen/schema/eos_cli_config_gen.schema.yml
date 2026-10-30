@@ -22445,6 +22445,13 @@ keys:
       router_id:
         type: str
         description: 32-bit OSPF router ID as an IP address.
+      bfd_enable:
+        type: bool
+        description: Enable BFD for all OSPFv3 address families.
+      bfd_adjacency_state_any:
+        type: bool
+        description: Allow BFD sessions to be established in any OSPFv3 adjacency
+          state.
       passive_interface_default:
         type: bool
       auto_cost_reference_bandwidth:
@@ -22468,6 +22475,13 @@ keys:
           router_id:
             type: str
             description: 32-bit OSPF router ID as an IP address.
+          bfd_enable:
+            type: bool
+            description: Enable BFD for this OSPFv3 address family.
+          bfd_adjacency_state_any:
+            type: bool
+            description: Allow BFD sessions to be established in any OSPFv3 adjacency
+              state for this address family.
           passive_interface_default:
             type: bool
           auto_cost_reference_bandwidth:
@@ -22595,6 +22609,13 @@ keys:
             router_id:
               type: str
               description: 32-bit OSPF router ID as an IP address.
+            bfd_enable:
+              type: bool
+              description: Enable BFD for all OSPFv3 address families in this VRF.
+            bfd_adjacency_state_any:
+              type: bool
+              description: Allow BFD sessions to be established in any OSPFv3 adjacency
+                state in this VRF.
             passive_interface_default:
               type: bool
             auto_cost_reference_bandwidth:
@@ -25547,6 +25568,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
                   required: true
@@ -25555,6 +25579,9 @@ keys:
             ipv6:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
                   required: true
@@ -25569,6 +25596,10 @@ keys:
               description: Disable passive interface mode.
             network_point_to_point:
               type: bool
+            bfd:
+              type: bool
+              description: Enable BFD for OSPFv3 on the interface for both address
+                families. Address-family BFD settings take precedence.
         ospf_cost:
           type: int
         ospf_authentication:
