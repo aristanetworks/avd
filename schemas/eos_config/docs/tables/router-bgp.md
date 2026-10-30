@@ -77,6 +77,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.listen_ranges.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;neighbor_default</samp>](## "router_bgp.neighbor_default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;send_community</samp>](## "router_bgp.neighbor_default.send_community") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>large</code><br>- <code>extended</code><br>- <code>standard</code><br>- <code>extended large</code><br>- <code>standard large</code><br>- <code>standard extended</code><br>- <code>standard extended large</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "router_bgp.neighbor_default.received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.neighbor_default.received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.neighbor_default.received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutally exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.peer_groups.[].metadata") | Dictionary |  |  |  |  |
@@ -89,8 +92,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "router_bgp.peer_groups.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "router_bgp.peer_groups.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "router_bgp.peer_groups.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.peer_groups.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.peer_groups.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutally exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "router_bgp.peer_groups.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.peer_groups.[].remove_private_as.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "router_bgp.peer_groups.[].remove_private_as.all") | Boolean |  |  |  |  |
@@ -187,8 +190,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "router_bgp.neighbors.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.neighbors.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.neighbors.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.neighbors.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.neighbors.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutally exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.neighbors.[].default_originate") | Dictionary |  |  |  |  |
@@ -1236,8 +1239,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].neighbors.[].remove_private_as_ingress.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;replace_as</samp>](## "router_bgp.vrfs.[].neighbors.[].remove_private_as_ingress.replace_as") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received_attribute_discard</samp>](## "router_bgp.vrfs.[].neighbors.[].received_attribute_discard") | Dictionary |  |  |  | Received path attribute configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.vrfs.[].neighbors.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.vrfs.[].neighbors.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_bgp.vrfs.[].neighbors.[].received_attribute_discard.disabled") | Boolean |  |  |  | Explicitly disable this configuration.<br>Mutually exclusive with `type_codes` and takes precedence over it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_codes</samp>](## "router_bgp.vrfs.[].neighbors.[].received_attribute_discard.type_codes") | String |  |  |  | BGP attribute type code(s) and/or range(s) of BGP attribute type codes.<br>Supported range 4-255. Mutally exclusive with `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "router_bgp.vrfs.[].neighbors.[].weight") | Integer |  |  | Min: 0<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "router_bgp.vrfs.[].neighbors.[].local_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "router_bgp.vrfs.[].neighbors.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
@@ -1878,6 +1881,17 @@
           remote_as: <str>
       neighbor_default:
         send_community: <str; "all" | "large" | "extended" | "standard" | "extended large" | "standard large" | "standard extended" | "standard extended large">
+
+        # Received path attribute configuration.
+        received_attribute_discard:
+
+          # Explicitly disable this configuration.
+          # Mutually exclusive with `type_codes` and takes precedence over it.
+          disabled: <bool>
+
+          # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+          # Supported range 4-255. Mutally exclusive with `disabled`.
+          type_codes: <str>
       peer_groups:
 
           # Peer-group name.
@@ -1910,10 +1924,11 @@
           received_attribute_discard:
 
             # Explicitly disable this configuration.
+            # Mutually exclusive with `type_codes` and takes precedence over it.
             disabled: <bool>
 
             # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
-            # Supported range 4-255.
+            # Supported range 4-255. Mutally exclusive with `disabled`.
             type_codes: <str>
 
           # Remove private AS numbers in outbound AS path.
@@ -2127,10 +2142,11 @@
           received_attribute_discard:
 
             # Explicitly disable this configuration.
+            # Mutually exclusive with `type_codes` and takes precedence over it.
             disabled: <bool>
 
             # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
-            # Supported range 4-255.
+            # Supported range 4-255. Mutally exclusive with `disabled`.
             type_codes: <str>
 
           # Inbound peer tag name.
@@ -4324,10 +4340,11 @@
               received_attribute_discard:
 
                 # Explicitly disable this configuration.
+                # Mutually exclusive with `type_codes` and takes precedence over it.
                 disabled: <bool>
 
                 # BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
-                # Supported range 4-255.
+                # Supported range 4-255. Mutally exclusive with `disabled`.
                 type_codes: <str>
               weight: <int; 0-65535>
 
