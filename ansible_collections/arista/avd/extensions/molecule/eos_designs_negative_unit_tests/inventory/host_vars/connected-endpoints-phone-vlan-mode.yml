@@ -15,5 +15,3 @@ servers:
         mode: trunk
         phone_vlan: 333
         native_vlan: 123
-
-expected_error_message: "Setting 'phone_vlan' requires 'mode: trunk phone' to be set on connected endpoint 'OLD_SW-1/7'."

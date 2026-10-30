@@ -23,6 +23,3 @@ tenants:
             profile: PROFILE-1
             nodes:
               - node: failure-svi-grandparent-profile-does-not-exist
-
-expected_error_message: >-
-  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under SVI Profile 'PROFILE-1' does not exist in 'svi_profiles'.

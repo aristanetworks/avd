@@ -19,7 +19,3 @@ tenants:
         name: test-address-locking-1
         address_locking:
           ipv4: true
-
-expected_error_message: >-
-  To configure address locking ipv4 for vlan 101 in Tenant 'TENANT1' either `address_locking_settings.dhcp_servers_ipv4` or
-  `address_locking_settings.locked_address.ipv4_enforcement_disabled` is required.

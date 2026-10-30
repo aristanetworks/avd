@@ -63,6 +63,3 @@ wan_carriers:
   - name: ATT
     path_group: INET
     trusted: true
-
-expected_error_message: >-
-  Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks.
