@@ -1,1 +1,1 @@
-pyavd._errors.AvdFutureBehaviorWarning: Host 'ipv4-acl-in-missing-on-l3-port-channel-wan-interface' (Underlay): L3 Port-Channel 'Port-Channel5' must have at least one member interface defined. This configuration will not be supported in AVD 7.0.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'ipv4-acl-in-missing-on-l3-port-channel-wan-interface': L3 Port-Channel 'Port-Channel5' must have at least one member interface defined. This underlay configuration will not be supported in AVD 7.0.

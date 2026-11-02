@@ -1,1 +1,1 @@
-pyavd._errors.AvdFutureBehaviorWarning: Host 'ospf-cleartext-passwords' (Network Services): L3 Port-Channel 'Port-Channel1111' must have at least one member interface defined. This configuration will not be supported in AVD 7.0.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'ospf-cleartext-passwords': L3 Port-Channel 'Port-Channel1111' must have at least one member interface defined. This Network Services configuration will not be supported in AVD 7.0.

@@ -37,18 +37,31 @@ class PortChannelInterfacesMixin(Protocol):
         if not self.shared_utils.network_services_l1 and not self.shared_utils.network_services_l3:
             return
 
+        l3_port_channels_without_members: list[str] = []
         for tenant in self.shared_utils.filtered_tenants:
-            self._set_l3_port_channels(tenant)
+            l3_port_channels_without_members.extend(self._set_l3_port_channels(tenant))
 
             if not tenant.point_to_point_services:
                 continue
 
             self._set_point_to_point_port_channel_interfaces(tenant)
 
+        if l3_port_channels_without_members:
+            l3_port_channel_names = list(dict.fromkeys(l3_port_channels_without_members))
+            if len(l3_port_channel_names) == 1:
+                msg = f"L3 Port-Channel '{l3_port_channel_names[0]}' must have at least one member interface defined."
+            else:
+                msg = f"L3 Port-Channels {', '.join(repr(name) for name in l3_port_channel_names)} must each have at least one member interface defined."
+            warnings.warn(
+                f"Host '{self.shared_utils.hostname}': {msg} This Network Services configuration will not be supported in AVD 7.0.",
+                AvdFutureBehaviorWarning,
+                stacklevel=2,
+            )
+
     def _set_l3_port_channels(
         self: AvdStructuredConfigNetworkServicesProtocol,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
-    ) -> None:
+    ) -> list[str]:
         """
         Set the port-channel interfaces for all network-services tenants in structured configuration.
 
@@ -56,6 +69,7 @@ class PortChannelInterfacesMixin(Protocol):
             AristaAvdInvalidInputsError:
                 if any subinterface is using a non supported key.
         """
+        l3_port_channels_without_members: list[str] = []
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
                 if is_subinterface := "." in l3_port_channel.name:
@@ -76,11 +90,7 @@ class PortChannelInterfacesMixin(Protocol):
                     msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
                     if self.inputs.avd_design_future.raise_for_port_channels_without_members:
                         raise AristaAvdInvalidInputsError(msg)
-                    warnings.warn(
-                        f"Host '{self.shared_utils.hostname}' (Network Services): {msg} This configuration will not be supported in AVD 7.0.",
-                        AvdFutureBehaviorWarning,
-                        stacklevel=2,
-                    )
+                    l3_port_channels_without_members.append(l3_port_channel.name)
 
                 if not (interface_description := l3_port_channel.description):
                     interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
@@ -131,6 +141,8 @@ class PortChannelInterfacesMixin(Protocol):
                     )
 
                 self.structured_config.port_channel_interfaces.append(port_channel_interface)
+
+        return l3_port_channels_without_members
 
     def _update_port_channel_interface_ipv4(
         self: AvdStructuredConfigNetworkServicesProtocol,
