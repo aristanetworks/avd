@@ -16,7 +16,6 @@ from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible import constants as C  # noqa: N812
-from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
@@ -212,7 +211,9 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     Returns:
         bool: False if Ansible version is not valid.
     """
-    collection_meta = _get_collection_metadata(collection_name)
+    collection_path = _get_collection_path(collection_name)
+    with Path(collection_path, "meta", "runtime.yml").open("rb") as fd:
+        collection_meta = yaml.safe_load(fd)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
     info["ansible_version"] = running_version
 
