@@ -32,8 +32,7 @@ aaa_settings:
         cleartext_key: super-secret-key
 
 # Test AAA timeout ACLs on adapters, network ports, and inherited port profiles.
-# The future knob is intentionally unset: extended ACL references render without catalog validation or definitions.
-# Standard ACLs are always validated and configured. Unused entries in both catalogs must not render.
+# New IPv4 ACL keys are validated and configured. Unused ACL entries must not render.
 ipv4_acls:
   - name: AAA-EXTENDED
     entries:
@@ -64,13 +63,13 @@ port_profiles:
       aaa:
         unresponsive:
           action:
-            traffic_allow_access_list: AAA-EXTENDED
+            traffic_allow_ipv4_acl: AAA-EXTENDED
   - profile: AAA-STANDARD-PROFILE
     dot1x:
       aaa:
         unresponsive:
           action:
-            traffic_allow_standard_access_list: AAA-STANDARD
+            traffic_allow_ipv4_standard_acl: AAA-STANDARD
 connected_endpoints:
   - name: aaa-timeout-test
     adapters:
@@ -83,7 +82,7 @@ connected_endpoints:
           aaa:
             unresponsive:
               action:
-                traffic_allow_access_list: AAA-EXTENDED
+                traffic_allow_ipv4_acl: AAA-EXTENDED
       - switches:
           - dot1x-settings-5
         switch_ports:
@@ -93,7 +92,7 @@ connected_endpoints:
           aaa:
             unresponsive:
               action:
-                traffic_allow_standard_access_list: AAA-STANDARD
+                traffic_allow_ipv4_standard_acl: AAA-STANDARD
       - switches:
           - dot1x-settings-5
         switch_ports:
@@ -116,7 +115,7 @@ network_ports:
       aaa:
         unresponsive:
           action:
-            traffic_allow_access_list: AAA-EXTENDED
+            traffic_allow_ipv4_acl: AAA-EXTENDED
   - switches:
       - dot1x-settings-5
     switch_ports:
@@ -126,7 +125,7 @@ network_ports:
       aaa:
         unresponsive:
           action:
-            traffic_allow_standard_access_list: AAA-STANDARD
+            traffic_allow_ipv4_standard_acl: AAA-STANDARD
   - switches:
       - dot1x-settings-5
     switch_ports:

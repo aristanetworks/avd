@@ -1,5 +1,5 @@
 ---
-# Both ACL types are rejected even with the future knob unset.
+# An extended ACL cannot be combined with a standard ACL.
 type: l2leaf
 l2leaf:
   nodes:
@@ -18,7 +18,7 @@ port_profiles:
       aaa:
         unresponsive:
           action:
-            traffic_allow_standard_access_list: AAA-STANDARD
+            traffic_allow_ipv4_standard_acl: AAA-STANDARD
 network_ports:
   - switches:
       - dot1x-aaa-unresponsive-network-port-profile-conflict
@@ -29,7 +29,7 @@ network_ports:
       aaa:
         unresponsive:
           action:
-            traffic_allow_access_list: AAA-EXTENDED
+            traffic_allow_ipv4_acl: AAA-EXTENDED
 
 expected_error_message: >-
-  'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive under 'network_ports[0].dot1x.aaa.unresponsive.action'.
+  'traffic_allow_ipv4_acl' and 'traffic_allow_ipv4_standard_acl' are mutually exclusive under 'network_ports[0].dot1x.aaa.unresponsive.action'.

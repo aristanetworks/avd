@@ -12,8 +12,6 @@ aaa_settings:
     servers:
       - host: 192.0.2.10
         cleartext_key: test-key
-avd_design_future:
-  validate_dot1x_aaa_unresponsive_acl: true
 ipv4_standard_acls:
   - name: AAA-TIMEOUT
     entries:
@@ -28,7 +26,7 @@ network_ports:
       aaa:
         unresponsive:
           action:
-            traffic_allow_access_list: AAA-TIMEOUT
+            traffic_allow_ipv4_acl: AAA-TIMEOUT
 
 expected_error_message: >-
   'ipv4_acls[name=AAA-TIMEOUT]' is required but was not found for host 'dot1x-aaa-unresponsive-network-port-missing-extended'.

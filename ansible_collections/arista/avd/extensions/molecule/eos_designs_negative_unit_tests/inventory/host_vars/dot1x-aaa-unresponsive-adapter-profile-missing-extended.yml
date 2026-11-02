@@ -12,8 +12,6 @@ aaa_settings:
     servers:
       - host: 192.0.2.10
         cleartext_key: test-key
-avd_design_future:
-  validate_dot1x_aaa_unresponsive_acl: true
 ipv4_standard_acls:
   - name: AAA-TIMEOUT
     entries:
@@ -25,7 +23,7 @@ port_profiles:
       aaa:
         unresponsive:
           action:
-            traffic_allow_access_list: AAA-TIMEOUT
+            traffic_allow_ipv4_acl: AAA-TIMEOUT
 connected_endpoints:
   - name: server1
     adapters:

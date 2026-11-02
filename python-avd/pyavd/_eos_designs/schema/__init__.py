@@ -1049,7 +1049,6 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {
-            "validate_dot1x_aaa_unresponsive_acl": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
@@ -1071,20 +1070,6 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
-        validate_dot1x_aaa_unresponsive_acl: bool
-        """
-        Available from AVD 6.5.0.
-        Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under
-        connected endpoint adapters, network ports, and port profiles
-        against `ipv4_acls`, and configure the
-        referenced IPv4 extended access-list definitions.
-        When disabled, only the interface ACL reference is
-        configured, allowing ACL definitions outside the catalog.
-        `traffic_allow_standard_access_list` is
-        always validated against `ipv4_standard_acls` and configured.
-
-        Default value: `False`
-        """
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
         Available from AVD 6.2.0.
@@ -1296,7 +1281,6 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                validate_dot1x_aaa_unresponsive_acl: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
@@ -1325,16 +1309,6 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    validate_dot1x_aaa_unresponsive_acl:
-                       Available from AVD 6.5.0.
-                       Validate `dot1x.aaa.unresponsive.action.traffic_allow_access_list` under
-                       connected endpoint adapters, network ports, and port profiles
-                       against `ipv4_acls`, and configure the
-                       referenced IPv4 extended access-list definitions.
-                       When disabled, only the interface ACL reference is
-                       configured, allowing ACL definitions outside the catalog.
-                       `traffic_allow_standard_access_list` is
-                       always validated against `ipv4_standard_acls` and configured.
                     accept_dhcp_default_route_for_mgmt_ip_dhcp:
                        Available from AVD 6.2.0.
                        Configure management interface to accept DHCP default route when the
@@ -3425,33 +3399,35 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {
+                                "traffic_allow_ipv4_acl": {"type": str},
+                                "traffic_allow_ipv4_standard_acl": {"type": str},
                                 "traffic_allow_access_list": {"type": str},
-                                "traffic_allow_standard_access_list": {"type": str},
                                 "apply_alternate": {"type": bool},
                                 "traffic_allow_vlan": {"type": int},
                                 "apply_cached_results": {"type": bool},
                                 "cached_results_timeout": {"type": CachedResultsTimeout},
                                 "traffic_allow": {"type": bool},
                             }
-                            traffic_allow_access_list: str | None
+                            traffic_allow_ipv4_acl: str | None
                             """
                             Name of the IPv4 extended access-list to apply when AAA times out.
-                            When
-                            `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                            under
-                            `ipv4_acls` and its definition is configured on devices where it is referenced.
-                            Otherwise,
-                            only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                            The access-list must be defined
+                            under `ipv4_acls` and its definition is configured on devices where it is referenced.
                             Mutually
-                            exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                            exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                            Setting
+                            both raises an error.
                             """
-                            traffic_allow_standard_access_list: str | None
+                            traffic_allow_ipv4_standard_acl: str | None
                             """
                             Name of the IPv4 standard access-list to apply when AAA times out.
                             The access-list must be defined
                             under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                            Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                            Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                            an error.
                             """
+                            traffic_allow_access_list: str | None
+                            """Name of standard access-list to apply when AAA times out."""
                             apply_alternate: bool | None
                             """
                             Apply alternate action if primary action fails.
@@ -3471,8 +3447,9 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
+                                    traffic_allow_ipv4_acl: str | UndefinedType | None = Undefined,
+                                    traffic_allow_ipv4_standard_acl: str | UndefinedType | None = Undefined,
                                     traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                    traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
                                     apply_alternate: bool | UndefinedType | None = Undefined,
                                     traffic_allow_vlan: int | UndefinedType | None = Undefined,
                                     apply_cached_results: bool | UndefinedType | None = Undefined,
@@ -3486,21 +3463,21 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        traffic_allow_access_list:
+                                        traffic_allow_ipv4_acl:
                                            Name of the IPv4 extended access-list to apply when AAA times out.
-                                           When
-                                           `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                           under
-                                           `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                           Otherwise,
-                                           only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                           The access-list must be defined
+                                           under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                            Mutually
-                                           exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                                        traffic_allow_standard_access_list:
+                                           exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                           Setting
+                                           both raises an error.
+                                        traffic_allow_ipv4_standard_acl:
                                            Name of the IPv4 standard access-list to apply when AAA times out.
                                            The access-list must be defined
                                            under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                           Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                           Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                           an error.
+                                        traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                         apply_alternate:
                                            Apply alternate action if primary action fails.
                                            e.g. aaa unresponsive action apply cached-results
@@ -29639,33 +29616,35 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
+                            "traffic_allow_ipv4_acl": {"type": str},
+                            "traffic_allow_ipv4_standard_acl": {"type": str},
                             "traffic_allow_access_list": {"type": str},
-                            "traffic_allow_standard_access_list": {"type": str},
                             "apply_alternate": {"type": bool},
                             "traffic_allow_vlan": {"type": int},
                             "apply_cached_results": {"type": bool},
                             "cached_results_timeout": {"type": CachedResultsTimeout},
                             "traffic_allow": {"type": bool},
                         }
-                        traffic_allow_access_list: str | None
+                        traffic_allow_ipv4_acl: str | None
                         """
                         Name of the IPv4 extended access-list to apply when AAA times out.
-                        When
-                        `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                        under
-                        `ipv4_acls` and its definition is configured on devices where it is referenced.
-                        Otherwise,
-                        only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                        The access-list must be defined
+                        under `ipv4_acls` and its definition is configured on devices where it is referenced.
                         Mutually
-                        exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                        exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                        Setting
+                        both raises an error.
                         """
-                        traffic_allow_standard_access_list: str | None
+                        traffic_allow_ipv4_standard_acl: str | None
                         """
                         Name of the IPv4 standard access-list to apply when AAA times out.
                         The access-list must be defined
                         under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                        Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                        Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                        an error.
                         """
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
                         apply_alternate: bool | None
                         """
                         Apply alternate action if primary action fails.
@@ -29685,8 +29664,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
+                                traffic_allow_ipv4_acl: str | UndefinedType | None = Undefined,
+                                traffic_allow_ipv4_standard_acl: str | UndefinedType | None = Undefined,
                                 traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
                                 apply_alternate: bool | UndefinedType | None = Undefined,
                                 traffic_allow_vlan: int | UndefinedType | None = Undefined,
                                 apply_cached_results: bool | UndefinedType | None = Undefined,
@@ -29700,21 +29680,21 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    traffic_allow_access_list:
+                                    traffic_allow_ipv4_acl:
                                        Name of the IPv4 extended access-list to apply when AAA times out.
-                                       When
-                                       `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                       under
-                                       `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                       Otherwise,
-                                       only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                       The access-list must be defined
+                                       under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                        Mutually
-                                       exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                                    traffic_allow_standard_access_list:
+                                       exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                       Setting
+                                       both raises an error.
+                                    traffic_allow_ipv4_standard_acl:
                                        Name of the IPv4 standard access-list to apply when AAA times out.
                                        The access-list must be defined
                                        under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                       Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                       Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                       an error.
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                     apply_alternate:
                                        Apply alternate action if primary action fails.
                                        e.g. aaa unresponsive action apply cached-results
@@ -49253,33 +49233,35 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
+                            "traffic_allow_ipv4_acl": {"type": str},
+                            "traffic_allow_ipv4_standard_acl": {"type": str},
                             "traffic_allow_access_list": {"type": str},
-                            "traffic_allow_standard_access_list": {"type": str},
                             "apply_alternate": {"type": bool},
                             "traffic_allow_vlan": {"type": int},
                             "apply_cached_results": {"type": bool},
                             "cached_results_timeout": {"type": CachedResultsTimeout},
                             "traffic_allow": {"type": bool},
                         }
-                        traffic_allow_access_list: str | None
+                        traffic_allow_ipv4_acl: str | None
                         """
                         Name of the IPv4 extended access-list to apply when AAA times out.
-                        When
-                        `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                        under
-                        `ipv4_acls` and its definition is configured on devices where it is referenced.
-                        Otherwise,
-                        only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                        The access-list must be defined
+                        under `ipv4_acls` and its definition is configured on devices where it is referenced.
                         Mutually
-                        exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                        exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                        Setting
+                        both raises an error.
                         """
-                        traffic_allow_standard_access_list: str | None
+                        traffic_allow_ipv4_standard_acl: str | None
                         """
                         Name of the IPv4 standard access-list to apply when AAA times out.
                         The access-list must be defined
                         under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                        Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                        Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                        an error.
                         """
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
                         apply_alternate: bool | None
                         """
                         Apply alternate action if primary action fails.
@@ -49299,8 +49281,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
+                                traffic_allow_ipv4_acl: str | UndefinedType | None = Undefined,
+                                traffic_allow_ipv4_standard_acl: str | UndefinedType | None = Undefined,
                                 traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
                                 apply_alternate: bool | UndefinedType | None = Undefined,
                                 traffic_allow_vlan: int | UndefinedType | None = Undefined,
                                 apply_cached_results: bool | UndefinedType | None = Undefined,
@@ -49314,21 +49297,21 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    traffic_allow_access_list:
+                                    traffic_allow_ipv4_acl:
                                        Name of the IPv4 extended access-list to apply when AAA times out.
-                                       When
-                                       `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                       under
-                                       `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                       Otherwise,
-                                       only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                       The access-list must be defined
+                                       under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                        Mutually
-                                       exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                                    traffic_allow_standard_access_list:
+                                       exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                       Setting
+                                       both raises an error.
+                                    traffic_allow_ipv4_standard_acl:
                                        Name of the IPv4 standard access-list to apply when AAA times out.
                                        The access-list must be defined
                                        under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                       Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                       Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                       an error.
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                     apply_alternate:
                                        Apply alternate action if primary action fails.
                                        e.g. aaa unresponsive action apply cached-results
@@ -81751,33 +81734,35 @@ class EosDesigns(EosDesignsRootModel):
                                                 """
 
                                     _fields: ClassVar[dict] = {
+                                        "traffic_allow_ipv4_acl": {"type": str},
+                                        "traffic_allow_ipv4_standard_acl": {"type": str},
                                         "traffic_allow_access_list": {"type": str},
-                                        "traffic_allow_standard_access_list": {"type": str},
                                         "apply_alternate": {"type": bool},
                                         "traffic_allow_vlan": {"type": int},
                                         "apply_cached_results": {"type": bool},
                                         "cached_results_timeout": {"type": CachedResultsTimeout},
                                         "traffic_allow": {"type": bool},
                                     }
-                                    traffic_allow_access_list: str | None
+                                    traffic_allow_ipv4_acl: str | None
                                     """
                                     Name of the IPv4 extended access-list to apply when AAA times out.
-                                    When
-                                    `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                    under
-                                    `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                    Otherwise,
-                                    only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                    The access-list must be defined
+                                    under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                     Mutually
-                                    exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                    Setting
+                                    both raises an error.
                                     """
-                                    traffic_allow_standard_access_list: str | None
+                                    traffic_allow_ipv4_standard_acl: str | None
                                     """
                                     Name of the IPv4 standard access-list to apply when AAA times out.
                                     The access-list must be defined
                                     under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                    Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                    an error.
                                     """
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
                                     apply_alternate: bool | None
                                     """
                                     Apply alternate action if primary action fails.
@@ -81797,8 +81782,9 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
+                                            traffic_allow_ipv4_acl: str | UndefinedType | None = Undefined,
+                                            traffic_allow_ipv4_standard_acl: str | UndefinedType | None = Undefined,
                                             traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                            traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
                                             apply_alternate: bool | UndefinedType | None = Undefined,
                                             traffic_allow_vlan: int | UndefinedType | None = Undefined,
                                             apply_cached_results: bool | UndefinedType | None = Undefined,
@@ -81812,21 +81798,21 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                traffic_allow_access_list:
+                                                traffic_allow_ipv4_acl:
                                                    Name of the IPv4 extended access-list to apply when AAA times out.
-                                                   When
-                                                   `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                                   under
-                                                   `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                                   Otherwise,
-                                                   only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                                   The access-list must be defined
+                                                   under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                                    Mutually
-                                                   exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                                                traffic_allow_standard_access_list:
+                                                   exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                                   Setting
+                                                   both raises an error.
+                                                traffic_allow_ipv4_standard_acl:
                                                    Name of the IPv4 standard access-list to apply when AAA times out.
                                                    The access-list must be defined
                                                    under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                                   Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                                   Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                                   an error.
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                                 apply_alternate:
                                                    Apply alternate action if primary action fails.
                                                    e.g. aaa unresponsive action apply cached-results
@@ -84354,33 +84340,35 @@ class EosDesigns(EosDesignsRootModel):
                                                 """
 
                                     _fields: ClassVar[dict] = {
+                                        "traffic_allow_ipv4_acl": {"type": str},
+                                        "traffic_allow_ipv4_standard_acl": {"type": str},
                                         "traffic_allow_access_list": {"type": str},
-                                        "traffic_allow_standard_access_list": {"type": str},
                                         "apply_alternate": {"type": bool},
                                         "traffic_allow_vlan": {"type": int},
                                         "apply_cached_results": {"type": bool},
                                         "cached_results_timeout": {"type": CachedResultsTimeout},
                                         "traffic_allow": {"type": bool},
                                     }
-                                    traffic_allow_access_list: str | None
+                                    traffic_allow_ipv4_acl: str | None
                                     """
                                     Name of the IPv4 extended access-list to apply when AAA times out.
-                                    When
-                                    `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                    under
-                                    `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                    Otherwise,
-                                    only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                    The access-list must be defined
+                                    under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                     Mutually
-                                    exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
+                                    exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                    Setting
+                                    both raises an error.
                                     """
-                                    traffic_allow_standard_access_list: str | None
+                                    traffic_allow_ipv4_standard_acl: str | None
                                     """
                                     Name of the IPv4 standard access-list to apply when AAA times out.
                                     The access-list must be defined
                                     under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                    Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                    Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                    an error.
                                     """
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
                                     apply_alternate: bool | None
                                     """
                                     Apply alternate action if primary action fails.
@@ -84400,8 +84388,9 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
+                                            traffic_allow_ipv4_acl: str | UndefinedType | None = Undefined,
+                                            traffic_allow_ipv4_standard_acl: str | UndefinedType | None = Undefined,
                                             traffic_allow_access_list: str | UndefinedType | None = Undefined,
-                                            traffic_allow_standard_access_list: str | UndefinedType | None = Undefined,
                                             apply_alternate: bool | UndefinedType | None = Undefined,
                                             traffic_allow_vlan: int | UndefinedType | None = Undefined,
                                             apply_cached_results: bool | UndefinedType | None = Undefined,
@@ -84415,21 +84404,21 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                traffic_allow_access_list:
+                                                traffic_allow_ipv4_acl:
                                                    Name of the IPv4 extended access-list to apply when AAA times out.
-                                                   When
-                                                   `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined
-                                                   under
-                                                   `ipv4_acls` and its definition is configured on devices where it is referenced.
-                                                   Otherwise,
-                                                   only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
+                                                   The access-list must be defined
+                                                   under `ipv4_acls` and its definition is configured on devices where it is referenced.
                                                    Mutually
-                                                   exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                                                traffic_allow_standard_access_list:
+                                                   exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                                                   Setting
+                                                   both raises an error.
+                                                traffic_allow_ipv4_standard_acl:
                                                    Name of the IPv4 standard access-list to apply when AAA times out.
                                                    The access-list must be defined
                                                    under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                                                   Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
+                                                   Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises
+                                                   an error.
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                                 apply_alternate:
                                                    Apply alternate action if primary action fails.
                                                    e.g. aaa unresponsive action apply cached-results

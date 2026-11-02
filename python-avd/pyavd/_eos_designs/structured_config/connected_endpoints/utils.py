@@ -275,20 +275,29 @@ class UtilsMixin(Protocol):
 
         dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
         action = adapter.dot1x.aaa.unresponsive.action
-        if action.traffic_allow_access_list and action.traffic_allow_standard_access_list:
+        ipv4_acl = action.traffic_allow_ipv4_acl
+        ipv4_standard_acl = action.traffic_allow_ipv4_standard_acl
+        legacy_access_list = action.traffic_allow_access_list
+
+        if ipv4_acl and (ipv4_standard_acl or legacy_access_list):
+            conflicting_standard_key = "traffic_allow_ipv4_standard_acl" if ipv4_standard_acl else "traffic_allow_access_list"
             msg = (
-                "'traffic_allow_access_list' and 'traffic_allow_standard_access_list' are mutually exclusive under "
+                f"'traffic_allow_ipv4_acl' and '{conflicting_standard_key}' are mutually exclusive under "
                 f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action'."
             )
             raise AristaAvdInvalidInputsError(msg)
-        if acl_name := action.traffic_allow_standard_access_list:
-            self.structured_config_utils._set_ipv4_standard_acl(acl_name)
-            dot1x.aaa.unresponsive.action.traffic_allow_access_list = acl_name
-        elif self.inputs.avd_design_future.validate_dot1x_aaa_unresponsive_acl and (acl_name := action.traffic_allow_access_list):
-            if acl_name not in self.inputs.ipv4_acls:
-                msg = f"ipv4_acls[name={acl_name}]"
+        if ipv4_standard_acl:
+            self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
+            dot1x.aaa.unresponsive.action.traffic_allow_access_list = ipv4_standard_acl
+        elif ipv4_acl:
+            if ipv4_acl not in self.inputs.ipv4_acls:
+                msg = f"ipv4_acls[name={ipv4_acl}]"
                 raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
-            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[acl_name])
+            dot1x.aaa.unresponsive.action.traffic_allow_access_list = ipv4_acl
+            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[ipv4_acl])
+        elif legacy_access_list:
+            # Deprecated input kept for backwards compatibility. Preserve the interface ACL reference without catalog validation.
+            dot1x.aaa.unresponsive.action.traffic_allow_access_list = legacy_access_list
         if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
             acl_found = False
             if acl_name in self.inputs.ipv4_acls:

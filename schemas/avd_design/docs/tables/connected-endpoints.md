@@ -97,8 +97,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under<br>`ipv4_acls` and its definition is configured on devices where it is referenced.<br>Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.<br>Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_standard_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_standard_access_list") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_acl</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_acl") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.<br>Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_standard_acl</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_standard_acl") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") <span style="color:red">deprecated</span> | String |  |  |  | Name of standard access-list to apply when AAA times out.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>traffic_allow_ipv4_standard_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
@@ -303,8 +304,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under<br>`ipv4_acls` and its definition is configured on devices where it is referenced.<br>Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.<br>Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_standard_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_standard_access_list") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_acl</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_acl") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.<br>Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_standard_acl</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_standard_acl") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") <span style="color:red">deprecated</span> | String |  |  |  | Name of standard access-list to apply when AAA times out.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>traffic_allow_ipv4_standard_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
@@ -509,8 +511,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under<br>`ipv4_acls` and its definition is configured on devices where it is referenced.<br>Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.<br>Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_standard_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_standard_access_list") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_acl</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_acl") | String |  |  |  | Name of the IPv4 extended access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.<br>Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_ipv4_standard_acl</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_ipv4_standard_acl") | String |  |  |  | Name of the IPv4 standard access-list to apply when AAA times out.<br>The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.<br>Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") <span style="color:red">deprecated</span> | String |  |  |  | Name of standard access-list to apply when AAA times out.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>traffic_allow_ipv4_standard_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
@@ -958,16 +961,21 @@
                   action:
 
                     # Name of the IPv4 extended access-list to apply when AAA times out.
-                    # When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under
-                    # `ipv4_acls` and its definition is configured on devices where it is referenced.
-                    # Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
-                    # Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                    traffic_allow_access_list: <str>
+                    # The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.
+                    # Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                    # Setting both raises an error.
+                    traffic_allow_ipv4_acl: <str>
 
                     # Name of the IPv4 standard access-list to apply when AAA times out.
                     # The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                    # Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
-                    traffic_allow_standard_access_list: <str>
+                    # Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error.
+                    traffic_allow_ipv4_standard_acl: <str>
+
+                    # Name of standard access-list to apply when AAA times out.
+                    # This key is deprecated.
+                    # Support will be removed in AVD version 7.0.0.
+                    # Use `traffic_allow_ipv4_standard_acl` instead.
+                    traffic_allow_access_list: <str>
 
                     # Apply alternate action if primary action fails.
                     # e.g. aaa unresponsive action apply cached-results else traffic allow
@@ -1575,16 +1583,21 @@
                   action:
 
                     # Name of the IPv4 extended access-list to apply when AAA times out.
-                    # When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under
-                    # `ipv4_acls` and its definition is configured on devices where it is referenced.
-                    # Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
-                    # Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                    traffic_allow_access_list: <str>
+                    # The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.
+                    # Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                    # Setting both raises an error.
+                    traffic_allow_ipv4_acl: <str>
 
                     # Name of the IPv4 standard access-list to apply when AAA times out.
                     # The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                    # Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
-                    traffic_allow_standard_access_list: <str>
+                    # Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error.
+                    traffic_allow_ipv4_standard_acl: <str>
+
+                    # Name of standard access-list to apply when AAA times out.
+                    # This key is deprecated.
+                    # Support will be removed in AVD version 7.0.0.
+                    # Use `traffic_allow_ipv4_standard_acl` instead.
+                    traffic_allow_access_list: <str>
 
                     # Apply alternate action if primary action fails.
                     # e.g. aaa unresponsive action apply cached-results else traffic allow
@@ -2190,16 +2203,21 @@
                   action:
 
                     # Name of the IPv4 extended access-list to apply when AAA times out.
-                    # When `avd_design_future.validate_dot1x_aaa_unresponsive_acl` is enabled, the access-list must be defined under
-                    # `ipv4_acls` and its definition is configured on devices where it is referenced.
-                    # Otherwise, only the interface ACL reference is configured, allowing the ACL to be defined elsewhere.
-                    # Mutually exclusive with `traffic_allow_standard_access_list`. Setting both raises an error.
-                    traffic_allow_access_list: <str>
+                    # The access-list must be defined under `ipv4_acls` and its definition is configured on devices where it is referenced.
+                    # Mutually exclusive with `traffic_allow_ipv4_standard_acl` or deprecated `traffic_allow_access_list`.
+                    # Setting both raises an error.
+                    traffic_allow_ipv4_acl: <str>
 
                     # Name of the IPv4 standard access-list to apply when AAA times out.
                     # The access-list must be defined under `ipv4_standard_acls` and its definition is configured on devices where it is referenced.
-                    # Mutually exclusive with `traffic_allow_access_list`. Setting both raises an error.
-                    traffic_allow_standard_access_list: <str>
+                    # Mutually exclusive with `traffic_allow_ipv4_acl` or `traffic_allow_access_list`. Setting both raises an error.
+                    traffic_allow_ipv4_standard_acl: <str>
+
+                    # Name of standard access-list to apply when AAA times out.
+                    # This key is deprecated.
+                    # Support will be removed in AVD version 7.0.0.
+                    # Use `traffic_allow_ipv4_standard_acl` instead.
+                    traffic_allow_access_list: <str>
 
                     # Apply alternate action if primary action fails.
                     # e.g. aaa unresponsive action apply cached-results else traffic allow

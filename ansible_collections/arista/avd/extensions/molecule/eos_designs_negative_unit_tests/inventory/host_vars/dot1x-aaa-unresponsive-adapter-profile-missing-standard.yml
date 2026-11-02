@@ -25,7 +25,7 @@ port_profiles:
       aaa:
         unresponsive:
           action:
-            traffic_allow_standard_access_list: AAA-TIMEOUT
+            traffic_allow_ipv4_standard_acl: AAA-TIMEOUT
 connected_endpoints:
   - name: server1
     adapters:
