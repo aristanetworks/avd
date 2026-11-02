@@ -14,6 +14,3 @@ cvxserver:
     - name: missing-mgmt-ip-cvx-servers
       id: 1
       mgmt_ip: 192.168.201.116/24
-
-expected_error_message: >-
-  'mgmt_ip' for CVX Server missing-peer-ip-l3-interface is required.

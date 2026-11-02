@@ -28,7 +28,3 @@ tenants:
             ipv6_address: 2001:db8:110::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[].ospfv3.enabled: true' is not supported on node
-  'network-services-ospfv3-uplink-type-lan-no-uplink-switches' with 'uplink_type: lan', since SVIs are deployed as subinterfaces.

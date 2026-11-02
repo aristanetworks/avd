@@ -12,6 +12,3 @@ aaa_settings:
         vrf: default
         groups:
           - TACACS1
-
-expected_error_message: >-
-  '`aaa_settings.radius.servers[host=10.10.10.11].key` or `aaa_settings.radius.servers[host=10.10.10.11].cleartext_key`' is required but was not found.

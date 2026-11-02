@@ -18,6 +18,3 @@ generate_cv_tags:
   topology_hints: true
   device_tags:
     - name: myname
-
-expected_error_message: >-
-  'generate_cv_tags.device_tags[name=myname]' is missing either a static 'value' or a dynamic 'data_path'

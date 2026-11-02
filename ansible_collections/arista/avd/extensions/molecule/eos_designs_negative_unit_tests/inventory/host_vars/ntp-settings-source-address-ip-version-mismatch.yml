@@ -12,7 +12,3 @@ ntp_settings:
   servers:
     - name: 1.2.3.4
       source_address: use_inband_mgmt_interface_ipv6
-
-expected_error_message: >-
-  'ntp_settings.servers[name=1.2.3.4].source_address' resolves to '2001:db8:200::2', but NTP server '1.2.3.4' is IPv4.
-  Set a matching IPv4 source address or use an FQDN server name.

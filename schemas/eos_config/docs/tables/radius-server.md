@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "radius_server.attribute_32_include_in_access_req.format") | String |  |  |  | Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored. |
     | [<samp>&nbsp;&nbsp;deadtime</samp>](## "radius_server.deadtime") | Integer |  |  | Min: 1<br>Max: 1000 | Time to skip a non-responsive server in minutes. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "radius_server.dynamic_authorization") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | UDP port used for RADIUS dynamic authorization requests. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.dynamic_authorization.tls_ssl_profile") | String |  |  |  | Name of TLS profile. |
     | [<samp>&nbsp;&nbsp;servers</samp>](## "radius_server.servers") | List, items: Dictionary |  |  |  | Hosts configuration for VRF default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "radius_server.servers.[].host") | String | Required |  |  | -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for TLS and no TLS. |
@@ -53,7 +53,7 @@
       deadtime: <int; 1-1000>
       dynamic_authorization:
 
-        # TCP Port.
+        # UDP port used for RADIUS dynamic authorization requests.
         port: <int; 0-65535>
 
         # Name of TLS profile.
