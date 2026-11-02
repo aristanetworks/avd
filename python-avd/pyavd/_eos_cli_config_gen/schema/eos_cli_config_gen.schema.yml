@@ -25835,6 +25835,12 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  description: Quality of Service Policy-map name.
         tcp_mss_ceiling:
           type: dict
           keys:
