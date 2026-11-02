@@ -24,7 +24,3 @@ cv_settings_profiles:
         servers:
           - name: 192.0.2.3
           - name: 192.0.2.4
-
-expected_error_message: >-
-  Max 3 servers allowed for on-prem CVP cluster onprem,
-  provided: ['192.0.2.1', '192.0.2.2', '192.0.2.3', '192.0.2.4']

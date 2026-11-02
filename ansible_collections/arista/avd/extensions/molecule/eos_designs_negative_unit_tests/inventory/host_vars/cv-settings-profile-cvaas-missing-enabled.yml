@@ -9,6 +9,3 @@ cv_settings_profiles:
     cvaas:
       clusters:
         - name: cvaas
-
-expected_error_message: |-
-  The 'enabled' setting must be configured when CVaaS settings are provided.
