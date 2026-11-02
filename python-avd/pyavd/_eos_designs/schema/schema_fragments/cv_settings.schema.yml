@@ -99,7 +99,6 @@ keys:
               pattern: "[a-zA-Z0-9-_]+"
             servers:
               type: list
-              required: false
               min_length: 1
               max_length: 3
               primary_key: name
