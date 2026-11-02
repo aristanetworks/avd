@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import sys
+from datetime import datetime, timezone
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
@@ -277,11 +278,24 @@ def test_build_reports_logs_warning_when_all_results_hidden_by_filters(caplog: p
 
 
 @pytest.mark.parametrize(
-    ("report_settings_extra", "expected_log"),
+    ("report_settings_extra", "expected_log", "expect_markdown_report_call", "expect_run_overview_data"),
     [
-        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", id="csv"),
-        pytest.param({"md_output": "/out/report.md"}, "Generating Markdown report at /out/report.md", id="markdown"),
-        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", id="json"),
+        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", False, False, id="csv"),
+        pytest.param(
+            {"md_output": "/out/report.md"},
+            "Generating Markdown report at /out/report.md",
+            True,
+            False,
+            id="markdown-default-no-timestamp",
+        ),
+        pytest.param(
+            {"md_output": "/out/report.md", "include_generation_timestamp": True},
+            "Generating Markdown report at /out/report.md",
+            True,
+            True,
+            id="markdown",
+        ),
+        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", False, False, id="json"),
     ],
 )
 def test_build_reports_logs_info_for_each_report_type(
@@ -289,6 +303,8 @@ def test_build_reports_logs_info_for_each_report_type(
     *,
     report_settings_extra: dict,
     expected_log: str,
+    expect_markdown_report_call: bool,
+    expect_run_overview_data: bool,
 ) -> None:
     """An INFO log naming the output path is emitted for each report format that is configured."""
     mock_result_manager = MagicMock()
@@ -308,13 +324,57 @@ def test_build_reports_logs_info_for_each_report_type(
         patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
         patch(f"{MODULE_PATH}.sort_result_manager"),
         patch(f"{MODULE_PATH}.ReportCsv"),
-        patch(f"{MODULE_PATH}.MDReportGenerator"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
         patch("pathlib.Path.open", mock_open()),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
         build_reports(iter([]), report_settings)
 
     assert expected_log in caplog.messages
+    assert mock_md_report.return_value.generate.called is expect_markdown_report_call
+    if expect_markdown_report_call:
+        md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+        run_overview_keys = {"test_execution_start_time", "test_execution_end_time", "total_duration"}
+        assert run_overview_keys.issubset(md_extra_data) is expect_run_overview_data
+
+
+def test_build_reports_adds_markdown_run_overview_when_enabled(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The Markdown report includes start time, end time and duration in Run Overview when enabled."""
+    mock_result_manager = MagicMock()
+    mock_result_manager.results = []
+    mock_result_manager.get_total_results.return_value = 0
+    mock_result_manager.device_stats = {}
+    test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
+    report_settings = {
+        "md_output": "/out/report.md",
+        "include_generation_timestamp": True,
+        "sorting": {
+            "sort_fields": ["device", "test"],
+            "status_priority": ["error", "failure", "skipped", "success", "unset"],
+        },
+    }
+    mock_datetime = MagicMock()
+    mock_datetime.now.return_value = datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
+    monkeypatch.setattr(anta_module, "datetime", mock_datetime)
+    with (
+        patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
+        patch(f"{MODULE_PATH}.sort_result_manager"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
+    ):
+        build_reports(iter([]), report_settings, run_overview_data={"test_execution_start_time": test_execution_start_time})
+
+    md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+    assert md_extra_data["test_execution_start_time"] == datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
+    assert md_extra_data["test_execution_end_time"] == datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
+    assert md_extra_data["total_duration"] == datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc) - datetime(
+        2026,
+        1,
+        1,
+        12,
+        30,
+        0,
+        tzinfo=timezone.utc,
+    )
 
 
 def test_action_module_run_raises_when_pyavd_missing(action_module: Callable[..., ActionModule]) -> None:
@@ -620,6 +680,7 @@ def test_validate_argument_spec_materializes_report_sorting_defaults(
     _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
     validated_args = anta_module.strip_empties_from_dict(validated_args)
 
+    assert validated_args["report"]["include_generation_timestamp"] is False
     assert validated_args["report"]["sorting"]["status_priority"] == ["error", "failure", "skipped", "success", "unset"]
     assert validated_args["report"]["sorting"]["sort_fields"] == ["device", "categories", "test", "description", "custom_field"]
 

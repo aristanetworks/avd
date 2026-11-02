@@ -109,6 +109,12 @@ options:
     description: ANTA report settings. These settings define the output format and location of the ANTA reports.
     type: dict
     suboptions:
+      include_generation_timestamp:
+        description: |-
+          If `true`, include test execution start time, end time, and total duration in the Markdown report Run Overview section.
+          Keep disabled when deterministic report content is required across repeated runs.
+        type: bool
+        default: false
       expand_results:
         description: |-
           Controls the granularity of the Markdown report.
@@ -208,6 +214,7 @@ EXAMPLES = r"""
           #     - skipped
           #   sort_fields:
           #     - categories
+          # include_generation_timestamp: true
           # expand_results: true
           # generate_custom_field: true
 """

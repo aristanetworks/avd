@@ -351,6 +351,11 @@ These settings control the format and content of the generated reports.
 
 `anta_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
 
+`anta_report_include_generation_timestamp`: Controls whether test execution start time, end time, and total duration are included in the Markdown report Run Overview section.
+
+!!! tip
+    Keep this disabled when deterministic report content is required in CI change-detection workflows.
+
 !!! info
     ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
 
@@ -369,6 +374,8 @@ These settings control the format and content of the generated reports.
         anta_report_expand_results: true
         # Generate the custom_field column in the Markdown report
         anta_report_custom_field: true
+        # Include UTC generation timestamp in Markdown report
+        anta_report_include_generation_timestamp: true
 ```
 
 ### Extra Fabric Validation
