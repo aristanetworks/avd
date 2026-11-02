@@ -67081,7 +67081,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "router_id": {"type": str},
-                "bfd_enable": {"type": bool},
+                "bfd_default": {"type": bool},
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
@@ -67091,7 +67091,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Activate the address family."""
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
-            bfd_enable: bool | None
+            bfd_default: bool | None
             """Enable BFD for this OSPFv3 address family."""
             bfd_adjacency_state_any: bool | None
             """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
@@ -67112,7 +67112,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
-                    bfd_enable: bool | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -67127,7 +67127,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: Activate the address family.
                         router_id: 32-bit OSPF router ID as an IP address.
-                        bfd_enable: Enable BFD for this OSPFv3 address family.
+                        bfd_default: Enable BFD for this OSPFv3 address family.
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -67470,7 +67470,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "redistribute": {"type": Redistribute},
                 "enabled": {"type": bool},
                 "router_id": {"type": str},
-                "bfd_enable": {"type": bool},
+                "bfd_default": {"type": bool},
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
@@ -67485,7 +67485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Activate the address family."""
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
-            bfd_enable: bool | None
+            bfd_default: bool | None
             """Enable BFD for this OSPFv3 address family."""
             bfd_adjacency_state_any: bool | None
             """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
@@ -67501,7 +67501,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     redistribute: Redistribute | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
-                    bfd_enable: bool | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -67519,7 +67519,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         enabled: Activate the address family.
                         router_id: 32-bit OSPF router ID as an IP address.
-                        bfd_enable: Enable BFD for this OSPFv3 address family.
+                        bfd_default: Enable BFD for this OSPFv3 address family.
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -67838,7 +67838,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str},
-                    "bfd_enable": {"type": bool},
+                    "bfd_default": {"type": bool},
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
@@ -67848,7 +67848,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Activate the address family."""
                 router_id: str | None
                 """32-bit OSPF router ID as an IP address."""
-                bfd_enable: bool | None
+                bfd_default: bool | None
                 """Enable BFD for this OSPFv3 address family."""
                 bfd_adjacency_state_any: bool | None
                 """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
@@ -67869,7 +67869,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         enabled: bool | UndefinedType = Undefined,
                         router_id: str | UndefinedType | None = Undefined,
-                        bfd_enable: bool | UndefinedType | None = Undefined,
+                        bfd_default: bool | UndefinedType | None = Undefined,
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -67884,7 +67884,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled: Activate the address family.
                             router_id: 32-bit OSPF router ID as an IP address.
-                            bfd_enable: Enable BFD for this OSPFv3 address family.
+                            bfd_default: Enable BFD for this OSPFv3 address family.
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -68232,7 +68232,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "redistribute": {"type": Redistribute},
                     "enabled": {"type": bool},
                     "router_id": {"type": str},
-                    "bfd_enable": {"type": bool},
+                    "bfd_default": {"type": bool},
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
@@ -68247,7 +68247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Activate the address family."""
                 router_id: str | None
                 """32-bit OSPF router ID as an IP address."""
-                bfd_enable: bool | None
+                bfd_default: bool | None
                 """Enable BFD for this OSPFv3 address family."""
                 bfd_adjacency_state_any: bool | None
                 """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
@@ -68263,7 +68263,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         redistribute: Redistribute | UndefinedType = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         router_id: str | UndefinedType | None = Undefined,
-                        bfd_enable: bool | UndefinedType | None = Undefined,
+                        bfd_default: bool | UndefinedType | None = Undefined,
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -68281,7 +68281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             enabled: Activate the address family.
                             router_id: 32-bit OSPF router ID as an IP address.
-                            bfd_enable: Enable BFD for this OSPFv3 address family.
+                            bfd_default: Enable BFD for this OSPFv3 address family.
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -68291,7 +68291,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "router_id": {"type": str},
-                "bfd_enable": {"type": bool},
+                "bfd_default": {"type": bool},
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
@@ -68306,7 +68306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
-            bfd_enable: bool | None
+            bfd_default: bool | None
             """Enable BFD for all OSPFv3 address families in this VRF."""
             bfd_adjacency_state_any: bool | None
             """Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF."""
@@ -68343,7 +68343,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
-                    bfd_enable: bool | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -68362,7 +68362,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            VRF name.
                            VRF 'default' must be configured directly under 'router_ospfv3'.
                         router_id: 32-bit OSPF router ID as an IP address.
-                        bfd_enable: Enable BFD for all OSPFv3 address families in this VRF.
+                        bfd_default: Enable BFD for all OSPFv3 address families in this VRF.
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -68395,7 +68395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "router_id": {"type": str},
-            "bfd_enable": {"type": bool},
+            "bfd_default": {"type": bool},
             "bfd_adjacency_state_any": {"type": bool},
             "passive_interface_default": {"type": bool},
             "auto_cost_reference_bandwidth": {"type": int},
@@ -68406,7 +68406,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         router_id: str | None
         """32-bit OSPF router ID as an IP address."""
-        bfd_enable: bool | None
+        bfd_default: bool | None
         """Enable BFD for all OSPFv3 address families."""
         bfd_adjacency_state_any: bool | None
         """Allow BFD sessions to be established in any OSPFv3 adjacency state."""
@@ -68444,7 +68444,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 router_id: str | UndefinedType | None = Undefined,
-                bfd_enable: bool | UndefinedType | None = Undefined,
+                bfd_default: bool | UndefinedType | None = Undefined,
                 bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                 passive_interface_default: bool | UndefinedType | None = Undefined,
                 auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
@@ -68461,7 +68461,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     router_id: 32-bit OSPF router ID as an IP address.
-                    bfd_enable: Enable BFD for all OSPFv3 address families.
+                    bfd_default: Enable BFD for all OSPFv3 address families.
                     bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -76750,15 +76750,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
-                bfd: bool | None
-                """Enable BFD for OSPFv3 IPv4 on the interface."""
+                _fields: ClassVar[dict] = {"area": {"type": str}}
                 area: str
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
                         """
                         Ipv4.
 
@@ -76766,7 +76764,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            bfd: Enable BFD for OSPFv3 IPv4 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
 
                         """
@@ -76774,15 +76771,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
-                bfd: bool | None
-                """Enable BFD for OSPFv3 IPv6 on the interface."""
+                _fields: ClassVar[dict] = {"area": {"type": str}}
                 area: str
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -76790,7 +76785,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            bfd: Enable BFD for OSPFv3 IPv6 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
 
                         """
@@ -76801,7 +76795,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "passive_interface": {"type": bool},
                 "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
-                "bfd": {"type": bool},
             }
             ipv4: Ipv4
             """Subclass of AvdModel."""
@@ -76812,11 +76805,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             no_passive_interface: bool | None
             """Disable passive interface mode."""
             network_point_to_point: bool | None
-            bfd: bool | None
-            """
-            Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take
-            precedence.
-            """
 
             if TYPE_CHECKING:
 
@@ -76828,7 +76816,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     passive_interface: bool | UndefinedType | None = Undefined,
                     no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
-                    bfd: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     Ospfv3.
@@ -76842,9 +76829,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
-                        bfd:
-                           Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take
-                           precedence.
 
                     """
 

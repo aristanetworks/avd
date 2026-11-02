@@ -16,7 +16,7 @@ keys:
       router_id:
         type: str
         description: 32-bit OSPF router ID as an IP address.
-      bfd_enable:
+      bfd_default:
         type: bool
         description: Enable BFD for all OSPFv3 address families.
       bfd_adjacency_state_any:
@@ -43,7 +43,7 @@ keys:
           router_id:
             type: str
             description: 32-bit OSPF router ID as an IP address.
-          bfd_enable:
+          bfd_default:
             type: bool
             description: Enable BFD for this OSPFv3 address family.
           bfd_adjacency_state_any:
@@ -176,7 +176,7 @@ keys:
             router_id:
               type: str
               description: 32-bit OSPF router ID as an IP address.
-            bfd_enable:
+            bfd_default:
               type: bool
               description: Enable BFD for all OSPFv3 address families in this VRF.
             bfd_adjacency_state_any:

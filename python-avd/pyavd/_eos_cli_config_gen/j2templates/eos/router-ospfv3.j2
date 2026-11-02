@@ -14,9 +14,9 @@ router ospfv3 vrf {{ vrf.name }}
    router-id {{ vrf.router_id }}
 {%         set use_delimiter = true %}
 {%     endif %}
-{%     if vrf.bfd_enable is arista.avd.defined(true)
-           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_enable is not arista.avd.defined)
-           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+{%     if vrf.bfd_default is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.bfd_default is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.bfd_default is not arista.avd.defined) %}
    bfd default
 {%         set use_delimiter = true %}
 {%     endif %}
@@ -51,7 +51,7 @@ router ospfv3 vrf {{ vrf.name }}
 {%         if vrf.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ vrf.address_family_ipv4.router_id }}
 {%         endif %}
-{%         if vrf.address_family_ipv4.bfd_enable is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv4.bfd_default is arista.avd.defined(true) %}
       bfd default
 {%         endif %}
 {%         if vrf.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined(true) %}
@@ -139,7 +139,7 @@ router ospfv3 vrf {{ vrf.name }}
 {%         if vrf.address_family_ipv6.router_id is arista.avd.defined %}
       router-id {{ vrf.address_family_ipv6.router_id }}
 {%         endif %}
-{%         if vrf.address_family_ipv6.bfd_enable is arista.avd.defined(true) %}
+{%         if vrf.address_family_ipv6.bfd_default is arista.avd.defined(true) %}
       bfd default
 {%         endif %}
 {%         if vrf.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined(true) %}
@@ -228,7 +228,7 @@ router ospfv3 vrf {{ vrf.name }}
 {%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
-      or router_ospfv3.bfd_enable is arista.avd.defined(true)
+      or router_ospfv3.bfd_default is arista.avd.defined(true)
       or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
@@ -244,9 +244,9 @@ router ospfv3
    router-id {{ router_ospfv3.router_id }}
 {%         set use_delimiter = true %}
 {%     endif %}
-{%     if router_ospfv3.bfd_enable is arista.avd.defined(true)
-           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_enable is not arista.avd.defined)
-           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_enable is not arista.avd.defined) %}
+{%     if router_ospfv3.bfd_default is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.bfd_default is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.bfd_default is not arista.avd.defined) %}
    bfd default
 {%         set use_delimiter = true %}
 {%     endif %}
@@ -281,7 +281,7 @@ router ospfv3
 {%         if router_ospfv3.address_family_ipv4.router_id is arista.avd.defined %}
       router-id {{ router_ospfv3.address_family_ipv4.router_id }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv4.bfd_enable is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv4.bfd_default is arista.avd.defined(true) %}
       bfd default
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined(true) %}
@@ -369,7 +369,7 @@ router ospfv3
 {%         if router_ospfv3.address_family_ipv6.router_id is arista.avd.defined %}
       router-id {{ router_ospfv3.address_family_ipv6.router_id }}
 {%         endif %}
-{%         if router_ospfv3.address_family_ipv6.bfd_enable is arista.avd.defined(true) %}
+{%         if router_ospfv3.address_family_ipv6.bfd_default is arista.avd.defined(true) %}
       bfd default
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined(true) %}
