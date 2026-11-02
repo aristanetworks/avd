@@ -1,1 +1,1 @@
-pyavd._errors.AvdFutureBehaviorWarning: Host 'cv-pathfinder-custom-control-plane-policy-pathfinder-1': L3 Port-Channel 'Port-Channel5' must have at least one member interface defined. This underlay configuration will not be supported in AVD 7.0.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'cv-pathfinder-custom-control-plane-policy-pathfinder-1' (Underlay): L3 Port-Channel 'Port-Channel5' must have at least one member interface defined. This configuration will not be supported in AVD 7.0.

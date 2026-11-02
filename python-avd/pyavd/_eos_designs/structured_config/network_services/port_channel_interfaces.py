@@ -53,7 +53,7 @@ class PortChannelInterfacesMixin(Protocol):
             else:
                 msg = f"L3 Port-Channels {', '.join(repr(name) for name in l3_port_channel_names)} must each have at least one member interface defined."
             warnings.warn(
-                f"Host '{self.shared_utils.hostname}': {msg} This Network Services configuration will not be supported in AVD 7.0.",
+                f"Host '{self.shared_utils.hostname}' (Network Services): {msg} This configuration will not be supported in AVD 7.0.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )

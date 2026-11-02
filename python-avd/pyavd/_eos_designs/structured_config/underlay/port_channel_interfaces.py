@@ -141,7 +141,7 @@ class PortChannelInterfacesMixin(Protocol):
             if self.inputs.avd_design_future.raise_for_port_channels_without_members:
                 raise AristaAvdInvalidInputsError(msg)
             warnings.warn(
-                f"Host '{self.shared_utils.hostname}': {msg} This underlay configuration will not be supported in AVD 7.0.",
+                f"Host '{self.shared_utils.hostname}' (Underlay): {msg} This configuration will not be supported in AVD 7.0.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
