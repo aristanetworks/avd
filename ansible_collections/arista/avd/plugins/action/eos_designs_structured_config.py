@@ -29,7 +29,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import MutableMapping
 
     from pyavd._eos_designs.structured_config import get_structured_config
-    from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
@@ -37,7 +36,6 @@ if TYPE_CHECKING:  # pragma: no cover
 
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
-    from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils.merge import merge
     from pyavd._utils.strip_empties import strip_null_from_data
     from pyavd._utils.template import template as templater
@@ -102,9 +100,6 @@ class ActionModule(AVDActionPlugin):
             # Materialize the lazy hostvars only when a Jinja rendering path is enabled.
             template_vars = ChainMap(output, host_hostvars.data if isinstance(host_hostvars, UserDict) else dict(host_hostvars))
 
-            # Load output schema used by merger on output of custom templates
-            output_schema = AvdSchema(schema_id="eos_cli_config_gen")
-
             for template_item in eos_designs_custom_templates:
                 template_options = template_item.get("options", {})
                 list_merge = template_options.get("list_merge", "append_rp")
@@ -134,7 +129,7 @@ class ActionModule(AVDActionPlugin):
                 if not isinstance(template_result_data, list):
                     template_result_data = [template_result_data]
 
-                merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
+                merge(output, *template_result_data, list_merge=list_merge, schema_name="eos_config")
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.

@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.constants import INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME, INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -32,8 +33,9 @@ class IpNatMixin(Protocol):
         # set the ACL
         self._set_direct_ie_policy_acl(ip_interfaces, acl_name)
 
-    def _set_zscaler_ie_policy_ip_nat(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set the structured config for ip_nat."""
+    @run_once_method
+    def set_once_zscaler_ie_policy_ip_nat(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set once the shared structured config for Zscaler internet exit NAT."""
         pool = EosCliConfigGen.IpNat.PoolsItem(name="PORT-ONLY-POOL", type="port-only")
         pool.ranges.append_new(first_port=1500, last_port=65535)
         self.structured_config.ip_nat.pools.append(pool)

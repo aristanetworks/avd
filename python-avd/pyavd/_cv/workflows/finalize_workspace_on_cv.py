@@ -301,6 +301,7 @@ def _produce_cvworkspace_build_result(
     workspace_build_details: list[WorkspaceBuildDetails],
     compiled_workspace_build_warnings_suppress_list: list[Pattern],
     devices: list[CVDevice],
+    workflow_warnings: list,
 ) -> list[CVWorkspaceDeviceBuildResult]:
     """
     Process list of WorkspaceBuildDetails to generate list of CVWorkspaceDeviceBuildResult suppressing undesired warnings (when requested).
@@ -310,6 +311,7 @@ def _produce_cvworkspace_build_result(
         workspace_build_details: List of WorkspaceBuildDetails objects.
         compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
         devices: List of CVDevice objects representing existing CV devices.
+        workflow_warnings: List of workflow warnings to update.
 
     Returns:
         List of CVWorkspaceDeviceBuildResult objects defining details of the Workspace build.
@@ -327,11 +329,12 @@ def _produce_cvworkspace_build_result(
 
         # Continue if device is not in the list of devices targeted by this deployment
         if device is None:
-            LOGGER.warning(
-                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s'",
-                workspace_build_details_item.key.device_id,
-                workspace_build_details_item,
+            warning = (
+                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device "
+                f"'{workspace_build_details_item.key.device_id}' not targeted by our deployment: '{workspace_build_details_item}'"
             )
+            LOGGER.warning(warning)
+            workflow_warnings.append(warning)
             continue
 
         # Build errors and warnings lists
@@ -390,6 +393,7 @@ async def _process_workspace_build_details(
         workspace_build_details=workspace_build_details,
         compiled_workspace_build_warnings_suppress_list=compiled_workspace_build_warnings_suppress_list,
         devices=devices,
+        workflow_warnings=warnings,
     )
 
 

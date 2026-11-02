@@ -1,0 +1,24 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-services-ospfv3-svi-ipv6-enable-false
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: IPV6_ENABLE_FALSE
+            vxlan: false
+            ipv6_enable: false
+            ospfv3:
+              enabled: true

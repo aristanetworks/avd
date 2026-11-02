@@ -99,7 +99,3 @@ application_classification:
     ipv4_applications:
       - name: TEST-APPLICATION
         src_prefix_set_name: MISSING-PREFIX-SET
-
-expected_error_message: >-
-  IPv4 prefix field set 'MISSING-PREFIX-SET' referenced in the application 'TEST-APPLICATION' is not defined
-  in 'application_classification.fields_sets.ipv4_prefixes'.

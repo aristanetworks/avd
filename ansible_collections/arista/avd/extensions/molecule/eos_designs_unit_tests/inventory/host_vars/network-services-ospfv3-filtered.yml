@@ -1,0 +1,48 @@
+---
+# The VRF is deployed through an SVI without OSPFv3 while the OSPFv3 SVI is filtered out by tags.
+# No OSPFv3 instance is created and the VRF OSPFv3 settings are ignored, so the BGP VRF has no 'redistribute ospfv3'.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65101
+    filter:
+      tags:
+        - DEPLOYED
+  nodes:
+    - name: network-services-ospfv3-filtered
+      id: 1
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        ospfv3:
+          router_id: 10.255.10.1
+          redistribute_bgp:
+            enabled: true
+          redistribute_connected:
+            enabled: true
+        redistribute_ospfv3:
+          enabled: true
+        svis:
+          - id: 110
+            name: DEPLOYED_NO_OSPFV3
+            tags:
+              - DEPLOYED
+            enabled: true
+            ipv6_address: 2001:db8:110::1/64
+          - id: 111
+            name: FILTERED_OSPFV3
+            tags:
+              - NOT_DEPLOYED
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:111::1/64
+            ospfv3:
+              enabled: true

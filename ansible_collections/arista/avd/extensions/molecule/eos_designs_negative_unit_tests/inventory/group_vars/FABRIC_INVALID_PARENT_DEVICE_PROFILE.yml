@@ -25,6 +25,3 @@ device_profiles:
 
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
-
-expected_error_message: >-
-  Parent profile 'invalid-profile' applied under profile 'L3LEAF_PARENT_PROFILE' does not exist in 'device_profiles'.

@@ -742,12 +742,68 @@ keys:
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
+              ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: |-
+                  Router OSPFv3 settings for the VRF.
+                  The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                  These settings only override the defaults.
+                  VRF `default` is not supported yet.
+                keys:
+                  router_id:
+                    type: str
+                    default: main_router_id
+                    description: |-
+                      Router ID to use for OSPFv3 in this VRF.
+                      This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
+                      - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set.
+                      - "none" will not configure an OSPFv3 Router ID for this VRF.
+                        EOS then uses the `router general` Router ID or an IPv4 address of an interface in the VRF.
+                        If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance does not start.
+                      - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                        description: |-
+                          Redistribute BGP into OSPFv3.
+                          Ignored on devices where BGP is not configured for this VRF.
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                        description: Redistribute connected routes into OSPFv3.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/vrfs/items"
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+              redistribute_ospfv3:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: |-
+                      Redistribute OSPFv3 internal routes into BGP for this VRF.
+                      Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
+                      OSPFv3 external routes are not redistributed.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -1327,7 +1383,18 @@ keys:
                       max: 8191
                     ip_address:
                       type: str
-                      required: true
+                      description: IPv4 address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      min_length: 1
+                      description: |-
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        At least one of `ip_address` or `ipv6_addresses` must be set.
+                        The first address in this list is used for the IPv6 virtual source-nat of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                      items:
+                        type: str
+                        description: IPv6 address/Mask.
+                        min_length: 1
                     description:
                       type: str
                     enabled:
@@ -1335,7 +1402,9 @@ keys:
                       default: true
                     ospf:
                       type: dict
-                      description: OSPF interface configuration.
+                      description: |-
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF and this loopback.
                       keys:
                         enabled:
                           type: bool

@@ -526,8 +526,18 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.1.53.0/32
+  ipv6_addresses:
+  - fd5a:fe45:8831:06c5::a/64
+  - 8:8:8:8:8:8:8:8/124
   ospf_area: '1'
   hardware_forwarding_id: true
+- name: Loopback125
+  description: Test-Only-IPv6
+  shutdown: false
+  vrf: Tenant_A_OSPF
+  ipv6_addresses:
+  - 2001:db8:21::1/48
+  - 5:5:5:5:5:5:5:5/124
 management_api_http:
   enable_https: true
   default_services: false
@@ -1172,6 +1182,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.10
 - name: Tenant_A_OSPF
   ip_address: 10.255.11.10
+  ipv6_address: fd5a:fe45:8831:06c5::a
 vlan_interfaces:
 - name: Vlan130
   description: Tenant_A_APP_Zone_1
@@ -1601,6 +1612,7 @@ vrfs:
     - Tenant_A
 - name: Tenant_A_OSPF
   ip_routing: true
+  ipv6_routing: true
   metadata:
     tenants:
     - Tenant_A

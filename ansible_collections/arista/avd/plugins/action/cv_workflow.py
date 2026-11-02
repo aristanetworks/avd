@@ -243,6 +243,7 @@ class ActionModule(ActionBase):
                     cloudvision={
                         **get_result(cloudvision),
                         "token": "<removed>",
+                        **({"password": "<removed>"} if cloudvision.password is not None else {}),  # NOSONAR
                         **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
                     configs=[get_result(config) for config in eos_config_objects],
