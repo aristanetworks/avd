@@ -72,7 +72,7 @@ class DhcpServersMixin(Protocol):
 
     def _update_ntp_servers(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
         """Set list of NTP servers."""
-        ntp_servers_settings = self.inputs.ntp_settings.servers
+        ntp_servers_settings = self.shared_utils.ntp_settings.servers
         if not ntp_servers_settings:
             return
 
