@@ -405,6 +405,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
                   required: true
@@ -413,6 +416,9 @@ keys:
             ipv6:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
                   required: true
@@ -426,6 +432,9 @@ keys:
               description: Disable passive interface mode.
             network_point_to_point:
               type: bool
+            bfd:
+              type: bool
+              description: Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take precedence.
         ospf_cost:
           type: int
         ospf_authentication:
