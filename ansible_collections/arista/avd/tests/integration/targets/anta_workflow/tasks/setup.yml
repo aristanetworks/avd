@@ -50,7 +50,7 @@
 
 - name: Create user catalog fixtures
   ansible.builtin.copy:
-    content: "{{ anta_test_catalog | to_json if item == 'json' else anta_test_catalog | to_nice_yaml }}"
+    content: "{{ anta_user_catalog_fixture | to_json if item == 'json' else anta_user_catalog_fixture | to_nice_yaml }}"
     dest: "{{ actual_output_dir }}/catalogs/{{ item }}/tests.{{ item }}"
     mode: '0644'
   loop: [yml, yaml, json]

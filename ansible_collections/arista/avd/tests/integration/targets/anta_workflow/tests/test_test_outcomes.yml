@@ -28,6 +28,7 @@
       - result.anta_tests_summary.tests_error == 1
       - result.anta_tests_summary.devices_with_test_failures == ['anta-leaf1']
       - result.anta_tests_summary.devices_with_test_errors == ['anta-leaf1']
+      - report_data | map(attribute='test') | list == ['ProbeError', 'ProbeSuccess']
       - report_data | map(attribute='result') | list == ['error', 'success']
   vars:
     report_data: "{{ lookup('file', actual_output_dir ~ '/outcomes.json') | from_json }}"
