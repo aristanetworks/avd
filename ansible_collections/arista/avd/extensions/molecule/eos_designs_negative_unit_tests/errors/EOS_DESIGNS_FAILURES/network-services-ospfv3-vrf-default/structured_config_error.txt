@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=TENANT_A].vrfs[name=default].svis[id=110].ospfv3.enabled: true' is not supported in VRF 'default'.

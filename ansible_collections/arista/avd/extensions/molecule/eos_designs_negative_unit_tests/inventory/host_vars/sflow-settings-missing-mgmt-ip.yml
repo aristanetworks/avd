@@ -15,6 +15,3 @@ servers:
       - switches: [sflow-settings-missing-mgmt-ip]
         switch_ports: [Ethernet1]
         sflow: true
-
-expected_error_message: >-
-  'sflow_settings.destinations[destination=10.10.10.10].vrf' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

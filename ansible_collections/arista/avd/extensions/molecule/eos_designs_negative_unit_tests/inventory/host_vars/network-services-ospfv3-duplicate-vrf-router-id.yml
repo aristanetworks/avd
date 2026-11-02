@@ -1,0 +1,40 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-services-ospfv3-duplicate-vrf-router-id
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_SHARED
+        vrf_id: 10
+        ospfv3:
+          router_id: 10.255.10.1
+        svis:
+          - id: 110
+            name: TENANT_A_TRANSIT
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
+  - name: TENANT_B
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: VRF_SHARED
+        vrf_id: 10
+        ospfv3:
+          router_id: 10.255.10.2
+        svis:
+          - id: 111
+            name: TENANT_B_TRANSIT
+            vxlan: false
+            ipv6_address: 2001:db8:111::1/64
+            ospfv3:
+              enabled: true

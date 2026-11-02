@@ -31,6 +31,7 @@ dot1x_settings:
     syslog: true
   dynamic_authorization:
     additional_groups: [coa-server-group]
+    port: 100
   mac_based_authentication:
     username_format:
       delimiter: colon

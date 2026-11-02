@@ -12,7 +12,7 @@ import pytest
 from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
-from pyavd._cv.workflows.models import DeployToCvResult
+from pyavd._cv.workflows.models import CloudVision, DeployToCvResult
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -177,6 +177,37 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
     assert result["changed"] is True
     assert result_object.errors == ["cv-error"]
     assert result_object.warnings == ["cv-warning", "logger-warning"]
+
+
+@pytest.mark.parametrize("cv_password", [None, "fake-cv-password"])
+def test_deploy_redacts_credentials_in_detailed_result(
+    action_module: Callable[..., ActionModule],
+    cv_password: str | None,
+) -> None:
+    """Detailed results mask supplied credentials without changing the credentials used for deployment."""
+    module = action_module(ActionModule)
+    fake_token = "fake-cv-token"  # noqa: S105 - deliberate redaction test value
+    fake_proxy_password = "fake-proxy-password"  # noqa: S105 - deliberate redaction test value
+    validated_args = _make_validated_args(
+        return_details=True,
+        cv_token=fake_token,
+        cv_password=cv_password,
+        proxy_password=fake_proxy_password,
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    assert cloudvision_class.call_args.kwargs["password"] == cv_password
+    assert result["cloudvision"]["password"] == ("<removed>" if cv_password is not None else None)
+    assert result["cloudvision"]["token"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    assert result["cloudvision"]["proxy_password"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    for credential in (fake_token, cv_password, fake_proxy_password):
+        if credential is not None:
+            assert credential not in str(result)
 
 
 def test_run_snapshots_detailed_inputs_before_deployment(

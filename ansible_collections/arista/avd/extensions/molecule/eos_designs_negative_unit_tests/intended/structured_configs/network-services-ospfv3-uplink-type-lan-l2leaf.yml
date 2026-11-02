@@ -1,0 +1,41 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_network-services-ospfv3-uplink-type-lan_Ethernet1
+  shutdown: false
+  spanning_tree_portfast: edge
+  metadata:
+    peer: network-services-ospfv3-uplink-type-lan
+    peer_interface: Ethernet1
+    peer_type: l3-router
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '110'
+hostname: network-services-ospfv3-uplink-type-lan-l2leaf
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_FAILURES
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: SUBINTERFACE
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false

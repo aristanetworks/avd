@@ -1,0 +1,108 @@
+---
+- name: Test shared output folder management across inventory hosts
+  hosts: output_folder_hosts
+  gather_facts: false
+  vars:
+    # Distinct roots expose directory tasks that accidentally lose run_once.
+    root_dir: "{{ test_directory.path }}/{{ inventory_hostname }}"
+    primary_host: "{{ ansible_play_hosts_all | first }}"
+    secondary_host: "{{ ansible_play_hosts_all | last }}"
+    primary_root: "{{ test_directory.path }}/{{ primary_host }}"
+  tasks:
+    - name: Create isolated multi-host test directory
+      ansible.builtin.tempfile:
+        state: directory
+        prefix: avd-output-folders-multi-host-
+      register: test_directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Test role delegation and shared execution
+      block:
+        - name: Prepare shared outputs
+          delegate_to: localhost
+          run_once: true
+          block:
+            - name: Create stale output and catalog directories
+              ansible.builtin.file:
+                path: "{{ primary_root }}/{{ item }}"
+                state: directory
+                mode: "0755"
+              loop:
+                - intended
+                - anta/obsolete
+                - anta/user_catalogs
+
+            - name: Seed generated output and user catalog
+              ansible.builtin.copy:
+                dest: "{{ primary_root }}/{{ item }}"
+                content: "test content\n"
+                mode: "0644"
+              loop:
+                - intended/stale.cfg
+                - anta/user_catalogs/keep.yml
+
+        # Do not apply run_once or delegation on the include: the role must supply both.
+        - name: Run role from both inventory hosts
+          ansible.builtin.include_role:
+            name: arista.avd.build_output_folders
+
+        - name: Verify shared results
+          delegate_to: localhost
+          run_once: true
+          block:
+            - name: Inspect created output directories
+              ansible.builtin.stat:
+                path: "{{ primary_root }}/{{ item }}"
+              loop:
+                - intended/configs
+                - intended/structured_configs/cvp
+                - anta/avd_catalogs
+                - anta/reports
+              register: shared_directories
+
+            - name: Verify output directories were created on localhost
+              ansible.builtin.assert:
+                that: item.stat.isdir
+              loop: "{{ shared_directories.results }}"
+              loop_control:
+                label: "{{ item.item }}"
+
+            - name: Inspect stale paths and the second host root
+              ansible.builtin.stat:
+                path: "{{ item }}"
+              loop:
+                - "{{ primary_root }}/intended/stale.cfg"
+                - "{{ primary_root }}/anta/obsolete"
+                - "{{ test_directory.path }}/{{ secondary_host }}"
+              register: absent_paths
+
+            - name: Verify cleanup and once-only directory creation
+              ansible.builtin.assert:
+                that: not item.stat.exists
+              loop: "{{ absent_paths.results }}"
+              loop_control:
+                label: "{{ item.item }}"
+
+            - name: Read preserved user catalog
+              ansible.builtin.slurp:
+                src: "{{ primary_root }}/anta/user_catalogs/keep.yml"
+              register: shared_catalog
+
+            - name: Verify catalog preservation and shared registered results
+              ansible.builtin.assert:
+                that:
+                  - ansible_play_hosts_all | length == 2
+                  - shared_catalog.content | b64decode == 'test content\n'
+                  - hostvars[primary_host].dirs_to_clean == hostvars[secondary_host].dirs_to_clean
+                  - >-
+                    hostvars[secondary_host].dirs_to_clean.files | map(attribute='path') | list
+                    == [primary_root ~ '/anta/obsolete']
+
+      always:
+        - name: Remove isolated multi-host test directory
+          ansible.builtin.file:
+            path: "{{ test_directory.path }}"
+            state: absent
+          delegate_to: localhost
+          run_once: true

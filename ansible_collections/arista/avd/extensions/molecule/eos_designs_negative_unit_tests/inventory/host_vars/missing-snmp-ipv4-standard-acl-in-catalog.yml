@@ -31,6 +31,3 @@ snmp_settings:
     - name: SNMP-COMMUNITY-1
       access: ro
       ipv4_standard_acl: acl-not-present-in-catalog
-
-expected_error_message: >-
-  'ipv4_standard_acls[name=acl-not-present-in-catalog]' is required but was not found for host 'missing-snmp-ipv4-standard-acl-in-catalog'.
