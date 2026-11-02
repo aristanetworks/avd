@@ -1,3 +1,4 @@
+---
 fabric_name: EOS_DESIGNS_FAILURES
 devices:
   - name: cv-settings-profile-missing-profile
