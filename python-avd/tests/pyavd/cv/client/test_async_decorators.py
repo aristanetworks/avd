@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# pylint: disable=too-many-lines
 import logging
 import re
 from asyncio.exceptions import InvalidStateError as AsyncioInvalidStateError
@@ -37,6 +38,7 @@ INVALID_VERSION_TESTS = [
     pytest.param("2023.1.0", LookupError("Unsupported version of CloudVision: '2023.1.0'."), id="invalid_version"),
     pytest.param("223.1.0", ValueError("Invalid CV Version '223.1.0'. The version must conform to the pattern '.+'"), id="invalid_version_syntax_1"),
     pytest.param("cvaas", ValueError("Invalid CV Version 'cvaas'. The version must conform to the pattern '.+'"), id="invalid_version_syntax_2"),
+    pytest.param("2020.1.2.1.1", ValueError("Invalid CV Version '2020.1.2.1.1'. The version must conform to the pattern '.+'"), id="invalid_version_syntax_3"),
 ]
 
 VALID_VERSION_TESTS = [
@@ -44,7 +46,9 @@ VALID_VERSION_TESTS = [
     pytest.param("2024.1.0", ("2024.1.0", "2024.1.99"), id="valid_version_1"),
     pytest.param("2024.1.5", ("2024.1.0", "2024.1.99"), id="valid_version_2"),
     pytest.param("2025.42.25", ("2025.1.0", "2025.99.99"), id="valid_version_3"),
-    pytest.param(CVAAS_VERSION_STRING, (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING), id="valid_version_4"),
+    pytest.param("2024.1.5.1", ("2024.1.0", "2024.1.99"), id="valid_version_4"),
+    pytest.param("2025.42.25.1", ("2025.1.0", "2025.99.99"), id="valid_version_5"),
+    pytest.param(CVAAS_VERSION_STRING, (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING), id="valid_version_6"),
 ]
 
 STREAM_RESET_RETRY_TESTS = [
@@ -320,6 +324,21 @@ async def test_invalid_versions_overlapping() -> None:
 async def test_valid_versions(version: str, expected_response: tuple[str, str]) -> None:
     resp = await CvClass(CvVersion(version)).version_limited_method()
     assert resp == expected_response
+
+
+def test_cv_version_ignores_fourth_component() -> None:
+    assert CvVersion("2020.1.2") == CvVersion("2020.1.2.1")
+
+
+@pytest.mark.parametrize(
+    ("older_version", "newer_version"),
+    [
+        pytest.param("2024.9.9", "2024.10.10", id="second_component"),
+        pytest.param("2020.1.3", "2020.1.10", id="third_component"),
+    ],
+)
+def test_cv_version_compares_first_three_components_numerically(older_version: str, newer_version: str) -> None:
+    assert CvVersion(older_version) < CvVersion(newer_version)
 
 
 @pytest.mark.asyncio
