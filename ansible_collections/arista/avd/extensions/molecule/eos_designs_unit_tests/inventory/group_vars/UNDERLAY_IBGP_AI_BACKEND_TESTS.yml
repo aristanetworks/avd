@@ -1,7 +1,6 @@
 ---
-# Testing 'underlay_routing_protocol: ibgp' with the BGP settings of the PS AI backend SKU with 2 PODs and super-spines.
-# The SKU used custom structured configuration for the route reflection, which these inputs replace.
-# The leaf aggregate address is still custom structured configuration.
+# Testing 'underlay_routing_protocol: ibgp' with BGP settings typical of an AI backend fabric with 2 PODs and super-spines.
+# The leaf aggregate address is set with custom structured configuration.
 
 default_node_types:
   - node_type: super-spine
