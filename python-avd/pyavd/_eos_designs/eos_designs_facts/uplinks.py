@@ -133,7 +133,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel:
                         raise AristaAvdInvalidInputsError(msg)
                     warnings.warn(
-                        f"{msg} Set 'avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel: true' to opt in to the future behavior.",
+                        f"Host '{self.shared_utils.hostname}': {msg} This configuration will not be supported in AVD 7.0. "
+                        "Set 'avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel: true' to opt in to the future behavior.",
                         AvdFutureBehaviorWarning,
                         stacklevel=2,
                     )
