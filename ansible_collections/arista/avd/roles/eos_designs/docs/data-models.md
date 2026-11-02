@@ -1029,6 +1029,55 @@ schemas/avd_design/docs/tables/wan-cv-pathfinder-zscaler-integration.md
 schemas/avd_design/docs/tables/aaa-settings.md
 --8<--
 
+AAA settings profiles can be selected from node type defaults, node groups, or nodes using `aaa_settings_profile`.
+Profiles without a `parent_profile` inherit from global `aaa_settings`; child profiles inherit their parent, and the chain falls back to global settings.
+Child profile values override matching values from their parent.
+For TACACS and RADIUS, `vrfs` entries merge by name across global settings and the profile chain; a more specific entry overrides matching fields.
+A defined `servers` list replaces the inherited list for that protocol, while an omitted list keeps the inherited servers.
+
+```yaml
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+
+aaa_settings_profiles:
+  - profile: common_aaa
+    authorization:
+      exec:
+        default: group tacacs+ local
+
+  - profile: restricted_aaa
+    parent_profile: common_aaa
+    authorization:
+      exec:
+        default: local
+
+node_types:
+  - type: l3leaf
+    defaults:
+      aaa_settings_profile: restricted_aaa
+```
+
+The AAA-related structured configuration generated for an `l3leaf` using `restricted_aaa` is:
+
+```yaml
+aaa_authentication:
+  login:
+    default: group tacacs+ local
+aaa_authorization:
+  exec:
+    default: local
+aaa_root:
+  disabled: true
+enable_password:
+  disabled: true
+```
+
+--8<--
+schemas/avd_design/docs/tables/aaa-settings-profiles.md
+--8<--
+
 ### DNS
 
 --8<--

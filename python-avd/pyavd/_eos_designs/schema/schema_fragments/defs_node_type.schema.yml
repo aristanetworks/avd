@@ -1787,6 +1787,14 @@ $defs:
               Name of the NTP settings profile to apply to this device.
               The profile must be defined under `ntp_settings_profiles`.
               The selected profile settings will be merged over the general `ntp_settings`.
+          aaa_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: |-
+              Name of the AAA settings profile to apply to this device.
+              The profile must be defined under `aaa_settings_profiles`.
+              The selected profile settings will be merged over the general `aaa_settings`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
