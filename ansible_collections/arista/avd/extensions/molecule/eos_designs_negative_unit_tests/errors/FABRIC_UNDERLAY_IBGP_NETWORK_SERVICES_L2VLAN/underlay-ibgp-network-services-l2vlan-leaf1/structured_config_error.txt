@@ -1,1 +1,0 @@
-pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support network services, but tenant 'UNDERLAY_IBGP_TENANT' has VRFs or L2 VLANs on this node; remove them or exclude the tenant with 'filter.tenants'.
