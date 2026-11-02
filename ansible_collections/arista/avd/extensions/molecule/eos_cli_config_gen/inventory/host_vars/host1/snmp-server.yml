@@ -128,7 +128,7 @@ snmp_server:
       auth: sha
       auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
       priv: aes
-      priv_passphrase: DEADBEEFCAFE123456ABC1234321AB12334567
+      priv_passphrase: DEADBEEFCAFE123456ABC1234321AB12
     - name: USER-AUTH-TYPE7
       group: GRP-READ
       version: v3

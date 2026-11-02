@@ -83,6 +83,8 @@
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+  - [Static Routes](#static-routes)
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
   - [Router OSPF](#router-ospf)
@@ -111,6 +113,9 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Device Configuration](#platform-device-configuration)
@@ -373,13 +378,13 @@ cvx
 
 ### Enable Password
 
-sha512 encrypted enable password is configured
+md5 encrypted enable password is configured
 
 #### Enable Password Device Configuration
 
 ```eos
 !
-enable password sha512 <removed>
+enable password 5 <removed>
 !
 ```
 
@@ -1191,6 +1196,7 @@ service routing protocols model ribd
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| MGMT | True |
 
 #### IP Routing Device Configuration
 
@@ -1198,6 +1204,31 @@ service routing protocols model ribd
 !
 no ip routing
 no ip icmp redirect
+ip routing vrf MGMT
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
+### Static Routes
+
+#### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| MGMT | 0.0.0.0/0 | 10.73.255.2 | - | 1 | - | - | - |
+
+#### Static Routes Device Configuration
+
+```eos
+!
+ip route vrf MGMT 0.0.0.0/0 10.73.255.2
 ```
 
 ### ARP
@@ -2113,6 +2144,21 @@ dot1x system-auth-control
 dot1x protocol lldp bypass
 dot1x protocol bpdu bypass
 dot1x dynamic-authorization
+```
+
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | enabled |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
 ```
 
 ## Platform

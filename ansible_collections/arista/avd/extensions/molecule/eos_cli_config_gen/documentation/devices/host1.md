@@ -3502,7 +3502,7 @@ hardware access-list update default-result permit
 vmtracer session session_1
    url https://192.168.0.10
    username user1
-   password 7 0011D0516421B120A25735E080A16001D1617
+   password 7 Tgwz9SMmB8ZmAQ8+XBfU9A==
    autovlan disable
    vrf MGMT
    source-interface Management1
@@ -3510,7 +3510,7 @@ vmtracer session session_1
 vmtracer session session_2
    url https://192.168.0.10
    username user1
-   password 7 0011D0516421B120A25735E080A16001D1617
+   password 7 Tgwz9SMmB8ZmAQ8+XBfU9A==
 ```
 
 ### Event Handler
@@ -5159,19 +5159,19 @@ interface Dps1
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
 | Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
-| Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
-| Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.3/31 | default | - | - | - | - |
+| Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.13/31 | default | - | - | - | - |
+| Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.15/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | - | 172.31.255.3/31 | default | - | - | - | - |
 | Ethernet63 | DHCP client interface | - | dhcp | default | - | - | - | - |
-| Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 192.0.2.2/25 | default | - | False | - | - |
+| Ethernet64 | DHCP server interface | - | 192.168.43.1/24 | default | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 10.65.0.2/24 | default | - | False | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 10.66.0.2/24 | default | - | False | - | - |
 | Ethernet80 | LAG Member | 17 | *192.0.2.3/31 | *default | *- | *- | *- | *- |
 | Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | 112 | *dhcp | *default | *- | *- | *- | *- |
 | Ethernet81/3 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
-| Ethernet81/4 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
+| Ethernet81/4 | Traffic Engineering Interface | - | 100.64.127.12/31 | default | - | False | - | - |
 | Ethernet81/5 | Traffic Engineering Interface Defaults | - | 100.64.127.6/31 | default | - | False | - | - |
 | Ethernet81/138 | LAG Member IPv6 enable only coverage | 138 | *100.64.127.8/31 | *default | *- | *- | *- | *- |
 
@@ -5240,10 +5240,10 @@ interface Dps1
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC:101::1/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8:65:1::2/64, 2001:db8:65::2/64 | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8:66::2/64 | default | - | False | - | - | - | - | - | - | - | - |
 | Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- | *- |
 | Ethernet81/6 | IPv6 enable only coverage | - | - | default | - | False | - | - | - | - | - | - | - | - |
 | Ethernet81/138 | LAG Member IPv6 enable only coverage | 138 | *- | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- | *- |
@@ -5257,11 +5257,11 @@ interface Dps1
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
 | --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1, 2002:db8::2 | text |
-| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
-| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 10.65.0.1, 10.65.1.3, 10.65.2.4 | 2 | - | ietf-md5 |
+| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:65::1, 2001:db8:65:1::1 | text |
+| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 10.66.0.1 | 2 | - | ietf-md5 |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:66::1 | text |
+| Ethernet66 | 3 | - | - | Disabled | - | - | 10.66.0.5 | 3 | - | - |
 
 ##### ISIS
 
@@ -5680,16 +5680,16 @@ interface Ethernet8
 interface Ethernet8.101
    description to WAN-ISP-01 Ethernet2.101 - VRF-C1
    encapsulation dot1q vlan 101
-   ip address 172.31.128.1/31
+   ip address 172.31.128.3/31
    ipv6 enable
-   ipv6 address 2002:ABDC::1/64
+   ipv6 address 2002:ABDC:101::1/64
    isis authentication mode md5
    isis authentication key 0 <removed>
 !
 interface Ethernet9
    description interface_with_mpls_enabled
    no switchport
-   ip address 172.31.128.9/31
+   ip address 172.31.128.13/31
    mpls ldp interface
    no lldp receive
    multicast ipv4 boundary ACL_MULTICAST out
@@ -5702,7 +5702,7 @@ interface Ethernet9
 interface Ethernet10
    description interface_with_mpls_disabled
    no switchport
-   ip address 172.31.128.10/31
+   ip address 172.31.128.15/31
    no mpls ldp interface
    no mpls ip
    no ntp serve
@@ -6190,7 +6190,7 @@ interface Ethernet64
    description DHCP server interface
    no switchport
    mac timestamp replace-fcs
-   ip address 192.168.42.42/24
+   ip address 192.168.43.1/24
    dhcp server ipv4
    dhcp server ipv6
 !
@@ -6199,43 +6199,46 @@ interface Ethernet65
    no shutdown
    no switchport
    mac timestamp header
-   ip address 192.0.2.2/25
+   ip address 10.65.0.2/24
+   ip address 10.65.1.2/24 secondary
+   ip address 10.65.2.2/24 secondary
    ipv6 enable
-   ipv6 address 2001:db8::2/64
+   ipv6 address 2001:db8:65:1::2/64
+   ipv6 address 2001:db8:65::2/64
    ipv6 address fe80::2/64 link-local
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
-   vrrp 1 ipv4 192.0.2.1
-   vrrp 1 ipv4 192.0.3.3 secondary
-   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 1 ipv4 10.65.0.1
+   vrrp 1 ipv4 10.65.1.3 secondary
+   vrrp 1 ipv4 10.65.2.4 secondary
    vrrp 2 peer authentication text <removed>
-   vrrp 2 ipv6 2001:db8::1
-   vrrp 2 ipv6 2002:db8::2
+   vrrp 2 ipv6 2001:db8:65:1::1
+   vrrp 2 ipv6 2001:db8:65::1
 !
 interface Ethernet66
    description Multiple VRIDs and tracking
    no shutdown
    no switchport
-   ip address 192.0.2.2/25
+   ip address 10.66.0.2/24
    ipv6 enable
-   ipv6 address 2001:db8::2/64
+   ipv6 address 2001:db8:66::2/64
    ipv6 address fe80::2/64 link-local
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string <removed>
-   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 10.66.0.1
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text 0 <removed>
-   vrrp 2 ipv6 2001:db8::1
+   vrrp 2 ipv6 2001:db8:66::1
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
    vrrp 3 timers delay reload 900
-   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 10.66.0.5
    vrrp 3 ipv4 version 3
 !
 interface Ethernet67
@@ -6454,7 +6457,7 @@ interface Ethernet81/4
    description Traffic Engineering Interface
    no shutdown
    no switchport
-   ip address 100.64.127.0/31
+   ip address 100.64.127.12/31
    traffic-engineering
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
@@ -6741,6 +6744,8 @@ interface Ethernet90
 | Port-Channel137 | Traffic Engineering Interface | - | 100.64.127.4/31 | default | - | - | - | - |
 | Port-Channel138 | Traffic Engineering Interface Defaults | - | 100.64.127.8/31 | default | - | - | - | - |
 | Port-Channel303 | Traffic Engineering Static Delay Coverage | - | 100.64.127.10/31 | default | - | - | - | - |
+| Port-Channel333 | Multiple VRIDs and tracking | - | 10.33.0.2/24 | default | - | False | - | - |
+| Port-Channel667 | Multiple VRIDs | - | 10.66.10.2/24 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -6777,23 +6782,25 @@ interface Ethernet90
 | Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - | - |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4/64 | default | - | - | - | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe:1::b4/64 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel51 | ipv6_prefix | - | - | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | caff::b5/64 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
 | Port-Channel109 | Molecule ACLs | - | - | default | - | - | - | - | - | - | - | - | IPV6_ACL_IN | IPV6_ACL_OUT |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
 | Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
+| Port-Channel333 | Multiple VRIDs and tracking | - | 2001:db8:4333:1::2/64, 2001:db8:4333::2/64 | default | - | False | - | - | - | - | - | - | - | - |
 | Port-Channel400 | TEST-IPV6-ND-WITHOUT-ADDR | - | - | default | - | - | True | - | True | True | - | - | TEST-V6-IN | TEST-V6-OUT |
+| Port-Channel667 | Multiple VRIDs | - | 2001:db8:4667::2/64 | default | - | - | - | - | - | - | - | - | - | - |
 
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
 | --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
-| Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-| Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Port-Channel667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
+| Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 10.33.0.1, 10.33.1.3, 10.33.2.4 | 2 | - | ietf-md5 |
+| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:4333::1, 2001:db8:4333:1::1 | text |
+| Port-Channel333 | 3 | - | - | Disabled | - | - | 10.33.0.5 | 3 | - | - |
+| Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 10.66.10.1, 10.66.11.3, 10.66.12.4 | 2 | - | ietf-md5 |
+| Port-Channel667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:4667::1 | text |
 
 ##### ISIS
 
@@ -6926,7 +6933,7 @@ interface Port-Channel8
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
    encapsulation dot1q vlan 101
-   ipv6 address cafe::b4/64
+   ipv6 address cafe:1::b4/64
 !
 interface Port-Channel9
    no switchport
@@ -7577,23 +7584,29 @@ interface Port-Channel303
 interface Port-Channel333
    description Multiple VRIDs and tracking
    no shutdown
+   no switchport
+   ip address 10.33.0.2/24
+   ip address 10.33.1.2/24 secondary
+   ip address 10.33.2.2/24 secondary
+   ipv6 address 2001:db8:4333:1::2/64
+   ipv6 address 2001:db8:4333::2/64
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
-   vrrp 1 ipv4 192.0.2.1
-   vrrp 1 ipv4 192.0.3.3 secondary
-   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 1 ipv4 10.33.0.1
+   vrrp 1 ipv4 10.33.1.3 secondary
+   vrrp 1 ipv4 10.33.2.4 secondary
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text <removed>
-   vrrp 2 ipv6 2001:db8:333::1
-   vrrp 2 ipv6 2002:db8:333::2
+   vrrp 2 ipv6 2001:db8:4333:1::1
+   vrrp 2 ipv6 2001:db8:4333::1
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
    vrrp 3 timers delay reload 900
-   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 10.33.0.5
    vrrp 3 ipv4 version 3
 !
 interface Port-Channel400
@@ -7608,15 +7621,20 @@ interface Port-Channel400
 !
 interface Port-Channel667
    description Multiple VRIDs
+   no switchport
+   ip address 10.66.10.2/24
+   ip address 10.66.11.2/24 secondary
+   ip address 10.66.12.2/24 secondary
+   ipv6 address 2001:db8:4667::2/64
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string <removed>
-   vrrp 1 ipv4 192.0.2.1
-   vrrp 1 ipv4 192.0.3.3 secondary
-   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 1 ipv4 10.66.10.1
+   vrrp 1 ipv4 10.66.11.3 secondary
+   vrrp 1 ipv4 10.66.12.4 secondary
    vrrp 2 peer authentication text 0 <removed>
-   vrrp 2 ipv6 2001:db8:667::1
+   vrrp 2 ipv6 2001:db8:4667::1
 ```
 
 ### Loopback Interfaces
@@ -7632,7 +7650,7 @@ interface Port-Channel667
 | Loopback2 | - | default | - |
 | Loopback10 | Test_Node_Segment | default | 10.2.255.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
+| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.253.100/32 |
 
 ##### IPv6
 
@@ -7704,7 +7722,7 @@ interface Loopback99
 interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    vrf TENANT_A_PROJECT02
-   ip address 10.1.255.3/32
+   ip address 10.1.253.100/32
    ipv6 address auto-config
    hardware forwarding id
    isis enable ISIS_MODE_FALLBACK
@@ -7730,7 +7748,7 @@ interface Loopback100
 | --------- | --- | ---------- | ------- | ----------------- | ------ | ------- |
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
-| Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
+| Tunnel4 | default | 64.64.65.64/24 | - | - | - | - |
 | Tunnel6 | default | 10.99.99.1/30 | - | - | - | - |
 | Tunnel7 | default | 10.99.99.5/30 | - | - | - | - |
 
@@ -7741,7 +7759,7 @@ interface Loopback100
 | Tunnel1 | Tunnel-VRF | auto-config | - | ingress | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
 | Tunnel2 | default | cafe::1/64 | 666 | egress | - | - | - | - | - | - | test-in | test-out |
 | Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - | - |
+| Tunnel4 | default | beef:1::64/64 | - | - | - | - | - | - | - | - | - | - |
 | Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - | - |
 | Tunnel6 | default | - | 1400 | - | True | - | True | True | capacity: 100 | - | - | - |
 
@@ -7808,9 +7826,9 @@ interface Tunnel3
 interface Tunnel4
    description test no tcp_mss
    mtu 1500
-   ip address 64.64.64.64/24
+   ip address 64.64.65.64/24
    ipv6 enable
-   ipv6 address beef::64/64
+   ipv6 address beef:1::64/64
    ip nat service-profile NAT-PROFILE-NO-VRF-1
    tunnel source 10.10.10.10
    tunnel destination 1.1.1.1
@@ -7948,19 +7966,19 @@ interface Tunnel7
 | Vlan81 | Tenant_C | - | 10.10.81.1/24 | - | - | - |
 | Vlan83 | default | - | 10.10.83.1/24 | - | - | - |
 | Vlan84 | default | 10.10.84.1/24 | - | 10.10.84.254, 10.11.84.254/24 | - | - |
-| Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
-| Vlan86 | default | 10.10.83.1/24 | - | - | - | - |
+| Vlan85 | default | 10.10.85.1/24 | - | - | - | - |
+| Vlan86 | default | 10.10.86.1/24 | - | - | - | - |
 | Vlan87 | default | 10.10.87.1/24 | - | - | ACL_IN | ACL_OUT |
-| Vlan88 | default | - | 10.10.87.1/23 | - | - | - |
+| Vlan88 | default | - | 10.10.88.1/23 | - | - | - |
 | Vlan89 | default | - | 10.10.144.3/20 | - | - | - |
-| Vlan90 | default | 10.10.83.1/24 | - | - | - | - |
+| Vlan90 | default | 10.10.90.1/24 | - | - | - | - |
 | Vlan91 | default | - | - | - | - | - |
 | Vlan92 | default | 10.10.92.1/24 | - | - | - | - |
 | Vlan110 | Tenant_A | 10.0.101.1/24 | - | - | - | - |
 | Vlan111 | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - | - | - |
 | Vlan112 | default | - | - | - | - | - |
 | Vlan332 | default | - | - | - | - | - |
-| Vlan333 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan333 | default | 10.33.10.2/24 | - | - | - | - |
 | Vlan334 | default | - | - | - | - | - |
 | Vlan335 | default | - | - | - | - | - |
 | Vlan336 | default | - | - | - | - | - |
@@ -7979,7 +7997,7 @@ interface Tunnel7
 | Vlan368 | default | - | - | - | - | - |
 | Vlan369 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
-| Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan667 | default | 10.66.20.2/24 | - | - | - | - |
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
 | Vlan1002 | Tenant_A | - | 10.1.2.1/24 | - | - | - |
@@ -8025,13 +8043,13 @@ interface Tunnel7
 | --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - | - | - |
 | Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan43 | default | a0:43::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan44 | default | a0:44::4/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - | - | - |
 | Vlan332 | default | auto-config | - | - | - | - | - | - | - | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan333 | default | 2001:db8:333:1::2/64, 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - | - | - |
@@ -8047,10 +8065,10 @@ interface Tunnel7
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
 | --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
-| Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 10.33.10.1, 10.33.11.3, 10.33.12.4 | 2 | - | ietf-md5 |
+| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1, 2001:db8:333:1::1 | text |
+| Vlan333 | 3 | - | - | Disabled | - | - | 10.33.10.5 | 3 | - | - |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 10.66.20.1, 10.66.21.3, 10.66.22.4 | 2 | - | ietf-md5 |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
 
 ##### OSPF
@@ -8161,8 +8179,8 @@ interface Vlan42
 interface Vlan43
    description SVI Description
    no shutdown
-   ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback44 link-address a0::4
-   ipv6 address a0::1/64
+   ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback44 link-address a0:43::4
+   ipv6 address a0:43::1/64
    isis authentication key-id 2 algorithm sha-512 key 0 password
    isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
    isis authentication key-id 1 algorithm sha-1 key 0 password level-1
@@ -8175,8 +8193,8 @@ interface Vlan44
    description SVI Description
    no shutdown
    ipv6 dhcp relay destination a0::8
-   ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
-   ipv6 address a0::4/64
+   ipv6 dhcp relay destination a0::5 vrf TEST source-address a0:44::6 link-address a0:44::7
+   ipv6 address a0:44::4/64
    ip nat service-profile PROFILE1
 !
 interface Vlan50
@@ -8238,7 +8256,7 @@ interface Vlan84
 !
 interface Vlan85
    description SVI Description
-   ip address 10.10.84.1/24
+   ip address 10.10.85.1/24
    arp cache dynamic capacity 50000
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
@@ -8251,7 +8269,7 @@ interface Vlan85
 !
 interface Vlan86
    description SVI Description
-   ip address 10.10.83.1/24
+   ip address 10.10.86.1/24
    ip attached-host route export 10
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
@@ -8273,7 +8291,7 @@ interface Vlan88
    isis authentication mode text rx-disabled level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
-   ip address virtual 10.10.87.1/23
+   ip address virtual 10.10.88.1/23
 !
 interface Vlan89
    description SVI Description
@@ -8300,7 +8318,7 @@ interface Vlan89
 !
 interface Vlan90
    description SVI Description
-   ip address 10.10.83.1/24
+   ip address 10.10.90.1/24
    ip attached-host route export
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile2 algorithm sha-1 level-1
@@ -8354,28 +8372,31 @@ interface Vlan332
 interface Vlan333
    description Multiple VRIDs and tracking
    no shutdown
-   ip address 192.0.2.2/25
+   ip address 10.33.10.2/24
+   ip address 10.33.11.2/24 secondary
+   ip address 10.33.12.2/24 secondary
    arp aging timeout 180
    ipv6 enable
+   ipv6 address 2001:db8:333:1::2/64
    ipv6 address 2001:db8:333::2/64
    ipv6 address fe80::2/64 link-local
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
-   vrrp 1 ipv4 192.0.2.1
-   vrrp 1 ipv4 192.0.3.3 secondary
-   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 1 ipv4 10.33.10.1
+   vrrp 1 ipv4 10.33.11.3 secondary
+   vrrp 1 ipv4 10.33.12.4 secondary
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text <removed>
+   vrrp 2 ipv6 2001:db8:333:1::1
    vrrp 2 ipv6 2001:db8:333::1
-   vrrp 2 ipv6 2002:db8:333::2
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
    vrrp 3 timers delay reload 900
-   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 10.33.10.5
    vrrp 3 ipv4 version 3
 !
 interface Vlan334
@@ -8483,7 +8504,9 @@ interface Vlan501
 interface Vlan667
    description Multiple VRIDs
    no shutdown
-   ip address 192.0.2.2/25
+   ip address 10.66.20.2/24
+   ip address 10.66.21.2/24 secondary
+   ip address 10.66.22.2/24 secondary
    arp aging timeout 180
    ipv6 enable
    ipv6 address 2001:db8:667::2/64
@@ -8492,9 +8515,9 @@ interface Vlan667
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string <removed>
-   vrrp 1 ipv4 192.0.2.1
-   vrrp 1 ipv4 192.0.3.3 secondary
-   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 1 ipv4 10.66.20.1
+   vrrp 1 ipv4 10.66.21.3 secondary
+   vrrp 1 ipv4 10.66.22.4 secondary
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
 !
@@ -8770,13 +8793,14 @@ ip virtual-router mac-address mlag-peer
 | --- | --------------- |
 | default | True (ipv6 interfaces) |
 | BLAH | False |
+| C2 | True |
 | defauls | False |
 | defaulu | False |
 | MGMT | False |
-| Tenant_A | False |
+| Tenant_A | True |
 | TENANT_A_PROJECT01 | True |
 | TENANT_A_PROJECT02 | True |
-| Tenant_B | False |
+| Tenant_B | True |
 | Tenant_C | False |
 | test | False |
 | TEST1 | True |
@@ -8793,14 +8817,15 @@ ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
 ip hardware fib load-balance distribution dynamic
 ip hardware fib load-balance distribution dynamic flow-set-size 4
+ip routing vrf C2
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ip routing vrf TEST1
 ip routing ipv6 interfaces vrf TEST2
 ip routing vrf TEST3
-no ip routing vrf Tenant_A
-no ip routing vrf Tenant_B
+ip routing vrf Tenant_A
+ip routing vrf Tenant_B
 no ip routing vrf Tenant_C
 no ip routing vrf Tunnel-VRF
 no ip routing vrf test
@@ -8814,11 +8839,12 @@ no ip routing vrf test
 | --- | --------------- |
 | default | True |
 | BLAH | False |
+| C2 | False |
 | defauls | False |
 | default | True |
 | defaulu | False |
 | MGMT | False |
-| Tenant_A | False |
+| Tenant_A | True |
 | TENANT_A_PROJECT01 | False |
 | TENANT_A_PROJECT02 | False |
 | Tenant_B | False |
@@ -8837,6 +8863,7 @@ no ip routing vrf test
 ipv6 unicast-routing
 ipv6 hardware fib optimize prefixes profile internet
 ipv6 unicast-routing vrf TEST1
+ipv6 unicast-routing vrf Tenant_A
 ```
 
 ### Static Routes
@@ -13320,13 +13347,14 @@ mac access-list TEST5
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | BLAH | disabled |
+| C2 | enabled |
 | defauls | disabled |
 | defaulu | disabled |
 | MGMT | disabled |
-| Tenant_A | disabled |
+| Tenant_A | enabled |
 | TENANT_A_PROJECT01 | enabled |
 | TENANT_A_PROJECT02 | enabled |
-| Tenant_B | disabled |
+| Tenant_B | enabled |
 | Tenant_C | disabled |
 | test | disabled |
 | TEST1 | enabled |
@@ -13340,6 +13368,8 @@ mac access-list TEST5
 ```eos
 !
 vrf instance BLAH
+!
+vrf instance C2
 !
 vrf instance MGMT
 !
@@ -13599,8 +13629,8 @@ system l1
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
 | empty-application | - | - | - | - | - | - | - | - | - |
 | empty-protocols | - | - | - | 21 | - | - | - | - | - |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
-| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim, icmp, tcp | 21, 7-11 | - | - | - | - | ef 1-42 cs1 |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | - | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
+| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim, icmp, tcp | 21, 7-11, 25 | - | - | - | - | ef 1-42 cs1 |
 
 #### Layer 4 Applications
 
@@ -13681,7 +13711,6 @@ application traffic recognition
       destination prefix field-set dest_prefix_set1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp source port field-set src_port_set2 destination port field-set dest_port_set2
-      protocol 25
       dscp 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62
    !
    application ipv4 user_defined_app2
@@ -13690,7 +13719,7 @@ application traffic recognition
       protocol icmp
       protocol pim
       protocol tcp
-      protocol 7-11, 21
+      protocol 7-11, 21, 25
       dscp ef 1-42 cs1
    !
    application l4 l4-app-1
