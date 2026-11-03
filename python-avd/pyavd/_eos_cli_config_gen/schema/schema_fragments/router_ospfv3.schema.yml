@@ -23,7 +23,9 @@ keys:
           the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
       bfd_adjacency_state_any:
         type: bool
-        description: Allow BFD sessions to be established in any OSPFv3 adjacency state.
+        description: |-
+          Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family defines
+          this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true.
       passive_interface_default:
         type: bool
       auto_cost_reference_bandwidth:
@@ -185,7 +187,9 @@ keys:
                 the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
             bfd_adjacency_state_any:
               type: bool
-              description: Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
+              description: |-
+                Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled address family defines
+                this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true.
             passive_interface_default:
               type: bool
             auto_cost_reference_bandwidth:

@@ -10,7 +10,7 @@
     | [<samp>router_ospfv3</samp>](## "router_ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6_router_ospf' on EOS.<br>Use only one style across all VRFs and instances. |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
     | [<samp>&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.bfd_default") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,<br>the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true. |
-    | [<samp>&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state. |
+    | [<samp>&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
@@ -92,7 +92,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.vrfs.[].bfd_default") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,<br>the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
@@ -187,7 +187,8 @@
       # the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
       bfd_default: <bool>
 
-      # Allow BFD sessions to be established in any OSPFv3 adjacency state.
+      # Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family defines
+      # this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true.
       bfd_adjacency_state_any: <bool>
       passive_interface_default: <bool>
 
@@ -329,7 +330,8 @@
           # the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
           bfd_default: <bool>
 
-          # Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
+          # Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled address family defines
+          # this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true.
           bfd_adjacency_state_any: <bool>
           passive_interface_default: <bool>
 

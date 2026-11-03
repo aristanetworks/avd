@@ -68314,7 +68314,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             when that family setting is true.
             """
             bfd_adjacency_state_any: bool | None
-            """Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF."""
+            """
+            Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled
+            address family defines
+            this setting, the shared BFD adjacency command is not rendered. A family BFD
+            adjacency command is rendered only when that family setting is true.
+            """
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -68372,7 +68377,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            setting is defined,
                            the shared BFD command is not rendered. A family BFD command is rendered only
                            when that family setting is true.
-                        bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
+                        bfd_adjacency_state_any:
+                           Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled
+                           address family defines
+                           this setting, the shared BFD adjacency command is not rendered. A family BFD
+                           adjacency command is rendered only when that family setting is true.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         address_family_ipv4:
@@ -68423,7 +68432,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         when that family setting is true.
         """
         bfd_adjacency_state_any: bool | None
-        """Allow BFD sessions to be established in any OSPFv3 adjacency state."""
+        """
+        Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family
+        defines
+        this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency
+        command is rendered only when that family setting is true.
+        """
         passive_interface_default: bool | None
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
@@ -68480,7 +68494,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        setting is defined,
                        the shared BFD command is not rendered. A family BFD command is rendered only
                        when that family setting is true.
-                    bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state.
+                    bfd_adjacency_state_any:
+                       Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family
+                       defines
+                       this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency
+                       command is rendered only when that family setting is true.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                     address_family_ipv4:
