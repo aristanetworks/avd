@@ -22,8 +22,6 @@ keys:
         name:
           type: str
           description: Access-list Name.
-          convert_types:
-            - int
         counters_per_entry:
           type: bool
         permit_response_traffic:
@@ -43,8 +41,6 @@ keys:
               sequence:
                 type: int
                 description: Sequence ID.
-                convert_types:
-                  - str
               action:
                 type: str
                 required: true

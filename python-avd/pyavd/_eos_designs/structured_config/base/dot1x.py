@@ -49,7 +49,12 @@ class Dot1xMixin(Protocol):
         self: AvdStructuredConfigBaseProtocol, dyn_authorization_settings: EosDesigns.Dot1xSettings.DynamicAuthorization
     ) -> None:
         """Configure 802.1X AAA dynamic authorization settings."""
-        if not (dyn_authorization_settings.enabled and dyn_authorization_settings.additional_groups):
+        if not dyn_authorization_settings.enabled:
+            return
+
+        self.structured_config.radius_server.dynamic_authorization.port = dyn_authorization_settings.port
+
+        if not dyn_authorization_settings.additional_groups:
             return
 
         self._validate_radius_groups(dyn_authorization_settings.additional_groups, "additional dynamic authorization server")
@@ -86,9 +91,10 @@ class Dot1xMixin(Protocol):
 
     def _configure_dot1x_global_settings(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
         """Configure 802.1X global settings."""
+        feature_support = self.shared_utils.platform_settings.feature_support
         self.structured_config.dot1x = EosCliConfigGen.Dot1x(
             system_auth_control=True,
-            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
+            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu if feature_support.dot1x_bpdu_bypass else None,
             protocol_lldp_bypass=dot1x_settings.bypass_lldp,
             dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
         )

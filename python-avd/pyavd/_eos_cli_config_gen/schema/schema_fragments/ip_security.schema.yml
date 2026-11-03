@@ -32,8 +32,6 @@ keys:
                 If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
             ike_lifetime:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 24
               description: IKE lifetime in hours.
@@ -46,8 +44,6 @@ keys:
               description: IKE encryption algorithm.
             dh_group:
               type: int
-              convert_types:
-                - str
               valid_values: [1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
               description: Diffie-Hellman group for the key exchange.
             integrity:
@@ -113,8 +109,6 @@ keys:
                     - 3des
             pfs_dh_group:
               type: int
-              convert_types:
-                - str
               valid_values: [1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
       profiles:
         type: list
@@ -150,16 +144,12 @@ keys:
                   type: int
                   description: Interval (in seconds) between keep-alive messages.
                   required: true
-                  convert_types:
-                    - str
                   min: 2
                   max: 3600
                 time:
                   type: int
                   description: Time (in seconds) after which the action is applied.
                   required: true
-                  convert_types:
-                    - str
                   min: 10
                   max: 3600
                 action:

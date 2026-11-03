@@ -37,15 +37,9 @@ keys:
             required: true
           latitude:
             type: str
-            convert_types:
-              - int
-              - float
             required: true
           longitude:
             type: str
-            convert_types:
-              - int
-              - float
             required: true
       secondary:
         type: dict

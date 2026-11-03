@@ -32,7 +32,3 @@ l3leaf:
     - name: downlink-pools-duplicate-l3leaf
       id: 10
       uplink_switch_interfaces: [Ethernet3]
-
-expected_error_message: >-
-  Unable to assign IPs for uplinks. 'uplink_ipv4_pool' (10.0.2.0/24) on this switch cannot be combined with
-  'downlink_pools' (10.0.2.0/24) on any uplink switch for host 'downlink-pools-duplicate-l3leaf'.

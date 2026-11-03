@@ -38,8 +38,6 @@ keys:
                     type: str
                   priority:
                     type: int
-                    convert_types:
-                      - str
         destinations:
           type: list
           items:
@@ -50,8 +48,6 @@ keys:
         header_remove_size:
           type: int
           description: Number of bytes to remove from header.
-          convert_types:
-            - str
         access_group:
           type: dict
           keys:
@@ -79,8 +75,6 @@ keys:
               "10 mbps"
         sample:
           type: int
-          convert_types:
-            - str
         truncate:
           type: dict
           keys:
@@ -89,5 +83,3 @@ keys:
             size:
               type: int
               description: Size in bytes.
-              convert_types:
-                - str

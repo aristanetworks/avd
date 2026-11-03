@@ -89,9 +89,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             workspace_id=workspace.id,
             request_id=cast("str", workspace_config.request_params.request_id),
         )
-        # Form a list of known inactive existing devices
-        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is False]:
-            msg = f"Inactive devices present: {inactive_devices}"
+        # Form a list of existing devices which are not known to be streaming
+        if non_streaming_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device.streaming is not True]:
+            msg = f"Non-streaming devices present: {non_streaming_devices}"
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
@@ -104,15 +104,15 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
             # Unforced Workspace submission failed due to inactive devices.
             if submit_result.code == ResponseCode.INACTIVE_DEVICES_EXIST:
-                # Use case where some of the devices that we targeted were known to be inactive prior to Workspace submission
-                if inactive_devices:
+                # Use case where some of the devices that we targeted were not known to be streaming prior to Workspace submission
+                if non_streaming_devices:
                     msg = (
-                        f"Failed to submit CloudVision Workspace due to the presence of inactive devices: {inactive_devices}. "
+                        f"Failed to submit CloudVision Workspace due to the presence of non-streaming devices: {non_streaming_devices}. "
                         f"Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
                         f"(if using action plugin `cv_workflow`) to override."
                     )
                     raise CVWorkspaceSubmitFailedInactiveDevices(msg)
-                # Use case where all devices were actively streaming prior to Workspace submission
+                # Use case where all devices were known to be streaming prior to Workspace submission
                 msg = (
                     "Failed to submit CloudVision Workspace due to the presence of inactive devices. "
                     "Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
@@ -301,6 +301,7 @@ def _produce_cvworkspace_build_result(
     workspace_build_details: list[WorkspaceBuildDetails],
     compiled_workspace_build_warnings_suppress_list: list[Pattern],
     devices: list[CVDevice],
+    workflow_warnings: list,
 ) -> list[CVWorkspaceDeviceBuildResult]:
     """
     Process list of WorkspaceBuildDetails to generate list of CVWorkspaceDeviceBuildResult suppressing undesired warnings (when requested).
@@ -310,6 +311,7 @@ def _produce_cvworkspace_build_result(
         workspace_build_details: List of WorkspaceBuildDetails objects.
         compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
         devices: List of CVDevice objects representing existing CV devices.
+        workflow_warnings: List of workflow warnings to update.
 
     Returns:
         List of CVWorkspaceDeviceBuildResult objects defining details of the Workspace build.
@@ -327,11 +329,12 @@ def _produce_cvworkspace_build_result(
 
         # Continue if device is not in the list of devices targeted by this deployment
         if device is None:
-            LOGGER.warning(
-                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s'",
-                workspace_build_details_item.key.device_id,
-                workspace_build_details_item,
+            warning = (
+                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device "
+                f"'{workspace_build_details_item.key.device_id}' not targeted by our deployment: '{workspace_build_details_item}'"
             )
+            LOGGER.warning(warning)
+            workflow_warnings.append(warning)
             continue
 
         # Build errors and warnings lists
@@ -390,6 +393,7 @@ async def _process_workspace_build_details(
         workspace_build_details=workspace_build_details,
         compiled_workspace_build_warnings_suppress_list=compiled_workspace_build_warnings_suppress_list,
         devices=devices,
+        workflow_warnings=warnings,
     )
 
 

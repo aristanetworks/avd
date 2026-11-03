@@ -1362,6 +1362,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Logging(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Event(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+                denied_address_drop: bool | None
+                """Log events for denied address drops."""
+                dhcp_server_drop: bool | None
+                """
+                Log events for DHCP server to client packet drops.
+                Requires EOS version 4.36.2F or later.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        Event.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            denied_address_drop: Log events for denied address drops.
+                            dhcp_server_drop:
+                               Log events for DHCP server to client packet drops.
+                               Requires EOS version 4.36.2F or later.
+
+                        """
+
+            _fields: ClassVar[dict] = {"event": {"type": Event}}
+            event: Event
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, event: Event | UndefinedType = Undefined) -> None:
+                    """
+                    Logging.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        event: Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
@@ -1369,6 +1421,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "leases": {"type": Leases},
             "local_interface": {"type": str},
             "locked_address": {"type": LockedAddress},
+            "logging": {"type": Logging},
         }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
@@ -1387,6 +1440,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         local_interface: str | None
         locked_address: LockedAddress
         """Subclass of AvdModel."""
+        logging: Logging
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -1399,6 +1454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 leases: Leases | UndefinedType = Undefined,
                 local_interface: str | UndefinedType | None = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLocking.
@@ -1418,6 +1474,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface
                     locked_address: Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
 
                 """
 
@@ -6680,6 +6737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "new_bgp_peer_group_cli_order": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6769,6 +6827,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_bgp_peer_group_cli_order: bool
+        """
+        Available from AVD 6.5.0.
+        When `true`, renders BGP peer groups globally and under address families
+        in case-sensitive natural order, matching EOS CLI ordering.
+        When `false` (default), preserves the
+        legacy case-insensitive natural order for BGP peer groups globally and under address families.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6783,6 +6851,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                new_bgp_peer_group_cli_order: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6847,6 +6916,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    new_bgp_peer_group_cli_order:
+                       Available from AVD 6.5.0.
+                       When `true`, renders BGP peer groups globally and under address families
+                       in case-sensitive natural order, matching EOS CLI ordering.
+                       When `false` (default), preserves the
+                       legacy case-insensitive natural order for BGP peer groups globally and under address families.
 
                 """
 
@@ -29545,7 +29620,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            Environment: TypeAlias = Literal["act"]
+            Environment: TypeAlias = Literal["act", "containerlab"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
@@ -43191,7 +43266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"port": {"type": int}, "tls_ssl_profile": {"type": str}}
             port: int | None
-            """TCP Port."""
+            """UDP port used for RADIUS dynamic authorization requests."""
             tls_ssl_profile: str | None
             """Name of TLS profile."""
 
@@ -43205,7 +43280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        port: TCP Port.
+                        port: UDP port used for RADIUS dynamic authorization requests.
                         tls_ssl_profile: Name of TLS profile.
 
                     """
@@ -57628,6 +57703,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -57691,6 +57767,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -57757,6 +57835,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -57815,6 +57894,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
@@ -76653,6 +76733,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
                 "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
             }
             ipv4: Ipv4
@@ -76660,7 +76741,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6: Ipv6
             """Subclass of AvdModel."""
             passive_interface: bool | None
-            """Include interface but without actively running OSPF."""
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
             network_point_to_point: bool | None
 
             if TYPE_CHECKING:
@@ -76671,6 +76754,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
                     passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -76682,7 +76766,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
-                        passive_interface: Include interface but without actively running OSPF.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
 
                     """
@@ -77859,13 +77944,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}}
+            class Qos(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"input": {"type": str}}
+                input: str | None
+                """Quality of Service Policy-map name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Qos.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            input: Quality of Service Policy-map name.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}, "qos": {"type": Qos}}
             pbr: Pbr
+            """Subclass of AvdModel."""
+            qos: Qos
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined) -> None:
+                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined, qos: Qos | UndefinedType = Undefined) -> None:
                     """
                     ServicePolicy.
 
@@ -77874,6 +77982,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         pbr: Subclass of AvdModel.
+                        qos: Subclass of AvdModel.
 
                     """
 

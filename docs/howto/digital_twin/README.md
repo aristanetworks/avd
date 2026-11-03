@@ -27,7 +27,7 @@ AVD currently supports the following Digital Twin environments:
 ## Key Features
 
 - **Configuration Optimization**: Device configurations are adjusted to remove or modify features not supported by EOS in the Digital Twin environment
-- **Platform-Specific Optimizations**: Configurations are optimized for each Digital Twin platform (e.g., eAPI access in `default` VRF for ACT)
+- **Platform-Specific Optimizations**: Configurations are optimized for each Digital Twin platform (e.g., eAPI and SSH access in `default` VRF for ACT)
 - **Topology Generation**: Topology information is generated in the format required by the target Digital Twin platform
 - **Platform Mapping**: Production hardware platforms are mapped to virtual platforms supported by target Digital Twin environment
 - **Separate Artifact Management**: Digital Twin artifacts can be generated alongside production artifacts in separate directories
@@ -419,6 +419,50 @@ management api http-commands
 +       no shutdown
 ```
 
+#### ACT SSH Access Control
+
+ACT users connect to device SSH through ACT's infrastructure. This connectivity requires SSH to be enabled in EOS's **default VRF**.
+
+If production configuration leaves SSH disabled in the default VRF, ACT will not be able to connect to devices. Use the `act_ensure_ssh_access` setting to resolve this for all fabric nodes:
+
+```yaml
+digital_twin:
+  fabric:
+    act_ensure_ssh_access: true
+```
+
+When enabled, AVD makes the following adjustments to the generated Digital Twin configuration:
+
+1. Enables SSH in the default VRF
+2. Removes any IPv4 ACL from the default VRF SSH configuration, while preserving IPv6 ACLs
+
+This setting applies to all ACT node types.
+
+**Example - Production Configuration:**
+
+```eos
+management ssh
+   ip access-group ssh_vrf_mgmt_acl_in vrf MGMT in
+   shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
+
+**Example - Digital Twin Configuration with `act_ensure_ssh_access: true`:**
+
+```diff
+management ssh
+   ip access-group ssh_vrf_mgmt_acl_in vrf MGMT in
+   shutdown
+   !
+   vrf MGMT
+      no shutdown
++  !
++  vrf default
++     no shutdown
+```
+
 #### ACT Internet Access Configuration
 
 By default, ACT does not provide direct Internet access to `cloudeos` or `veos` devices. To enable Internet access (for example, to download software or access CVaaS or other external services) for all fabric nodes:
@@ -530,14 +574,15 @@ spine:
 
 #### ACT Best Practices
 
-##### 1. Enable eAPI Access for ACT Automation
+##### 1. Enable eAPI and SSH Access for ACT Automation
 
-Enable `act_ensure_eapi_access` when production configuration has eAPI disabled or restricted in `default` VRF:
+Enable `act_ensure_eapi_access` or `act_ensure_ssh_access` when production configuration has the corresponding service disabled or restricted in `default` VRF:
 
 ```yaml
 digital_twin:
   fabric:
     act_ensure_eapi_access: true
+    act_ensure_ssh_access: true
 ```
 
 ##### 2. Version Consistency

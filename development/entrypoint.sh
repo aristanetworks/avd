@@ -12,7 +12,7 @@ echo "Upgrading pip"
 python -m pip install --upgrade pip
 
 # install pip requirements (the doc group includes the Schema Explorer
-# build-time deps: pyyaml, referencing, deepmerge, pydantic, jsonschema-rs)
+# build-time deps: pyyaml, referencing, deepmerge, jsonschema-rs)
 echo "Installing Documentation python requirements"
 python -m pip install --group doc --upgrade
 

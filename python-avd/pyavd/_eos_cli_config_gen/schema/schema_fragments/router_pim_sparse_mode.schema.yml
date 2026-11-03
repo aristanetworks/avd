@@ -81,8 +81,6 @@ keys:
                         description: |-
                           Number of registers to forward before pausing in range of 0 to 4294967295.
                           Use 'infinity' to forward all registers.
-                        convert_types:
-                          - int
       vrfs:
         type: list
         primary_key: name
@@ -92,8 +90,6 @@ keys:
             name:
               type: str
               description: VRF Name.
-              convert_types:
-                - int
             ipv4:
               type: dict
               keys:

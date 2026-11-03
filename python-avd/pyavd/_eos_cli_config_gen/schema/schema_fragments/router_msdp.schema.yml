@@ -14,8 +14,6 @@ keys:
         description: Interface to use for originator ID.
       rejected_limit:
         type: int
-        convert_types:
-          - str
         description: Maximum number of rejected SA messages allowed in cache.
         min: 0
         max: 40000
@@ -23,8 +21,6 @@ keys:
         type: bool
       connection_retry_interval:
         type: int
-        convert_types:
-          - str
         min: 1
         max: 65535
       group_limits:
@@ -38,8 +34,6 @@ keys:
               description: Source address prefix.
             limit:
               type: int
-              convert_types:
-                - str
               description: Limit for SAs matching the source address prefix.
               min: 0
               max: 40000
@@ -70,8 +64,6 @@ keys:
               description: Disable the MSDP peer.
             sa_limit:
               type: int
-              convert_types:
-                - str
               description: Maximum number of SA messages allowed in cache.
               min: 0
               max: 40000
@@ -89,15 +81,11 @@ keys:
               keys:
                 keepalive_timer:
                   type: int
-                  convert_types:
-                    - str
                   required: true
                   min: 1
                   max: 65535
                 hold_timer:
                   type: int
-                  convert_types:
-                    - str
                   required: true
                   description: Must be greater than keepalive timer.
                   min: 1
@@ -120,15 +108,11 @@ keys:
             name:
               type: str
               description: VRF name.
-              convert_types:
-                - int
             originator_id_local_interface:
               type: str
               description: Interface to use for originator ID.
             rejected_limit:
               type: int
-              convert_types:
-                - str
               description: Maximum number of rejected SA messages allowed in cache.
               min: 0
               max: 40000
@@ -136,8 +120,6 @@ keys:
               type: bool
             connection_retry_interval:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 65535
             group_limits:
@@ -151,8 +133,6 @@ keys:
                     description: Source address prefix.
                   limit:
                     type: int
-                    convert_types:
-                      - str
                     description: Limit for SAs matching the source address prefix.
                     min: 0
                     max: 40000
@@ -183,8 +163,6 @@ keys:
                     description: Disable the MSDP peer.
                   sa_limit:
                     type: int
-                    convert_types:
-                      - str
                     description: Maximum number of SA messages allowed in cache.
                     min: 0
                     max: 40000
@@ -202,15 +180,11 @@ keys:
                     keys:
                       keepalive_timer:
                         type: int
-                        convert_types:
-                          - str
                         required: true
                         min: 1
                         max: 65535
                       hold_timer:
                         type: int
-                        convert_types:
-                          - str
                         required: true
                         description: Must be greater than keepalive timer.
                         min: 1

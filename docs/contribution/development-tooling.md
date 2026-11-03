@@ -154,7 +154,7 @@ The AVD project leverages Molecule for:
 
 The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/extensions/molecule`).
 
-The `eos_designs_negative_unit_tests` directory contains E2E-only fixtures and is not a Molecule scenario. Run and review these cases with the [PyAVD end-to-end test tool](e2e-test/using-the-tool.md#eos-designs-negative-tests).
+Some projects retain their location under this directory during the transition to PyAVD E2E testing but are no longer Molecule scenarios. See the [E2E-only project list](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/README.md#e2e-only-projects) and use the [PyAVD E2E instructions](e2e-test/using-the-tool.md#run-selected-projects) to run them and review their generated artifacts.
 
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 

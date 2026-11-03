@@ -20,8 +20,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: |-
                 VRF name.
                 The value will be interpreted according to these rules:
@@ -37,13 +35,9 @@ keys:
               description: Enable SSH in VRF.
             ipv4_acl:
               type: str
-              convert_types:
-                - int
               description: IPv4 access-list name.
             ipv6_acl:
               type: str
-              convert_types:
-                - int
               description: IPv6 access-list name.
       idle_timeout:
         type: int

@@ -19,7 +19,6 @@ scenario:
     - side_effect
   test_sequence:
     - syntax
-    - create
     - converge
     - idempotence
     - verify

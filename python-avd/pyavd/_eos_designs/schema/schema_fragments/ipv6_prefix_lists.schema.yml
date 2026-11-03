@@ -28,8 +28,6 @@ keys:
                 type: int
                 required: true
                 description: Sequence ID.
-                convert_types:
-                  - str
               action:
                 type: str
                 required: true

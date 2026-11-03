@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 
@@ -42,9 +43,17 @@ class LoopbackInterfacesMixin(Protocol):
                 # The loopbacks have already been filtered in _filtered_tenants
                 # to only contain entries with our hostname
                 for loopback in vrf.loopbacks:
+                    if not loopback.ip_address and not loopback.ipv6_addresses:
+                        msg = (
+                            f"'Loopback{loopback.loopback}' defined under "
+                            f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                            f"for node '{self.shared_utils.hostname}' must have at least one of 'ip_address' or 'ipv6_addresses' configured."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     loopback_interface_item = EosCliConfigGen.LoopbackInterfacesItem(
                         name=f"Loopback{loopback.loopback}",
                         ip_address=loopback.ip_address,
+                        ipv6_addresses=loopback.ipv6_addresses._cast_as(EosCliConfigGen.LoopbackInterfacesItem.Ipv6Addresses),
                         shutdown=not loopback.enabled,
                         description=loopback.description,
                         eos_cli=loopback.raw_eos_cli,
@@ -52,10 +61,22 @@ class LoopbackInterfacesMixin(Protocol):
                     if vrf.name != "default":
                         loopback_interface_item.vrf = vrf.name
                     if loopback.ospf.enabled and vrf.ospf.enabled:
+                        if not loopback.ip_address:
+                            msg = (
+                                f"'Loopback{loopback.loopback}' defined under "
+                                f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].loopbacks' "
+                                f"for node '{self.shared_utils.hostname}' cannot enable OSPF without an 'ip_address'. OSPFv2 requires an IPv4 address."
+                            )
+                            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                         loopback_interface_item.ospf_area = loopback.ospf.area
                     if loopback.hardware_forwarding:
                         loopback_interface_item.hardware_forwarding_id = True
-                    self._set_virtual_source_nat_for_vrf_loopback(loopback_interface_item.vrf, loopback_interface_item.ip_address)
+                    self._set_virtual_source_nat_for_vrf_loopback(
+                        loopback_interface_item.vrf,
+                        loopback_interface_item.ip_address,
+                        ipv6_address=next(iter(loopback.ipv6_addresses), None),
+                        fill_missing_ipv6=True,
+                    )
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 
     def _get_vtep_diagnostic_loopback_for_vrf(
@@ -66,19 +87,7 @@ class LoopbackInterfacesMixin(Protocol):
         if (loopback := vrf.vtep_diagnostic.loopback) is None:
             return None
 
-        pod_name = self.inputs.pod_name
-        loopback_ip_pools = vrf.vtep_diagnostic.loopback_ip_pools
-
-        loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range
-        loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
-
-        # Override defaults if pod-specific pools exist
-        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
-            if ipv4_pool := pod_pools.ipv4_pool:
-                loopback_ipv4_pool = ipv4_pool
-            if ipv6_pool := pod_pools.ipv6_pool:
-                loopback_ipv6_pool = ipv6_pool
-
+        loopback_ipv4_pool, loopback_ipv6_pool = self._get_vtep_diagnostic_loopback_pools(vrf)
         if not loopback_ipv4_pool and not loopback_ipv6_pool:
             return None
 
@@ -101,3 +110,21 @@ class LoopbackInterfacesMixin(Protocol):
         self._set_virtual_source_nat_for_vrf_loopback(vrf.name, ipv4_address, ipv6_address)
 
         return loopback_interface
+
+    def _get_vtep_diagnostic_loopback_pools(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> tuple[str | None, str | None]:
+        """Return the IPv4 and IPv6 pools of the VTEP diagnostic loopback for the given VRF, using the pod-specific pools when defined."""
+        loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range
+        loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
+
+        pod_name = self.inputs.pod_name
+        loopback_ip_pools = vrf.vtep_diagnostic.loopback_ip_pools
+        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
+            if ipv4_pool := pod_pools.ipv4_pool:
+                loopback_ipv4_pool = ipv4_pool
+            if ipv6_pool := pod_pools.ipv6_pool:
+                loopback_ipv6_pool = ipv6_pool
+
+        return loopback_ipv4_pool, loopback_ipv6_pool

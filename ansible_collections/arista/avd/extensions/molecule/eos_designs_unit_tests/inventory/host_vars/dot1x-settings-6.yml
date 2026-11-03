@@ -15,6 +15,7 @@ custom_platform_settings:
     feature_support:
       address_locking:
         supported: false
+      dot1x_bpdu_bypass: false
 
 address_locking_settings:
   dhcp_servers_ipv4:

@@ -17,8 +17,6 @@ keys:
       keys:
         platform:
           type: str
-          convert_types:
-            - int
         speeds:
           type: list
           primary_key: speed
@@ -31,5 +29,3 @@ keys:
                 type: list
                 items:
                   type: str
-                  convert_types:
-                    - int

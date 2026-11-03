@@ -61,8 +61,6 @@ keys:
                   sequence:
                     type: int
                     description: Sequence ID.
-                    convert_types:
-                      - str
                   match_regex:
                     type: str
                     required: true

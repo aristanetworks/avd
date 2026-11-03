@@ -19,10 +19,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.accounting.radius_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "dot1x_settings.accounting.multicast") | Boolean |  | `False` |  | Send Accounting-Request messages to all servers in a RADIUS group at the same time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;syslog</samp>](## "dot1x_settings.accounting.syslog") | Boolean |  | `False` |  | Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive. |
-    | [<samp>&nbsp;&nbsp;bypass_bpdu</samp>](## "dot1x_settings.bypass_bpdu") | Boolean |  | `True` |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
+    | [<samp>&nbsp;&nbsp;bypass_bpdu</samp>](## "dot1x_settings.bypass_bpdu") | Boolean |  | `True` |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.<br>Ignored when `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings. |
     | [<samp>&nbsp;&nbsp;bypass_lldp</samp>](## "dot1x_settings.bypass_lldp") | Boolean |  | `True` |  | Allow LLDP packets to be processed even if the port is not authorized. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x_settings.dynamic_authorization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.dynamic_authorization.enabled") | Boolean |  | `True` |  | Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "dot1x_settings.dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | UDP port used for RADIUS dynamic authorization requests.<br>Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_groups</samp>](## "dot1x_settings.dynamic_authorization.additional_groups") | List, items: String |  |  |  | List of additional RADIUS server groups for dynamic authorization purposes only.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on any server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.dynamic_authorization.additional_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x_settings.mac_based_authentication") | Dictionary |  |  |  |  |
@@ -105,6 +106,7 @@
         syslog: <bool; default=False>
 
       # Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+      # Ignored when `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
       bypass_bpdu: <bool; default=True>
 
       # Allow LLDP packets to be processed even if the port is not authorized.
@@ -113,6 +115,10 @@
 
         # Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session.
         enabled: <bool; default=True>
+
+        # UDP port used for RADIUS dynamic authorization requests.
+        # Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
+        port: <int; 0-65535>
 
         # List of additional RADIUS server groups for dynamic authorization purposes only.
         # The order of the list defines the server group priority.

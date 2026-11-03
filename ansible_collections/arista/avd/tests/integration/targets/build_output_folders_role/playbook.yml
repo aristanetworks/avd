@@ -1,0 +1,10 @@
+---
+- name: Test build_output_folders
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run output folder integration tests
+      ansible.builtin.include_tasks: tasks/main.yml
+
+- name: Run multi-host regression test
+  ansible.builtin.import_playbook: multi_host.yml

@@ -55,6 +55,6 @@
 
         ```yaml
         vrfs:
-        - name: use_default_mgmt_method_vrf
-          enabled: true
+          - name: use_default_mgmt_method_vrf
+            enabled: true
         ```

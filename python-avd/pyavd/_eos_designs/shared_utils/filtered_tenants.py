@@ -557,6 +557,72 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
+        if svi.ospfv3.enabled:
+            self._set_svi_ospfv3_config(config, svi, vrf, tenant)
+
+    def ospfv3_enabled_for_vrf(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> bool:
+        """True if the given filtered VRF has at least one OSPFv3-enabled SVI on this device, so an OSPFv3 instance is created for it."""
+        return any(svi.ospfv3.enabled for svi in vrf.svis)
+
+    def _set_svi_ospfv3_config(
+        self: SharedUtilsProtocol,
+        config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
+        svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """
+        Validate the SVI and set the OSPFv3 interface configuration.
+
+        The addressing is taken from what is already rendered on the given config.
+        Only the IPv6 address family is supported.
+        """
+        svi_path = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]"
+
+        if isinstance(config, EosCliConfigGen.EthernetInterfacesItem):
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs deployed as subinterfaces with 'uplink_type: lan'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if vrf.name == "default":
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported in VRF 'default'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        # Same condition as the one used to add the SVI VLAN to the Vxlan1 interface.
+        if (self.overlay_vtep or self.is_wan_router) and self.network_services_l2 and svi.vxlan:
+            msg = f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs extended over VXLAN. Set 'vxlan: false' to use OSPFv3 on this SVI."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if svi.ospfv3.ipv4.enabled:
+            msg = f"'{svi_path}.ospfv3.ipv4.enabled: true' is not supported yet. OSPFv3 currently only supports the IPv6 address family."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if config.ipv6_address_virtuals:
+            msg = (
+                f"'{svi_path}.ospfv3.enabled: true' is not supported on SVIs with anycast IPv6 addresses ('ipv6_address_virtuals'). "
+                "Use a unique 'ipv6_address' per node instead, optionally with 'ipv6_virtual_router_addresses'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        # Secondary IPv4 addresses are not checked, since EOS requires a primary address first.
+        if svi.ospfv3.ipv4.enabled is None and (config.ip_address or config.ip_address_virtual):
+            msg = (
+                f"'{svi_path}.ospfv3.enabled: true' on an SVI with IPv4 addressing requires 'ospfv3.ipv4.enabled: false', "
+                "since OSPFv3 currently only supports the IPv6 address family."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if not config.ipv6_addresses and not config.ipv6_enable:
+            msg = f"'{svi_path}.ospfv3.enabled: true' requires IPv6 on the SVI. Remove 'ipv6_enable: false' or set 'ipv6_address'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        config.ospfv3.ipv6.area = svi.ospfv3.area
+        if svi.ospfv3.passive:
+            config.ospfv3.passive_interface = True
+        else:
+            config.ospfv3.no_passive_interface = True
+        if svi.ospfv3.point_to_point:
+            config.ospfv3.network_point_to_point = True
+
     @overload
     def update_ospf_authentication(
         self: SharedUtilsProtocol,

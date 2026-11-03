@@ -41,7 +41,7 @@ LOGGER = getLogger("ansible_collections.arista.avd")
 DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
-DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = True
 COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
@@ -72,16 +72,13 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
     if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
         LOGGER.error("Python Version running %s - Minimum Version required is %s", running_version, min_version)
         return False
-    # Keeping this for next deprecation adjust the message as required
     if DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION and sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
         msg = (
-            f"You are currently running Python version {running_version}. "
-            f"AVD version 5.0.0 will drop support for Python version {min_version}. "
-            "The decision has been taken to remove Python version 3.9 support in AVD "
-            "collection to anticipate its removal in `ansible-core`. `ansible-core` "
-            "version 2.15 End-Of-Life is scheduled for November 2024 and it will be the "
-            "last `ansible-core` version supporting Python version 3.9 as documented here: "
-            "https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix."
+            f"You are currently running Python {running_version}. "
+            f"Python {min_version} has reached end of life and no longer receives security updates. "
+            f"AVD will drop support for Python {min_version} in a future release. "
+            "Please upgrade to a newer Python version supported by AVD. "
+            "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions."
         )
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
 

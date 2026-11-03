@@ -44,5 +44,3 @@ keys:
               It will require setting the `enabled` key to true.
             min: 600
             max: 3600
-            convert_types:
-              - str

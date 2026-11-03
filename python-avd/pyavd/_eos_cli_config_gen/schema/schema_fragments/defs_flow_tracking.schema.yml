@@ -23,15 +23,11 @@ $defs:
               keys:
                 on_inactive_timeout:
                   type: int
-                  convert_types:
-                    - str
                   min: 3000
                   max: 900000
                   description: Flow record inactive export timeout in milliseconds.
                 on_interval:
                   type: int
-                  convert_types:
-                    - str
                   min: 1000
                   max: 36000000
                   description: Flow record export interval in milliseconds.
@@ -60,22 +56,16 @@ $defs:
                           description: Collector Port Number.
                           min: 1
                           max: 65535
-                          convert_types:
-                            - str
                   format:
                     type: dict
                     keys:
                       ipfix_version:
                         type: int
-                        convert_types:
-                          - str
                   local_interface:
                     type: str
                     description: Local Source Interface.
                   template_interval:
                     type: int
-                    convert_types:
-                      - str
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds.

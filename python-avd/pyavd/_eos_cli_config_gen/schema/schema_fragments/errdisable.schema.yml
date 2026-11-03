@@ -169,12 +169,8 @@ keys:
                     Interval for each recovery cause in seconds.
                   min: 30
                   max: 86400
-                  convert_types:
-                    - str
           interval:
             type: int
-            convert_types:
-              - "str"
             description: Interval in seconds.
             min: 30
             max: 86400
@@ -196,8 +192,6 @@ keys:
                 description: Interval for ACL recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           arp_inspection:
             type: dict
             description: Recovery settings for ARP inspection errors.
@@ -210,8 +204,6 @@ keys:
                 description: Interval for ARP inspection recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           bpduguard:
             type: dict
             description: Recovery settings for BPDU guard errors.
@@ -224,8 +216,6 @@ keys:
                 description: Interval for BPDU guard recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           dot1x:
             type: dict
             description: Recovery settings for 802.1X errors.
@@ -238,8 +228,6 @@ keys:
                 description: Interval for 802.1X recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           dot1x_coa:
             type: dict
             description: Recovery settings for 802.1X Change of Authorization errors.
@@ -252,8 +240,6 @@ keys:
                 description: Interval for 802.1X Change of Authorization recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           dot1x_phone_classification:
             type: dict
             description: Recovery settings for 802.1X phone classification errors.
@@ -266,8 +252,6 @@ keys:
                 description: Interval for 802.1X phone classification recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           dot1x_session_replace:
             type: dict
             description: Recovery settings for 802.1X session replace errors.
@@ -280,8 +264,6 @@ keys:
                 description: Interval for 802.1X session replace recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           error_correction_encoding:
             type: dict
             description: Recovery settings for error correction encoding errors.
@@ -294,8 +276,6 @@ keys:
                 description: Interval for error correction encoding recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           fabric_capacity_low:
             type: dict
             description: Recovery settings for fabric capacity low errors.
@@ -308,8 +288,6 @@ keys:
                 description: Interval for fabric capacity low recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           hardware_speed_group:
             type: dict
             description: Recovery settings for hardware speed group errors.
@@ -322,8 +300,6 @@ keys:
                 description: Interval for hardware speed group recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           hitless_reload_down:
             type: dict
             description: Recovery settings for hitless reload down errors.
@@ -336,8 +312,6 @@ keys:
                 description: Interval for hitless reload down recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           interface_speed:
             type: dict
             description: Recovery settings for interface speed errors.
@@ -350,8 +324,6 @@ keys:
                 description: Interval for interface speed recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           internal_error:
             type: dict
             description: Recovery settings for internal errors.
@@ -364,8 +336,6 @@ keys:
                 description: Interval for internal error recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           lacp_rate_limit:
             type: dict
             description: Recovery settings for LACP rate limit errors.
@@ -378,8 +348,6 @@ keys:
                 description: Interval for LACP rate limit recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           link_flap:
             type: dict
             description: Recovery settings for link flap errors.
@@ -392,8 +360,6 @@ keys:
                 description: Interval for link flap recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           no_internal_vlan:
             type: dict
             description: Recovery settings for no internal VLAN errors.
@@ -406,8 +372,6 @@ keys:
                 description: Interval for no internal VLAN recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           port_breakout:
             type: dict
             description: Recovery settings for port breakout errors.
@@ -420,8 +384,6 @@ keys:
                 description: Interval for port breakout recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           portchannelguard:
             type: dict
             description: Recovery settings for port-channel guard errors.
@@ -434,8 +396,6 @@ keys:
                 description: Interval for port-channel guard recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           portsec:
             type: dict
             description: Recovery settings for port security errors.
@@ -448,8 +408,6 @@ keys:
                 description: Interval for port security recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           speed_misconfigured:
             type: dict
             description: Recovery settings for speed misconfigured errors.
@@ -462,8 +420,6 @@ keys:
                 description: Interval for speed misconfigured recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           storm_control:
             type: dict
             description: Recovery settings for storm control errors.
@@ -476,8 +432,6 @@ keys:
                 description: Interval for storm control recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           stuck_queue:
             type: dict
             description: Recovery settings for stuck queue errors.
@@ -490,8 +444,6 @@ keys:
                 description: Interval for stuck queue recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           switchcard_unreachable:
             type: dict
             description: Recovery settings for switchcard unreachable errors.
@@ -504,8 +456,6 @@ keys:
                 description: Interval for switchcard unreachable recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           tap_port_init:
             type: dict
             description: Recovery settings for tap port init errors.
@@ -518,8 +468,6 @@ keys:
                 description: Interval for tap port init recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           tapagg:
             type: dict
             description: Recovery settings for tap aggregation errors.
@@ -532,8 +480,6 @@ keys:
                 description: Interval for tap aggregation recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           tpid:
             type: dict
             description: Recovery settings for TPID errors.
@@ -546,8 +492,6 @@ keys:
                 description: Interval for TPID recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           transceiver_adapter:
             type: dict
             description: Recovery settings for transceiver adapter errors.
@@ -560,8 +504,6 @@ keys:
                 description: Interval for transceiver adapter recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           uplink_failure_detection:
             type: dict
             description: Recovery settings for uplink failure detection errors.
@@ -574,8 +516,6 @@ keys:
                 description: Interval for uplink failure detection recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           xcvr_misconfigured:
             type: dict
             description: Recovery settings for transceiver misconfiguration errors.
@@ -588,8 +528,6 @@ keys:
                 description: Interval for transceiver misconfiguration recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           xcvr_overheat:
             type: dict
             description: Recovery settings for transceiver overheat errors.
@@ -602,8 +540,6 @@ keys:
                 description: Interval for transceiver overheat recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           xcvr_power_unsupported:
             type: dict
             description: Recovery settings for unsupported transceiver power errors.
@@ -616,8 +552,6 @@ keys:
                 description: Interval for unsupported transceiver power recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
           xcvr_unsupported:
             type: dict
             description: Recovery settings for unsupported transceiver errors.
@@ -630,12 +564,8 @@ keys:
                 description: Interval for unsupported transceiver recovery in seconds.
                 min: 30
                 max: 86400
-                convert_types:
-                  - str
       recovery_interval:
         type: int
-        convert_types:
-          - str
         description: Default recovery interval in seconds applied to all recovery causes. EOS default is 300 seconds.
         min: 30
         max: 86400

@@ -57,8 +57,6 @@ $defs:
                 type: str
             preference:
               type: str
-              convert_types:
-                - int
               description: |-
                 Valid values are 1-65535 | "preferred" | "alternate".
 

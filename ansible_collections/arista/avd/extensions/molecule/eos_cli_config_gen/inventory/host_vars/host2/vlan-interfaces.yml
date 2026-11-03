@@ -38,6 +38,7 @@ vlan_interfaces:
         area: 1000
       ipv6:
         area: 0.0.0.0
+      no_passive_interface: true
 
   - name: Vlan1001
     description: Test VLAN with both ospfv3 and ipv6_ospf configurations
@@ -52,3 +53,12 @@ vlan_interfaces:
       process:
         id: 100
         area: 0.0.0.29
+
+  # Test that no passive-interface command is rendered when neither flag is set.
+  - name: Vlan1002
+    description: Test OSPFv3 without passive-interface settings
+    ospfv3:
+      ipv4:
+        area: 0.0.0.0
+      ipv6:
+        area: 0.0.0.0

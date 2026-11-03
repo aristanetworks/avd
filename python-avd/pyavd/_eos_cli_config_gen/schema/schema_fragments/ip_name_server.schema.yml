@@ -20,8 +20,6 @@ keys:
                 VRF Name.
                 Use "default" for the default VRF.
               type: str
-              convert_types:
-                - int
             servers:
               type: list
               required: true
@@ -36,7 +34,5 @@ keys:
                   priority:
                     description: Priority value (lower is first).
                     type: int
-                    convert_types:
-                      - str
                     min: 0
                     max: 4

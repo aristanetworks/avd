@@ -1,0 +1,22 @@
+---
+# Test that ACT Digital Twin mode does not override eAPI when act_ensure_eapi_access is omitted.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-enforce-eapi-5
+      id: 1
+      mgmt_ip: 192.168.0.5/32
+
+digital_twin:
+  environment: act
+  fabric: {}
+
+management_eapi:
+  enabled: true
+  enable_https: false
+  vrfs:
+    - name: MGMT
+      enabled: true
+      ipv4_acl: eapi_mgmt_ipv4_acl_in
+      ipv6_acl: eapi_mgmt_ipv6_acl_in

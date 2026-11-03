@@ -172,7 +172,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv4.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].ospfv3.ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv6.area") | String | Required |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interface</samp>](## "vlan_interfaces.[].ospfv3.no_passive_interface") | Boolean |  |  |  | Disable passive interface mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
@@ -298,6 +299,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_policy</samp>](## "vlan_interfaces.[].service_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "vlan_interfaces.[].service_policy.pbr") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].service_policy.pbr.input") | String |  |  |  | Name of policy-map used for policy based routing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "vlan_interfaces.[].service_policy.qos") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "vlan_interfaces.[].service_policy.qos.input") | String |  |  |  | Quality of Service Policy-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "vlan_interfaces.[].tcp_mss_ceiling") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vlan_interfaces.[].tcp_mss_ceiling.ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].tcp_mss_ceiling.ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
@@ -701,8 +704,11 @@
             # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             area: <str; required>
 
-          # Include interface but without actively running OSPF.
+          # Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
           passive_interface: <bool>
+
+          # Disable passive interface mode.
+          no_passive_interface: <bool>
           network_point_to_point: <bool>
         ospf_cost: <int>
         ospf_authentication: <str; "none" | "simple" | "message-digest">
@@ -956,6 +962,10 @@
           pbr:
 
             # Name of policy-map used for policy based routing.
+            input: <str>
+          qos:
+
+            # Quality of Service Policy-map name.
             input: <str>
         tcp_mss_ceiling:
 

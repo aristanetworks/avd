@@ -364,6 +364,8 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ospfv3 is arista.avd.defined %}
 {%         if vlan_interface.ospfv3.passive_interface is arista.avd.defined(true) %}
    ospfv3 passive-interface
+{%         elif vlan_interface.ospfv3.no_passive_interface is arista.avd.defined(true) %}
+   no ospfv3 passive-interface
 {%         endif %}
 {%         if vlan_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
    ospfv3 network point-to-point
@@ -411,6 +413,9 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.pim.ipv4.local_interface is arista.avd.defined %}
    pim ipv4 local-interface {{ vlan_interface.pim.ipv4.local_interface }}
+{%     endif %}
+{%     if vlan_interface.service_policy.qos.input is arista.avd.defined %}
+   service-policy type qos input {{ vlan_interface.service_policy.qos.input }}
 {%     endif %}
 {%     if vlan_interface.isis_enable is arista.avd.defined %}
    isis enable {{ vlan_interface.isis_enable }}

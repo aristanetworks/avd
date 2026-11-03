@@ -2,9 +2,66 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
+from collections.abc import Generator
+from contextlib import contextmanager
+from contextvars import ContextVar
+from dataclasses import dataclass
 from typing import Any
 
 from ansible.utils.display import Display
+
+_LOG_CONTEXT: ContextVar[str | None] = ContextVar("avd_log_context", default=None)
+_PROCESS_LOG_CONTEXT: str | None = None
+
+
+@contextmanager
+def log_context(value: str | None) -> Generator[None, None, None]:
+    """Set task-local and process-fallback log context for the duration of the context manager."""
+    global _PROCESS_LOG_CONTEXT  # noqa: PLW0603
+
+    previous_process_context = _PROCESS_LOG_CONTEXT
+    _PROCESS_LOG_CONTEXT = value
+    token = _LOG_CONTEXT.set(value)
+    try:
+        yield
+    finally:
+        _LOG_CONTEXT.reset(token)
+        _PROCESS_LOG_CONTEXT = previous_process_context
+
+
+@dataclass
+class LoggingOutcome:
+    """Mutable outcome populated while an action plugin's log records are handled."""
+
+    has_errors: bool = False
+
+
+class ErrorTrackingHandler(logging.Handler):
+    """Track whether an error-level record was handled without deciding task status."""
+
+    def __init__(self, logging_outcome: LoggingOutcome) -> None:
+        """Initialize the handler with the outcome to update."""
+        super().__init__(level=logging.ERROR)
+        self.logging_outcome = logging_outcome
+
+    def emit(self, record: logging.LogRecord) -> None:  # noqa: ARG002
+        """Record that an error-level log record was handled."""
+        self.logging_outcome.has_errors = True
+
+
+class LogContextFilter(logging.Filter):
+    """Inject the process-local log context before a record enters a multiprocessing queue."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """Add the active log context to the record."""
+        context = _LOG_CONTEXT.get()
+        # Standard CPython threads do not inherit ContextVar values by default.
+        # Python 3.14 can opt in with Thread(context=...), while free-threaded
+        # builds inherit the caller's context by default.
+        # The process fallback preserves context for those records, matching the old
+        # fixed child-process logging filter used by the ANTA workflow.
+        record.avd_log_context = _PROCESS_LOG_CONTEXT if context is None else context
+        return True
 
 
 class ContextFilter(logging.Filter):

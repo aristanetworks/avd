@@ -33,8 +33,6 @@ keys:
                   description: Destination port for the request STUN server (default - 3478).
                   min: 1
                   max: 65535
-                  convert_types:
-                    - str
       server:
         type: dict
         description: STUN server settings.
@@ -47,8 +45,6 @@ keys:
           bindings_timeout:
             type: int
             description: Timeout for bindings stored on STUN server in seconds.
-            convert_types:
-              - str
             min: 10
             max: 7200
           ssl_profile:
@@ -63,15 +59,11 @@ keys:
               minutes:
                 type: int
                 description: SSL connection lifetime in minutes (default - 120).
-                convert_types:
-                  - str
                 min: 1
                 max: 1440
               hours:
                 type: int
                 description: SSL connection lifetime in hours (default - 2).
-                convert_types:
-                  - str
                 min: 1
                 max: 24
           port:
@@ -79,5 +71,3 @@ keys:
             description: Listening port for STUN server (default - 3478).
             min: 1
             max: 65535
-            convert_types:
-              - str

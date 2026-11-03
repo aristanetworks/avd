@@ -39,8 +39,6 @@ $defs:
           Protocol values can be between 1 and 255.
         items:
           type: str
-          convert_types:
-            - int
       udp_src_port_set_name:
         type: str
         description: |-

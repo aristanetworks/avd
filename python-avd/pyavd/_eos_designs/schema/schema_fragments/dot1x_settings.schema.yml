@@ -67,6 +67,9 @@ keys:
       bypass_bpdu:
         type: bool
         default: true
+        description: |-
+          Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+          Ignored when `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
         $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
       bypass_lldp:
         type: bool
@@ -79,6 +82,13 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          port:
+            type: int
+            min: 0
+            max: 65535
+            description: |-
+              UDP port used for RADIUS dynamic authorization requests.
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is `true`.
           additional_groups:
             type: list
             description: |-

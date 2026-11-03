@@ -18,8 +18,6 @@ keys:
             type: int
             min: 1
             max: 4
-            convert_types:
-              - str
             description: Maximum number of concurrent scheduled jobs.
           prepend_hostname_logfile:
             type: bool
@@ -39,8 +37,6 @@ keys:
               type: int
               min: 2
               max: 1440
-              convert_types:
-                - str
               description: |-
                 Interval in minutes. Used as the standalone interval when `at` is not set,
                 or as the recurring interval when combined with `at` and `at.once` is not True.
@@ -66,8 +62,6 @@ keys:
               type: int
               min: 1
               max: 480
-              convert_types:
-                - str
               description: |-
                 Job timeout in minutes for CLI command execution. Must be less than the job interval.
             max_log_files:
@@ -75,8 +69,6 @@ keys:
               required: true
               min: 0
               max: 10000
-              convert_types:
-                - str
               description: Maximum number of log files to retain.
             logging_verbose:
               type: bool
