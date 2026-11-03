@@ -645,7 +645,7 @@ To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default).
 
 !!! note
 
-    To explicitly use an existing `<schema/scope>_proxy` environment variable, map its URL to the `cv_deploy`'s `proxy_*` role inputs in your playbook. This does not cause the role to read proxy environment variables automatically.
+    To explicitly use an existing `<schema/scope>_proxy` environment variable, map its URL to the `cv_deploy`'s `proxy_*` role inputs in your playbook.
 
     Example:
     ```yaml
