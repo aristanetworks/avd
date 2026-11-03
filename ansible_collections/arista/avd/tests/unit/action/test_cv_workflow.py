@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from os import environ
 from typing import TYPE_CHECKING, Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
+from ansible.plugins.filter.urlsplit import split_url
 
 from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
 from pyavd._cv.workflows.models import CloudVision, DeployToCvResult
@@ -208,6 +210,64 @@ def test_deploy_redacts_credentials_in_detailed_result(
     for credential in (fake_token, cv_password, fake_proxy_password):
         if credential is not None:
             assert credential not in str(result)
+
+
+@pytest.mark.parametrize(
+    ("https_proxy", "expected_proxy_settings"),
+    [
+        pytest.param(
+            "http://http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": None, "proxy_password": None},
+            id="EXPLICIT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://http-connect-proxy.local",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 8080, "proxy_username": None, "proxy_password": None},
+            id="DEFAULT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd_user:avd_password@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd_user", "proxy_password": "avd_password"},
+            id="EXPLICIT_PORT_WITH_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd%40user:avd%3Apassword@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd%40user", "proxy_password": "avd%3Apassword"},
+            id="URL_ENCODED_CREDENTIALS",
+        ),
+    ],
+)
+def test_deploy_uses_proxy_settings_parsed_from_https_proxy(
+    action_module: Callable[..., ActionModule],
+    https_proxy: str,
+    expected_proxy_settings: dict[str, str | int | None],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test that the suggested/documented https_proxy recipe passes normalized settings to the workflow."""
+    monkeypatch.setenv("https_proxy", https_proxy)
+    cv_proxy_url = environ["https_proxy"]
+    validated_args = _make_validated_args(
+        proxy_host=split_url(cv_proxy_url, "hostname"),
+        proxy_port=split_url(cv_proxy_url, "port") or 8080,
+        proxy_username=split_url(cv_proxy_url, "username"),
+        proxy_password=split_url(cv_proxy_url, "password"),
+    )
+    module = action_module(ActionModule)
+    result_object = _make_deploy_result_mock()
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+        patch(f"{MODULE_PATH}.CVDeployFuture", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=result_object),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=result_object),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    assert {key: cloudvision_class.call_args.kwargs[key] for key in expected_proxy_settings} == expected_proxy_settings
 
 
 def test_run_snapshots_detailed_inputs_before_deployment(
