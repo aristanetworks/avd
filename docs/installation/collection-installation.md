@@ -41,21 +41,29 @@ server and can be automatically installed on your system.
     When installing or upgrading PyAVD, update its Python dependencies to the
     latest compatible releases to pick up available security fixes using:
 
-    - pip: "--upgrade --upgrade-strategy eager"
-    - uv: "--upgrade"
+    - pip: `--upgrade --upgrade-strategy eager`
+    - uv: `--upgrade`
 
 ### Latest version
 
 These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
 all required Ansible collections.
 
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd[ansible]"
+    ```
+
+Then install the Ansible collection:
+
 ```shell
-# pip
-pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
-
-# uv
-uv pip install --upgrade "pyavd[ansible]"
-
 ansible-galaxy collection install arista.avd --upgrade
 ```
 
@@ -67,26 +75,41 @@ ansible-galaxy collection install arista.avd --upgrade
 
 ### Install a specific version
 
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.1.0"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd[ansible]==6.1.0"
+    ```
+
+Then install the Ansible collection:
+
 ```shell
-# pip
-pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.1.0"
-
-# uv
-uv pip install --upgrade "pyavd[ansible]==6.1.0"
-
 ansible-galaxy collection install arista.avd:==6.1.0 --upgrade
 ```
 
 ### Install latest `devel` version from AVD GitHub
 
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    ```
+
+Then install the Ansible collection:
+
 ```shell
-# pip
-pip install --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
-
-# uv
-uv pip install --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
-
-
 ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
 ```
 
@@ -126,9 +149,17 @@ Installing 'arista.avd:6.0.0' to '/home/arista/.ansible/collections/ansible_coll
 
 After an upgrade, some python requirements may have changed. Make sure to also update the Python requirements for the same version (the version given below matches the installed collection above):
 
-```shell
-pip install "pyavd[ansible]==6.0.0"
-```
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.0.0"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd[ansible]==6.0.0"
+    ```
 
 ### Python requirements installation
 
