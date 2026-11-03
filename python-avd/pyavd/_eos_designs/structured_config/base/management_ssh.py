@@ -46,6 +46,7 @@ class ManagementSshMixin(Protocol):
             if vrf_name == "default":
                 self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
                 if vrf.enabled:
+                    self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
                     if vrf.ipv4_acl:
                         self.structured_config_utils._validate_ipv4_acl_exclusion(
                             vrf.ipv4_acl, vrf.ipv4_standard_acl, context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
@@ -53,7 +54,7 @@ class ManagementSshMixin(Protocol):
                         if self.inputs.avd_design_future.raise_for_missing_ssh_settings_vrfs_ipv4_acl:
                             acl = self.shared_utils.get_ipv4_acl(vrf.ipv4_acl, interface_name=vrf_name)
                             self.structured_config_utils._set_ipv4_acl(acl)
-                        self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl, ipv6_access_group_in=vrf.ipv6_acl)
+                        self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_standard_acl, ipv6_access_group_in=vrf.ipv6_acl)
