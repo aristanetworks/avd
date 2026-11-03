@@ -220,13 +220,6 @@ ip_access_lists:
     protocol: ip
     source: 10.10.40.20
     destination: any
-- name: ACL-QMS
-  entries:
-  - sequence: 10
-    action: permit
-    protocol: ip
-    source: any
-    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
