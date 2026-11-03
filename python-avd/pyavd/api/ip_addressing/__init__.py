@@ -309,7 +309,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return self._template(
                 template_path,
                 switch_id=self._id,
-                loopback_ipv4_pool=self._loopback_ipv4_pool,
+                loopback_ipv4_pool=loopback_pool,
                 loopback_ipv4_address=self.shared_utils.node_config.loopback_ipv4_address,
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
