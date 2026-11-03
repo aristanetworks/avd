@@ -1043,12 +1043,12 @@ interface Dps1
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------- | -------------- | ---------------- | -------------- | ---------------- |
-| Vlan85 | True | True | - | True | 0.0.0.0 | True | 1000 |
-| Vlan1000 | False | - | True | - | 1000 | - | 0.0.0.0 |
-| Vlan1001 | True | True | - | - | 1000 | - | 0.0.0.0 |
-| Vlan1002 | - | - | - | - | 0.0.0.0 | - | 0.0.0.0 |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
+| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | 0.0.0.0 | 1000 |
+| Vlan1000 | False | - | 1000 | 0.0.0.0 |
+| Vlan1001 | True | True | 1000 | 0.0.0.0 |
+| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
 
 ##### ISIS
 
@@ -1069,9 +1069,7 @@ interface Vlan85
    no mpls ip
    ospfv3 passive-interface
    ospfv3 network point-to-point
-   ospfv3 ipv4 bfd
    ospfv3 ipv4 area 0.0.0.0
-   ospfv3 ipv6 bfd
    ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
@@ -1080,7 +1078,6 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
-   ospfv3 bfd
    no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
