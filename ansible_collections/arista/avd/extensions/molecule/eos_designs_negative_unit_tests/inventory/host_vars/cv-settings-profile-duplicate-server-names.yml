@@ -12,6 +12,7 @@ cv_settings:
 
 cv_settings_profiles:
   - profile: duplicate_server_names
+    cvaas: null  # Ensuring we are not raising for missing enabled when given null.
     onprem_clusters:
       - name: profile
         servers:

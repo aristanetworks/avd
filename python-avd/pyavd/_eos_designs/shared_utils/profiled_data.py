@@ -83,7 +83,7 @@ class ProfiledDataMixin(Protocol):
 
         # The global schema requires `cvaas.enabled`; profiles may omit it while being defined.
         cvaas = cv_settings._get("cvaas")
-        if cvaas is not None and cvaas._get("enabled") is None:
+        if cvaas is not None and not cvaas._created_from_null and cvaas.enabled is None:
             msg = "The 'cv_settings.cvaas.enabled' setting must be configured when CVaaS settings are provided."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
