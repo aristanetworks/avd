@@ -1269,7 +1269,7 @@ class EosDesigns(EosDesignsRootModel):
         When this is set to `true`, the presence of access-list
         `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
         An error is raised if the
-        referenced ACL is not defined in under `ipv4_acls`.
+        referenced ACL is not defined under `ipv4_acls`.
         If the referenced ACL is a standard ACL, use
         `ssh_settings.vrfs[].ipv4_standard_acl` instead.
 
@@ -1431,7 +1431,7 @@ class EosDesigns(EosDesignsRootModel):
                        When this is set to `true`, the presence of access-list
                        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
                        An error is raised if the
-                       referenced ACL is not defined in under `ipv4_acls`.
+                       referenced ACL is not defined under `ipv4_acls`.
                        If the referenced ACL is a standard ACL, use
                        `ssh_settings.vrfs[].ipv4_standard_acl` instead.
 
