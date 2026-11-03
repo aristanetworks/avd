@@ -439,14 +439,13 @@ class AvdStructuredConfigBaseProtocol(
         ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
         ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
         if ip_standard_access_group is not None:
-            if ip_standard_access_group not in self.inputs.ipv4_standard_acls:
-                msg = f"ipv4_standard_acls[name={ip_standard_access_group}]"
-                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
             self.structured_config_utils._set_ipv4_standard_acl(ip_standard_access_group)
             queue_monitor_streaming.ip_access_group = ip_standard_access_group
         elif ip_access_group is not None and self.inputs.avd_design_future.raise_for_missing_queue_monitor_streaming_acls:
-            acl = self.shared_utils.get_ipv4_acl(name=ip_access_group, interface_name="queue_monitor_streaming")
-            self.structured_config_utils._set_ipv4_acl(acl)
+            if ip_access_group not in self.inputs.ipv4_acls:
+                msg = f"ipv4_acls[name={ip_access_group}]"
+                raise AristaAvdMissingVariableError(msg)
+            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[ip_access_group])
 
         self.structured_config.queue_monitor_streaming = queue_monitor_streaming
 
