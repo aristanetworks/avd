@@ -132,8 +132,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
                     if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel:
                         raise AristaAvdInvalidInputsError(msg)
+                    node_config_path = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}]"
                     warnings.warn(
-                        f"Host '{self.shared_utils.hostname}': Setting 'underlay_router: true' with 'uplink_type: port-channel' is not supported.",
+                        f"Host '{self.shared_utils.hostname}': Setting '{node_config_path}.underlay_router: true' with "
+                        f"'{node_config_path}.uplink_type: port-channel' is not supported.",
                         AvdFutureBehaviorWarning,
                         stacklevel=2,
                     )

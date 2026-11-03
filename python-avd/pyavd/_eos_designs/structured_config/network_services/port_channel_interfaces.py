@@ -93,7 +93,7 @@ class PortChannelInterfacesMixin(Protocol):
                     if self.inputs.avd_design_future.raise_for_port_channels_without_members:
                         raise AristaAvdInvalidInputsError(msg)
                     l3_port_channel_paths_without_members.append(
-                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={l3_port_channel.name}]"
+                        f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={l3_port_channel.name}]"
                     )
 
                 if not (interface_description := l3_port_channel.description):

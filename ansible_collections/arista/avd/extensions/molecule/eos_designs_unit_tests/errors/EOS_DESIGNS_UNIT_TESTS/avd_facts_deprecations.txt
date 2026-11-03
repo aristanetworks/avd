@@ -1,3 +1,3 @@
-pyavd._errors.AvdFutureBehaviorWarning: Host 'hardware-features-cloudeos-2': Setting 'underlay_router: true' with 'uplink_type: port-channel' is not supported.
-pyavd._errors.AvdFutureBehaviorWarning: Host 'hardware-features-custom-platform': Setting 'underlay_router: true' with 'uplink_type: port-channel' is not supported.
-pyavd._errors.AvdFutureBehaviorWarning: Host 'override-uplink-type-d': Setting 'underlay_router: true' with 'uplink_type: port-channel' is not supported.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'hardware-features-cloudeos-2': Setting 'l3leaf.nodes[name=hardware-features-cloudeos-2].underlay_router: true' with 'l3leaf.nodes[name=hardware-features-cloudeos-2].uplink_type: port-channel' is not supported.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'hardware-features-custom-platform': Setting 'l3leaf.nodes[name=hardware-features-custom-platform].underlay_router: true' with 'l3leaf.nodes[name=hardware-features-custom-platform].uplink_type: port-channel' is not supported.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'override-uplink-type-d': Setting 'spine.nodes[name=override-uplink-type-d].underlay_router: true' with 'spine.nodes[name=override-uplink-type-d].uplink_type: port-channel' is not supported.
