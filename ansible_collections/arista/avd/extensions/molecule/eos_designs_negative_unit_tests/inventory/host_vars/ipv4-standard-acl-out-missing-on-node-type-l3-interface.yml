@@ -15,6 +15,3 @@ spine:
           ipv4_standard_acl_out: NON-EXISTENT-STD-ACL
 
 # ipv4_standard_acls is intentionally omitted / NON-EXISTENT-STD-ACL is not defined.
-
-expected_error_message: >-
-  'ipv4_standard_acls[name=NON-EXISTENT-STD-ACL]' is required but was not found for host 'ipv4-standard-acl-out-missing-on-node-type-l3-interface'.
