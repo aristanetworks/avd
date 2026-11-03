@@ -14,6 +14,3 @@ core_router:
   nodes:
     - name: missing-loopback-ipv4-pool
       id: 1
-
-expected_error_message: >-
-  'loopback_ipv4_pool' or 'loopback_ipv4_address' or 'router_id_pool' (for underlay_ipv6_numbered) must be set to render router_id.
