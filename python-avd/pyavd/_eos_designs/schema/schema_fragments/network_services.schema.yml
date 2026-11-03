@@ -799,19 +799,19 @@ keys:
                 description: |-
                   Non-selectively enabling or disabling redistribute ospf inside the VRF.
                   Deprecated: Use `redistribute_ospf_settings` instead. This key will be removed in AVD 7.0.
-              redistribute_ospf_settings: 
+              redistribute_ospf_settings:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
                 type: dict
                 description: |-
                   Redistribution of OSPF routes into BGP with optional route-map and match-type filtering.
                   When `redistribute_ospf_settings` is set it takes precedence over `redistribute_ospf`.
-                keys: 
+                keys:
                   enabled:
                     type: bool
                     default: true
                     description: Enable or disable redistribution of OSPF routes into BGP.
-                  route_map: 
+                  route_map:
                     type: str
                     description: Route-map name to apply to redistributed OSPF routes.
                   match:
