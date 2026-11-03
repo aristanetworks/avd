@@ -7421,9 +7421,7 @@ keys:
                       VRF.
 
                       Ignored on devices where BGP is not configured for this VRF
-                      or where the VRF has no OSPFv3 instance.
-
-                      OSPFv3 external routes are not redistributed.'
+                      or where the VRF has no OSPFv3 instance.'
                     keys:
                       internal:
                         type: dict

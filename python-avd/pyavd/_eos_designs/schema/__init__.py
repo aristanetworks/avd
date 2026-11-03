@@ -39998,8 +39998,6 @@ class EosDesigns(EosDesignsRootModel):
                 Redistribution of OSPFv3 routes into BGP for this VRF.
                 Ignored on devices where BGP is not
                 configured for this VRF or where the VRF has no OSPFv3 instance.
-                OSPFv3 external routes are not
-                redistributed.
 
                 Subclass of AvdModel.
                 """
@@ -40058,8 +40056,6 @@ class EosDesigns(EosDesignsRootModel):
                                Redistribution of OSPFv3 routes into BGP for this VRF.
                                Ignored on devices where BGP is not
                                configured for this VRF or where the VRF has no OSPFv3 instance.
-                               OSPFv3 external routes are not
-                               redistributed.
 
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
@@ -94580,8 +94576,6 @@ class EosDesigns(EosDesignsRootModel):
                         Redistribution of OSPFv3 routes into BGP for this VRF.
                         Ignored on devices where BGP is not
                         configured for this VRF or where the VRF has no OSPFv3 instance.
-                        OSPFv3 external routes are not
-                        redistributed.
 
                         Subclass of AvdModel.
                         """
@@ -94640,8 +94634,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Redistribution of OSPFv3 routes into BGP for this VRF.
                                        Ignored on devices where BGP is not
                                        configured for this VRF or where the VRF has no OSPFv3 instance.
-                                       OSPFv3 external routes are not
-                                       redistributed.
 
                                        Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
