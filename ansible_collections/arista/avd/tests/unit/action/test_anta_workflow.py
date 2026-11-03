@@ -345,6 +345,7 @@ def test_build_reports_adds_markdown_run_overview_when_enabled(monkeypatch: pyte
     mock_result_manager.get_total_results.return_value = 0
     mock_result_manager.device_stats = {}
     test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
+    test_execution_end_time = datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
     report_settings = {
         "md_output": "/out/report.md",
         "include_generation_timestamp": True,
@@ -354,27 +355,26 @@ def test_build_reports_adds_markdown_run_overview_when_enabled(monkeypatch: pyte
         },
     }
     mock_datetime = MagicMock()
-    mock_datetime.now.return_value = datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
+    mock_datetime.now.return_value = datetime(2026, 1, 1, 12, 40, 0, tzinfo=timezone.utc)
     monkeypatch.setattr(anta_module, "datetime", mock_datetime)
     with (
         patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
         patch(f"{MODULE_PATH}.sort_result_manager"),
         patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
     ):
-        build_reports(iter([]), report_settings, run_overview_data={"test_execution_start_time": test_execution_start_time})
+        build_reports(
+            iter([]),
+            report_settings,
+            run_overview_data={
+                "test_execution_start_time": test_execution_start_time,
+                "test_execution_end_time": test_execution_end_time,
+            },
+        )
 
     md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
-    assert md_extra_data["test_execution_start_time"] == datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
-    assert md_extra_data["test_execution_end_time"] == datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
-    assert md_extra_data["total_duration"] == datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc) - datetime(
-        2026,
-        1,
-        1,
-        12,
-        30,
-        0,
-        tzinfo=timezone.utc,
-    )
+    assert md_extra_data["test_execution_start_time"] == test_execution_start_time
+    assert md_extra_data["test_execution_end_time"] == test_execution_end_time
+    assert md_extra_data["total_duration"] == test_execution_end_time - test_execution_start_time
 
 
 def test_action_module_run_raises_when_pyavd_missing(action_module: Callable[..., ActionModule]) -> None:

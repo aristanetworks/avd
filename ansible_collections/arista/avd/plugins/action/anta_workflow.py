@@ -275,9 +275,13 @@ class ActionModule(AVDActionPlugin):
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
                 batches = [deployed_devices[i : i + batch_size] for i in range(0, len(deployed_devices), batch_size)]
                 batch_results = executor.map(run_anta, batches)
+            test_execution_end_time = datetime.now(timezone.utc)
 
         # Build the ANTA reports and summary
-        run_overview_data = {"test_execution_start_time": test_execution_start_time}
+        run_overview_data = {
+            "test_execution_start_time": test_execution_start_time,
+            "test_execution_end_time": test_execution_end_time,
+        }
         anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"), run_overview_data=run_overview_data)
         update_ansible_result(self.result, anta_tests_summary)
 
@@ -322,7 +326,6 @@ def build_reports(
     for manager in batch_results:
         for result in manager.results:
             result_manager.add(result)
-    test_execution_end_time = datetime.now(timezone.utc)
 
     # Filter the results based on the exclude_statuses if provided
     if exclude_statuses:
@@ -350,6 +353,11 @@ def build_reports(
         extra_data = {"_report_options": {"expand_results": expand_results, "render_custom_field": generate_custom_field}}
         if include_generation_timestamp:
             run_overview_data = run_overview_data or {}
+            default_end_time = datetime.now(timezone.utc)
+            test_execution_end_time = get(run_overview_data, "test_execution_end_time", default=default_end_time)
+            if not isinstance(test_execution_end_time, DATETIME_TYPE):
+                test_execution_end_time = default_end_time
+
             test_execution_start_time = get(run_overview_data, "test_execution_start_time", default=test_execution_end_time)
             if not isinstance(test_execution_start_time, DATETIME_TYPE):
                 test_execution_start_time = test_execution_end_time
