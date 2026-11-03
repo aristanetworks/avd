@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'custom_system_mac_address' uses unsupported formatter field 'unsupported_field'. Supported formatter fields are 'device_id' and 'hostname'.

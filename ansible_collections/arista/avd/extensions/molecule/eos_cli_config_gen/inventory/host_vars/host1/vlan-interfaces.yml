@@ -230,6 +230,13 @@ vlan_interfaces:
           algorithm: sha-256
         rx_disabled: true
 
+  - name: Vlan93
+    description: QoS Description
+    shutdown: true
+    service_policy:
+      qos:
+        input: MyQosPolicy
+
   - name: Vlan4092
     description: MLAG_PEER
     ip_address: 10.255.252.0/31
@@ -407,6 +414,8 @@ vlan_interfaces:
         source_address: a0::6
         link_address: a0::7
       - address: a0::8
+    ip_nat:
+      service_profile: PROFILE1
 
   - name: Vlan50
     description: IP NAT Testing
@@ -879,3 +888,10 @@ vlan_interfaces:
       ipv4: 1330
       ipv6: 1340
       direction: egress
+
+  - name: Vlan1000
+    description: Vlan with minimal ipv6 ospf configurations
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29

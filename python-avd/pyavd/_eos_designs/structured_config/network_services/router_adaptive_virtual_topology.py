@@ -35,7 +35,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
 
     def _set_cv_pathfinder_control_plane_virtual_topology(
         self: AvdStructuredConfigNetworkServicesProtocol,
-        output_policy: EosCliConfigGen.RouterAdaptiveVirtualTopology.PoliciesItem | EosCliConfigGen.RouterPathSelection.PoliciesItem,
+        output_policy: EosCliConfigGen.RouterAdaptiveVirtualTopology.PoliciesItem,
         cv_pathfinder_policy_profiles: EosCliConfigGen.RouterAdaptiveVirtualTopology.VrfsItem.Profiles,
     ) -> None:
         """

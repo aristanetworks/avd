@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mgmt_ip' for CVX Server 'dhcp-mgmt-ip-overlay-cvx-servers' must be a static management IP address, 'dhcp' is not supported.

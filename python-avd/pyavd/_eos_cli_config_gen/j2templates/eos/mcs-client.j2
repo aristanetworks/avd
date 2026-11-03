@@ -23,5 +23,11 @@ mcs client
 {%         for server_host in mcs_client.cvx_secondary.server_hosts | arista.avd.natural_sort %}
       server host {{ server_host }}
 {%         endfor %}
+{%         if mcs_client.cvx_secondary.source_interface is arista.avd.defined %}
+      source-interface {{ mcs_client.cvx_secondary.source_interface }}
+{%         endif %}
+{%         if mcs_client.cvx_secondary.vrf is arista.avd.defined %}
+      vrf {{ mcs_client.cvx_secondary.vrf }}
+{%         endif %}
 {%     endif %}
 {% endif %}

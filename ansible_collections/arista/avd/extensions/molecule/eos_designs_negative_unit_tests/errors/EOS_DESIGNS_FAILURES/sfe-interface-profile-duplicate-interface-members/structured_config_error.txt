@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Interfaces. {'name': 'Ethernet1/19', 'rx_queue': {'mode': 'exclusive'}} conflicts with {'name': 'Ethernet1/19', 'rx_queue': {'count': 2}}.

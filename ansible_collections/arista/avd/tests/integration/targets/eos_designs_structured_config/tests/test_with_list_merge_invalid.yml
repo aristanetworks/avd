@@ -26,11 +26,11 @@
           list_merge: "append12"
 
 - vars:
-    error_msg: >-
+    expected_error: >-
       Error during plugin 'arista.avd.eos_designs_structured_config' execution: merge:
       'list_merge' argument can only be equal to one of
       ['replace', 'keep', 'append', 'prepend', 'append_rp', 'prepend_rp']
   assert:
     that:
       - result.failed == true
-      - result.msg == error_msg
+      - result.msg == expected_error

@@ -38,8 +38,6 @@ keys:
               type: str
             password_type:
               type: str
-              convert_types:
-                - int
               valid_values: ["0", "7", "8a"]
               default: "7"
       source_group_standard_disabled:
@@ -58,8 +56,6 @@ keys:
               type: int
               min: 0
               max: 4294967295
-              convert_types:
-                - str
             url:
               type: str
               description: It only accepts http(s), udp and unix domain socket URL.

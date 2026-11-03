@@ -9,6 +9,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router BGP](#router-bgp)
 - [Multicast](#multicast)
   - [Router Multicast](#router-multicast)
@@ -50,9 +51,9 @@ interface Management1
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.0.2.1:9910,192.0.2.2:9910,192.0.2.3:9910 | mgt | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.0.2.1:9910,192.0.2.2:9910,192.0.2.3:9910 | mgt | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -73,7 +74,7 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
-| IPv6_ROUTING_ENABLED_VRF | - |
+| IPv6_ROUTING_ENABLED_VRF | False |
 
 #### IP Routing Device Configuration
 
@@ -89,8 +90,8 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| FUTURE_IPV6_INTERFACES | false |
-| IPv6_ROUTING_ENABLED_VRF | true |
+| FUTURE_IPV6_INTERFACES | False |
+| IPv6_ROUTING_ENABLED_VRF | True |
 
 #### IPv6 Routing Device Configuration
 
@@ -99,6 +100,64 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 ipv6 unicast-routing
 ipv6 hardware fib optimize prefixes profile internet
 ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 3.3.3.3 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | - |
+| ospfv3 leaked match external | True | - |
+| ospfv3 leaked match nssa-external | True | - |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
+   !
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal
+      redistribute ospfv3 leaked match external
+      redistribute ospfv3 leaked match nssa-external
 ```
 
 ### Router BGP
@@ -115,10 +174,36 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
+#### Router BGP Peer Groups
+
+##### evpn-overlay-peers
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPV4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
+
+#### Router BGP IPv4 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -127,10 +212,24 @@ ASN Notation: asplain
 router bgp 65005
    router-id 192.0.2.5
    bgp additional-paths send backup
+   neighbor IPV4-UNDERLAY-PEERS peer group
+   neighbor evpn-overlay-peers peer group
    !
    address-family evpn
       bgp next-hop-unchanged
       next-hop mpls resolution ribs tunnel-rib host5-rib
+   !
+   address-family ipv4
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv4 labeled-unicast
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv6
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
 ```
 
 ## Multicast

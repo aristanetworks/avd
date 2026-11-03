@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-missing-ip-addr'. 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key.

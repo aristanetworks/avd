@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Missing mandatory `id` in `wan_virtual_topologies.policies[DEFAULT-POLICY].application_virtual_topologies[TEST]` when `wan_mode` is 'cv-pathfinder.

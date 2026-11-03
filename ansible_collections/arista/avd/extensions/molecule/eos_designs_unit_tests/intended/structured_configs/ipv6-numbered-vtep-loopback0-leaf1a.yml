@@ -49,7 +49,7 @@ ipv6_prefix_lists:
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 2001:db8:4::/64
+    action: permit 2001:db8:10::/64
 ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -121,7 +121,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65101'
-  router_id: 10.255.1.1
+  router_id: 10.255.2.1
   maximum_paths:
     paths: 4
   bgp:
@@ -177,7 +177,7 @@ router_bgp:
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.1.1:10011
+    rd: 10.255.2.1:10011
     route_targets:
       both:
       - 10011:10011
@@ -187,7 +187,7 @@ router_bgp:
     metadata:
       tenants:
       - TENANT1
-    rd: 10.255.1.1:10012
+    rd: 10.255.2.1:10012
     route_targets:
       both:
       - 10012:10012
@@ -209,7 +209,7 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF10
-    rd: 10.255.1.1:10
+    rd: 10.255.2.1:10
     route_targets:
       import:
       - address_family: evpn
@@ -219,7 +219,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 10.255.1.1
+    router_id: 10.255.2.1
     neighbors:
     - ip_address: 2001:db8:4::2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -274,7 +274,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ipv6_addresses:
-  - 2001:db8:4::1/64
+  - 2001:db8:10::1/64
   mtu: 9214
   metadata:
     tenants:

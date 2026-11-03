@@ -23,6 +23,8 @@ class ManagementInterfaceMixin(Protocol):
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
+
             # Check if mgmt_ip is set to "dhcp"
             is_dhcp = self.shared_utils.oob_mgmt_ip == "dhcp"
             is_auto_config = self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config"

@@ -56,6 +56,11 @@ class DaemonTerminattrMixin(Protocol):
                 EosCliConfigGen.DaemonTerminattr.Cvtargetconfigs
             )
 
+        if cv_settings.terminattr.custom_cv_options:
+            self.structured_config.daemon_terminattr.custom_cv_options = cv_settings.terminattr.custom_cv_options._cast_as(
+                EosCliConfigGen.DaemonTerminattr.CustomCvOptions
+            )
+
         if first_tracker_exported_to_cloudvision is not None:
             flow_tracking_vrf = self.shared_utils.get_vrf(
                 flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
@@ -155,7 +160,7 @@ class DaemonTerminattrMixin(Protocol):
             AristaAvdInvalidInputsError: If required NTP or DNS settings are missing.
         """
         # NTP is always required
-        if not self.inputs.ntp_settings.servers:
+        if not self.shared_utils.ntp_settings.servers:
             msg = (
                 "'ntp_settings.servers' must be configured when CloudVision "
                 "clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined."
@@ -163,7 +168,7 @@ class DaemonTerminattrMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         # If DNS is already configured, no further DNS validation is needed
-        if self.inputs.dns_settings.servers:
+        if self.shared_utils.dns_settings_servers:
             return
         for cluster in clusters:
             match cluster:

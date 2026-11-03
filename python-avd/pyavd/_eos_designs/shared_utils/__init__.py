@@ -25,6 +25,7 @@ from .node_type import NodeTypeMixin
 from .node_type_keys import NodeTypeKeysMixin
 from .overlay import OverlayMixin
 from .platform_mixin import PlatformMixin
+from .profiled_data import ProfiledDataMixin
 from .ptp import PtpMixin
 from .routing import RoutingMixin
 from .underlay import UnderlayMixin
@@ -36,7 +37,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._utils import AVDTemplar
+    from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
 
 
@@ -58,6 +59,7 @@ class SharedUtilsProtocol(
     NodeTypeKeysMixin,
     OverlayMixin,
     PlatformMixin,
+    ProfiledDataMixin,
     PtpMixin,
     WanMixin,
     RoutingMixin,

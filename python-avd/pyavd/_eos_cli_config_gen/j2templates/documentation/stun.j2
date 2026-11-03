@@ -17,9 +17,10 @@
 | Server Profile | IP address | SSL Profile | Port |
 | -------------- | ---------- | ----------- | ---- |
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
+{%                 set ip_address = server_profile.ip_address | arista.avd.default("-") %}
 {%                 set ssl_profile = server_profile.ssl_profile | arista.avd.default("-") %}
 {%                 set stun_port = server_profile.port | arista.avd.default("3478") %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ ssl_profile }} | {{ stun_port }} |
+| {{ server_profile.name }} | {{ ip_address }} | {{ ssl_profile }} | {{ stun_port }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

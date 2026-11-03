@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'member_interfaces' set. This is not a valid setting.

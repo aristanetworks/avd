@@ -14,8 +14,6 @@ keys:
         keys:
           activity_polling_interval:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
@@ -27,8 +25,6 @@ keys:
                 type: int
                 min: 0
                 max: 600
-                convert_types:
-                  - str
           routing:
             type: bool
           multipath:
@@ -64,15 +60,11 @@ keys:
                             type: int
                             min: 1
                             max: 255
-                            convert_types:
-                              - str
       ipv6:
         type: dict
         keys:
           activity_polling_interval:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
@@ -89,8 +81,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
             ipv4:
               type: dict
               keys:

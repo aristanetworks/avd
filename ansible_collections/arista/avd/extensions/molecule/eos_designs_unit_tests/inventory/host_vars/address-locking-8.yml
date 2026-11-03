@@ -1,0 +1,21 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: address-locking-8
+      id: 101
+      bgp_as: 101
+
+# Testing dhcp_server_interfaces without local_interface using the future knob
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  dhcp_server_interfaces:
+    - Ethernet1
+  disabled: true

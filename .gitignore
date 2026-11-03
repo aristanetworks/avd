@@ -33,6 +33,9 @@ dist/
 *.egg-info/
 .tox/
 .pytest_cache/
+# Ansible collection test artifacts
+/ansible_collections/arista/avd/tests/integration/inventory/
+/ansible_collections/arista/avd/tests/output/
 ## pyenv
 .python-version
 ## direnv
@@ -56,8 +59,9 @@ python-avd/pyavd/*/j2templates/.hash
 python-avd/pyavd/*/schema/schema_fragments/.hash
 schemas/*/schema_fragments/.hash
 
-# gz of schema store
+# Generated schema stores
 python-avd/pyavd/_schema/schemas.json.gz
+python-avd/pyavd/_schema/schemas.rkyv
 
 # Dynamically-created molecule artifacts
 ansible_collections/arista/avd/extensions/molecule/cv_deploy/intended/structured_configs/test_duplicated_devices_configs/

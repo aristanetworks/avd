@@ -1,3 +1,4 @@
+---
 nodes:
 - digital-twin-adjust-oob-mgmt-1:
     node_type: veos
@@ -45,6 +46,30 @@ nodes:
 - digital-twin-enforce-eapi-4:
     node_type: veos
     ip_addr: 192.168.0.4/32
+    version: 4.33.1.1F
+- digital-twin-enforce-eapi-5:
+    node_type: veos
+    ip_addr: 192.168.0.5/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-1:
+    node_type: veos
+    ip_addr: 192.168.0.6/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-2:
+    node_type: veos
+    ip_addr: 192.168.0.7/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-3:
+    node_type: veos
+    ip_addr: 192.168.0.8/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-4:
+    node_type: veos
+    ip_addr: 192.168.0.9/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-5:
+    node_type: veos
+    ip_addr: 192.168.0.10/32
     version: 4.33.1.1F
 - digital-twin-ethernet-ports-1:
     node_type: veos

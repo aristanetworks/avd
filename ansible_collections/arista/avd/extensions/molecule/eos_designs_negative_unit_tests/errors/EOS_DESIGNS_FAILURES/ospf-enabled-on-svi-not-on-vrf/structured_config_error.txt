@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: OSPF is enabled on SVI 'ospf-enabled' but not under 'tenants[name=Tenant-A].vrfs[name=no-ospf-vrf]'.

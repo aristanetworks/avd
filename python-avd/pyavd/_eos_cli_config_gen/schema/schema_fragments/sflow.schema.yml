@@ -12,14 +12,10 @@ keys:
     keys:
       sample:
         type: int
-        convert_types:
-          - str
       sample_truncate_size:
         type: int
         min: 128
         max: 512
-        convert_types:
-          - str
         description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
@@ -29,8 +25,6 @@ keys:
         type: bool
       polling_interval:
         type: int
-        convert_types:
-          - str
         description: Polling interval in seconds.
       vrfs:
         type: list
@@ -40,8 +34,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
             destinations:
               type: list
               primary_key: destination
@@ -54,8 +46,6 @@ keys:
                   port:
                     type: int
                     description: Port Number
-                    convert_types:
-                      - str
             source:
               type: str
               description: |
@@ -76,8 +66,6 @@ keys:
             port:
               type: int
               description: Port Number.
-              convert_types:
-                - str
       source:
         type: str
         description: |
@@ -129,8 +117,6 @@ keys:
             type: bool
           sample:
             type: int
-            convert_types:
-              - str
           modules:
             type: list
             primary_key: name

@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, IPv4Network
+from ipaddress import AddressValueError, IPv4Address
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ class DhcpServersMixin(Protocol):
         """Set structured config for dhcp_server."""
         dhcp_server = EosCliConfigGen.DhcpServersItem()
         # Set subnets for DHCP server
-        self._update_subnets(dhcp_server)
+        dhcp_server.ipv4_subnets = self._underlay_subnets[1]
         if len(dhcp_server.ipv4_subnets) == 0:
             return
         dhcp_server.vrf = "default"
@@ -36,38 +36,13 @@ class DhcpServersMixin(Protocol):
         self._update_ipv4_ztp_boot_file(dhcp_server)
         # Set DNS servers
         # TODO: Figure out if / how we should filter on VRFs. Currently just adding all servers.
-        if dns_servers := self.inputs.dns_settings.servers:
+        if dns_servers := self.shared_utils.dns_settings_servers:
             for dns_server in dns_servers:
                 dhcp_server.dns_servers_ipv4.append(dns_server.ip_address)
         # Set NTP servers
         self._update_ntp_servers(dhcp_server)
 
         self.structured_config.dhcp_servers.append(dhcp_server)
-
-    def _update_subnets(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
-        """
-        Update dhcp_server with a list of dhcp subnets for downstream p2p interfaces.
-
-        Used for l3 inband ztp/ztr.
-        """
-        for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer)
-            for uplink in peer_facts.uplinks:
-                if (
-                    uplink.peer == self.shared_utils.hostname
-                    and uplink.type == "underlay_p2p"
-                    and uplink.ip_address
-                    and "unnumbered" not in uplink.ip_address
-                    and peer_facts.inband_ztp
-                ):
-                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
-                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
-                        subnet=str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
-                        name=f"inband ztp for {peer}-{uplink.interface}",
-                        default_gateway=f"{uplink.peer_ip_address}",
-                    )
-                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
-                    dhcp_server.ipv4_subnets.append(subnet_item)
 
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""
@@ -97,7 +72,7 @@ class DhcpServersMixin(Protocol):
 
     def _update_ntp_servers(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
         """Set list of NTP servers."""
-        ntp_servers_settings = self.inputs.ntp_settings.servers
+        ntp_servers_settings = self.shared_utils.ntp_settings.servers
         if not ntp_servers_settings:
             return
 

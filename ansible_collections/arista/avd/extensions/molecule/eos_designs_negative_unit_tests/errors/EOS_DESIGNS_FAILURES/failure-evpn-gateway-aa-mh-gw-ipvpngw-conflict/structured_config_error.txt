@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature.

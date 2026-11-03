@@ -220,9 +220,9 @@ boot secret 5 <removed>
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | apiserver.arista.io:443 | mgt | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | apiserver.arista.io:443 | mgt | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -274,9 +274,9 @@ logging vrf check_source_interface_table_created source-interface Ethernet1
 
 MCS client is shutdown
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | - | - |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | - | mgt | - | - |
 
 #### MCS Client Device Configuration
 
@@ -286,6 +286,7 @@ mcs client
    shutdown
    !
    cvx secondary default
+      vrf mgt
 ```
 
 ### SFlow
@@ -375,6 +376,64 @@ router ospf 702
    router-id 10.255.0.3
    segment-routing mpls
       adjacency-segment allocation none
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 3.3.3.3 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 2000 |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| ospfv3 leaked match internal | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3
+   address-family ipv4
+      router-id 2.2.2.2
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
+   !
+   address-family ipv6
+      router-id 3.3.3.3
+      auto-cost reference-bandwidth 2000
+      passive-interface default
+      redistribute ospfv3 leaked match internal route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
 ```
 
 ### Router ISIS
@@ -502,6 +561,20 @@ ipv6 dhcp relay always-on
 ipv6 dhcp relay all-subnets default
 ipv6 dhcp relay option link-layer address
 ipv6 dhcp relay option remote-id format %m:%h:%p
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu exceed action drop
 ```
 
 ## Errdisable

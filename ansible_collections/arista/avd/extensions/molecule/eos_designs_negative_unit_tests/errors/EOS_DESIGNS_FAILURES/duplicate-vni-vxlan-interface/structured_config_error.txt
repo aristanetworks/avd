@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Found duplicate objects with conflicting data while generating configuration for VXLAN VNI 10110. The following items are conflicting: SVI 110 in tenant Tenant_A, SVI 111 in tenant Tenant_A.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Length of 'ipv6_addresses' (2) must match length of 'nodes' (1) for l3_interfaces under VRF 'TENANT_B_WAN' in tenant 'TENANT_B'.

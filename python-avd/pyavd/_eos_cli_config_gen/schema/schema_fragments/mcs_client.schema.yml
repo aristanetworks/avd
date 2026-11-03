@@ -23,3 +23,9 @@ keys:
             items:
               type: str
               description: IP or hostname.
+          vrf:
+            type: str
+            description: VRF name.
+          source_interface:
+            type: str
+            description: Source interface name.

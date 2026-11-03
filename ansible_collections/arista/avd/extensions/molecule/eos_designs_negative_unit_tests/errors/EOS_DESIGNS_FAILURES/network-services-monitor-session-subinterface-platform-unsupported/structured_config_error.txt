@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Monitor session on sub-interfaces is not supported on this platform. Got monitor session on interface 'Ethernet6.101' under tenants[name=TENANT_A].vrfs[name=VRF_A].l3_interfaces[0].

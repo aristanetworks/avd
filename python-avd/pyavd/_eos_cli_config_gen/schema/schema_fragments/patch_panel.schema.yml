@@ -31,16 +31,12 @@ keys:
                         required: true
                         min: 10
                         max: 600
-                        convert_types:
-                          - str
                         description: Minimum delay.
                       max:
                         type: int
                         required: true
                         min: 15
                         max: 900
-                        convert_types:
-                          - str
                         description: Maximum delay.
       patches:
         type: list
@@ -63,8 +59,6 @@ keys:
                 keys:
                   id:
                     type: str
-                    convert_types:
-                      - int
                   type:
                     type: str
                     valid_values:

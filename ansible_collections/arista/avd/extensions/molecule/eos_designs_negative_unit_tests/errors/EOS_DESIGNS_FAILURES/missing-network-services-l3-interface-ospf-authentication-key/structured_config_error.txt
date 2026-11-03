@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: '`tenants[name=L3PO].vrfs[name=TESTING].ospf.cleartext_simple_auth_key` or `tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.simple_auth_key` or `tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.cleartext_simple_auth_key`' is required but was not found.

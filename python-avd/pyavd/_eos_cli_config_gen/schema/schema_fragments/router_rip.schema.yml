@@ -20,15 +20,11 @@ keys:
               type: bool
             vrf:
               type: str
-              convert_types:
-                - int
             metric_default:
               type: int
               description: Set default metric for the routes.
               min: 0
               max: 16
-              convert_types:
-                - str
             networks:
               type: list
               min_length: 1

@@ -14,6 +14,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router OSPFv3](#router-ospfv3)
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
@@ -156,7 +157,7 @@ interface Port-Channel2
 | MGMT | False |
 | TENANT_A | True |
 | TENANT_B | True (ipv6 interfaces) |
-| TENANT_C | - |
+| TENANT_C | False |
 
 #### IP Routing Device Configuration
 
@@ -174,16 +175,184 @@ ip routing ipv6 interfaces vrf TENANT_B
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| TENANT_A | false |
-| TENANT_B | false |
-| TENANT_C | true |
+| MGMT | False |
+| TENANT_A | False |
+| TENANT_B | False |
+| TENANT_C | True |
 
 #### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing vrf TENANT_C
+```
+
+### Router OSPFv3
+
+#### VRF: default
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 1.1.1.1 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 1000 |
+
+##### Address Family IPv4
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | - |
+| static | True | map1 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| dhcp | - | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | - |
+| static | True | map1 |
+
+#### VRF: MGMT
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv6
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | True | map1 |
+| connected | True | map1 |
+| dhcp | - | map1 |
+| isis level-1 | True | map1 |
+| ospfv3 leaked | True | map1 |
+| ospfv3 leaked match external | True | map1 |
+| ospfv3 leaked match nssa-external | True | map1 |
+| static | True | map1 |
+
+#### VRF: TEST
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### VRF: TEST_VRF
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | 100 |
+
+##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | - |
+
+###### Redistribution
+
+| Source Protocol | Include Leaked | Route Map |
+| --------------- | -------------- | --------- |
+| bgp | - | - |
+
+#### VRF: TEST_VRF2
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 2.2.2.2 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 100 |
+
+#### VRF: data
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | 1.1.1.1 |
+| Passive Interface Default | True |
+| Auto Cost Reference Bandwidth | 1000 |
+
+#### Router OSPFv3 Device Configuration
+
+```eos
+!
+router ospfv3 vrf MGMT
+   auto-cost reference-bandwidth 100
+   !
+   address-family ipv6
+      redistribute bgp include leaked route-map map1
+      redistribute dhcp route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked route-map map1
+      redistribute ospfv3 leaked match external route-map map1
+      redistribute ospfv3 leaked match nssa-external route-map map1
+      redistribute static include leaked route-map map1
+!
+router ospfv3 vrf TEST
+   auto-cost reference-bandwidth 100
+!
+router ospfv3 vrf TEST_VRF
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   !
+   address-family ipv6
+      passive-interface default
+      redistribute bgp
+!
+router ospfv3 vrf TEST_VRF2
+   router-id 2.2.2.2
+   auto-cost reference-bandwidth 100
+   passive-interface default
+!
+router ospfv3 vrf data
+   bfd default
+   !
+   address-family ipv4
+      router-id 1.1.1.1
+      auto-cost reference-bandwidth 1000
+      passive-interface default
+!
+router ospfv3
+   router-id 1.1.1.1
+   auto-cost reference-bandwidth 1000
+   passive-interface default
+   !
+   address-family ipv4
+      redistribute bgp include leaked route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked
+      redistribute static include leaked route-map map1
+   !
+   address-family ipv6
+      redistribute bgp include leaked route-map map1
+      redistribute dhcp route-map map1
+      redistribute connected include leaked route-map map1
+      redistribute isis include leaked level-1 route-map map1
+      redistribute ospfv3 leaked
+      redistribute static include leaked route-map map1
 ```
 
 ### Router BGP
@@ -200,12 +369,33 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send limit 6 |
 
+#### Router BGP Peer Groups
+
+##### evpn-overlay-peers
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65001 |
+
+##### IPV4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65002 |
+
 #### Router BGP IPv4 Labeled Unicast
 
 ##### General Settings
 
 | Settings | Value |
 | -------- | ----- |
+
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Path-Selection Address Family
 
@@ -221,16 +411,28 @@ ASN Notation: asplain
 !
 router bgp 65006
    bgp additional-paths send limit 6
+   neighbor evpn-overlay-peers peer group
+   neighbor evpn-overlay-peers remote-as 65001
+   neighbor evpn-overlay-peers description EVPN overlay peer group for legacy ordering
+   neighbor IPV4-UNDERLAY-PEERS peer group
+   neighbor IPV4-UNDERLAY-PEERS remote-as 65002
+   neighbor IPV4-UNDERLAY-PEERS description IPv4 underlay peer group for legacy ordering
    redistribute ospf include leaked route-map RM-BGP-OSPF
    !
    address-family ipv4
       bgp additional-paths send limit 4
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
    !
    address-family ipv4 labeled-unicast
       no bgp additional-paths send
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
    !
    address-family ipv6
       no bgp additional-paths send
+      neighbor evpn-overlay-peers activate
+      neighbor IPV4-UNDERLAY-PEERS activate
       redistribute ospfv3 match external route-map RM-BGP-OSPFV3-EXTERNAL
    !
    address-family path-selection

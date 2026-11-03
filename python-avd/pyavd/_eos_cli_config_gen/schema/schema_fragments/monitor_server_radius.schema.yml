@@ -20,15 +20,11 @@ keys:
           interval:
             type: int
             description: Server probe interval in seconds.
-            convert_types:
-              - str
             min: 1
             max: 1000
           threshold_failure:
             type: int
             description: Number of consecutive failed probes before a server is marked as dead.
-            convert_types:
-              - str
             min: 1
             max: 255
           method:
@@ -50,7 +46,5 @@ keys:
                 description: Encrypted password using the `password_type`.
               password_type:
                 type: str
-                convert_types:
-                  - int
                 valid_values: ["0", "7", "8a"]
                 default: "7"

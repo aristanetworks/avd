@@ -13,7 +13,7 @@ from pyavd._schema.models.avd_model import AvdModel
 from pyavd._schema.models.eos_cli_config_gen_root_model import EosCliConfigGenRootModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class EosCliConfigGen(EosCliConfigGenRootModel):
@@ -1362,6 +1362,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Logging(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Event(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+                denied_address_drop: bool | None
+                """Log events for denied address drops."""
+                dhcp_server_drop: bool | None
+                """
+                Log events for DHCP server to client packet drops.
+                Requires EOS version 4.36.2F or later.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        Event.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            denied_address_drop: Log events for denied address drops.
+                            dhcp_server_drop:
+                               Log events for DHCP server to client packet drops.
+                               Requires EOS version 4.36.2F or later.
+
+                        """
+
+            _fields: ClassVar[dict] = {"event": {"type": Event}}
+            event: Event
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, event: Event | UndefinedType = Undefined) -> None:
+                    """
+                    Logging.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        event: Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
@@ -1369,6 +1421,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "leases": {"type": Leases},
             "local_interface": {"type": str},
             "locked_address": {"type": LockedAddress},
+            "logging": {"type": Logging},
         }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
@@ -1387,6 +1440,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         local_interface: str | None
         locked_address: LockedAddress
         """Subclass of AvdModel."""
+        logging: Logging
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -1399,6 +1454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 leases: Leases | UndefinedType = Undefined,
                 local_interface: str | UndefinedType | None = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLocking.
@@ -1418,6 +1474,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface
                     locked_address: Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
 
                 """
 
@@ -4165,6 +4222,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Cvtargetconfigs._item_type = str
 
+        class CustomCvOptionsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+            flag: str
+            """TerminAttr CLI flag name without the leading dash."""
+            value: str | None
+            """
+            Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+            If set, the flag is
+            rendered as `-flag=value`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    CustomCvOptionsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        flag: TerminAttr CLI flag name without the leading dash.
+                        value:
+                           Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                           If set, the flag is
+                           rendered as `-flag=value`.
+
+                    """
+
+        class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+            """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+        CustomCvOptions._item_type = CustomCvOptionsItem
+
         _fields: ClassVar[dict] = {
             "cvaddrs": {"type": Cvaddrs},
             "clusters": {"type": Clusters},
@@ -4180,6 +4273,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "grpcreadonly": {"type": bool},
             "ingestexclude": {"type": str},
             "smashexcludes": {"type": str},
+            "sysdbexcludes": {"type": str},
             "taillogs": {"type": str},
             "ecodhcpaddr": {"type": str},
             "ipfix": {"type": bool},
@@ -4190,6 +4284,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_loss_timeout": {"type": int},
             "cvtargetconfigs": {"type": Cvtargetconfigs},
             "flowdns": {"type": bool},
+            "custom_cv_options": {"type": CustomCvOptions},
         }
         cvaddrs: Cvaddrs
         """
@@ -4260,6 +4355,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Exclude paths from the shared memory table.
         e.g. "ale,flexCounter,hardware,kni,pulse,strata"
         """
+        sysdbexcludes: str | None
+        """
+        Exclude paths from Sysdb.
+        e.g.
+        "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
+        """
         taillogs: str | None
         """
         Enable log file collection; /var/log/messages is streamed by default if no path is set.
@@ -4312,6 +4413,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Set to false to disable DNS
         lookups on sFlow/IPFIX flow records.
         """
+        custom_cv_options: CustomCvOptions
+        """
+        TerminAttr CLI options not covered by the schema.
+        Each entry renders as `-<flag>=<value>` when
+        `value` is set, or `-<flag>` when `value` is omitted.
+        Options are appended at the end of the
+        TerminAttr exec command line after all other flags.
+
+
+        Subclass of AvdList with `CustomCvOptionsItem`
+        items.
+        """
 
         if TYPE_CHECKING:
 
@@ -4332,6 +4445,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 grpcreadonly: bool | UndefinedType | None = Undefined,
                 ingestexclude: str | UndefinedType | None = Undefined,
                 smashexcludes: str | UndefinedType | None = Undefined,
+                sysdbexcludes: str | UndefinedType | None = Undefined,
                 taillogs: str | UndefinedType | None = Undefined,
                 ecodhcpaddr: str | UndefinedType | None = Undefined,
                 ipfix: bool | UndefinedType | None = Undefined,
@@ -4342,6 +4456,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_loss_timeout: int | UndefinedType | None = Undefined,
                 cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                 flowdns: bool | UndefinedType | None = Undefined,
+                custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4396,6 +4511,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     smashexcludes:
                        Exclude paths from the shared memory table.
                        e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                    sysdbexcludes:
+                       Exclude paths from Sysdb.
+                       e.g.
+                       "/Sysdb/mcs/v1/fromCvx/deviceConfig/senderPolicy,/Sysdb/mcs/v1/activeflows/route"
                     taillogs:
                        Enable log file collection; /var/log/messages is streamed by default if no path is set.
                        e.g.
@@ -4430,6 +4549,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Enable DNS resolution for flow records (TerminAttr default is true).
                        Set to false to disable DNS
                        lookups on sFlow/IPFIX flow records.
+                    custom_cv_options:
+                       TerminAttr CLI options not covered by the schema.
+                       Each entry renders as `-<flag>=<value>` when
+                       `value` is set, or `-<flag>` when `value` is omitted.
+                       Options are appended at the end of the
+                       TerminAttr exec command line after all other flags.
+
+
+                       Subclass of AvdList with `CustomCvOptionsItem`
+                       items.
 
                 """
 
@@ -4513,6 +4642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tunnel_requests_disabled": {"type": bool},
             "mlag_peerlink_requests_disabled": {"type": bool},
             "client_requests": {"type": ClientRequests},
+            "reply_source_address_validation": {"type": bool},
         }
         servers: Servers
         """Subclass of AvdList with `str` items."""
@@ -4524,6 +4654,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        reply_source_address_validation: bool | None
+        """
+        Validate reply source address matches configured server.
+        Supported starting with 4.33.10M, 4.34.8M,
+        4.35.6M, and 4.36.2F.
+        """
 
         if TYPE_CHECKING:
 
@@ -4534,6 +4670,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tunnel_requests_disabled: bool | UndefinedType | None = Undefined,
                 mlag_peerlink_requests_disabled: bool | UndefinedType | None = Undefined,
                 client_requests: ClientRequests | UndefinedType = Undefined,
+                reply_source_address_validation: bool | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DhcpRelay.
@@ -4549,6 +4686,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure DHCP client request settings.
 
                        Subclass of AvdModel.
+                    reply_source_address_validation:
+                       Validate reply source address matches configured server.
+                       Supported starting with 4.33.10M, 4.34.8M,
+                       4.35.6M, and 4.36.2F.
 
                 """
 
@@ -5933,7 +6074,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             start_limit_infinite: bool | None
             """Set captive-portal start limit to infinite."""
             access_list_ipv4: str | None
-            """Standard access-list name."""
+            """Extended access-list name."""
 
             if TYPE_CHECKING:
 
@@ -5960,7 +6101,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                              - https: https://<hostname>[:<port>]
                         ssl_profile: ssl_profile
                         start_limit_infinite: Set captive-portal start limit to infinite.
-                        access_list_ipv4: Standard access-list name.
+                        access_list_ipv4: Extended access-list name.
 
                     """
 
@@ -6596,6 +6737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "render_monitor_layer1_without_enabled": {"type": bool, "default": False},
             "render_spanning_tree_portfast_edge": {"type": bool, "default": False},
             "only_render_separator_with_boot_secret_key": {"type": bool, "default": False},
+            "new_bgp_peer_group_cli_order": {"type": bool, "default": False},
         }
         always_render_ip_routing_separator: bool
         """
@@ -6685,6 +6827,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_bgp_peer_group_cli_order: bool
+        """
+        Available from AVD 6.5.0.
+        When `true`, renders BGP peer groups globally and under address families
+        in case-sensitive natural order, matching EOS CLI ordering.
+        When `false` (default), preserves the
+        legacy case-insensitive natural order for BGP peer groups globally and under address families.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6699,6 +6851,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 render_monitor_layer1_without_enabled: bool | UndefinedType = Undefined,
                 render_spanning_tree_portfast_edge: bool | UndefinedType = Undefined,
                 only_render_separator_with_boot_secret_key: bool | UndefinedType = Undefined,
+                new_bgp_peer_group_cli_order: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6763,6 +6916,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `boot.secret.key` is provided.
                        When `false` (default), the '!' separator is always rendered when
                        `boot.secret` is defined, even if `boot.secret.key` is missing, for backward compatibility.
+                    new_bgp_peer_group_cli_order:
+                       Available from AVD 6.5.0.
+                       When `true`, renders BGP peer groups globally and under address families
+                       in case-sensitive natural order, matching EOS CLI ordering.
+                       When `false` (default), preserves the
+                       legacy case-insensitive natural order for BGP peer groups globally and under address families.
 
                 """
 
@@ -9669,7 +9828,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str | None
-                    """ACL name or multicast IP subnet."""
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
                     out: bool | None
 
                     if TYPE_CHECKING:
@@ -9682,7 +9841,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: ACL name or multicast IP subnet.
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                                 out: out
 
                             """
@@ -9720,7 +9879,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str | None
-                    """ACL name or multicast IP subnet."""
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
 
                     if TYPE_CHECKING:
 
@@ -9732,7 +9891,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: ACL name or multicast IP subnet.
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
 
                             """
 
@@ -10903,6 +11062,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Role: TypeAlias = Literal["master", "dynamic"]
             Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
+
+            class Management(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"drop": {"type": bool}}
+                drop: bool | None
+                """Drop PTP management messages."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Management.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            drop: Drop PTP management messages.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -10914,6 +11095,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "role": {"type": str},
                 "vlan": {"type": str},
                 "transport": {"type": str},
+                "management": {"type": Management},
             }
             enable: bool | None
             announce: Announce
@@ -10930,6 +11112,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan: str | None
             """VLAN can be 'all' or list of vlans as string."""
             transport: Transport | None
+            management: Management
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -10946,6 +11130,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     role: Role | UndefinedType | None = Undefined,
                     vlan: str | UndefinedType | None = Undefined,
                     transport: Transport | UndefinedType | None = Undefined,
+                    management: Management | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -10964,6 +11149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         role: role
                         vlan: VLAN can be 'all' or list of vlans as string.
                         transport: transport
+                        management: Subclass of AvdModel.
 
                     """
 
@@ -11249,13 +11435,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 Action: TypeAlias = Literal["allow", "drop"]
-                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}}
+                _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}, "allow_access_list": {"type": str}}
                 action: Action | None
                 allow_vlan: int | None
+                allow_access_list: str | None
+                """Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Action | UndefinedType | None = Undefined, allow_vlan: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         AuthenticationFailure.
 
@@ -11265,6 +11459,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             action: action
                             allow_vlan: allow_vlan
+                            allow_access_list: Name of the IPv4/IPv6 standard/extended access list to be applied to unauthenticated traffic.
 
                         """
 
@@ -15048,8 +15243,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """MAC access list name."""
         multicast: Multicast
         """
-        Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-        of both.
+        Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+        both.
 
         Subclass of AvdModel.
         """
@@ -15368,8 +15563,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mac_access_group_in: MAC access list name.
                     mac_access_group_out: MAC access list name.
                     multicast:
-                       Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                       of both.
+                       Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                       both.
 
                        Subclass of AvdModel.
                     ospf_network_point_to_point: ospf_network_point_to_point
@@ -17151,6 +17346,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -17215,8 +17411,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -17254,6 +17461,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -17302,7 +17510,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -20011,6 +20227,63 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpSoftwareForwarding(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Mtu(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"size": {"type": int}, "exceed_action_drop": {"type": bool}}
+            size: int | None
+            """
+            IPv4 software-forwarding MTU threshold in bytes.
+            Defaults to 1500 on EOS.
+            """
+            exceed_action_drop: bool | None
+            """
+            Drop IPv4 packets larger than `mtu.size` in software.
+            Supported starting EOS 4.36.1F, 4.35.4M,
+            4.34.6M, 4.33.8M, 4.32.11M.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, size: int | UndefinedType | None = Undefined, exceed_action_drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Mtu.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        size:
+                           IPv4 software-forwarding MTU threshold in bytes.
+                           Defaults to 1500 on EOS.
+                        exceed_action_drop:
+                           Drop IPv4 packets larger than `mtu.size` in software.
+                           Supported starting EOS 4.36.1F, 4.35.4M,
+                           4.34.6M, 4.33.8M, 4.32.11M.
+
+                    """
+
+        _fields: ClassVar[dict] = {"mtu": {"type": Mtu}}
+        mtu: Mtu
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, mtu: Mtu | UndefinedType = Undefined) -> None:
+                """
+                IpSoftwareForwarding.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    mtu: Subclass of AvdModel.
+
+                """
+
     class IpSshClient(AvdModel):
         """Subclass of AvdModel."""
 
@@ -20329,6 +20602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -20385,8 +20659,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -20423,6 +20708,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -20467,7 +20753,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -24745,6 +25039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"idle_timeout": {"type": int}}
         idle_timeout: int | None
+        """Idle timeout in minutes."""
 
         if TYPE_CHECKING:
 
@@ -24756,7 +25051,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    idle_timeout: idle_timeout
+                    idle_timeout: Idle timeout in minutes.
 
                 """
 
@@ -28067,11 +28362,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ServerHosts._item_type = str
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "shutdown": {"type": bool}, "server_hosts": {"type": ServerHosts}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "shutdown": {"type": bool},
+                "server_hosts": {"type": ServerHosts},
+                "vrf": {"type": str},
+                "source_interface": {"type": str},
+            }
             name: str | None
             shutdown: bool | None
             server_hosts: ServerHosts
             """Subclass of AvdList with `str` items."""
+            vrf: str | None
+            """VRF name."""
+            source_interface: str | None
+            """Source interface name."""
 
             if TYPE_CHECKING:
 
@@ -28081,6 +28386,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     server_hosts: ServerHosts | UndefinedType = Undefined,
+                    vrf: str | UndefinedType | None = Undefined,
+                    source_interface: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     CvxSecondary.
@@ -28092,6 +28399,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: name
                         shutdown: shutdown
                         server_hosts: Subclass of AvdList with `str` items.
+                        vrf: VRF name.
+                        source_interface: Source interface name.
 
                     """
 
@@ -29311,7 +29620,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            Environment: TypeAlias = Literal["act"]
+            Environment: TypeAlias = Literal["act", "containerlab"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
@@ -29442,6 +29751,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Bgp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"check_tcp_queues": {"type": bool}, "minimum_established_time": {"type": int}}
+            check_tcp_queues: bool | None
+            """Flag to check if the TCP session queues are empty for all BGP peers."""
+            minimum_established_time: int | None
+            """Minimum established time (seconds) for all BGP sessions."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, check_tcp_queues: bool | UndefinedType | None = Undefined, minimum_established_time: int | UndefinedType | None = Undefined
+                ) -> None:
+                    """
+                    Bgp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        check_tcp_queues: Flag to check if the TCP session queues are empty for all BGP peers.
+                        minimum_established_time: Minimum established time (seconds) for all BGP sessions.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "is_deployed": {"type": bool},
             "platform": {"type": str},
@@ -29459,6 +29794,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "validate_no_errors_period": {"type": int},
             "exclude_as_extra_fabric_validation_target": {"type": bool},
             "interfaces": {"type": Interfaces},
+            "bgp": {"type": Bgp},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -29532,6 +29868,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        bgp: Bgp
+        """
+        Validation settings for BGP.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -29554,6 +29896,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 validate_no_errors_period: int | UndefinedType | None = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType | None = Undefined,
                 interfaces: Interfaces | UndefinedType = Undefined,
+                bgp: Bgp | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -29614,6 +29957,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        fabric validation tests performed by the `anta_runner` role.
                     interfaces:
                        Interface validation settings.
+
+                       Subclass of AvdModel.
+                    bgp:
+                       Validation settings for BGP.
 
                        Subclass of AvdModel.
 
@@ -36654,6 +37001,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Role: TypeAlias = Literal["master", "dynamic"]
             Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
+
+            class Management(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"drop": {"type": bool}}
+                drop: bool | None
+                """Drop PTP management messages."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Management.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            drop: Drop PTP management messages.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -36666,6 +37035,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "vlan": {"type": str},
                 "transport": {"type": str},
                 "mpass": {"type": bool},
+                "management": {"type": Management},
             }
             enable: bool | None
             announce: Announce
@@ -36691,6 +37061,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
             devices.
             """
+            management: Management
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -36708,6 +37080,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vlan: str | UndefinedType | None = Undefined,
                     transport: Transport | UndefinedType | None = Undefined,
                     mpass: bool | UndefinedType | None = Undefined,
+                    management: Management | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -36733,6 +37106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            within the port-channel.
                            Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
                            devices.
+                        management: Subclass of AvdModel.
 
                     """
 
@@ -37497,6 +37871,144 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4: Subclass of AvdModel.
+
+                    """
+
+        class Multicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BoundariesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
+                    boundary: str
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
+                    out: bool | None
+                    """Restrict multicast routing to and from the interface for group."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined, out: bool | UndefinedType | None = Undefined) -> None:
+                            """
+                            BoundariesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
+                                out: Restrict multicast routing to and from the interface for group.
+
+                            """
+
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
+                    """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "boundary"
+
+                Boundaries._item_type = BoundariesItem
+
+                _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
+                boundaries: Boundaries
+                """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+                static: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            boundaries: Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
+                            static: static
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BoundariesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"boundary": {"type": str}}
+                    boundary: str
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, boundary: str | UndefinedType = Undefined) -> None:
+                            """
+                            BoundariesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
+
+                            """
+
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
+                    """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "boundary"
+
+                Boundaries._item_type = BoundariesItem
+
+                _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "static": {"type": bool}}
+                boundaries: Boundaries
+                """Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`)."""
+                static: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, boundaries: Boundaries | UndefinedType = Undefined, static: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            boundaries: Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
+                            static: static
+
+                        """
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}, "ipv6": {"type": Ipv6}}
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """
+            Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+            both.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined, ipv6: Ipv6 | UndefinedType = Undefined) -> None:
+                    """
+                    Multicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6:
+                           Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                           both.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -39852,6 +40364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mac_access_group_in": {"type": str},
             "mac_access_group_out": {"type": str},
             "pim": {"type": Pim},
+            "multicast": {"type": Multicast},
             "service_profile": {"type": str},
             "ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
@@ -40016,6 +40529,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """MAC access list name."""
         pim: Pim
         """Subclass of AvdModel."""
+        multicast: Multicast
+        """
+        Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+        both.
+
+        Subclass of AvdModel.
+        """
         service_profile: str | None
         """QOS profile."""
         ospf_network_point_to_point: bool | None
@@ -40134,6 +40654,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mac_access_group_in: str | UndefinedType | None = Undefined,
                 mac_access_group_out: str | UndefinedType | None = Undefined,
                 pim: Pim | UndefinedType = Undefined,
+                multicast: Multicast | UndefinedType = Undefined,
                 service_profile: str | UndefinedType | None = Undefined,
                 ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
                 ospf_area: str | UndefinedType | None = Undefined,
@@ -40248,6 +40769,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mac_access_group_in: MAC access list name.
                     mac_access_group_out: MAC access list name.
                     pim: Subclass of AvdModel.
+                    multicast:
+                       Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                       both.
+
+                       Subclass of AvdModel.
                     service_profile: QOS profile.
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ospf_area: ospf_area
@@ -42740,7 +43266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"port": {"type": int}, "tls_ssl_profile": {"type": str}}
             port: int | None
-            """TCP Port."""
+            """UDP port used for RADIUS dynamic authorization requests."""
             tls_ssl_profile: str | None
             """Name of TLS profile."""
 
@@ -42754,7 +43280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        port: TCP Port.
+                        port: UDP port used for RADIUS dynamic authorization requests.
                         tls_ssl_profile: Name of TLS profile.
 
                     """
@@ -44352,6 +44878,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
+            class Convergence(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"slow_peer_time": {"type": int}, "time": {"type": int}}
+                slow_peer_time: int | None
+                """
+                Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do
+                not establish session within a reasonable time.
+                """
+                time: int | None
+                """Maximum amount of time to wait in seconds before declaring initial BGP convergence."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, slow_peer_time: int | UndefinedType | None = Undefined, time: int | UndefinedType | None = Undefined) -> None:
+                        """
+                        Convergence.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            slow_peer_time:
+                               Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do
+                               not establish session within a reasonable time.
+                            time: Maximum amount of time to wait in seconds before declaring initial BGP convergence.
+
+                        """
+
             class Default(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -44577,6 +45132,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "convergence": {"type": Convergence},
                 "default": {"type": Default},
                 "route_reflector_preserve_attributes": {"type": RouteReflectorPreserveAttributes},
                 "bestpath": {"type": Bestpath},
@@ -44584,6 +45140,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "redistribute_internal": {"type": bool},
                 "labeled_unicast": {"type": LabeledUnicast},
             }
+            convergence: Convergence
+            """Subclass of AvdModel."""
             default: Default
             """Subclass of AvdModel."""
             route_reflector_preserve_attributes: RouteReflectorPreserveAttributes
@@ -44602,6 +45160,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    convergence: Convergence | UndefinedType = Undefined,
                     default: Default | UndefinedType = Undefined,
                     route_reflector_preserve_attributes: RouteReflectorPreserveAttributes | UndefinedType = Undefined,
                     bestpath: Bestpath | UndefinedType = Undefined,
@@ -44616,6 +45175,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        convergence: Subclass of AvdModel.
                         default: Subclass of AvdModel.
                         route_reflector_preserve_attributes: Subclass of AvdModel.
                         bestpath: Subclass of AvdModel.
@@ -44881,6 +45441,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class MaximumAcceptedRoutes(AvdModel):
+                """Subclass of AvdModel."""
+
+                class WarningLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                    count: int | None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                    with `percent`. `count` takes precedence.
+                    """
+                    percent: int | None
+                    """
+                    Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                    with `count`. `count` takes precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            WarningLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                   with `percent`. `count` takes precedence.
+                                percent:
+                                   Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                   with `count`. `count` takes precedence.
+
+                            """
+
+                _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                limit: int
+                """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                warning_limit: WarningLimit
+                """
+                Warning threshold for the maximum number of accepted routes.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                        """
+                        MaximumAcceptedRoutes.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                            warning_limit:
+                               Warning threshold for the maximum number of accepted routes.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class MissingPolicy(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -45127,6 +45752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
                 "maximum_routes_warning_only": {"type": bool},
+                "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 "missing_policy": {"type": MissingPolicy},
                 "link_bandwidth": {"type": LinkBandwidth},
                 "allowas_in": {"type": AllowasIn},
@@ -45140,6 +45766,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
+                "maximum_advertised_routes": {"type": int},
+                "maximum_advertised_routes_warning_limit": {"type": str},
             }
             name: str
             """Peer-group name."""
@@ -45210,6 +45838,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             maximum number of routes at which to warn ("<1-100> percent").
             """
             maximum_routes_warning_only: bool | None
+            maximum_accepted_routes: MaximumAcceptedRoutes
+            """Subclass of AvdModel."""
             missing_policy: MissingPolicy
             """
             Missing policy configuration for all address-families.
@@ -45238,6 +45868,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
+            maximum_advertised_routes: int | None
+            """Maximum number of advertised routes (0 means unlimited)."""
+            maximum_advertised_routes_warning_limit: str | None
+            """
+            Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+            never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            """
 
             if TYPE_CHECKING:
 
@@ -45270,6 +45908,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     maximum_routes: int | UndefinedType | None = Undefined,
                     maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                     maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -45283,6 +45922,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     session_tracker: str | UndefinedType | None = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     PeerGroupsItem.
@@ -45337,6 +45978,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Percentage of
                            maximum number of routes at which to warn ("<1-100> percent").
                         maximum_routes_warning_only: maximum_routes_warning_only
+                        maximum_accepted_routes: Subclass of AvdModel.
                         missing_policy:
                            Missing policy configuration for all address-families.
 
@@ -45353,6 +45995,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                        maximum_advertised_routes_warning_limit:
+                           Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                           never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -45477,6 +46124,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             enabled: enabled
                             always: always
                             route_map: route_map
+
+                        """
+
+            class MaximumAcceptedRoutes(AvdModel):
+                """Subclass of AvdModel."""
+
+                class WarningLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                    count: int | None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                    with `percent`. `count` takes precedence.
+                    """
+                    percent: int | None
+                    """
+                    Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                    with `count`. `count` takes precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            WarningLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                   with `percent`. `count` takes precedence.
+                                percent:
+                                   Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                   with `count`. `count` takes precedence.
+
+                            """
+
+                _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                limit: int
+                """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                warning_limit: WarningLimit
+                """
+                Warning threshold for the maximum number of accepted routes.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                        """
+                        MaximumAcceptedRoutes.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                            warning_limit:
+                               Warning threshold for the maximum number of accepted routes.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -45779,6 +46491,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
                 "maximum_routes_warning_only": {"type": bool},
+                "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 "missing_policy": {"type": MissingPolicy},
                 "allowas_in": {"type": AllowasIn},
                 "ebgp_multihop": {"type": int},
@@ -45791,6 +46504,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
+                "maximum_advertised_routes": {"type": int},
+                "maximum_advertised_routes_warning_limit": {"type": str},
             }
             ip_address: str
             peer_group: str | None
@@ -45859,6 +46574,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             maximum number of routes at which to warn ("<1-100> percent").
             """
             maximum_routes_warning_only: bool | None
+            maximum_accepted_routes: MaximumAcceptedRoutes
+            """Subclass of AvdModel."""
             missing_policy: MissingPolicy
             """
             Missing policy configuration for all address-families.
@@ -45888,6 +46605,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
+            maximum_advertised_routes: int | None
+            """Maximum number of advertised routes (0 means unlimited)."""
+            maximum_advertised_routes_warning_limit: str | None
+            """
+            Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+            never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            """
 
             if TYPE_CHECKING:
 
@@ -45921,6 +46646,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     maximum_routes: int | UndefinedType | None = Undefined,
                     maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                     maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
                     ebgp_multihop: int | UndefinedType | None = Undefined,
@@ -45933,6 +46659,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     session_tracker: str | UndefinedType | None = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     NeighborsItem.
@@ -45985,6 +46713,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Percentage of
                            maximum number of routes at which to warn ("<1-100> percent").
                         maximum_routes_warning_only: maximum_routes_warning_only
+                        maximum_accepted_routes: Subclass of AvdModel.
                         missing_policy:
                            Missing policy configuration for all address-families.
 
@@ -46003,6 +46732,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                        maximum_advertised_routes_warning_limit:
+                           Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                           never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -48781,6 +49515,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "activate": {"type": bool},
@@ -48795,6 +49594,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_out": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                     "next_hop": {"type": NextHop},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 }
                 name: str
                 """Peer-group name."""
@@ -48827,6 +49629,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 next_hop: NextHop
                 """Subclass of AvdModel."""
+                maximum_advertised_routes: int | None
+                """Maximum number of advertised routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                """
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -48846,6 +49658,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_out: str | UndefinedType | None = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         next_hop: NextHop | UndefinedType = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -48871,6 +49686,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
                             next_hop: Subclass of AvdModel.
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                            maximum_accepted_routes: Subclass of AvdModel.
 
                         """
 
@@ -49010,6 +49831,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "activate": {"type": bool},
@@ -49024,6 +49910,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "default_originate": {"type": DefaultOriginate},
                     "additional_paths": {"type": AdditionalPaths},
                     "next_hop": {"type": NextHop},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 }
                 ip_address: str
                 activate: bool | None
@@ -49055,6 +49944,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 next_hop: NextHop
                 """Subclass of AvdModel."""
+                maximum_advertised_routes: int | None
+                """Maximum number of advertised routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                """
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -49074,6 +49973,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         next_hop: NextHop | UndefinedType = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -49099,6 +50001,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
                             next_hop: Subclass of AvdModel.
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                            maximum_accepted_routes: Subclass of AvdModel.
 
                         """
 
@@ -49812,12 +50720,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -49833,6 +50762,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -49844,6 +50775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4.
@@ -49860,6 +50792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -50380,12 +51313,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart_helper: GracefulRestartHelper
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
                 missing_policy: MissingPolicy
                 """
@@ -50458,11 +51391,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             aigp_session: aigp_session
                             graceful_restart: graceful_restart
                             graceful_restart_helper: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
                             missing_policy:
                                Missing policy configuration for BGP Labeled-Unicast neighbor.
 
@@ -50728,12 +51661,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart_helper: GracefulRestartHelper
                 """Subclass of AvdModel."""
                 maximum_advertised_routes: int | None
-                """Maximum number of routes (0 means unlimited)."""
+                """Maximum number of advertised routes (0 means unlimited)."""
                 maximum_advertised_routes_warning_limit: str | None
                 """
-                Maximum number of routes after which a warning is issued (0 means never warn) or
-                Percentage of
-                maximum number of routes at which to warn ("<1-100> percent").
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
                 """
                 missing_policy: MissingPolicy
                 """
@@ -50806,11 +51739,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             aigp_session: aigp_session
                             graceful_restart: graceful_restart
                             graceful_restart_helper: Subclass of AvdModel.
-                            maximum_advertised_routes: Maximum number of routes (0 means unlimited).
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
                             maximum_advertised_routes_warning_limit:
-                               Maximum number of routes after which a warning is issued (0 means never warn) or
-                               Percentage of
-                               maximum number of routes at which to warn ("<1-100> percent").
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
                             missing_policy:
                                Missing policy configuration for BGP Labeled-Unicast neighbor.
 
@@ -50886,6 +51819,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
+
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
 
             class NextHopsItem(AvdModel):
                 """Subclass of AvdModel."""
@@ -50997,6 +51950,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "networks": {"type": Networks},
+                "next_hop": {"type": NextHop},
                 "next_hops": {"type": NextHops},
                 "next_hop_resolution_ribs": {"type": NextHopResolutionRibs},
                 "tunnel_source_protocols": {"type": TunnelSourceProtocols},
@@ -51018,6 +51972,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
+            next_hop: NextHop
+            """Subclass of AvdModel."""
             next_hops: NextHops
             """Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`)."""
             next_hop_resolution_ribs: NextHopResolutionRibs
@@ -51049,6 +52005,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                     next_hops: NextHops | UndefinedType = Undefined,
                     next_hop_resolution_ribs: NextHopResolutionRibs | UndefinedType = Undefined,
                     tunnel_source_protocols: TunnelSourceProtocols | UndefinedType = Undefined,
@@ -51070,6 +52027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_groups: Subclass of AvdIndexedList with `PeerGroupsItem` items. Primary key is `name` (`str`).
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         networks: Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`).
+                        next_hop: Subclass of AvdModel.
                         next_hops: Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`).
                         next_hop_resolution_ribs:
                            Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB
@@ -52177,6 +53135,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "activate": {"type": bool},
@@ -52190,6 +53213,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_out": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                     "default_originate": {"type": DefaultOriginate},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 }
                 name: str
                 """Peer-group name."""
@@ -52220,6 +53246,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 default_originate: DefaultOriginate
                 """Subclass of AvdModel."""
+                maximum_advertised_routes: int | None
+                """Maximum number of advertised routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                """
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -52238,6 +53274,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_out: str | UndefinedType | None = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -52262,6 +53301,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                            maximum_accepted_routes: Subclass of AvdModel.
 
                         """
 
@@ -52367,6 +53412,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "activate": {"type": bool},
@@ -52380,6 +53490,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_out": {"type": str},
                     "default_originate": {"type": DefaultOriginate},
                     "additional_paths": {"type": AdditionalPaths},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 }
                 ip_address: str
                 activate: bool | None
@@ -52409,6 +53522,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                maximum_advertised_routes: int | None
+                """Maximum number of advertised routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                """
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -52427,6 +53550,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_out: str | UndefinedType | None = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -52451,6 +53577,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Outbound prefix-list name.
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                            maximum_accepted_routes: Subclass of AvdModel.
 
                         """
 
@@ -52984,12 +54116,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
+                "next_hop": {"type": NextHop},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -53005,6 +54158,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            next_hop: NextHop
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -53016,6 +54171,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -53032,6 +54188,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -55397,12 +56554,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "peer_groups": {"type": PeerGroups},
                 "route": {"type": Route},
                 "neighbors": {"type": Neighbors},
                 "neighbor_default_encapsulation_mpls_next_hop_self": {"type": NeighborDefaultEncapsulationMplsNextHopSelf},
+                "next_hop": {"type": NextHop},
             }
             domain_identifier: str | None
             peer_groups: PeerGroups
@@ -55412,6 +56590,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             neighbors: Neighbors
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf
+            """Subclass of AvdModel."""
+            next_hop: NextHop
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -55424,6 +56604,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyVpnIpv6.
@@ -55437,6 +56618,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route: Subclass of AvdModel.
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         neighbor_default_encapsulation_mpls_next_hop_self: Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
@@ -56307,6 +57489,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 class AllowasIn(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -56456,6 +57703,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "ttl_maximum_hops": {"type": int},
                     "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
@@ -56467,6 +57715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
                     "maximum_routes_warning_only": {"type": bool},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                     "allowas_in": {"type": AllowasIn},
                     "default_originate": {"type": DefaultOriginate},
                     "enforce_first_as": {"type": bool},
@@ -56518,6 +57767,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                ttl_maximum_hops: int | None
+                """Maximum number of hops."""
                 next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
@@ -56543,6 +57794,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 maximum number of routes at which to warn ("<1-100> percent").
                 """
                 maximum_routes_warning_only: bool | None
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
                 allowas_in: AllowasIn
                 """Subclass of AvdModel."""
                 default_originate: DefaultOriginate
@@ -56582,6 +57835,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | UndefinedType | None = Undefined,
                         route_reflector_client: bool | UndefinedType | None = Undefined,
                         ebgp_multihop: int | UndefinedType | None = Undefined,
+                        ttl_maximum_hops: int | UndefinedType | None = Undefined,
                         next_hop_peer: bool | UndefinedType | None = Undefined,
                         next_hop_self: bool | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
@@ -56593,6 +57847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         maximum_routes: int | UndefinedType | None = Undefined,
                         maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                         maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         enforce_first_as: bool | UndefinedType | None = Undefined,
@@ -56639,6 +57894,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            ttl_maximum_hops: Maximum number of hops.
                             next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
@@ -56656,6 +57912,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Percentage of
                                maximum number of routes at which to warn ("<1-100> percent").
                             maximum_routes_warning_only: maximum_routes_warning_only
+                            maximum_accepted_routes: Subclass of AvdModel.
                             allowas_in: Subclass of AvdModel.
                             default_originate: Subclass of AvdModel.
                             enforce_first_as: Enforce the first AS in eBGP updates. EOS default is true.
@@ -65517,6 +66774,1658 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class RouterOspfv3(AvdModel):
+        """Subclass of AvdModel."""
+
+        class AddressFamilyIpv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Redistribute(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Bgp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Bgp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Connected(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Connected.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Static(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Static.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Isis(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Level: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "level": {"type": str}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    level: Level | None
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            level: Level | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Isis.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                level: level
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Ospfv3(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Leaked(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Redistribute OSPFv3 leaked routes."""
+                        match_internal: bool | None
+                        """Redistribute internal OSPFv3 leaked routes."""
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                match_internal: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Leaked.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Redistribute OSPFv3 leaked routes.
+                                    match_internal: Redistribute internal OSPFv3 leaked routes.
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchExternal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                LeakedMatchExternal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchNssaExternal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                LeakedMatchNssaExternal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "leaked": {"type": Leaked},
+                        "leaked_match_external": {"type": LeakedMatchExternal},
+                        "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
+                    }
+                    leaked: Leaked
+                    """Subclass of AvdModel."""
+                    leaked_match_external: LeakedMatchExternal
+                    """
+                    Redistribute external OSPFv3 leaked routes.
+
+                    Subclass of AvdModel.
+                    """
+                    leaked_match_nssa_external: LeakedMatchNssaExternal
+                    """
+                    Redistribute NSSA external OSPFv3 leaked routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            leaked: Leaked | UndefinedType = Undefined,
+                            leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                            leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Ospfv3.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                leaked: Subclass of AvdModel.
+                                leaked_match_external:
+                                   Redistribute external OSPFv3 leaked routes.
+
+                                   Subclass of AvdModel.
+                                leaked_match_nssa_external:
+                                   Redistribute NSSA external OSPFv3 leaked routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "bgp": {"type": Bgp},
+                    "connected": {"type": Connected},
+                    "static": {"type": Static},
+                    "isis": {"type": Isis},
+                    "ospfv3": {"type": Ospfv3},
+                }
+                bgp: Bgp
+                """Subclass of AvdModel."""
+                connected: Connected
+                """Subclass of AvdModel."""
+                static: Static
+                """Subclass of AvdModel."""
+                isis: Isis
+                """Subclass of AvdModel."""
+                ospfv3: Ospfv3
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        bgp: Bgp | UndefinedType = Undefined,
+                        connected: Connected | UndefinedType = Undefined,
+                        static: Static | UndefinedType = Undefined,
+                        isis: Isis | UndefinedType = Undefined,
+                        ospfv3: Ospfv3 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Redistribute.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            bgp: Subclass of AvdModel.
+                            connected: Subclass of AvdModel.
+                            static: Subclass of AvdModel.
+                            isis: Subclass of AvdModel.
+                            ospfv3: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "router_id": {"type": str},
+                "passive_interface_default": {"type": bool},
+                "auto_cost_reference_bandwidth": {"type": int},
+                "redistribute": {"type": Redistribute},
+            }
+            enabled: bool
+            """Activate the address family."""
+            router_id: str | None
+            """32-bit OSPF router ID as an IP address."""
+            passive_interface_default: bool | None
+            auto_cost_reference_bandwidth: int | None
+            """Reference bandwidth in Mbps."""
+            redistribute: Redistribute
+            """
+            Redistribute routes into OSPFv3.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    redistribute: Redistribute | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AddressFamilyIpv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Activate the address family.
+                        router_id: 32-bit OSPF router ID as an IP address.
+                        passive_interface_default: passive_interface_default
+                        auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        redistribute:
+                           Redistribute routes into OSPFv3.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class AddressFamilyIpv6(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Redistribute(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Dhcp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool
+                    route_map: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                            """
+                            Dhcp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+
+                            """
+
+                class Bgp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Bgp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Connected(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Connected.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Static(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Static.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Isis(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Level: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "level": {"type": str}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                    enabled: bool
+                    level: Level | None
+                    route_map: str | None
+                    include_leaked: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            level: Level | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                            include_leaked: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Isis.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                level: level
+                                route_map: route_map
+                                include_leaked: include_leaked
+
+                            """
+
+                class Ospfv3(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Leaked(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Redistribute OSPFv3 leaked routes."""
+                        match_internal: bool | None
+                        """Redistribute internal OSPFv3 leaked routes."""
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                match_internal: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Leaked.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Redistribute OSPFv3 leaked routes.
+                                    match_internal: Redistribute internal OSPFv3 leaked routes.
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchExternal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                LeakedMatchExternal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+
+                                """
+
+                    class LeakedMatchNssaExternal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                LeakedMatchNssaExternal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "leaked": {"type": Leaked},
+                        "leaked_match_external": {"type": LeakedMatchExternal},
+                        "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
+                    }
+                    leaked: Leaked
+                    """Subclass of AvdModel."""
+                    leaked_match_external: LeakedMatchExternal
+                    """
+                    Redistribute external OSPFv3 leaked routes.
+
+                    Subclass of AvdModel.
+                    """
+                    leaked_match_nssa_external: LeakedMatchNssaExternal
+                    """
+                    Redistribute NSSA external OSPFv3 leaked routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            leaked: Leaked | UndefinedType = Undefined,
+                            leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                            leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Ospfv3.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                leaked: Subclass of AvdModel.
+                                leaked_match_external:
+                                   Redistribute external OSPFv3 leaked routes.
+
+                                   Subclass of AvdModel.
+                                leaked_match_nssa_external:
+                                   Redistribute NSSA external OSPFv3 leaked routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "dhcp": {"type": Dhcp},
+                    "bgp": {"type": Bgp},
+                    "connected": {"type": Connected},
+                    "static": {"type": Static},
+                    "isis": {"type": Isis},
+                    "ospfv3": {"type": Ospfv3},
+                }
+                dhcp: Dhcp
+                """Subclass of AvdModel."""
+                bgp: Bgp
+                """Subclass of AvdModel."""
+                connected: Connected
+                """Subclass of AvdModel."""
+                static: Static
+                """Subclass of AvdModel."""
+                isis: Isis
+                """Subclass of AvdModel."""
+                ospfv3: Ospfv3
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dhcp: Dhcp | UndefinedType = Undefined,
+                        bgp: Bgp | UndefinedType = Undefined,
+                        connected: Connected | UndefinedType = Undefined,
+                        static: Static | UndefinedType = Undefined,
+                        isis: Isis | UndefinedType = Undefined,
+                        ospfv3: Ospfv3 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Redistribute.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dhcp: Subclass of AvdModel.
+                            bgp: Subclass of AvdModel.
+                            connected: Subclass of AvdModel.
+                            static: Subclass of AvdModel.
+                            isis: Subclass of AvdModel.
+                            ospfv3: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "redistribute": {"type": Redistribute},
+                "enabled": {"type": bool},
+                "router_id": {"type": str},
+                "passive_interface_default": {"type": bool},
+                "auto_cost_reference_bandwidth": {"type": int},
+            }
+            redistribute: Redistribute
+            """
+            Redistribute routes into OSPFv3.
+
+            Subclass of AvdModel.
+            """
+            enabled: bool
+            """Activate the address family."""
+            router_id: str | None
+            """32-bit OSPF router ID as an IP address."""
+            passive_interface_default: bool | None
+            auto_cost_reference_bandwidth: int | None
+            """Reference bandwidth in Mbps."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    redistribute: Redistribute | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    AddressFamilyIpv6.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        redistribute:
+                           Redistribute routes into OSPFv3.
+
+                           Subclass of AvdModel.
+                        enabled: Activate the address family.
+                        router_id: 32-bit OSPF router ID as an IP address.
+                        passive_interface_default: passive_interface_default
+                        auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+
+                    """
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamilyIpv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Redistribute(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Bgp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Bgp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Connected(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Connected.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Static(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Static.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Isis(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Level: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "level": {"type": str},
+                            "route_map": {"type": str},
+                            "include_leaked": {"type": bool},
+                        }
+                        enabled: bool
+                        level: Level | None
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                level: Level | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Isis.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    level: level
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Leaked(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            """Redistribute OSPFv3 leaked routes."""
+                            match_internal: bool | None
+                            """Redistribute internal OSPFv3 leaked routes."""
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    match_internal: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Leaked.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Redistribute OSPFv3 leaked routes.
+                                        match_internal: Redistribute internal OSPFv3 leaked routes.
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchExternal(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    LeakedMatchExternal.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchNssaExternal(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    LeakedMatchNssaExternal.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: route_map
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "leaked": {"type": Leaked},
+                            "leaked_match_external": {"type": LeakedMatchExternal},
+                            "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
+                        }
+                        leaked: Leaked
+                        """Subclass of AvdModel."""
+                        leaked_match_external: LeakedMatchExternal
+                        """
+                        Redistribute external OSPFv3 leaked routes.
+
+                        Subclass of AvdModel.
+                        """
+                        leaked_match_nssa_external: LeakedMatchNssaExternal
+                        """
+                        Redistribute NSSA external OSPFv3 leaked routes.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                leaked: Leaked | UndefinedType = Undefined,
+                                leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                                leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    leaked: Subclass of AvdModel.
+                                    leaked_match_external:
+                                       Redistribute external OSPFv3 leaked routes.
+
+                                       Subclass of AvdModel.
+                                    leaked_match_nssa_external:
+                                       Redistribute NSSA external OSPFv3 leaked routes.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "bgp": {"type": Bgp},
+                        "connected": {"type": Connected},
+                        "static": {"type": Static},
+                        "isis": {"type": Isis},
+                        "ospfv3": {"type": Ospfv3},
+                    }
+                    bgp: Bgp
+                    """Subclass of AvdModel."""
+                    connected: Connected
+                    """Subclass of AvdModel."""
+                    static: Static
+                    """Subclass of AvdModel."""
+                    isis: Isis
+                    """Subclass of AvdModel."""
+                    ospfv3: Ospfv3
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            bgp: Bgp | UndefinedType = Undefined,
+                            connected: Connected | UndefinedType = Undefined,
+                            static: Static | UndefinedType = Undefined,
+                            isis: Isis | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Redistribute.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                bgp: Subclass of AvdModel.
+                                connected: Subclass of AvdModel.
+                                static: Subclass of AvdModel.
+                                isis: Subclass of AvdModel.
+                                ospfv3: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "router_id": {"type": str},
+                    "passive_interface_default": {"type": bool},
+                    "auto_cost_reference_bandwidth": {"type": int},
+                    "redistribute": {"type": Redistribute},
+                }
+                enabled: bool
+                """Activate the address family."""
+                router_id: str | None
+                """32-bit OSPF router ID as an IP address."""
+                passive_interface_default: bool | None
+                auto_cost_reference_bandwidth: int | None
+                """Reference bandwidth in Mbps."""
+                redistribute: Redistribute
+                """
+                Redistribute routes into OSPFv3.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        router_id: str | UndefinedType | None = Undefined,
+                        passive_interface_default: bool | UndefinedType | None = Undefined,
+                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                        redistribute: Redistribute | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressFamilyIpv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Activate the address family.
+                            router_id: 32-bit OSPF router ID as an IP address.
+                            passive_interface_default: passive_interface_default
+                            auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                            redistribute:
+                               Redistribute routes into OSPFv3.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class AddressFamilyIpv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Redistribute(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Dhcp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        route_map: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                """
+                                Dhcp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+
+                                """
+
+                    class Bgp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Bgp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Connected(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Connected.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Static(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        enabled: bool
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Static.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Isis(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Level: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "level": {"type": str},
+                            "route_map": {"type": str},
+                            "include_leaked": {"type": bool},
+                        }
+                        enabled: bool
+                        level: Level | None
+                        route_map: str | None
+                        include_leaked: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                level: Level | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Isis.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    level: level
+                                    route_map: route_map
+                                    include_leaked: include_leaked
+
+                                """
+
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Leaked(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "match_internal": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            """Redistribute OSPFv3 leaked routes."""
+                            match_internal: bool | None
+                            """Redistribute internal OSPFv3 leaked routes."""
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    match_internal: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Leaked.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Redistribute OSPFv3 leaked routes.
+                                        match_internal: Redistribute internal OSPFv3 leaked routes.
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchExternal(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    LeakedMatchExternal.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: route_map
+
+                                    """
+
+                        class LeakedMatchNssaExternal(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    LeakedMatchNssaExternal.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: route_map
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "leaked": {"type": Leaked},
+                            "leaked_match_external": {"type": LeakedMatchExternal},
+                            "leaked_match_nssa_external": {"type": LeakedMatchNssaExternal},
+                        }
+                        leaked: Leaked
+                        """Subclass of AvdModel."""
+                        leaked_match_external: LeakedMatchExternal
+                        """
+                        Redistribute external OSPFv3 leaked routes.
+
+                        Subclass of AvdModel.
+                        """
+                        leaked_match_nssa_external: LeakedMatchNssaExternal
+                        """
+                        Redistribute NSSA external OSPFv3 leaked routes.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                leaked: Leaked | UndefinedType = Undefined,
+                                leaked_match_external: LeakedMatchExternal | UndefinedType = Undefined,
+                                leaked_match_nssa_external: LeakedMatchNssaExternal | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    leaked: Subclass of AvdModel.
+                                    leaked_match_external:
+                                       Redistribute external OSPFv3 leaked routes.
+
+                                       Subclass of AvdModel.
+                                    leaked_match_nssa_external:
+                                       Redistribute NSSA external OSPFv3 leaked routes.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "dhcp": {"type": Dhcp},
+                        "bgp": {"type": Bgp},
+                        "connected": {"type": Connected},
+                        "static": {"type": Static},
+                        "isis": {"type": Isis},
+                        "ospfv3": {"type": Ospfv3},
+                    }
+                    dhcp: Dhcp
+                    """Subclass of AvdModel."""
+                    bgp: Bgp
+                    """Subclass of AvdModel."""
+                    connected: Connected
+                    """Subclass of AvdModel."""
+                    static: Static
+                    """Subclass of AvdModel."""
+                    isis: Isis
+                    """Subclass of AvdModel."""
+                    ospfv3: Ospfv3
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            dhcp: Dhcp | UndefinedType = Undefined,
+                            bgp: Bgp | UndefinedType = Undefined,
+                            connected: Connected | UndefinedType = Undefined,
+                            static: Static | UndefinedType = Undefined,
+                            isis: Isis | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Redistribute.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                dhcp: Subclass of AvdModel.
+                                bgp: Subclass of AvdModel.
+                                connected: Subclass of AvdModel.
+                                static: Subclass of AvdModel.
+                                isis: Subclass of AvdModel.
+                                ospfv3: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "redistribute": {"type": Redistribute},
+                    "enabled": {"type": bool},
+                    "router_id": {"type": str},
+                    "passive_interface_default": {"type": bool},
+                    "auto_cost_reference_bandwidth": {"type": int},
+                }
+                redistribute: Redistribute
+                """
+                Redistribute routes into OSPFv3.
+
+                Subclass of AvdModel.
+                """
+                enabled: bool
+                """Activate the address family."""
+                router_id: str | None
+                """32-bit OSPF router ID as an IP address."""
+                passive_interface_default: bool | None
+                auto_cost_reference_bandwidth: int | None
+                """Reference bandwidth in Mbps."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        redistribute: Redistribute | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType = Undefined,
+                        router_id: str | UndefinedType | None = Undefined,
+                        passive_interface_default: bool | UndefinedType | None = Undefined,
+                        auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AddressFamilyIpv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            redistribute:
+                               Redistribute routes into OSPFv3.
+
+                               Subclass of AvdModel.
+                            enabled: Activate the address family.
+                            router_id: 32-bit OSPF router ID as an IP address.
+                            passive_interface_default: passive_interface_default
+                            auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "router_id": {"type": str},
+                "passive_interface_default": {"type": bool},
+                "auto_cost_reference_bandwidth": {"type": int},
+                "address_family_ipv4": {"type": AddressFamilyIpv4},
+                "address_family_ipv6": {"type": AddressFamilyIpv6},
+                "eos_cli": {"type": str},
+            }
+            name: str
+            """
+            VRF name.
+            VRF 'default' must be configured directly under 'router_ospfv3'.
+            """
+            router_id: str | None
+            """32-bit OSPF router ID as an IP address."""
+            passive_interface_default: bool | None
+            auto_cost_reference_bandwidth: int | None
+            """Reference bandwidth in Mbps."""
+            address_family_ipv4: AddressFamilyIpv4
+            """
+            Address family IPv4 configuration.
+            Common configurations defined at the router-level and address-
+            family level are mutually exclusive.
+            If both are provided, the address-family level configuration
+            takes precedence.
+
+            Subclass of AvdModel.
+            """
+            address_family_ipv6: AddressFamilyIpv6
+            """
+            Address family IPv6 configuration.
+            Common configurations defined at the router-level and address-
+            family level are mutually exclusive.
+            If both are provided, the address-family level configuration
+            takes precedence.
+
+            Subclass of AvdModel.
+            """
+            eos_cli: str | None
+            """Multiline EOS CLI rendered directly on this VRF OSPFv3 instance."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    router_id: str | UndefinedType | None = Undefined,
+                    passive_interface_default: bool | UndefinedType | None = Undefined,
+                    auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                    address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                    eos_cli: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           VRF 'default' must be configured directly under 'router_ospfv3'.
+                        router_id: 32-bit OSPF router ID as an IP address.
+                        passive_interface_default: passive_interface_default
+                        auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        address_family_ipv4:
+                           Address family IPv4 configuration.
+                           Common configurations defined at the router-level and address-
+                           family level are mutually exclusive.
+                           If both are provided, the address-family level configuration
+                           takes precedence.
+
+                           Subclass of AvdModel.
+                        address_family_ipv6:
+                           Address family IPv6 configuration.
+                           Common configurations defined at the router-level and address-
+                           family level are mutually exclusive.
+                           If both are provided, the address-family level configuration
+                           takes precedence.
+
+                           Subclass of AvdModel.
+                        eos_cli: Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "router_id": {"type": str},
+            "passive_interface_default": {"type": bool},
+            "auto_cost_reference_bandwidth": {"type": int},
+            "address_family_ipv4": {"type": AddressFamilyIpv4},
+            "address_family_ipv6": {"type": AddressFamilyIpv6},
+            "vrfs": {"type": Vrfs},
+            "eos_cli": {"type": str},
+        }
+        router_id: str | None
+        """32-bit OSPF router ID as an IP address."""
+        passive_interface_default: bool | None
+        auto_cost_reference_bandwidth: int | None
+        """Reference bandwidth in Mbps."""
+        address_family_ipv4: AddressFamilyIpv4
+        """
+        Address family IPv4 configuration.
+        Common configurations defined at the router-level and address-
+        family level are mutually exclusive.
+        If both are provided, the address-family level configuration
+        takes precedence.
+
+        Subclass of AvdModel.
+        """
+        address_family_ipv6: AddressFamilyIpv6
+        """
+        Address family IPv6 configuration.
+        Common configurations defined at the router-level and address-
+        family level are mutually exclusive.
+        If both are provided, the address-family level configuration
+        takes precedence.
+
+        Subclass of AvdModel.
+        """
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        eos_cli: str | None
+        """Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                router_id: str | UndefinedType | None = Undefined,
+                passive_interface_default: bool | UndefinedType | None = Undefined,
+                auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
+                address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                eos_cli: str | UndefinedType | None = Undefined,
+            ) -> None:
+                """
+                RouterOspfv3.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    router_id: 32-bit OSPF router ID as an IP address.
+                    passive_interface_default: passive_interface_default
+                    auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                    address_family_ipv4:
+                       Address family IPv4 configuration.
+                       Common configurations defined at the router-level and address-
+                       family level are mutually exclusive.
+                       If both are provided, the address-family level configuration
+                       takes precedence.
+
+                       Subclass of AvdModel.
+                    address_family_ipv6:
+                       Address family IPv6 configuration.
+                       Common configurations defined at the router-level and address-
+                       family level are mutually exclusive.
+                       If both are provided, the address-family level configuration
+                       takes precedence.
+
+                       Subclass of AvdModel.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    eos_cli: Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance.
+
+                """
+
     class RouterPathSelection(AvdModel):
         """Subclass of AvdModel."""
 
@@ -68729,6 +71638,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            AuthKeyType: TypeAlias = Literal["0", "7"]
+            PrivKeyType: TypeAlias = Literal["0", "7"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -68737,36 +71648,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "localized": {"type": str},
                 "auth": {"type": str},
+                "auth_key_type": {"type": str},
+                "auth_key": {"type": str},
                 "auth_passphrase": {"type": str},
                 "priv": {"type": str},
+                "priv_key_type": {"type": str},
+                "priv_key": {"type": str},
                 "priv_passphrase": {"type": str},
             }
             name: str | None
-            """Username."""
+            """
+            SNMP username.
+            Maximum length is 32 characters.
+            """
             group: str | None
             """Group name."""
             remote_address: str | None
             """
-            Hostname or ip of remote engine.
-            The remote_address and udp_port are used for remote users.
-            A
-            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-            and
-            `localized` is not set.
+            Hostname or IP address of the remote SNMP engine.
+            When set, this user is rendered as a remote SNMPv3
+            user and optional `udp_port` is appended.
+            If `localized` is not set, a matching
+            `snmp_server.engine_ids.remotes[].address` entry is required.
             """
             udp_port: int | None
-            """udp_port will not be used if no remote_address is configured."""
+            """
+            UDP port of the remote SNMP engine.
+            Only used when `remote_address` is set.
+            """
             version: Version | None
             localized: str | None
-            """Engine ID in hexadecimal for localizing auth and/or priv."""
+            """
+            Engine ID in hexadecimal.
+            When set, auth and priv values are interpreted as localized key material
+            (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+            Required to use
+            `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+            """
             auth: str | None
-            """Hash algorithm."""
+            """
+            Hash algorithm.
+            Required for rendering any authentication or privacy credential.
+            """
+            auth_key_type: AuthKeyType | None
+            """
+            Authentication key type.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            Used with `auth_key`.
+            Requires `version` to be `v3`, and `auth`, `localized`, and
+            `auth_key` to be set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7 encrypted (HIDDEN) key.
+            """
+            auth_key: str | None
+            """
+            Authentication key.
+            Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+            be set.
+            Takes precedence over `auth_passphrase` when both are set.
+            """
             auth_passphrase: str | None
-            """Hashed authentication passphrase if localized is used else cleartext authentication passphrase."""
+            """
+            Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+            Rendered only when `auth` is set and `version` is `v3`.
+            Ignored when `auth_key_type` and `auth_key`
+            are set with `localized`.
+            """
             priv: str | None
-            """Encryption algorithm."""
+            """
+            Encryption algorithm.
+            Required for rendering any privacy credential.
+            """
+            priv_key_type: PrivKeyType | None
+            """
+            Privacy key type.
+            EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+            Used with `priv_key`.
+            Requires `localized` and `priv_key` to be set.
+            Rendered only when `priv`,
+            `auth_key_type`, and `auth_key` are also set.
+            - `0`: Key string is not encrypted.
+            - `7`: Type-7
+            encrypted (HIDDEN) key.
+            """
+            priv_key: str | None
+            """
+            Privacy key.
+            Requires `localized` and `priv_key_type` to be set.
+            Takes precedence over
+            `priv_passphrase` when both are set.
+            Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+            also set.
+            Ignored when authentication is rendered from `auth_passphrase`.
+            """
             priv_passphrase: str | None
-            """Hashed privacy passphrase if localized is used else cleartext privacy passphrase."""
+            """
+            Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+            Rendered only when
+            `priv` is set and authentication is rendered from `auth_passphrase`.
+            Ignored when `priv_key_type`
+            and `priv_key` are set with `localized`.
+            Ignored when authentication is rendered from
+            `auth_key_type`/`auth_key`.
+            """
 
             if TYPE_CHECKING:
 
@@ -68780,8 +71765,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     localized: str | UndefinedType | None = Undefined,
                     auth: str | UndefinedType | None = Undefined,
+                    auth_key_type: AuthKeyType | UndefinedType | None = Undefined,
+                    auth_key: str | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
                     priv: str | UndefinedType | None = Undefined,
+                    priv_key_type: PrivKeyType | UndefinedType | None = Undefined,
+                    priv_key: str | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -68791,22 +71780,77 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Username.
+                        name:
+                           SNMP username.
+                           Maximum length is 32 characters.
                         group: Group name.
                         remote_address:
-                           Hostname or ip of remote engine.
-                           The remote_address and udp_port are used for remote users.
-                           A
-                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-                           and
-                           `localized` is not set.
-                        udp_port: udp_port will not be used if no remote_address is configured.
+                           Hostname or IP address of the remote SNMP engine.
+                           When set, this user is rendered as a remote SNMPv3
+                           user and optional `udp_port` is appended.
+                           If `localized` is not set, a matching
+                           `snmp_server.engine_ids.remotes[].address` entry is required.
+                        udp_port:
+                           UDP port of the remote SNMP engine.
+                           Only used when `remote_address` is set.
                         version: version
-                        localized: Engine ID in hexadecimal for localizing auth and/or priv.
-                        auth: Hash algorithm.
-                        auth_passphrase: Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
-                        priv: Encryption algorithm.
-                        priv_passphrase: Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                        localized:
+                           Engine ID in hexadecimal.
+                           When set, auth and priv values are interpreted as localized key material
+                           (RFC 2574, engine-ID specific) instead of cleartext passphrases.
+                           Required to use
+                           `auth_key_type`/`auth_key` or `priv_key_type`/`priv_key`.
+                        auth:
+                           Hash algorithm.
+                           Required for rendering any authentication or privacy credential.
+                        auth_key_type:
+                           Authentication key type.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           Used with `auth_key`.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and
+                           `auth_key` to be set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7 encrypted (HIDDEN) key.
+                        auth_key:
+                           Authentication key.
+                           Requires `version` to be `v3`, and `auth`, `localized`, and `auth_key_type` to
+                           be set.
+                           Takes precedence over `auth_passphrase` when both are set.
+                        auth_passphrase:
+                           Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                           Rendered only when `auth` is set and `version` is `v3`.
+                           Ignored when `auth_key_type` and `auth_key`
+                           are set with `localized`.
+                        priv:
+                           Encryption algorithm.
+                           Required for rendering any privacy credential.
+                        priv_key_type:
+                           Privacy key type.
+                           EOS version dependent. Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and 4.36.2F.
+                           Used with `priv_key`.
+                           Requires `localized` and `priv_key` to be set.
+                           Rendered only when `priv`,
+                           `auth_key_type`, and `auth_key` are also set.
+                           - `0`: Key string is not encrypted.
+                           - `7`: Type-7
+                           encrypted (HIDDEN) key.
+                        priv_key:
+                           Privacy key.
+                           Requires `localized` and `priv_key_type` to be set.
+                           Takes precedence over
+                           `priv_passphrase` when both are set.
+                           Rendered only when `priv`, `auth_key_type`, and `auth_key` are
+                           also set.
+                           Ignored when authentication is rendered from `auth_passphrase`.
+                        priv_passphrase:
+                           Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                           Rendered only when
+                           `priv` is set and authentication is rendered from `auth_passphrase`.
+                           Ignored when `priv_key_type`
+                           and `priv_key` are set with `localized`.
+                           Ignored when authentication is rendered from
+                           `auth_key_type`/`auth_key`.
 
                     """
 
@@ -70167,15 +73211,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"control_plane": {"type": ControlPlane}, "l1": {"type": L1}}
+        _fields: ClassVar[dict] = {"control_plane": {"type": ControlPlane}, "l1": {"type": L1}, "mac_address": {"type": str}}
         control_plane: ControlPlane
         """Subclass of AvdModel."""
         l1: L1
         """Subclass of AvdModel."""
+        mac_address: str | None
+        """
+        Unicast (the least-significant bit of the first octet must be zero) system MAC address in
+        `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, control_plane: ControlPlane | UndefinedType = Undefined, l1: L1 | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                control_plane: ControlPlane | UndefinedType = Undefined,
+                l1: L1 | UndefinedType = Undefined,
+                mac_address: str | UndefinedType | None = Undefined,
+            ) -> None:
                 """
                 System.
 
@@ -70185,6 +73240,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     control_plane: Subclass of AvdModel.
                     l1: Subclass of AvdModel.
+                    mac_address:
+                       Unicast (the least-significant bit of the first octet must be zero) system MAC address in
+                       `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
 
                 """
 
@@ -72918,7 +75976,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"destination": {"type": Destination}, "source": {"type": Source}}
+            _fields: ClassVar[dict] = {"service_profile": {"type": str}, "destination": {"type": Destination}, "source": {"type": Source}}
+            service_profile: str | None
+            """NAT interface profile."""
             destination: Destination
             """Subclass of AvdModel."""
             source: Source
@@ -72926,7 +75986,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, destination: Destination | UndefinedType = Undefined, source: Source | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    service_profile: str | UndefinedType | None = Undefined,
+                    destination: Destination | UndefinedType = Undefined,
+                    source: Source | UndefinedType = Undefined,
+                ) -> None:
                     """
                     IpNat.
 
@@ -72934,6 +76000,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        service_profile: NAT interface profile.
                         destination: Subclass of AvdModel.
                         source: Subclass of AvdModel.
 
@@ -73369,7 +76436,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}, "out": {"type": bool}}
                     boundary: str
-                    """IPv4 access-list name or IPv4 multicast group prefix with mask."""
+                    """Standard IPv4 access-list name or IPv4 multicast group prefix with mask."""
                     out: bool | None
 
                     if TYPE_CHECKING:
@@ -73382,7 +76449,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: IPv4 access-list name or IPv4 multicast group prefix with mask.
+                                boundary: Standard IPv4 access-list name or IPv4 multicast group prefix with mask.
                                 out: out
 
                             """
@@ -73421,8 +76488,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "source_route_export": {"type": SourceRouteExport}, "static": {"type": bool}}
                 boundaries: Boundaries
                 """
-                Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                of both.
+                Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                both.
 
                 Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                 """
@@ -73447,8 +76514,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             boundaries:
-                               Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                               of both.
+                               Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                               both.
 
                                Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                             source_route_export: Subclass of AvdModel.
@@ -73464,7 +76531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"boundary": {"type": str}}
                     boundary: str
-                    """IPv6 access-list name or IPv6 multicast group prefix with mask."""
+                    """Standard IPv6 access-list name or IPv6 multicast group prefix with mask."""
 
                     if TYPE_CHECKING:
 
@@ -73476,7 +76543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                boundary: IPv6 access-list name or IPv6 multicast group prefix with mask.
+                                boundary: Standard IPv6 access-list name or IPv6 multicast group prefix with mask.
 
                             """
 
@@ -73514,8 +76581,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"boundaries": {"type": Boundaries}, "source_route_export": {"type": SourceRouteExport}, "static": {"type": bool}}
                 boundaries: Boundaries
                 """
-                Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                of both.
+                Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                both.
 
                 Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                 """
@@ -73540,8 +76607,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             boundaries:
-                               Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination
-                               of both.
+                               Boundaries can be either list of ACLs or multicast IP address_range(s)/prefix but not combination of
+                               both.
 
                                Subclass of AvdIndexedList with `BoundariesItem` items. Primary key is `boundary` (`str`).
                             source_route_export: Subclass of AvdModel.
@@ -73613,6 +76680,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         process: Subclass of AvdModel.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
+                    network_point_to_point: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
 
                     """
@@ -74789,13 +77944,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}}
+            class Qos(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"input": {"type": str}}
+                input: str | None
+                """Quality of Service Policy-map name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Qos.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            input: Quality of Service Policy-map name.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}, "qos": {"type": Qos}}
             pbr: Pbr
+            """Subclass of AvdModel."""
+            qos: Qos
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined) -> None:
+                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined, qos: Qos | UndefinedType = Undefined) -> None:
                     """
                     ServicePolicy.
 
@@ -74804,6 +77982,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         pbr: Subclass of AvdModel.
+                        qos: Subclass of AvdModel.
 
                     """
 
@@ -75019,6 +78198,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
             "ipv6_ospf": {"type": Ipv6Ospf},
+            "ospfv3": {"type": Ospfv3},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -75165,7 +78345,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_area: str | None
         ipv6_ospf: Ipv6Ospf
         """
-        IPv6 OSPF configuration for the interface.
+        IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+        is also configured.
+        Use only one style throughout the configuration.
+
+        Subclass of AvdModel.
+        """
+        ospfv3: Ospfv3
+        """
+        Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+        Use only one style throughout the
+        configuration.
 
         Subclass of AvdModel.
         """
@@ -75286,6 +78476,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | UndefinedType | None = Undefined,
                 ospf_area: str | UndefinedType | None = Undefined,
                 ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 ospf_cost: int | UndefinedType | None = Undefined,
                 ospf_authentication: OspfAuthentication | UndefinedType | None = Undefined,
                 ospf_authentication_key: str | UndefinedType | None = Undefined,
@@ -75397,7 +78588,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ospf_area: ospf_area
                     ipv6_ospf:
-                       IPv6 OSPF configuration for the interface.
+                       IPv6 OSPF configuration for the interface. Mutually exclusive with 'ospfv3'. Ignored when 'ospfv3'
+                       is also configured.
+                       Use only one style throughout the configuration.
+
+                       Subclass of AvdModel.
+                    ospfv3:
+                       Mutually exclusive with 'ipv6_ospf' and takes precedence over it.
+                       Use only one style throughout the
+                       configuration.
 
                        Subclass of AvdModel.
                     ospf_cost: ospf_cost
@@ -75892,6 +79091,62 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _primary_key: ClassVar[str] = "name"
 
     Vrfs._item_type = VrfsItem
+
+    class Vrrp(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ipv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"authentication_anti_replay": {"type": bool}}
+            authentication_anti_replay: bool | None
+            """
+            Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+            Supported in EOS
+            starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, authentication_anti_replay: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Ipv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_anti_replay:
+                           Enable anti-replay validation for authenticated IPv4 VRRPv2 advertisements.
+                           Supported in EOS
+                           starting 4.33.10M, 4.34.8M, 4.35.6M and 4.36.2F.
+
+                    """
+
+        _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}}
+        ipv4: Ipv4
+        """
+        VRRP IPv4 configuration.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined) -> None:
+                """
+                Vrrp.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ipv4:
+                       VRRP IPv4 configuration.
+
+                       Subclass of AvdModel.
+
+                """
 
     class VxlanInterface(AvdModel):
         """Subclass of AvdModel."""
@@ -76537,6 +79792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
+        "ip_software_forwarding": {"type": IpSoftwareForwarding},
         "ip_ssh_client": {"type": IpSshClient},
         "ip_tacacs": {"type": IpTacacs},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
@@ -76629,6 +79885,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_msdp": {"type": RouterMsdp},
         "router_multicast": {"type": RouterMulticast},
         "router_ospf": {"type": RouterOspf},
+        "router_ospfv3": {"type": RouterOspfv3},
         "router_path_selection": {"type": RouterPathSelection},
         "router_pim_sparse_mode": {"type": RouterPimSparseMode},
         "router_rip": {"type": RouterRip},
@@ -76666,6 +79923,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "vlans": {"type": Vlans},
         "vmtracer_sessions": {"type": VmtracerSessions},
         "vrfs": {"type": Vrfs},
+        "vrrp": {"type": Vrrp},
         "vxlan_interface": {"type": VxlanInterface},
     }
     _allow_other_keys: ClassVar[bool] = True
@@ -76975,6 +80233,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_routing_ipv6_interfaces: bool | None
     ip_security: IpSecurity
     """Subclass of AvdModel."""
+    ip_software_forwarding: IpSoftwareForwarding
+    """Subclass of AvdModel."""
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
     ip_tacacs: IpTacacs
@@ -77211,6 +80471,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     router_ospf: RouterOspf
     """Subclass of AvdModel."""
+    router_ospfv3: RouterOspfv3
+    """
+    Mutually exclusive with 'ipv6_router_ospf' on EOS.
+    Use only one style across all VRFs and instances.
+    Subclass of AvdModel.
+    """
     router_path_selection: RouterPathSelection
     """
     Dynamic path selection configuration.
@@ -77320,6 +80586,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     Subclass of AvdIndexedList with
     `VrfsItem` items. Primary key is `name` (`str`).
     """
+    vrrp: Vrrp
+    """
+    Global VRRP configuration.
+
+    Subclass of AvdModel.
+    """
     vxlan_interface: VxlanInterface
     """Subclass of AvdModel."""
 
@@ -77405,6 +80677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_routing: bool | UndefinedType | None = Undefined,
             ip_routing_ipv6_interfaces: bool | UndefinedType | None = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
+            ip_software_forwarding: IpSoftwareForwarding | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
             ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
@@ -77497,6 +80770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_msdp: RouterMsdp | UndefinedType = Undefined,
             router_multicast: RouterMulticast | UndefinedType = Undefined,
             router_ospf: RouterOspf | UndefinedType = Undefined,
+            router_ospfv3: RouterOspfv3 | UndefinedType = Undefined,
             router_path_selection: RouterPathSelection | UndefinedType = Undefined,
             router_pim_sparse_mode: RouterPimSparseMode | UndefinedType = Undefined,
             router_rip: RouterRip | UndefinedType = Undefined,
@@ -77534,6 +80808,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlans: Vlans | UndefinedType = Undefined,
             vmtracer_sessions: VmtracerSessions | UndefinedType = Undefined,
             vrfs: Vrfs | UndefinedType = Undefined,
+            vrrp: Vrrp | UndefinedType = Undefined,
             vxlan_interface: VxlanInterface | UndefinedType = Undefined,
         ) -> None:
             """
@@ -77744,6 +81019,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
+                ip_software_forwarding: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
                 ip_tacacs:
                    IP TACACS source interface configuration.
@@ -77878,6 +81154,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 router_msdp: Subclass of AvdModel.
                 router_multicast: Subclass of AvdModel.
                 router_ospf: Subclass of AvdModel.
+                router_ospfv3:
+                   Mutually exclusive with 'ipv6_router_ospf' on EOS.
+                   Use only one style across all VRFs and instances.
+                   Subclass of AvdModel.
                 router_path_selection:
                    Dynamic path selection configuration.
 
@@ -77941,6 +81221,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdIndexedList with
                    `VrfsItem` items. Primary key is `name` (`str`).
+                vrrp:
+                   Global VRRP configuration.
+
+                   Subclass of AvdModel.
                 vxlan_interface: Subclass of AvdModel.
 
             """

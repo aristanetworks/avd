@@ -2,8 +2,10 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
+from dataclasses import fields
 from logging import DEBUG
 from pathlib import Path
 from typing import Any
@@ -426,6 +428,23 @@ class TestAvdWorkspaceBuildWarningsConfigFromDict:
             AvdWorkspaceBuildWarningsConfig.from_dict(invalid_data)
 
 
+class TestAvdWorkspace:
+    @pytest.mark.parametrize(
+        ("max_sync_retries", "expected_exception"),
+        [
+            pytest.param(0, does_not_raise(), id="ZERO_ALLOWED"),
+            pytest.param(1, does_not_raise(), id="ONE_ALLOWED"),
+            pytest.param(5, does_not_raise(), id="DEFAULT_ALLOWED"),
+            pytest.param(-1, pytest.raises(ValueError, match="max_sync_retries must be a non-negative integer, got -1"), id="NEGATIVE_ONE_REJECTED"),
+            pytest.param(-100, pytest.raises(ValueError, match="max_sync_retries must be a non-negative integer, got -100"), id="LARGE_NEGATIVE_REJECTED"),
+        ],
+    )
+    def test_max_sync_retries_validation(self, max_sync_retries: int, expected_exception: AbstractContextManager) -> None:
+        """Tests that max_sync_retries >= 0 is enforced at construction time."""
+        with expected_exception:
+            AvdWorkspace(max_sync_retries=max_sync_retries)
+
+
 # === CVGRPCKeepalives Tests ===
 
 
@@ -558,6 +577,23 @@ class TestCVWorkspace:
         assert result["change_control_id"] == "cc-id"
         assert result["build_id"] == "build-id"
         assert result["device_build_results"] == []
+
+    def test_reset(self) -> None:
+        """Tests that reset clears mutable state from the previous deployment attempt."""
+        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
+        ws = CVWorkspace(
+            state="submit failed",
+            build_id="build-id",
+            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+            synchronization_required=True,
+        )
+
+        ws.reset()
+
+        assert not ws.device_build_results
+        assert ws.state == "pending"
+        assert ws.build_id is None
+        assert ws.synchronization_required is False
 
 
 class TestCVDevice:
@@ -772,3 +808,60 @@ class TestDeployToCvResult:
         assert result["removed_interface_tags"][0]["label"] == "old_speed"
         assert result["removed_interface_tags"][0]["value"] == "old_val"
         assert result["removed_interface_tags"][0]["device"] is None
+
+    def test_reset(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that reset defaults all current or future attempt fields while preserving persistent fields."""
+        device = CVDevice(avd_device=AvdDevice(hostname="leaf1"))
+        workspace = CVWorkspace(
+            avd_workspace=AvdWorkspace(name="ws-name", id="ws-id"),
+            state="submit failed",
+            build_id="b1",
+            device_build_results=[CVWorkspaceDeviceBuildResult(device=device, config_validation=CVWorkspaceBuildConfigValidationResult())],
+            synchronization_required=True,
+        )
+        change_control = CVChangeControl(avd_change_control=AvdChangeControl(name="avd-cc-name", description="avd-cc-desc"))
+        warnings = ["warn1"]
+        preserved_field_names = {"warnings", "workspace", "change_control"}
+        container = AvdContainer(name="container", tag_query="device:*")
+        configlet = AvdConfiglet(name="configlet", file="configlet.cfg")
+        device_tag = CVDeviceTag(label="device-tag", value="value", device=device)
+        interface_tag = CVInterfaceTag(label="interface-tag", value="value", device=device, interface="Ethernet1")
+        eos_config = CVEosConfig(file="leaf1.cfg", device=device)
+        studio_inputs = CVStudioInputs(studio_id="studio-id", inputs={"key": "value"})
+        cv_pathfinder_metadata = CVPathfinderMetadata(metadata={"role": "pathfinder"}, device=device)
+        attempt_values: dict[str, Any] = {
+            "failed": True,
+            "errors": [CVManifestError("error")],
+            "deployed_configs": [eos_config],
+            "deployed_static_config_containers": [container],
+            "deployed_static_config_configlets": [configlet],
+            "deployed_device_tags": [device_tag],
+            "deployed_interface_tags": [interface_tag],
+            "deployed_studio_inputs": [studio_inputs],
+            "deployed_cv_pathfinder_metadata": [cv_pathfinder_metadata],
+            "skipped_configs": [eos_config],
+            "skipped_static_config_containers": [container],
+            "skipped_device_tags": [device_tag],
+            "skipped_interface_tags": [interface_tag],
+            "skipped_cv_pathfinder_metadata": [cv_pathfinder_metadata],
+            "removed_configs": ["config-id"],
+            "removed_static_config_containers": ["container-id"],
+            "removed_static_config_configlets": ["configlet-id"],
+            "removed_device_tags": [device_tag],
+            "removed_interface_tags": [interface_tag],
+        }
+        resettable_field_names = {dataclass_field.name for dataclass_field in fields(DeployToCvResult) if dataclass_field.name not in preserved_field_names}
+        # Guard to catch newly-added fields of the DeployToCvResult dataclass
+        assert set(attempt_values) == resettable_field_names
+        result = DeployToCvResult(warnings=warnings, workspace=workspace, change_control=change_control, **attempt_values)
+
+        with caplog.at_level(DEBUG):
+            result.reset()
+
+        expected_result = DeployToCvResult(warnings=warnings, workspace=workspace, change_control=change_control)
+        for dataclass_field in fields(DeployToCvResult):
+            assert getattr(result, dataclass_field.name) == getattr(expected_result, dataclass_field.name)
+        assert result.warnings is warnings
+        assert result.workspace is workspace
+        assert result.change_control is change_control
+        assert any(re.search(r"DeployToCvResult.reset.*ws-name.*ws-id", str(record.message)) for record in caplog.records)

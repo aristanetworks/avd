@@ -24,6 +24,3 @@ tenants:
         vtep_diagnostic:
           loopback: 666
           loopback_ip_range: 192.168.66.0/24
-
-expected_error_message: |-
-  'id' is not set on 'missing-id-for-vrf-loopback' to get IP address for a vrf loopback interface

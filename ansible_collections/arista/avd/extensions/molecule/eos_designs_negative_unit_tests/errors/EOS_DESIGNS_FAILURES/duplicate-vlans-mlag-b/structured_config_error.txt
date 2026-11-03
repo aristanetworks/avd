@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdDuplicateDataError: Found duplicate objects with conflicting data while generating configuration for Vlans. {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_WAN_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenants': ['Tenant_C']}} conflicts with {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_OP_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenants': ['Tenant_C']}}.

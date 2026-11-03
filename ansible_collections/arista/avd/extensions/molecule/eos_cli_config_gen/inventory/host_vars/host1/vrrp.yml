@@ -1,0 +1,4 @@
+---
+vrrp:
+  ipv4:
+    authentication_anti_replay: true

@@ -13,5 +13,4 @@ keys:
         type: int
         min: 0
         max: 86400
-        convert_types:
-          - str
+        description: Idle timeout in minutes.

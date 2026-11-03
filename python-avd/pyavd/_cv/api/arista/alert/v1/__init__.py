@@ -733,6 +733,13 @@ class SenderStatus(aristaproto.Message):
     retried.
     """
 
+    config_timestamp: datetime = aristaproto.message_field(9)
+    """
+    config_timestamp is the AlertConfig update timestamp captured when the send attempt associated
+    with this sender status was made. It correlates the status with the configuration it used,
+    which is not always possible using just Sender Status last-modification timestamp.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class EventIdentifiers(aristaproto.Message):

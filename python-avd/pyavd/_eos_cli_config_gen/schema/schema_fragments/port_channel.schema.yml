@@ -24,8 +24,6 @@ keys:
               required: true
             ip_protocol:
               type: str
-              convert_types:
-                - int
               description: |-
                 IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
                 IP protocol number within the range <0-255>.
@@ -40,8 +38,6 @@ keys:
               required: true
             offset:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 64
               required: true

@@ -29,21 +29,21 @@ Enable the plugin in `pyproject.toml`:
 plugins = [
   "coverage_plugins.jinja",
 ]
-source_dirs = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates",
-  "python-avd/pyavd/_eos_designs/j2templates",
-]
+source_pkgs = ["pyavd"]
 
 [tool.coverage.coverage_plugins.jinja]
+package = "pyavd"
 compiled_template_roots = [
-  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
-  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+  "_eos_cli_config_gen/j2templates/compiled_templates",
+  "_eos_designs/j2templates/compiled_templates",
 ]
 ```
 
-`compiled_template_roots` is required and is used during `coverage run` only. It tells the tracer where generated Jinja Python modules can be found. Reporting should work without those directories being present.
+`compiled_template_roots` is required and tells the tracer where generated Jinja Python modules can be found. When `package` is set, the plugin discovers the installed package with Python's import machinery and resolves each root relative to it. This works for regular and editable installs without importing the package or depending on the current working directory. Without `package`, roots retain their original behavior and are resolved relative to the current working directory.
 
-Do not omit compiled template paths in `[tool.coverage.run]`; coverage must be allowed to see those files so the tracer can claim them and remap execution to `.j2` files.
+The package must include both the compiled Python modules and their corresponding `.j2` source templates. Coverage executes the compiled modules, while the plugin uses the source templates for mapping and reporting.
+
+The plugin also exposes the `.j2` files beneath these roots to coverage source discovery. Reporting therefore works after generated compiled-template directories have been removed, without adding cwd-sensitive template paths to `source_dirs`.
 
 ## Line Coverage
 

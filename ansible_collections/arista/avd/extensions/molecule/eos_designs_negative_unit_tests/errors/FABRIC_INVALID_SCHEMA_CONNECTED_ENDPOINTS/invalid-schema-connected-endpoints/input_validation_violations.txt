@@ -1,0 +1,2 @@
+[['servers', '0', 'adapters', '0', 'swtch_ports']]: 'Invalid key.'
+[['servers', '0', 'adapters', '0']]: 'Missing the required key 'switch_ports'.'

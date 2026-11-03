@@ -12,5 +12,3 @@ keys:
     description: Number of path to configure in ECMP for ISIS.
     type: int
     default: 4
-    convert_types:
-      - str

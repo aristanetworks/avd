@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: No vtep_diagnostic loopback defined on VRF 'MULTICAST_ENABLED_110' in Tenant 'Tenant_A'. This is required when 'l3_multicast' is enabled on the VRF and 'ip_address_virtual' is used on an SVI in that VRF.

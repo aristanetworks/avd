@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ntp_settings.servers[name=pool.ntp.com].source_address' is set to 'use_mgmt_interface_ipv4', but 'ntp_settings.server_vrf' resolves to 'default'. This source_address keyword requires VRF 'MGMT'.

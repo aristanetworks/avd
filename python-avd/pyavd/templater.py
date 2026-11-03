@@ -126,6 +126,7 @@ class Templar:
             default,
             encrypt,
             hide_passwords,
+            ip_address_sort,
             is_in_filter,
             list_compress,
             natural_sort,
@@ -145,6 +146,7 @@ class Templar:
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
                 "arista.avd.hide_passwords": hide_passwords,
+                "arista.avd.ip_address_sort": ip_address_sort,
                 "arista.avd.is_in_filter": is_in_filter,
                 "arista.avd.list_compress": list_compress,
                 # Hidden compatibility shim for legacy templates that relied on

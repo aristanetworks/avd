@@ -10,7 +10,15 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig
+from pyavd._cv.api.arista.workspace.v1 import (
+    Response,
+    Responses,
+    ResponseStatus,
+    Workspace,
+    WorkspaceConfig,
+    WorkspaceKey,
+    WorkspaceStreamResponse,
+)
 from pyavd._cv.client.exceptions import CVTimeoutError, CVWorkspaceFailed
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_B_ID,
@@ -94,3 +102,32 @@ async def test_rebase_workspace(cv_client: CVClient) -> None:
         response_workspace_config = await cv_client.rebase_workspace(workspace_id=MOCKED_WORKSPACE_B_ID)
 
     assert isinstance(response_workspace_config, WorkspaceConfig)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("terminal_status", [ResponseStatus.SUCCESS, ResponseStatus.FAIL])
+async def test_wait_for_workspace_response_ignores_non_terminal_statuses(cv_client: CVClient, terminal_status: ResponseStatus) -> None:
+    """Test that workspace response polling waits for a known terminal status."""
+    request_id = "req-test"
+    unknown_status = ResponseStatus.try_value(99)
+
+    async def workspace_responses() -> AsyncIterator[WorkspaceStreamResponse]:
+        for status in (ResponseStatus.IN_PROGRESS, unknown_status, terminal_status):
+            yield WorkspaceStreamResponse(
+                value=Workspace(
+                    key=WorkspaceKey(workspace_id=MOCKED_WORKSPACE_ID),
+                    responses=Responses(values={request_id: Response(status=status)}),
+                ),
+            )
+
+    with patch(
+        "pyavd._cv.client.workspace.WorkspaceServiceStub.subscribe",
+        return_value=workspace_responses(),
+    ):
+        response, workspace = await cv_client.wait_for_workspace_response(
+            workspace_id=MOCKED_WORKSPACE_ID,
+            request_id=request_id,
+        )
+
+    assert response.status == terminal_status
+    assert workspace.key.workspace_id == MOCKED_WORKSPACE_ID

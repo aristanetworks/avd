@@ -19,8 +19,6 @@ keys:
         name:
           type: str
           description: Access-list name.
-          convert_types:
-            - int
         counters_per_entry:
           type: bool
         entries:
@@ -32,8 +30,6 @@ keys:
             keys:
               sequence:
                 type: int
-                convert_types:
-                  - str
               action:
                 type: str
                 valid_values: [permit, deny]

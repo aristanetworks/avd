@@ -1,0 +1,27 @@
+# Clean can be set globally or per scenario and defaults to True.
+# Clean can also be set per fabric, but here it defaults to False, since multiple fabrics usually share the same output directories.
+# clean = true  # Clean output directories before running to catch removed or failing hosts
+
+# The following settings can only be set globally or per scenario. (Not per fabric)
+# custom_path = null  # One path item which will be inserted into the python path before running the scenario. Useful for custom modules.
+# custom_templates = false  # Support custom templates with Ansible Templar.
+# extra_vars = null  # Extra variables injected before loading the Ansible inventory. Similar to command line -e vars in Ansible.
+# inventory_file = "inventory.yml"  # Inventory file relative to the directory with this config file.
+
+# The following settings can be set globally or per scenario or per scenario fabric.
+# avd_design = true  # Generate facts, structured config and fabric doc for the inventory. If false only EOS config and device docs will be generated.
+# device_configs = true  # Generate device configurations
+# digital_twin = false  # Run in digital-twin mode
+# docs_dir = "documentation"  # Directory where device and fabric docs will be created. Relative to directory with this config file.
+# documentation.device_docs: true  # Generate device documentation
+# documentation.device_docs_toc: true  # Include TOC in the device documentation
+# documentation.fabric_doc: true  # Generate fabric documentation
+# documentation.include_connected_endpoints: true  # Include connected-endpoints in the fabric doc
+# documentation.topology_csv: false  # Generate fabric topology.csv
+# documentation.p2p_links_csv. false  # Generate fabric p2p-links.csv
+# documentation.toc: true  # Include TOC in the fabric documentation
+# dump_tracebacks = false  # Include full stack traces in the error files.
+# error_dir = "errors"  # Directory where errors will be dumped as files per fabric and device. Relative to directory with this config file.
+# output_dir = "intended"  # Directory where configs and structured_configs will be created. Relative to directory with this config file.
+# structured_config_suffix  = "yml"  # Suffix for structured config files. Accepts "yml", "yaml" or "json"
+inventory_file = "inventory/hosts.yml"

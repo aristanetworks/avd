@@ -1,0 +1,88 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_documentation"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_documentation"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Create structured config for testhost in YAML format
+  arista.avd.eos_designs_structured_config:
+    dest: "{{ actual_output_dir }}/testhost.yml"
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_documentation"
+  check_mode: false
+  run_once: true
+
+- name: Enable ACT digital twin metadata in structured config
+  ansible.builtin.replace:
+    path: "{{ actual_output_dir }}/testhost.yml"
+    regexp: |
+      metadata:
+        is_deployed: true
+        fabric_name: testgroup
+    replace: |
+      metadata:
+        is_deployed: true
+        fabric_name: testgroup
+        digital_twin:
+          environment: act
+          node_type: veos
+          username: cvpadmin
+          password: cvpadmin
+          version: 4.32.3F
+
+- name: Remove prior documentation output files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs.md"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_topology.csv"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_p2p.csv"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_digital_twin.yml"
+
+- name: Run eos_designs_documentation with all outputs enabled
+  register: result
+  arista.avd.eos_designs_documentation:
+    structured_config_dir: "{{ actual_output_dir }}"
+    structured_config_suffix: yml
+    fabric_documentation_file: "{{ actual_output_dir }}/eos_designs_documentation_all_outputs.md"
+    topology_csv_file: "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_topology.csv"
+    p2p_links_csv_file: "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_p2p.csv"
+    digital_twin_file: "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_digital_twin.yml"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs_documentation"
+    fabric_documentation: true
+    topology_csv: true
+    p2p_links_csv: true
+    digital_twin: true
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Stat mandatory generated output files
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs.md"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_topology.csv"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_p2p.csv"
+    - "{{ actual_output_dir }}/eos_designs_documentation_all_outputs_digital_twin.yml"
+  register: generated_files
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.changed == true
+      - generated_files.results | map(attribute='stat.exists') | min

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to configure IP HTTP Client source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set.

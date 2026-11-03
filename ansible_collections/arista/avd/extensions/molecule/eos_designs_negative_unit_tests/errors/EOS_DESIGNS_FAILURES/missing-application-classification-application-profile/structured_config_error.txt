@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Application Profile 'TEST' referenced in policy 'DEFAULT-POLICY' is not defined in 'application_classification.application_profiles'.

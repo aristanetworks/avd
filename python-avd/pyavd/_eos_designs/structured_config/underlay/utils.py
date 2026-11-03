@@ -4,13 +4,16 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import IPv4Network
 from typing import TYPE_CHECKING, Protocol, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
+from pyavd._utils.undefined import Undefined, UndefinedType
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -367,3 +370,34 @@ class UtilsMixin(Protocol):
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return a list of P2P underlay links."""
         return [link for link in self._underlay_links if link.type == "underlay_p2p"]
+
+    @cached_property
+    def _underlay_subnets(self: AvdStructuredConfigUnderlayProtocol) -> tuple[list[str], EosCliConfigGen.DhcpServersItem.Ipv4Subnets]:
+        """
+        Returns tuple of list of peer IPv4 subnets and dhcp subnets for downstream p2p interfaces.
+
+        Used for l3 inband ztp/ztr.
+        """
+        subnets = []
+        dhcp_server_ipv4_subnets = EosCliConfigGen.DhcpServersItem.Ipv4Subnets()
+        for peer in self._avd_peers:
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
+                if (
+                    uplink.peer == self.shared_utils.hostname
+                    and uplink.type == "underlay_p2p"
+                    and uplink.ip_address
+                    and "unnumbered" not in uplink.ip_address
+                    and peer_facts.inband_ztp
+                ):
+                    subnet = str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False))
+                    subnets.append(subnet)
+                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
+                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                        subnet=subnet,
+                        name=f"inband ztp for {peer}-{uplink.interface}",
+                        default_gateway=f"{uplink.peer_ip_address}",
+                    )
+                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                    dhcp_server_ipv4_subnets.append(subnet_item)
+        return subnets, dhcp_server_ipv4_subnets

@@ -15,7 +15,6 @@ config_end: true
 dot1x:
   system_auth_control: true
   protocol_lldp_bypass: true
-  protocol_bpdu_bypass: true
   dynamic_authorization: true
   radius_av_pair:
     dhcp:
@@ -40,6 +39,7 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
+  platform: no_address_locking_platform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
   vrfs:

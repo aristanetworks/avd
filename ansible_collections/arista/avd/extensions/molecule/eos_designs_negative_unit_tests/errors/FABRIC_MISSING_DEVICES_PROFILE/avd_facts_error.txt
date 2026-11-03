@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The Device Profile 'missing-profile' applied for the device 'missing-devices-profile' does not exist under `device_profiles`.

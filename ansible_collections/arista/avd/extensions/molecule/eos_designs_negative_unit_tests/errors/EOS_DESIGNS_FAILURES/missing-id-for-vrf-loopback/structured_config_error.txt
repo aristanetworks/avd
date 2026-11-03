@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'id' is not set on 'missing-id-for-vrf-loopback' to get IP address for a vrf loopback interface

@@ -3,6 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import importlib
+import sys
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import pytest
@@ -108,6 +111,39 @@ def test_file_tracer_without_compiled_template_roots_traces_no_files(tmp_path: P
     compiled_file.write_text("name = 'template.j2'\ndebug_info = '1=10'\n", encoding="utf-8")
 
     assert JinjaTemplateCoveragePlugin().file_tracer(str(compiled_file)) is None
+
+
+def test_package_relative_roots_are_discovered_without_importing_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    package_name = "coverage_test_package"
+    package_root = tmp_path / package_name
+    compiled_root = package_root / "j2templates/compiled_templates"
+    source_file = package_root / "j2templates/simple.j2"
+    package_root.mkdir()
+    (package_root / "__init__.py").write_text("raise AssertionError('package must not be imported')\n", encoding="utf-8")
+    compiled_root.mkdir(parents=True)
+    source_file.write_text("hello\n", encoding="utf-8")
+    monkeypatch.syspath_prepend(str(tmp_path))
+    importlib.invalidate_caches()
+    sys.modules.pop(package_name, None)
+
+    plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=("j2templates/compiled_templates",), package=package_name)
+
+    assert plugin.compiled_template_roots == (compiled_root.resolve(),)
+    assert list(plugin.find_executable_files(str(package_root))) == [str(source_file.resolve())]
+    assert not list(plugin.find_executable_files(str(tmp_path / "other")))
+    assert package_name not in sys.modules
+
+
+def test_multiprocessing_worker_does_not_enumerate_unexecuted_templates(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "simple.j2"
+    compiled_root.mkdir(parents=True)
+    source_file.write_text("hello\n", encoding="utf-8")
+    plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,))
+    monkeypatch.setattr("coverage_plugins.jinja.current_process", lambda: SimpleNamespace(name="ForkServerProcess-1"))
+
+    assert not list(plugin.find_executable_files(str(tmp_path)))
 
 
 def test_coverage_init_requires_compiled_template_roots() -> None:

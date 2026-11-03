@@ -16,8 +16,6 @@ keys:
         name:
           type: str
           description: Access-list Name.
-          convert_types:
-            - int
         counters_per_entry:
           type: bool
         entries:
@@ -56,8 +54,6 @@ keys:
               ttl:
                 type: int
                 description: TTL value.
-                convert_types:
-                  - str
                 min: 0
                 max: 255
               ttl_match:

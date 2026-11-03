@@ -14,7 +14,7 @@ from pyavd._schema.models.avd_model import AvdModel
 from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
 
 if TYPE_CHECKING:
-    from pyavd._utils import Undefined, UndefinedType
+    from pyavd._utils.undefined import Undefined, UndefinedType
 
 
 class EosDesigns(EosDesignsRootModel):
@@ -819,15 +819,15 @@ class EosDesigns(EosDesignsRootModel):
     class AddressLockingSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class DhcpServersIpv4(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        DhcpServersIpv4._item_type = str
-
         class DhcpServerInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DhcpServerInterfaces._item_type = str
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
 
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -895,15 +895,68 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Logging(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Event(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"denied_address_drop": {"type": bool}, "dhcp_server_drop": {"type": bool}}
+                denied_address_drop: bool | None
+                """Log events for denied address drops."""
+                dhcp_server_drop: bool | None
+                """
+                Log events for DHCP server to client packet drops.
+                Requires EOS version 4.36.2F or later.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, denied_address_drop: bool | UndefinedType | None = Undefined, dhcp_server_drop: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        Event.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            denied_address_drop: Log events for denied address drops.
+                            dhcp_server_drop:
+                               Log events for DHCP server to client packet drops.
+                               Requires EOS version 4.36.2F or later.
+
+                        """
+
+            _fields: ClassVar[dict] = {"event": {"type": Event}}
+            event: Event
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, event: Event | UndefinedType = Undefined) -> None:
+                    """
+                    Logging.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        event: Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
-            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
-            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
+            "logging": {"type": Logging},
         }
-        local_interface: str
+        local_interface: str | None
         """
         The value will be interpreted according to these rules:
           - `use_mgmt_interface` will configure the
@@ -914,24 +967,31 @@ class EosDesigns(EosDesignsRootModel):
         configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
-
-        Default value: `"use_default_mgmt_method_interface"`
+        When
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+        exclusive with `dhcp_server_interfaces`.
         """
-        dhcp_servers_ipv4: DhcpServersIpv4
-        """Subclass of AvdList with `str` items."""
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
-        Requires EOS version 4.36 or later.
+        Requires
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+        ignored.
+        When enabled, this setting is mutually exclusive with `local_interface`.
+        Requires EOS
+        version 4.36 or later.
 
-        Subclass
-        of AvdList with `str` items.
+        Subclass of AvdList with `str` items.
         """
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
         """Subclass of AvdList with `LeasesItem` items."""
         locked_address: LockedAddress
+        """Subclass of AvdModel."""
+        logging: Logging
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
@@ -939,12 +999,13 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                local_interface: str | UndefinedType = Undefined,
-                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLockingSettings.
@@ -963,16 +1024,24 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                       When
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
+                       exclusive with `dhcp_server_interfaces`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
-                       Requires EOS version 4.36 or later.
+                       Requires
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+                       ignored.
+                       When enabled, this setting is mutually exclusive with `local_interface`.
+                       Requires EOS
+                       version 4.36 or later.
 
-                       Subclass
-                       of AvdList with `str` items.
+                       Subclass of AvdList with `str` items.
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
 
                 """
 
@@ -983,9 +1052,15 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "accept_ra_default_route_for_ipv6_mgmt_ip_auto_config": {"type": bool, "default": False},
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
+            "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
+            "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
             "fix_radius_server_group_tls": {"type": bool, "default": False},
+            "fix_virtual_source_nat_address_families": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
             "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
@@ -993,6 +1068,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1018,6 +1094,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        allow_recursive_profile_inheritance: bool
+        """
+        Available from AVD 6.5.0.
+        Allow `parent_profile` to inherit from its own `parent_profile` in
+        `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
+
+        Default value: `False`
+        """
         configure_inband_mgmt_ipv6_vrf: bool
         """
         Available from AVD 6.2.0.
@@ -1035,11 +1119,83 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        fix_address_locking_dhcp_server_interfaces: bool
+        """
+        Available from AVD 6.4.0.
+        Fix support for `address_locking_settings.dhcp_server_interfaces`.
+        When
+        enabled, `address_locking_settings.dhcp_server_interfaces` and
+        `address_locking_settings.local_interface` are mutually exclusive.
+
+        Default value: `False`
+        """
+        fix_match_ipv6_prefix_list_on_mlag_route_map: bool
+        """
+        Available from AVD 6.4.0.
+        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+        ipv6 address prefix-list`
+        instead of `match ip address prefix-list` when using
+        `underlay_ipv6_numbered`.
+
+        Default value: `False`
+        """
+        fix_mlag_ibgp_peering_ipv6_pool: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+        `underlay_ipv6_numbered`.
+        When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+        MLAG iBGP peering SVI,
+        using `mlag_ibgp_peering_ipv6_pool` when set, and
+        `mlag_ibgp_peering_ipv4_pool` is ignored.
+
+        Default value: `False`
+        """
+        fix_mlag_ibgp_peering_vrfs_address_families: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+        `underlay_ipv6_numbered`.
+        These iBGP sessions run over IPv6, so when enabled:
+        - With
+        `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+        activates the IPv6 address family
+          instead of the IPv4 address family. An error is raised if a VRF
+        with MLAG iBGP peering has IPv4 configured, with either the shared
+          or the dedicated peer group,
+        since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+        -
+        With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+        originate`) and the IPv6
+          address family are activated on the MLAG peer group used for VRFs, either
+        the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+          or the dedicated
+        `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+        using the shared
+          peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+        vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+          This allows dual-stack VRFs over a
+        numbered IPv6 underlay.
+
+        Default value: `False`
+        """
         fix_radius_server_group_tls: bool
         """
         Available from AVD 6.2.0.
         Fix to configure TLS on RADIUS server group members to match their global
         RADIUS server configurations.
+
+        Default value: `False`
+        """
+        fix_virtual_source_nat_address_families: bool
+        """
+        Available from AVD 6.5.0.
+        Fix the selection of the addresses used for the IPv4 and IPv6 virtual
+        source-nat of a VRF.
+        When enabled, each address family uses the first loopback in the VRF with an
+        address of that family.
+        The VTEP diagnostic loopback is used first, followed by the VRF loopbacks in
+        input order.
 
         Default value: `False`
         """
@@ -1103,6 +1259,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool
+        """
+        Available from AVD 6.5.0.
+        Configure OOB management VRF and OOB IPv4 static routes only when OOB
+        management is actually used.
+        When enabled:
+        - AVD renders the OOB management VRF only if
+        `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+        - Setting only
+        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+        VRF.
+        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+        route prerequisites are met).
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1112,9 +1284,15 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: bool | UndefinedType = Undefined,
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
+                fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
+                fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
+                fix_virtual_source_nat_address_families: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
                 only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
@@ -1122,6 +1300,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1142,6 +1321,10 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.3.0.
                        Configure inband management interface to accept DHCP default route when
                        the inband management IP is set to 'dhcp'.
+                    allow_recursive_profile_inheritance:
+                       Available from AVD 6.5.0.
+                       Allow `parent_profile` to inherit from its own `parent_profile` in
+                       `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`.
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
@@ -1151,10 +1334,62 @@ class EosDesigns(EosDesignsRootModel):
                        allowed' on both ends
                        and on all 'uplink_switches' even when available VLANs differ between the
                        'uplink_switches'.
+                    fix_address_locking_dhcp_server_interfaces:
+                       Available from AVD 6.4.0.
+                       Fix support for `address_locking_settings.dhcp_server_interfaces`.
+                       When
+                       enabled, `address_locking_settings.dhcp_server_interfaces` and
+                       `address_locking_settings.local_interface` are mutually exclusive.
+                    fix_match_ipv6_prefix_list_on_mlag_route_map:
+                       Available from AVD 6.4.0.
+                       Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match
+                       ipv6 address prefix-list`
+                       instead of `match ip address prefix-list` when using
+                       `underlay_ipv6_numbered`.
+                    fix_mlag_ibgp_peering_ipv6_pool:
+                       Available from AVD 6.5.0.
+                       Fix the MLAG iBGP peering BGP neighbor in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       When enabled, the BGP neighbor is derived from the same IPv6 pool as the
+                       MLAG iBGP peering SVI,
+                       using `mlag_ibgp_peering_ipv6_pool` when set, and
+                       `mlag_ibgp_peering_ipv4_pool` is ignored.
+                    fix_mlag_ibgp_peering_vrfs_address_families:
+                       Available from AVD 6.5.0.
+                       Fix the BGP address families of the MLAG iBGP peerings in VRFs when using
+                       `underlay_ipv6_numbered`.
+                       These iBGP sessions run over IPv6, so when enabled:
+                       - With
+                       `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group
+                       activates the IPv6 address family
+                         instead of the IPv4 address family. An error is raised if a VRF
+                       with MLAG iBGP peering has IPv4 configured, with either the shared
+                         or the dedicated peer group,
+                       since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.
+                       -
+                       With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6
+                       originate`) and the IPv6
+                         address family are activated on the MLAG peer group used for VRFs, either
+                       the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`
+                         or the dedicated
+                       `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when
+                       using the shared
+                         peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing
+                       vrf <vrf>` are configured for VRFs with MLAG iBGP peering.
+                         This allows dual-stack VRFs over a
+                       numbered IPv6 underlay.
                     fix_radius_server_group_tls:
                        Available from AVD 6.2.0.
                        Fix to configure TLS on RADIUS server group members to match their global
                        RADIUS server configurations.
+                    fix_virtual_source_nat_address_families:
+                       Available from AVD 6.5.0.
+                       Fix the selection of the addresses used for the IPv4 and IPv6 virtual
+                       source-nat of a VRF.
+                       When enabled, each address family uses the first loopback in the VRF with an
+                       address of that family.
+                       The VTEP diagnostic loopback is used first, followed by the VRF loopbacks in
+                       input order.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used:
                        Available from AVD 6.2.0.
                        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
@@ -1187,6 +1422,18 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
                        IPv4 is activated by default instead of always deactivating it.
+                    only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
+                       Available from AVD 6.5.0.
+                       Configure OOB management VRF and OOB IPv4 static routes only when OOB
+                       management is actually used.
+                       When enabled:
+                       - AVD renders the OOB management VRF only if
+                       `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+                       - Setting only
+                       `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+                       VRF.
+                       - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+                       route prerequisites are met).
 
                 """
 
@@ -3097,6 +3344,509 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailure(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Action: TypeAlias = Literal["allow", "drop"]
+                    _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                    allow_access_list: str | None
+                    """
+                    Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                    The access
+                    list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                    On EOS, the access list is
+                    only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                    """
+                    action: Action | None
+                    allow_vlan: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            allow_access_list: str | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType | None = Undefined,
+                            allow_vlan: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AuthenticationFailure.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                allow_access_list:
+                                   Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                   The access
+                                   list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                   On EOS, the access list is
+                                   only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                action: action
+                                allow_vlan: allow_vlan
+
+                            """
+
+                PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                class Pae(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                    mode: Mode | None
+                    supplicant_profile: str | None
+                    """Supplicant profile name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                        ) -> None:
+                            """
+                            Pae.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: mode
+                                supplicant_profile: Supplicant profile name.
+
+                            """
+
+                class HostMode(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["multi-host", "single-host"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                    mode: Mode | None
+                    multi_host_authenticated: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                        ) -> None:
+                            """
+                            HostMode.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: mode
+                                multi_host_authenticated: multi_host_authenticated
+
+                            """
+
+                class MacBasedAuthentication(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                    enabled: bool | None
+                    always: bool | None
+                    host_mode_common: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            always: bool | UndefinedType | None = Undefined,
+                            host_mode_common: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            MacBasedAuthentication.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: always
+                                host_mode_common: host_mode_common
+
+                            """
+
+                class Timeout(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "idle_host": {"type": int},
+                        "quiet_period": {"type": int},
+                        "reauth_period": {"type": str},
+                        "reauth_timeout_ignore": {"type": bool},
+                        "tx_period": {"type": int},
+                    }
+                    idle_host: int | None
+                    quiet_period: int | None
+                    reauth_period: str | None
+                    """Value can be 60-4294967295 or 'server'."""
+                    reauth_timeout_ignore: bool | None
+                    tx_period: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            idle_host: int | UndefinedType | None = Undefined,
+                            quiet_period: int | UndefinedType | None = Undefined,
+                            reauth_period: str | UndefinedType | None = Undefined,
+                            reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                            tx_period: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Timeout.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                idle_host: idle_host
+                                quiet_period: quiet_period
+                                reauth_period: Value can be 60-4294967295 or 'server'.
+                                reauth_timeout_ignore: reauth_timeout_ignore
+                                tx_period: tx_period
+
+                            """
+
+                class Unauthorized(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                    access_vlan_membership_egress: bool | None
+                    native_vlan_membership_egress: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                            native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            Unauthorized.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                access_vlan_membership_egress: access_vlan_membership_egress
+                                native_vlan_membership_egress: native_vlan_membership_egress
+
+                            """
+
+                class Eapol(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class AuthenticationFailureFallbackMba(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                        enabled: bool | None
+                        timeout: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                AuthenticationFailureFallbackMba.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    timeout: timeout
+
+                                """
+
+                    _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                    disabled: bool | None
+                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            disabled: bool | UndefinedType | None = Undefined,
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Eapol.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                disabled: disabled
+                                authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                            """
+
+                class Aaa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Unresponsive(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                        class Action(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class CachedResultsTimeout(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                time_duration: int
+                                """
+                                Enable caching for a specific duration -
+                                <1-10000>      duration in days
+                                <1-14400000>   duration in
+                                minutes
+                                <1-240000>     duration in hours
+                                <1-864000000>  duration in seconds
+                                """
+                                time_duration_unit: TimeDurationUnit
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        time_duration: int | UndefinedType = Undefined,
+                                        time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        CachedResultsTimeout.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            time_duration:
+                                               Enable caching for a specific duration -
+                                               <1-10000>      duration in days
+                                               <1-14400000>   duration in
+                                               minutes
+                                               <1-240000>     duration in hours
+                                               <1-864000000>  duration in seconds
+                                            time_duration_unit: time_duration_unit
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "traffic_allow_access_list": {"type": str},
+                                "apply_alternate": {"type": bool},
+                                "traffic_allow_vlan": {"type": int},
+                                "apply_cached_results": {"type": bool},
+                                "cached_results_timeout": {"type": CachedResultsTimeout},
+                                "traffic_allow": {"type": bool},
+                            }
+                            traffic_allow_access_list: str | None
+                            """Name of standard access-list to apply when AAA times out."""
+                            apply_alternate: bool | None
+                            """
+                            Apply alternate action if primary action fails.
+                            e.g. aaa unresponsive action apply cached-results
+                            else traffic allow
+                            """
+                            traffic_allow_vlan: int | None
+                            apply_cached_results: bool | None
+                            """Use results from a previous AAA response."""
+                            cached_results_timeout: CachedResultsTimeout
+                            """Subclass of AvdModel."""
+                            traffic_allow: bool | None
+                            """Set action for supplicant traffic when AAA times out."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                    apply_alternate: bool | UndefinedType | None = Undefined,
+                                    traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                    apply_cached_results: bool | UndefinedType | None = Undefined,
+                                    cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                    traffic_allow: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Action.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                        apply_alternate:
+                                           Apply alternate action if primary action fails.
+                                           e.g. aaa unresponsive action apply cached-results
+                                           else traffic allow
+                                        traffic_allow_vlan: traffic_allow_vlan
+                                        apply_cached_results: Use results from a previous AAA response.
+                                        cached_results_timeout: Subclass of AvdModel.
+                                        traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "eap_response": {"type": str},
+                            "action": {"type": Action},
+                            "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                        }
+                        eap_response: EapResponse | None
+                        """EAP response to send. EOS default is `success`."""
+                        action: Action
+                        """
+                        Set action for supplicant when AAA times out.
+
+                        Subclass of AvdModel.
+                        """
+                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                        """Set action for supplicant when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                eap_response: EapResponse | UndefinedType | None = Undefined,
+                                action: Action | UndefinedType = Undefined,
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Unresponsive.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    eap_response: EAP response to send. EOS default is `success`.
+                                    action:
+                                       Set action for supplicant when AAA times out.
+
+                                       Subclass of AvdModel.
+                                    phone_action: Set action for supplicant when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                    unresponsive: Unresponsive
+                    """
+                    Configure AAA timeout options.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                            """
+                            Aaa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                unresponsive:
+                                   Configure AAA timeout options.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "authentication_failure": {"type": AuthenticationFailure},
+                    "port_control": {"type": str},
+                    "port_control_force_authorized_phone": {"type": bool},
+                    "reauthentication": {"type": bool},
+                    "pae": {"type": Pae},
+                    "host_mode": {"type": HostMode},
+                    "mac_based_authentication": {"type": MacBasedAuthentication},
+                    "mac_based_access_list": {"type": bool},
+                    "timeout": {"type": Timeout},
+                    "reauthorization_request_limit": {"type": int},
+                    "unauthorized": {"type": Unauthorized},
+                    "eapol": {"type": Eapol},
+                    "aaa": {"type": Aaa},
+                }
+                authentication_failure: AuthenticationFailure
+                """Subclass of AvdModel."""
+                port_control: PortControl | None
+                port_control_force_authorized_phone: bool | None
+                reauthentication: bool | None
+                pae: Pae
+                """Subclass of AvdModel."""
+                host_mode: HostMode
+                """Subclass of AvdModel."""
+                mac_based_authentication: MacBasedAuthentication
+                """Subclass of AvdModel."""
+                mac_based_access_list: bool | None
+                """Operate interface in per-mac access-list mode."""
+                timeout: Timeout
+                """Subclass of AvdModel."""
+                reauthorization_request_limit: int | None
+                unauthorized: Unauthorized
+                """Subclass of AvdModel."""
+                eapol: Eapol
+                """Subclass of AvdModel."""
+                aaa: Aaa
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                        port_control: PortControl | UndefinedType | None = Undefined,
+                        port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                        reauthentication: bool | UndefinedType | None = Undefined,
+                        pae: Pae | UndefinedType = Undefined,
+                        host_mode: HostMode | UndefinedType = Undefined,
+                        mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                        mac_based_access_list: bool | UndefinedType | None = Undefined,
+                        timeout: Timeout | UndefinedType = Undefined,
+                        reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                        unauthorized: Unauthorized | UndefinedType = Undefined,
+                        eapol: Eapol | UndefinedType = Undefined,
+                        aaa: Aaa | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            authentication_failure: Subclass of AvdModel.
+                            port_control: port_control
+                            port_control_force_authorized_phone: port_control_force_authorized_phone
+                            reauthentication: reauthentication
+                            pae: Subclass of AvdModel.
+                            host_mode: Subclass of AvdModel.
+                            mac_based_authentication: Subclass of AvdModel.
+                            mac_based_access_list: Operate interface in per-mac access-list mode.
+                            timeout: Subclass of AvdModel.
+                            reauthorization_request_limit: reauthorization_request_limit
+                            unauthorized: Subclass of AvdModel.
+                            eapol: Subclass of AvdModel.
+                            aaa: Subclass of AvdModel.
+
+                        """
+
             class AddressLocking(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -3693,7 +4443,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sflow": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
-                "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "dot1x": {"type": Dot1x},
                 "address_locking": {"type": AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
@@ -3891,8 +4641,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-            """802.1x"""
+            dot1x: Dot1x
+            """
+            802.1x
+
+            Subclass of AvdModel.
+            """
             address_locking: AddressLocking
             """
             Address locking settings applied on the port.
@@ -3996,7 +4750,7 @@ class EosDesigns(EosDesignsRootModel):
                     sflow: bool | UndefinedType | None = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    dot1x: Dot1x | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
@@ -4156,7 +4910,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
-                        dot1x: 802.1x
+                        dot1x:
+                           802.1x
+
+                           Subclass of AvdModel.
                         address_locking:
                            Address locking settings applied on the port.
 
@@ -4984,7 +5741,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5174,7 +5931,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -5788,7 +6545,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5978,7 +6735,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -6730,12 +7487,49 @@ class EosDesigns(EosDesignsRootModel):
 
             Cvtargetconfigs._item_type = str
 
+            class CustomCvOptionsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+                flag: str
+                """TerminAttr CLI flag name without the leading dash."""
+                value: str | None
+                """
+                Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                If set, the flag is
+                rendered as `-flag=value`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        CustomCvOptionsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            flag: TerminAttr CLI flag name without the leading dash.
+                            value:
+                               Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                               If set, the flag is
+                               rendered as `-flag=value`.
+
+                        """
+
+            class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+                """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+            CustomCvOptions._item_type = CustomCvOptionsItem
+
             _fields: ClassVar[dict] = {
                 "ingestexclude": {"type": str},
                 "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
                 "disable_aaa": {"type": bool, "default": False},
                 "cvtargetconfigs": {"type": Cvtargetconfigs},
                 "flowdns": {"type": bool},
+                "custom_cv_options": {"type": CustomCvOptions},
             }
             ingestexclude: str | None
             """
@@ -6772,6 +7566,18 @@ class EosDesigns(EosDesignsRootModel):
             Set to false to disable DNS
             lookups on sFlow/IPFIX flow records.
             """
+            custom_cv_options: CustomCvOptions
+            """
+            TerminAttr CLI options not covered by the schema.
+            Each entry renders as `-<flag>=<value>` when
+            `value` is set, or `-<flag>` when `value` is omitted.
+            Options are appended at the end of the
+            TerminAttr exec command line after all other flags.
+
+
+            Subclass of AvdList with `CustomCvOptionsItem`
+            items.
+            """
 
             if TYPE_CHECKING:
 
@@ -6783,6 +7589,7 @@ class EosDesigns(EosDesignsRootModel):
                     disable_aaa: bool | UndefinedType = Undefined,
                     cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
                     flowdns: bool | UndefinedType | None = Undefined,
+                    custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Terminattr.
@@ -6812,6 +7619,16 @@ class EosDesigns(EosDesignsRootModel):
                            Enable DNS resolution for flow records (TerminAttr default is true).
                            Set to false to disable DNS
                            lookups on sFlow/IPFIX flow records.
+                        custom_cv_options:
+                           TerminAttr CLI options not covered by the schema.
+                           Each entry renders as `-<flag>=<value>` when
+                           `value` is set, or `-<flag>` when `value` is omitted.
+                           Options are appended at the end of the
+                           TerminAttr exec command line after all other flags.
+
+
+                           Subclass of AvdList with `CustomCvOptionsItem`
+                           items.
 
                     """
 
@@ -8239,15 +9056,18 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            Hostnames
-            configured here cannot also be configured under `evpn_route_servers` on the same node.
-            If a remote
-            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            If a
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -8296,15 +9116,18 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                           Hostnames
-                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                           If a remote
-                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           If a
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -9218,7 +10041,13 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "peer_as": {"type": str},
+                    "ipv4_prefix_list_in": {"type": str},
+                    "ipv4_prefix_list_out": {"type": str},
+                    "ipv6_prefix_list_in": {"type": str},
+                    "ipv6_prefix_list_out": {"type": str},
+                }
                 peer_as: str
                 """
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -9239,6 +10068,21 @@ class EosDesigns(EosDesignsRootModel):
                 advertised.
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                 """
+                ipv6_prefix_list_in: str | None
+                """
+                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                Only applied when
+                `peer_ipv6` is set; otherwise ignored.
+                The specified prefix list name must exist in
+                `ipv6_prefix_list_catalog`.
+                """
+                ipv6_prefix_list_out: str | None
+                """
+                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                Only applied when `peer_ipv6`
+                is set; otherwise ignored.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -9248,6 +10092,8 @@ class EosDesigns(EosDesignsRootModel):
                         peer_as: str | UndefinedType = Undefined,
                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         Bgp.
@@ -9270,6 +10116,17 @@ class EosDesigns(EosDesignsRootModel):
                                If not specified, nothing would be
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv6_prefix_list_in:
+                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                               Only applied when
+                               `peer_ipv6` is set; otherwise ignored.
+                               The specified prefix list name must exist in
+                               `ipv6_prefix_list_catalog`.
+                            ipv6_prefix_list_out:
+                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                               Only applied when `peer_ipv6`
+                               is set; otherwise ignored.
+                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -9559,14 +10416,14 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
+            IPv6 BGP peering using
+            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
             """
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP
-            peering on L3 interfaces is not yet supported.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -9755,12 +10612,12 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
+                           IPv6 BGP peering using
+                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                           IPv6 BGP
-                           peering on L3 interfaces is not yet supported.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -10072,7 +10929,13 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "peer_as": {"type": str},
+                    "ipv4_prefix_list_in": {"type": str},
+                    "ipv4_prefix_list_out": {"type": str},
+                    "ipv6_prefix_list_in": {"type": str},
+                    "ipv6_prefix_list_out": {"type": str},
+                }
                 peer_as: str
                 """
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -10093,6 +10956,21 @@ class EosDesigns(EosDesignsRootModel):
                 advertised.
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                 """
+                ipv6_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                Only applied when
+                `peer_ipv6` is set; otherwise ignored.
+                The specified prefix list name must exist in
+                `ipv6_prefix_list_catalog`.
+                """
+                ipv6_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                Only applied when `peer_ipv6` is
+                set; otherwise ignored.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -10102,6 +10980,8 @@ class EosDesigns(EosDesignsRootModel):
                         peer_as: str | UndefinedType = Undefined,
                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         Bgp.
@@ -10124,6 +11004,17 @@ class EosDesigns(EosDesignsRootModel):
                                If not specified, nothing would be
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv6_prefix_list_in:
+                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                               Only applied when
+                               `peer_ipv6` is set; otherwise ignored.
+                               The specified prefix list name must exist in
+                               `ipv6_prefix_list_catalog`.
+                            ipv6_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                               Only applied when `peer_ipv6` is
+                               set; otherwise ignored.
+                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -10294,14 +11185,14 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
+            IPv6 BGP peering using
+            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
             """
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP
-            peering on L3 Port-Channels is not yet supported.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -10472,12 +11363,12 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
+                           IPv6 BGP peering using
+                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                           IPv6 BGP
-                           peering on L3 Port-Channels is not yet supported.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -10833,6 +11724,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -10925,6 +11817,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -10955,14 +11848,20 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
+            "ntp_settings_profile": {"type": str},
         }
         name: str
         """Profile Name"""
         parent_profile: str | None
         """
         Inherit settings from a parent profile defined under `device_profiles`.
-        Max two levels of profile
-        inheritance: device -> profile -> parent_profile
+        By default, profile
+        inheritance is limited to two levels: device -> profile -> parent_profile.
+        From AVD 6.5.0 onwards,
+        setting `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit
+        settings across any number of levels.
         """
         type: str | None
         """
@@ -10991,6 +11890,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -11289,7 +12219,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -11331,9 +12263,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -11381,8 +12314,6 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        Hostnames configured here cannot also
-        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
         Subclass of AvdList with `str`
@@ -11471,6 +12402,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -11480,8 +12413,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -11489,8 +12423,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -11504,8 +12438,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -11668,15 +12612,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -11902,6 +12863,20 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
+        """
+        ntp_settings_profile: str | None
+        """
+        Name of the NTP settings profile to apply to this device.
+        The profile must be defined under
+        `ntp_settings_profiles`.
+        """
 
         if TYPE_CHECKING:
 
@@ -11916,6 +12891,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -12008,6 +12984,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -12038,6 +13015,8 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
+                ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DeviceProfilesItem.
@@ -12049,8 +13028,12 @@ class EosDesigns(EosDesignsRootModel):
                     name: Profile Name
                     parent_profile:
                        Inherit settings from a parent profile defined under `device_profiles`.
-                       Max two levels of profile
-                       inheritance: device -> profile -> parent_profile
+                       By default, profile
+                       inheritance is limited to two levels: device -> profile -> parent_profile.
+                       From AVD 6.5.0 onwards,
+                       setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit
+                       settings across any number of levels.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global
@@ -12070,6 +13053,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -12283,7 +13295,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -12311,9 +13325,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -12344,8 +13359,6 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                       Hostnames configured here cannot also
-                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                        Subclass of AvdList with `str`
@@ -12404,28 +13417,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -12550,15 +13576,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -12709,6 +13748,16 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
+                    dns_settings_profile:
+                       Name of the DNS settings profile to apply to this device.
+                       The profile must be defined under
+                       `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
 
                 """
 
@@ -13685,15 +14734,18 @@ class EosDesigns(EosDesignsRootModel):
             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
             If the
             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-            Hostnames
-            configured here cannot also be configured under `evpn_route_servers` on the same node.
-            If a remote
-            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-            peering.
-
-
-            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-            (`str`).
+            If a
+            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+            the EVPN Gateway core peering is configured on the local node.
+            Suppression is evaluated
+            independently on each node based on its local EVPN Route Server and client relationships and
+            `evpn_gateway.remote_peers` configuration.
+            When one node uses an EVPN Gateway core peering and the
+            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+            both sides use the same password.
+            If an explicit `ip_address` differs from the regular EVPN peering
+            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
             """
             evpn_l2: EvpnL2
             """
@@ -13742,15 +14794,18 @@ class EosDesigns(EosDesignsRootModel):
                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                            If the
                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                           Hostnames
-                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                           If a remote
-                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                           peering.
-
-
-                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                           (`str`).
+                           If a
+                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                           the EVPN Gateway core peering is configured on the local node.
+                           Suppression is evaluated
+                           independently on each node based on its local EVPN Route Server and client relationships and
+                           `evpn_gateway.remote_peers` configuration.
+                           When one node uses an EVPN Gateway core peering and the
+                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                           both sides use the same password.
+                           If an explicit `ip_address` differs from the regular EVPN peering
+                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         evpn_l2:
                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -14664,7 +15719,13 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "peer_as": {"type": str},
+                    "ipv4_prefix_list_in": {"type": str},
+                    "ipv4_prefix_list_out": {"type": str},
+                    "ipv6_prefix_list_in": {"type": str},
+                    "ipv6_prefix_list_out": {"type": str},
+                }
                 peer_as: str
                 """
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -14685,6 +15746,21 @@ class EosDesigns(EosDesignsRootModel):
                 advertised.
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                 """
+                ipv6_prefix_list_in: str | None
+                """
+                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                Only applied when
+                `peer_ipv6` is set; otherwise ignored.
+                The specified prefix list name must exist in
+                `ipv6_prefix_list_catalog`.
+                """
+                ipv6_prefix_list_out: str | None
+                """
+                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                Only applied when `peer_ipv6`
+                is set; otherwise ignored.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -14694,6 +15770,8 @@ class EosDesigns(EosDesignsRootModel):
                         peer_as: str | UndefinedType = Undefined,
                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         Bgp.
@@ -14716,6 +15794,17 @@ class EosDesigns(EosDesignsRootModel):
                                If not specified, nothing would be
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv6_prefix_list_in:
+                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                               Only applied when
+                               `peer_ipv6` is set; otherwise ignored.
+                               The specified prefix list name must exist in
+                               `ipv6_prefix_list_catalog`.
+                            ipv6_prefix_list_out:
+                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                               Only applied when `peer_ipv6`
+                               is set; otherwise ignored.
+                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -15005,14 +16094,14 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
+            IPv6 BGP peering using
+            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
             """
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP
-            peering on L3 interfaces is not yet supported.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -15201,12 +16290,12 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
+                           IPv6 BGP peering using
+                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                           IPv6 BGP
-                           peering on L3 interfaces is not yet supported.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -15518,7 +16607,13 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "peer_as": {"type": str},
+                    "ipv4_prefix_list_in": {"type": str},
+                    "ipv4_prefix_list_out": {"type": str},
+                    "ipv6_prefix_list_in": {"type": str},
+                    "ipv6_prefix_list_out": {"type": str},
+                }
                 peer_as: str
                 """
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -15539,6 +16634,21 @@ class EosDesigns(EosDesignsRootModel):
                 advertised.
                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                 """
+                ipv6_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                Only applied when
+                `peer_ipv6` is set; otherwise ignored.
+                The specified prefix list name must exist in
+                `ipv6_prefix_list_catalog`.
+                """
+                ipv6_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                Only applied when `peer_ipv6` is
+                set; otherwise ignored.
+                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -15548,6 +16658,8 @@ class EosDesigns(EosDesignsRootModel):
                         peer_as: str | UndefinedType = Undefined,
                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         Bgp.
@@ -15570,6 +16682,17 @@ class EosDesigns(EosDesignsRootModel):
                                If not specified, nothing would be
                                advertised.
                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv6_prefix_list_in:
+                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                               Only applied when
+                               `peer_ipv6` is set; otherwise ignored.
+                               The specified prefix list name must exist in
+                               `ipv6_prefix_list_catalog`.
+                            ipv6_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                               Only applied when `peer_ipv6` is
+                               set; otherwise ignored.
+                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                         """
 
@@ -15740,14 +16863,14 @@ class EosDesigns(EosDesignsRootModel):
             peer_ipv6: str | None
             """
             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-            "peer_ipv6" token.
+            "peer_ipv6" token
+            and for creating IPv6 BGP peering if `bgp` is also set.
+            IPv6 BGP peering using
+            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
             """
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP
-            peering on L3 Port-Channels is not yet supported.
-
+            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -15918,12 +17041,12 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6:
                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                           "peer_ipv6" token.
+                           "peer_ipv6" token
+                           and for creating IPv6 BGP peering if `bgp` is also set.
+                           IPv6 BGP peering using
+                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                           IPv6 BGP
-                           peering on L3 Port-Channels is not yet supported.
-
+                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -16280,6 +17403,7 @@ class EosDesigns(EosDesignsRootModel):
             "platform": {"type": str},
             "mac_address": {"type": str},
             "system_mac_address": {"type": str},
+            "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
@@ -16372,6 +17496,7 @@ class EosDesigns(EosDesignsRootModel):
             "inband_mgmt_gateway": {"type": str},
             "inband_mgmt_ipv6_address": {"type": str},
             "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
             "inband_mgmt_ipv6_gateway": {"type": str},
             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -16402,16 +17527,21 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
+            "ntp_settings_profile": {"type": str},
         }
         name: str
         """The Node Name is used as "hostname"."""
         profile: str | None
         """
         Inherit settings from a profile defined under `device_profiles`.
-        Max two levels of profile
-        inheritance: device -> profile -> parent_profile
-        This takes precedence over the global
-        `device_profile` key.
+        By default, profile inheritance is
+        limited to two levels: device -> profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
+        This takes precedence over the global `device_profile` key.
         """
         type: str | None
         """
@@ -16448,6 +17578,37 @@ class EosDesigns(EosDesignsRootModel):
         "system_mac_address" can also be set directly as a
         hostvar.
         If both are set, the setting under node type settings takes precedence.
+        Mutually exclusive
+        with "custom_system_mac_address", whether defined globally or in node configuration.
+        """
+        custom_system_mac_address: str | None
+        """
+        Set a custom EOS system MAC address using an AVD string formatter template.
+        When set, the rendered
+        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+        CloudVision-based Zscaler integration.
+        The node configuration value takes precedence over the global
+        `custom_system_mac_address` value.
+        Mutually exclusive with `system_mac_address`, whether defined
+        globally or in node configuration.
+        If unset, the existing `system_mac_address` behavior is
+        unchanged.
+        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+        not accepted by EOS.
+        Regardless of the input format, the MAC address is normalized to
+        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+        Only the following
+        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+        Examples:
+        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+        `021c.7300.04d2` for device with ID 1234.
+          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+        characters of the hostname represent a numerical identifier of the deployment site which we want to
+        encode into the 3rd and 4th octets of the generated MAC address).
         """
         serial_number: str | None
         """
@@ -16746,7 +17907,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 address without mask for Loopback0.
         When set, it takes precedence over `loopback_ipv4_pool`.
-        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+        Note: AVD does
+        not check for validity of the IPv4 address and does not catch duplicates.
         """
         vtep_loopback_ipv4_pool: str | None
         """
@@ -16788,9 +17951,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         router_id_pool: str | None
         """
-        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-        will not exist on the device.
+        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+        and takes precedence over `router_id_pool`.
         """
         loopback_ipv6_pool: str | None
         """
@@ -16838,8 +18002,6 @@ class EosDesigns(EosDesignsRootModel):
         evpn_route_servers: EvpnRouteServers
         """
         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-        Hostnames configured here cannot also
-        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
         Subclass of AvdList with `str`
@@ -16928,6 +18090,8 @@ class EosDesigns(EosDesignsRootModel):
         Underlay L3 peering SVI interface id.
         If set to 0 or the same vlan as mlag_peer_vlan, the
         mlag_peer_vlan will be used for L3 peering.
+        See `mlag_peer_address_family` for the supported address
+        families in that case.
 
         Default value: `4093`
         """
@@ -16937,8 +18101,9 @@ class EosDesigns(EosDesignsRootModel):
         The IPv4
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+        true`.
         """
         mlag_peer_l3_ipv6_pool: str | None
         """
@@ -16946,8 +18111,8 @@ class EosDesigns(EosDesignsRootModel):
         The IPv6
         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
         MLAG switch.
-        Required when MLAG leafs present in topology and they are using a separate L3 peering
-        VLAN.
+        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+        and a separate L3 peering VLAN.
         """
         mlag_peer_vlan: int
         """
@@ -16961,8 +18126,18 @@ class EosDesigns(EosDesignsRootModel):
         IP address family used to establish MLAG Peer Link (control link).
         `ipv6` requires EOS version
         4.31.1F or higher.
-        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-        (ex. `mlag_peer_l3_vlan` set to 4094).
+        This never changes which address families (NLRI) are activated on the MLAG BGP
+        peerings.
+        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+        The
+        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+        When the MLAG peer VLAN is also used for L3 peering
+        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+        the MLAG L3 peerings
+        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+        so this must be `ipv6`
+        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
         Default value: `"ipv4"`
         """
@@ -17125,15 +18300,32 @@ class EosDesigns(EosDesignsRootModel):
         l3leaf A      :
         <subnet> + 2 (same IP on all l3leaf A)
         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-        l2leafs       : <subnet> + 3 + <l2leaf id>
-        GW on l2leafs : <subnet> + 1
-        Assign range larger than
-        total l2leafs + 5
+        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+        GW on l2leafs :
+        <subnet> + 1
+        Assign range larger than total l2leafs + 5
 
-        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+        Setting is ignored if
+        'inband_mgmt_ipv6_address' is set.
 
-        This setting is
-        applicable to L2 switches (switches using L2 trunks as uplinks).
+        This setting is applicable to L2 switches (switches using L2
+        trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+        The assigned
+        IPv6 address will be computed by adding this offset to the device ID.
+        Choose an IPv6 subnet large
+        enough to contain all calculated addresses.
+        The highest L2 leaf address is:
+        <subnet> + 3 + <highest
+        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+        If the calculated address falls outside the subnet,
+        address allocation
+        fails with "address out of range".
+
+        Default value: `0`
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -17359,6 +18551,20 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
+        """
+        ntp_settings_profile: str | None
+        """
+        Name of the NTP settings profile to apply to this device.
+        The profile must be defined under
+        `ntp_settings_profiles`.
+        """
 
         if TYPE_CHECKING:
 
@@ -17374,6 +18580,7 @@ class EosDesigns(EosDesignsRootModel):
                 platform: str | UndefinedType | None = Undefined,
                 mac_address: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -17466,6 +18673,7 @@ class EosDesigns(EosDesignsRootModel):
                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                 inband_mgmt_description: str | UndefinedType = Undefined,
                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -17496,6 +18704,8 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
+                ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DevicesItem.
@@ -17507,10 +18717,13 @@ class EosDesigns(EosDesignsRootModel):
                     name: The Node Name is used as "hostname".
                     profile:
                        Inherit settings from a profile defined under `device_profiles`.
-                       Max two levels of profile
-                       inheritance: device -> profile -> parent_profile
-                       This takes precedence over the global
-                       `device_profile` key.
+                       By default, profile inheritance is
+                       limited to two levels: device -> profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
+                       This takes precedence over the global `device_profile` key.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global
@@ -17536,6 +18749,35 @@ class EosDesigns(EosDesignsRootModel):
                        "system_mac_address" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
+                       Mutually exclusive
+                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                    custom_system_mac_address:
+                       Set a custom EOS system MAC address using an AVD string formatter template.
+                       When set, the rendered
+                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                       CloudVision-based Zscaler integration.
+                       The node configuration value takes precedence over the global
+                       `custom_system_mac_address` value.
+                       Mutually exclusive with `system_mac_address`, whether defined
+                       globally or in node configuration.
+                       If unset, the existing `system_mac_address` behavior is
+                       unchanged.
+                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                       not accepted by EOS.
+                       Regardless of the input format, the MAC address is normalized to
+                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                       Only the following
+                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                       Examples:  # fmt: skip
+                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                       `021c.7300.04d2` for device with ID 1234.
+                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                       encode into the 3rd and 4th octets of the generated MAC address).
                     serial_number:
                        Set to the Serial Number of the device.
                        Only used for documentation purpose in the fabric
@@ -17749,7 +18991,9 @@ class EosDesigns(EosDesignsRootModel):
                     loopback_ipv4_address:
                        IPv4 address without mask for Loopback0.
                        When set, it takes precedence over `loopback_ipv4_pool`.
-                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                       Note: AVD does
+                       not check for validity of the IPv4 address and does not catch duplicates.
                     vtep_loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -17777,9 +19021,10 @@ class EosDesigns(EosDesignsRootModel):
                        For example, set the minimum
                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                     router_id_pool:
-                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                       will not exist on the device.
+                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                       and takes precedence over `router_id_pool`.
                     loopback_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -17810,8 +19055,6 @@ class EosDesigns(EosDesignsRootModel):
                        Default is set in node_type definition from node_type_keys.
                     evpn_route_servers:
                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                       Hostnames configured here cannot also
-                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                        Subclass of AvdList with `str`
@@ -17870,28 +19113,41 @@ class EosDesigns(EosDesignsRootModel):
                        Underlay L3 peering SVI interface id.
                        If set to 0 or the same vlan as mlag_peer_vlan, the
                        mlag_peer_vlan will be used for L3 peering.
+                       See `mlag_peer_address_family` for the supported address
+                       families in that case.
                     mlag_peer_l3_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                       true`.
                     mlag_peer_l3_ipv6_pool:
                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                        The IPv6
                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                        MLAG switch.
-                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                       VLAN.
+                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                       and a separate L3 peering VLAN.
                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                     mlag_peer_address_family:
                        IP address family used to establish MLAG Peer Link (control link).
                        `ipv6` requires EOS version
                        4.31.1F or higher.
-                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                       peerings.
+                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                       The
+                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                       When the MLAG peer VLAN is also used for L3 peering
+                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                       the MLAG L3 peerings
+                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                       so this must be `ipv6`
+                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                     mlag_peer_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -18016,15 +19272,28 @@ class EosDesigns(EosDesignsRootModel):
                        l3leaf A      :
                        <subnet> + 2 (same IP on all l3leaf A)
                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                       GW on l2leafs : <subnet> + 1
-                       Assign range larger than
-                       total l2leafs + 5
+                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                       GW on l2leafs :
+                       <subnet> + 1
+                       Assign range larger than total l2leafs + 5
 
-                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                       Setting is ignored if
+                       'inband_mgmt_ipv6_address' is set.
 
-                       This setting is
-                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                       This setting is applicable to L2 switches (switches using L2
+                       trunks as uplinks).
+                    inband_mgmt_ipv6_subnet_offset:
+                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                       The assigned
+                       IPv6 address will be computed by adding this offset to the device ID.
+                       Choose an IPv6 subnet large
+                       enough to contain all calculated addresses.
+                       The highest L2 leaf address is:
+                       <subnet> + 3 + <highest
+                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                       If the calculated address falls outside the subnet,
+                       address allocation
+                       fails with "address out of range".
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
@@ -18175,6 +19444,16 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
+                    dns_settings_profile:
+                       Name of the DNS settings profile to apply to this device.
+                       The profile must be defined under
+                       `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
 
                 """
 
@@ -18188,7 +19467,7 @@ class EosDesigns(EosDesignsRootModel):
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
-        Environment: TypeAlias = Literal["act"]
+        Environment: TypeAlias = Literal["act", "containerlab"]
 
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
@@ -18199,6 +19478,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
                 "act_ensure_eapi_access": {"type": bool, "default": False},
+                "act_ensure_ssh_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -18228,13 +19508,26 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ensures eAPI remains accessible for automation and testing via ACT.
             Clients connecting to device
-            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
             management VRF, this primary eAPI connectivity can be unintentionally broken.
             Set this to `true` to
             enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
             default VRF and preserving this connectivity.
-            This setting is only applicable to ACT `veos` and
-            `cloudeos` node types.
+            Any IPv4 ACL applied to eAPI in the default VRF is
+            removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
+
+            Default value: `False`
+            """
+            act_ensure_ssh_access: bool
+            """
+            Ensures SSH remains accessible for automation and testing via ACT.
+            Clients connecting to device SSH
+            through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF
+            (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
+            Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
+            default VRF and preserving this connectivity.
+            Any IPv4 ACL applied to SSH in the default VRF is
+            removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
             Default value: `False`
             """
@@ -18249,6 +19542,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
                     act_ensure_eapi_access: bool | UndefinedType = Undefined,
+                    act_ensure_ssh_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -18269,13 +19563,22 @@ class EosDesigns(EosDesignsRootModel):
                         act_ensure_eapi_access:
                            Ensures eAPI remains accessible for automation and testing via ACT.
                            Clients connecting to device
-                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           eAPI through ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
                            management VRF, this primary eAPI connectivity can be unintentionally broken.
                            Set this to `true` to
                            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
                            default VRF and preserving this connectivity.
-                           This setting is only applicable to ACT `veos` and
-                           `cloudeos` node types.
+                           Any IPv4 ACL applied to eAPI in the default VRF is
+                           removed. IPv6 ACLs and eAPI configuration for non-default VRFs are preserved.
+                        act_ensure_ssh_access:
+                           Ensures SSH remains accessible for automation and testing via ACT.
+                           Clients connecting to device SSH
+                           through ACT rely on access in the default VRF. If SSH is disabled globally or in the default VRF
+                           (takes precedence over global setting), this primary SSH connectivity can be unintentionally broken.
+                           Set this to `true` to enforce the required EOS configuration, guaranteeing SSH is enabled in the
+                           default VRF and preserving this connectivity.
+                           Any IPv4 ACL applied to SSH in the default VRF is
+                           removed. IPv6 ACLs and SSH configuration for non-default VRFs are preserved.
 
                     """
 
@@ -18461,9 +19764,22 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdList with `str` items.
         """
         servers: Servers
-        """Subclass of AvdList with `ServersItem` items."""
+        """
+        List of DNS servers to configure.
+        May be omitted when inherited from a parent DNS settings profile
+        or global `dns_settings`.
+        When the resolved DNS settings are non-empty, at least one server must be
+        configured.
+
+        Subclass of AvdList with `ServersItem` items.
+        """
         vrfs: Vrfs
-        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        """
+        Per-VRF DNS lookup source-interface settings.
+
+        Subclass of AvdIndexedList with `VrfsItem` items.
+        Primary key is `name` (`str`).
+        """
         set_source_interfaces: bool
         """
         Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
@@ -18474,6 +19790,7 @@ class EosDesigns(EosDesignsRootModel):
         Default value: `True`
         """
         ip_hosts: EosCliConfigGen.IpHosts
+        """Static hostname-to-IP address mappings to configure in the local host table."""
 
         if TYPE_CHECKING:
 
@@ -18499,16 +19816,255 @@ class EosDesigns(EosDesignsRootModel):
                        Domain names to complete unqualified host names.
 
                        Subclass of AvdList with `str` items.
-                    servers: Subclass of AvdList with `ServersItem` items.
-                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    servers:
+                       List of DNS servers to configure.
+                       May be omitted when inherited from a parent DNS settings profile
+                       or global `dns_settings`.
+                       When the resolved DNS settings are non-empty, at least one server must be
+                       configured.
+
+                       Subclass of AvdList with `ServersItem` items.
+                    vrfs:
+                       Per-VRF DNS lookup source-interface settings.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items.
+                       Primary key is `name` (`str`).
                     set_source_interfaces:
                        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
-                    ip_hosts: ip_hosts
+                    ip_hosts: Static hostname-to-IP address mappings to configure in the local host table.
 
                 """
+
+    class DnsSettingsProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DomainList(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DomainList._item_type = str
+
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str
+            """
+            The value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+            DNS lookup source-interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+            configured for the device.
+            - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+              An
+            error will be raised if inband management is not configured for the device.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
+            priority: int | None
+            """Priority value (lower is first)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, vrf: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, priority: int | UndefinedType | None = Undefined
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           The value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+                           DNS lookup source-interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+                           configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+                           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
+                        priority: Priority value (lower is first).
+
+                    """
+
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
+
+        Servers._item_type = ServersItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """VRF name."""
+            source_interface: str | None
+            """
+            Source interface to use for DNS lookups in this VRF.
+            If set for the VRFs defined by
+            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        source_interface:
+                           Source interface to use for DNS lookups in this VRF.
+                           If set for the VRFs defined by
+                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "domain": {"type": str},
+            "domain_list": {"type": DomainList},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
+            "set_source_interfaces": {"type": bool, "default": True},
+            "ip_hosts": {"type": EosCliConfigGen.IpHosts},
+        }
+        profile: str
+        """DNS settings profile name."""
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `dns_settings_profiles`.
+        The settings from this
+        profile override settings inherited from the parent profile.
+        """
+        domain: str | None
+        """DNS domain name like 'fabric.local'"""
+        domain_list: DomainList
+        """
+        Domain names to complete unqualified host names.
+
+        Subclass of AvdList with `str` items.
+        """
+        servers: Servers
+        """
+        List of DNS servers to configure.
+        May be omitted when inherited from a parent DNS settings profile
+        or global `dns_settings`.
+        When the resolved DNS settings are non-empty, at least one server must be
+        configured.
+
+        Subclass of AvdList with `ServersItem` items.
+        """
+        vrfs: Vrfs
+        """
+        Per-VRF DNS lookup source-interface settings.
+
+        Subclass of AvdIndexedList with `VrfsItem` items.
+        Primary key is `name` (`str`).
+        """
+        set_source_interfaces: bool
+        """
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+        Can be set to `false` to avoid changes when
+        migrating from the old `name_servers` model.
+
+        Default value: `True`
+        """
+        ip_hosts: EosCliConfigGen.IpHosts
+        """Static hostname-to-IP address mappings to configure in the local host table."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | UndefinedType | None = Undefined,
+                domain: str | UndefinedType | None = Undefined,
+                domain_list: DomainList | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                set_source_interfaces: bool | UndefinedType = Undefined,
+                ip_hosts: EosCliConfigGen.IpHosts | UndefinedType = Undefined,
+            ) -> None:
+                """
+                DnsSettingsProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: DNS settings profile name.
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `dns_settings_profiles`.
+                       The settings from this
+                       profile override settings inherited from the parent profile.
+                    domain: DNS domain name like 'fabric.local'
+                    domain_list:
+                       Domain names to complete unqualified host names.
+
+                       Subclass of AvdList with `str` items.
+                    servers:
+                       List of DNS servers to configure.
+                       May be omitted when inherited from a parent DNS settings profile
+                       or global `dns_settings`.
+                       When the resolved DNS settings are non-empty, at least one server must be
+                       configured.
+
+                       Subclass of AvdList with `ServersItem` items.
+                    vrfs:
+                       Per-VRF DNS lookup source-interface settings.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items.
+                       Primary key is `name` (`str`).
+                    set_source_interfaces:
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+                       `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                       Can be set to `false` to avoid changes when
+                       migrating from the old `name_servers` model.
+                    ip_hosts: Static hostname-to-IP address mappings to configure in the local host table.
+
+                """
+
+    class DnsSettingsProfiles(AvdIndexedList[str, DnsSettingsProfilesItem]):
+        """Subclass of AvdIndexedList with `DnsSettingsProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    DnsSettingsProfiles._item_type = DnsSettingsProfilesItem
 
     class Dot1xSettings(AvdModel):
         """Subclass of AvdModel."""
@@ -18652,13 +20208,19 @@ class EosDesigns(EosDesignsRootModel):
 
             AdditionalGroups._item_type = str
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "port": {"type": int}, "additional_groups": {"type": AdditionalGroups}}
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
             adjust an active client session.
 
             Default value: `True`
+            """
+            port: int | None
+            """
+            UDP port used for RADIUS dynamic authorization requests.
+            Applied only when
+            `dot1x_settings.dynamic_authorization.enabled` is `true`.
             """
             additional_groups: AdditionalGroups
             """
@@ -18673,7 +20235,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    port: int | UndefinedType | None = Undefined,
+                    additional_groups: AdditionalGroups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     DynamicAuthorization.
 
@@ -18684,6 +20252,10 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
+                        port:
+                           UDP port used for RADIUS dynamic authorization requests.
+                           Applied only when
+                           `dot1x_settings.dynamic_authorization.enabled` is `true`.
                         additional_groups:
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the
@@ -19107,9 +20679,20 @@ class EosDesigns(EosDesignsRootModel):
         class WebAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "url": {"type": str}, "ssl_profile": {"type": str}, "start_limit_infinite": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "url": {"type": str},
+                "ssl_profile": {"type": str},
+                "start_limit_infinite": {"type": bool},
+            }
             enabled: bool
             """Enable the Web Authentication feature."""
+            ipv4_acl: str | None
+            """
+            Extended IPv4 ACL name.
+            This ACL must be present in `ipv4_acls` catalog.
+            """
             url: str | None
             """
             Static captive portal URL used when the RADIUS server does not provide one during the authentication
@@ -19138,6 +20721,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
+                    ipv4_acl: str | UndefinedType | None = Undefined,
                     url: str | UndefinedType | None = Undefined,
                     ssl_profile: str | UndefinedType | None = Undefined,
                     start_limit_infinite: bool | UndefinedType | None = Undefined,
@@ -19150,6 +20734,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: Enable the Web Authentication feature.
+                        ipv4_acl:
+                           Extended IPv4 ACL name.
+                           This ACL must be present in `ipv4_acls` catalog.
                         url:
                            Static captive portal URL used when the RADIUS server does not provide one during the authentication
                            workflow.
@@ -19196,6 +20783,8 @@ class EosDesigns(EosDesignsRootModel):
         bypass_bpdu: bool
         """
         Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+        Ignored when
+        `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
 
         Default value: `True`
         """
@@ -19267,7 +20856,10 @@ class EosDesigns(EosDesignsRootModel):
                        any interface.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
-                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_bpdu:
+                       Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                       Ignored when
+                       `feature_support.dot1x_bpdu_bypass` is false in the selected platform settings.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
@@ -22174,6 +23766,7 @@ class EosDesigns(EosDesignsRootModel):
                 "information_option": {"type": bool, "default": False},
                 "tunnel_requests_disabled": {"type": bool, "default": False},
                 "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+                "reply_source_address_validation": {"type": bool},
             }
             information_option: bool
             """
@@ -22197,6 +23790,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            reply_source_address_validation: bool | None
+            """
+            Validate reply source address matches configured server.
+            Supported starting with 4.33.10M, 4.34.8M,
+            4.35.6M, and 4.36.2F.
+            """
 
             if TYPE_CHECKING:
 
@@ -22206,6 +23805,7 @@ class EosDesigns(EosDesignsRootModel):
                     information_option: bool | UndefinedType = Undefined,
                     tunnel_requests_disabled: bool | UndefinedType = Undefined,
                     mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                    reply_source_address_validation: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DhcpRelay.
@@ -22223,6 +23823,10 @@ class EosDesigns(EosDesignsRootModel):
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
                            This will only be configured on VXLAN
                            VTEPs which are also MLAG devices.
+                        reply_source_address_validation:
+                           Validate reply source address matches configured server.
+                           Supported starting with 4.33.10M, 4.34.8M,
+                           4.35.6M, and 4.36.2F.
 
                     """
 
@@ -22255,12 +23859,36 @@ class EosDesigns(EosDesignsRootModel):
 
         SuspendedVlans._item_type = SuspendedVlansItem
 
+        class IpSoftwareForwardingExceedActionDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "mtu": {"type": int}}
+            enabled: bool
+            mtu: int
+            """IPv4 software-forwarding MTU threshold in bytes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, mtu: int | UndefinedType = Undefined) -> None:
+                    """
+                    IpSoftwareForwardingExceedActionDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        mtu: IPv4 software-forwarding MTU threshold in bytes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "interface_defaults": {"type": InterfaceDefaults},
             "arp": {"type": Arp},
             "ip_icmp_redirect": {"type": bool},
             "dhcp_relay": {"type": DhcpRelay},
             "suspended_vlans": {"type": SuspendedVlans},
+            "ip_software_forwarding_exceed_action_drop": {"type": IpSoftwareForwardingExceedActionDrop},
         }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
@@ -22279,6 +23907,14 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
         key is `id` (`int`).
         """
+        ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop
+        """
+        Drop IPv4 packets larger than configured mtu (in bytes) in software.
+        Supported starting EOS 4.36.1F,
+        4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -22290,6 +23926,7 @@ class EosDesigns(EosDesignsRootModel):
                 ip_icmp_redirect: bool | UndefinedType | None = Undefined,
                 dhcp_relay: DhcpRelay | UndefinedType = Undefined,
                 suspended_vlans: SuspendedVlans | UndefinedType = Undefined,
+                ip_software_forwarding_exceed_action_drop: IpSoftwareForwardingExceedActionDrop | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -22310,6 +23947,12 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `SuspendedVlansItem` items. Primary
                        key is `id` (`int`).
+                    ip_software_forwarding_exceed_action_drop:
+                       Drop IPv4 packets larger than configured mtu (in bytes) in software.
+                       Supported starting EOS 4.36.1F,
+                       4.35.4M, 4.34.6M, 4.33.8M, 4.32.11M.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -22646,6 +24289,7 @@ class EosDesigns(EosDesignsRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -22659,19 +24303,21 @@ class EosDesigns(EosDesignsRootModel):
             }
             source: str | None
             """
-            This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
-            "peer_ip" for Layer 3 interfaces.
-            Alternatively it can be set with a static value of "any",
-            "<ip>/<mask>" or "<ip>".
+            This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only
+            supported for node type L3 interfaces and L3 port-channels; it is not supported for SVIs or network
+            services L3 interfaces and L3 port-channels.
+            Alternatively it can be set with a static value of
+            "any", "<ip>/<mask>" or "<ip>".
             "<ip>" without a mask means host.
             Required except for remarks.
             """
             destination: str | None
             """
-            This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
-            "peer_ip" for Layer 3 interfaces.
-            Alternatively it can be set with a static value of "any",
-            "<ip>/<mask>" or "<ip>".
+            This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only
+            supported for node type L3 interfaces and L3 port-channels, it is not supported for SVIs or network
+            services L3 interfaces and L3 port-channels.
+            Alternatively it can be set with a static value of
+            "any", "<ip>/<mask>" or "<ip>".
             "<ip>" without a mask means host.
             Required except for remarks.
             """
@@ -22716,8 +24362,19 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -22755,6 +24412,7 @@ class EosDesigns(EosDesignsRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -22774,17 +24432,19 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         source:
-                           This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
-                           "peer_ip" for Layer 3 interfaces.
-                           Alternatively it can be set with a static value of "any",
-                           "<ip>/<mask>" or "<ip>".
+                           This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only
+                           supported for node type L3 interfaces and L3 port-channels; it is not supported for SVIs or network
+                           services L3 interfaces and L3 port-channels.
+                           Alternatively it can be set with a static value of
+                           "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
                         destination:
-                           This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
-                           "peer_ip" for Layer 3 interfaces.
-                           Alternatively it can be set with a static value of "any",
-                           "<ip>/<mask>" or "<ip>".
+                           This field supports substitution of the fields "interface_ip" and "peer_ip". "peer_ip" is only
+                           supported for node type L3 interfaces and L3 port-channels, it is not supported for SVIs or network
+                           services L3 interfaces and L3 port-channels.
+                           Alternatively it can be set with a static value of
+                           "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
                         sequence: ACL entry sequence number.
@@ -22809,7 +24469,15 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -23155,6 +24823,7 @@ class EosDesigns(EosDesignsRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
+                "copy_captive_portal": {"type": bool},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
@@ -23221,8 +24890,19 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
+            copy_captive_portal: bool | None
+            """
+            Copy packet to CPU queue for dot1x captive-portal.
+            Only supported with deny entries.
+            For deny
+            entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+            """
             log: bool | None
-            """Log matches against this rule."""
+            """
+            Log matches against this rule.
+            For deny entries, mutually exclusive with `copy_captive_portal`.
+            `copy_captive_portal` takes precedence.
+            """
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -23259,6 +24939,7 @@ class EosDesigns(EosDesignsRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    copy_captive_portal: bool | UndefinedType | None = Undefined,
                     log: bool | UndefinedType | None = Undefined,
                     icmp_type: str | UndefinedType | None = Undefined,
                     icmp_code: str | UndefinedType | None = Undefined,
@@ -23313,7 +24994,15 @@ class EosDesigns(EosDesignsRootModel):
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        log: Log matches against this rule.
+                        copy_captive_portal:
+                           Copy packet to CPU queue for dot1x captive-portal.
+                           Only supported with deny entries.
+                           For deny
+                           entries, mutually exclusive with `log`. `copy_captive_portal` takes precedence.
+                        log:
+                           Log matches against this rule.
+                           For deny entries, mutually exclusive with `copy_captive_portal`.
+                           `copy_captive_portal` takes precedence.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
@@ -23430,6 +25119,73 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdList with `str` items."""
 
     Ipv6MgmtDestinationNetworks._item_type = str
+
+    class Ipv6PrefixListCatalogItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class SequenceNumbersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
+            sequence: int
+            """Sequence ID."""
+            action: str
+            """
+            Action as string.
+            Example: "permit 2001:db8::/32 le 128"
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sequence: int | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
+                    """
+                    SequenceNumbersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action:
+                           Action as string.
+                           Example: "permit 2001:db8::/32 le 128"
+
+                    """
+
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
+
+        SequenceNumbers._item_type = SequenceNumbersItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "sequence_numbers": {"type": SequenceNumbers}}
+        name: str
+        """Prefix-list Name."""
+        sequence_numbers: SequenceNumbers
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, name: str | UndefinedType = Undefined, sequence_numbers: SequenceNumbers | UndefinedType = Undefined) -> None:
+                """
+                Ipv6PrefixListCatalogItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Prefix-list Name.
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
+
+                """
+
+    class Ipv6PrefixListCatalog(AvdIndexedList[str, Ipv6PrefixListCatalogItem]):
+        """Subclass of AvdIndexedList with `Ipv6PrefixListCatalogItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv6PrefixListCatalog._item_type = Ipv6PrefixListCatalogItem
 
     IsisDefaultCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
     IsisDefaultIsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
@@ -23770,8 +25526,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Name of parent L2VLAN profile to apply.
-        l2vlan_profiles can refer to another l2vlan_profile to
-        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        By default, profile inheritance is limited to two levels:
+        (l2vlan -> l2vlan_profile -> parent_profile).
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
         vni_override: int | None
@@ -23901,8 +25661,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Profile name.
                     parent_profile:
                        Name of parent L2VLAN profile to apply.
-                       l2vlan_profiles can refer to another l2vlan_profile to
-                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                       By default, profile inheritance is limited to two levels:
+                       (l2vlan -> l2vlan_profile -> parent_profile).
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     address_locking: address_locking
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
@@ -24623,7 +26387,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -24813,7 +26577,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -25427,7 +27191,7 @@ class EosDesigns(EosDesignsRootModel):
             qos_profile: str | None
             """QOS service profile."""
             macsec_profile: str | None
-            """MAC security profile."""
+            """MAC security profile. Not supported when `port_channel` is configured."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -25617,7 +27381,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
-                        macsec_profile: MAC security profile.
+                        macsec_profile: MAC security profile. Not supported when `port_channel` is configured.
                         port_channel:
                            Port-channel parameters.
 
@@ -25780,7 +27544,13 @@ class EosDesigns(EosDesignsRootModel):
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "peer_as": {"type": str},
+                "ipv4_prefix_list_in": {"type": str},
+                "ipv4_prefix_list_out": {"type": str},
+                "ipv6_prefix_list_in": {"type": str},
+                "ipv6_prefix_list_out": {"type": str},
+            }
             peer_as: str
             """
             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -25801,6 +27571,21 @@ class EosDesigns(EosDesignsRootModel):
             advertised.
             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
             """
+            ipv6_prefix_list_in: str | None
+            """
+            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+            Only applied when
+            `peer_ipv6` is set; otherwise ignored.
+            The specified prefix list name must exist in
+            `ipv6_prefix_list_catalog`.
+            """
+            ipv6_prefix_list_out: str | None
+            """
+            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+            Only applied when `peer_ipv6`
+            is set; otherwise ignored.
+            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+            """
 
             if TYPE_CHECKING:
 
@@ -25810,6 +27595,8 @@ class EosDesigns(EosDesignsRootModel):
                     peer_as: str | UndefinedType = Undefined,
                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     Bgp.
@@ -25832,6 +27619,17 @@ class EosDesigns(EosDesignsRootModel):
                            If not specified, nothing would be
                            advertised.
                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                        ipv6_prefix_list_in:
+                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                           Only applied when
+                           `peer_ipv6` is set; otherwise ignored.
+                           The specified prefix list name must exist in
+                           `ipv6_prefix_list_catalog`.
+                        ipv6_prefix_list_out:
+                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                           Only applied when `peer_ipv6`
+                           is set; otherwise ignored.
+                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                     """
 
@@ -26124,14 +27922,14 @@ class EosDesigns(EosDesignsRootModel):
         peer_ipv6: str | None
         """
         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-        "peer_ipv6" token.
+        "peer_ipv6" token
+        and for creating IPv6 BGP peering if `bgp` is also set.
+        IPv6 BGP peering using
+        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
         """
         bgp: Bgp
         """
-        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-        IPv6 BGP
-        peering on L3 interfaces is not yet supported.
-
+        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
         Subclass of AvdModel.
         """
         ipv4_acl_in: str | None
@@ -26322,12 +28120,12 @@ class EosDesigns(EosDesignsRootModel):
                        and `ip` is an IP address.
                     peer_ipv6:
                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                       "peer_ipv6" token.
+                       "peer_ipv6" token
+                       and for creating IPv6 BGP peering if `bgp` is also set.
+                       IPv6 BGP peering using
+                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                     bgp:
-                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                       IPv6 BGP
-                       peering on L3 interfaces is not yet supported.
-
+                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                        Subclass of AvdModel.
                     ipv4_acl_in:
                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -27731,6 +29529,504 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                allow_access_list: str | None
+                """
+                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                The access
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                """
+                action: Action | None
+                allow_vlan: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            allow_access_list:
+                               Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                               The access
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            action: action
+                            allow_vlan: allow_vlan
+
+                        """
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class Pae(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Mode | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Pae.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            supplicant_profile: Supplicant profile name.
+
+                        """
+
+            class HostMode(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["multi-host", "single-host"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                mode: Mode | None
+                multi_host_authenticated: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HostMode.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            multi_host_authenticated: multi_host_authenticated
+
+                        """
+
+            class MacBasedAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                enabled: bool | None
+                always: bool | None
+                host_mode_common: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        always: bool | UndefinedType | None = Undefined,
+                        host_mode_common: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        MacBasedAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            always: always
+                            host_mode_common: host_mode_common
+
+                        """
+
+            class Timeout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "idle_host": {"type": int},
+                    "quiet_period": {"type": int},
+                    "reauth_period": {"type": str},
+                    "reauth_timeout_ignore": {"type": bool},
+                    "tx_period": {"type": int},
+                }
+                idle_host: int | None
+                quiet_period: int | None
+                reauth_period: str | None
+                """Value can be 60-4294967295 or 'server'."""
+                reauth_timeout_ignore: bool | None
+                tx_period: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        idle_host: int | UndefinedType | None = Undefined,
+                        quiet_period: int | UndefinedType | None = Undefined,
+                        reauth_period: str | UndefinedType | None = Undefined,
+                        reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                        tx_period: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Timeout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            idle_host: idle_host
+                            quiet_period: quiet_period
+                            reauth_period: Value can be 60-4294967295 or 'server'.
+                            reauth_timeout_ignore: reauth_timeout_ignore
+                            tx_period: tx_period
+
+                        """
+
+            class Unauthorized(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                access_vlan_membership_egress: bool | None
+                native_vlan_membership_egress: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Unauthorized.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            access_vlan_membership_egress: access_vlan_membership_egress
+                            native_vlan_membership_egress: native_vlan_membership_egress
+
+                        """
+
+            class Eapol(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailureFallbackMba(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                    enabled: bool | None
+                    timeout: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            AuthenticationFailureFallbackMba.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                timeout: timeout
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                disabled: bool | None
+                authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | UndefinedType | None = Undefined,
+                        authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Eapol.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: disabled
+                            authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                        """
+
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "eap_response": {"type": str},
+                        "action": {"type": Action},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                eap_response: EAP response to send. EOS default is `success`.
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "authentication_failure": {"type": AuthenticationFailure},
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": Pae},
+                "host_mode": {"type": HostMode},
+                "mac_based_authentication": {"type": MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": Unauthorized},
+                "eapol": {"type": Eapol},
+                "aaa": {"type": Aaa},
+            }
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: Pae
+            """Subclass of AvdModel."""
+            host_mode: HostMode
+            """Subclass of AvdModel."""
+            mac_based_authentication: MacBasedAuthentication
+            """Subclass of AvdModel."""
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: Timeout
+            """Subclass of AvdModel."""
+            reauthorization_request_limit: int | None
+            unauthorized: Unauthorized
+            """Subclass of AvdModel."""
+            eapol: Eapol
+            """Subclass of AvdModel."""
+            aaa: Aaa
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: Pae | UndefinedType = Undefined,
+                    host_mode: HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: Unauthorized | UndefinedType = Undefined,
+                    eapol: Eapol | UndefinedType = Undefined,
+                    aaa: Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_failure: Subclass of AvdModel.
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: Subclass of AvdModel.
+                        host_mode: Subclass of AvdModel.
+                        mac_based_authentication: Subclass of AvdModel.
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: Subclass of AvdModel.
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: Subclass of AvdModel.
+                        eapol: Subclass of AvdModel.
+                        aaa: Subclass of AvdModel.
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -28621,7 +30917,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -28804,8 +31100,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """
+        802.1x
+
+        Subclass of AvdModel.
+        """
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -28913,7 +31213,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -29063,7 +31363,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x:
+                       802.1x
+
+                       Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -29211,12 +31514,45 @@ class EosDesigns(EosDesignsRootModel):
             class AddressFamilyIpv6(AvdModel):
                 """Subclass of AvdModel."""
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            always: bool | UndefinedType | None = Undefined,
+                            route_map: str | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
+                    "default_originate": {"type": DefaultOriginate},
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
                 }
@@ -29235,6 +31571,8 @@ class EosDesigns(EosDesignsRootModel):
                 Outbound RCF function name with parenthesis.
                 Example: MyFunction(myarg).
                 """
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
                 prefix_list_in: str | None
                 """Inbound prefix-list name."""
                 prefix_list_out: str | None
@@ -29250,6 +31588,7 @@ class EosDesigns(EosDesignsRootModel):
                         route_map_out: str | UndefinedType | None = Undefined,
                         rcf_in: str | UndefinedType | None = Undefined,
                         rcf_out: str | UndefinedType | None = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                         prefix_list_in: str | UndefinedType | None = Undefined,
                         prefix_list_out: str | UndefinedType | None = Undefined,
                     ) -> None:
@@ -29269,6 +31608,7 @@ class EosDesigns(EosDesignsRootModel):
                             rcf_out:
                                Outbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
+                            default_originate: Subclass of AvdModel.
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
 
@@ -29494,6 +31834,71 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: enabled
                             always: always
                             route_map: Route-map name.
+
+                        """
+
+            class MaximumAcceptedRoutes(AvdModel):
+                """Subclass of AvdModel."""
+
+                class WarningLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                    count: int | None
+                    """
+                    Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                    with `percent`. `count` takes precedence.
+                    """
+                    percent: int | None
+                    """
+                    Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                    with `count`. `count` takes precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            WarningLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                   with `percent`. `count` takes precedence.
+                                percent:
+                                   Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                   with `count`. `count` takes precedence.
+
+                            """
+
+                _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                limit: int
+                """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                warning_limit: WarningLimit
+                """
+                Warning threshold for the maximum number of accepted routes.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                        """
+                        MaximumAcceptedRoutes.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                            warning_limit:
+                               Warning threshold for the maximum number of accepted routes.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -29748,6 +32153,7 @@ class EosDesigns(EosDesignsRootModel):
                 "maximum_routes": {"type": int},
                 "maximum_routes_warning_limit": {"type": str},
                 "maximum_routes_warning_only": {"type": bool},
+                "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                 "missing_policy": {"type": MissingPolicy},
                 "link_bandwidth": {"type": LinkBandwidth},
                 "allowas_in": {"type": AllowasIn},
@@ -29761,6 +32167,8 @@ class EosDesigns(EosDesignsRootModel):
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
+                "maximum_advertised_routes": {"type": int},
+                "maximum_advertised_routes_warning_limit": {"type": str},
             }
             name: str
             """BGP peer group name."""
@@ -29863,6 +32271,8 @@ class EosDesigns(EosDesignsRootModel):
             maximum number of routes at which to warn ("<1-100> percent").
             """
             maximum_routes_warning_only: bool | None
+            maximum_accepted_routes: MaximumAcceptedRoutes
+            """Subclass of AvdModel."""
             missing_policy: MissingPolicy
             """
             Missing policy configuration for all address-families.
@@ -29891,6 +32301,14 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
+            maximum_advertised_routes: int | None
+            """Maximum number of advertised routes (0 means unlimited)."""
+            maximum_advertised_routes_warning_limit: str | None
+            """
+            Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+            never warn) or
+            Percentage of maximum number of routes at which to warn ("<1-100> percent").
+            """
 
             if TYPE_CHECKING:
 
@@ -29928,6 +32346,7 @@ class EosDesigns(EosDesignsRootModel):
                     maximum_routes: int | UndefinedType | None = Undefined,
                     maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                     maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                    maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -29941,6 +32360,8 @@ class EosDesigns(EosDesignsRootModel):
                     session_tracker: str | UndefinedType | None = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                    maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     BgpPeerGroupsItem.
@@ -30017,6 +32438,7 @@ class EosDesigns(EosDesignsRootModel):
                            Percentage of
                            maximum number of routes at which to warn ("<1-100> percent").
                         maximum_routes_warning_only: maximum_routes_warning_only
+                        maximum_accepted_routes: Subclass of AvdModel.
                         missing_policy:
                            Missing policy configuration for all address-families.
 
@@ -30033,6 +32455,11 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
+                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                        maximum_advertised_routes_warning_limit:
+                           Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                           never warn) or
+                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                     """
 
@@ -30989,6 +33416,130 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Ospfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RedistributeBgp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                    enabled: bool
+                    """
+                    Redistribute BGP into OSPFv3.
+                    Ignored on devices where BGP is not configured for this VRF.
+
+                    Default value: `True`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            RedistributeBgp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled:
+                                   Redistribute BGP into OSPFv3.
+                                   Ignored on devices where BGP is not configured for this VRF.
+
+                            """
+
+                class RedistributeConnected(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                    enabled: bool
+                    """
+                    Redistribute connected routes into OSPFv3.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            RedistributeConnected.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Redistribute connected routes into OSPFv3.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "router_id": {"type": str, "default": "main_router_id"},
+                    "redistribute_bgp": {"type": RedistributeBgp},
+                    "redistribute_connected": {"type": RedistributeConnected},
+                    "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
+                }
+                router_id: str
+                """
+                Router ID to use for OSPFv3 in this VRF.
+                This can be an IPv4 address, "main_router_id", "none" or
+                "diagnostic_loopback".
+                - "main_router_id" will use the IP address of Loopback0 or the common `router
+                general` Router ID if `use_router_general_for_router_id` is set.
+                - "none" will not configure an
+                OSPFv3 Router ID for this VRF.
+                  EOS then uses the `router general` Router ID or an IPv4 address of
+                an interface in the VRF.
+                  If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                does not start.
+                - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                interface.
+
+                Default value: `"main_router_id"`
+                """
+                redistribute_bgp: RedistributeBgp
+                """Subclass of AvdModel."""
+                redistribute_connected: RedistributeConnected
+                """Subclass of AvdModel."""
+                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        router_id: str | UndefinedType = Undefined,
+                        redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                        redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ospfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            router_id:
+                               Router ID to use for OSPFv3 in this VRF.
+                               This can be an IPv4 address, "main_router_id", "none" or
+                               "diagnostic_loopback".
+                               - "main_router_id" will use the IP address of Loopback0 or the common `router
+                               general` Router ID if `use_router_general_for_router_id` is set.
+                               - "none" will not configure an
+                               OSPFv3 Router ID for this VRF.
+                                 EOS then uses the `router general` Router ID or an IPv4 address of
+                               an interface in the VRF.
+                                 If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                               does not start.
+                               - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                               interface.
+                            redistribute_bgp: Subclass of AvdModel.
+                            redistribute_connected: Subclass of AvdModel.
+                            structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+
+                        """
+
             class RedistributeOspfSettings(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -31037,6 +33588,40 @@ class EosDesigns(EosDesignsRootModel):
                                - "external": Redistribute OSPF external routes.
                                - "nssa-external": Redistribute OSPF NSSA
                                external routes.
+
+                        """
+
+            class RedistributeOspfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                enabled: bool
+                """
+                Redistribute OSPFv3 internal routes into BGP for this VRF.
+                Ignored on devices where BGP is not
+                configured for this VRF or where the VRF has no OSPFv3 instance.
+                OSPFv3 external routes are not
+                redistributed.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                        """
+                        RedistributeOspfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Redistribute OSPFv3 internal routes into BGP for this VRF.
+                               Ignored on devices where BGP is not
+                               configured for this VRF or where the VRF has no OSPFv3 instance.
+                               OSPFv3 external routes are not
+                               redistributed.
 
                         """
 
@@ -32101,6 +34686,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Ipv4(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                            enabled: bool | None
+                            """
+                            Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                            The
+                            IPv4 address family is not supported yet, so `true` raises an error.
+                            An SVI with IPv4 addressing
+                            also raises an error unless this is set to `false`.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    Ipv4.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                           The
+                                           IPv4 address family is not supported yet, so `true` raises an error.
+                                           An SVI with IPv4 addressing
+                                           also raises an error unless this is set to `false`.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "area": {"type": str, "default": "0.0.0.0"},
+                            "point_to_point": {"type": bool, "default": False},
+                            "passive": {"type": bool, "default": False},
+                            "ipv4": {"type": Ipv4},
+                        }
+                        enabled: bool | None
+                        area: str
+                        """
+                        OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                        Default value: `"0.0.0.0"`
+                        """
+                        point_to_point: bool
+                        """
+                        Configure the OSPFv3 network type as point-to-point.
+
+                        Default value: `False`
+                        """
+                        passive: bool
+                        """
+                        Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                        By default, OSPFv3-enabled SVIs
+                        are configured with `no ospfv3 passive-interface`.
+
+                        Default value: `False`
+                        """
+                        ipv4: Ipv4
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType | None = Undefined,
+                                area: str | UndefinedType = Undefined,
+                                point_to_point: bool | UndefinedType = Undefined,
+                                passive: bool | UndefinedType = Undefined,
+                                ipv4: Ipv4 | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                    point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                    passive:
+                                       Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                       By default, OSPFv3-enabled SVIs
+                                       are configured with `no ospfv3 passive-interface`.
+                                    ipv4: Subclass of AvdModel.
+
+                                """
+
                     class Bgp(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -32142,6 +34822,7 @@ class EosDesigns(EosDesignsRootModel):
                         "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "name": {"type": str},
                         "enabled": {"type": bool},
+                        "autostate": {"type": bool, "default": True},
                         "description": {"type": str},
                         "arp_gratuitous_accept": {"type": bool},
                         "ip_address": {"type": str},
@@ -32159,6 +34840,8 @@ class EosDesigns(EosDesignsRootModel):
                         "ipv4_acl_out": {"type": str},
                         "ipv6_acl_in": {"type": str},
                         "ipv6_acl_out": {"type": str},
+                        "ipv4_standard_acl_in": {"type": str},
+                        "ipv4_standard_acl_out": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
                         "static_routes": {"type": StaticRoutes},
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -32177,6 +34860,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int},
                         "mtu": {"type": int},
                         "ospf": {"type": Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "bgp": {"type": Bgp},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -32198,6 +34882,12 @@ class EosDesigns(EosDesignsRootModel):
                     """VLAN name."""
                     enabled: bool | None
                     """Enable or disable interface."""
+                    autostate: bool
+                    """
+                    Set to false to disable automatic management of the interface link state.
+
+                    Default value: `True`
+                    """
                     description: str | None
                     """SVI description. By default set to VLAN name."""
                     arp_gratuitous_accept: bool | None
@@ -32269,24 +34959,52 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the IPv4 access-list to be assigned in the ingress direction.
                     The access-list must be
                     defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive
+                    with `ipv4_standard_acl_in`. Setting both raises an error.
                     """
                     ipv4_acl_out: str | None
                     """
                     Name of the IPv4 Access-list to be assigned in the egress direction.
                     The access-list must be defined
                     under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    Mutually exclusive with
+                    `ipv4_standard_acl_out`. Setting both raises an error.
                     """
                     ipv6_acl_in: str | None
                     """
                     Name of the IPv6 access-list to be assigned in the ingress direction.
                     The access-list must be
-                    defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                    resolved from
+                    `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                    Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                    removed in AVD 7.0.0.
                     """
                     ipv6_acl_out: str | None
                     """
                     Name of the IPv6 access-list to be assigned in the egress direction.
                     The access-list must be defined
-                    under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                    resolved from
+                    `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                    Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                    removed in AVD 7.0.0.
+                    """
+                    ipv4_standard_acl_in: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    """
+                    ipv4_standard_acl_out: str | None
+                    """
+                    Name of the IPv4 standard access-list to be assigned in the egress direction.
+                    The access-list must
+                    be defined under `ipv4_standard_acls`.
+                    Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                    instead when field substitution for "interface_ip" is required, setting both raises an error.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -32401,6 +35119,26 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    ospfv3: Ospfv3
+                    """
+                    OSPFv3 interface configuration.
+                    Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                    configuration for the VRF of the SVI on the device.
+                    Only the IPv6 address family is currently
+                    supported.
+                    SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                    OSPFv3 uses the IPv6
+                    link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                    `ipv6_address` (`ipv6_enable: false` is not supported).
+                    Anycast IPv6 (`ipv6_address_virtuals`) is
+                    not supported.
+                    SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                    VRF
+                    `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                    Subclass of
+                    AvdModel.
+                    """
                     bgp: Bgp
                     """Subclass of AvdModel."""
                     raw_eos_cli: str | None
@@ -32427,6 +35165,7 @@ class EosDesigns(EosDesignsRootModel):
                             tags: Tags | UndefinedType = Undefined,
                             name: str | UndefinedType | None = Undefined,
                             enabled: bool | UndefinedType | None = Undefined,
+                            autostate: bool | UndefinedType = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                             ip_address: str | UndefinedType | None = Undefined,
@@ -32444,6 +35183,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv4_acl_out: str | UndefinedType | None = Undefined,
                             ipv6_acl_in: str | UndefinedType | None = Undefined,
                             ipv6_acl_out: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                            ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
                             static_routes: StaticRoutes | UndefinedType = Undefined,
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -32462,6 +35203,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType | None = Undefined,
                             mtu: int | UndefinedType | None = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             raw_eos_cli: str | UndefinedType | None = Undefined,
                             structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -32483,6 +35225,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with `str` items.
                                 name: VLAN name.
                                 enabled: Enable or disable interface.
+                                autostate: Set to false to disable automatic management of the interface link state.
                                 description: SVI description. By default set to VLAN name.
                                 arp_gratuitous_accept: Accept gratuitous ARP.
                                 ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -32534,18 +35277,42 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the IPv4 access-list to be assigned in the ingress direction.
                                    The access-list must be
                                    defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive
+                                   with `ipv4_standard_acl_in`. Setting both raises an error.
                                 ipv4_acl_out:
                                    Name of the IPv4 Access-list to be assigned in the egress direction.
                                    The access-list must be defined
                                    under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                   Mutually exclusive with
+                                   `ipv4_standard_acl_out`. Setting both raises an error.
                                 ipv6_acl_in:
                                    Name of the IPv6 access-list to be assigned in the ingress direction.
                                    The access-list must be
-                                   defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                   defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                   resolved from
+                                   `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                   Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                   removed in AVD 7.0.0.
                                 ipv6_acl_out:
                                    Name of the IPv6 access-list to be assigned in the egress direction.
                                    The access-list must be defined
-                                   under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                   under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                   resolved from
+                                   `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                   Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                   removed in AVD 7.0.0.
+                                ipv4_standard_acl_in:
+                                   Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                ipv4_standard_acl_out:
+                                   Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                   The access-list must
+                                   be defined under `ipv4_standard_acls`.
+                                   Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                   instead when field substitution for "interface_ip" is required, setting both raises an error.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -32623,6 +35390,24 @@ class EosDesigns(EosDesignsRootModel):
                                    OSPF interface configuration.
 
                                    Subclass of AvdModel.
+                                ospfv3:
+                                   OSPFv3 interface configuration.
+                                   Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                   configuration for the VRF of the SVI on the device.
+                                   Only the IPv6 address family is currently
+                                   supported.
+                                   SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                   OSPFv3 uses the IPv6
+                                   link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                   `ipv6_address` (`ipv6_enable: false` is not supported).
+                                   Anycast IPv6 (`ipv6_address_virtuals`) is
+                                   not supported.
+                                   SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                   VRF
+                                   `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                   Subclass of
+                                   AvdModel.
                                 bgp: Subclass of AvdModel.
                                 raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                 structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -33506,6 +36291,101 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class Ospfv3(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Ipv4(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                        enabled: bool | None
+                        """
+                        Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                        The
+                        IPv4 address family is not supported yet, so `true` raises an error.
+                        An SVI with IPv4 addressing
+                        also raises an error unless this is set to `false`.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                """
+                                Ipv4.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                       The
+                                       IPv4 address family is not supported yet, so `true` raises an error.
+                                       An SVI with IPv4 addressing
+                                       also raises an error unless this is set to `false`.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "area": {"type": str, "default": "0.0.0.0"},
+                        "point_to_point": {"type": bool, "default": False},
+                        "passive": {"type": bool, "default": False},
+                        "ipv4": {"type": Ipv4},
+                    }
+                    enabled: bool | None
+                    area: str
+                    """
+                    OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                    Default value: `"0.0.0.0"`
+                    """
+                    point_to_point: bool
+                    """
+                    Configure the OSPFv3 network type as point-to-point.
+
+                    Default value: `False`
+                    """
+                    passive: bool
+                    """
+                    Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                    By default, OSPFv3-enabled SVIs
+                    are configured with `no ospfv3 passive-interface`.
+
+                    Default value: `False`
+                    """
+                    ipv4: Ipv4
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType | None = Undefined,
+                            area: str | UndefinedType = Undefined,
+                            point_to_point: bool | UndefinedType = Undefined,
+                            passive: bool | UndefinedType = Undefined,
+                            ipv4: Ipv4 | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Ospfv3.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                passive:
+                                   Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                   By default, OSPFv3-enabled SVIs
+                                   are configured with `no ospfv3 passive-interface`.
+                                ipv4: Subclass of AvdModel.
+
+                            """
+
                 class Bgp(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -33551,6 +36431,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "nodes": {"type": Nodes},
                     "enabled": {"type": bool},
+                    "autostate": {"type": bool, "default": True},
                     "description": {"type": str},
                     "arp_gratuitous_accept": {"type": bool},
                     "ip_address": {"type": str},
@@ -33568,6 +36449,8 @@ class EosDesigns(EosDesignsRootModel):
                     "ipv4_acl_out": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
+                    "ipv4_standard_acl_in": {"type": str},
+                    "ipv4_standard_acl_out": {"type": str},
                     "ip_helpers": {"type": IpHelpers},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -33586,6 +36469,7 @@ class EosDesigns(EosDesignsRootModel):
                     "spanning_tree_priority": {"type": int},
                     "mtu": {"type": int},
                     "ospf": {"type": Ospf},
+                    "ospfv3": {"type": Ospfv3},
                     "bgp": {"type": Bgp},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -33606,6 +36490,10 @@ class EosDesigns(EosDesignsRootModel):
                 SVI profile name to apply.
                 SVI can refer to one svi_profile which again can refer to another
                 svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                From
+                AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                allows
+                profiles to inherit settings across any number of levels.
                 """
                 tags: Tags
                 """
@@ -33637,6 +36525,12 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 enabled: bool | None
                 """Enable or disable interface."""
+                autostate: bool
+                """
+                Set to false to disable automatic management of the interface link state.
+
+                Default value: `True`
+                """
                 description: str | None
                 """SVI description. By default set to VLAN name."""
                 arp_gratuitous_accept: bool | None
@@ -33708,24 +36602,52 @@ class EosDesigns(EosDesignsRootModel):
                 Name of the IPv4 access-list to be assigned in the ingress direction.
                 The access-list must be
                 defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive
+                with `ipv4_standard_acl_in`. Setting both raises an error.
                 """
                 ipv4_acl_out: str | None
                 """
                 Name of the IPv4 Access-list to be assigned in the egress direction.
                 The access-list must be defined
                 under `ipv4_acls` and supports substitution of the field "interface_ip".
+                Mutually exclusive with
+                `ipv4_standard_acl_out`. Setting both raises an error.
                 """
                 ipv6_acl_in: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
                 The access-list must be
-                defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from
+                `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                removed in AVD 7.0.0.
                 """
                 ipv6_acl_out: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the egress direction.
                 The access-list must be defined
-                under `ipv6_acls` and supports substitution of the field "interface_ip".
+                under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                resolved from
+                `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                removed in AVD 7.0.0.
+                """
+                ipv4_standard_acl_in: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
+                """
+                ipv4_standard_acl_out: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the egress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                instead when field substitution for "interface_ip" is required, setting both raises an error.
                 """
                 ip_helpers: IpHelpers
                 """
@@ -33840,6 +36762,26 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                ospfv3: Ospfv3
+                """
+                OSPFv3 interface configuration.
+                Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                configuration for the VRF of the SVI on the device.
+                Only the IPv6 address family is currently
+                supported.
+                SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                OSPFv3 uses the IPv6
+                link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                `ipv6_address` (`ipv6_enable: false` is not supported).
+                Anycast IPv6 (`ipv6_address_virtuals`) is
+                not supported.
+                SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                VRF
+                `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                Subclass of
+                AvdModel.
+                """
                 bgp: Bgp
                 """Subclass of AvdModel."""
                 raw_eos_cli: str | None
@@ -33870,6 +36812,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
                         enabled: bool | UndefinedType | None = Undefined,
+                        autostate: bool | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                         ip_address: str | UndefinedType | None = Undefined,
@@ -33887,6 +36830,8 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                         ip_helpers: IpHelpers | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -33905,6 +36850,7 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_priority: int | UndefinedType | None = Undefined,
                         mtu: int | UndefinedType | None = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
+                        ospfv3: Ospfv3 | UndefinedType = Undefined,
                         bgp: Bgp | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -33927,6 +36873,10 @@ class EosDesigns(EosDesignsRootModel):
                                SVI profile name to apply.
                                SVI can refer to one svi_profile which again can refer to another
                                svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                               From
+                               AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                               allows
+                               profiles to inherit settings across any number of levels.
                             tags:
                                Tags leveraged for networks services filtering.
                                Tags are matched against "filter.tags" defined under
@@ -33948,6 +36898,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                             enabled: Enable or disable interface.
+                            autostate: Set to false to disable automatic management of the interface link state.
                             description: SVI description. By default set to VLAN name.
                             arp_gratuitous_accept: Accept gratuitous ARP.
                             ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -33999,18 +36950,42 @@ class EosDesigns(EosDesignsRootModel):
                                Name of the IPv4 access-list to be assigned in the ingress direction.
                                The access-list must be
                                defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive
+                               with `ipv4_standard_acl_in`. Setting both raises an error.
                             ipv4_acl_out:
                                Name of the IPv4 Access-list to be assigned in the egress direction.
                                The access-list must be defined
                                under `ipv4_acls` and supports substitution of the field "interface_ip".
+                               Mutually exclusive with
+                               `ipv4_standard_acl_out`. Setting both raises an error.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
-                               defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from
+                               `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                               Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                               removed in AVD 7.0.0.
                             ipv6_acl_out:
                                Name of the IPv6 access-list to be assigned in the egress direction.
                                The access-list must be defined
-                               under `ipv6_acls` and supports substitution of the field "interface_ip".
+                               under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                               resolved from
+                               `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                               Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                               removed in AVD 7.0.0.
+                            ipv4_standard_acl_in:
+                               Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            ipv4_standard_acl_out:
+                               Name of the IPv4 standard access-list to be assigned in the egress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                               instead when field substitution for "interface_ip" is required, setting both raises an error.
                             ip_helpers:
                                IP helper for DHCP relay.
 
@@ -34088,6 +37063,24 @@ class EosDesigns(EosDesignsRootModel):
                                OSPF interface configuration.
 
                                Subclass of AvdModel.
+                            ospfv3:
+                               OSPFv3 interface configuration.
+                               Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                               configuration for the VRF of the SVI on the device.
+                               Only the IPv6 address family is currently
+                               supported.
+                               SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                               OSPFv3 uses the IPv6
+                               link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                               `ipv6_address` (`ipv6_enable: false` is not supported).
+                               Anycast IPv6 (`ipv6_address_virtuals`) is
+                               not supported.
+                               SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                               VRF
+                               `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                               Subclass of
+                               AvdModel.
                             bgp: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                             structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -35738,6 +38731,11 @@ class EosDesigns(EosDesignsRootModel):
             class LoopbacksItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class Ospf(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -35770,6 +38768,7 @@ class EosDesigns(EosDesignsRootModel):
                     "node": {"type": str},
                     "loopback": {"type": int},
                     "ip_address": {"type": str},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "description": {"type": str},
                     "enabled": {"type": bool, "default": True},
                     "ospf": {"type": Ospf},
@@ -35778,13 +38777,25 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 node: str
                 loopback: int
-                ip_address: str
+                ip_address: str | None
+                """IPv4 address/Mask."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                At least one of `ip_address` or
+                `ipv6_addresses` must be set.
+                The first address in this list is used for the IPv6 virtual source-nat
+                of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 enabled: bool
                 """Default value: `True`"""
                 ospf: Ospf
                 """
-                OSPF interface configuration.
+                OSPFv2 interface configuration.
+                Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                and this loopback.
 
                 Subclass of AvdModel.
                 """
@@ -35803,7 +38814,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         node: str | UndefinedType = Undefined,
                         loopback: int | UndefinedType = Undefined,
-                        ip_address: str | UndefinedType = Undefined,
+                        ip_address: str | UndefinedType | None = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         description: str | UndefinedType | None = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -35819,11 +38831,20 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             node: node
                             loopback: loopback
-                            ip_address: ip_address
+                            ip_address: IPv4 address/Mask.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               At least one of `ip_address` or
+                               `ipv6_addresses` must be set.
+                               The first address in this list is used for the IPv6 virtual source-nat
+                               of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                               Subclass of AvdList with `str` items.
                             description: description
                             enabled: enabled
                             ospf:
-                               OSPF interface configuration.
+                               OSPFv2 interface configuration.
+                               Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                               and this loopback.
 
                                Subclass of AvdModel.
                             hardware_forwarding:
@@ -36296,9 +39317,38 @@ class EosDesigns(EosDesignsRootModel):
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
+                class GracefulRestart(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
+                    enabled: bool
+                    """Enable or disable BGP graceful-restart for this VRF."""
+                    restart_time: int
+                    """
+                    Restart time in seconds.
+
+                    Default value: `300`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                            """
+                            GracefulRestart.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable or disable BGP graceful-restart for this VRF.
+                                restart_time: Restart time in seconds.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str, "default": "main_router_id"},
+                    "graceful_restart": {"type": GracefulRestart},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                 }
@@ -36328,6 +39378,15 @@ class EosDesigns(EosDesignsRootModel):
 
                 Default value: `"main_router_id"`
                 """
+                graceful_restart: GracefulRestart
+                """
+                BGP graceful-restart configuration for this VRF.
+                This setting is not supported for VRF default. Use
+                `bgp_graceful_restart` instead.
+
+
+                Subclass of AvdModel.
+                """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -36340,6 +39399,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         enabled: bool | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
+                        graceful_restart: GracefulRestart | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
@@ -36370,6 +39430,13 @@ class EosDesigns(EosDesignsRootModel):
                                Router ID for this VRF. EOS will use the main BGP Router ID.
                                - "diagnostic_loopback" will use the IP
                                address of the VRF Diagnostic Loopback interface.
+                            graceful_restart:
+                               BGP graceful-restart configuration for this VRF.
+                               This setting is not supported for VRF default. Use
+                               `bgp_graceful_restart` instead.
+
+
+                               Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                             structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -36460,12 +39527,45 @@ class EosDesigns(EosDesignsRootModel):
                 class AddressFamilyIpv6(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class DefaultOriginate(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        always: bool | None
+                        """Always advertise a default route to this peer."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                always: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DefaultOriginate.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    always: Always advertise a default route to this peer.
+                                    route_map: Route-map name.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
+                        "default_originate": {"type": DefaultOriginate},
                         "prefix_list_in": {"type": str},
                         "prefix_list_out": {"type": str},
                     }
@@ -36484,6 +39584,8 @@ class EosDesigns(EosDesignsRootModel):
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
                     """
+                    default_originate: DefaultOriginate
+                    """Subclass of AvdModel."""
                     prefix_list_in: str | None
                     """Inbound prefix-list name."""
                     prefix_list_out: str | None
@@ -36499,6 +39601,7 @@ class EosDesigns(EosDesignsRootModel):
                             route_map_out: str | UndefinedType | None = Undefined,
                             rcf_in: str | UndefinedType | None = Undefined,
                             rcf_out: str | UndefinedType | None = Undefined,
+                            default_originate: DefaultOriginate | UndefinedType = Undefined,
                             prefix_list_in: str | UndefinedType | None = Undefined,
                             prefix_list_out: str | UndefinedType | None = Undefined,
                         ) -> None:
@@ -36518,6 +39621,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rcf_out:
                                    Outbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
+                                default_originate: Subclass of AvdModel.
                                 prefix_list_in: Inbound prefix-list name.
                                 prefix_list_out: Outbound prefix-list name.
 
@@ -36750,6 +39854,71 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: enabled
                                 always: always
                                 route_map: Route-map name.
+
+                            """
+
+                class MaximumAcceptedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                        with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                        with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                       with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                       with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of accepted routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAcceptedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                warning_limit:
+                                   Warning threshold for the maximum number of accepted routes.
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -37004,6 +40173,7 @@ class EosDesigns(EosDesignsRootModel):
                     "maximum_routes": {"type": int},
                     "maximum_routes_warning_limit": {"type": str},
                     "maximum_routes_warning_only": {"type": bool},
+                    "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                     "missing_policy": {"type": MissingPolicy},
                     "link_bandwidth": {"type": LinkBandwidth},
                     "allowas_in": {"type": AllowasIn},
@@ -37017,6 +40187,8 @@ class EosDesigns(EosDesignsRootModel):
                     "session_tracker": {"type": str},
                     "shared_secret": {"type": SharedSecret},
                     "ttl_maximum_hops": {"type": int},
+                    "maximum_advertised_routes": {"type": int},
+                    "maximum_advertised_routes_warning_limit": {"type": str},
                 }
                 name: str
                 """BGP peer group name."""
@@ -37123,6 +40295,8 @@ class EosDesigns(EosDesignsRootModel):
                 maximum number of routes at which to warn ("<1-100> percent").
                 """
                 maximum_routes_warning_only: bool | None
+                maximum_accepted_routes: MaximumAcceptedRoutes
+                """Subclass of AvdModel."""
                 missing_policy: MissingPolicy
                 """
                 Missing policy configuration for all address-families.
@@ -37151,6 +40325,14 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 ttl_maximum_hops: int | None
                 """Maximum number of hops."""
+                maximum_advertised_routes: int | None
+                """Maximum number of advertised routes (0 means unlimited)."""
+                maximum_advertised_routes_warning_limit: str | None
+                """
+                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                """
 
                 if TYPE_CHECKING:
 
@@ -37188,6 +40370,7 @@ class EosDesigns(EosDesignsRootModel):
                         maximum_routes: int | UndefinedType | None = Undefined,
                         maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                         maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                        maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                         missing_policy: MissingPolicy | UndefinedType = Undefined,
                         link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                         allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -37201,6 +40384,8 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: str | UndefinedType | None = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         BgpPeerGroupsItem.
@@ -37281,6 +40466,7 @@ class EosDesigns(EosDesignsRootModel):
                                Percentage of
                                maximum number of routes at which to warn ("<1-100> percent").
                             maximum_routes_warning_only: maximum_routes_warning_only
+                            maximum_accepted_routes: Subclass of AvdModel.
                             missing_policy:
                                Missing policy configuration for all address-families.
 
@@ -37297,6 +40483,11 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: session_tracker
                             shared_secret: Subclass of AvdModel.
                             ttl_maximum_hops: Maximum number of hops.
+                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                            maximum_advertised_routes_warning_limit:
+                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                               never warn) or
+                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                         """
 
@@ -37480,8 +40671,10 @@ class EosDesigns(EosDesignsRootModel):
                 "mlag_ibgp_peering_vlan": {"type": int},
                 "vtep_diagnostic": {"type": VtepDiagnostic},
                 "ospf": {"type": Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "redistribute_ospf": {"type": bool, "default": True},
                 "redistribute_ospf_settings": {"type": RedistributeOspfSettings},
+                "redistribute_ospfv3": {"type": RedistributeOspfv3},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "pim_rp_addresses": {"type": PimRpAddresses},
                 "evpn_l2_multi_domain": {"type": bool},
@@ -37618,10 +40811,15 @@ class EosDesigns(EosDesignsRootModel):
             mlag_ibgp_peering_ipv6_pool: str | None
             """
             Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-            The
-            subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-            MLAG switch.
-            If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Only
+            used when `underlay_ipv6_numbered` is set.
+            The subnet used for the iBGP peering in the VRF is
+            derived from this pool based on the ID of the first MLAG switch.
+            If not set,
+            "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            Set
+            `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+            pool.
             """
             ip_helpers: IpHelpers
             """
@@ -37674,6 +40872,17 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            ospfv3: Ospfv3
+            """
+            Router OSPFv3 settings for the VRF.
+            The OSPFv3 configuration is created automatically on a device
+            when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+            These settings only
+            override the defaults.
+            VRF `default` is not supported yet.
+
+            Subclass of AvdModel.
+            """
             redistribute_ospf: bool
             """
             Non-selectively enabling or disabling redistribute ospf inside the VRF.
@@ -37691,6 +40900,8 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of
             AvdModel.
             """
+            redistribute_ospfv3: RedistributeOspfv3
+            """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -37856,8 +41067,10 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                     vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     redistribute_ospf: bool | UndefinedType = Undefined,
                     redistribute_ospf_settings: RedistributeOspfSettings | UndefinedType = Undefined,
+                    redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                     evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -37966,10 +41179,15 @@ class EosDesigns(EosDesignsRootModel):
                            If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                         mlag_ibgp_peering_ipv6_pool:
                            Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                           The
-                           subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                           MLAG switch.
-                           If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Only
+                           used when `underlay_ipv6_numbered` is set.
+                           The subnet used for the iBGP peering in the VRF is
+                           derived from this pool based on the ID of the first MLAG switch.
+                           If not set,
+                           "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                           Set
+                           `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                           pool.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -38009,6 +41227,15 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
+                        ospfv3:
+                           Router OSPFv3 settings for the VRF.
+                           The OSPFv3 configuration is created automatically on a device
+                           when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                           These settings only
+                           override the defaults.
+                           VRF `default` is not supported yet.
+
+                           Subclass of AvdModel.
                         redistribute_ospf:
                            Non-selectively enabling or disabling redistribute ospf inside the VRF.
                            Deprecated: Use
@@ -38020,6 +41247,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of
                            AvdModel.
+                        redistribute_ospfv3: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -38436,6 +41664,10 @@ class EosDesigns(EosDesignsRootModel):
             The profile must be defined under `l2vlan_profiles`. The profile may refer to
             another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
             l2vlan_profile -> l2vlan_parent_profile).
+            From AVD 6.5.0 onwards, setting
+            `avd_design_future.allow_recursive_profile_inheritance` to true
+            allows profiles to inherit settings
+            across any number of levels.
             """
             tags: Tags
             """
@@ -38581,6 +41813,10 @@ class EosDesigns(EosDesignsRootModel):
                            The profile must be defined under `l2vlan_profiles`. The profile may refer to
                            another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                            l2vlan_profile -> l2vlan_parent_profile).
+                           From AVD 6.5.0 onwards, setting
+                           `avd_design_future.allow_recursive_profile_inheritance` to true
+                           allows profiles to inherit settings
+                           across any number of levels.
                         tags:
                            Tags leveraged for networks services filtering.
                            Tags are matched against filter.tags defined under
@@ -40801,6 +44037,312 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class NtpSettingsProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "burst": {"type": bool},
+                "iburst": {"type": bool},
+                "key": {"type": int},
+                "maxpoll": {"type": int},
+                "minpoll": {"type": int},
+                "version": {"type": int},
+                "source_address": {"type": str},
+            }
+            name: str
+            """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
+            burst: bool | None
+            iburst: bool | None
+            key: int | None
+            maxpoll: int | None
+            """Value of maxpoll between 3 - 17 (Logarithmic)."""
+            minpoll: int | None
+            """Value of minpoll between 3 - 17 (Logarithmic)."""
+            version: int | None
+            source_address: str | None
+            """
+            - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+            interface.
+            - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+            management interface.
+            - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+            address of the inband management interface.
+            - `use_inband_mgmt_interface_ipv6` configures the source
+            address as the IPv6 address of the inband management interface.
+            - Any other string is used directly
+            as the source address (for example, an IPv4 or IPv6 address).
+            `use_*` values fail validation when
+            the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    burst: bool | UndefinedType | None = Undefined,
+                    iburst: bool | UndefinedType | None = Undefined,
+                    key: int | UndefinedType | None = Undefined,
+                    maxpoll: int | UndefinedType | None = Undefined,
+                    minpoll: int | UndefinedType | None = Undefined,
+                    version: int | UndefinedType | None = Undefined,
+                    source_address: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.
+                        burst: burst
+                        iburst: iburst
+                        key: key
+                        maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
+                        minpoll: Value of minpoll between 3 - 17 (Logarithmic).
+                        version: version
+                        source_address:
+                           - `use_mgmt_interface_ipv4` configures the source address as the IPv4 address of the management
+                           interface.
+                           - `use_mgmt_interface_ipv6` configures the source address as the IPv6 address of the
+                           management interface.
+                           - `use_inband_mgmt_interface_ipv4` configures the source address as the IPv4
+                           address of the inband management interface.
+                           - `use_inband_mgmt_interface_ipv6` configures the source
+                           address as the IPv6 address of the inband management interface.
+                           - Any other string is used directly
+                           as the source address (for example, an IPv4 or IPv6 address).
+                           `use_*` values fail validation when
+                           the management address is missing/dhcp, ntp_settings.server_vrf is not the expected management VRF.
+
+                    """
+
+        class Servers(AvdIndexedList[str, ServersItem]):
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Servers._item_type = ServersItem
+
+        class AuthenticationKeysItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1"]
+            _fields: ClassVar[dict] = {
+                "id": {"type": int},
+                "key": {"type": str},
+                "cleartext_key": {"type": str},
+                "key_type": {"type": str},
+                "hash_algorithm": {"type": str},
+            }
+            id: int
+            """Key identifier."""
+            key: str | None
+            """
+            Authentication provided using the `key_type` format.
+            Will be rendered as such.
+            Takes precedence over
+            `cleartext_key`.
+            """
+            cleartext_key: str | None
+            """
+            Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+            `key_type` does not
+            influence this key.
+            To protect the password at rest it is strongly recommended to make use of a
+            vault or similar.
+            """
+            key_type: KeyType | None
+            """
+            Key type of the `key`.
+            Does not have any influence on `cleartext_key`.
+            """
+            hash_algorithm: HashAlgorithm
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    id: int | UndefinedType = Undefined,
+                    key: str | UndefinedType | None = Undefined,
+                    cleartext_key: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType | None = Undefined,
+                    hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AuthenticationKeysItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: Key identifier.
+                        key:
+                           Authentication provided using the `key_type` format.
+                           Will be rendered as such.
+                           Takes precedence over
+                           `cleartext_key`.
+                        cleartext_key:
+                           Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+                           `key_type` does not
+                           influence this key.
+                           To protect the password at rest it is strongly recommended to make use of a
+                           vault or similar.
+                        key_type:
+                           Key type of the `key`.
+                           Does not have any influence on `cleartext_key`.
+                        hash_algorithm: hash_algorithm
+
+                    """
+
+        class AuthenticationKeys(AvdIndexedList[int, AuthenticationKeysItem]):
+            """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        AuthenticationKeys._item_type = AuthenticationKeysItem
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+            "set_first_ntp_server_as_preferred": {"type": bool, "default": True},
+            "servers": {"type": Servers},
+            "authenticate": {"type": bool},
+            "authenticate_servers_only": {"type": bool},
+            "authentication_keys": {"type": AuthenticationKeys},
+            "trusted_keys": {"type": str},
+        }
+        profile: str
+        """NTP settings profile name."""
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+        The settings from this
+        profile override settings inherited from the parent profile.
+        """
+        server_vrf: str
+        """
+        EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-
+        interface.
+        - `use_mgmt_interface_vrf` will configure the NTP server(s) under the VRF set with
+        `mgmt_interface_vrf` and set the `mgmt_interface` as NTP local-interface.
+          An error will be raised
+        if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+        - `use_inband_mgmt_vrf` will
+        configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the
+        `inband_mgmt_interface` as NTP local-interface.
+          An error will be raised if inband management is
+        not configured for the device.
+        - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+        server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+        - Any other
+        string will be used directly as the VRF name but local interface must be set with
+        `custom_structured_configuration_ntp` if needed.
+
+        Default value: `"use_default_mgmt_method_vrf"`
+        """
+        set_first_ntp_server_as_preferred: bool
+        """
+        If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+        Set to 'false' to
+        avoid automatically setting any server as 'preferred'.
+
+        Default value: `True`
+        """
+        servers: Servers
+        """
+        By default, AVD marks the first server as `preferred`.
+        Set
+        'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
+
+        Subclass of
+        AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
+        """
+        authenticate: bool | None
+        authenticate_servers_only: bool | None
+        authentication_keys: AuthenticationKeys
+        """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
+        trusted_keys: str | None
+        """List of trusted-keys as string ex. 10-12,15."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | UndefinedType | None = Undefined,
+                server_vrf: str | UndefinedType = Undefined,
+                set_first_ntp_server_as_preferred: bool | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                authenticate: bool | UndefinedType | None = Undefined,
+                authenticate_servers_only: bool | UndefinedType | None = Undefined,
+                authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
+                trusted_keys: str | UndefinedType | None = Undefined,
+            ) -> None:
+                """
+                NtpSettingsProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: NTP settings profile name.
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+                       The settings from this
+                       profile override settings inherited from the parent profile.
+                    server_vrf:
+                       EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-
+                       interface.
+                       - `use_mgmt_interface_vrf` will configure the NTP server(s) under the VRF set with
+                       `mgmt_interface_vrf` and set the `mgmt_interface` as NTP local-interface.
+                         An error will be raised
+                       if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                       - `use_inband_mgmt_vrf` will
+                       configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the
+                       `inband_mgmt_interface` as NTP local-interface.
+                         An error will be raised if inband management is
+                       not configured for the device.
+                       - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+                       server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+                       - Any other
+                       string will be used directly as the VRF name but local interface must be set with
+                       `custom_structured_configuration_ntp` if needed.
+                    set_first_ntp_server_as_preferred:
+                       If 'true', AVD marks the first entry under 'ntp_settings.servers' as 'preferred'.
+                       Set to 'false' to
+                       avoid automatically setting any server as 'preferred'.
+                    servers:
+                       By default, AVD marks the first server as `preferred`.
+                       Set
+                       'ntp_settings.set_first_ntp_server_as_preferred: false' to disable this behavior.
+
+                       Subclass of
+                       AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
+                    authenticate: authenticate
+                    authenticate_servers_only: authenticate_servers_only
+                    authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
+                    trusted_keys: List of trusted-keys as string ex. 10-12,15.
+
+                """
+
+    class NtpSettingsProfiles(AvdIndexedList[str, NtpSettingsProfilesItem]):
+        """Subclass of AvdIndexedList with `NtpSettingsProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    NtpSettingsProfiles._item_type = NtpSettingsProfilesItem
+
     class OverlayCvxServers(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -41127,8 +44669,105 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
+
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
 
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
@@ -42275,6 +45914,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -42300,6 +45941,15 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -42506,6 +46156,8 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -42538,6 +46190,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.
@@ -42730,6 +46386,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -42747,6 +46404,24 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
+        """
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        configured in the device but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+        Subclass of AvdList
+        with `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -42792,6 +46467,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -42812,7 +46488,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       configured in the device but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -42876,8 +46566,105 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AdditionalTcamProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        AdditionalTcamProfiles._item_type = str
+
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
+
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "supported": {"type": bool, "default": True},
+                    "ipv4_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_enforcement_disabled": {"type": bool, "default": True},
+                    "ipv6_ethernet_interface": {"type": bool, "default": True},
+                    "ipv6_vlan": {"type": bool, "default": True},
+                }
+                supported: bool
+                """
+                Global support for Address Locking feature.
+                The feature will be ignored on platforms where this is
+                false.
+
+                Default value: `True`
+                """
+                ipv4_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv4 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_enforcement_disabled: bool
+                """
+                Support for disabling enforcement for locked IPv6 addresses.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_ethernet_interface: bool
+                """
+                Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                The feature will be
+                ignored on platforms where this is false.
+
+                Default value: `True`
+                """
+                ipv6_vlan: bool
+                """
+                Support for controlling IPv6 Address Locking on the VLAN level.
+                The feature will be ignored on
+                platforms where this is false.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        supported: bool | UndefinedType = Undefined,
+                        ipv4_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_enforcement_disabled: bool | UndefinedType = Undefined,
+                        ipv6_ethernet_interface: bool | UndefinedType = Undefined,
+                        ipv6_vlan: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported:
+                               Global support for Address Locking feature.
+                               The feature will be ignored on platforms where this is
+                               false.
+                            ipv4_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv4 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_enforcement_disabled:
+                               Support for disabling enforcement for locked IPv6 addresses.
+                               The feature will be ignored on
+                               platforms where this is false.
+                            ipv6_ethernet_interface:
+                               Support for controlling IPv6 Address Locking on the Ethernet interface level.
+                               The feature will be
+                               ignored on platforms where this is false.
+                            ipv6_vlan:
+                               Support for controlling IPv6 Address Locking on the VLAN level.
+                               The feature will be ignored on
+                               platforms where this is false.
+
+                        """
 
             class PlatformSfeInterfaceProfile(AvdModel):
                 """Subclass of AvdModel."""
@@ -44024,6 +47811,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
+                "dot1x_bpdu_bypass": {"type": bool, "default": True},
+                "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -44049,6 +47838,15 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_validation": {"type": bool, "default": True},
                 "errdisable_causes": {"type": ErrdisableCauses},
             }
+            dot1x_bpdu_bypass: bool
+            """
+            Support for 802.1X BPDU bypass.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            address_locking: AddressLocking
+            """Subclass of AvdModel."""
             queue_monitor: bool
             """
             Support for LANZ.
@@ -44255,6 +48053,8 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
@@ -44287,6 +48087,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        dot1x_bpdu_bypass:
+                           Support for 802.1X BPDU bypass.
+                           The feature will be ignored on platforms where this is false.
+                        address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
                            The feature will be ignored on platforms where this is false.
@@ -44479,6 +48283,7 @@ class EosDesigns(EosDesignsRootModel):
             "trident_forwarding_table_partition": {"type": str},
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
+            "additional_tcam_profiles": {"type": AdditionalTcamProfiles},
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
@@ -44496,6 +48301,24 @@ class EosDesigns(EosDesignsRootModel):
         reload_delay: ReloadDelay
         """Subclass of AvdModel."""
         tcam_profile: str | None
+        """
+        TCAM profile name to activate as the system profile.
+        If the profile is defined under
+        `tcam_profiles`, it will also be configured in the device.
+        Built-in profiles (e.g., system-profile)
+        can be used without being defined in `tcam_profiles`.
+        """
+        additional_tcam_profiles: AdditionalTcamProfiles
+        """
+        List of additional TCAM profile names that must be defined under `tcam_profiles`.
+        These profiles are
+        configured in the device but are not set as the system profile.
+        If a profile is specified in both
+        `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+        Subclass of AvdList
+        with `str` items.
+        """
         lag_hardware_only: bool | None
         default_interface_mtu: int | None
         """
@@ -44541,6 +48364,7 @@ class EosDesigns(EosDesignsRootModel):
                 trident_forwarding_table_partition: str | UndefinedType | None = Undefined,
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | UndefinedType | None = Undefined,
+                additional_tcam_profiles: AdditionalTcamProfiles | UndefinedType = Undefined,
                 lag_hardware_only: bool | UndefinedType | None = Undefined,
                 default_interface_mtu: int | UndefinedType | None = Undefined,
                 p2p_uplinks_mtu: int | UndefinedType | None = Undefined,
@@ -44561,7 +48385,21 @@ class EosDesigns(EosDesignsRootModel):
                     platforms: Subclass of AvdList with `str` items.
                     trident_forwarding_table_partition: Only applied when evpn_multicast is true.
                     reload_delay: Subclass of AvdModel.
-                    tcam_profile: tcam_profile
+                    tcam_profile:
+                       TCAM profile name to activate as the system profile.
+                       If the profile is defined under
+                       `tcam_profiles`, it will also be configured in the device.
+                       Built-in profiles (e.g., system-profile)
+                       can be used without being defined in `tcam_profiles`.
+                    additional_tcam_profiles:
+                       List of additional TCAM profile names that must be defined under `tcam_profiles`.
+                       These profiles are
+                       configured in the device but are not set as the system profile.
+                       If a profile is specified in both
+                       `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+
+                       Subclass of AvdList
+                       with `str` items.
                     lag_hardware_only: lag_hardware_only
                     default_interface_mtu:
                        Default interface MTU configured on EOS under "interface defaults".
@@ -45347,6 +49185,504 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Dot1x(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AuthenticationFailure(AvdModel):
+                """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["allow", "drop"]
+                _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                allow_access_list: str | None
+                """
+                Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                The access
+                list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                On EOS, the access list is
+                only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                """
+                action: Action | None
+                allow_vlan: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        allow_access_list: str | UndefinedType | None = Undefined,
+                        action: Action | UndefinedType | None = Undefined,
+                        allow_vlan: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AuthenticationFailure.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            allow_access_list:
+                               Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                               The access
+                               list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                               On EOS, the access list is
+                               only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            action: action
+                            allow_vlan: allow_vlan
+
+                        """
+
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+            class Pae(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Mode | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Pae.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            supplicant_profile: Supplicant profile name.
+
+                        """
+
+            class HostMode(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["multi-host", "single-host"]
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                mode: Mode | None
+                multi_host_authenticated: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        HostMode.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: mode
+                            multi_host_authenticated: multi_host_authenticated
+
+                        """
+
+            class MacBasedAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                enabled: bool | None
+                always: bool | None
+                host_mode_common: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        always: bool | UndefinedType | None = Undefined,
+                        host_mode_common: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        MacBasedAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            always: always
+                            host_mode_common: host_mode_common
+
+                        """
+
+            class Timeout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "idle_host": {"type": int},
+                    "quiet_period": {"type": int},
+                    "reauth_period": {"type": str},
+                    "reauth_timeout_ignore": {"type": bool},
+                    "tx_period": {"type": int},
+                }
+                idle_host: int | None
+                quiet_period: int | None
+                reauth_period: str | None
+                """Value can be 60-4294967295 or 'server'."""
+                reauth_timeout_ignore: bool | None
+                tx_period: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        idle_host: int | UndefinedType | None = Undefined,
+                        quiet_period: int | UndefinedType | None = Undefined,
+                        reauth_period: str | UndefinedType | None = Undefined,
+                        reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                        tx_period: int | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Timeout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            idle_host: idle_host
+                            quiet_period: quiet_period
+                            reauth_period: Value can be 60-4294967295 or 'server'.
+                            reauth_timeout_ignore: reauth_timeout_ignore
+                            tx_period: tx_period
+
+                        """
+
+            class Unauthorized(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                access_vlan_membership_egress: bool | None
+                native_vlan_membership_egress: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                        native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Unauthorized.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            access_vlan_membership_egress: access_vlan_membership_egress
+                            native_vlan_membership_egress: native_vlan_membership_egress
+
+                        """
+
+            class Eapol(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AuthenticationFailureFallbackMba(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                    enabled: bool | None
+                    timeout: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            AuthenticationFailureFallbackMba.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                timeout: timeout
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba}}
+                disabled: bool | None
+                authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | UndefinedType | None = Undefined,
+                        authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Eapol.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: disabled
+                            authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                        """
+
+            class Aaa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Unresponsive(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                    class Action(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class CachedResultsTimeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                            _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                            time_duration: int
+                            """
+                            Enable caching for a specific duration -
+                            <1-10000>      duration in days
+                            <1-14400000>   duration in
+                            minutes
+                            <1-240000>     duration in hours
+                            <1-864000000>  duration in seconds
+                            """
+                            time_duration_unit: TimeDurationUnit
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, time_duration: int | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    CachedResultsTimeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        time_duration:
+                                           Enable caching for a specific duration -
+                                           <1-10000>      duration in days
+                                           <1-14400000>   duration in
+                                           minutes
+                                           <1-240000>     duration in hours
+                                           <1-864000000>  duration in seconds
+                                        time_duration_unit: time_duration_unit
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "traffic_allow_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
+                            "apply_cached_results": {"type": bool},
+                            "cached_results_timeout": {"type": CachedResultsTimeout},
+                            "traffic_allow": {"type": bool},
+                        }
+                        traffic_allow_access_list: str | None
+                        """Name of standard access-list to apply when AAA times out."""
+                        apply_alternate: bool | None
+                        """
+                        Apply alternate action if primary action fails.
+                        e.g. aaa unresponsive action apply cached-results
+                        else traffic allow
+                        """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
+                        traffic_allow: bool | None
+                        """Set action for supplicant traffic when AAA times out."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                apply_alternate: bool | UndefinedType | None = Undefined,
+                                traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                apply_cached_results: bool | UndefinedType | None = Undefined,
+                                cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                traffic_allow: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Action.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                    apply_alternate:
+                                       Apply alternate action if primary action fails.
+                                       e.g. aaa unresponsive action apply cached-results
+                                       else traffic allow
+                                    traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "eap_response": {"type": str},
+                        "action": {"type": Action},
+                        "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                    }
+                    eap_response: EapResponse | None
+                    """EAP response to send. EOS default is `success`."""
+                    action: Action
+                    """
+                    Set action for supplicant when AAA times out.
+
+                    Subclass of AvdModel.
+                    """
+                    phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                    """Set action for supplicant when AAA times out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            eap_response: EapResponse | UndefinedType | None = Undefined,
+                            action: Action | UndefinedType = Undefined,
+                            phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Unresponsive.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                eap_response: EAP response to send. EOS default is `success`.
+                                action:
+                                   Set action for supplicant when AAA times out.
+
+                                   Subclass of AvdModel.
+                                phone_action: Set action for supplicant when AAA times out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                unresponsive: Unresponsive
+                """
+                Configure AAA timeout options.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                        """
+                        Aaa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unresponsive:
+                               Configure AAA timeout options.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "authentication_failure": {"type": AuthenticationFailure},
+                "port_control": {"type": str},
+                "port_control_force_authorized_phone": {"type": bool},
+                "reauthentication": {"type": bool},
+                "pae": {"type": Pae},
+                "host_mode": {"type": HostMode},
+                "mac_based_authentication": {"type": MacBasedAuthentication},
+                "mac_based_access_list": {"type": bool},
+                "timeout": {"type": Timeout},
+                "reauthorization_request_limit": {"type": int},
+                "unauthorized": {"type": Unauthorized},
+                "eapol": {"type": Eapol},
+                "aaa": {"type": Aaa},
+            }
+            authentication_failure: AuthenticationFailure
+            """Subclass of AvdModel."""
+            port_control: PortControl | None
+            port_control_force_authorized_phone: bool | None
+            reauthentication: bool | None
+            pae: Pae
+            """Subclass of AvdModel."""
+            host_mode: HostMode
+            """Subclass of AvdModel."""
+            mac_based_authentication: MacBasedAuthentication
+            """Subclass of AvdModel."""
+            mac_based_access_list: bool | None
+            """Operate interface in per-mac access-list mode."""
+            timeout: Timeout
+            """Subclass of AvdModel."""
+            reauthorization_request_limit: int | None
+            unauthorized: Unauthorized
+            """Subclass of AvdModel."""
+            eapol: Eapol
+            """Subclass of AvdModel."""
+            aaa: Aaa
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                    port_control: PortControl | UndefinedType | None = Undefined,
+                    port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                    reauthentication: bool | UndefinedType | None = Undefined,
+                    pae: Pae | UndefinedType = Undefined,
+                    host_mode: HostMode | UndefinedType = Undefined,
+                    mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                    mac_based_access_list: bool | UndefinedType | None = Undefined,
+                    timeout: Timeout | UndefinedType = Undefined,
+                    reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                    unauthorized: Unauthorized | UndefinedType = Undefined,
+                    eapol: Eapol | UndefinedType = Undefined,
+                    aaa: Aaa | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Dot1x.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        authentication_failure: Subclass of AvdModel.
+                        port_control: port_control
+                        port_control_force_authorized_phone: port_control_force_authorized_phone
+                        reauthentication: reauthentication
+                        pae: Subclass of AvdModel.
+                        host_mode: Subclass of AvdModel.
+                        mac_based_authentication: Subclass of AvdModel.
+                        mac_based_access_list: Operate interface in per-mac access-list mode.
+                        timeout: Subclass of AvdModel.
+                        reauthorization_request_limit: reauthorization_request_limit
+                        unauthorized: Subclass of AvdModel.
+                        eapol: Subclass of AvdModel.
+                        aaa: Subclass of AvdModel.
+
+                    """
+
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -45939,7 +50275,7 @@ class EosDesigns(EosDesignsRootModel):
             "sflow": {"type": bool},
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
-            "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "dot1x": {"type": Dot1x},
             "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
@@ -45956,8 +50292,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Parent profile is optional.
-        Port_profiles can refer to another port_profile to inherit settings in
-        up to two levels (adapter->profile->parent_profile).
+        By default, profile inheritance is limited to two levels: adapter ->
+        profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         port_channel: PortChannel
         """
@@ -46084,8 +50424,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """802.1x"""
+        dot1x: Dot1x
+        """
+        802.1x
+
+        Subclass of AvdModel.
+        """
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
@@ -46185,7 +50529,7 @@ class EosDesigns(EosDesignsRootModel):
                 sflow: bool | UndefinedType | None = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                dot1x: Dot1x | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
@@ -46207,8 +50551,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Port profile name.
                     parent_profile:
                        Parent profile is optional.
-                       Port_profiles can refer to another port_profile to inherit settings in
-                       up to two levels (adapter->profile->parent_profile).
+                       By default, profile inheritance is limited to two levels: adapter ->
+                       profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     port_channel:
                        Used for port-channel adapter.
 
@@ -46300,7 +50648,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x: 802.1x
+                    dot1x:
+                       802.1x
+
+                       Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
 
@@ -46404,12 +50755,35 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         Transport: TypeAlias = Literal["ipv4"]
+
+        class Management(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"drop": {"type": bool}}
+            drop: bool | None
+            """Drop PTP management messages."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, drop: bool | UndefinedType | None = Undefined) -> None:
+                    """
+                    Management.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        drop: Drop PTP management messages.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "announce": {"type": Announce},
             "delay_req": {"type": int},
             "sync_message": {"type": SyncMessage},
             "transport": {"type": str},
+            "management": {"type": Management},
         }
         profile: str
         """PTP profile."""
@@ -46427,6 +50801,8 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         transport: Transport | None
+        management: Management
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -46438,6 +50814,7 @@ class EosDesigns(EosDesignsRootModel):
                 delay_req: int | UndefinedType | None = Undefined,
                 sync_message: SyncMessage | UndefinedType = Undefined,
                 transport: Transport | UndefinedType | None = Undefined,
+                management: Management | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpProfilesItem.
@@ -46457,6 +50834,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     transport: transport
+                    management: Subclass of AvdModel.
 
                 """
 
@@ -47204,6 +51582,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            KeyType: TypeAlias = Literal["disabled", "7"]
             Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
@@ -47211,6 +51590,7 @@ class EosDesigns(EosDesignsRootModel):
                 "version": {"type": str},
                 "auth": {"type": str},
                 "auth_passphrase": {"type": str},
+                "key_type": {"type": str, "default": "disabled"},
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
@@ -47222,6 +51602,22 @@ class EosDesigns(EosDesignsRootModel):
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+            key_type: KeyType
+            """
+            Key type for the computed localized SNMPv3 auth and priv keys.
+            Used only when
+            `compute_v3_user_localized_key` is `true`.
+            Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+            4.36.2F.
+            When set to `7`, AVD renders the computed localized keys using EOS `key <type> <key>`
+            syntax for both auth and priv.
+            - `disabled`: Use legacy syntax without key type (auth_passphrase
+            rendered directly). Default for backward compatibility.
+            - `7`: Type-7 encrypted (HIDDEN) key. AVD
+            applies Type-7 obfuscation to the computed localized key before rendering.
+
+            Default value: `"disabled"`
+            """
             priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
@@ -47236,6 +51632,7 @@ class EosDesigns(EosDesignsRootModel):
                     version: Version | UndefinedType | None = Undefined,
                     auth: Auth | UndefinedType | None = Undefined,
                     auth_passphrase: str | UndefinedType | None = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                     priv: Priv | UndefinedType | None = Undefined,
                     priv_passphrase: str | UndefinedType | None = Undefined,
                 ) -> None:
@@ -47251,6 +51648,18 @@ class EosDesigns(EosDesignsRootModel):
                         version: version
                         auth: auth
                         auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                        key_type:
+                           Key type for the computed localized SNMPv3 auth and priv keys.
+                           Used only when
+                           `compute_v3_user_localized_key` is `true`.
+                           Supported starting 4.33.10M, 4.34.8M, 4.35.6M, and
+                           4.36.2F.
+                           When set to `7`, AVD renders the computed localized keys using EOS `key <type> <key>`
+                           syntax for both auth and priv.
+                           - `disabled`: Use legacy syntax without key type (auth_passphrase
+                           rendered directly). Default for backward compatibility.
+                           - `7`: Type-7 encrypted (HIDDEN) key. AVD
+                           applies Type-7 obfuscation to the computed localized key before rendering.
                         priv: priv
                         priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
 
@@ -47933,6 +52342,7 @@ class EosDesigns(EosDesignsRootModel):
             "priority": {"type": int, "default": 32768},
             "port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
             "loop_guard_default": {"type": bool, "default": False},
+            "edge_port_bpduguard_default": {"type": bool, "default": False},
         }
         mode: Mode | None
         """
@@ -47965,6 +52375,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        edge_port_bpduguard_default: bool
+        """
+        Enable BPDU Guard on portfast interfaces.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -47975,6 +52391,7 @@ class EosDesigns(EosDesignsRootModel):
                 priority: int | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
                 loop_guard_default: bool | UndefinedType = Undefined,
+                edge_port_bpduguard_default: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTreeSettings.
@@ -48001,6 +52418,7 @@ class EosDesigns(EosDesignsRootModel):
                        If
                        both are set, the setting under node type settings takes precedence.
                     loop_guard_default: Enable loopguard by default on all ports.
+                    edge_port_bpduguard_default: Enable BPDU Guard on portfast interfaces.
 
                 """
 
@@ -48080,7 +52498,82 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        class ClientVrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure SSH for the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure SSH for the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+            depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as the VRF
+            name.
+            """
+            source_interface: str | None
+            """
+            Source interface to use for IP SSH Client in this VRF.
+            If set, the value is used directly as the
+            source interface name.
+            If not set, the source interface is derived automatically when `name` is set
+            to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+            For any other
+            `name` value, `source_interface` must be set.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    ClientVrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure SSH for the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure SSH for the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above
+                           depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as the VRF
+                           name.
+                        source_interface:
+                           Source interface to use for IP SSH Client in this VRF.
+                           If set, the value is used directly as the
+                           source interface name.
+                           If not set, the source interface is derived automatically when `name` is set
+                           to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                           For any other
+                           `name` value, `source_interface` must be set.
+
+                    """
+
+        class ClientVrfs(AvdIndexedList[str, ClientVrfsItem]):
+            """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        ClientVrfs._item_type = ClientVrfsItem
+
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}, "client_vrfs": {"type": ClientVrfs}}
         enabled: bool | None
         """
         Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
@@ -48090,6 +52583,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
+        client_vrfs: ClientVrfs
+        """Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -48099,6 +52594,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType | None = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 idle_timeout: int | UndefinedType | None = Undefined,
+                client_vrfs: ClientVrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 SshSettings.
@@ -48112,6 +52608,7 @@ class EosDesigns(EosDesignsRootModel):
                        all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
+                    client_vrfs: Subclass of AvdIndexedList with `ClientVrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -48978,6 +53475,101 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class Ospfv3(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ipv4(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                    enabled: bool | None
+                    """
+                    Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                    The
+                    IPv4 address family is not supported yet, so `true` raises an error.
+                    An SVI with IPv4 addressing
+                    also raises an error unless this is set to `false`.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                            """
+                            Ipv4.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled:
+                                   Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                   The
+                                   IPv4 address family is not supported yet, so `true` raises an error.
+                                   An SVI with IPv4 addressing
+                                   also raises an error unless this is set to `false`.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "area": {"type": str, "default": "0.0.0.0"},
+                    "point_to_point": {"type": bool, "default": False},
+                    "passive": {"type": bool, "default": False},
+                    "ipv4": {"type": Ipv4},
+                }
+                enabled: bool | None
+                area: str
+                """
+                OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                Default value: `"0.0.0.0"`
+                """
+                point_to_point: bool
+                """
+                Configure the OSPFv3 network type as point-to-point.
+
+                Default value: `False`
+                """
+                passive: bool
+                """
+                Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                By default, OSPFv3-enabled SVIs
+                are configured with `no ospfv3 passive-interface`.
+
+                Default value: `False`
+                """
+                ipv4: Ipv4
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType = Undefined,
+                        point_to_point: bool | UndefinedType = Undefined,
+                        passive: bool | UndefinedType = Undefined,
+                        ipv4: Ipv4 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ospfv3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                            point_to_point: Configure the OSPFv3 network type as point-to-point.
+                            passive:
+                               Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                               By default, OSPFv3-enabled SVIs
+                               are configured with `no ospfv3 passive-interface`.
+                            ipv4: Subclass of AvdModel.
+
+                        """
+
             class Bgp(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -49018,6 +53610,7 @@ class EosDesigns(EosDesignsRootModel):
                 "node": {"type": str},
                 "name": {"type": str},
                 "enabled": {"type": bool},
+                "autostate": {"type": bool, "default": True},
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
@@ -49035,6 +53628,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -49053,6 +53648,7 @@ class EosDesigns(EosDesignsRootModel):
                 "spanning_tree_priority": {"type": int},
                 "mtu": {"type": int},
                 "ospf": {"type": Ospf},
+                "ospfv3": {"type": Ospfv3},
                 "bgp": {"type": Bgp},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -49064,6 +53660,12 @@ class EosDesigns(EosDesignsRootModel):
             """VLAN name."""
             enabled: bool | None
             """Enable or disable interface."""
+            autostate: bool
+            """
+            Set to false to disable automatic management of the interface link state.
+
+            Default value: `True`
+            """
             description: str | None
             """SVI description. By default set to VLAN name."""
             arp_gratuitous_accept: bool | None
@@ -49135,24 +53737,52 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 access-list to be assigned in the ingress direction.
             The access-list must be
             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive
+            with `ipv4_standard_acl_in`. Setting both raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
+            Mutually exclusive with
+            `ipv4_standard_acl_out`. Setting both raises an error.
             """
             ipv6_acl_in: str | None
             """
             Name of the IPv6 access-list to be assigned in the ingress direction.
             The access-list must be
-            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            resolved from
+            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+            removed in AVD 7.0.0.
             """
             ipv6_acl_out: str | None
             """
             Name of the IPv6 access-list to be assigned in the egress direction.
             The access-list must be defined
-            under `ipv6_acls` and supports substitution of the field "interface_ip".
+            under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+            resolved from
+            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+            removed in AVD 7.0.0.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+            instead when field substitution for "interface_ip" is required, setting both raises an error.
             """
             ip_helpers: IpHelpers
             """
@@ -49267,6 +53897,26 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            ospfv3: Ospfv3
+            """
+            OSPFv3 interface configuration.
+            Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+            configuration for the VRF of the SVI on the device.
+            Only the IPv6 address family is currently
+            supported.
+            SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+            OSPFv3 uses the IPv6
+            link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+            `ipv6_address` (`ipv6_enable: false` is not supported).
+            Anycast IPv6 (`ipv6_address_virtuals`) is
+            not supported.
+            SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+            VRF
+            `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+            Subclass of
+            AvdModel.
+            """
             bgp: Bgp
             """Subclass of AvdModel."""
             raw_eos_cli: str | None
@@ -49292,6 +53942,7 @@ class EosDesigns(EosDesignsRootModel):
                     node: str | UndefinedType = Undefined,
                     name: str | UndefinedType | None = Undefined,
                     enabled: bool | UndefinedType | None = Undefined,
+                    autostate: bool | UndefinedType = Undefined,
                     description: str | UndefinedType | None = Undefined,
                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                     ip_address: str | UndefinedType | None = Undefined,
@@ -49309,6 +53960,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -49327,6 +53980,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                     mtu: int | UndefinedType | None = Undefined,
                     ospf: Ospf | UndefinedType = Undefined,
+                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -49342,6 +53996,7 @@ class EosDesigns(EosDesignsRootModel):
                         node: Node inventory hostname.
                         name: VLAN name.
                         enabled: Enable or disable interface.
+                        autostate: Set to false to disable automatic management of the interface link state.
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -49393,18 +54048,42 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 access-list to be assigned in the ingress direction.
                            The access-list must be
                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive
+                           with `ipv4_standard_acl_in`. Setting both raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                           Mutually exclusive with
+                           `ipv4_standard_acl_out`. Setting both raises an error.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
-                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                           defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                           resolved from
+                           `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                           removed in AVD 7.0.0.
                         ipv6_acl_out:
                            Name of the IPv6 access-list to be assigned in the egress direction.
                            The access-list must be defined
-                           under `ipv6_acls` and supports substitution of the field "interface_ip".
+                           under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                           resolved from
+                           `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                           removed in AVD 7.0.0.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -49482,6 +54161,24 @@ class EosDesigns(EosDesignsRootModel):
                            OSPF interface configuration.
 
                            Subclass of AvdModel.
+                        ospfv3:
+                           OSPFv3 interface configuration.
+                           Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                           configuration for the VRF of the SVI on the device.
+                           Only the IPv6 address family is currently
+                           supported.
+                           SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                           OSPFv3 uses the IPv6
+                           link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                           `ipv6_address` (`ipv6_enable: false` is not supported).
+                           Anycast IPv6 (`ipv6_address_virtuals`) is
+                           not supported.
+                           SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                           VRF
+                           `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                           Subclass of
+                           AvdModel.
                         bgp: Subclass of AvdModel.
                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                         structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -50358,6 +55055,101 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                enabled: bool | None
+                """
+                Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                The
+                IPv4 address family is not supported yet, so `true` raises an error.
+                An SVI with IPv4 addressing
+                also raises an error unless this is set to `false`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                               The
+                               IPv4 address family is not supported yet, so `true` raises an error.
+                               An SVI with IPv4 addressing
+                               also raises an error unless this is set to `false`.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "area": {"type": str, "default": "0.0.0.0"},
+                "point_to_point": {"type": bool, "default": False},
+                "passive": {"type": bool, "default": False},
+                "ipv4": {"type": Ipv4},
+            }
+            enabled: bool | None
+            area: str
+            """
+            OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+            Default value: `"0.0.0.0"`
+            """
+            point_to_point: bool
+            """
+            Configure the OSPFv3 network type as point-to-point.
+
+            Default value: `False`
+            """
+            passive: bool
+            """
+            Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+            By default, OSPFv3-enabled SVIs
+            are configured with `no ospfv3 passive-interface`.
+
+            Default value: `False`
+            """
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType | None = Undefined,
+                    area: str | UndefinedType = Undefined,
+                    point_to_point: bool | UndefinedType = Undefined,
+                    passive: bool | UndefinedType = Undefined,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                        point_to_point: Configure the OSPFv3 network type as point-to-point.
+                        passive:
+                           Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                           By default, OSPFv3-enabled SVIs
+                           are configured with `no ospfv3 passive-interface`.
+                        ipv4: Subclass of AvdModel.
+
+                    """
+
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -50400,6 +55192,7 @@ class EosDesigns(EosDesignsRootModel):
             "nodes": {"type": Nodes},
             "name": {"type": str},
             "enabled": {"type": bool},
+            "autostate": {"type": bool, "default": True},
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
@@ -50417,6 +55210,8 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ipv6_acl_in": {"type": str},
             "ipv6_acl_out": {"type": str},
+            "ipv4_standard_acl_in": {"type": str},
+            "ipv4_standard_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -50435,6 +55230,7 @@ class EosDesigns(EosDesignsRootModel):
             "spanning_tree_priority": {"type": int},
             "mtu": {"type": int},
             "ospf": {"type": Ospf},
+            "ospfv3": {"type": Ospfv3},
             "bgp": {"type": Bgp},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -50445,8 +55241,12 @@ class EosDesigns(EosDesignsRootModel):
         parent_profile: str | None
         """
         Parent SVI profile name to apply.
-        svi_profiles can refer to another svi_profile to inherit settings
-        in up to two levels (svi -> svi_profile -> svi_parent_profile).
+        By default, profile inheritance is limited to two levels: svi ->
+        svi_profile -> parent_profile.
+        From AVD 6.5.0 onwards, setting
+        `avd_design_future.allow_recursive_profile_inheritance` to true
+        allows profiles to inherit settings
+        across any number of levels.
         """
         nodes: Nodes
         """
@@ -50462,6 +55262,12 @@ class EosDesigns(EosDesignsRootModel):
         """VLAN name."""
         enabled: bool | None
         """Enable or disable interface."""
+        autostate: bool
+        """
+        Set to false to disable automatic management of the interface link state.
+
+        Default value: `True`
+        """
         description: str | None
         """SVI description. By default set to VLAN name."""
         arp_gratuitous_accept: bool | None
@@ -50533,24 +55339,52 @@ class EosDesigns(EosDesignsRootModel):
         Name of the IPv4 access-list to be assigned in the ingress direction.
         The access-list must be
         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive
+        with `ipv4_standard_acl_in`. Setting both raises an error.
         """
         ipv4_acl_out: str | None
         """
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
+        Mutually exclusive with
+        `ipv4_standard_acl_out`. Setting both raises an error.
         """
         ipv6_acl_in: str | None
         """
         Name of the IPv6 access-list to be assigned in the ingress direction.
         The access-list must be
-        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        resolved from
+        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+        removed in AVD 7.0.0.
         """
         ipv6_acl_out: str | None
         """
         Name of the IPv6 access-list to be assigned in the egress direction.
         The access-list must be defined
-        under `ipv6_acls` and supports substitution of the field "interface_ip".
+        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+        resolved from
+        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+        removed in AVD 7.0.0.
+        """
+        ipv4_standard_acl_in: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
+        """
+        ipv4_standard_acl_out: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the egress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+        instead when field substitution for "interface_ip" is required, setting both raises an error.
         """
         ip_helpers: IpHelpers
         """
@@ -50665,6 +55499,26 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        ospfv3: Ospfv3
+        """
+        OSPFv3 interface configuration.
+        Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+        configuration for the VRF of the SVI on the device.
+        Only the IPv6 address family is currently
+        supported.
+        SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+        OSPFv3 uses the IPv6
+        link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+        `ipv6_address` (`ipv6_enable: false` is not supported).
+        Anycast IPv6 (`ipv6_address_virtuals`) is
+        not supported.
+        SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+        VRF
+        `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+        Subclass of
+        AvdModel.
+        """
         bgp: Bgp
         """Subclass of AvdModel."""
         raw_eos_cli: str | None
@@ -50692,6 +55546,7 @@ class EosDesigns(EosDesignsRootModel):
                 nodes: Nodes | UndefinedType = Undefined,
                 name: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType | None = Undefined,
+                autostate: bool | UndefinedType = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                 ip_address: str | UndefinedType | None = Undefined,
@@ -50709,6 +55564,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -50727,6 +55584,7 @@ class EosDesigns(EosDesignsRootModel):
                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                 mtu: int | UndefinedType | None = Undefined,
                 ospf: Ospf | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 raw_eos_cli: str | UndefinedType | None = Undefined,
                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -50742,8 +55600,12 @@ class EosDesigns(EosDesignsRootModel):
                     profile: Profile name.
                     parent_profile:
                        Parent SVI profile name to apply.
-                       svi_profiles can refer to another svi_profile to inherit settings
-                       in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                       By default, profile inheritance is limited to two levels: svi ->
+                       svi_profile -> parent_profile.
+                       From AVD 6.5.0 onwards, setting
+                       `avd_design_future.allow_recursive_profile_inheritance` to true
+                       allows profiles to inherit settings
+                       across any number of levels.
                     nodes:
                        Define node specific configuration, such as unique IP addresses.
                        Any keys set here will be merged
@@ -50754,6 +55616,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                     name: VLAN name.
                     enabled: Enable or disable interface.
+                    autostate: Set to false to disable automatic management of the interface link state.
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -50805,18 +55668,42 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 access-list to be assigned in the ingress direction.
                        The access-list must be
                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive
+                       with `ipv4_standard_acl_in`. Setting both raises an error.
                     ipv4_acl_out:
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                       Mutually exclusive with
+                       `ipv4_standard_acl_out`. Setting both raises an error.
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
-                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                       resolved from
+                       `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                       Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                       removed in AVD 7.0.0.
                     ipv6_acl_out:
                        Name of the IPv6 access-list to be assigned in the egress direction.
                        The access-list must be defined
-                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                       resolved from
+                       `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                       Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                       removed in AVD 7.0.0.
+                    ipv4_standard_acl_in:
+                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                    ipv4_standard_acl_out:
+                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -50894,6 +55781,24 @@ class EosDesigns(EosDesignsRootModel):
                        OSPF interface configuration.
 
                        Subclass of AvdModel.
+                    ospfv3:
+                       OSPFv3 interface configuration.
+                       Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                       configuration for the VRF of the SVI on the device.
+                       Only the IPv6 address family is currently
+                       supported.
+                       SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                       OSPFv3 uses the IPv6
+                       link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                       `ipv6_address` (`ipv6_enable: false` is not supported).
+                       Anycast IPv6 (`ipv6_address_virtuals`) is
+                       not supported.
+                       SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                       VRF
+                       `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                       Subclass of
+                       AvdModel.
                     bgp: Subclass of AvdModel.
                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                     structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -51382,6 +56287,7 @@ class EosDesigns(EosDesignsRootModel):
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "interfaces": {"type": EosCliConfigGen.Metadata.Interfaces},
+            "bgp": {"type": EosCliConfigGen.Metadata.Bgp},
         }
         name: str
         parent_profile: str | None
@@ -51411,6 +56317,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         interfaces: EosCliConfigGen.Metadata.Interfaces
         """Interface validation settings."""
+        bgp: EosCliConfigGen.Metadata.Bgp
+        """Validation settings for BGP."""
 
         if TYPE_CHECKING:
 
@@ -51423,6 +56331,7 @@ class EosDesigns(EosDesignsRootModel):
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 interfaces: EosCliConfigGen.Metadata.Interfaces | UndefinedType = Undefined,
+                bgp: EosCliConfigGen.Metadata.Bgp | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -51449,6 +56358,7 @@ class EosDesigns(EosDesignsRootModel):
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
                     interfaces: Interface validation settings.
+                    bgp: Validation settings for BGP.
 
                 """
 
@@ -54187,15 +59097,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -54244,15 +59157,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -55175,7 +60091,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -55196,6 +60118,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -55205,6 +60142,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -55227,6 +60166,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -55518,14 +60468,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -55714,12 +60664,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -56031,7 +60981,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -56052,6 +61008,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -56061,6 +61032,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -56083,6 +61056,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -56253,14 +61237,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -56431,12 +61415,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -56788,6 +61772,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -56880,6 +61865,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -56910,6 +61896,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -56925,6 +61913,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -57223,7 +62242,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -57265,9 +62286,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -57315,8 +62337,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -57405,6 +62425,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -57414,8 +62436,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -57423,8 +62446,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -57438,8 +62461,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -57602,15 +62635,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -57836,6 +62886,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -57846,6 +62910,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -57939,6 +63004,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -57969,6 +63035,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -57987,6 +63055,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -58200,7 +63297,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -58228,9 +63327,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -58261,8 +63361,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -58321,28 +63419,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -58467,15 +63578,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -58626,6 +63750,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -59610,15 +64744,18 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                            Hostnames
-                            configured here cannot also be configured under `evpn_route_servers` on the same node.
-                            If a remote
-                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            If a
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -59667,15 +64804,18 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                           Hostnames
-                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                           If a remote
-                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           If a
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -60607,6 +65747,8 @@ class EosDesigns(EosDesignsRootModel):
                                     "peer_as": {"type": str},
                                     "ipv4_prefix_list_in": {"type": str},
                                     "ipv4_prefix_list_out": {"type": str},
+                                    "ipv6_prefix_list_in": {"type": str},
+                                    "ipv6_prefix_list_out": {"type": str},
                                 }
                                 peer_as: str
                                 """
@@ -60628,6 +65770,21 @@ class EosDesigns(EosDesignsRootModel):
                                 advertised.
                                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
+                                ipv6_prefix_list_in: str | None
+                                """
+                                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                Only applied when
+                                `peer_ipv6` is set; otherwise ignored.
+                                The specified prefix list name must exist in
+                                `ipv6_prefix_list_catalog`.
+                                """
+                                ipv6_prefix_list_out: str | None
+                                """
+                                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                Only applied when `peer_ipv6`
+                                is set; otherwise ignored.
+                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -60637,6 +65794,8 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_as: str | UndefinedType = Undefined,
                                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
                                         Bgp.
@@ -60659,6 +65818,17 @@ class EosDesigns(EosDesignsRootModel):
                                                If not specified, nothing would be
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                            ipv6_prefix_list_in:
+                                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                               Only applied when
+                                               `peer_ipv6` is set; otherwise ignored.
+                                               The specified prefix list name must exist in
+                                               `ipv6_prefix_list_catalog`.
+                                            ipv6_prefix_list_out:
+                                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                               Only applied when `peer_ipv6`
+                                               is set; otherwise ignored.
+                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -60952,14 +66122,14 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
+                            IPv6 BGP peering using
+                            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                             """
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                            IPv6 BGP
-                            peering on L3 interfaces is not yet supported.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -61148,12 +66318,12 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
+                                           IPv6 BGP peering using
+                                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                           IPv6 BGP
-                                           peering on L3 interfaces is not yet supported.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -61469,6 +66639,8 @@ class EosDesigns(EosDesignsRootModel):
                                     "peer_as": {"type": str},
                                     "ipv4_prefix_list_in": {"type": str},
                                     "ipv4_prefix_list_out": {"type": str},
+                                    "ipv6_prefix_list_in": {"type": str},
+                                    "ipv6_prefix_list_out": {"type": str},
                                 }
                                 peer_as: str
                                 """
@@ -61490,6 +66662,21 @@ class EosDesigns(EosDesignsRootModel):
                                 advertised.
                                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
+                                ipv6_prefix_list_in: str | None
+                                """
+                                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                Only applied when
+                                `peer_ipv6` is set; otherwise ignored.
+                                The specified prefix list name must exist in
+                                `ipv6_prefix_list_catalog`.
+                                """
+                                ipv6_prefix_list_out: str | None
+                                """
+                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                Only applied when `peer_ipv6` is
+                                set; otherwise ignored.
+                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -61499,6 +66686,8 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_as: str | UndefinedType = Undefined,
                                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
                                         Bgp.
@@ -61521,6 +66710,17 @@ class EosDesigns(EosDesignsRootModel):
                                                If not specified, nothing would be
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                            ipv6_prefix_list_in:
+                                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                               Only applied when
+                                               `peer_ipv6` is set; otherwise ignored.
+                                               The specified prefix list name must exist in
+                                               `ipv6_prefix_list_catalog`.
+                                            ipv6_prefix_list_out:
+                                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                               Only applied when `peer_ipv6` is
+                                               set; otherwise ignored.
+                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -61693,14 +66893,14 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
+                            IPv6 BGP peering using
+                            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                             """
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                            IPv6 BGP
-                            peering on L3 Port-Channels is not yet supported.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -61871,12 +67071,12 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
+                                           IPv6 BGP peering using
+                                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                           IPv6 BGP
-                                           peering on L3 Port-Channels is not yet supported.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -62230,6 +67430,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -62322,6 +67523,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -62352,6 +67554,8 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
+                            "ntp_settings_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -62377,6 +67581,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -62675,7 +67910,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -62717,9 +67954,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -62767,8 +68005,6 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                        Hostnames configured here cannot also
-                        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                         Subclass of AvdList with `str`
@@ -62857,6 +68093,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -62866,8 +68104,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -62875,8 +68114,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -62890,8 +68129,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -63054,15 +68303,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -63288,6 +68554,20 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
+                        """
+                        ntp_settings_profile: str | None
+                        """
+                        Name of the NTP settings profile to apply to this device.
+                        The profile must be defined under
+                        `ntp_settings_profiles`.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -63300,6 +68580,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -63393,6 +68674,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -63423,6 +68705,8 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -63448,6 +68732,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -63661,7 +68974,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -63689,9 +69004,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -63722,8 +69038,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                       Hostnames configured here cannot also
-                                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                        Subclass of AvdList with `str`
@@ -63782,28 +69096,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -63928,15 +69255,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -64087,6 +69427,16 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
+                                    dns_settings_profile:
+                                       Name of the DNS settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
 
                                 """
 
@@ -64996,15 +70346,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -65053,15 +70406,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -65984,7 +71340,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -66005,6 +71367,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -66014,6 +71391,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -66036,6 +71415,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -66327,14 +71717,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -66523,12 +71913,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -66840,7 +72230,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -66861,6 +72257,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -66870,6 +72281,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -66892,6 +72305,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -67062,14 +72486,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -67240,12 +72664,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -67599,6 +73023,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -67691,6 +73116,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -67721,6 +73147,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     group: str
                     """
@@ -67749,6 +73177,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -68047,7 +73506,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -68089,9 +73550,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -68139,8 +73601,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -68229,6 +73689,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -68238,8 +73700,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -68247,8 +73710,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -68262,8 +73725,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -68426,15 +73899,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -68660,6 +74150,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -68672,6 +74176,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -68765,6 +74270,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -68795,6 +74301,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -68822,6 +74330,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -69035,7 +74572,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -69063,9 +74602,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -69096,8 +74636,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -69156,28 +74694,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -69302,15 +74853,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -69461,6 +75025,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -70445,15 +76019,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -70502,15 +76079,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -71433,7 +77013,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -71454,6 +77040,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -71463,6 +77064,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -71485,6 +77088,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -71776,14 +77390,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -71972,12 +77586,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -72289,7 +77903,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -72310,6 +77930,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -72319,6 +77954,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -72341,6 +77978,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -72511,14 +78159,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -72689,12 +78337,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -73048,6 +78696,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -73140,6 +78789,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -73170,6 +78820,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -73195,6 +78847,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -73493,7 +79176,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -73535,9 +79220,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -73585,8 +79271,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -73675,6 +79359,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -73684,8 +79370,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -73693,8 +79380,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -73708,8 +79395,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -73872,15 +79569,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -74106,6 +79820,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -74118,6 +79846,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -74211,6 +79940,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -74241,6 +79971,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -74266,6 +79998,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -74479,7 +80240,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -74507,9 +80270,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -74540,8 +80304,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -74600,28 +80362,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -74746,15 +80521,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -74905,6 +80693,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -75850,6 +81648,514 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                            allow_access_list: str | None
+                            """
+                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                            The access
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            """
+                            action: Action | None
+                            allow_vlan: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    allow_access_list: str | UndefinedType | None = Undefined,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        allow_access_list:
+                                           Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                           The access
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                        action: action
+                                        allow_vlan: allow_vlan
+
+                                    """
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class Pae(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                            mode: Mode | None
+                            supplicant_profile: str | None
+                            """Supplicant profile name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    Pae.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        supplicant_profile: Supplicant profile name.
+
+                                    """
+
+                        class HostMode(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["multi-host", "single-host"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                            mode: Mode | None
+                            multi_host_authenticated: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HostMode.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        multi_host_authenticated: multi_host_authenticated
+
+                                    """
+
+                        class MacBasedAuthentication(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                            enabled: bool | None
+                            always: bool | None
+                            host_mode_common: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    host_mode_common: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MacBasedAuthentication.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: always
+                                        host_mode_common: host_mode_common
+
+                                    """
+
+                        class Timeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "idle_host": {"type": int},
+                                "quiet_period": {"type": int},
+                                "reauth_period": {"type": str},
+                                "reauth_timeout_ignore": {"type": bool},
+                                "tx_period": {"type": int},
+                            }
+                            idle_host: int | None
+                            quiet_period: int | None
+                            reauth_period: str | None
+                            """Value can be 60-4294967295 or 'server'."""
+                            reauth_timeout_ignore: bool | None
+                            tx_period: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    idle_host: int | UndefinedType | None = Undefined,
+                                    quiet_period: int | UndefinedType | None = Undefined,
+                                    reauth_period: str | UndefinedType | None = Undefined,
+                                    reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                                    tx_period: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Timeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        idle_host: idle_host
+                                        quiet_period: quiet_period
+                                        reauth_period: Value can be 60-4294967295 or 'server'.
+                                        reauth_timeout_ignore: reauth_timeout_ignore
+                                        tx_period: tx_period
+
+                                    """
+
+                        class Unauthorized(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                            access_vlan_membership_egress: bool | None
+                            native_vlan_membership_egress: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                    native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Unauthorized.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        access_vlan_membership_egress: access_vlan_membership_egress
+                                        native_vlan_membership_egress: native_vlan_membership_egress
+
+                                    """
+
+                        class Eapol(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AuthenticationFailureFallbackMba(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                                enabled: bool | None
+                                timeout: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        AuthenticationFailureFallbackMba.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            timeout: timeout
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "disabled": {"type": bool},
+                                "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba},
+                            }
+                            disabled: bool | None
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    disabled: bool | UndefinedType | None = Undefined,
+                                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Eapol.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        disabled: disabled
+                                        authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                                    """
+
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "eap_response": {"type": str},
+                                    "action": {"type": Action},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        action: Action | UndefinedType = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": Pae},
+                            "host_mode": {"type": HostMode},
+                            "mac_based_authentication": {"type": MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": Unauthorized},
+                            "eapol": {"type": Eapol},
+                            "aaa": {"type": Aaa},
+                        }
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: Pae
+                        """Subclass of AvdModel."""
+                        host_mode: HostMode
+                        """Subclass of AvdModel."""
+                        mac_based_authentication: MacBasedAuthentication
+                        """Subclass of AvdModel."""
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: Timeout
+                        """Subclass of AvdModel."""
+                        reauthorization_request_limit: int | None
+                        unauthorized: Unauthorized
+                        """Subclass of AvdModel."""
+                        eapol: Eapol
+                        """Subclass of AvdModel."""
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: Pae | UndefinedType = Undefined,
+                                host_mode: HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: Unauthorized | UndefinedType = Undefined,
+                                eapol: Eapol | UndefinedType = Undefined,
+                                aaa: Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    authentication_failure: Subclass of AvdModel.
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: Subclass of AvdModel.
+                                    host_mode: Subclass of AvdModel.
+                                    mac_based_authentication: Subclass of AvdModel.
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: Subclass of AvdModel.
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: Subclass of AvdModel.
+                                    eapol: Subclass of AvdModel.
+                                    aaa: Subclass of AvdModel.
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -76448,7 +82754,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -76646,8 +82952,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """
+                    802.1x
+
+                    Subclass of AvdModel.
+                    """
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -76751,7 +83061,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -76911,7 +83221,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x:
+                                   802.1x
+
+                                   Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
@@ -77906,6 +84219,514 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Dot1x(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AuthenticationFailure(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Action: TypeAlias = Literal["allow", "drop"]
+                            _fields: ClassVar[dict] = {"allow_access_list": {"type": str}, "action": {"type": str}, "allow_vlan": {"type": int}}
+                            allow_access_list: str | None
+                            """
+                            Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                            The access
+                            list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                            On EOS, the access list is
+                            only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                            """
+                            action: Action | None
+                            allow_vlan: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    allow_access_list: str | UndefinedType | None = Undefined,
+                                    action: Action | UndefinedType | None = Undefined,
+                                    allow_vlan: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    AuthenticationFailure.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        allow_access_list:
+                                           Name of the IPv4 and/or IPv6 extended access list to apply to unauthenticated traffic.
+                                           The access
+                                           list must be defined under the `ipv4_acls` and/or `ipv6_acls` catalog.
+                                           On EOS, the access list is
+                                           only applied when `dot1x.mac_based_access_list` is enabled on the interface.
+                                        action: action
+                                        allow_vlan: allow_vlan
+
+                                    """
+
+                        PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
+                        class Pae(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["authenticator", "supplicant"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                            mode: Mode | None
+                            supplicant_profile: str | None
+                            """Supplicant profile name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, supplicant_profile: str | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    Pae.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        supplicant_profile: Supplicant profile name.
+
+                                    """
+
+                        class HostMode(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["multi-host", "single-host"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
+                            mode: Mode | None
+                            multi_host_authenticated: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | UndefinedType | None = Undefined, multi_host_authenticated: bool | UndefinedType | None = Undefined
+                                ) -> None:
+                                    """
+                                    HostMode.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: mode
+                                        multi_host_authenticated: multi_host_authenticated
+
+                                    """
+
+                        class MacBasedAuthentication(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "host_mode_common": {"type": bool}}
+                            enabled: bool | None
+                            always: bool | None
+                            host_mode_common: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    host_mode_common: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MacBasedAuthentication.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: always
+                                        host_mode_common: host_mode_common
+
+                                    """
+
+                        class Timeout(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "idle_host": {"type": int},
+                                "quiet_period": {"type": int},
+                                "reauth_period": {"type": str},
+                                "reauth_timeout_ignore": {"type": bool},
+                                "tx_period": {"type": int},
+                            }
+                            idle_host: int | None
+                            quiet_period: int | None
+                            reauth_period: str | None
+                            """Value can be 60-4294967295 or 'server'."""
+                            reauth_timeout_ignore: bool | None
+                            tx_period: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    idle_host: int | UndefinedType | None = Undefined,
+                                    quiet_period: int | UndefinedType | None = Undefined,
+                                    reauth_period: str | UndefinedType | None = Undefined,
+                                    reauth_timeout_ignore: bool | UndefinedType | None = Undefined,
+                                    tx_period: int | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Timeout.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        idle_host: idle_host
+                                        quiet_period: quiet_period
+                                        reauth_period: Value can be 60-4294967295 or 'server'.
+                                        reauth_timeout_ignore: reauth_timeout_ignore
+                                        tx_period: tx_period
+
+                                    """
+
+                        class Unauthorized(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"access_vlan_membership_egress": {"type": bool}, "native_vlan_membership_egress": {"type": bool}}
+                            access_vlan_membership_egress: bool | None
+                            native_vlan_membership_egress: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    access_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                    native_vlan_membership_egress: bool | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    Unauthorized.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        access_vlan_membership_egress: access_vlan_membership_egress
+                                        native_vlan_membership_egress: native_vlan_membership_egress
+
+                                    """
+
+                        class Eapol(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AuthenticationFailureFallbackMba(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "timeout": {"type": int}}
+                                enabled: bool | None
+                                timeout: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | UndefinedType | None = Undefined, timeout: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        AuthenticationFailureFallbackMba.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            timeout: timeout
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "disabled": {"type": bool},
+                                "authentication_failure_fallback_mba": {"type": AuthenticationFailureFallbackMba},
+                            }
+                            disabled: bool | None
+                            authentication_failure_fallback_mba: AuthenticationFailureFallbackMba
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    disabled: bool | UndefinedType | None = Undefined,
+                                    authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Eapol.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        disabled: disabled
+                                        authentication_failure_fallback_mba: Subclass of AvdModel.
+
+                                    """
+
+                        class Aaa(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Unresponsive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                EapResponse: TypeAlias = Literal["success", "disabled"]
+
+                                class Action(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class CachedResultsTimeout(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
+                                        _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
+                                        time_duration: int
+                                        """
+                                        Enable caching for a specific duration -
+                                        <1-10000>      duration in days
+                                        <1-14400000>   duration in
+                                        minutes
+                                        <1-240000>     duration in hours
+                                        <1-864000000>  duration in seconds
+                                        """
+                                        time_duration_unit: TimeDurationUnit
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self,
+                                                *,
+                                                time_duration: int | UndefinedType = Undefined,
+                                                time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
+                                            ) -> None:
+                                                """
+                                                CachedResultsTimeout.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    time_duration:
+                                                       Enable caching for a specific duration -
+                                                       <1-10000>      duration in days
+                                                       <1-14400000>   duration in
+                                                       minutes
+                                                       <1-240000>     duration in hours
+                                                       <1-864000000>  duration in seconds
+                                                    time_duration_unit: time_duration_unit
+
+                                                """
+
+                                    _fields: ClassVar[dict] = {
+                                        "traffic_allow_access_list": {"type": str},
+                                        "apply_alternate": {"type": bool},
+                                        "traffic_allow_vlan": {"type": int},
+                                        "apply_cached_results": {"type": bool},
+                                        "cached_results_timeout": {"type": CachedResultsTimeout},
+                                        "traffic_allow": {"type": bool},
+                                    }
+                                    traffic_allow_access_list: str | None
+                                    """Name of standard access-list to apply when AAA times out."""
+                                    apply_alternate: bool | None
+                                    """
+                                    Apply alternate action if primary action fails.
+                                    e.g. aaa unresponsive action apply cached-results
+                                    else traffic allow
+                                    """
+                                    traffic_allow_vlan: int | None
+                                    apply_cached_results: bool | None
+                                    """Use results from a previous AAA response."""
+                                    cached_results_timeout: CachedResultsTimeout
+                                    """Subclass of AvdModel."""
+                                    traffic_allow: bool | None
+                                    """Set action for supplicant traffic when AAA times out."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            traffic_allow_access_list: str | UndefinedType | None = Undefined,
+                                            apply_alternate: bool | UndefinedType | None = Undefined,
+                                            traffic_allow_vlan: int | UndefinedType | None = Undefined,
+                                            apply_cached_results: bool | UndefinedType | None = Undefined,
+                                            cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
+                                            traffic_allow: bool | UndefinedType | None = Undefined,
+                                        ) -> None:
+                                            """
+                                            Action.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
+                                                apply_alternate:
+                                                   Apply alternate action if primary action fails.
+                                                   e.g. aaa unresponsive action apply cached-results
+                                                   else traffic allow
+                                                traffic_allow_vlan: traffic_allow_vlan
+                                                apply_cached_results: Use results from a previous AAA response.
+                                                cached_results_timeout: Subclass of AvdModel.
+                                                traffic_allow: Set action for supplicant traffic when AAA times out.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "eap_response": {"type": str},
+                                    "action": {"type": Action},
+                                    "phone_action": {"type": EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction},
+                                }
+                                eap_response: EapResponse | None
+                                """EAP response to send. EOS default is `success`."""
+                                action: Action
+                                """
+                                Set action for supplicant when AAA times out.
+
+                                Subclass of AvdModel.
+                                """
+                                phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction
+                                """Set action for supplicant when AAA times out."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        eap_response: EapResponse | UndefinedType | None = Undefined,
+                                        action: Action | UndefinedType = Undefined,
+                                        phone_action: EosCliConfigGen.Dot1x.Aaa.Unresponsive.PhoneAction | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Unresponsive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            eap_response: EAP response to send. EOS default is `success`.
+                                            action:
+                                               Set action for supplicant when AAA times out.
+
+                                               Subclass of AvdModel.
+                                            phone_action: Set action for supplicant when AAA times out.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"unresponsive": {"type": Unresponsive}}
+                            unresponsive: Unresponsive
+                            """
+                            Configure AAA timeout options.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, unresponsive: Unresponsive | UndefinedType = Undefined) -> None:
+                                    """
+                                    Aaa.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unresponsive:
+                                           Configure AAA timeout options.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "authentication_failure": {"type": AuthenticationFailure},
+                            "port_control": {"type": str},
+                            "port_control_force_authorized_phone": {"type": bool},
+                            "reauthentication": {"type": bool},
+                            "pae": {"type": Pae},
+                            "host_mode": {"type": HostMode},
+                            "mac_based_authentication": {"type": MacBasedAuthentication},
+                            "mac_based_access_list": {"type": bool},
+                            "timeout": {"type": Timeout},
+                            "reauthorization_request_limit": {"type": int},
+                            "unauthorized": {"type": Unauthorized},
+                            "eapol": {"type": Eapol},
+                            "aaa": {"type": Aaa},
+                        }
+                        authentication_failure: AuthenticationFailure
+                        """Subclass of AvdModel."""
+                        port_control: PortControl | None
+                        port_control_force_authorized_phone: bool | None
+                        reauthentication: bool | None
+                        pae: Pae
+                        """Subclass of AvdModel."""
+                        host_mode: HostMode
+                        """Subclass of AvdModel."""
+                        mac_based_authentication: MacBasedAuthentication
+                        """Subclass of AvdModel."""
+                        mac_based_access_list: bool | None
+                        """Operate interface in per-mac access-list mode."""
+                        timeout: Timeout
+                        """Subclass of AvdModel."""
+                        reauthorization_request_limit: int | None
+                        unauthorized: Unauthorized
+                        """Subclass of AvdModel."""
+                        eapol: Eapol
+                        """Subclass of AvdModel."""
+                        aaa: Aaa
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                authentication_failure: AuthenticationFailure | UndefinedType = Undefined,
+                                port_control: PortControl | UndefinedType | None = Undefined,
+                                port_control_force_authorized_phone: bool | UndefinedType | None = Undefined,
+                                reauthentication: bool | UndefinedType | None = Undefined,
+                                pae: Pae | UndefinedType = Undefined,
+                                host_mode: HostMode | UndefinedType = Undefined,
+                                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                                mac_based_access_list: bool | UndefinedType | None = Undefined,
+                                timeout: Timeout | UndefinedType = Undefined,
+                                reauthorization_request_limit: int | UndefinedType | None = Undefined,
+                                unauthorized: Unauthorized | UndefinedType = Undefined,
+                                eapol: Eapol | UndefinedType = Undefined,
+                                aaa: Aaa | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Dot1x.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    authentication_failure: Subclass of AvdModel.
+                                    port_control: port_control
+                                    port_control_force_authorized_phone: port_control_force_authorized_phone
+                                    reauthentication: reauthentication
+                                    pae: Subclass of AvdModel.
+                                    host_mode: Subclass of AvdModel.
+                                    mac_based_authentication: Subclass of AvdModel.
+                                    mac_based_access_list: Operate interface in per-mac access-list mode.
+                                    timeout: Subclass of AvdModel.
+                                    reauthorization_request_limit: reauthorization_request_limit
+                                    unauthorized: Subclass of AvdModel.
+                                    eapol: Subclass of AvdModel.
+                                    aaa: Subclass of AvdModel.
+
+                                """
+
                     class AddressLocking(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -78504,7 +85325,7 @@ class EosDesigns(EosDesignsRootModel):
                         "sflow": {"type": bool},
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "dot1x": {"type": Dot1x},
                         "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
@@ -78702,8 +85523,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
+                    dot1x: Dot1x
+                    """
+                    802.1x
+
+                    Subclass of AvdModel.
+                    """
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
@@ -78807,7 +85632,7 @@ class EosDesigns(EosDesignsRootModel):
                             sflow: bool | UndefinedType | None = Undefined,
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            dot1x: Dot1x | UndefinedType = Undefined,
                             address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
@@ -78967,7 +85792,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x: 802.1x
+                                dot1x:
+                                   802.1x
+
+                                   Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
 
@@ -79197,12 +86025,45 @@ class EosDesigns(EosDesignsRootModel):
                     class AddressFamilyIpv6(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class DefaultOriginate(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                            enabled: bool
+                            always: bool | None
+                            """Always advertise a default route to this peer."""
+                            route_map: str | None
+                            """Route-map name."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    always: bool | UndefinedType | None = Undefined,
+                                    route_map: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    DefaultOriginate.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        always: Always advertise a default route to this peer.
+                                        route_map: Route-map name.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "activate": {"type": bool},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
                             "rcf_in": {"type": str},
                             "rcf_out": {"type": str},
+                            "default_originate": {"type": DefaultOriginate},
                             "prefix_list_in": {"type": str},
                             "prefix_list_out": {"type": str},
                         }
@@ -79221,6 +86082,8 @@ class EosDesigns(EosDesignsRootModel):
                         Outbound RCF function name with parenthesis.
                         Example: MyFunction(myarg).
                         """
+                        default_originate: DefaultOriginate
+                        """Subclass of AvdModel."""
                         prefix_list_in: str | None
                         """Inbound prefix-list name."""
                         prefix_list_out: str | None
@@ -79236,6 +86099,7 @@ class EosDesigns(EosDesignsRootModel):
                                 route_map_out: str | UndefinedType | None = Undefined,
                                 rcf_in: str | UndefinedType | None = Undefined,
                                 rcf_out: str | UndefinedType | None = Undefined,
+                                default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 prefix_list_in: str | UndefinedType | None = Undefined,
                                 prefix_list_out: str | UndefinedType | None = Undefined,
                             ) -> None:
@@ -79255,6 +86119,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rcf_out:
                                        Outbound RCF function name with parenthesis.
                                        Example: MyFunction(myarg).
+                                    default_originate: Subclass of AvdModel.
                                     prefix_list_in: Inbound prefix-list name.
                                     prefix_list_out: Outbound prefix-list name.
 
@@ -79489,6 +86354,71 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: enabled
                                     always: always
                                     route_map: Route-map name.
+
+                                """
+
+                    class MaximumAcceptedRoutes(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class WarningLimit(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                            count: int | None
+                            """
+                            Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                            with `percent`. `count` takes precedence.
+                            """
+                            percent: int | None
+                            """
+                            Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                            with `count`. `count` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    WarningLimit.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                           with `percent`. `count` takes precedence.
+                                        percent:
+                                           Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                           with `count`. `count` takes precedence.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                        limit: int
+                        """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                        warning_limit: WarningLimit
+                        """
+                        Warning threshold for the maximum number of accepted routes.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                """
+                                MaximumAcceptedRoutes.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                    warning_limit:
+                                       Warning threshold for the maximum number of accepted routes.
+
+                                       Subclass of AvdModel.
 
                                 """
 
@@ -79743,6 +86673,7 @@ class EosDesigns(EosDesignsRootModel):
                         "maximum_routes": {"type": int},
                         "maximum_routes_warning_limit": {"type": str},
                         "maximum_routes_warning_only": {"type": bool},
+                        "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                         "missing_policy": {"type": MissingPolicy},
                         "link_bandwidth": {"type": LinkBandwidth},
                         "allowas_in": {"type": AllowasIn},
@@ -79756,6 +86687,8 @@ class EosDesigns(EosDesignsRootModel):
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
+                        "maximum_advertised_routes": {"type": int},
+                        "maximum_advertised_routes_warning_limit": {"type": str},
                     }
                     name: str
                     """BGP peer group name."""
@@ -79858,6 +86791,8 @@ class EosDesigns(EosDesignsRootModel):
                     maximum number of routes at which to warn ("<1-100> percent").
                     """
                     maximum_routes_warning_only: bool | None
+                    maximum_accepted_routes: MaximumAcceptedRoutes
+                    """Subclass of AvdModel."""
                     missing_policy: MissingPolicy
                     """
                     Missing policy configuration for all address-families.
@@ -79886,6 +86821,14 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     ttl_maximum_hops: int | None
                     """Maximum number of hops."""
+                    maximum_advertised_routes: int | None
+                    """Maximum number of advertised routes (0 means unlimited)."""
+                    maximum_advertised_routes_warning_limit: str | None
+                    """
+                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                    never warn) or
+                    Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                    """
 
                     if TYPE_CHECKING:
 
@@ -79923,6 +86866,7 @@ class EosDesigns(EosDesignsRootModel):
                             maximum_routes: int | UndefinedType | None = Undefined,
                             maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                             maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                            maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                             missing_policy: MissingPolicy | UndefinedType = Undefined,
                             link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                             allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -79936,6 +86880,8 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: str | UndefinedType | None = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                            maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                            maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             BgpPeerGroupsItem.
@@ -80012,6 +86958,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Percentage of
                                    maximum number of routes at which to warn ("<1-100> percent").
                                 maximum_routes_warning_only: maximum_routes_warning_only
+                                maximum_accepted_routes: Subclass of AvdModel.
                                 missing_policy:
                                    Missing policy configuration for all address-families.
 
@@ -80028,6 +86975,11 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
+                                maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                                maximum_advertised_routes_warning_limit:
+                                   Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                                   never warn) or
+                                   Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                             """
 
@@ -80996,6 +87948,130 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Ospfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class RedistributeBgp(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                            enabled: bool
+                            """
+                            Redistribute BGP into OSPFv3.
+                            Ignored on devices where BGP is not configured for this VRF.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeBgp.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Redistribute BGP into OSPFv3.
+                                           Ignored on devices where BGP is not configured for this VRF.
+
+                                    """
+
+                        class RedistributeConnected(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """
+                            Redistribute connected routes into OSPFv3.
+
+                            Default value: `False`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeConnected.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Redistribute connected routes into OSPFv3.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "router_id": {"type": str, "default": "main_router_id"},
+                            "redistribute_bgp": {"type": RedistributeBgp},
+                            "redistribute_connected": {"type": RedistributeConnected},
+                            "structured_config": {"type": EosCliConfigGen.RouterOspfv3.VrfsItem},
+                        }
+                        router_id: str
+                        """
+                        Router ID to use for OSPFv3 in this VRF.
+                        This can be an IPv4 address, "main_router_id", "none" or
+                        "diagnostic_loopback".
+                        - "main_router_id" will use the IP address of Loopback0 or the common `router
+                        general` Router ID if `use_router_general_for_router_id` is set.
+                        - "none" will not configure an
+                        OSPFv3 Router ID for this VRF.
+                          EOS then uses the `router general` Router ID or an IPv4 address of
+                        an interface in the VRF.
+                          If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                        does not start.
+                        - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                        interface.
+
+                        Default value: `"main_router_id"`
+                        """
+                        redistribute_bgp: RedistributeBgp
+                        """Subclass of AvdModel."""
+                        redistribute_connected: RedistributeConnected
+                        """Subclass of AvdModel."""
+                        structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem
+                        """Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                router_id: str | UndefinedType = Undefined,
+                                redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
+                                redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.RouterOspfv3.VrfsItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ospfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    router_id:
+                                       Router ID to use for OSPFv3 in this VRF.
+                                       This can be an IPv4 address, "main_router_id", "none" or
+                                       "diagnostic_loopback".
+                                       - "main_router_id" will use the IP address of Loopback0 or the common `router
+                                       general` Router ID if `use_router_general_for_router_id` is set.
+                                       - "none" will not configure an
+                                       OSPFv3 Router ID for this VRF.
+                                         EOS then uses the `router general` Router ID or an IPv4 address of
+                                       an interface in the VRF.
+                                         If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance
+                                       does not start.
+                                       - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback
+                                       interface.
+                                    redistribute_bgp: Subclass of AvdModel.
+                                    redistribute_connected: Subclass of AvdModel.
+                                    structured_config: Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
+
+                                """
+
                     class RedistributeOspfSettings(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -81044,6 +88120,40 @@ class EosDesigns(EosDesignsRootModel):
                                        - "external": Redistribute OSPF external routes.
                                        - "nssa-external": Redistribute OSPF NSSA
                                        external routes.
+
+                                """
+
+                    class RedistributeOspfv3(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                        enabled: bool
+                        """
+                        Redistribute OSPFv3 internal routes into BGP for this VRF.
+                        Ignored on devices where BGP is not
+                        configured for this VRF or where the VRF has no OSPFv3 instance.
+                        OSPFv3 external routes are not
+                        redistributed.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                """
+                                RedistributeOspfv3.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Redistribute OSPFv3 internal routes into BGP for this VRF.
+                                       Ignored on devices where BGP is not
+                                       configured for this VRF or where the VRF has no OSPFv3 instance.
+                                       OSPFv3 external routes are not
+                                       redistributed.
 
                                 """
 
@@ -82121,6 +89231,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class Ospfv3(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Ipv4(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                    enabled: bool | None
+                                    """
+                                    Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                    The
+                                    IPv4 address family is not supported yet, so `true` raises an error.
+                                    An SVI with IPv4 addressing
+                                    also raises an error unless this is set to `false`.
+                                    """
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                            """
+                                            Ipv4.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled:
+                                                   Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                                   The
+                                                   IPv4 address family is not supported yet, so `true` raises an error.
+                                                   An SVI with IPv4 addressing
+                                                   also raises an error unless this is set to `false`.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "area": {"type": str, "default": "0.0.0.0"},
+                                    "point_to_point": {"type": bool, "default": False},
+                                    "passive": {"type": bool, "default": False},
+                                    "ipv4": {"type": Ipv4},
+                                }
+                                enabled: bool | None
+                                area: str
+                                """
+                                OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                                Default value: `"0.0.0.0"`
+                                """
+                                point_to_point: bool
+                                """
+                                Configure the OSPFv3 network type as point-to-point.
+
+                                Default value: `False`
+                                """
+                                passive: bool
+                                """
+                                Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                By default, OSPFv3-enabled SVIs
+                                are configured with `no ospfv3 passive-interface`.
+
+                                Default value: `False`
+                                """
+                                ipv4: Ipv4
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType | None = Undefined,
+                                        area: str | UndefinedType = Undefined,
+                                        point_to_point: bool | UndefinedType = Undefined,
+                                        passive: bool | UndefinedType = Undefined,
+                                        ipv4: Ipv4 | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ospfv3.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                            point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                            passive:
+                                               Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                               By default, OSPFv3-enabled SVIs
+                                               are configured with `no ospfv3 passive-interface`.
+                                            ipv4: Subclass of AvdModel.
+
+                                        """
+
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -82162,6 +89367,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
+                                "autostate": {"type": bool, "default": True},
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
@@ -82179,6 +89385,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
                                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -82197,6 +89405,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "spanning_tree_priority": {"type": int},
                                 "mtu": {"type": int},
                                 "ospf": {"type": Ospf},
+                                "ospfv3": {"type": Ospfv3},
                                 "bgp": {"type": Bgp},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -82218,6 +89427,12 @@ class EosDesigns(EosDesignsRootModel):
                             """VLAN name."""
                             enabled: bool | None
                             """Enable or disable interface."""
+                            autostate: bool
+                            """
+                            Set to false to disable automatic management of the interface link state.
+
+                            Default value: `True`
+                            """
                             description: str | None
                             """SVI description. By default set to VLAN name."""
                             arp_gratuitous_accept: bool | None
@@ -82289,24 +89504,52 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 access-list to be assigned in the ingress direction.
                             The access-list must be
                             defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive
+                            with `ipv4_standard_acl_in`. Setting both raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            Mutually exclusive with
+                            `ipv4_standard_acl_out`. Setting both raises an error.
                             """
                             ipv6_acl_in: str | None
                             """
                             Name of the IPv6 access-list to be assigned in the ingress direction.
                             The access-list must be
-                            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                            resolved from
+                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                            removed in AVD 7.0.0.
                             """
                             ipv6_acl_out: str | None
                             """
                             Name of the IPv6 access-list to be assigned in the egress direction.
                             The access-list must be defined
-                            under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                            resolved from
+                            `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                            Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                            removed in AVD 7.0.0.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                            instead when field substitution for "interface_ip" is required, setting both raises an error.
                             """
                             ip_helpers: IpHelpers
                             """
@@ -82421,6 +89664,26 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            ospfv3: Ospfv3
+                            """
+                            OSPFv3 interface configuration.
+                            Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                            configuration for the VRF of the SVI on the device.
+                            Only the IPv6 address family is currently
+                            supported.
+                            SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                            OSPFv3 uses the IPv6
+                            link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                            `ipv6_address` (`ipv6_enable: false` is not supported).
+                            Anycast IPv6 (`ipv6_address_virtuals`) is
+                            not supported.
+                            SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                            VRF
+                            `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                            Subclass of
+                            AvdModel.
+                            """
                             bgp: Bgp
                             """Subclass of AvdModel."""
                             raw_eos_cli: str | None
@@ -82447,6 +89710,7 @@ class EosDesigns(EosDesignsRootModel):
                                     tags: Tags | UndefinedType = Undefined,
                                     name: str | UndefinedType | None = Undefined,
                                     enabled: bool | UndefinedType | None = Undefined,
+                                    autostate: bool | UndefinedType = Undefined,
                                     description: str | UndefinedType | None = Undefined,
                                     arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                     ip_address: str | UndefinedType | None = Undefined,
@@ -82464,6 +89728,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -82482,6 +89748,7 @@ class EosDesigns(EosDesignsRootModel):
                                     spanning_tree_priority: int | UndefinedType | None = Undefined,
                                     mtu: int | UndefinedType | None = Undefined,
                                     ospf: Ospf | UndefinedType = Undefined,
+                                    ospfv3: Ospfv3 | UndefinedType = Undefined,
                                     bgp: Bgp | UndefinedType = Undefined,
                                     raw_eos_cli: str | UndefinedType | None = Undefined,
                                     structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -82503,6 +89770,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
+                                        autostate: Set to false to disable automatic management of the interface link state.
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -82554,18 +89822,42 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
                                            The access-list must be
                                            defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive
+                                           with `ipv4_standard_acl_in`. Setting both raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                           Mutually exclusive with
+                                           `ipv4_standard_acl_out`. Setting both raises an error.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
-                                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                           defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                           resolved from
+                                           `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                           removed in AVD 7.0.0.
                                         ipv6_acl_out:
                                            Name of the IPv6 access-list to be assigned in the egress direction.
                                            The access-list must be defined
-                                           under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                           under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                           resolved from
+                                           `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                           removed in AVD 7.0.0.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                           instead when field substitution for "interface_ip" is required, setting both raises an error.
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -82643,6 +89935,24 @@ class EosDesigns(EosDesignsRootModel):
                                            OSPF interface configuration.
 
                                            Subclass of AvdModel.
+                                        ospfv3:
+                                           OSPFv3 interface configuration.
+                                           Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                           configuration for the VRF of the SVI on the device.
+                                           Only the IPv6 address family is currently
+                                           supported.
+                                           SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                           OSPFv3 uses the IPv6
+                                           link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                           `ipv6_address` (`ipv6_enable: false` is not supported).
+                                           Anycast IPv6 (`ipv6_address_virtuals`) is
+                                           not supported.
+                                           SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                           VRF
+                                           `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                           Subclass of
+                                           AvdModel.
                                         bgp: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                         structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -83528,6 +90838,101 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Ospfv3(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Ipv4(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                enabled: bool | None
+                                """
+                                Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                The
+                                IPv4 address family is not supported yet, so `true` raises an error.
+                                An SVI with IPv4 addressing
+                                also raises an error unless this is set to `false`.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType | None = Undefined) -> None:
+                                        """
+                                        Ipv4.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               Set to `false` to exclude the IPv4 address family from OSPFv3 on an SVI with IPv4 addressing.
+                                               The
+                                               IPv4 address family is not supported yet, so `true` raises an error.
+                                               An SVI with IPv4 addressing
+                                               also raises an error unless this is set to `false`.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "area": {"type": str, "default": "0.0.0.0"},
+                                "point_to_point": {"type": bool, "default": False},
+                                "passive": {"type": bool, "default": False},
+                                "ipv4": {"type": Ipv4},
+                            }
+                            enabled: bool | None
+                            area: str
+                            """
+                            OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+
+                            Default value: `"0.0.0.0"`
+                            """
+                            point_to_point: bool
+                            """
+                            Configure the OSPFv3 network type as point-to-point.
+
+                            Default value: `False`
+                            """
+                            passive: bool
+                            """
+                            Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                            By default, OSPFv3-enabled SVIs
+                            are configured with `no ospfv3 passive-interface`.
+
+                            Default value: `False`
+                            """
+                            ipv4: Ipv4
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType | None = Undefined,
+                                    area: str | UndefinedType = Undefined,
+                                    point_to_point: bool | UndefinedType = Undefined,
+                                    passive: bool | UndefinedType = Undefined,
+                                    ipv4: Ipv4 | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ospfv3.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        area: OSPFv3 area ID in IPv4 address or decimal format (range 0 to 4294967295).
+                                        point_to_point: Configure the OSPFv3 network type as point-to-point.
+                                        passive:
+                                           Advertise the SVI subnet into OSPFv3 without forming adjacencies.
+                                           By default, OSPFv3-enabled SVIs
+                                           are configured with `no ospfv3 passive-interface`.
+                                        ipv4: Subclass of AvdModel.
+
+                                    """
+
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -83573,6 +90978,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
+                            "autostate": {"type": bool, "default": True},
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
@@ -83590,6 +90996,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -83608,6 +91016,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_priority": {"type": int},
                             "mtu": {"type": int},
                             "ospf": {"type": Ospf},
+                            "ospfv3": {"type": Ospfv3},
                             "bgp": {"type": Bgp},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -83628,6 +91037,10 @@ class EosDesigns(EosDesignsRootModel):
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another
                         svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                        From
+                        AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                        allows
+                        profiles to inherit settings across any number of levels.
                         """
                         tags: Tags
                         """
@@ -83659,6 +91072,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         enabled: bool | None
                         """Enable or disable interface."""
+                        autostate: bool
+                        """
+                        Set to false to disable automatic management of the interface link state.
+
+                        Default value: `True`
+                        """
                         description: str | None
                         """SVI description. By default set to VLAN name."""
                         arp_gratuitous_accept: bool | None
@@ -83730,24 +91149,52 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 access-list to be assigned in the ingress direction.
                         The access-list must be
                         defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive
+                        with `ipv4_standard_acl_in`. Setting both raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        Mutually exclusive with
+                        `ipv4_standard_acl_out`. Setting both raises an error.
                         """
                         ipv6_acl_in: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
                         The access-list must be
-                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from
+                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                        removed in AVD 7.0.0.
                         """
                         ipv6_acl_out: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the egress direction.
                         The access-list must be defined
-                        under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                        resolved from
+                        `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                        Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                        removed in AVD 7.0.0.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required, setting both raises an error.
                         """
                         ip_helpers: IpHelpers
                         """
@@ -83862,6 +91309,26 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        ospfv3: Ospfv3
+                        """
+                        OSPFv3 interface configuration.
+                        Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                        configuration for the VRF of the SVI on the device.
+                        Only the IPv6 address family is currently
+                        supported.
+                        SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                        OSPFv3 uses the IPv6
+                        link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                        `ipv6_address` (`ipv6_enable: false` is not supported).
+                        Anycast IPv6 (`ipv6_address_virtuals`) is
+                        not supported.
+                        SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                        VRF
+                        `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                        Subclass of
+                        AvdModel.
+                        """
                         bgp: Bgp
                         """Subclass of AvdModel."""
                         raw_eos_cli: str | None
@@ -83892,6 +91359,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_vlan_bundle: str | UndefinedType | None = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType | None = Undefined,
+                                autostate: bool | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 arp_gratuitous_accept: bool | UndefinedType | None = Undefined,
                                 ip_address: str | UndefinedType | None = Undefined,
@@ -83909,6 +91377,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -83927,6 +91397,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_priority: int | UndefinedType | None = Undefined,
                                 mtu: int | UndefinedType | None = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
+                                ospfv3: Ospfv3 | UndefinedType = Undefined,
                                 bgp: Bgp | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -83949,6 +91420,10 @@ class EosDesigns(EosDesignsRootModel):
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
                                        svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                                       From
+                                       AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                                       allows
+                                       profiles to inherit settings across any number of levels.
                                     tags:
                                        Tags leveraged for networks services filtering.
                                        Tags are matched against "filter.tags" defined under
@@ -83970,6 +91445,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
+                                    autostate: Set to false to disable automatic management of the interface link state.
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -84021,18 +91497,42 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
                                        The access-list must be
                                        defined under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive
+                                       with `ipv4_standard_acl_in`. Setting both raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                       Mutually exclusive with
+                                       `ipv4_standard_acl_out`. Setting both raises an error.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
-                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from
+                                       `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                       Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                       removed in AVD 7.0.0.
                                     ipv6_acl_out:
                                        Name of the IPv6 access-list to be assigned in the egress direction.
                                        The access-list must be defined
-                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                       under `ipv6_acls` and supports substitution of the field "interface_ipv6",
+                                       resolved from
+                                       `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+                                       Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6" and will be
+                                       removed in AVD 7.0.0.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out`
+                                       instead when field substitution for "interface_ip" is required, setting both raises an error.
                                     ip_helpers:
                                        IP helper for DHCP relay.
 
@@ -84110,6 +91610,24 @@ class EosDesigns(EosDesignsRootModel):
                                        OSPF interface configuration.
 
                                        Subclass of AvdModel.
+                                    ospfv3:
+                                       OSPFv3 interface configuration.
+                                       Enabling OSPFv3 on an SVI automatically creates the OSPFv3
+                                       configuration for the VRF of the SVI on the device.
+                                       Only the IPv6 address family is currently
+                                       supported.
+                                       SVIs with IPv4 addressing require `ospfv3.ipv4.enabled: false`.
+                                       OSPFv3 uses the IPv6
+                                       link-local address of the SVI, so `ipv6_enable: true` is set automatically on SVIs without
+                                       `ipv6_address` (`ipv6_enable: false` is not supported).
+                                       Anycast IPv6 (`ipv6_address_virtuals`) is
+                                       not supported.
+                                       SVIs extended over VXLAN are not supported. Set `vxlan: false` on the SVI.
+                                       VRF
+                                       `default` and SVIs deployed as subinterfaces with `uplink_type: lan` are not supported.
+
+                                       Subclass of
+                                       AvdModel.
                                     bgp: Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                                     structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
@@ -85764,6 +93282,11 @@ class EosDesigns(EosDesignsRootModel):
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -85796,6 +93319,7 @@ class EosDesigns(EosDesignsRootModel):
                             "node": {"type": str},
                             "loopback": {"type": int},
                             "ip_address": {"type": str},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
@@ -85804,13 +93328,25 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         node: str
                         loopback: int
-                        ip_address: str
+                        ip_address: str | None
+                        """IPv4 address/Mask."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        At least one of `ip_address` or
+                        `ipv6_addresses` must be set.
+                        The first address in this list is used for the IPv6 virtual source-nat
+                        of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                        Subclass of AvdList with `str` items.
+                        """
                         description: str | None
                         enabled: bool
                         """Default value: `True`"""
                         ospf: Ospf
                         """
-                        OSPF interface configuration.
+                        OSPFv2 interface configuration.
+                        Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                        and this loopback.
 
                         Subclass of AvdModel.
                         """
@@ -85829,7 +93365,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 node: str | UndefinedType = Undefined,
                                 loopback: int | UndefinedType = Undefined,
-                                ip_address: str | UndefinedType = Undefined,
+                                ip_address: str | UndefinedType | None = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 description: str | UndefinedType | None = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -85845,11 +93382,20 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     node: node
                                     loopback: loopback
-                                    ip_address: ip_address
+                                    ip_address: IPv4 address/Mask.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       At least one of `ip_address` or
+                                       `ipv6_addresses` must be set.
+                                       The first address in this list is used for the IPv6 virtual source-nat
+                                       of the VRF, unless the VTEP diagnostic loopback or an earlier loopback in the VRF already sets it.
+                                       Subclass of AvdList with `str` items.
                                     description: description
                                     enabled: enabled
                                     ospf:
-                                       OSPF interface configuration.
+                                       OSPFv2 interface configuration.
+                                       Requires `ip_address` to be set when OSPF is enabled on both the VRF
+                                       and this loopback.
 
                                        Subclass of AvdModel.
                                     hardware_forwarding:
@@ -86322,9 +93868,38 @@ class EosDesigns(EosDesignsRootModel):
                     class Bgp(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class GracefulRestart(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "restart_time": {"type": int, "default": 300}}
+                            enabled: bool
+                            """Enable or disable BGP graceful-restart for this VRF."""
+                            restart_time: int
+                            """
+                            Restart time in seconds.
+
+                            Default value: `300`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, restart_time: int | UndefinedType = Undefined) -> None:
+                                    """
+                                    GracefulRestart.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable or disable BGP graceful-restart for this VRF.
+                                        restart_time: Restart time in seconds.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "router_id": {"type": str, "default": "main_router_id"},
+                            "graceful_restart": {"type": GracefulRestart},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                         }
@@ -86354,6 +93929,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `"main_router_id"`
                         """
+                        graceful_restart: GracefulRestart
+                        """
+                        BGP graceful-restart configuration for this VRF.
+                        This setting is not supported for VRF default. Use
+                        `bgp_graceful_restart` instead.
+
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -86366,6 +93950,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 enabled: bool | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
+                                graceful_restart: GracefulRestart | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -86396,6 +93981,13 @@ class EosDesigns(EosDesignsRootModel):
                                        Router ID for this VRF. EOS will use the main BGP Router ID.
                                        - "diagnostic_loopback" will use the IP
                                        address of the VRF Diagnostic Loopback interface.
+                                    graceful_restart:
+                                       BGP graceful-restart configuration for this VRF.
+                                       This setting is not supported for VRF default. Use
+                                       `bgp_graceful_restart` instead.
+
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                                     structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -86486,12 +94078,45 @@ class EosDesigns(EosDesignsRootModel):
                         class AddressFamilyIpv6(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class DefaultOriginate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                always: bool | None
+                                """Always advertise a default route to this peer."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        always: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        DefaultOriginate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            always: Always advertise a default route to this peer.
+                                            route_map: Route-map name.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "activate": {"type": bool},
                                 "route_map_in": {"type": str},
                                 "route_map_out": {"type": str},
                                 "rcf_in": {"type": str},
                                 "rcf_out": {"type": str},
+                                "default_originate": {"type": DefaultOriginate},
                                 "prefix_list_in": {"type": str},
                                 "prefix_list_out": {"type": str},
                             }
@@ -86510,6 +94135,8 @@ class EosDesigns(EosDesignsRootModel):
                             Outbound RCF function name with parenthesis.
                             Example: MyFunction(myarg).
                             """
+                            default_originate: DefaultOriginate
+                            """Subclass of AvdModel."""
                             prefix_list_in: str | None
                             """Inbound prefix-list name."""
                             prefix_list_out: str | None
@@ -86525,6 +94152,7 @@ class EosDesigns(EosDesignsRootModel):
                                     route_map_out: str | UndefinedType | None = Undefined,
                                     rcf_in: str | UndefinedType | None = Undefined,
                                     rcf_out: str | UndefinedType | None = Undefined,
+                                    default_originate: DefaultOriginate | UndefinedType = Undefined,
                                     prefix_list_in: str | UndefinedType | None = Undefined,
                                     prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
@@ -86544,6 +94172,7 @@ class EosDesigns(EosDesignsRootModel):
                                         rcf_out:
                                            Outbound RCF function name with parenthesis.
                                            Example: MyFunction(myarg).
+                                        default_originate: Subclass of AvdModel.
                                         prefix_list_in: Inbound prefix-list name.
                                         prefix_list_out: Outbound prefix-list name.
 
@@ -86778,6 +94407,73 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: enabled
                                         always: always
                                         route_map: Route-map name.
+
+                                    """
+
+                        class MaximumAcceptedRoutes(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class WarningLimit(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                                count: int | None
+                                """
+                                Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                with `percent`. `count` takes precedence.
+                                """
+                                percent: int | None
+                                """
+                                Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                with `count`. `count` takes precedence.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        WarningLimit.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Maximum number of routes after which a warning is issued (0 means never warn). Mutually exclusive
+                                               with `percent`. `count` takes precedence.
+                                            percent:
+                                               Percentage of the maximum number of accepted routes at which a warning is issued. Mutually exclusive
+                                               with `count`. `count` takes precedence.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                            limit: int
+                            """Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor."""
+                            warning_limit: WarningLimit
+                            """
+                            Warning threshold for the maximum number of accepted routes.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                    """
+                                    MaximumAcceptedRoutes.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        limit: Maximum number of routes (0 means unlimited) that can be accepted from the BGP neighbor.
+                                        warning_limit:
+                                           Warning threshold for the maximum number of accepted routes.
+
+                                           Subclass of AvdModel.
 
                                     """
 
@@ -87036,6 +94732,7 @@ class EosDesigns(EosDesignsRootModel):
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_limit": {"type": str},
                             "maximum_routes_warning_only": {"type": bool},
+                            "maximum_accepted_routes": {"type": MaximumAcceptedRoutes},
                             "missing_policy": {"type": MissingPolicy},
                             "link_bandwidth": {"type": LinkBandwidth},
                             "allowas_in": {"type": AllowasIn},
@@ -87049,6 +94746,8 @@ class EosDesigns(EosDesignsRootModel):
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
+                            "maximum_advertised_routes": {"type": int},
+                            "maximum_advertised_routes_warning_limit": {"type": str},
                         }
                         name: str
                         """BGP peer group name."""
@@ -87155,6 +94854,8 @@ class EosDesigns(EosDesignsRootModel):
                         maximum number of routes at which to warn ("<1-100> percent").
                         """
                         maximum_routes_warning_only: bool | None
+                        maximum_accepted_routes: MaximumAcceptedRoutes
+                        """Subclass of AvdModel."""
                         missing_policy: MissingPolicy
                         """
                         Missing policy configuration for all address-families.
@@ -87183,6 +94884,14 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         ttl_maximum_hops: int | None
                         """Maximum number of hops."""
+                        maximum_advertised_routes: int | None
+                        """Maximum number of advertised routes (0 means unlimited)."""
+                        maximum_advertised_routes_warning_limit: str | None
+                        """
+                        Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                        never warn) or
+                        Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                        """
 
                         if TYPE_CHECKING:
 
@@ -87220,6 +94929,7 @@ class EosDesigns(EosDesignsRootModel):
                                 maximum_routes: int | UndefinedType | None = Undefined,
                                 maximum_routes_warning_limit: str | UndefinedType | None = Undefined,
                                 maximum_routes_warning_only: bool | UndefinedType | None = Undefined,
+                                maximum_accepted_routes: MaximumAcceptedRoutes | UndefinedType = Undefined,
                                 missing_policy: MissingPolicy | UndefinedType = Undefined,
                                 link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                                 allowas_in: AllowasIn | UndefinedType = Undefined,
@@ -87233,6 +94943,8 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: str | UndefinedType | None = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | UndefinedType | None = Undefined,
+                                maximum_advertised_routes: int | UndefinedType | None = Undefined,
+                                maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 BgpPeerGroupsItem.
@@ -87313,6 +95025,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Percentage of
                                        maximum number of routes at which to warn ("<1-100> percent").
                                     maximum_routes_warning_only: maximum_routes_warning_only
+                                    maximum_accepted_routes: Subclass of AvdModel.
                                     missing_policy:
                                        Missing policy configuration for all address-families.
 
@@ -87329,6 +95042,11 @@ class EosDesigns(EosDesignsRootModel):
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
+                                    maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
+                                    maximum_advertised_routes_warning_limit:
+                                       Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
+                                       never warn) or
+                                       Percentage of maximum number of routes at which to warn ("<1-100> percent").
 
                                 """
 
@@ -87517,8 +95235,10 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_ibgp_peering_vlan": {"type": int},
                         "vtep_diagnostic": {"type": VtepDiagnostic},
                         "ospf": {"type": Ospf},
+                        "ospfv3": {"type": Ospfv3},
                         "redistribute_ospf": {"type": bool, "default": True},
                         "redistribute_ospf_settings": {"type": RedistributeOspfSettings},
+                        "redistribute_ospfv3": {"type": RedistributeOspfv3},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
                         "pim_rp_addresses": {"type": PimRpAddresses},
                         "evpn_l2_multi_domain": {"type": bool},
@@ -87655,10 +95375,15 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_ibgp_peering_ipv6_pool: str | None
                     """
                     Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                    The
-                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                    MLAG switch.
-                    If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Only
+                    used when `underlay_ipv6_numbered` is set.
+                    The subnet used for the iBGP peering in the VRF is
+                    derived from this pool based on the ID of the first MLAG switch.
+                    If not set,
+                    "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                    Set
+                    `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                    pool.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -87711,6 +95436,17 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    ospfv3: Ospfv3
+                    """
+                    Router OSPFv3 settings for the VRF.
+                    The OSPFv3 configuration is created automatically on a device
+                    when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                    These settings only
+                    override the defaults.
+                    VRF `default` is not supported yet.
+
+                    Subclass of AvdModel.
+                    """
                     redistribute_ospf: bool
                     """
                     Non-selectively enabling or disabling redistribute ospf inside the VRF.
@@ -87728,6 +95464,8 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of
                     AvdModel.
                     """
+                    redistribute_ospfv3: RedistributeOspfv3
+                    """Subclass of AvdModel."""
                     evpn_l3_multicast: EvpnL3Multicast
                     """
                     Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -87893,8 +95631,10 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_ibgp_peering_vlan: int | UndefinedType | None = Undefined,
                             vtep_diagnostic: VtepDiagnostic | UndefinedType = Undefined,
                             ospf: Ospf | UndefinedType = Undefined,
+                            ospfv3: Ospfv3 | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
                             redistribute_ospf_settings: RedistributeOspfSettings | UndefinedType = Undefined,
+                            redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                             pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -88003,10 +95743,15 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                                 mlag_ibgp_peering_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
-                                   The
-                                   subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
-                                   MLAG switch.
-                                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Only
+                                   used when `underlay_ipv6_numbered` is set.
+                                   The subnet used for the iBGP peering in the VRF is
+                                   derived from this pool based on the ID of the first MLAG switch.
+                                   If not set,
+                                   "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                                   Set
+                                   `avd_design_future.fix_mlag_ibgp_peering_ipv6_pool: true` to also derive the BGP neighbor from this
+                                   pool.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -88046,6 +95791,15 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
+                                ospfv3:
+                                   Router OSPFv3 settings for the VRF.
+                                   The OSPFv3 configuration is created automatically on a device
+                                   when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                                   These settings only
+                                   override the defaults.
+                                   VRF `default` is not supported yet.
+
+                                   Subclass of AvdModel.
                                 redistribute_ospf:
                                    Non-selectively enabling or disabling redistribute ospf inside the VRF.
                                    Deprecated: Use
@@ -88057,6 +95811,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
+                                redistribute_ospfv3: Subclass of AvdModel.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -88478,6 +96233,10 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under `l2vlan_profiles`. The profile may refer to
                     another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
+                    From AVD 6.5.0 onwards, setting
+                    `avd_design_future.allow_recursive_profile_inheritance` to true
+                    allows profiles to inherit settings
+                    across any number of levels.
                     """
                     tags: Tags
                     """
@@ -88623,6 +96382,10 @@ class EosDesigns(EosDesignsRootModel):
                                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
                                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
+                                   From AVD 6.5.0 onwards, setting
+                                   `avd_design_future.allow_recursive_profile_inheritance` to true
+                                   allows profiles to inherit settings
+                                   across any number of levels.
                                 tags:
                                    Tags leveraged for networks services filtering.
                                    Tags are matched against filter.tags defined under
@@ -90372,15 +98135,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -90429,15 +98195,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -91360,7 +99129,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -91381,6 +99156,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -91390,6 +99180,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -91412,6 +99204,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -91703,14 +99506,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -91899,12 +99702,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -92216,7 +100019,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -92237,6 +100046,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -92246,6 +100070,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -92268,6 +100094,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -92438,14 +100275,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -92616,12 +100453,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -92973,6 +100810,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -93065,6 +100903,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -93095,6 +100934,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -93110,6 +100951,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -93408,7 +101280,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -93450,9 +101324,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -93500,8 +101375,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -93590,6 +101463,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -93599,8 +101474,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -93608,8 +101484,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -93623,8 +101499,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -93787,15 +101673,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -94021,6 +101924,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -94031,6 +101948,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -94124,6 +102042,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -94154,6 +102073,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -94172,6 +102093,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -94385,7 +102335,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -94413,9 +102365,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -94446,8 +102399,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -94506,28 +102457,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -94652,15 +102616,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -94811,6 +102788,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -95795,15 +103782,18 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                             If the
                             peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                            Hostnames
-                            configured here cannot also be configured under `evpn_route_servers` on the same node.
-                            If a remote
-                            peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                            peering.
-
-
-                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                            (`str`).
+                            If a
+                            remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                            the EVPN Gateway core peering is configured on the local node.
+                            Suppression is evaluated
+                            independently on each node based on its local EVPN Route Server and client relationships and
+                            `evpn_gateway.remote_peers` configuration.
+                            When one node uses an EVPN Gateway core peering and the
+                            other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                            both sides use the same password.
+                            If an explicit `ip_address` differs from the regular EVPN peering
+                            address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                            Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                             """
                             evpn_l2: EvpnL2
                             """
@@ -95852,15 +103842,18 @@ class EosDesigns(EosDesignsRootModel):
                                            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                            If the
                                            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                           Hostnames
-                                           configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                           If a remote
-                                           peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                           peering.
-
-
-                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                           (`str`).
+                                           If a
+                                           remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                           the EVPN Gateway core peering is configured on the local node.
+                                           Suppression is evaluated
+                                           independently on each node based on its local EVPN Route Server and client relationships and
+                                           `evpn_gateway.remote_peers` configuration.
+                                           When one node uses an EVPN Gateway core peering and the
+                                           other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                           both sides use the same password.
+                                           If an explicit `ip_address` differs from the regular EVPN peering
+                                           address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                           Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                         evpn_l2:
                                            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -96792,6 +104785,8 @@ class EosDesigns(EosDesignsRootModel):
                                     "peer_as": {"type": str},
                                     "ipv4_prefix_list_in": {"type": str},
                                     "ipv4_prefix_list_out": {"type": str},
+                                    "ipv6_prefix_list_in": {"type": str},
+                                    "ipv6_prefix_list_out": {"type": str},
                                 }
                                 peer_as: str
                                 """
@@ -96813,6 +104808,21 @@ class EosDesigns(EosDesignsRootModel):
                                 advertised.
                                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
+                                ipv6_prefix_list_in: str | None
+                                """
+                                IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                Only applied when
+                                `peer_ipv6` is set; otherwise ignored.
+                                The specified prefix list name must exist in
+                                `ipv6_prefix_list_catalog`.
+                                """
+                                ipv6_prefix_list_out: str | None
+                                """
+                                IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                Only applied when `peer_ipv6`
+                                is set; otherwise ignored.
+                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -96822,6 +104832,8 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_as: str | UndefinedType = Undefined,
                                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
                                         Bgp.
@@ -96844,6 +104856,17 @@ class EosDesigns(EosDesignsRootModel):
                                                If not specified, nothing would be
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                            ipv6_prefix_list_in:
+                                               IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                               Only applied when
+                                               `peer_ipv6` is set; otherwise ignored.
+                                               The specified prefix list name must exist in
+                                               `ipv6_prefix_list_catalog`.
+                                            ipv6_prefix_list_out:
+                                               IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                               Only applied when `peer_ipv6`
+                                               is set; otherwise ignored.
+                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -97137,14 +105160,14 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
+                            IPv6 BGP peering using
+                            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                             """
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                            IPv6 BGP
-                            peering on L3 interfaces is not yet supported.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -97333,12 +105356,12 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
+                                           IPv6 BGP peering using
+                                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                           IPv6 BGP
-                                           peering on L3 interfaces is not yet supported.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -97654,6 +105677,8 @@ class EosDesigns(EosDesignsRootModel):
                                     "peer_as": {"type": str},
                                     "ipv4_prefix_list_in": {"type": str},
                                     "ipv4_prefix_list_out": {"type": str},
+                                    "ipv6_prefix_list_in": {"type": str},
+                                    "ipv6_prefix_list_out": {"type": str},
                                 }
                                 peer_as: str
                                 """
@@ -97675,6 +105700,21 @@ class EosDesigns(EosDesignsRootModel):
                                 advertised.
                                 The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
+                                ipv6_prefix_list_in: str | None
+                                """
+                                Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                Only applied when
+                                `peer_ipv6` is set; otherwise ignored.
+                                The specified prefix list name must exist in
+                                `ipv6_prefix_list_catalog`.
+                                """
+                                ipv6_prefix_list_out: str | None
+                                """
+                                Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                Only applied when `peer_ipv6` is
+                                set; otherwise ignored.
+                                The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -97684,6 +105724,8 @@ class EosDesigns(EosDesignsRootModel):
                                         peer_as: str | UndefinedType = Undefined,
                                         ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                         ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                        ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
                                         Bgp.
@@ -97706,6 +105748,17 @@ class EosDesigns(EosDesignsRootModel):
                                                If not specified, nothing would be
                                                advertised.
                                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                            ipv6_prefix_list_in:
+                                               Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                               Only applied when
+                                               `peer_ipv6` is set; otherwise ignored.
+                                               The specified prefix list name must exist in
+                                               `ipv6_prefix_list_catalog`.
+                                            ipv6_prefix_list_out:
+                                               Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                               Only applied when `peer_ipv6` is
+                                               set; otherwise ignored.
+                                               The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                         """
 
@@ -97878,14 +105931,14 @@ class EosDesigns(EosDesignsRootModel):
                             peer_ipv6: str | None
                             """
                             The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                            "peer_ipv6" token.
+                            "peer_ipv6" token
+                            and for creating IPv6 BGP peering if `bgp` is also set.
+                            IPv6 BGP peering using
+                            `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                             """
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                            IPv6 BGP
-                            peering on L3 Port-Channels is not yet supported.
-
+                            Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -98056,12 +106109,12 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6:
                                            The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                           "peer_ipv6" token.
+                                           "peer_ipv6" token
+                                           and for creating IPv6 BGP peering if `bgp` is also set.
+                                           IPv6 BGP peering using
+                                           `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                           IPv6 BGP
-                                           peering on L3 Port-Channels is not yet supported.
-
+                                           Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -98415,6 +106468,7 @@ class EosDesigns(EosDesignsRootModel):
                             "platform": {"type": str},
                             "mac_address": {"type": str},
                             "system_mac_address": {"type": str},
+                            "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
@@ -98507,6 +106561,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
                             "inband_mgmt_ipv6_subnet": {"type": str},
+                            "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ipv6_gateway": {"type": str},
                             "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                             "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -98537,6 +106592,8 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
+                            "ntp_settings_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -98562,6 +106619,37 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address" can also be set directly as a
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
+                        Mutually exclusive
+                        with "custom_system_mac_address", whether defined globally or in node configuration.
+                        """
+                        custom_system_mac_address: str | None
+                        """
+                        Set a custom EOS system MAC address using an AVD string formatter template.
+                        When set, the rendered
+                        value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                        configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                        CloudVision-based Zscaler integration.
+                        The node configuration value takes precedence over the global
+                        `custom_system_mac_address` value.
+                        Mutually exclusive with `system_mac_address`, whether defined
+                        globally or in node configuration.
+                        If unset, the existing `system_mac_address` behavior is
+                        unchanged.
+                        The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                        or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                        not accepted by EOS.
+                        Regardless of the input format, the MAC address is normalized to
+                        `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                        Only the following
+                        template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                        Examples:
+                        - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                        `021c.7300.04d2` for device with ID 1234.
+                          - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                        produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                        characters of the hostname represent a numerical identifier of the deployment site which we want to
+                        encode into the 3rd and 4th octets of the generated MAC address).
                         """
                         serial_number: str | None
                         """
@@ -98860,7 +106948,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4 address without mask for Loopback0.
                         When set, it takes precedence over `loopback_ipv4_pool`.
-                        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                        For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                        Note: AVD does
+                        not check for validity of the IPv4 address and does not catch duplicates.
                         """
                         vtep_loopback_ipv4_pool: str | None
                         """
@@ -98902,9 +106992,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         router_id_pool: str | None
                         """
-                        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                        will not exist on the device.
+                        Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                        allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                        `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                        and takes precedence over `router_id_pool`.
                         """
                         loopback_ipv6_pool: str | None
                         """
@@ -98952,8 +107043,6 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_route_servers: EvpnRouteServers
                         """
                         List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                        Hostnames configured here cannot also
-                        be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                         Subclass of AvdList with `str`
@@ -99042,6 +107131,8 @@ class EosDesigns(EosDesignsRootModel):
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the
                         mlag_peer_vlan will be used for L3 peering.
+                        See `mlag_peer_address_family` for the supported address
+                        families in that case.
 
                         Default value: `4093`
                         """
@@ -99051,8 +107142,9 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv4
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                        unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                        true`.
                         """
                         mlag_peer_l3_ipv6_pool: str | None
                         """
@@ -99060,8 +107152,8 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                         MLAG switch.
-                        Required when MLAG leafs present in topology and they are using a separate L3 peering
-                        VLAN.
+                        Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                        and a separate L3 peering VLAN.
                         """
                         mlag_peer_vlan: int
                         """
@@ -99075,8 +107167,18 @@ class EosDesigns(EosDesignsRootModel):
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
                         4.31.1F or higher.
-                        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                        (ex. `mlag_peer_l3_vlan` set to 4094).
+                        This never changes which address families (NLRI) are activated on the MLAG BGP
+                        peerings.
+                        With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                        The
+                        MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                        and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                        When the MLAG peer VLAN is also used for L3 peering
+                        (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                        the MLAG L3 peerings
+                        (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                        so this must be `ipv6`
+                        with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                         Default value: `"ipv4"`
                         """
@@ -99239,15 +107341,32 @@ class EosDesigns(EosDesignsRootModel):
                         l3leaf A      :
                         <subnet> + 2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                        l2leafs       : <subnet> + 3 + <l2leaf id>
-                        GW on l2leafs : <subnet> + 1
-                        Assign range larger than
-                        total l2leafs + 5
+                        l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                        GW on l2leafs :
+                        <subnet> + 1
+                        Assign range larger than total l2leafs + 5
 
-                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                        Setting is ignored if
+                        'inband_mgmt_ipv6_address' is set.
 
-                        This setting is
-                        applicable to L2 switches (switches using L2 trunks as uplinks).
+                        This setting is applicable to L2 switches (switches using L2
+                        trunks as uplinks).
+                        """
+                        inband_mgmt_ipv6_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                        The assigned
+                        IPv6 address will be computed by adding this offset to the device ID.
+                        Choose an IPv6 subnet large
+                        enough to contain all calculated addresses.
+                        The highest L2 leaf address is:
+                        <subnet> + 3 + <highest
+                        l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                        If the calculated address falls outside the subnet,
+                        address allocation
+                        fails with "address out of range".
+
+                        Default value: `0`
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -99473,6 +107592,20 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
+                        """
+                        ntp_settings_profile: str | None
+                        """
+                        Name of the NTP settings profile to apply to this device.
+                        The profile must be defined under
+                        `ntp_settings_profiles`.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -99485,6 +107618,7 @@ class EosDesigns(EosDesignsRootModel):
                                 platform: str | UndefinedType | None = Undefined,
                                 mac_address: str | UndefinedType | None = Undefined,
                                 system_mac_address: str | UndefinedType | None = Undefined,
+                                custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
@@ -99578,6 +107712,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                                 inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                                inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                                 inband_mgmt_description: str | UndefinedType = Undefined,
                                 inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -99608,6 +107743,8 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -99633,6 +107770,35 @@ class EosDesigns(EosDesignsRootModel):
                                        "system_mac_address" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
+                                       Mutually exclusive
+                                       with "custom_system_mac_address", whether defined globally or in node configuration.
+                                    custom_system_mac_address:
+                                       Set a custom EOS system MAC address using an AVD string formatter template.
+                                       When set, the rendered
+                                       value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                       configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                       CloudVision-based Zscaler integration.
+                                       The node configuration value takes precedence over the global
+                                       `custom_system_mac_address` value.
+                                       Mutually exclusive with `system_mac_address`, whether defined
+                                       globally or in node configuration.
+                                       If unset, the existing `system_mac_address` behavior is
+                                       unchanged.
+                                       The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                       or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                       not accepted by EOS.
+                                       Regardless of the input format, the MAC address is normalized to
+                                       `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                       Only the following
+                                       template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                       Examples:  # fmt: skip
+                                       - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                       `021c.7300.04d2` for device with ID 1234.
+                                         - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                       produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                       characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                       encode into the 3rd and 4th octets of the generated MAC address).
                                     serial_number:
                                        Set to the Serial Number of the device.
                                        Only used for documentation purpose in the fabric
@@ -99846,7 +108012,9 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ipv4_address:
                                        IPv4 address without mask for Loopback0.
                                        When set, it takes precedence over `loopback_ipv4_pool`.
-                                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                       For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                       Note: AVD does
+                                       not check for validity of the IPv4 address and does not catch duplicates.
                                     vtep_loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                        address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -99874,9 +108042,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For example, set the minimum
                                        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                     router_id_pool:
-                                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                       will not exist on the device.
+                                       Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                       allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                       `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                       and takes precedence over `router_id_pool`.
                                     loopback_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                        address used for Loopback0 will be derived from this pool based on the node id and
@@ -99907,8 +108076,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Default is set in node_type definition from node_type_keys.
                                     evpn_route_servers:
                                        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                       Hostnames configured here cannot also
-                                       be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                        Subclass of AvdList with `str`
@@ -99967,28 +108134,41 @@ class EosDesigns(EosDesignsRootModel):
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
                                        mlag_peer_vlan will be used for L3 peering.
+                                       See `mlag_peer_address_family` for the supported address
+                                       families in that case.
                                     mlag_peer_l3_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                       unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                       true`.
                                     mlag_peer_l3_ipv6_pool:
                                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                        The IPv6
                                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                        MLAG switch.
-                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                       VLAN.
+                                       Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                       and a separate L3 peering VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
                                        IP address family used to establish MLAG Peer Link (control link).
                                        `ipv6` requires EOS version
                                        4.31.1F or higher.
-                                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                                       This never changes which address families (NLRI) are activated on the MLAG BGP
+                                       peerings.
+                                       With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                       The
+                                       MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                       and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                       When the MLAG peer VLAN is also used for L3 peering
+                                       (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                       the MLAG L3 peerings
+                                       (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                       so this must be `ipv6`
+                                       with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                     mlag_peer_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -100113,15 +108293,28 @@ class EosDesigns(EosDesignsRootModel):
                                        l3leaf A      :
                                        <subnet> + 2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                       l2leafs       : <subnet> + 3 + <l2leaf id>
-                                       GW on l2leafs : <subnet> + 1
-                                       Assign range larger than
-                                       total l2leafs + 5
+                                       l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                       GW on l2leafs :
+                                       <subnet> + 1
+                                       Assign range larger than total l2leafs + 5
 
-                                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                       Setting is ignored if
+                                       'inband_mgmt_ipv6_address' is set.
 
-                                       This setting is
-                                       applicable to L2 switches (switches using L2 trunks as uplinks).
+                                       This setting is applicable to L2 switches (switches using L2
+                                       trunks as uplinks).
+                                    inband_mgmt_ipv6_subnet_offset:
+                                       Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                       The assigned
+                                       IPv6 address will be computed by adding this offset to the device ID.
+                                       Choose an IPv6 subnet large
+                                       enough to contain all calculated addresses.
+                                       The highest L2 leaf address is:
+                                       <subnet> + 3 + <highest
+                                       l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                       If the calculated address falls outside the subnet,
+                                       address allocation
+                                       fails with "address out of range".
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
@@ -100272,6 +108465,16 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
+                                    dns_settings_profile:
+                                       Name of the DNS settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
 
                                 """
 
@@ -101181,15 +109384,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -101238,15 +109444,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -102169,7 +110378,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -102190,6 +110405,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -102199,6 +110429,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -102221,6 +110453,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -102512,14 +110755,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -102708,12 +110951,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -103025,7 +111268,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -103046,6 +111295,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -103055,6 +111319,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -103077,6 +111343,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -103247,14 +111524,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -103425,12 +111702,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -103784,6 +112061,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -103876,6 +112154,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -103906,6 +112185,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     group: str
                     """
@@ -103934,6 +112215,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -104232,7 +112544,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -104274,9 +112588,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -104324,8 +112639,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -104414,6 +112727,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -104423,8 +112738,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -104432,8 +112748,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -104447,8 +112763,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -104611,15 +112937,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -104845,6 +113188,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -104857,6 +113214,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -104950,6 +113308,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -104980,6 +113339,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -105007,6 +113368,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -105220,7 +113610,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -105248,9 +113640,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -105281,8 +113674,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -105341,28 +113732,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -105487,15 +113891,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -105646,6 +114063,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -106630,15 +115057,18 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                         If the
                         peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                        Hostnames
-                        configured here cannot also be configured under `evpn_route_servers` on the same node.
-                        If a remote
-                        peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                        peering.
-
-
-                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                        (`str`).
+                        If a
+                        remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                        the EVPN Gateway core peering is configured on the local node.
+                        Suppression is evaluated
+                        independently on each node based on its local EVPN Route Server and client relationships and
+                        `evpn_gateway.remote_peers` configuration.
+                        When one node uses an EVPN Gateway core peering and the
+                        other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                        both sides use the same password.
+                        If an explicit `ip_address` differs from the regular EVPN peering
+                        address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                        Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                         """
                         evpn_l2: EvpnL2
                         """
@@ -106687,15 +115117,18 @@ class EosDesigns(EosDesignsRootModel):
                                        ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
                                        If the
                                        peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
-                                       Hostnames
-                                       configured here cannot also be configured under `evpn_route_servers` on the same node.
-                                       If a remote
-                                       peer is also an uplink switch, AVD treats the EVPN peering to that peer as an EVPN Gateway core
-                                       peering.
-
-
-                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname`
-                                       (`str`).
+                                       If a
+                                       remote peer is also an EVPN Route Server or Route Server client and uses the same IP address, only
+                                       the EVPN Gateway core peering is configured on the local node.
+                                       Suppression is evaluated
+                                       independently on each node based on its local EVPN Route Server and client relationships and
+                                       `evpn_gateway.remote_peers` configuration.
+                                       When one node uses an EVPN Gateway core peering and the
+                                       other uses a regular EVPN peering, AVD does not synchronize BGP passwords. The user must ensure that
+                                       both sides use the same password.
+                                       If an explicit `ip_address` differs from the regular EVPN peering
+                                       address, the EVPN Gateway core peering is configured in addition to the regular EVPN peering.
+                                       Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
                                     evpn_l2:
                                        Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
 
@@ -107618,7 +116051,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -107639,6 +116078,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6`
+                            is set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -107648,6 +116102,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -107670,6 +116126,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           IPv6 prefix list name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           IPv6 prefix list name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6`
+                                           is set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -107961,14 +116428,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 interfaces is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -108157,12 +116624,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 interfaces is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -108474,7 +116941,13 @@ class EosDesigns(EosDesignsRootModel):
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "peer_as": {"type": str},
+                                "ipv4_prefix_list_in": {"type": str},
+                                "ipv4_prefix_list_out": {"type": str},
+                                "ipv6_prefix_list_in": {"type": str},
+                                "ipv6_prefix_list_out": {"type": str},
+                            }
                             peer_as: str
                             """
                             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -108495,6 +116968,21 @@ class EosDesigns(EosDesignsRootModel):
                             advertised.
                             The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
+                            ipv6_prefix_list_in: str | None
+                            """
+                            Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                            Only applied when
+                            `peer_ipv6` is set; otherwise ignored.
+                            The specified prefix list name must exist in
+                            `ipv6_prefix_list_catalog`.
+                            """
+                            ipv6_prefix_list_out: str | None
+                            """
+                            Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                            Only applied when `peer_ipv6` is
+                            set; otherwise ignored.
+                            The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -108504,6 +116992,8 @@ class EosDesigns(EosDesignsRootModel):
                                     peer_as: str | UndefinedType = Undefined,
                                     ipv4_prefix_list_in: str | UndefinedType | None = Undefined,
                                     ipv4_prefix_list_out: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_in: str | UndefinedType | None = Undefined,
+                                    ipv6_prefix_list_out: str | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
                                     Bgp.
@@ -108526,6 +117016,17 @@ class EosDesigns(EosDesignsRootModel):
                                            If not specified, nothing would be
                                            advertised.
                                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                                        ipv6_prefix_list_in:
+                                           Prefix List Name. Accept routes for only these IPv6 prefixes from the peer.
+                                           Only applied when
+                                           `peer_ipv6` is set; otherwise ignored.
+                                           The specified prefix list name must exist in
+                                           `ipv6_prefix_list_catalog`.
+                                        ipv6_prefix_list_out:
+                                           Prefix List Name. Advertise routes for only these IPv6 prefixes.
+                                           Only applied when `peer_ipv6` is
+                                           set; otherwise ignored.
+                                           The specified prefix list name must exist in `ipv6_prefix_list_catalog`.
 
                                     """
 
@@ -108696,14 +117197,14 @@ class EosDesigns(EosDesignsRootModel):
                         peer_ipv6: str | None
                         """
                         The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                        "peer_ipv6" token.
+                        "peer_ipv6" token
+                        and for creating IPv6 BGP peering if `bgp` is also set.
+                        IPv6 BGP peering using
+                        `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                         """
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                        IPv6 BGP
-                        peering on L3 Port-Channels is not yet supported.
-
+                        Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -108874,12 +117375,12 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6:
                                        The peer device IPv6 address (no mask). Used for field substitution in `ipv6_acls` entries with the
-                                       "peer_ipv6" token.
+                                       "peer_ipv6" token
+                                       and for creating IPv6 BGP peering if `bgp` is also set.
+                                       IPv6 BGP peering using
+                                       `peer_ipv6` and `bgp` is not supported when `wan_carrier` is set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-                                       IPv6 BGP
-                                       peering on L3 Port-Channels is not yet supported.
-
+                                       Configure IPv4 and/or IPv6 BGP peering for the interface when `peer_ip` and/or `peer_ipv6` is set.
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -109233,6 +117734,7 @@ class EosDesigns(EosDesignsRootModel):
                         "platform": {"type": str},
                         "mac_address": {"type": str},
                         "system_mac_address": {"type": str},
+                        "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
@@ -109325,6 +117827,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
                         "inband_mgmt_ipv6_subnet": {"type": str},
+                        "inband_mgmt_ipv6_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ipv6_gateway": {"type": str},
                         "inband_mgmt_description": {"type": str, "default": "Inband Management"},
                         "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
@@ -109355,6 +117858,8 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -109380,6 +117885,37 @@ class EosDesigns(EosDesignsRootModel):
                     "system_mac_address" can also be set directly as a
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
+                    Mutually exclusive
+                    with "custom_system_mac_address", whether defined globally or in node configuration.
+                    """
+                    custom_system_mac_address: str | None
+                    """
+                    Set a custom EOS system MAC address using an AVD string formatter template.
+                    When set, the rendered
+                    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                    CloudVision-based Zscaler integration.
+                    The node configuration value takes precedence over the global
+                    `custom_system_mac_address` value.
+                    Mutually exclusive with `system_mac_address`, whether defined
+                    globally or in node configuration.
+                    If unset, the existing `system_mac_address` behavior is
+                    unchanged.
+                    The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                    or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                    not accepted by EOS.
+                    Regardless of the input format, the MAC address is normalized to
+                    `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                    Only the following
+                    template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                    Examples:
+                    - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                    `021c.7300.04d2` for device with ID 1234.
+                      - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                    produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                    characters of the hostname represent a numerical identifier of the deployment site which we want to
+                    encode into the 3rd and 4th octets of the generated MAC address).
                     """
                     serial_number: str | None
                     """
@@ -109678,7 +118214,9 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     IPv4 address without mask for Loopback0.
                     When set, it takes precedence over `loopback_ipv4_pool`.
-                    Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                    Note: AVD does
+                    not check for validity of the IPv4 address and does not catch duplicates.
                     """
                     vtep_loopback_ipv4_pool: str | None
                     """
@@ -109720,9 +118258,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     router_id_pool: str | None
                     """
-                    Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                    router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                    will not exist on the device.
+                    Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                    allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                    `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                    and takes precedence over `router_id_pool`.
                     """
                     loopback_ipv6_pool: str | None
                     """
@@ -109770,8 +118309,6 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_route_servers: EvpnRouteServers
                     """
                     List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                    Hostnames configured here cannot also
-                    be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                     Subclass of AvdList with `str`
@@ -109860,6 +118397,8 @@ class EosDesigns(EosDesignsRootModel):
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the
                     mlag_peer_vlan will be used for L3 peering.
+                    See `mlag_peer_address_family` for the supported address
+                    families in that case.
 
                     Default value: `4093`
                     """
@@ -109869,8 +118408,9 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv4
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                    unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                    true`.
                     """
                     mlag_peer_l3_ipv6_pool: str | None
                     """
@@ -109878,8 +118418,8 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                     MLAG switch.
-                    Required when MLAG leafs present in topology and they are using a separate L3 peering
-                    VLAN.
+                    Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                    and a separate L3 peering VLAN.
                     """
                     mlag_peer_vlan: int
                     """
@@ -109893,8 +118433,18 @@ class EosDesigns(EosDesignsRootModel):
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
                     4.31.1F or higher.
-                    Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                    (ex. `mlag_peer_l3_vlan` set to 4094).
+                    This never changes which address families (NLRI) are activated on the MLAG BGP
+                    peerings.
+                    With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                    The
+                    MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                    and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                    When the MLAG peer VLAN is also used for L3 peering
+                    (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                    the MLAG L3 peerings
+                    (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                    so this must be `ipv6`
+                    with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
 
                     Default value: `"ipv4"`
                     """
@@ -110057,15 +118607,32 @@ class EosDesigns(EosDesignsRootModel):
                     l3leaf A      :
                     <subnet> + 2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                    l2leafs       : <subnet> + 3 + <l2leaf id>
-                    GW on l2leafs : <subnet> + 1
-                    Assign range larger than
-                    total l2leafs + 5
+                    l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                    GW on l2leafs :
+                    <subnet> + 1
+                    Assign range larger than total l2leafs + 5
 
-                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                    Setting is ignored if
+                    'inband_mgmt_ipv6_address' is set.
 
-                    This setting is
-                    applicable to L2 switches (switches using L2 trunks as uplinks).
+                    This setting is applicable to L2 switches (switches using L2
+                    trunks as uplinks).
+                    """
+                    inband_mgmt_ipv6_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                    The assigned
+                    IPv6 address will be computed by adding this offset to the device ID.
+                    Choose an IPv6 subnet large
+                    enough to contain all calculated addresses.
+                    The highest L2 leaf address is:
+                    <subnet> + 3 + <highest
+                    l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                    If the calculated address falls outside the subnet,
+                    address allocation
+                    fails with "address out of range".
+
+                    Default value: `0`
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -110291,6 +118858,20 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
+                    ntp_settings_profile: str | None
+                    """
+                    Name of the NTP settings profile to apply to this device.
+                    The profile must be defined under
+                    `ntp_settings_profiles`.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -110303,6 +118884,7 @@ class EosDesigns(EosDesignsRootModel):
                             platform: str | UndefinedType | None = Undefined,
                             mac_address: str | UndefinedType | None = Undefined,
                             system_mac_address: str | UndefinedType | None = Undefined,
+                            custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -110396,6 +118978,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_address: str | UndefinedType | None = Undefined,
                             inband_mgmt_ipv6_subnet: str | UndefinedType | None = Undefined,
+                            inband_mgmt_ipv6_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ipv6_gateway: str | UndefinedType | None = Undefined,
                             inband_mgmt_description: str | UndefinedType = Undefined,
                             inband_mgmt_vlan_name: str | UndefinedType = Undefined,
@@ -110426,6 +119009,8 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -110451,6 +119036,35 @@ class EosDesigns(EosDesignsRootModel):
                                    "system_mac_address" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
+                                   Mutually exclusive
+                                   with "custom_system_mac_address", whether defined globally or in node configuration.
+                                custom_system_mac_address:
+                                   Set a custom EOS system MAC address using an AVD string formatter template.
+                                   When set, the rendered
+                                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                                   CloudVision-based Zscaler integration.
+                                   The node configuration value takes precedence over the global
+                                   `custom_system_mac_address` value.
+                                   Mutually exclusive with `system_mac_address`, whether defined
+                                   globally or in node configuration.
+                                   If unset, the existing `system_mac_address` behavior is
+                                   unchanged.
+                                   The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh`
+                                   or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and
+                                   not accepted by EOS.
+                                   Regardless of the input format, the MAC address is normalized to
+                                   `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD metadata.
+                                   Only the following
+                                   template fields are supported: `device_id` (AVD node ID as an integer) and `hostname`.
+
+                                   Examples:  # fmt: skip
+                                   - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001` for device with ID 1 and
+                                   `021c.7300.04d2` for device with ID 1234.
+                                     - template `021c.{hostname:0>4.3}.{device_id:04x}` will
+                                   produce `021c.0567.04d2` for device with ID 1234 and hostname `567-leaf01` (assuming first three
+                                   characters of the hostname represent a numerical identifier of the deployment site which we want to
+                                   encode into the 3rd and 4th octets of the generated MAC address).
                                 serial_number:
                                    Set to the Serial Number of the device.
                                    Only used for documentation purpose in the fabric
@@ -110664,7 +119278,9 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv4_address:
                                    IPv4 address without mask for Loopback0.
                                    When set, it takes precedence over `loopback_ipv4_pool`.
-                                   Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                                   For `underlay_ipv6_numbered` designs, it takes precedence over the `router_id_pool`.
+                                   Note: AVD does
+                                   not check for validity of the IPv4 address and does not catch duplicates.
                                 vtep_loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
                                    address used for VTEP-Loopback will be derived from this pool based on the node id and
@@ -110692,9 +119308,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For example, set the minimum
                                    offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
                                 router_id_pool:
-                                   Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
-                                   router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
-                                   will not exist on the device.
+                                   Used for `underlay_ipv6_numbered` designs. `router_id_pool` is an IPv4 subnet used only for
+                                   allocation of BGP router-id's since an IPv4 address will not exist on the device.
+                                   `loopback_ipv4_address` can also be used for `underlay_ipv6_numbered` designs to set the router-id
+                                   and takes precedence over `router_id_pool`.
                                 loopback_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
                                    address used for Loopback0 will be derived from this pool based on the node id and
@@ -110725,8 +119342,6 @@ class EosDesigns(EosDesignsRootModel):
                                    Default is set in node_type definition from node_type_keys.
                                 evpn_route_servers:
                                    List of nodes acting as EVPN Route-Servers / Route-Reflectors.
-                                   Hostnames configured here cannot also
-                                   be configured under `evpn_gateway.remote_peers` on the same node.
 
 
                                    Subclass of AvdList with `str`
@@ -110785,28 +119400,41 @@ class EosDesigns(EosDesignsRootModel):
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
                                    mlag_peer_vlan will be used for L3 peering.
+                                   See `mlag_peer_address_family` for the supported address
+                                   families in that case.
                                 mlag_peer_l3_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using a separate L3 peering VLAN,
+                                   unless `underlay_ipv6_numbered: true` or both `underlay_rfc5549: true` and `overlay_mlag_rfc5549:
+                                   true`.
                                 mlag_peer_l3_ipv6_pool:
                                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The IPv6
                                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
                                    MLAG switch.
-                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
-                                   VLAN.
+                                   Required when MLAG leafs present in topology are using `underlay_ipv6_numbered: true`
+                                   and a separate L3 peering VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
                                    IP address family used to establish MLAG Peer Link (control link).
                                    `ipv6` requires EOS version
                                    4.31.1F or higher.
-                                   Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
-                                   (ex. `mlag_peer_l3_vlan` set to 4094).
+                                   This never changes which address families (NLRI) are activated on the MLAG BGP
+                                   peerings.
+                                   With a separate MLAG L3 peering VLAN (default), this only affects the MLAG Peer Link.
+                                   The
+                                   MLAG L3 peering VLAN then uses IPv6 (`mlag_peer_l3_ipv6_pool`) with `underlay_ipv6_numbered: true`
+                                   and IPv4 (`mlag_peer_l3_ipv4_pool`) otherwise.
+                                   When the MLAG peer VLAN is also used for L3 peering
+                                   (`mlag_peer_l3_vlan` set to 0 or to the same VLAN as `mlag_peer_vlan`),
+                                   the MLAG L3 peerings
+                                   (underlay and VRFs) are established using the MLAG peer VLAN IP addresses,
+                                   so this must be `ipv6`
+                                   with `underlay_ipv6_numbered: true` and `ipv4` otherwise.
                                 mlag_peer_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -110931,15 +119559,28 @@ class EosDesigns(EosDesignsRootModel):
                                    l3leaf A      :
                                    <subnet> + 2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-                                   l2leafs       : <subnet> + 3 + <l2leaf id>
-                                   GW on l2leafs : <subnet> + 1
-                                   Assign range larger than
-                                   total l2leafs + 5
+                                   l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_ipv6_subnet_offset>
+                                   GW on l2leafs :
+                                   <subnet> + 1
+                                   Assign range larger than total l2leafs + 5
 
-                                   Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+                                   Setting is ignored if
+                                   'inband_mgmt_ipv6_address' is set.
 
-                                   This setting is
-                                   applicable to L2 switches (switches using L2 trunks as uplinks).
+                                   This setting is applicable to L2 switches (switches using L2
+                                   trunks as uplinks).
+                                inband_mgmt_ipv6_subnet_offset:
+                                   Offset value to adjust the calculated inband management IPv6 address within the subnet.
+                                   The assigned
+                                   IPv6 address will be computed by adding this offset to the device ID.
+                                   Choose an IPv6 subnet large
+                                   enough to contain all calculated addresses.
+                                   The highest L2 leaf address is:
+                                   <subnet> + 3 + <highest
+                                   l2leaf id> + <inband_mgmt_ipv6_subnet_offset>.
+                                   If the calculated address falls outside the subnet,
+                                   address allocation
+                                   fails with "address out of range".
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
@@ -111090,6 +119731,16 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
 
                             """
 
@@ -111286,6 +119937,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": CustomStructuredConfigurationPrefix,
             "default": lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls),
         },
+        "custom_system_mac_address": {"type": str},
         "cv_pathfinder_global_sites": {"type": CvPathfinderGlobalSites},
         "cv_pathfinder_internet_exit_policies": {"type": CvPathfinderInternetExitPolicies},
         "cv_pathfinder_regions": {"type": CvPathfinderRegions},
@@ -111313,6 +119965,7 @@ class EosDesigns(EosDesignsRootModel):
         "devices": {"type": Devices},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
+        "dns_settings_profiles": {"type": DnsSettingsProfiles},
         "dot1x_settings": {"type": Dot1xSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -111321,6 +119974,7 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_return_structured_config": {"type": bool, "default": False},
         "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
+        "eos_designs_validate_inputs_template_with_multiprocessing": {"type": bool, "default": True},
         "errdisable_settings": {"type": ErrdisableSettings},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
@@ -111358,6 +120012,7 @@ class EosDesigns(EosDesignsRootModel):
         "ipv6_acls": {"type": Ipv6Acls},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
         "ipv6_mgmt_gateway": {"type": str},
+        "ipv6_prefix_list_catalog": {"type": Ipv6PrefixListCatalog},
         "is_deployed": {"type": bool, "default": True},
         "isis_advertise_passive_only": {"type": bool, "default": False},
         "isis_area_id": {"type": str, "default": "49.0001"},
@@ -111517,6 +120172,7 @@ class EosDesigns(EosDesignsRootModel):
             ),
         },
         "ntp_settings": {"type": NtpSettings},
+        "ntp_settings_profiles": {"type": NtpSettingsProfiles},
         "only_local_vlan_trunk_groups": {"type": bool, "default": False},
         "overlay_bgp_peer_description": {"type": str, "default": "{peer}{peer_interface?<_}"},
         "overlay_cvx_servers": {"type": OverlayCvxServers},
@@ -112465,6 +121121,7 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
+        "tcam_profiles": {"type": EosCliConfigGen.TcamProfile.Profiles},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -112805,6 +121462,37 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls)`
     """
+    custom_system_mac_address: str | None
+    """
+    Set a custom EOS system MAC address using an AVD string formatter template.
+    When set, the rendered
+    value is configured with `system mac-address` and used as the effective system MAC address for EOS
+    configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+    CloudVision-based Zscaler integration.
+    Can also be defined in node configuration. The node
+    configuration value takes precedence when both values are set.
+    Mutually exclusive with
+    `system_mac_address`, whether defined globally or in node configuration.
+    If unset, the existing
+    `system_mac_address` behavior is unchanged.
+    The rendered value must be a unicast MAC address in
+    `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+    The all-zero address is reserved and not accepted by EOS.
+    Regardless of the input format, the MAC
+    address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+    metadata.
+    Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+    and `hostname`.
+
+    Examples:
+      - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+    for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+      - template
+    `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+    hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+    identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+    generated MAC address).
+    """
     cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
     Define sites that are outside of the CV Pathfinder hierarchy.
@@ -113114,8 +121802,12 @@ class EosDesigns(EosDesignsRootModel):
     Inherit settings from a device profile defined under `device_profiles`.
     If the device is defined
     under `devices` it is recommended to set the `profile` there instead.
-    Max two levels of profile
-    inheritance: device -> profile -> parent_profile
+    By default, profile
+    inheritance is limited to two levels: device -> device_profile -> parent_profile.
+    From AVD 6.5.0
+    onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+    allows profiles to
+    inherit settings across any number of levels.
     """
     device_profiles: DeviceProfiles
     """
@@ -113141,6 +121833,16 @@ class EosDesigns(EosDesignsRootModel):
     DNS settings
 
     Subclass of AvdModel.
+    """
+    dns_settings_profiles: DnsSettingsProfiles
+    """
+    List of DNS settings profiles that can be applied to devices using `dns_settings_profile` under node
+    definitions.
+    Profiles support inheritance using `parent_profile`, allowing common DNS settings to be
+    shared and selectively overridden per profile.
+
+    Subclass of AvdIndexedList with
+    `DnsSettingsProfilesItem` items. Primary key is `profile` (`str`).
     """
     dot1x_settings: Dot1xSettings
     """
@@ -113202,6 +121904,16 @@ class EosDesigns(EosDesignsRootModel):
     size and the available resources, you may want to adjust this number.
 
     Default value: `10`
+    """
+    eos_designs_validate_inputs_template_with_multiprocessing: bool
+    """
+    Use Multiprocessing for variable templating.
+    Disable this when templating of input variables invokes
+    code that uses locks or background threads.
+    Forked worker processes may inherit locked state,
+    potentially causing deadlocks.
+
+    Default value: `True`
     """
     errdisable_settings: ErrdisableSettings
     """
@@ -113440,16 +122152,43 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv4 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-    are in use.
+    referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`,
+    `l3_port_channels`, or under node type `l3_interfaces` and `l3_port_channels`,
+    or using
+    `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
+    profiles.
+    They will only be configured on devices where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces,
-    but where certain fields require unique values like the "interface_ip" or "peer_ip".
-    When using
-    substitution, the interface name will be appended to the ACL name.
+    The substitution is useful
+    when assigning the same access-list on multiple interfaces where certain fields require unique
+    values.
+    When using substitution, the interface name will be appended to the ACL name.
 
-    Subclass of AvdIndexedList with
-    `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    The
+    "interface_ip" substitution field is resolved per interface type:
+    - For SVIs: resolved from
+    `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
+    - For network services L3
+    interfaces: resolved from the node's entry in `ip_addresses`.
+    - For network services L3 port-
+    channels: resolved from `ip_address`.
+    - For node type L3 interfaces and L3 port-channels: resolved
+    from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+    If
+    the required field is not set, the substitution will fail with an error.
+
+    The "peer_ip" substitution
+    field is resolved per interface type:
+    - For SVIs: not supported. Substitution will fail with an
+    error if used.
+    - For network services L3 interfaces and L3 port-channels: not supported.
+    Substitution will fail with an error if used.
+    - For node type L3 interfaces and L3 port-channels:
+    resolved from `peer_ip`.
+    If `peer_ip` is not set on the interface, the substitution will fail with
+    an error.
+
+    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -113480,38 +122219,40 @@ class EosDesigns(EosDesignsRootModel):
     These access-lists can be
     referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
     `l3_interfaces` and `l3_port_channels`,
-    and will only be configured on devices where they are in
-    use.
+    or using `dot1x.authentication_failure.allow_access_list`
+    under connected endpoints, network ports, and port profiles.
+    They will only be configured on devices
+    where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple interfaces where
-    certain fields require unique values.
-    When using substitution, the interface name will be appended
-    to the ACL name.
+    The substitution is useful when assigning the same access-list on multiple
+    interfaces where certain fields require unique values.
+    When using substitution, the interface name
+    will be appended to the ACL name.
 
-    The "interface_ipv6" substitution field is resolved per interface type:
-    - For
-    SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-    as a fallback.
-    - For L3 interfaces and L3 port-channels: resolved from the first entry of
-    `ipv6_addresses`.
-    If the required field is not set, the substitution will fail with an error.
+    The "interface_ipv6" substitution field is resolved per interface
+    type:
+    - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+    `ipv6_address_virtuals` is used as a fallback.
+    - For L3 interfaces and L3 port-channels: resolved
+    from the first entry of `ipv6_addresses`.
+    If the required field is not set, the substitution will
+    fail with an error.
 
-    The
-    "peer_ipv6" substitution field is resolved per interface type:
-    - For SVIs: not supported.
-    Substitution will fail with an error if used.
-    - For network services L3 interfaces and L3 port-
-    channels: not supported. Substitution will fail with an error if used.
-    - For node type L3 interfaces
-    and L3 port-channels: resolved from `peer_ipv6`.
-    If `peer_ipv6` is not set on the interface, the
-    substitution will fail with an error.
+    The "peer_ipv6" substitution field is resolved per interface type:
+    - For SVIs:
+    not supported. Substitution will fail with an error if used.
+    - For network services L3 interfaces
+    and L3 port-channels: not supported. Substitution will fail with an error if used.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+    If `peer_ipv6` is not set on the
+    interface, the substitution will fail with an error.
 
-    Note: The "interface_ip" token is deprecated and will be
-    removed in AVD 7.0.0. Use "interface_ipv6" instead.
+    Note: The "interface_ip" token is deprecated
+    and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem`
-    items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with
+    `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -113539,6 +122280,14 @@ class EosDesigns(EosDesignsRootModel):
     under node config is set to 'auto-config', since router
     advertisements are expected to provide the
     gateway and default route.
+    """
+    ipv6_prefix_list_catalog: Ipv6PrefixListCatalog
+    """
+    IPv6 prefix-list catalog.
+    Entries are only rendered when explicitly referenced by
+    `ipv6_prefix_list_in` or
+    `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.
+    Subclass of AvdIndexedList with `Ipv6PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
     is_deployed: bool
     """
@@ -113949,6 +122698,13 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    ntp_settings_profiles: NtpSettingsProfiles
+    """
+    NTP settings
+
+    Subclass of AvdIndexedList with `NtpSettingsProfilesItem` items. Primary key is
+    `profile` (`str`).
+    """
     only_local_vlan_trunk_groups: bool
     """
     A vlan can have many trunk_groups assigned.
@@ -114012,8 +122768,15 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_mlag_rfc5549: bool
     """
-    IPv6 Unnumbered for MLAG iBGP connections.
-    Requires "underlay_rfc5549: true".
+    Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+    Requires
+    one of:
+    - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+    (unnumbered).
+    - `underlay_ipv6_numbered: true` and
+    `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+      The MLAG iBGP peerings in
+    VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
 
     Default value: `False`
     """
@@ -114062,9 +122825,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily
     """
-    When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-    This feature depends on
-    underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+    Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+    Setting this to `ipv6` requires both
+    `underlay_ipv6: true` and `underlay_rfc5549: true`.
+    When `underlay_ipv6_numbered: true`, this
+    setting is not required. IPv6 overlay peering is enabled automatically.
 
     Default value: `"ipv4"`
     """
@@ -114255,14 +123020,19 @@ class EosDesigns(EosDesignsRootModel):
     svi_profile.nodes[inventory_hostname].structured_config
     3.
     svi_parent_profile.nodes[inventory_hostname].structured_config
-    4. svi.structured_config
-    5.
-    svi_profile.structured_config
-    6. svi_parent_profile.structured_config
+    4. Further ancestor profiles'
+    nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+    is enabled)
+    5. svi.structured_config
+    6. svi_profile.structured_config
+    7.
+    svi_parent_profile.structured_config
+    8. Further ancestor profiles' structured_config in nearest-to-
+    farthest order (when recursive inheritance is enabled)
 
 
-    Subclass of AvdIndexedList
-    with `SviProfilesItem` items. Primary key is `profile` (`str`).
+    Subclass of AvdIndexedList with
+    `SviProfilesItem` items. Primary key is `profile` (`str`).
     """
     system_mac_address: str | None
     """
@@ -114271,6 +123041,19 @@ class EosDesigns(EosDesignsRootModel):
     also be set under node type settings.
     If both are set, the value under node type settings takes
     precedence.
+    Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+    configuration.
+    """
+    tcam_profiles: EosCliConfigGen.TcamProfile.Profiles
+    """
+    List of TCAM profile definitions that can be referenced by platform_settings.
+    Profiles are
+    configured in the device based on platform_settings[].tcam_profile and
+    platform_settings[].additional_tcam_profiles.
+    All profiles in
+    platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+    If a
+    profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
     """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
@@ -114331,22 +123114,24 @@ class EosDesigns(EosDesignsRootModel):
       -
     "uplink_ipv6_pool" (or `downlink_pools`)
       - "vtep_loopback_ipv6_pool"
-      - "router_id_pool"
-    For
-    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-      -
-    "mlag_peer_address_family: ipv6"
-      - "mlag_peer_ipv6_pool"
-      - "mlag_peer_l3_ipv6_pool"
-    Some
-    settings are not yet supported with IPv6 underlay:
+      - "router_id_pool" or
+    "loopback_ipv4_address"
+    For MLAG, set on the MLAG nodes:
+      - "mlag_peer_l3_ipv6_pool" when using a
+    separate MLAG L3 peering VLAN (default).
+      - "mlag_peer_address_family: ipv6" and
+    "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+        With a
+    separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+    link) to IPv6.
+    Some settings are not yet supported with IPv6 underlay:
       - underlay_multicast_pim_sm
-      -
-    underlay_multicast_rp_interfaces
+    - underlay_multicast_rp_interfaces
       - underlay_rfc5549
       - wan_role
       - vtep_vvtep_ip
-      - inband_ztp
+      -
+    inband_ztp
 
     Default value: `False`
     """
@@ -114700,6 +123485,7 @@ class EosDesigns(EosDesignsRootModel):
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
             custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge | UndefinedType = Undefined,
             custom_structured_configuration_prefix: CustomStructuredConfigurationPrefix | UndefinedType = Undefined,
+            custom_system_mac_address: str | UndefinedType | None = Undefined,
             cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
@@ -114727,6 +123513,7 @@ class EosDesigns(EosDesignsRootModel):
             devices: Devices | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
+            dns_settings_profiles: DnsSettingsProfiles | UndefinedType = Undefined,
             dot1x_settings: Dot1xSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
@@ -114735,6 +123522,7 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             eos_designs_tmp_dir: str | UndefinedType | None = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            eos_designs_validate_inputs_template_with_multiprocessing: bool | UndefinedType = Undefined,
             errdisable_settings: ErrdisableSettings | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
@@ -114769,6 +123557,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
+            ipv6_prefix_list_catalog: Ipv6PrefixListCatalog | UndefinedType = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
             isis_advertise_passive_only: bool | UndefinedType = Undefined,
             isis_area_id: str | UndefinedType = Undefined,
@@ -114813,6 +123602,7 @@ class EosDesigns(EosDesignsRootModel):
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
             node_type_keys: NodeTypeKeys | UndefinedType = Undefined,
             ntp_settings: NtpSettings | UndefinedType = Undefined,
+            ntp_settings_profiles: NtpSettingsProfiles | UndefinedType = Undefined,
             only_local_vlan_trunk_groups: bool | UndefinedType = Undefined,
             overlay_bgp_peer_description: str | UndefinedType = Undefined,
             overlay_cvx_servers: OverlayCvxServers | UndefinedType = Undefined,
@@ -114846,6 +123636,7 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | UndefinedType | None = Undefined,
+            tcam_profiles: EosCliConfigGen.TcamProfile.Profiles | UndefinedType = Undefined,
             timezone: str | UndefinedType | None = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | UndefinedType | None = Undefined,
@@ -115111,6 +123902,35 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdList with `str` items.
+                custom_system_mac_address:
+                   Set a custom EOS system MAC address using an AVD string formatter template.
+                   When set, the rendered
+                   value is configured with `system mac-address` and used as the effective system MAC address for EOS
+                   configuration, AVD metadata, SNMP engine ID generation, CloudVision identification and the
+                   CloudVision-based Zscaler integration.
+                   Can also be defined in node configuration. The node
+                   configuration value takes precedence when both values are set.
+                   Mutually exclusive with
+                   `system_mac_address`, whether defined globally or in node configuration.
+                   If unset, the existing
+                   `system_mac_address` behavior is unchanged.
+                   The rendered value must be a unicast MAC address in
+                   `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit).
+                   The all-zero address is reserved and not accepted by EOS.
+                   Regardless of the input format, the MAC
+                   address is normalized to `hh:hh:hh:hh:hh:hh` format in the generated EOS configuration and AVD
+                   metadata.
+                   Only the following template fields are supported: `device_id` (AVD node ID as an integer)
+                   and `hostname`.
+
+                   Examples:  # fmt: skip
+                     - template `021c.7300.{device_id:04x}` will produce `021c.7300.0001`
+                   for device with ID 1 and `021c.7300.04d2` for device with ID 1234.
+                     - template
+                   `021c.{hostname:0>4.3}.{device_id:04x}` will produce `021c.0567.04d2` for device with ID 1234 and
+                   hostname `567-leaf01` (assuming first three characters of the hostname represent a numerical
+                   identifier of the deployment site which we want to encode into the 3rd and 4th octets of the
+                   generated MAC address).
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
                    This is used to arrange pathfinders in
@@ -115356,8 +124176,12 @@ class EosDesigns(EosDesignsRootModel):
                    Inherit settings from a device profile defined under `device_profiles`.
                    If the device is defined
                    under `devices` it is recommended to set the `profile` there instead.
-                   Max two levels of profile
-                   inheritance: device -> profile -> parent_profile
+                   By default, profile
+                   inheritance is limited to two levels: device -> device_profile -> parent_profile.
+                   From AVD 6.5.0
+                   onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true
+                   allows profiles to
+                   inherit settings across any number of levels.
                 device_profiles:
                    PREVIEW - This datamodel is still under development and may change or get removed at any time.
                    Subclass of AvdIndexedList with `DeviceProfilesItem` items. Primary key is `name` (`str`).
@@ -115375,6 +124199,14 @@ class EosDesigns(EosDesignsRootModel):
                    DNS settings
 
                    Subclass of AvdModel.
+                dns_settings_profiles:
+                   List of DNS settings profiles that can be applied to devices using `dns_settings_profile` under node
+                   definitions.
+                   Profiles support inheritance using `parent_profile`, allowing common DNS settings to be
+                   shared and selectively overridden per profile.
+
+                   Subclass of AvdIndexedList with
+                   `DnsSettingsProfilesItem` items. Primary key is `profile` (`str`).
                 dot1x_settings:
                    Settings for 802.1X deployments.
 
@@ -115412,6 +124244,12 @@ class EosDesigns(EosDesignsRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                eos_designs_validate_inputs_template_with_multiprocessing:
+                   Use Multiprocessing for variable templating.
+                   Disable this when templating of input variables invokes
+                   code that uses locks or background threads.
+                   Forked worker processes may inherit locked state,
+                   potentially causing deadlocks.
                 errdisable_settings:
                    Errdisable settings for the device.
                    Causes are filtered based on platform feature support defined in
@@ -115577,16 +124415,43 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acls:
                    IPv4 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-                   are in use.
+                   referenced using `ipv4_acl_in` / `ipv4_acl_out` under network services `svis`, `l3_interfaces`,
+                   `l3_port_channels`, or under node type `l3_interfaces` and `l3_port_channels`,
+                   or using
+                   `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
+                   profiles.
+                   They will only be configured on devices where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces,
-                   but where certain fields require unique values like the "interface_ip" or "peer_ip".
-                   When using
-                   substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful
+                   when assigning the same access-list on multiple interfaces where certain fields require unique
+                   values.
+                   When using substitution, the interface name will be appended to the ACL name.
 
-                   Subclass of AvdIndexedList with
-                   `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   The
+                   "interface_ip" substitution field is resolved per interface type:
+                   - For SVIs: resolved from
+                   `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
+                   - For network services L3
+                   interfaces: resolved from the node's entry in `ip_addresses`.
+                   - For network services L3 port-
+                   channels: resolved from `ip_address`.
+                   - For node type L3 interfaces and L3 port-channels: resolved
+                   from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+                   If
+                   the required field is not set, the substitution will fail with an error.
+
+                   The "peer_ip" substitution
+                   field is resolved per interface type:
+                   - For SVIs: not supported. Substitution will fail with an
+                   error if used.
+                   - For network services L3 interfaces and L3 port-channels: not supported.
+                   Substitution will fail with an error if used.
+                   - For node type L3 interfaces and L3 port-channels:
+                   resolved from `peer_ip`.
+                   If `peer_ip` is not set on the interface, the substitution will fail with
+                   an error.
+
+                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
@@ -115611,38 +124476,40 @@ class EosDesigns(EosDesignsRootModel):
                    These access-lists can be
                    referenced using `ipv6_acl_in` / `ipv6_acl_out` under network services `svis`, or under node type
                    `l3_interfaces` and `l3_port_channels`,
-                   and will only be configured on devices where they are in
-                   use.
+                   or using `dot1x.authentication_failure.allow_access_list`
+                   under connected endpoints, network ports, and port profiles.
+                   They will only be configured on devices
+                   where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple interfaces where
-                   certain fields require unique values.
-                   When using substitution, the interface name will be appended
-                   to the ACL name.
+                   The substitution is useful when assigning the same access-list on multiple
+                   interfaces where certain fields require unique values.
+                   When using substitution, the interface name
+                   will be appended to the ACL name.
 
-                   The "interface_ipv6" substitution field is resolved per interface type:
-                   - For
-                   SVIs: resolved from `ipv6_address`. If not set, the first entry of `ipv6_address_virtuals` is used
-                   as a fallback.
-                   - For L3 interfaces and L3 port-channels: resolved from the first entry of
-                   `ipv6_addresses`.
-                   If the required field is not set, the substitution will fail with an error.
+                   The "interface_ipv6" substitution field is resolved per interface
+                   type:
+                   - For SVIs: resolved from `ipv6_address`. If not set, the first entry of
+                   `ipv6_address_virtuals` is used as a fallback.
+                   - For L3 interfaces and L3 port-channels: resolved
+                   from the first entry of `ipv6_addresses`.
+                   If the required field is not set, the substitution will
+                   fail with an error.
 
-                   The
-                   "peer_ipv6" substitution field is resolved per interface type:
-                   - For SVIs: not supported.
-                   Substitution will fail with an error if used.
-                   - For network services L3 interfaces and L3 port-
-                   channels: not supported. Substitution will fail with an error if used.
-                   - For node type L3 interfaces
-                   and L3 port-channels: resolved from `peer_ipv6`.
-                   If `peer_ipv6` is not set on the interface, the
-                   substitution will fail with an error.
+                   The "peer_ipv6" substitution field is resolved per interface type:
+                   - For SVIs:
+                   not supported. Substitution will fail with an error if used.
+                   - For network services L3 interfaces
+                   and L3 port-channels: not supported. Substitution will fail with an error if used.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `peer_ipv6`.
+                   If `peer_ipv6` is not set on the
+                   interface, the substitution will fail with an error.
 
-                   Note: The "interface_ip" token is deprecated and will be
-                   removed in AVD 7.0.0. Use "interface_ipv6" instead.
+                   Note: The "interface_ip" token is deprecated
+                   and will be removed in AVD 7.0.0. Use "interface_ipv6" instead.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem`
-                   items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with
+                   `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
@@ -115666,6 +124533,12 @@ class EosDesigns(EosDesignsRootModel):
                    under node config is set to 'auto-config', since router
                    advertisements are expected to provide the
                    gateway and default route.
+                ipv6_prefix_list_catalog:
+                   IPv6 prefix-list catalog.
+                   Entries are only rendered when explicitly referenced by
+                   `ipv6_prefix_list_in` or
+                   `ipv6_prefix_list_out` under BGP on an L3 interface or L3 Port-Channel.
+                   Subclass of AvdIndexedList with `Ipv6PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 is_deployed:
                    If the device is already deployed in the fabric.
                    When set to false:
@@ -115951,6 +124824,11 @@ class EosDesigns(EosDesignsRootModel):
                    NTP settings
 
                    Subclass of AvdModel.
+                ntp_settings_profiles:
+                   NTP settings
+
+                   Subclass of AvdIndexedList with `NtpSettingsProfilesItem` items. Primary key is
+                   `profile` (`str`).
                 only_local_vlan_trunk_groups:
                    A vlan can have many trunk_groups assigned.
                    To avoid unneeded configuration changes on all leaf
@@ -115995,8 +124873,15 @@ class EosDesigns(EosDesignsRootModel):
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
                 overlay_mlag_rfc5549:
-                   IPv6 Unnumbered for MLAG iBGP connections.
-                   Requires "underlay_rfc5549: true".
+                   Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+                   Requires
+                   one of:
+                   - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses
+                   (unnumbered).
+                   - `underlay_ipv6_numbered: true` and
+                   `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+                     The MLAG iBGP peerings in
+                   VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
                 overlay_rd_type:
                    Configuration options for the Administrator subfield (first part of RD) and the Assigned Number
                    subfield (second part of RD).
@@ -116037,9 +124922,11 @@ class EosDesigns(EosDesignsRootModel):
                      If not set, the
                    default_overlay_routing_protocol defined under the node_type_keys will be used (default is "ebgp").
                 overlay_routing_protocol_address_family:
-                   When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-                   This feature depends on
-                   underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+                   Set to `ipv6` to use IPv6 addresses for overlay EVPN peering.
+                   Setting this to `ipv6` requires both
+                   `underlay_ipv6: true` and `underlay_rfc5549: true`.
+                   When `underlay_ipv6_numbered: true`, this
+                   setting is not required. IPv6 overlay peering is enabled automatically.
                 overlay_rt_type:
                    Configuration options for the Administrator subfield (first part of RT) and the Assigned Number
                    subfield (second part of RT).
@@ -116173,20 +125060,36 @@ class EosDesigns(EosDesignsRootModel):
                    svi_profile.nodes[inventory_hostname].structured_config
                    3.
                    svi_parent_profile.nodes[inventory_hostname].structured_config
-                   4. svi.structured_config
-                   5.
-                   svi_profile.structured_config
-                   6. svi_parent_profile.structured_config
+                   4. Further ancestor profiles'
+                   nodes[inventory_hostname].structured_config in nearest-to-farthest order (when recursive inheritance
+                   is enabled)
+                   5. svi.structured_config
+                   6. svi_profile.structured_config
+                   7.
+                   svi_parent_profile.structured_config
+                   8. Further ancestor profiles' structured_config in nearest-to-
+                   farthest order (when recursive inheritance is enabled)
 
 
-                   Subclass of AvdIndexedList
-                   with `SviProfilesItem` items. Primary key is `profile` (`str`).
+                   Subclass of AvdIndexedList with
+                   `SviProfilesItem` items. Primary key is `profile` (`str`).
                 system_mac_address:
                    Set to the same MAC address as available in "show version" on the device.
                    "system_mac_address" can
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
+                   Mutually exclusive with "custom_system_mac_address", whether defined globally or in node
+                   configuration.
+                tcam_profiles:
+                   List of TCAM profile definitions that can be referenced by platform_settings.
+                   Profiles are
+                   configured in the device based on platform_settings[].tcam_profile and
+                   platform_settings[].additional_tcam_profiles.
+                   All profiles in
+                   platform_settings[].additional_tcam_profiles (if defined in this list) will be configured.
+                   If a
+                   profile appears in both tcam_profile and additional_tcam_profiles, it will only be configured once.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:
@@ -116229,22 +125132,24 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "uplink_ipv6_pool" (or `downlink_pools`)
                      - "vtep_loopback_ipv6_pool"
-                     - "router_id_pool"
-                   For
-                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
-                     -
-                   "mlag_peer_address_family: ipv6"
-                     - "mlag_peer_ipv6_pool"
-                     - "mlag_peer_l3_ipv6_pool"
-                   Some
-                   settings are not yet supported with IPv6 underlay:
+                     - "router_id_pool" or
+                   "loopback_ipv4_address"
+                   For MLAG, set on the MLAG nodes:
+                     - "mlag_peer_l3_ipv6_pool" when using a
+                   separate MLAG L3 peering VLAN (default).
+                     - "mlag_peer_address_family: ipv6" and
+                   "mlag_peer_ipv6_pool" when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`.
+                       With a
+                   separate MLAG L3 peering VLAN, these keys are optional and only set the MLAG peer link (control
+                   link) to IPv6.
+                   Some settings are not yet supported with IPv6 underlay:
                      - underlay_multicast_pim_sm
-                     -
-                   underlay_multicast_rp_interfaces
+                   - underlay_multicast_rp_interfaces
                      - underlay_rfc5549
                      - wan_role
                      - vtep_vvtep_ip
-                     - inband_ztp
+                     -
+                   inband_ztp
                 underlay_isis_authentication_cleartext_key:
                    Cleartext password.
                    Encrypted to Type 7 by AVD.
