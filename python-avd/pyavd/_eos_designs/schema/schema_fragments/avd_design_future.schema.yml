@@ -55,7 +55,7 @@ keys:
           Available from AVD 6.4.0.
           Fix support for `address_locking_settings.dhcp_server_interfaces`.
           When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
-      raise_for_missing_queue_monitor_streaming_acls:
+      configure_queue_monitor_streaming_ipv4_acl_from_catalog:
         type: bool
         default: false
         description: |-
