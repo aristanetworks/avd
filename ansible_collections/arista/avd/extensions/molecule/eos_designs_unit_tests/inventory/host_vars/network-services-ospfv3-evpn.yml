@@ -190,7 +190,8 @@ tenants:
             enabled: false
         bgp:
           redistribute_ospfv3:
-            enabled: false
+            internal:
+              enabled: false
         svis:
           - id: 212
             name: VRF_C_TRANSIT
@@ -247,7 +248,8 @@ tenants:
           enabled: true
         bgp:
           redistribute_ospfv3:
-            enabled: false
+            internal:
+              enabled: false
         svis:
           - id: 215
             name: VRF_DUAL_STACK_2_TRANSIT
@@ -279,7 +281,8 @@ tenants:
         bgp:
           enabled: false
           redistribute_ospfv3:
-            enabled: true
+            internal:
+              enabled: true
         ospfv3:
           redistribute_bgp:
             enabled: true
