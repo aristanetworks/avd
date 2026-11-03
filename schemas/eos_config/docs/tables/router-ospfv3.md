@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_ospfv3</samp>](## "router_ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6_router_ospf' on EOS.<br>Use only one style across all VRFs and instances. |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
-    | [<samp>&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.bfd_default") | Boolean |  |  |  | Enable BFD for all OSPFv3 address families. |
+    | [<samp>&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.bfd_default") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,<br>the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
@@ -91,7 +91,7 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.vrfs.[].bfd_default") | Boolean |  |  |  | Enable BFD for all OSPFv3 address families in this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_default</samp>](## "router_ospfv3.vrfs.[].bfd_default") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,<br>the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
@@ -183,7 +183,8 @@
       # 32-bit OSPF router ID as an IP address.
       router_id: <str>
 
-      # Enable BFD for all OSPFv3 address families.
+      # Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,
+      # the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
       bfd_default: <bool>
 
       # Allow BFD sessions to be established in any OSPFv3 adjacency state.
@@ -324,7 +325,8 @@
           # 32-bit OSPF router ID as an IP address.
           router_id: <str>
 
-          # Enable BFD for all OSPFv3 address families in this VRF.
+          # Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD setting is defined,
+          # the shared BFD command is not rendered. A family BFD command is rendered only when that family setting is true.
           bfd_default: <bool>
 
           # Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.

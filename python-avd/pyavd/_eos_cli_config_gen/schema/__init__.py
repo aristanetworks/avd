@@ -68307,7 +68307,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
             bfd_default: bool | None
-            """Enable BFD for all OSPFv3 address families in this VRF."""
+            """
+            Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
+            setting is defined,
+            the shared BFD command is not rendered. A family BFD command is rendered only
+            when that family setting is true.
+            """
             bfd_adjacency_state_any: bool | None
             """Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF."""
             passive_interface_default: bool | None
@@ -68362,7 +68367,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            VRF name.
                            VRF 'default' must be configured directly under 'router_ospfv3'.
                         router_id: 32-bit OSPF router ID as an IP address.
-                        bfd_default: Enable BFD for all OSPFv3 address families in this VRF.
+                        bfd_default:
+                           Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
+                           setting is defined,
+                           the shared BFD command is not rendered. A family BFD command is rendered only
+                           when that family setting is true.
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
@@ -68407,7 +68416,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         router_id: str | None
         """32-bit OSPF router ID as an IP address."""
         bfd_default: bool | None
-        """Enable BFD for all OSPFv3 address families."""
+        """
+        Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
+        setting is defined,
+        the shared BFD command is not rendered. A family BFD command is rendered only
+        when that family setting is true.
+        """
         bfd_adjacency_state_any: bool | None
         """Allow BFD sessions to be established in any OSPFv3 adjacency state."""
         passive_interface_default: bool | None
@@ -68461,7 +68475,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     router_id: 32-bit OSPF router ID as an IP address.
-                    bfd_default: Enable BFD for all OSPFv3 address families.
+                    bfd_default:
+                       Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
+                       setting is defined,
+                       the shared BFD command is not rendered. A family BFD command is rendered only
+                       when that family setting is true.
                     bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
