@@ -212,8 +212,11 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
         bool: False if Ansible version is not valid.
     """
     collection_path = _get_collection_path(collection_name)
-    with Path(collection_path, "meta", "runtime.yml").open("rb") as fd:
-        collection_meta = yaml.safe_load(fd)
+    try:
+        with Path(collection_path, "meta", "runtime.yml").open("rb") as fd:
+            collection_meta = yaml.safe_load(fd) or {}
+    except FileNotFoundError:
+        collection_meta = {}
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
     info["ansible_version"] = running_version
 
