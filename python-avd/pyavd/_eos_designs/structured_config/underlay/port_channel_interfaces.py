@@ -140,8 +140,12 @@ class PortChannelInterfacesMixin(Protocol):
             msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
             if self.inputs.avd_design_future.raise_for_port_channels_without_members:
                 raise AristaAvdInvalidInputsError(msg)
+            l3_port_channel_path = (
+                f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels[name={l3_port_channel.name}]"
+            )
             warnings.warn(
-                f"Host '{self.shared_utils.hostname}' (Underlay): {msg} This configuration will not be supported in AVD 7.0.",
+                f"Host '{self.shared_utils.hostname}': L3 Port-Channel at path '{l3_port_channel_path}' must have at least one member interface defined. "
+                "This configuration will not be supported in AVD 7.0.",
                 AvdFutureBehaviorWarning,
                 stacklevel=2,
             )
