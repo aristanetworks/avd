@@ -674,6 +674,7 @@ class AvdV6Build:
         try:
             with warnings.catch_warnings(record=True) as captured_warnings:
                 warnings.simplefilter("always", DeprecationWarning)
+                warnings.simplefilter("always", AvdFutureBehaviorWarning)
                 avd_facts = get_facts(
                     self._loaded_avd_designs,
                     all_hostvars=self._validated_inputs_dict,
@@ -913,6 +914,7 @@ def build_validate_and_render_for_one_device(
         try:
             with warnings.catch_warnings(record=True) as captured_warnings:
                 warnings.simplefilter("always", DeprecationWarning)
+                warnings.simplefilter("always", AvdFutureBehaviorWarning)
                 eos_config = get_structured_config(
                     hostname=device,
                     inputs=device_avd_validated_inputs,

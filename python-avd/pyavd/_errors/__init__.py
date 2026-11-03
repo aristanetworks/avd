@@ -98,7 +98,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         super().__init__(self.message)
 
 
-class AvdFutureBehaviorWarning(DeprecationWarning):
+class AvdFutureBehaviorWarning(FutureWarning):
     """Warning for behavior that will change when a future-behavior knob becomes the default."""
 
 
