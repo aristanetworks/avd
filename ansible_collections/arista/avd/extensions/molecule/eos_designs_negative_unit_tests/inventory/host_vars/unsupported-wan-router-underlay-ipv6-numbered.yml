@@ -50,6 +50,3 @@ wan_carriers:
   - name: Comcast
     path_group: INET
     trusted: true
-
-expected_error_message: >-
-  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay for host 'unsupported-wan-router-underlay-ipv6-numbered'.

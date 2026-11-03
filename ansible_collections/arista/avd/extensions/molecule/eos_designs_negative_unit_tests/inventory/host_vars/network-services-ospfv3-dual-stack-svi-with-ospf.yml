@@ -28,7 +28,3 @@ tenants:
               enabled: true
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.enabled: true' on an SVI with IPv4 addressing requires 'ospfv3.ipv4.enabled: false',
-  since OSPFv3 currently only supports the IPv6 address family.

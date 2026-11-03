@@ -1,0 +1,27 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    ntp_settings_profile: child_ntp_profile
+  nodes:
+    - name: ntp-settings-profile-parent-chain
+
+ntp_settings:
+  authenticate: true
+  set_first_ntp_server_as_preferred: false
+
+ntp_settings_profiles:
+  - profile: common_ntp_profile
+    server_vrf: default
+    trusted_keys: 1
+    servers:
+      - name: 192.0.2.123
+        iburst: true
+  - profile: regional_ntp_profile
+    parent_profile: common_ntp_profile
+    authenticate_servers_only: true
+  - profile: child_ntp_profile
+    parent_profile: regional_ntp_profile
+    servers:
+      - name: 192.0.2.124
+        burst: true

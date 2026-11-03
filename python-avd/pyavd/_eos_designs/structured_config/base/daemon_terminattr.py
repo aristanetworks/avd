@@ -160,7 +160,7 @@ class DaemonTerminattrMixin(Protocol):
             AristaAvdInvalidInputsError: If required NTP or DNS settings are missing.
         """
         # NTP is always required
-        if not self.inputs.ntp_settings.servers:
+        if not self.shared_utils.ntp_settings.servers:
             msg = (
                 "'ntp_settings.servers' must be configured when CloudVision "
                 "clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined."
