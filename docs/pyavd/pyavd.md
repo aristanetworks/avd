@@ -58,8 +58,12 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 Install the `pyavd` Python package:
 
-```sh
-pip install pyavd
+```shell
+# pip
+pip install --upgrade --upgrade-strategy eager "pyavd"
+
+# uv
+uv pip install --upgrade "pyavd"
 ```
 
 Python dependencies are automatically installed with above command.
@@ -68,8 +72,12 @@ Python dependencies are automatically installed with above command.
 
 To install Ansible [AVD collection Python requirements](../installation/collection-installation.md#python-requirements-installation) install with extra `ansible`:
 
-```sh
-pip install pyavd[ansible]
+```shell
+# pip
+pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
+
+# uv
+uv pip install --upgrade "pyavd[ansible]"
 ```
 
 ## Reference

@@ -36,14 +36,27 @@ To set up a development environment, please follow the [development tooling](../
 The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd)
 server and can be automatically installed on your system.
 
+!!! important "Keep Python dependencies up to date"
+
+    When installing or upgrading PyAVD, update its Python dependencies to the
+    latest compatible releases to pick up available security fixes using:
+
+    - pip: "--upgrade --upgrade-strategy eager"
+    - uv: "--upgrade"
+
 ### Latest version
 
 These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
 all required Ansible collections.
 
 ```shell
-pip install "pyavd[ansible]"
-ansible-galaxy collection install arista.avd
+# pip
+pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
+
+# uv
+uv pip install --upgrade "pyavd[ansible]"
+
+ansible-galaxy collection install arista.avd --upgrade
 ```
 
 !!! warning
@@ -55,15 +68,26 @@ ansible-galaxy collection install arista.avd
 ### Install a specific version
 
 ```shell
-pip install "pyavd[ansible]==5.7.3"
-ansible-galaxy collection install arista.avd:==5.7.3
+# pip
+pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.1.0"
+
+# uv
+uv pip install --upgrade "pyavd[ansible]==6.1.0"
+
+ansible-galaxy collection install arista.avd:==6.1.0 --upgrade
 ```
 
 ### Install latest `devel` version from AVD GitHub
 
 ```shell
-pip install "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
-ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel
+# pip
+pip install --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+
+# uv
+uv pip install --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+
+
+ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
 ```
 
 !!! note
