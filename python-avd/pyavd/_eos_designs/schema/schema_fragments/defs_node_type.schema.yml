@@ -1771,6 +1771,14 @@ $defs:
               Name of the DNS settings profile to apply to this device.
               The profile must be defined under `dns_settings_profiles`.
               The selected profile settings will be merged over the general `dns_settings`.
+          cv_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: |-
+              Name of the CloudVision settings profile to apply to this device.
+              The profile must be defined under `cv_settings_profiles`.
+              The selected profile settings will be merged over the general `cv_settings`.
           ntp_settings_profile:
             documentation_options:
               table: node-type-common-configuration
@@ -1778,6 +1786,7 @@ $defs:
             description: |-
               Name of the NTP settings profile to apply to this device.
               The profile must be defined under `ntp_settings_profiles`.
+              The selected profile settings will be merged over the general `ntp_settings`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
