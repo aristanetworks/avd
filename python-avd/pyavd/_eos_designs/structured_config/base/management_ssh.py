@@ -57,7 +57,7 @@ class ManagementSshMixin(Protocol):
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
-                        self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_standard_acl, ipv6_access_group_in=vrf.ipv6_acl)
+                        self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_standard_acl)
             else:
                 management_ssh_vrf = EosCliConfigGen.ManagementSsh.VrfsItem(
                     name=vrf_name, enable=vrf.enabled, ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None
