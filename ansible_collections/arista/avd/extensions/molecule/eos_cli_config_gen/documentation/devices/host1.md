@@ -3039,7 +3039,6 @@ snmp-server vrf aaa
 snmp-server vrf abc
 snmp-server vrf foo
 snmp-server vrf lower_case
-no snmp-server vrf not_enabled
 snmp-server ifmib ifspeed shape-rate
 ```
 
