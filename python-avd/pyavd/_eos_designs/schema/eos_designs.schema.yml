@@ -493,7 +493,7 @@ keys:
 
           When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface`
           are mutually exclusive.'
-      raise_for_missing_queue_monitor_streaming_acls:
+      configure_queue_monitor_streaming_ipv4_acl_from_catalog:
         type: bool
         default: false
         description: 'Available from AVD 6.5.0.
@@ -10314,7 +10314,7 @@ keys:
         type: str
         description: 'IPv4 extended access-list name.
 
-          When `avd_design_future.raise_for_missing_queue_monitor_streaming_acls`
+          When `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`
           is enabled, the access-list must be defined under `ipv4_acls`.
 
           Otherwise, no catalog entry is required.

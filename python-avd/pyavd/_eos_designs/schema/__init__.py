@@ -1056,7 +1056,7 @@ class EosDesigns(EosDesignsRootModel):
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
-            "raise_for_missing_queue_monitor_streaming_acls": {"type": bool, "default": False},
+            "configure_queue_monitor_streaming_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
@@ -1130,7 +1130,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        raise_for_missing_queue_monitor_streaming_acls: bool
+        configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
         """
         Available from AVD 6.5.0.
         Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
@@ -1303,7 +1303,7 @@ class EosDesigns(EosDesignsRootModel):
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
-                raise_for_missing_queue_monitor_streaming_acls: bool | UndefinedType = Undefined,
+                configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
@@ -1356,7 +1356,7 @@ class EosDesigns(EosDesignsRootModel):
                        When
                        enabled, `address_locking_settings.dhcp_server_interfaces` and
                        `address_locking_settings.local_interface` are mutually exclusive.
-                    raise_for_missing_queue_monitor_streaming_acls:
+                    configure_queue_monitor_streaming_ipv4_acl_from_catalog:
                        Available from AVD 6.5.0.
                        Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
                        under `ipv4_acls`.
@@ -51147,11 +51147,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         IPv4 extended access-list name.
         When
-        `avd_design_future.raise_for_missing_queue_monitor_streaming_acls` is enabled, the access-list must
-        be defined under `ipv4_acls`.
+        `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
+        list must be defined under `ipv4_acls`.
         Otherwise, no catalog entry is required.
-        `ip_access_group` and
-        `ip_standard_access_group` must not be defined together.
+        `ip_access_group`
+        and `ip_standard_access_group` must not be defined together.
         Field substitution is not supported for
         queue-monitor streaming references.
         """
@@ -51188,11 +51188,11 @@ class EosDesigns(EosDesignsRootModel):
                     ip_access_group:
                        IPv4 extended access-list name.
                        When
-                       `avd_design_future.raise_for_missing_queue_monitor_streaming_acls` is enabled, the access-list must
-                       be defined under `ipv4_acls`.
+                       `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
+                       list must be defined under `ipv4_acls`.
                        Otherwise, no catalog entry is required.
-                       `ip_access_group` and
-                       `ip_standard_access_group` must not be defined together.
+                       `ip_access_group`
+                       and `ip_standard_access_group` must not be defined together.
                        Field substitution is not supported for
                        queue-monitor streaming references.
                     ip_standard_access_group:
