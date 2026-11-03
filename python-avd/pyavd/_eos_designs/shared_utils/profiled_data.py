@@ -75,12 +75,30 @@ class ProfiledDataMixin(Protocol):
         if not self.node_config.aaa_settings_profile:
             return self.inputs.aaa_settings
 
-        return resolve_profile(
+        resolved_aaa_settings = resolve_profile(
             self.inputs.aaa_settings,
             self.inputs.aaa_settings_profiles,
             self.node_config.aaa_settings_profile,
             target_name="aaa_settings",
         )
+        # Password fields are alternatives. Validate the resolved settings so profiles cannot leave
+        # both the inherited and replacement credential set, which would make the renderer use the hash.
+        enable_password = resolved_aaa_settings._get("enable_password")
+        if enable_password is not None:
+            self._validate_password_or_cleartext_password(
+                enable_password,
+                context="aaa_settings.enable_password",
+            )
+
+        resolved_local_users = resolved_aaa_settings._get("local_users")
+        if resolved_local_users is not None:
+            for local_user in resolved_local_users:
+                self._validate_password_or_cleartext_password(
+                    local_user,
+                    context=f"aaa_settings.local_users[name={local_user.name}]",
+                )
+
+        return resolved_aaa_settings
 
     @cached_property
     def cv_settings(self: SharedUtilsProtocol) -> EosDesigns.CvSettings:
@@ -136,3 +154,15 @@ class ProfiledDataMixin(Protocol):
                     msg = f"Duplicate on-prem CVP server name '{server_name}'. Server names must be unique across clusters."
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 server_names.add(server_name)
+
+    def _validate_password_or_cleartext_password(
+        self: SharedUtilsProtocol,
+        credentials: EosDesigns.AaaSettings.EnablePassword | EosDesigns.AaaSettings.LocalUsersItem,
+        context: str,
+    ) -> None:
+        """Raise when both password forms are set for the same resolved AAA setting."""
+        hashed_password = credentials._get("password") or credentials._get("sha512_password")
+        if hashed_password and credentials.cleartext_password:
+            hashed_field = "sha512_password" if credentials._get("sha512_password") else "password"
+            msg = f"Either '{context}.{hashed_field}' or '{context}.cleartext_password' should be provided, not both."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)

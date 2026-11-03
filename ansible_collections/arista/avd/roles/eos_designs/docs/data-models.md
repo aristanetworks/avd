@@ -1053,10 +1053,9 @@ aaa_settings_profiles:
       exec:
         default: local
 
-node_types:
-  - type: l3leaf
-    defaults:
-      aaa_settings_profile: restricted_aaa
+l3leaf:
+  defaults:
+    aaa_settings_profile: restricted_aaa
 ```
 
 The AAA-related structured configuration generated for an `l3leaf` using `restricted_aaa` is:
