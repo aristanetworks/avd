@@ -8,7 +8,7 @@ from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from os import environ
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 from requests import Request, Session
@@ -116,6 +116,33 @@ def test_cv_client_explicit_proxy_overrides_proxy_environment_variables(env_var:
         "https": "http://user-proxy.local:8080",
     }
     assert set(_get_proxy_managers("https://www.arista.io", proxies, cv_client._tls.requests_verify)) == {"http://user-proxy.local:8080"}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("proxy_port", "expected_port"),
+    [
+        pytest.param(None, 8080, id="NONE_PORT"),
+        pytest.param(8080, 8080, id="EXPLICIT_DEFAULT_PORT"),
+        pytest.param(3128, 3128, id="EXPLICIT_NONDEFAULT_PORT"),
+    ],
+)
+async def test_cv_client_normalizes_proxy_port(proxy_port: int | None, expected_port: int) -> None:
+    """An explicit None port from deploy_to_cv must use the default."""
+    response = Mock()
+    response.json.return_value = {"version": "CVaaS"}
+
+    with patch("pyavd._cv.client.get", return_value=response) as mocked_get:
+        async with CVClient(
+            servers="www.arista.io",
+            token="secret_access_token",  # noqa: S106
+            proxy_host="user-proxy.local",
+            proxy_port=proxy_port,
+        ):
+            pass
+
+    expected_proxy_url = f"http://user-proxy.local:{expected_port}"
+    assert mocked_get.call_args.kwargs["proxies"] == {"http": expected_proxy_url, "https": expected_proxy_url}
 
 
 @pytest.mark.parametrize(("env_var", "value"), PROXY_ENV_SETTINGS)
