@@ -163,7 +163,7 @@ After an upgrade, some python requirements may have changed. Make sure to also u
 
 ### Python requirements installation
 
-Python requirements can be installed with `pip install "pyavd[ansible]"`.
+Python requirements can be installed with `pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"`.
 The installed version of PyAVD **must** match the version of the `arista.avd` collection.
 
 See the [collection installation](#install-collection-from-ansible-galaxy) section for details of each installation method.
