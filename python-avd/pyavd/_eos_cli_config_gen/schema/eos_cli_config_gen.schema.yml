@@ -25577,8 +25577,10 @@ keys:
               type: bool
             bfd:
               type: bool
-              description: Enable BFD for OSPFv3 on the interface for both address
-                families. Address-family BFD settings take precedence.
+              description: 'Enable BFD for OSPFv3 on the interface for both address
+                families. If either address family defines a BFD setting,
+
+                the shared BFD setting is ignored.'
         ospf_cost:
           type: int
         ospf_authentication:

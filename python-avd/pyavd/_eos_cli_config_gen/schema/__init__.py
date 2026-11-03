@@ -76754,8 +76754,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             network_point_to_point: bool | None
             bfd: bool | None
             """
-            Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take
-            precedence.
+            Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a
+            BFD setting,
+            the shared BFD setting is ignored.
             """
 
             if TYPE_CHECKING:
@@ -76783,8 +76784,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
                         bfd:
-                           Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take
-                           precedence.
+                           Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a
+                           BFD setting,
+                           the shared BFD setting is ignored.
 
                     """
 

@@ -177,7 +177,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interface</samp>](## "vlan_interfaces.[].ospfv3.no_passive_interface") | Boolean |  |  |  | Disable passive interface mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.bfd") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.bfd") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,<br>the shared BFD setting is ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication_key</samp>](## "vlan_interfaces.[].ospf_authentication_key") | String |  |  |  | Encrypted password. |
@@ -720,7 +720,8 @@
           no_passive_interface: <bool>
           network_point_to_point: <bool>
 
-          # Enable BFD for OSPFv3 on the interface for both address families. Address-family BFD settings take precedence.
+          # Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
+          # the shared BFD setting is ignored.
           bfd: <bool>
         ospf_cost: <int>
         ospf_authentication: <str; "none" | "simple" | "message-digest">
