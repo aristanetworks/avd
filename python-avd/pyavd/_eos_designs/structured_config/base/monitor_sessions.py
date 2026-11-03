@@ -206,9 +206,9 @@ class MonitorSessionsMixin(Protocol):
 
                         interface_name = l3_interface.interfaces[node_index]
                         ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
-                        interface_ip = IPv4Address(get_ip_from_ip_prefix(ip_address)) if ip_address else None
+                        interface_ip = IPv4Address(get_ip_from_ip_prefix(ip_address)) if ip_address and "/" in ip_address else None
                         ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
-                        interface_ipv6 = IPv6Address(get_ip_from_ip_prefix(ipv6_address)) if ipv6_address else None
+                        interface_ipv6 = IPv6Address(get_ip_from_ip_prefix(ipv6_address)) if ipv6_address and "/" in ipv6_address else None
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
                         # TODO: DO not raise the error for digital twin
                         if "." in interface_name and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
