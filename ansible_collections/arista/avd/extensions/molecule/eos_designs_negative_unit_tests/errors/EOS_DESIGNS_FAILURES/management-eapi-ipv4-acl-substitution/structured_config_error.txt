@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Field substitution of the value 'interface_ip' defined under 'ipv4_acls[name=FILTER].entries[0].source' is not supported for eAPI reference 'management_eapi.vrfs[name=MGMT].ipv4_acl'.

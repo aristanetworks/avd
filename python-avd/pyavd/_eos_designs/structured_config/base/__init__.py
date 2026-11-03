@@ -446,7 +446,8 @@ class AvdStructuredConfigBaseProtocol(
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required
         if self._act_ensure_eapi_access:
             self.structured_config.management_api_http.enable_https = True
-            # Create item for default VRF if not present. If present, remove IPv4 ACL.
+            # Create item for default VRF if not present. If present, remove the IPv4 ACL reference.
+            # Keep ACL definitions for ipv4_standard_acl and for ipv4_acl when management_eapi_acls_from_catalog is enabled.
             self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
 
     def _set_management_eapi_vrfs(self, vrfs: EosDesigns.ManagementEapi.Vrfs) -> None:
@@ -461,8 +462,12 @@ class AvdStructuredConfigBaseProtocol(
 
             if vrf.ipv4_standard_acl is not None:
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
-            elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.raise_for_missing_management_eapi_acls:
-                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name)
+            elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.management_eapi_acls_from_catalog:
+                self._validate_management_eapi_acl_substitution(vrf.ipv4_acl, context)
+                try:
+                    acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name)
+                except AristaAvdMissingVariableError as error:
+                    raise AristaAvdMissingVariableError(error.variable, host=self.shared_utils.hostname) from error
                 self.structured_config_utils._set_ipv4_acl(acl)
 
             self.structured_config.management_api_http.enable_vrfs.append_new(
@@ -470,6 +475,22 @@ class AvdStructuredConfigBaseProtocol(
                 access_group=default(vrf.ipv4_standard_acl, vrf.ipv4_acl),
                 ipv6_access_group=vrf.ipv6_acl,
             )
+
+    def _validate_management_eapi_acl_substitution(self, acl_name: str, context: str) -> None:
+        """Raise if an IPv4 ACL referenced by an eAPI VRF requires field substitution."""
+        if (ipv4_acl := self.inputs.ipv4_acls.get(acl_name, None)) is None:
+            return
+        for index, entry in enumerate(ipv4_acl.entries):
+            if entry._get("remark"):
+                continue
+            for field in ("source", "destination"):
+                if entry._get(field) in ("interface_ip", "peer_ip"):
+                    msg = (
+                        f"Field substitution of the value '{entry._get(field)}' defined under "
+                        f"'ipv4_acls[name={acl_name}].entries[{index}].{field}' "
+                        f"is not supported for eAPI reference '{context}.ipv4_acl'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

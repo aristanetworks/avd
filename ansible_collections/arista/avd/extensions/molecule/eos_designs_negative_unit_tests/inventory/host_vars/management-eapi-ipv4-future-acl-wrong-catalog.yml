@@ -15,7 +15,7 @@ management_eapi:
       ipv4_acl: FILTER
 
 avd_design_future:
-  raise_for_missing_management_eapi_acls: true
+  management_eapi_acls_from_catalog: true
 
 ipv4_standard_acls:
   - name: FILTER
@@ -25,4 +25,4 @@ ipv4_standard_acls:
         source: 192.0.2.0/24
 
 expected_error_message: >-
-  'ipv4_acls[name=FILTER]' is required but was not found.
+  'ipv4_acls[name=FILTER]' is required but was not found for host 'management-eapi-ipv4-future-acl-wrong-catalog'.

@@ -1,0 +1,31 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-acl-substitution
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: MGMT
+      enabled: true
+      ipv4_acl: FILTER
+
+avd_design_future:
+  management_eapi_acls_from_catalog: true
+
+ipv4_acls:
+  - name: FILTER
+    entries:
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+
+expected_error_message: >-
+  Field substitution of the value 'interface_ip' defined under
+  'ipv4_acls[name=FILTER].entries[0].source'
+  is not supported for eAPI reference 'management_eapi.vrfs[name=MGMT].ipv4_acl'.
