@@ -11,15 +11,13 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "<network_services_keys.name>.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 settings for the VRF.<br>The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.<br>These settings only override the defaults.<br>VRF `default` is not supported yet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 settings for the VRF.<br>The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.<br>If BGP is configured for the VRF, OSPFv3 internal routes are redistributed into BGP unless `bgp.redistribute_ospfv3.enabled` is set to `false`.<br>These settings only override the defaults.<br>VRF `default` is not supported yet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set.<br>- "none" will not configure an OSPFv3 Router ID for this VRF.<br>  EOS then uses the `router general` Router ID or an IPv4 address of an interface in the VRF.<br>  If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance does not start.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_bgp</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.redistribute_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.redistribute_bgp.enabled") | Boolean |  | `True` |  | Redistribute BGP into OSPFv3.<br>Ignored on devices where BGP is not configured for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_connected</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.redistribute_connected") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.redistribute_connected.enabled") | Boolean |  | `False` |  | Redistribute connected routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.<br>OSPFv3 external routes are not redistributed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -42,15 +40,13 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "network_services.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "network_services.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 settings for the VRF.<br>The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.<br>These settings only override the defaults.<br>VRF `default` is not supported yet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "network_services.[].vrfs.[].ospfv3") | Dictionary |  |  |  | Router OSPFv3 settings for the VRF.<br>The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.<br>If BGP is configured for the VRF, OSPFv3 internal routes are redistributed into BGP unless `bgp.redistribute_ospfv3.enabled` is set to `false`.<br>These settings only override the defaults.<br>VRF `default` is not supported yet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "network_services.[].vrfs.[].ospfv3.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set.<br>- "none" will not configure an OSPFv3 Router ID for this VRF.<br>  EOS then uses the `router general` Router ID or an IPv4 address of an interface in the VRF.<br>  If neither exists, for example in an IPv6-only VRF, the OSPFv3 instance does not start.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_bgp</samp>](## "network_services.[].vrfs.[].ospfv3.redistribute_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.redistribute_bgp.enabled") | Boolean |  | `True` |  | Redistribute BGP into OSPFv3.<br>Ignored on devices where BGP is not configured for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_connected</samp>](## "network_services.[].vrfs.[].ospfv3.redistribute_connected") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].ospfv3.redistribute_connected.enabled") | Boolean |  | `False` |  | Redistribute connected routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].ospfv3.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].redistribute_ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].redistribute_ospfv3.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.<br>OSPFv3 external routes are not redistributed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "network_services.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "network_services.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "network_services.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -111,6 +107,7 @@
 
             # Router OSPFv3 settings for the VRF.
             # The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+            # If BGP is configured for the VRF, OSPFv3 internal routes are redistributed into BGP unless `bgp.redistribute_ospfv3.enabled` is set to `false`.
             # These settings only override the defaults.
             # VRF `default` is not supported yet.
             ospfv3:
@@ -135,12 +132,6 @@
 
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
-            redistribute_ospfv3:
-
-              # Redistribute OSPFv3 internal routes into BGP for this VRF.
-              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
-              # OSPFv3 external routes are not redistributed.
-              enabled: <bool; default=True>
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
@@ -229,6 +220,7 @@
 
             # Router OSPFv3 settings for the VRF.
             # The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+            # If BGP is configured for the VRF, OSPFv3 internal routes are redistributed into BGP unless `bgp.redistribute_ospfv3.enabled` is set to `false`.
             # These settings only override the defaults.
             # VRF `default` is not supported yet.
             ospfv3:
@@ -253,12 +245,6 @@
 
               # Custom structured config added under router_ospfv3.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
-            redistribute_ospfv3:
-
-              # Redistribute OSPFv3 internal routes into BGP for this VRF.
-              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
-              # OSPFv3 external routes are not redistributed.
-              enabled: <bool; default=True>
 
             # List of SVIs.
             # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.

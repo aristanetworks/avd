@@ -295,8 +295,8 @@ class RouterBgpMixin(Protocol):
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
                     bgp_vrf.redistribute.ospf.enabled = True
 
-                # VRF level redistribution covers both OSPFv3 address families.
-                if vrf.redistribute_ospfv3.enabled and self.shared_utils.ospfv3_enabled_for_vrf(vrf):
+                # BGP VRF level redistribution covers both OSPFv3 address families.
+                if vrf.bgp.redistribute_ospfv3.enabled and self.shared_utils.ospfv3_enabled_for_vrf(vrf):
                     bgp_vrf.redistribute.ospfv3.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:

@@ -34184,40 +34184,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class RedistributeOspfv3(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
-                enabled: bool
-                """
-                Redistribute OSPFv3 internal routes into BGP for this VRF.
-                Ignored on devices where BGP is not
-                configured for this VRF or where the VRF has no OSPFv3 instance.
-                OSPFv3 external routes are not
-                redistributed.
-
-                Default value: `True`
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
-                        """
-                        RedistributeOspfv3.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            enabled:
-                               Redistribute OSPFv3 internal routes into BGP for this VRF.
-                               Ignored on devices where BGP is not
-                               configured for this VRF or where the VRF has no OSPFv3 instance.
-                               OSPFv3 external routes are not
-                               redistributed.
-
-                        """
-
             class EvpnL3Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -39938,10 +39904,45 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class RedistributeOspfv3(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                    enabled: bool
+                    """
+                    Redistribute OSPFv3 internal routes into BGP for this VRF.
+                    Ignored on devices where BGP is not
+                    configured for this VRF or where the VRF has no OSPFv3 instance.
+                    OSPFv3 external routes are not
+                    redistributed.
+
+                    Default value: `True`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            RedistributeOspfv3.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled:
+                                   Redistribute OSPFv3 internal routes into BGP for this VRF.
+                                   Ignored on devices where BGP is not
+                                   configured for this VRF or where the VRF has no OSPFv3 instance.
+                                   OSPFv3 external routes are not
+                                   redistributed.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str, "default": "main_router_id"},
                     "graceful_restart": {"type": GracefulRestart},
+                    "redistribute_ospfv3": {"type": RedistributeOspfv3},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                 }
@@ -39980,6 +39981,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                redistribute_ospfv3: RedistributeOspfv3
+                """Subclass of AvdModel."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -39993,6 +39996,7 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool | UndefinedType | None = Undefined,
                         router_id: str | UndefinedType = Undefined,
                         graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                        redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
@@ -40030,6 +40034,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            redistribute_ospfv3: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                             structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -41266,7 +41271,6 @@ class EosDesigns(EosDesignsRootModel):
                 "ospf": {"type": Ospf},
                 "ospfv3": {"type": Ospfv3},
                 "redistribute_ospf": {"type": bool, "default": True},
-                "redistribute_ospfv3": {"type": RedistributeOspfv3},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "pim_rp_addresses": {"type": PimRpAddresses},
                 "evpn_l2_multi_domain": {"type": bool},
@@ -41469,9 +41473,12 @@ class EosDesigns(EosDesignsRootModel):
             Router OSPFv3 settings for the VRF.
             The OSPFv3 configuration is created automatically on a device
             when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
-            These settings only
-            override the defaults.
-            VRF `default` is not supported yet.
+            If BGP is configured
+            for the VRF, OSPFv3 internal routes are redistributed into BGP unless
+            `bgp.redistribute_ospfv3.enabled` is set to `false`.
+            These settings only override the defaults.
+            VRF
+            `default` is not supported yet.
 
             Subclass of AvdModel.
             """
@@ -41481,8 +41488,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
-            redistribute_ospfv3: RedistributeOspfv3
-            """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -41650,7 +41655,6 @@ class EosDesigns(EosDesignsRootModel):
                     ospf: Ospf | UndefinedType = Undefined,
                     ospfv3: Ospfv3 | UndefinedType = Undefined,
                     redistribute_ospf: bool | UndefinedType = Undefined,
-                    redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                     evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -41811,13 +41815,15 @@ class EosDesigns(EosDesignsRootModel):
                            Router OSPFv3 settings for the VRF.
                            The OSPFv3 configuration is created automatically on a device
                            when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
-                           These settings only
-                           override the defaults.
-                           VRF `default` is not supported yet.
+                           If BGP is configured
+                           for the VRF, OSPFv3 internal routes are redistributed into BGP unless
+                           `bgp.redistribute_ospfv3.enabled` is set to `false`.
+                           These settings only override the defaults.
+                           VRF
+                           `default` is not supported yet.
 
                            Subclass of AvdModel.
                         redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
-                        redistribute_ospfv3: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -88714,40 +88720,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class RedistributeOspfv3(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
-                        enabled: bool
-                        """
-                        Redistribute OSPFv3 internal routes into BGP for this VRF.
-                        Ignored on devices where BGP is not
-                        configured for this VRF or where the VRF has no OSPFv3 instance.
-                        OSPFv3 external routes are not
-                        redistributed.
-
-                        Default value: `True`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
-                                """
-                                RedistributeOspfv3.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled:
-                                       Redistribute OSPFv3 internal routes into BGP for this VRF.
-                                       Ignored on devices where BGP is not
-                                       configured for this VRF or where the VRF has no OSPFv3 instance.
-                                       OSPFv3 external routes are not
-                                       redistributed.
-
-                                """
-
                     class EvpnL3Multicast(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -94487,10 +94459,45 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RedistributeOspfv3(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+                            enabled: bool
+                            """
+                            Redistribute OSPFv3 internal routes into BGP for this VRF.
+                            Ignored on devices where BGP is not
+                            configured for this VRF or where the VRF has no OSPFv3 instance.
+                            OSPFv3 external routes are not
+                            redistributed.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeOspfv3.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Redistribute OSPFv3 internal routes into BGP for this VRF.
+                                           Ignored on devices where BGP is not
+                                           configured for this VRF or where the VRF has no OSPFv3 instance.
+                                           OSPFv3 external routes are not
+                                           redistributed.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "router_id": {"type": str, "default": "main_router_id"},
                             "graceful_restart": {"type": GracefulRestart},
+                            "redistribute_ospfv3": {"type": RedistributeOspfv3},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                         }
@@ -94529,6 +94536,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        redistribute_ospfv3: RedistributeOspfv3
+                        """Subclass of AvdModel."""
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -94542,6 +94551,7 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool | UndefinedType | None = Undefined,
                                 router_id: str | UndefinedType = Undefined,
                                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                                redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -94579,6 +94589,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdModel.
+                                    redistribute_ospfv3: Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                                     structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
@@ -95828,7 +95839,6 @@ class EosDesigns(EosDesignsRootModel):
                         "ospf": {"type": Ospf},
                         "ospfv3": {"type": Ospfv3},
                         "redistribute_ospf": {"type": bool, "default": True},
-                        "redistribute_ospfv3": {"type": RedistributeOspfv3},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
                         "pim_rp_addresses": {"type": PimRpAddresses},
                         "evpn_l2_multi_domain": {"type": bool},
@@ -96031,9 +96041,12 @@ class EosDesigns(EosDesignsRootModel):
                     Router OSPFv3 settings for the VRF.
                     The OSPFv3 configuration is created automatically on a device
                     when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
-                    These settings only
-                    override the defaults.
-                    VRF `default` is not supported yet.
+                    If BGP is configured
+                    for the VRF, OSPFv3 internal routes are redistributed into BGP unless
+                    `bgp.redistribute_ospfv3.enabled` is set to `false`.
+                    These settings only override the defaults.
+                    VRF
+                    `default` is not supported yet.
 
                     Subclass of AvdModel.
                     """
@@ -96043,8 +96056,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
-                    redistribute_ospfv3: RedistributeOspfv3
-                    """Subclass of AvdModel."""
                     evpn_l3_multicast: EvpnL3Multicast
                     """
                     Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -96212,7 +96223,6 @@ class EosDesigns(EosDesignsRootModel):
                             ospf: Ospf | UndefinedType = Undefined,
                             ospfv3: Ospfv3 | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
-                            redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                             pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | UndefinedType | None = Undefined,
@@ -96373,13 +96383,15 @@ class EosDesigns(EosDesignsRootModel):
                                    Router OSPFv3 settings for the VRF.
                                    The OSPFv3 configuration is created automatically on a device
                                    when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
-                                   These settings only
-                                   override the defaults.
-                                   VRF `default` is not supported yet.
+                                   If BGP is configured
+                                   for the VRF, OSPFv3 internal routes are redistributed into BGP unless
+                                   `bgp.redistribute_ospfv3.enabled` is set to `false`.
+                                   These settings only override the defaults.
+                                   VRF
+                                   `default` is not supported yet.
 
                                    Subclass of AvdModel.
                                 redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
-                                redistribute_ospfv3: Subclass of AvdModel.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.

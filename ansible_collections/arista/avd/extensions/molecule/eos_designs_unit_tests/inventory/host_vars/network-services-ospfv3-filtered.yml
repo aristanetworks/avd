@@ -28,8 +28,9 @@ tenants:
             enabled: true
           redistribute_connected:
             enabled: true
-        redistribute_ospfv3:
-          enabled: true
+        bgp:
+          redistribute_ospfv3:
+            enabled: true
         svis:
           - id: 110
             name: DEPLOYED_NO_OSPFV3
