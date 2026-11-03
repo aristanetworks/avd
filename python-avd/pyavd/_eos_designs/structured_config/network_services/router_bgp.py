@@ -321,7 +321,8 @@ class RouterBgpMixin(Protocol):
                 msg = (
                     f"Invalid combination of inputs. IPv4 is configured with MLAG iBGP peering for the VRF at path '{vrf_paths[0]}', but "
                     "IPv4 routes cannot be exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
-                    "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
+                    "Set 'overlay_mlag_rfc5549: true' and 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to exchange IPv4 routes "
+                    "with an IPv6 next hop, "
                     "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
                 )
             else:
@@ -329,7 +330,8 @@ class RouterBgpMixin(Protocol):
                     f"Invalid combination of inputs. IPv4 is configured with MLAG iBGP peering for the VRFs at paths "
                     f"{', '.join(repr(path) for path in vrf_paths)}, "
                     "but IPv4 routes cannot be exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
-                    "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
+                    "Set 'overlay_mlag_rfc5549: true' and 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to exchange IPv4 routes "
+                    "with an IPv6 next hop, "
                     "or disable the MLAG iBGP peering for these VRFs with 'enable_mlag_ibgp_peering_vrfs: false'."
                 )
             warnings.warn(
