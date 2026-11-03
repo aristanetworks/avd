@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: The 'enabled' setting must be configured when CVaaS settings are provided.
+pyavd._errors.AristaAvdInvalidInputsError: The 'cv_settings.cvaas.enabled' setting must be configured when CVaaS settings are provided.

@@ -84,14 +84,14 @@ class ProfiledDataMixin(Protocol):
         # The global schema requires `cvaas.enabled`; profiles may omit it while being defined.
         cvaas = cv_settings._get("cvaas")
         if cvaas is not None and cvaas._get("enabled") is None:
-            msg = "The 'enabled' setting must be configured when CVaaS settings are provided."
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "The 'cv_settings.cvaas.enabled' setting must be configured when CVaaS settings are provided."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         self._validate_cv_onprem_clusters(cv_settings)
 
         return cv_settings
 
-    def _validate_cv_onprem_clusters(self, cv_settings: EosDesigns.CvSettings) -> None:
+    def _validate_cv_onprem_clusters(self: SharedUtilsProtocol, cv_settings: EosDesigns.CvSettings) -> None:
         """
         Validates if profile resolution does not produce an invalid `EosDesigns.CvSettings` object.
 
@@ -108,14 +108,14 @@ class ProfiledDataMixin(Protocol):
             # The global schema requires at least one server after profile inheritance is resolved.
             if not servers:
                 msg = f"At least 1 server must be provided for on-prem CVP cluster {cluster.name}"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             # The global schema caps each resolved cluster's server list at three.
             if len(servers) > 3:
                 msg = f"Max 3 servers allowed for on-prem CVP cluster {cluster.name}, provided: {sorted(servers)}"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             for server_name in servers:
                 # Mirrors `onprem_clusters.unique_keys: [servers.name]` across cluster entries.
                 if server_name in server_names:
                     msg = f"Duplicate on-prem CVP server name '{server_name}'. Server names must be unique across clusters."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                 server_names.add(server_name)
