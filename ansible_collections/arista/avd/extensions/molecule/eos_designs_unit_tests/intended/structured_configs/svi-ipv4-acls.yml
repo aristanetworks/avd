@@ -216,8 +216,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan612
   description: standard_acl_egress
   shutdown: false
@@ -227,8 +225,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan613
   description: standard_acl_both
   shutdown: false
@@ -239,8 +235,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - prod
 - name: Vlan614
   description: standard_acl_profile
   shutdown: false
@@ -251,8 +245,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan615
   description: standard_acl_parent_profile
   shutdown: false
@@ -263,8 +255,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan616
   description: standard_acl_child_override
   shutdown: false
@@ -275,8 +265,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan617
   description: standard_in_extended_out
   shutdown: false
@@ -287,8 +275,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan618
   description: extended_in_standard_out
   shutdown: false
@@ -299,8 +285,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan619
   description: standard_acl_svi_override
   shutdown: false
@@ -311,8 +295,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan620
   description: standard_acl_profile_node_override
   shutdown: false
@@ -323,8 +305,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 - name: Vlan621
   description: standard_acl_svi_node_override
   shutdown: false
@@ -335,8 +315,6 @@ vlan_interfaces:
   metadata:
     tenants:
     - SVI_ACL_TESTS
-    tags:
-    - dev
 vlan_internal_order:
   allocation: ascending
   range:
