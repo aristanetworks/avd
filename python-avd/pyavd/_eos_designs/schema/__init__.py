@@ -1054,6 +1054,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "configure_snmp_server_vrfs_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
@@ -1067,7 +1068,6 @@ class EosDesigns(EosDesignsRootModel):
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
-            "raise_for_missing_snmp_server_vrf_ipv4_acl": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
         }
@@ -1107,6 +1107,17 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        configure_snmp_server_vrfs_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.5.0.
+        Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
+        not defined under `ipv4_acls`.
+        When enabled, configure the referenced extended ACL on the device.
+        When disabled, only configure the ACL reference without requiring or configuring an ACL definition
+        from the catalog.
 
         Default value: `False`
         """
@@ -1252,17 +1263,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        raise_for_missing_snmp_server_vrf_ipv4_acl: bool
-        """
-        Available from AVD 6.5.0.
-        Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
-        not defined under `ipv4_acls`.
-        When enabled, configure the referenced extended ACL on the device.
-        When disabled, only configure the ACL reference without requiring or configuring an ACL definition
-        from the catalog.
-
-        Default value: `False`
-        """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
         Available from AVD 6.1.0.
@@ -1298,6 +1298,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                configure_snmp_server_vrfs_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
@@ -1311,7 +1312,6 @@ class EosDesigns(EosDesignsRootModel):
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
-                raise_for_missing_snmp_server_vrf_ipv4_acl: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
             ) -> None:
@@ -1341,6 +1341,13 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    configure_snmp_server_vrfs_ipv4_acl_from_catalog:
+                       Available from AVD 6.5.0.
+                       Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
+                       not defined under `ipv4_acls`.
+                       When enabled, configure the referenced extended ACL on the device.
+                       When disabled, only configure the ACL reference without requiring or configuring an ACL definition
+                       from the catalog.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -1431,13 +1438,6 @@ class EosDesigns(EosDesignsRootModel):
                        Raise an error if a node has both 'underlay_router: true' and
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
-                    raise_for_missing_snmp_server_vrf_ipv4_acl:
-                       Available from AVD 6.5.0.
-                       Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
-                       not defined under `ipv4_acls`.
-                       When enabled, configure the referenced extended ACL on the device.
-                       When disabled, only configure the ACL reference without requiring or configuring an ACL definition
-                       from the catalog.
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when

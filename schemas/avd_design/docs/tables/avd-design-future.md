@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;allow_recursive_profile_inheritance</samp>](## "avd_design_future.allow_recursive_profile_inheritance") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
+    | [<samp>&nbsp;&nbsp;configure_snmp_server_vrfs_ipv4_acl_from_catalog</samp>](## "avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended ACL on the device.<br>When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
@@ -26,7 +27,6 @@
     | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_used</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.<br>The route map is skipped when both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,<br>since 'redistribute connected route-map' is not required in that case. |
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
-    | [<samp>&nbsp;&nbsp;raise_for_missing_snmp_server_vrf_ipv4_acl</samp>](## "avd_design_future.raise_for_missing_snmp_server_vrf_ipv4_acl") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended ACL on the device.<br>When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
 
@@ -55,6 +55,12 @@
       # Available from AVD 6.2.0.
       # Configure `inband_mgmt_vrf` for IPv6 inband management.
       configure_inband_mgmt_ipv6_vrf: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
+      # When enabled, configure the referenced extended ACL on the device.
+      # When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
+      configure_snmp_server_vrfs_ipv4_acl_from_catalog: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
@@ -127,12 +133,6 @@
       # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
       # since this combination is not supported.
       raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
-
-      # Available from AVD 6.5.0.
-      # Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
-      # When enabled, configure the referenced extended ACL on the device.
-      # When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
-      raise_for_missing_snmp_server_vrf_ipv4_acl: <bool; default=False>
 
       # Available from AVD 6.1.0.
       # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.

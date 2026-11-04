@@ -41,6 +41,14 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      configure_snmp_server_vrfs_ipv4_acl_from_catalog:
+        type: bool
+        description: |-
+          Available from AVD 6.5.0.
+          Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
+          When enabled, configure the referenced extended ACL on the device.
+          When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
+        default: false
       consistent_uplink_vlans:
         type: bool
         description: |-
@@ -138,14 +146,6 @@ keys:
           Available from AVD 6.2.0.
           Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
           since this combination is not supported.
-        default: false
-      raise_for_missing_snmp_server_vrf_ipv4_acl:
-        type: bool
-        description: |-
-          Available from AVD 6.5.0.
-          Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is not defined under `ipv4_acls`.
-          When enabled, configure the referenced extended ACL on the device.
-          When disabled, only configure the ACL reference without requiring or configuring an ACL definition from the catalog.
         default: false
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
