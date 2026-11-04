@@ -84,23 +84,6 @@ ANTA_VARS = [
     "anta_tags",
 ]
 
-
-@dataclass(frozen=True, slots=True)
-class RunOverviewData:
-    """Timing metadata used to build the Markdown report Run Overview section."""
-
-    test_execution_start_time: datetime
-    test_execution_end_time: datetime
-
-    def to_dict(self) -> dict[str, Any]:
-        """Build ANTA markdown Run Overview data for test execution timing."""
-        return {
-            "test_execution_start_time": self.test_execution_start_time,
-            "test_execution_end_time": self.test_execution_end_time,
-            "total_duration": self.test_execution_end_time - self.test_execution_start_time,
-        }
-
-
 ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
     "avd_catalogs": {
@@ -184,6 +167,22 @@ FABRIC_DATA: AVDFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class RunOverviewData:
+    """Timing metadata used to build the Markdown report Run Overview section."""
+
+    test_execution_start_time: datetime
+    test_execution_end_time: datetime
+
+    def to_dict(self) -> dict[str, Any]:
+        """Build ANTA markdown Run Overview data for test execution timing."""
+        return {
+            "test_execution_start_time": self.test_execution_start_time,
+            "test_execution_end_time": self.test_execution_end_time,
+            "total_duration": self.test_execution_end_time - self.test_execution_start_time,
+        }
 
 
 class ActionModule(AVDActionPlugin):

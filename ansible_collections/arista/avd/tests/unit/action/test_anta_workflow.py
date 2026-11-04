@@ -297,7 +297,7 @@ def test_build_reports_logs_warning_when_all_results_hidden_by_filters(caplog: p
             "Generating Markdown report at /out/report.md",
             True,
             True,
-            id="markdown",
+            id="markdown-run-overview",
         ),
         pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", False, False, id="json"),
     ],
