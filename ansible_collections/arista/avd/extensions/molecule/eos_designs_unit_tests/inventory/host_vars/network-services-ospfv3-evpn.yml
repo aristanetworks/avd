@@ -226,7 +226,6 @@ tenants:
         vrf_id: 14
         ospf:
           enabled: true
-        redistribute_ospf: false
         svis:
           - id: 214
             name: VRF_DUAL_STACK_1_TRANSIT

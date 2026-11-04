@@ -268,24 +268,35 @@ router_bgp:
       activate: true
   vrfs:
   - name: IGMP_QUERIER_TEST_3
-    rd: 192.168.255.101:41
+    rd: 192.168.255.101:14
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '41:41'
+        - '14:14'
       export:
       - address_family: evpn
         route_targets:
-        - '41:41'
+        - '14:14'
     router_id: 192.168.255.101
     redistribute:
       connected:
+        enabled: true
+      ospf:
         enabled: true
 router_multicast:
   ipv4:
     routing: true
     software_forwarding: sfe
+router_ospf:
+  process_ids:
+  - id: 14
+    vrf: IGMP_QUERIER_TEST_3
+    passive_interface_default: true
+    router_id: 192.168.255.101
+    redistribute:
+      bgp:
+        enabled: true
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
