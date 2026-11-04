@@ -360,7 +360,7 @@ class CVClient(CVClientProtocol):
         if proxy_host is not None:
             self._proxy_manager = HTTPProxyManager(
                 proxy_host=proxy_host,
-                proxy_port=proxy_port if proxy_port is not None else 8080,
+                proxy_port=proxy_port,
                 proxy_username=proxy_username,
                 proxy_password=proxy_password,
                 target_host=self._servers[0],
