@@ -1,0 +1,108 @@
+---
+# Testing 'vlan_tags' on port_profiles, connected endpoints adapters and network_ports.
+# Expected allowed VLANs are noted in the descriptions.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-vlan-tags
+      mgmt_ip: 192.168.0.2/24
+      filter:
+        # VLANs only tagged 'NOT_ON_SWITCH' are not configured on this switch, so they must never be allowed on a port.
+        tags: [ESX, ESX2, BACKUP, NATIVE]
+
+port_profiles:
+  - profile: ESX_HOSTS
+    mode: trunk
+    vlan_tags: [ESX]
+  - profile: ESX_HOSTS_WITH_MGMT
+    parent_profile: ESX_HOSTS
+    vlans: "10"
+
+servers:
+  - name: esx_profile
+    adapters:
+      - switches: [connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet1]
+        profile: ESX_HOSTS
+        description: vlan_tags=[ESX] from profile -> 110,600-601
+  - name: esx_profile_with_vlans
+    adapters:
+      - switches: [connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet2]
+        profile: ESX_HOSTS_WITH_MGMT
+        description: vlans=10 from profile + vlan_tags=[ESX] from parent profile -> 10,110,600-601
+  - name: esx_adapter_override
+    adapters:
+      - switches: [connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet3]
+        profile: ESX_HOSTS
+        vlan_tags: [ESX2, BACKUP]
+        description: vlan_tags=[ESX2,BACKUP] overriding profile -> 120,602,700
+  - name: esx_port_channel
+    adapters:
+      - switches: [connected-endpoints-vlan-tags, connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet4, Ethernet5]
+        mode: trunk
+        vlans: 10-11
+        vlan_tags: [ESX2]
+        native_vlan: 4092
+        port_channel:
+          mode: active
+          description: vlans=10-11 + vlan_tags=[ESX2] -> 10-11,120,602
+  - name: no_matching_vlans
+    adapters:
+      - switches: [connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet6]
+        mode: trunk
+        vlan_tags: [UNKNOWN_TAG]
+        description: vlan_tags matching no VLAN -> none
+  - name: tag_partially_filtered
+    adapters:
+      - switches: [connected-endpoints-vlan-tags]
+        switch_ports: [Ethernet7]
+        mode: trunk
+        vlan_tags: [NOT_ON_SWITCH]
+        description: vlan_tags=[NOT_ON_SWITCH] -> 601 (130 and 610 are not configured on this switch)
+
+network_ports:
+  - switches: [connected-endpoints-vlan-tags]
+    switch_ports: [Ethernet10-11]
+    mode: trunk
+    vlan_tags: [ESX, ESX2]
+    description: network_ports vlan_tags=[ESX,ESX2] -> 110,120,600-602
+
+tenants:
+  - name: TENANT_A
+    vrfs:
+      - name: VRF_A
+        svis:
+          - id: 110
+            name: SVI_ESX
+            tags: [ESX]
+          - id: 120
+            name: SVI_ESX2
+            tags: [ESX2]
+          - id: 130
+            name: SVI_NOT_ON_SWITCH
+            tags: [NOT_ON_SWITCH]
+    l2vlans:
+      - id: 600
+        name: L2VLAN_ESX_A
+        tags: [ESX]
+      - id: 601
+        name: L2VLAN_ESX_B
+        tags: [ESX, NOT_ON_SWITCH]
+      - id: 602
+        name: L2VLAN_ESX2
+        tags: [ESX2]
+      - id: 610
+        name: L2VLAN_NOT_ON_SWITCH
+        tags: [NOT_ON_SWITCH]
+  - name: TENANT_B
+    l2vlans:
+      - id: 700
+        name: L2VLAN_BACKUP
+        tags: [BACKUP]
+      - id: 4092
+        name: L2VLAN_NATIVE
+        tags: [NATIVE]

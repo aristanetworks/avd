@@ -12,6 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvd
 from pyavd._utils.get import get_v2
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.undefined import Undefined, UndefinedType
+from pyavd.j2filters import list_compress, range_expand
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -303,6 +304,9 @@ class UtilsMixin(Protocol):
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> str | UndefinedType:
         """Return a list of allowed VLANs for a Trunk port for one adapter."""
+        if adapter.vlan_tags:
+            return self._get_adapter_vlans_from_vlan_tags(adapter)
+
         if adapter.mode == "trunk":
             if adapter.vlans == "defined_vlans":
                 return self.facts.vlans or "none"
@@ -314,3 +318,36 @@ class UtilsMixin(Protocol):
                 return adapter.vlans
 
         return Undefined
+
+    def _validate_adapter_vlan_tags(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> None:
+        """Raise AristaAvdInvalidInputsError if "vlan_tags" is set together with an unsupported "mode" or "vlans" value."""
+        if not adapter.vlan_tags:
+            return
+
+        if adapter.mode != "trunk":
+            msg = f"'vlan_tags' requires 'mode: trunk'. Found 'mode: {adapter.mode}' under '{adapter._internal_data.context}'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if adapter.vlans in ["all", "defined_vlans", "none"]:
+            msg = f"'vlan_tags' cannot be combined with 'vlans: {adapter.vlans}'. Found under '{adapter._internal_data.context}'."
+            raise AristaAvdInvalidInputsError(msg)
+
+    def _get_adapter_vlans_from_vlan_tags(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> str:
+        """
+        Return the allowed VLANs for a trunk port using "vlan_tags".
+
+        The result is the union of the VLANs set in "vlans" (if any) and the VLANs configured on this device
+        carrying at least one of the tags in "vlan_tags".
+        Returns "none" if no VLANs are found, to avoid implicitly allowing all VLANs.
+        Inputs are validated by "_validate_adapter_vlan_tags" before this is called.
+        """
+        vlans = {int(vlan) for vlan in range_expand(adapter.vlans)} if adapter.vlans else set()
+        vlans.update(self.shared_utils.get_vlans_from_vlan_tags(adapter.vlan_tags).intersection(self.shared_utils.accepted_vlans))
+
+        return list_compress(list(vlans)) if vlans else "none"

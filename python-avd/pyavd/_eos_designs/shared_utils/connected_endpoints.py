@@ -3,13 +3,17 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import defaultdict
 from functools import cached_property
+from itertools import chain
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from . import SharedUtilsProtocol
 
 
@@ -83,3 +87,49 @@ class ConnectedEndpointsMixin(Protocol):
             filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
+
+    @cached_property
+    def _network_services_vlans_by_tag(self: SharedUtilsProtocol) -> dict[str, frozenset[int]]:
+        """
+        Return a map from tag to the set of network services VLAN IDs carrying that tag.
+
+        Covers both l2vlans and SVIs from tenants accepted by "filter.tenants" with tags accepted by "filter.tags".
+        Deliberately not filtered on "filter.only_vlans_in_use", since this is used to decide which VLANs are in use.
+
+        Used to resolve "vlan_tags" on connected endpoints adapters, network_ports and port_profiles.
+        """
+        if not self.any_network_services:
+            return {}
+
+        tenant_filter = set(self.node_config.filter.tenants)
+        filter_tags = set(self.filter_tags)
+        accepted_tenants = chain(
+            (
+                tenant
+                for network_services_key in self.inputs._dynamic_keys.network_services
+                for tenant in network_services_key.value
+                if tenant_filter.intersection((tenant.name, "all"))
+            ),
+            (tenant for tenant in self.inputs.network_services if tenant_filter.intersection((tenant.name, "all"))),
+        )
+
+        vlans_by_tag: defaultdict[str, set[int]] = defaultdict(set)
+        for tenant in accepted_tenants:
+            for vlan in chain((svi for vrf in tenant.vrfs for svi in vrf.svis), tenant.l2vlans):
+                if "all" not in filter_tags and not filter_tags.intersection(vlan.tags):
+                    continue
+                for tag in vlan.tags:
+                    vlans_by_tag[tag].add(vlan.id)
+
+        return {tag: frozenset(vlans) for tag, vlans in vlans_by_tag.items()}
+
+    def get_vlans_from_vlan_tags(self: SharedUtilsProtocol, vlan_tags: Iterable[str]) -> set[int]:
+        """
+        Return the set of network services VLAN IDs carrying at least one of the given tags.
+
+        The VLANs are filtered on "filter.tenants" and "filter.tags" but not on "filter.only_vlans_in_use"
+        or on VLAN availability on uplink switches.
+        Callers in structured config should intersect with "accepted_vlans" to get the VLANs actually configured on the device.
+        """
+        vlans_by_tag = self._network_services_vlans_by_tag
+        return set(chain.from_iterable(vlans_by_tag.get(tag, ()) for tag in vlan_tags))
