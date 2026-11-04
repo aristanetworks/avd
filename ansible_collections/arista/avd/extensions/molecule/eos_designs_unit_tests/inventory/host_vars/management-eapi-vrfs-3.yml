@@ -28,7 +28,7 @@ management_eapi:
       ipv4_standard_acl: ACL_NOT_IN_CATALOG
 
 avd_design_future:
-  management_eapi_acls_from_catalog: true
+  configure_management_eapi_ipv4_acl_from_catalog: true
 
 ipv4_acls:
   - name: ACL_EAPI_IPv4_4

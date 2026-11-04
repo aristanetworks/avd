@@ -15,7 +15,7 @@ management_eapi:
       ipv4_acl: FILTER
 
 avd_design_future:
-  management_eapi_acls_from_catalog: true
+  configure_management_eapi_ipv4_acl_from_catalog: true
 
 ipv4_acls:
   - name: FILTER

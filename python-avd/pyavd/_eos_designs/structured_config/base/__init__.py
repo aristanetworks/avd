@@ -447,7 +447,7 @@ class AvdStructuredConfigBaseProtocol(
         if self._act_ensure_eapi_access:
             self.structured_config.management_api_http.enable_https = True
             # Create item for default VRF if not present. If present, remove the IPv4 ACL reference.
-            # Keep ACL definitions for ipv4_standard_acl and for ipv4_acl when management_eapi_acls_from_catalog is enabled.
+            # Keep ACL definitions for ipv4_standard_acl and for ipv4_acl when configure_management_eapi_ipv4_acl_from_catalog is enabled.
             self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
 
     def _set_management_eapi_vrfs(self, vrfs: EosDesigns.ManagementEapi.Vrfs) -> None:
@@ -462,7 +462,7 @@ class AvdStructuredConfigBaseProtocol(
 
             if vrf.ipv4_standard_acl is not None:
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
-            elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.management_eapi_acls_from_catalog:
+            elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.configure_management_eapi_ipv4_acl_from_catalog:
                 self._validate_management_eapi_acl_substitution(vrf.ipv4_acl, context)
                 try:
                     acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name)
