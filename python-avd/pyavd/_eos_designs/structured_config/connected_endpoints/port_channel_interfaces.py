@@ -195,6 +195,7 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
+        self._validate_adapter_vlan_tags(adapter)
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
         else:
@@ -211,7 +212,6 @@ class PortChannelInterfacesMixin(Protocol):
                 mode=adapter.mode,
                 phone=self._get_adapter_phone(adapter, connected_endpoint, output_type=EosCliConfigGen.PortChannelInterfacesItem.Switchport.Phone),
             )
-            self._validate_adapter_vlan_tags(adapter)
             if adapter.mode in ["access", "dot1q-tunnel"] and adapter.vlans is not None:
                 try:
                     # For access ports we use the 'vlans' field (str) as 'access_vlan' (int). Attempting to convert.

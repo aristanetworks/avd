@@ -94,6 +94,7 @@ class ConnectedEndpointsMixin(Protocol):
         Return a map from tag to the set of network services VLAN IDs carrying that tag.
 
         Covers both l2vlans and SVIs from tenants accepted by "filter.tenants" with tags accepted by "filter.tags".
+        SVIs are only included from VRFs accepted by "filter.allow_vrfs" and "filter.deny_vrfs".
         Deliberately not filtered on "filter.only_vlans_in_use", since this is used to decide which VLANs are in use.
 
         Used to resolve "vlan_tags" on connected endpoints adapters, network_ports and port_profiles.
@@ -115,7 +116,7 @@ class ConnectedEndpointsMixin(Protocol):
 
         vlans_by_tag: defaultdict[str, set[int]] = defaultdict(set)
         for tenant in accepted_tenants:
-            for vlan in chain((svi for vrf in tenant.vrfs for svi in vrf.svis), tenant.l2vlans):
+            for vlan in chain((svi for vrf in tenant.vrfs if self.is_accepted_vrf(vrf) for svi in vrf.svis), tenant.l2vlans):
                 if "all" not in filter_tags and not filter_tags.intersection(vlan.tags):
                     continue
                 for tag in vlan.tags:

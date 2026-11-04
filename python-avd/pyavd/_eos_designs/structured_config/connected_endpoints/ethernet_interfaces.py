@@ -125,6 +125,7 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
+        self._validate_adapter_vlan_tags(adapter)
         if adapter.subinterfaces:
             # TODO: Consider checking for switchport related inputs and error if we have conflicts instead of silently ignoring.
             ethernet_interface.switchport.enabled = False
@@ -145,7 +146,6 @@ class EthernetInterfacesMixin(Protocol):
             mode=adapter.mode,
             phone=self._get_adapter_phone(adapter, connected_endpoint, output_type=EosCliConfigGen.EthernetInterfacesItem.Switchport.Phone),
         )
-        self._validate_adapter_vlan_tags(adapter)
         if adapter.mode in ["access", "dot1q-tunnel"] and adapter.vlans is not None:
             try:
                 # For access ports we use the 'vlans' field (str) as 'access_vlan' (int). Attempting to convert.
