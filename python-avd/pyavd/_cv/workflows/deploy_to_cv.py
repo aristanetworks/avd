@@ -270,7 +270,7 @@ async def deploy_to_cv(
             verify_certs=cloudvision.verify_certs,
             use_system_certs=cloudvision.deploy_future.use_system_certs,
             proxy_host=cloudvision.proxy_host,
-            proxy_port=cloudvision.proxy_port,
+            proxy_port=cloudvision.proxy_port if cloudvision.proxy_port is not None else 8080,
             proxy_username=cloudvision.proxy_username,
             proxy_password=cloudvision.proxy_password,
             grpc_channel_configuration=cloudvision.grpc_channel_configuration,

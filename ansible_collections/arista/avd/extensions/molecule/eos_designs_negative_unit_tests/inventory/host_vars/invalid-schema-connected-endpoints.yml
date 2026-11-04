@@ -11,6 +11,3 @@ servers:
       - endpoint_ports: [Eth1]
         swtch_ports: [Ethernet1]
         switches: [invalid-schema-connected-endpoints]
-
-expected_error_message: >-
-  2 errors found during schema validation of input variables.

@@ -1130,7 +1130,61 @@ schemas/avd_design/docs/tables/management-interface-settings.md
 ### Time configuration
 
 --8<--
-schemas/avd_design/docs/tables/time-configuration.md
+schemas/avd_design/docs/tables/ntp-settings.md
+--8<--
+
+NTP settings profiles can be selected from node type defaults, node groups, or nodes using `ntp_settings_profile`.
+
+In this example, `leaf1` uses `leaf1_ntp_profile`, which inherits the NTP server and VRF from `common_ntp_profile`. Both profiles inherit the global `authenticate` and `set_first_ntp_server_as_preferred` settings from `ntp_settings`.
+
+```yaml
+fabric_name: FABRIC
+type: l2leaf
+
+ntp_settings:
+  authenticate: true
+  set_first_ntp_server_as_preferred: false
+
+ntp_settings_profiles:
+  - profile: common_ntp_profile
+    server_vrf: default
+    trusted_keys: "1"
+    servers:
+      - name: 192.0.2.123
+        iburst: true
+
+  - profile: leaf1_ntp_profile
+    parent_profile: common_ntp_profile
+    authenticate_servers_only: true
+    servers:
+      - name: 192.0.2.124
+        burst: true
+
+l2leaf:
+  defaults:
+    ntp_settings_profile: common_ntp_profile
+  nodes:
+    - name: leaf1
+      ntp_settings_profile: leaf1_ntp_profile
+```
+
+The NTP-related structured configuration generated for `leaf1` is:
+
+```yaml
+ntp:
+  servers:
+    - name: 192.0.2.124
+      burst: true
+    - name: 192.0.2.123
+      iburst: true
+  vrf: default
+  authenticate: true
+  authenticate_servers_only: true
+  trusted_keys: "1"
+```
+
+--8<--
+schemas/avd_design/docs/tables/ntp-settings-profiles.md
 --8<--
 
 ### sFlow
@@ -1217,6 +1271,63 @@ schemas/avd_design/docs/tables/system-settings.md
 
 --8<--
 schemas/avd_design/docs/tables/cloudvision-settings.md
+--8<--
+
+CloudVision settings profiles can be selected from node type defaults, node groups, or nodes using `cv_settings_profile`. A profile inherits the global `cv_settings` values, and profiles can inherit from a `parent_profile`.
+
+In this example, `leaf1` uses `europe_cv_profile`, which inherits TerminAttr settings from `common_cv_profile` and overrides the CVaaS region. The remaining values come from the global `cv_settings`.
+
+```yaml
+fabric_name: CV_SETTINGS_PROFILE_EXAMPLE
+type: l2leaf
+default_mgmt_method: oob
+
+# CVaaS requires DNS and NTP settings. Omitting them for demonstration purposes
+# ...
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        region: auto
+
+cv_settings_profiles:
+  - profile: common_cv_profile
+    terminattr:
+      disable_aaa: true
+  - profile: europe_cv_profile
+    parent_profile: common_cv_profile
+    cvaas:
+      clusters:
+        - name: cvaas
+          region: eu-3
+
+l2leaf:
+  defaults:
+    cv_settings_profile: europe_cv_profile
+  nodes:
+    - name: leaf1
+      mgmt_ip: 192.0.2.10/24
+```
+
+The CloudVision-related structured configuration generated for `leaf1` is:
+
+```yaml
+daemon_terminattr:
+  cvaddrs:
+    - apiserver.cv-prod-eu-3.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+```
+
+--8<--
+schemas/avd_design/docs/tables/cloudvision-settings-profiles.md
 --8<--
 
 ## CloudVision Tags Settings

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'Loopback100' defined under 'tenants[name=LOOPBACKS].vrfs[name=TESTING].loopbacks' for node 'net-srv-vrf-loopback-missing-ip-and-ipv6' must have at least one of 'ip_address' or 'ipv6_addresses' configured.

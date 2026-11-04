@@ -25,7 +25,3 @@ servers:
             - number: 10000
               description: subinterface number greater than 4094
               vlan_id: 1000
-
-expected_error_message: >-
-  'encapsulation_vlan.client_dot1q' must be set for 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]'
-  since the subinterface number is above 4094.

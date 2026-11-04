@@ -1,0 +1,339 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-vrf-loopbacks-virtual-source-nat
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.11.0.3/32
+- name: Loopback140
+  description: DIAG_VRF_VRF_DIAG_V4_TENANT_LO_V6
+  shutdown: false
+  vrf: VRF_DIAG_V4_TENANT_LO_V6
+  ip_address: 10.141.255.3/32
+- name: Loopback141
+  shutdown: false
+  vrf: VRF_DIAG_V4_TENANT_LO_V6
+  ipv6_addresses:
+  - 2001:db8:141::1/128
+- name: Loopback144
+  description: DIAG_VRF_VRF_DIAG_V4V6_TENANT_LO_V6
+  shutdown: false
+  vrf: VRF_DIAG_V4V6_TENANT_LO_V6
+  ip_address: 10.144.255.3/32
+  ipv6_addresses:
+  - 2001:db8:144::3/128
+- name: Loopback145
+  shutdown: false
+  vrf: VRF_DIAG_V4V6_TENANT_LO_V6
+  ipv6_addresses:
+  - 2001:db8:145::1/128
+- name: Loopback142
+  description: DIAG_VRF_VRF_DIAG_V6_TENANT_LO_V4
+  shutdown: false
+  vrf: VRF_DIAG_V6_TENANT_LO_V4
+  ipv6_addresses:
+  - 2001:db8:142::3/128
+- name: Loopback143
+  shutdown: false
+  vrf: VRF_DIAG_V6_TENANT_LO_V4
+  ip_address: 10.142.0.1/32
+- name: Loopback100
+  description: DIAG_VRF_VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  shutdown: false
+  vrf: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ip_address: 10.100.0.3/32
+- name: Loopback200
+  shutdown: false
+  vrf: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ip_address: 10.200.0.1/32
+- name: Loopback202
+  shutdown: false
+  vrf: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  ip_address: 10.202.0.1/32
+- name: Loopback149
+  shutdown: false
+  vrf: VRF_NO_DIAG_TENANT_LO_V4_V6
+  ip_address: 10.149.0.1/32
+- name: Loopback150
+  shutdown: false
+  vrf: VRF_NO_DIAG_TENANT_LO_V4_V6
+  ipv6_addresses:
+  - 2001:db8:150::1/128
+- name: Loopback146
+  shutdown: false
+  vrf: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+  ipv6_addresses:
+  - 2001:db8:146::1/128
+- name: Loopback147
+  shutdown: false
+  vrf: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+  ip_address: 10.147.0.1/32
+- name: Loopback148
+  shutdown: false
+  vrf: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+  ipv6_addresses:
+  - 2001:db8:148::1/128
+- name: Loopback101
+  description: DIAG_VRF_VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  shutdown: false
+  vrf: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ipv6_addresses:
+  - 2001:db8:101::3/128
+- name: Loopback201
+  shutdown: false
+  vrf: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ip_address: 10.201.0.1/32
+- name: Loopback103
+  description: DIAG_VRF_VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  shutdown: false
+  vrf: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  ipv6_addresses:
+  - 2001:db8:103::3/128
+- name: Loopback203
+  shutdown: false
+  vrf: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  ip_address: 10.203.0.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.11.0.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  router_id: 10.10.0.3
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vrfs:
+  - name: VRF_DIAG_V4_TENANT_LO_V6
+    rd: 10.10.0.3:4241
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4241:4241
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4241:4241
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_DIAG_V4V6_TENANT_LO_V6
+    rd: 10.10.0.3:4244
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4244:4244
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4244:4244
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_DIAG_V6_TENANT_LO_V4
+    rd: 10.10.0.3:4242
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4242:4242
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4242:4242
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+    rd: 10.10.0.3:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+    rd: 10.10.0.3:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_NO_DIAG_TENANT_LO_V4_V6
+    rd: 10.10.0.3:4249
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4249:4249
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4249:4249
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+    rd: 10.10.0.3:4246
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 4246:4246
+      export:
+      - address_family: evpn
+        route_targets:
+        - 4246:4246
+    router_id: 10.10.0.3
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF_DIAG_V4_TENANT_LO_V6
+  ip_address: 10.141.255.3
+  ipv6_address: 2001:db8:141::1
+- name: VRF_DIAG_V4V6_TENANT_LO_V6
+  ip_address: 10.144.255.3
+  ipv6_address: 2001:db8:144::3
+- name: VRF_DIAG_V6_TENANT_LO_V4
+  ipv6_address: 2001:db8:142::3
+- name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ip_address: 10.100.0.3
+- name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  ip_address: 10.202.0.1
+- name: VRF_NO_DIAG_TENANT_LO_V4_V6
+  ip_address: 10.149.0.1
+  ipv6_address: 2001:db8:150::1
+- name: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+  ipv6_address: 2001:db8:146::1
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_DIAG_V4_TENANT_LO_V6
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+- name: VRF_DIAG_V4V6_TENANT_LO_V6
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+- name: VRF_DIAG_V6_TENANT_LO_V4
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+- name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+    - TENANT_2
+- name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+    - TENANT_2
+- name: VRF_NO_DIAG_TENANT_LO_V4_V6
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+- name: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_1
+vxlan_interface:
+  vxlan1:
+    description: network-services-vrf-loopbacks-virtual-source-nat_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+      - name: VRF_DIAG_V4_TENANT_LO_V6
+        vni: 4241
+      - name: VRF_DIAG_V4V6_TENANT_LO_V6
+        vni: 4244
+      - name: VRF_DIAG_V6_TENANT_LO_V4
+        vni: 4242
+      - name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+        vni: 10
+      - name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+        vni: 11
+      - name: VRF_NO_DIAG_TENANT_LO_V4_V6
+        vni: 4249
+      - name: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+        vni: 4246

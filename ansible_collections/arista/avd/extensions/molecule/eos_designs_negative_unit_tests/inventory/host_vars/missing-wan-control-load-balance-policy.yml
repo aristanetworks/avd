@@ -59,5 +59,3 @@ wan_virtual_topologies:
     lowest_hop_count: true
     constraints:
       jitter: 5
-expected_error_message: >-
-  The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy

@@ -74,6 +74,7 @@ class VrfsMixin(Protocol):
             any(svi.ipv6_address or svi.ipv6_address_virtuals or svi.ospfv3.enabled for svi in vrf.svis)
             or any(l3_interface.ipv6_addresses for l3_interface in vrf.l3_interfaces)
             or any(l3_port_channel.ipv6_addresses for l3_port_channel in vrf.l3_port_channels)
+            or any(loopback.ipv6_addresses for loopback in vrf.loopbacks)
         )
 
     def _has_ipv4(

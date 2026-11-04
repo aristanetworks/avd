@@ -7,7 +7,3 @@ devices:
 dns_settings_profiles:
   - profile: child_profile
     parent_profile: missing_parent_profile
-
-expected_error_message: >-
-  Error during plugin 'arista.avd.eos_designs_structured_config' execution: Unresolved profile 'missing_parent_profile'
-  while trying to resolve profiles for 'dns_settings': child_profile -> missing_parent_profile

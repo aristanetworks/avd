@@ -7879,6 +7879,7 @@ interface Tunnel7
 | Vlan90 | SVI Description | default | - | - |
 | Vlan91 | PBR Description | default | - | True |
 | Vlan92 | SVI Description | default | - | - |
+| Vlan93 | QoS Description | default | - | True |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
 | Vlan111 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
 | Vlan112 | Multicast IPv4 static without boundaries | default | - | - |
@@ -7956,6 +7957,7 @@ interface Tunnel7
 | Vlan90 | default | 10.10.83.1/24 | - | - | - | - |
 | Vlan91 | default | - | - | - | - | - |
 | Vlan92 | default | 10.10.92.1/24 | - | - | - | - |
+| Vlan93 | default | - | - | - | - | - |
 | Vlan110 | Tenant_A | 10.0.101.1/24 | - | - | - | - |
 | Vlan111 | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - | - | - |
 | Vlan112 | default | - | - | - | - | - |
@@ -8324,6 +8326,11 @@ interface Vlan92
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+!
+interface Vlan93
+   description QoS Description
+   shutdown
+   service-policy type qos input MyQosPolicy
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping
