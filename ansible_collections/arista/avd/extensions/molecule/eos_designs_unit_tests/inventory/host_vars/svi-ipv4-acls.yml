@@ -10,6 +10,8 @@ l3leaf:
     - name: svi-ipv4-acls
       id: 1
       bgp_as: 65001
+      filter:
+        tags: [dev]
 svi_profiles:
   - profile: standard_acl_parent
     ipv4_standard_acl_in: SVI-STANDARD-IN
@@ -56,47 +58,58 @@ tenants:
             enabled: true
             ip_address_virtual: 10.6.11.1/24
             ipv4_standard_acl_in: SVI-STANDARD-IN
+            tags: [dev]
           - id: 612
             name: standard_acl_egress
             enabled: true
             ip_address_virtual: 10.6.12.1/24
             ipv4_standard_acl_out: SVI-STANDARD-OUT
+            tags: [dev]
           - id: 613
             name: standard_acl_both
             enabled: true
             ip_address_virtual: 10.6.13.1/24
             ipv4_standard_acl_in: SVI-STANDARD-IN
             ipv4_standard_acl_out: SVI-STANDARD-OUT
+            tags: [dev]
+            nodes:
+              - node: svi-ipv4-acls
+                tags: [prod]
           # Inherit both directions directly from a profile.
           - id: 614
             name: standard_acl_profile
             enabled: true
             ip_address_virtual: 10.6.14.1/24
             profile: standard_acl_parent
+            tags: [dev]
           # Inherit both directions through a child profile.
           - id: 615
             name: standard_acl_parent_profile
             enabled: true
             ip_address_virtual: 10.6.15.1/24
             profile: standard_acl_inherited
+            tags: [dev]
           # Child profile overrides both parent ACLs.
           - id: 616
             name: standard_acl_child_override
             enabled: true
             ip_address_virtual: 10.6.16.1/24
             profile: standard_acl_child_override
+            tags: [dev]
           - id: 617
             name: standard_in_extended_out
             enabled: true
             ip_address_virtual: 10.6.17.1/24
             ipv4_standard_acl_in: SVI-STANDARD-IN
             ipv4_acl_out: SVI-EXTENDED
+            tags: [dev]
           - id: 618
             name: extended_in_standard_out
             enabled: true
             ip_address_virtual: 10.6.18.1/24
             ipv4_acl_in: SVI-EXTENDED
             ipv4_standard_acl_out: SVI-STANDARD-OUT
+            tags: [dev]
           # SVI settings override both profile ACLs.
           - id: 619
             name: standard_acl_svi_override
@@ -105,19 +118,32 @@ tenants:
             profile: standard_acl_parent
             ipv4_standard_acl_in: SVI-STANDARD-OUT
             ipv4_standard_acl_out: SVI-STANDARD-IN
+            tags: [dev]
           # Profile node settings override both parent ACLs.
           - id: 620
             name: standard_acl_profile_node_override
             enabled: true
             ip_address_virtual: 10.6.20.1/24
             profile: standard_acl_node_override
+            tags: [dev]
           # SVI node settings override both profile node ACLs.
           - id: 621
             name: standard_acl_svi_node_override
             enabled: true
             ip_address_virtual: 10.6.21.1/24
             profile: standard_acl_node_override
+            tags: [dev]
             nodes:
               - node: svi-ipv4-acls
                 ipv4_standard_acl_in: SVI-STANDARD-IN
                 ipv4_standard_acl_out: SVI-STANDARD-OUT
+          - id: 622
+            name: standard_acl_tags
+            enabled: true
+            ip_address_virtual: 10.6.22.1/24
+            # nodes config is deepmerged, so this SVI will have only ops tag after the merge.
+            tags: [ops]
+            nodes:
+              - node: svi-ipv4-acls
+                # dev tag is ignored hence this SVI is not configured
+                tags: [dev]
