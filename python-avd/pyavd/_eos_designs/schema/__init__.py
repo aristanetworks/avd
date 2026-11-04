@@ -7379,10 +7379,14 @@ class EosDesigns(EosDesignsRootModel):
             """Short name for the cluster. Required here, but only used when configuring multiple clusters."""
             servers: Servers
             """
-            CloudVision servers that makes up one cluster.
+            CloudVision servers that make up one cluster.
+            May be omitted when inherited from a parent
+            CloudVision settings profile or global `cv_settings`.
+            After resolving profile and global settings,
+            each on-prem cluster must have at least one server.
 
-            Subclass of AvdIndexedList with `ServersItem` items.
-            Primary key is `name` (`str`).
+            Subclass of AvdIndexedList with `ServersItem`
+            items. Primary key is `name` (`str`).
             """
             vrf: str
             """
@@ -7440,10 +7444,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Short name for the cluster. Required here, but only used when configuring multiple clusters.
                         servers:
-                           CloudVision servers that makes up one cluster.
+                           CloudVision servers that make up one cluster.
+                           May be omitted when inherited from a parent
+                           CloudVision settings profile or global `cv_settings`.
+                           After resolving profile and global settings,
+                           each on-prem cluster must have at least one server.
 
-                           Subclass of AvdIndexedList with `ServersItem` items.
-                           Primary key is `name` (`str`).
+                           Subclass of AvdIndexedList with `ServersItem`
+                           items. Primary key is `name` (`str`).
                         vrf:
                            The VRF used to connect to CloudVision.
                            The value will be interpreted according to these rules:
@@ -7704,6 +7712,606 @@ class EosDesigns(EosDesignsRootModel):
                        migrating from the old `cv_instances` model.
 
                 """
+
+    class CvSettingsProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Cvaas(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ClustersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Region: TypeAlias = Literal[
+                    "auto",
+                    "us-central1-a",
+                    "us-central1-b",
+                    "us-central1-c",
+                    "us-4",
+                    "apnortheast-1",
+                    "euwest-2",
+                    "eu-3",
+                    "ausoutheast-1",
+                    "na-northeast1-b",
+                    "uk-1",
+                    "india-1",
+                    "staging",
+                    "dev",
+                    "play",
+                ]
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "region": {"type": str, "default": "auto"},
+                    "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                    "token_file": {"type": str, "default": "/tmp/cv-onboarding-token"},
+                    "source_interface": {"type": str},
+                }
+                name: str
+                """Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters."""
+                region: Region
+                """
+                Optionally set the region to stream to.
+                The "auto" region will use 'apiserver.arista.io:443' which
+                will redirect to the correct region based on the device's serial number.
+                "staging", "dev" and "play"
+                are for internal Arista use.
+
+                Default value: `"auto"`
+                """
+                vrf: str
+                """
+                The VRF used to connect to CloudVision.
+                The value will be interpreted according to these rules:
+                -
+                `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+                `mgmt_interface` as the source interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+                are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the VRF set with
+                `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                  An error will
+                be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf`
+                will configure the VRF and source-interface for one of the two options above depending on the value
+                of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+
+                Default value: `"use_default_mgmt_method_vrf"`
+                """
+                token_file: str
+                """
+                Path to the onboarding token used for certificate based authentication.
+                The path is on the EOS
+                device and the token file must be copied to the device first.
+
+                Default value: `"/tmp/cv-onboarding-token"`
+                """
+                source_interface: str | None
+                """
+                Source-interface used to connect to CloudVision.
+                If not set, the source interface may be set
+                automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                `use_default_mgmt_method_vrf`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        region: Region | UndefinedType = Undefined,
+                        vrf: str | UndefinedType = Undefined,
+                        token_file: str | UndefinedType = Undefined,
+                        source_interface: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        ClustersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
+                            region:
+                               Optionally set the region to stream to.
+                               The "auto" region will use 'apiserver.arista.io:443' which
+                               will redirect to the correct region based on the device's serial number.
+                               "staging", "dev" and "play"
+                               are for internal Arista use.
+                            vrf:
+                               The VRF used to connect to CloudVision.
+                               The value will be interpreted according to these rules:
+                               -
+                               `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+                               `mgmt_interface` as the source interface.
+                                 An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+                               are not configured for the device.
+                               - `use_inband_mgmt_vrf` will configure the VRF set with
+                               `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                                 An error will
+                               be raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf`
+                               will configure the VRF and source-interface for one of the two options above depending on the value
+                               of `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
+                            token_file:
+                               Path to the onboarding token used for certificate based authentication.
+                               The path is on the EOS
+                               device and the token file must be copied to the device first.
+                            source_interface:
+                               Source-interface used to connect to CloudVision.
+                               If not set, the source interface may be set
+                               automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                               `use_default_mgmt_method_vrf`.
+
+                        """
+
+            class Clusters(AvdIndexedList[str, ClustersItem]):
+                """Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Clusters._item_type = ClustersItem
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "clusters": {"type": Clusters, "default": lambda cls: coerce_type([{"name": "cvaas"}], target_type=cls)},
+            }
+            enabled: bool | None
+            """
+            Enable streaming to CVaaS.
+            When enabled it will stream to 'apiserver.arista.io:443' using the VRF
+            obtained from `default_mgmt_method` unless overridden under `clusters`.
+            """
+            clusters: Clusters
+            """
+            Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`).
+
+            Default value: `lambda cls: coerce_type([{"name": "cvaas"}], target_type=cls)`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType | None = Undefined, clusters: Clusters | UndefinedType = Undefined) -> None:
+                    """
+                    Cvaas.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable streaming to CVaaS.
+                           When enabled it will stream to 'apiserver.arista.io:443' using the VRF
+                           obtained from `default_mgmt_method` unless overridden under `clusters`.
+                        clusters: Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class OnpremClustersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "port": {"type": int, "default": 9910}}
+                name: str
+                """
+                Server IP address or FQDN.
+                Note: It is currently recommended to use IP address because of
+                limitations with Image transfers from CloudVision.
+                """
+                port: int
+                """Default value: `9910`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, port: int | UndefinedType = Undefined) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name:
+                               Server IP address or FQDN.
+                               Note: It is currently recommended to use IP address because of
+                               limitations with Image transfers from CloudVision.
+                            port: port
+
+                        """
+
+            class Servers(AvdIndexedList[str, ServersItem]):
+                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Servers._item_type = ServersItem
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "servers": {"type": Servers},
+                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                "token_file": {"type": str, "default": "/tmp/token"},
+                "source_interface": {"type": str},
+            }
+            name: str
+            """Short name for the cluster. Required here, but only used when configuring multiple clusters."""
+            servers: Servers
+            """
+            CloudVision servers that make up one cluster.
+            May be omitted when inherited from a parent
+            CloudVision settings profile or global `cv_settings`.
+            After resolving profile and global settings,
+            each on-prem cluster must have at least one server.
+
+            Note: Servers from this profile are merged with
+            servers for the same cluster from the parent profile and global
+            `cv_settings`, so the combined list
+            must not exceed three servers.
+            If a server has the same `name` as an inherited server, values from
+            this profile override the inherited values.
+
+            Subclass of AvdIndexedList with `ServersItem` items.
+            Primary key is `name` (`str`).
+            """
+            vrf: str
+            """
+            The VRF used to connect to CloudVision.
+            The value will be interpreted according to these rules:
+            -
+            `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+            `mgmt_interface` as the source interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+            are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure the VRF set with
+            `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+              An error will
+            be raised if inband management is not configured for the device.
+            - `use_default_mgmt_method_vrf`
+            will configure the VRF and source-interface for one of the two options above depending on the value
+            of `default_mgmt_method`.
+            - Any other string will be used directly as the VRF name.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+            token_file: str
+            """
+            Path to the onboarding token used for certificate based authentication.
+            The path is on the EOS
+            device and the token file must be copied to the device first.
+
+            Default value: `"/tmp/token"`
+            """
+            source_interface: str | None
+            """
+            Source-interface used to connect to CloudVision.
+            If not set, the source interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    servers: Servers | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    token_file: str | UndefinedType = Undefined,
+                    source_interface: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    OnpremClustersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Short name for the cluster. Required here, but only used when configuring multiple clusters.
+                        servers:
+                           CloudVision servers that make up one cluster.
+                           May be omitted when inherited from a parent
+                           CloudVision settings profile or global `cv_settings`.
+                           After resolving profile and global settings,
+                           each on-prem cluster must have at least one server.
+
+                           Note: Servers from this profile are merged with
+                           servers for the same cluster from the parent profile and global
+                           `cv_settings`, so the combined list
+                           must not exceed three servers.
+                           If a server has the same `name` as an inherited server, values from
+                           this profile override the inherited values.
+
+                           Subclass of AvdIndexedList with `ServersItem` items.
+                           Primary key is `name` (`str`).
+                        vrf:
+                           The VRF used to connect to CloudVision.
+                           The value will be interpreted according to these rules:
+                           -
+                           `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+                           `mgmt_interface` as the source interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+                           are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the VRF set with
+                           `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                             An error will
+                           be raised if inband management is not configured for the device.
+                           - `use_default_mgmt_method_vrf`
+                           will configure the VRF and source-interface for one of the two options above depending on the value
+                           of `default_mgmt_method`.
+                           - Any other string will be used directly as the VRF name.
+                        token_file:
+                           Path to the onboarding token used for certificate based authentication.
+                           The path is on the EOS
+                           device and the token file must be copied to the device first.
+                        source_interface:
+                           Source-interface used to connect to CloudVision.
+                           If not set, the source interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+
+                    """
+
+        class OnpremClusters(AvdIndexedList[str, OnpremClustersItem]):
+            """Subclass of AvdIndexedList with `OnpremClustersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        OnpremClusters._item_type = OnpremClustersItem
+
+        class Terminattr(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cvtargetconfigs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Cvtargetconfigs._item_type = str
+
+            class CustomCvOptionsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"flag": {"type": str}, "value": {"type": str}}
+                flag: str
+                """TerminAttr CLI flag name without the leading dash."""
+                value: str | None
+                """
+                Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                If set, the flag is
+                rendered as `-flag=value`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, flag: str | UndefinedType = Undefined, value: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        CustomCvOptionsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            flag: TerminAttr CLI flag name without the leading dash.
+                            value:
+                               Flag value. If omitted, the flag is rendered without a value (e.g. `-someflag`).
+                               If set, the flag is
+                               rendered as `-flag=value`.
+
+                        """
+
+            class CustomCvOptions(AvdList[CustomCvOptionsItem]):
+                """Subclass of AvdList with `CustomCvOptionsItem` items."""
+
+            CustomCvOptions._item_type = CustomCvOptionsItem
+
+            _fields: ClassVar[dict] = {
+                "ingestexclude": {"type": str},
+                "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
+                "disable_aaa": {"type": bool, "default": False},
+                "cvtargetconfigs": {"type": Cvtargetconfigs},
+                "flowdns": {"type": bool},
+                "custom_cv_options": {"type": CustomCvOptions},
+            }
+            ingestexclude: str | None
+            """
+            Exclude paths from Sysdb on the ingest side.
+            e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+            """
+            smashexcludes: str
+            """
+            Exclude paths from the shared memory table.
+            e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+
+            Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`
+            """
+            disable_aaa: bool
+            """
+            Disable AAA authorization and accounting.
+            When setting this flag, all commands pushed from
+            CloudVision are applied directly to the CLI without authorization.
+
+            Default value: `False`
+            """
+            cvtargetconfigs: Cvtargetconfigs
+            """
+            Set the target configuration path(s) for dynamic device configuration from CloudVision.
+            Used for MSS
+            (Multi-Domain Segmentation Service) integrations.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            flowdns: bool | None
+            """
+            Enable DNS resolution for flow records (TerminAttr default is true).
+            Set to false to disable DNS
+            lookups on sFlow/IPFIX flow records.
+            """
+            custom_cv_options: CustomCvOptions
+            """
+            TerminAttr CLI options not covered by the schema.
+            Each entry renders as `-<flag>=<value>` when
+            `value` is set, or `-<flag>` when `value` is omitted.
+            Options are appended at the end of the
+            TerminAttr exec command line after all other flags.
+
+
+            Subclass of AvdList with `CustomCvOptionsItem`
+            items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ingestexclude: str | UndefinedType | None = Undefined,
+                    smashexcludes: str | UndefinedType = Undefined,
+                    disable_aaa: bool | UndefinedType = Undefined,
+                    cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
+                    flowdns: bool | UndefinedType | None = Undefined,
+                    custom_cv_options: CustomCvOptions | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Terminattr.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ingestexclude:
+                           Exclude paths from Sysdb on the ingest side.
+                           e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+                        smashexcludes:
+                           Exclude paths from the shared memory table.
+                           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                        disable_aaa:
+                           Disable AAA authorization and accounting.
+                           When setting this flag, all commands pushed from
+                           CloudVision are applied directly to the CLI without authorization.
+                        cvtargetconfigs:
+                           Set the target configuration path(s) for dynamic device configuration from CloudVision.
+                           Used for MSS
+                           (Multi-Domain Segmentation Service) integrations.
+
+
+                           Subclass of AvdList with `str` items.
+                        flowdns:
+                           Enable DNS resolution for flow records (TerminAttr default is true).
+                           Set to false to disable DNS
+                           lookups on sFlow/IPFIX flow records.
+                        custom_cv_options:
+                           TerminAttr CLI options not covered by the schema.
+                           Each entry renders as `-<flag>=<value>` when
+                           `value` is set, or `-<flag>` when `value` is omitted.
+                           Options are appended at the end of the
+                           TerminAttr exec command line after all other flags.
+
+
+                           Subclass of AvdList with `CustomCvOptionsItem`
+                           items.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "cvaas": {"type": Cvaas},
+            "onprem_clusters": {"type": OnpremClusters},
+            "terminattr": {"type": Terminattr},
+            "set_source_interfaces": {"type": bool, "default": True},
+        }
+        profile: str
+        """CloudVision settings profile name."""
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `cv_settings_profiles`.
+        The settings from this
+        profile override settings inherited from the parent profile.
+        """
+        cvaas: Cvaas
+        """
+        State streaming to CloudVision-as-a-Service.
+
+        Subclass of AvdModel.
+        """
+        onprem_clusters: OnpremClusters
+        """
+        On-premise CloudVision clusters.
+
+        Subclass of AvdIndexedList with `OnpremClustersItem` items.
+        Primary key is `name` (`str`).
+        """
+        terminattr: Terminattr
+        """
+        Specific settings for the TerminAttr daemon.
+
+        Subclass of AvdModel.
+        """
+        set_source_interfaces: bool
+        """
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+        Can be set to `false` to avoid changes when
+        migrating from the old `cv_instances` model.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | UndefinedType | None = Undefined,
+                cvaas: Cvaas | UndefinedType = Undefined,
+                onprem_clusters: OnpremClusters | UndefinedType = Undefined,
+                terminattr: Terminattr | UndefinedType = Undefined,
+                set_source_interfaces: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                CvSettingsProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: CloudVision settings profile name.
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `cv_settings_profiles`.
+                       The settings from this
+                       profile override settings inherited from the parent profile.
+                    cvaas:
+                       State streaming to CloudVision-as-a-Service.
+
+                       Subclass of AvdModel.
+                    onprem_clusters:
+                       On-premise CloudVision clusters.
+
+                       Subclass of AvdIndexedList with `OnpremClustersItem` items.
+                       Primary key is `name` (`str`).
+                    terminattr:
+                       Specific settings for the TerminAttr daemon.
+
+                       Subclass of AvdModel.
+                    set_source_interfaces:
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+                       `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                       Can be set to `false` to avoid changes when
+                       migrating from the old `cv_instances` model.
+
+                """
+
+    class CvSettingsProfiles(AvdIndexedList[str, CvSettingsProfilesItem]):
+        """Subclass of AvdIndexedList with `CvSettingsProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    CvSettingsProfiles._item_type = CvSettingsProfilesItem
 
     class CvTopologyItem(AvdModel):
         """Subclass of AvdModel."""
@@ -11849,6 +12457,7 @@ class EosDesigns(EosDesignsRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
             "dns_settings_profile": {"type": str},
+            "cv_settings_profile": {"type": str},
             "ntp_settings_profile": {"type": str},
         }
         name: str
@@ -12871,11 +13480,20 @@ class EosDesigns(EosDesignsRootModel):
         The selected profile settings will be merged over the general
         `dns_settings`.
         """
+        cv_settings_profile: str | None
+        """
+        Name of the CloudVision settings profile to apply to this device.
+        The profile must be defined under
+        `cv_settings_profiles`.
+        The selected profile settings will be merged over the general `cv_settings`.
+        """
         ntp_settings_profile: str | None
         """
         Name of the NTP settings profile to apply to this device.
         The profile must be defined under
         `ntp_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `ntp_settings`.
         """
 
         if TYPE_CHECKING:
@@ -13016,6 +13634,7 @@ class EosDesigns(EosDesignsRootModel):
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
                 dns_settings_profile: str | UndefinedType | None = Undefined,
+                cv_settings_profile: str | UndefinedType | None = Undefined,
                 ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
@@ -13754,10 +14373,17 @@ class EosDesigns(EosDesignsRootModel):
                        `dns_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `dns_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
                     ntp_settings_profile:
                        Name of the NTP settings profile to apply to this device.
                        The profile must be defined under
                        `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -17528,6 +18154,7 @@ class EosDesigns(EosDesignsRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
             "dns_settings_profile": {"type": str},
+            "cv_settings_profile": {"type": str},
             "ntp_settings_profile": {"type": str},
         }
         name: str
@@ -18559,11 +19186,20 @@ class EosDesigns(EosDesignsRootModel):
         The selected profile settings will be merged over the general
         `dns_settings`.
         """
+        cv_settings_profile: str | None
+        """
+        Name of the CloudVision settings profile to apply to this device.
+        The profile must be defined under
+        `cv_settings_profiles`.
+        The selected profile settings will be merged over the general `cv_settings`.
+        """
         ntp_settings_profile: str | None
         """
         Name of the NTP settings profile to apply to this device.
         The profile must be defined under
         `ntp_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `ntp_settings`.
         """
 
         if TYPE_CHECKING:
@@ -18705,6 +19341,7 @@ class EosDesigns(EosDesignsRootModel):
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
                 dns_settings_profile: str | UndefinedType | None = Undefined,
+                cv_settings_profile: str | UndefinedType | None = Undefined,
                 ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
@@ -19450,10 +20087,17 @@ class EosDesigns(EosDesignsRootModel):
                        `dns_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `dns_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
                     ntp_settings_profile:
                        Name of the NTP settings profile to apply to this device.
                        The profile must be defined under
                        `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -61823,6 +62467,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
@@ -62820,11 +63465,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -62962,6 +63616,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -63682,10 +64337,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -67481,6 +68143,7 @@ class EosDesigns(EosDesignsRootModel):
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
                             "dns_settings_profile": {"type": str},
+                            "cv_settings_profile": {"type": str},
                             "ntp_settings_profile": {"type": str},
                         }
                         name: str
@@ -68488,11 +69151,20 @@ class EosDesigns(EosDesignsRootModel):
                         The selected profile settings will be merged over the general
                         `dns_settings`.
                         """
+                        cv_settings_profile: str | None
+                        """
+                        Name of the CloudVision settings profile to apply to this device.
+                        The profile must be defined under
+                        `cv_settings_profiles`.
+                        The selected profile settings will be merged over the general `cv_settings`.
+                        """
                         ntp_settings_profile: str | None
                         """
                         Name of the NTP settings profile to apply to this device.
                         The profile must be defined under
                         `ntp_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `ntp_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -68632,6 +69304,7 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
                                 dns_settings_profile: str | UndefinedType | None = Undefined,
+                                cv_settings_profile: str | UndefinedType | None = Undefined,
                                 ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -69359,10 +70032,17 @@ class EosDesigns(EosDesignsRootModel):
                                        `dns_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
                                     ntp_settings_profile:
                                        Name of the NTP settings profile to apply to this device.
                                        The profile must be defined under
                                        `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -73074,6 +73754,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     group: str
@@ -74084,11 +74765,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -74228,6 +74918,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -74957,10 +75648,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -78747,6 +79445,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     name: str
@@ -79754,11 +80453,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -79898,6 +80606,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -80625,10 +81334,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -100787,6 +101503,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
@@ -101784,11 +102501,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -101926,6 +102652,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -102646,10 +103373,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -106445,6 +107179,7 @@ class EosDesigns(EosDesignsRootModel):
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
                             "dns_settings_profile": {"type": str},
+                            "cv_settings_profile": {"type": str},
                             "ntp_settings_profile": {"type": str},
                         }
                         name: str
@@ -107452,11 +108187,20 @@ class EosDesigns(EosDesignsRootModel):
                         The selected profile settings will be merged over the general
                         `dns_settings`.
                         """
+                        cv_settings_profile: str | None
+                        """
+                        Name of the CloudVision settings profile to apply to this device.
+                        The profile must be defined under
+                        `cv_settings_profiles`.
+                        The selected profile settings will be merged over the general `cv_settings`.
+                        """
                         ntp_settings_profile: str | None
                         """
                         Name of the NTP settings profile to apply to this device.
                         The profile must be defined under
                         `ntp_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `ntp_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -107596,6 +108340,7 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
                                 dns_settings_profile: str | UndefinedType | None = Undefined,
+                                cv_settings_profile: str | UndefinedType | None = Undefined,
                                 ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -108323,10 +109068,17 @@ class EosDesigns(EosDesignsRootModel):
                                        `dns_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
                                     ntp_settings_profile:
                                        Name of the NTP settings profile to apply to this device.
                                        The profile must be defined under
                                        `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -112038,6 +112790,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     group: str
@@ -113048,11 +113801,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -113192,6 +113954,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -113921,10 +114684,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -117711,6 +118481,7 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
                         "dns_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     name: str
@@ -118718,11 +119489,20 @@ class EosDesigns(EosDesignsRootModel):
                     The selected profile settings will be merged over the general
                     `dns_settings`.
                     """
+                    cv_settings_profile: str | None
+                    """
+                    Name of the CloudVision settings profile to apply to this device.
+                    The profile must be defined under
+                    `cv_settings_profiles`.
+                    The selected profile settings will be merged over the general `cv_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
                     The profile must be defined under
                     `ntp_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `ntp_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -118862,6 +119642,7 @@ class EosDesigns(EosDesignsRootModel):
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
                             dns_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -119589,10 +120370,17 @@ class EosDesigns(EosDesignsRootModel):
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
                                    `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -119795,6 +120583,7 @@ class EosDesigns(EosDesignsRootModel):
         "cv_pathfinder_regions": {"type": CvPathfinderRegions},
         "cv_server": {"type": str},
         "cv_settings": {"type": CvSettings},
+        "cv_settings_profiles": {"type": CvSettingsProfiles},
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
@@ -121389,6 +122178,16 @@ class EosDesigns(EosDesignsRootModel):
     Settings for CloudVision telemetry streaming and provisioning.
 
     Subclass of AvdModel.
+    """
+    cv_settings_profiles: CvSettingsProfiles
+    """
+    List of CloudVision settings profiles that can be applied to devices using `cv_settings_profile`
+    under node definitions.
+    Profiles support inheritance using `parent_profile`, allowing common
+    CloudVision settings to be shared and selectively overridden per profile.
+
+    Subclass of
+    AvdIndexedList with `CvSettingsProfilesItem` items. Primary key is `profile` (`str`).
     """
     cv_tags_topology_type: str | None
     """
@@ -123343,6 +124142,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
             cv_server: str | UndefinedType | None = Undefined,
             cv_settings: CvSettings | UndefinedType = Undefined,
+            cv_settings_profiles: CvSettingsProfiles | UndefinedType = Undefined,
             cv_tags_topology_type: str | UndefinedType | None = Undefined,
             cv_token: str | UndefinedType | None = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
@@ -123818,6 +124618,14 @@ class EosDesigns(EosDesignsRootModel):
                    Settings for CloudVision telemetry streaming and provisioning.
 
                    Subclass of AvdModel.
+                cv_settings_profiles:
+                   List of CloudVision settings profiles that can be applied to devices using `cv_settings_profile`
+                   under node definitions.
+                   Profiles support inheritance using `parent_profile`, allowing common
+                   CloudVision settings to be shared and selectively overridden per profile.
+
+                   Subclass of
+                   AvdIndexedList with `CvSettingsProfilesItem` items. Primary key is `profile` (`str`).
                 cv_tags_topology_type:
                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                    "edge" or "member-leaf". Defaults to the setting under node_type_keys.
