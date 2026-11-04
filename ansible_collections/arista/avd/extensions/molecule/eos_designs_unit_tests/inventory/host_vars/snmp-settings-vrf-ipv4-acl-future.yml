@@ -24,7 +24,7 @@ l2leaf:
       mgmt_ip: 10.10.10.43/26
 
 avd_design_future:
-  raise_for_missing_snmp_server_vrf_ipv4_acl: true
+  configure_snmp_server_vrfs_ipv4_acl_from_catalog: true
 
 mgmt_interface_settings:
   vrf: MGMT
