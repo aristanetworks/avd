@@ -21,6 +21,7 @@
 | DIGITAL_TWIN_CONTAINERLAB | l3leaf | dc1-leaf2a | 172.16.1.102/24 | cEOSLab | Provisioned | - |
 | DIGITAL_TWIN_CONTAINERLAB | spine | dc1-spine1 | 172.16.1.11/24 | cEOSLab | Provisioned | - |
 | DIGITAL_TWIN_CONTAINERLAB | spine | dc1-spine2 | 172.16.1.12/24 | cEOSLab | Provisioned | - |
+| DIGITAL_TWIN_CONTAINERLAB | l2leaf | digital-twin-hardware-identity-containerlab-tests-l2leaf | 172.16.1.103/24 | cEOSLab | Provisioned | PRODCONTAINERLAB03 |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

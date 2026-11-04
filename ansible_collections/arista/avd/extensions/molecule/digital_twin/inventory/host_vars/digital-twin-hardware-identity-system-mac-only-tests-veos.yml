@@ -1,0 +1,21 @@
+---
+type: l2leaf
+
+# Verify a node-level Digital Twin system MAC can be set without a Digital Twin serial number.
+# The bare MAC format must be normalized and used for metadata, the ACT topology, and the SNMPv3 EngineID.
+l2leaf:
+  nodes:
+    - name: digital-twin-hardware-identity-system-mac-only-tests-veos
+      id: 22
+      mgmt_ip: 192.168.10.22/32
+      serial_number: PROD-SYSTEM-MAC-ONLY-VEOS-SERIAL
+      system_mac_address: 02:1c:73:00:00:22
+      digital_twin:
+        system_mac_address_template: "021c7310{device_id:02x}22"
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac
+
+eos_cli_config_gen_documentation:
+  enable: false
