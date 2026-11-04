@@ -228,7 +228,7 @@ class EthernetInterfacesMixin(Protocol):
                 ),
             )
             or None,
-            speed=adapter.speed,
+            speed=self.structured_config_utils.get_interface_speed(adapter.speed),
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,

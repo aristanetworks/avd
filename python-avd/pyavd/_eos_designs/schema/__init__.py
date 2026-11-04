@@ -46518,6 +46518,7 @@ class EosDesigns(EosDesignsRootModel):
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
+                "explicit_interface_speed_auto_mode": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "subinterface_monitor_session": {"type": bool, "default": True},
@@ -46568,6 +46569,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for storm-control.
             The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            explicit_interface_speed_auto_mode: bool
+            """
+            Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
+            When set to false, these
+            commands are omitted while `speed auto` and fixed speed commands are preserved.
 
             Default value: `True`
             """
@@ -46760,6 +46769,7 @@ class EosDesigns(EosDesignsRootModel):
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
+                    explicit_interface_speed_auto_mode: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     subinterface_monitor_session: bool | UndefinedType = Undefined,
@@ -46803,6 +46813,10 @@ class EosDesigns(EosDesignsRootModel):
                         interface_storm_control:
                            Support for storm-control.
                            The feature will be ignored on platforms where this is false.
+                        explicit_interface_speed_auto_mode:
+                           Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
+                           When set to false, these
+                           commands are omitted while `speed auto` and fixed speed commands are preserved.
                         poe:
                            Support for PoE.
                            The feature will be ignored on platforms where this is false.
@@ -48415,6 +48429,7 @@ class EosDesigns(EosDesignsRootModel):
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
+                "explicit_interface_speed_auto_mode": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "subinterface_monitor_session": {"type": bool, "default": True},
@@ -48465,6 +48480,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for storm-control.
             The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            explicit_interface_speed_auto_mode: bool
+            """
+            Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
+            When set to false, these
+            commands are omitted while `speed auto` and fixed speed commands are preserved.
 
             Default value: `True`
             """
@@ -48657,6 +48680,7 @@ class EosDesigns(EosDesignsRootModel):
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
+                    explicit_interface_speed_auto_mode: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     subinterface_monitor_session: bool | UndefinedType = Undefined,
@@ -48700,6 +48724,10 @@ class EosDesigns(EosDesignsRootModel):
                         interface_storm_control:
                            Support for storm-control.
                            The feature will be ignored on platforms where this is false.
+                        explicit_interface_speed_auto_mode:
+                           Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
+                           When set to false, these
+                           commands are omitted while `speed auto` and fixed speed commands are preserved.
                         poe:
                            Support for PoE.
                            The feature will be ignored on platforms where this is false.

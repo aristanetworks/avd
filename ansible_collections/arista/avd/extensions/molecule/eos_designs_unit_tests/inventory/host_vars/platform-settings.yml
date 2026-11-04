@@ -8,6 +8,15 @@ l3leaf:
     - name: platform-settings
       id: 101
       bgp_as: 101
+      l3_interfaces:
+        - name: Ethernet17
+          speed: auto 10000full
+      l3_port_channels:
+        - name: Port-Channel18
+          mode: active
+          member_interfaces:
+            - name: Ethernet18
+              speed: auto 10000full
 
 platform_settings:
   - platforms: [default]
@@ -20,6 +29,7 @@ platform_settings:
     # Prevent mtu generation under subinterface.
     feature_support:
       subinterface_mtu: false
+      explicit_interface_speed_auto_mode: false
     # Test for structured_config
     structured_config:
       ethernet_interfaces:
@@ -34,6 +44,13 @@ tenants:
     vrfs:
       - name: default
         vrf_id: 1
+        l3_port_channels:
+          - name: Port-Channel19
+            mode: active
+            node: platform-settings
+            member_interfaces:
+              - name: Ethernet19
+                speed: auto 10000full
         l3_interfaces:
           - interfaces: [Ethernet10.10]
             ip_addresses: [10.10.10.10/24]
@@ -42,3 +59,25 @@ tenants:
             mtu: 9000
             enabled: true
             description: "test sub interface mtu false"
+
+servers:
+  - name: SPEED_TEST_SERVER
+    adapters:
+      - switches: [platform-settings]
+        switch_ports: [Ethernet13]
+        endpoint_ports: [Eth1]
+        speed: auto 10000full
+      - switches: [platform-settings]
+        switch_ports: [Ethernet14]
+        endpoint_ports: [Eth2]
+        speed: auto
+      - switches: [platform-settings]
+        switch_ports: [Ethernet15]
+        endpoint_ports: [Eth3]
+        speed: 100g
+
+network_ports:
+  - switches: [platform-settings]
+    switch_ports: [Ethernet16]
+    endpoint: SPEED_TEST_NETWORK_PORT
+    speed: auto 1000full

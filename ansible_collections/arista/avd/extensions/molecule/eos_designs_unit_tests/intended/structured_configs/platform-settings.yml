@@ -4,6 +4,19 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet17
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet18
+  shutdown: false
+  channel_group:
+    id: 18
+    mode: active
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet10.10
   description: test sub interface mtu false
   shutdown: false
@@ -12,6 +25,54 @@ ethernet_interfaces:
   ip_address: 10.10.10.10/24
   metadata:
     peer_type: l3_interface
+- name: Ethernet19
+  shutdown: false
+  channel_group:
+    id: 19
+    mode: active
+  metadata:
+    peer_type: l3_port_channel_member
+- name: Ethernet13
+  description: SERVER_SPEED_TEST_SERVER_Eth1
+  shutdown: false
+  metadata:
+    peer: SPEED_TEST_SERVER
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+- name: Ethernet14
+  description: SERVER_SPEED_TEST_SERVER_Eth2
+  shutdown: false
+  speed: auto
+  metadata:
+    peer: SPEED_TEST_SERVER
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+- name: Ethernet15
+  description: SERVER_SPEED_TEST_SERVER_Eth3
+  shutdown: false
+  speed: 100g
+  metadata:
+    peer: SPEED_TEST_SERVER
+    peer_interface: Eth3
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+- name: Ethernet16
+  description: SPEED_TEST_NETWORK_PORT
+  shutdown: false
+  metadata:
+    peer: SPEED_TEST_NETWORK_PORT
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 - name: Ethernet10
   shutdown: false
   metadata:
@@ -44,6 +105,19 @@ management_security:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel18
+  shutdown: false
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel19
+  shutdown: false
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

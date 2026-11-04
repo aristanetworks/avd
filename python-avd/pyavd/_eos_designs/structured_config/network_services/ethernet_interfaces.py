@@ -77,7 +77,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=member_intf.name,
                     description=interface_description or None,
                     shutdown=not l3_port_channel.enabled,
-                    speed=member_intf.speed or None,
+                    speed=self.structured_config_utils.get_interface_speed(member_intf.speed),
                     metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                         peer_interface=member_intf.peer_interface or None,
                         peer_type="l3_port_channel_member",

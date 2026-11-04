@@ -31,6 +31,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;explicit_interface_speed_auto_mode</samp>](## "platform_settings.[].feature_support.explicit_interface_speed_auto_mode") | Boolean |  | `True` |  | Support for explicit `speed auto <mode>` commands on Ethernet interfaces.<br>When set to false, these commands are omitted while `speed auto` and fixed speed commands are preserved. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration on sub-interfaces.<br>When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface. |
@@ -265,6 +266,10 @@
           # Support for storm-control.
           # The feature will be ignored on platforms where this is false.
           interface_storm_control: <bool; default=True>
+
+          # Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
+          # When set to false, these commands are omitted while `speed auto` and fixed speed commands are preserved.
+          explicit_interface_speed_auto_mode: <bool; default=True>
 
           # Support for PoE.
           # The feature will be ignored on platforms where this is false.
