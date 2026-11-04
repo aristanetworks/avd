@@ -1043,12 +1043,12 @@ interface Dps1
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | False | - | 1000 | 0.0.0.0 |
-| Vlan1001 | True | True | 1000 | 0.0.0.0 |
-| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 Cost | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ----------- | ---------------- | ---------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | - | 0.0.0.0 | 10 | 1000 | 20 |
+| Vlan1000 | False | - | - | 1000 | - | 0.0.0.0 | - |
+| Vlan1001 | True | True | 30 | 1000 | - | 0.0.0.0 | - |
+| Vlan1002 | - | - | - | 0.0.0.0 | - | 0.0.0.0 | - |
 
 ##### ISIS
 
@@ -1069,7 +1069,9 @@ interface Vlan85
    no mpls ip
    ospfv3 passive-interface
    ospfv3 network point-to-point
+   ospfv3 ipv4 cost 10
    ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 cost 20
    ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
@@ -1085,6 +1087,7 @@ interface Vlan1000
 interface Vlan1001
    description Test VLAN with both ospfv3 and ipv6_ospf configurations
    ospfv3 passive-interface
+   ospfv3 cost 30
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0

@@ -26,8 +26,11 @@ vlan_interfaces:
     ospfv3:
       ipv4:
         area: 0.0.0.0
+        cost: 10
       ipv6:
         area: 1000
+        cost: 20
+      cost: 40 # won't render on global because cost is set on address families
       passive_interface: true
       network_point_to_point: true
 
@@ -49,6 +52,7 @@ vlan_interfaces:
         area: 0.0.0.0
       passive_interface: true
       network_point_to_point: true
+      cost: 30
     ipv6_ospf:
       process:
         id: 100
