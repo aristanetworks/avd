@@ -46,8 +46,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     set ipv4_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('ipv4_acl', 'arista.avd.defined') | list %}
-{%     set ipv6_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('ipv6_acl', 'arista.avd.defined') | list %}
+{%     set ipv4_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('ipv4_acl', 'arista.avd.defined') | list %}
+{%     set ipv6_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('ipv6_acl', 'arista.avd.defined') | list %}
 {%     set has_ipv4_acls = ipv4_acl_vrfs | length > 0 or snmp_server.ipv4_acl is arista.avd.defined or snmp_server.ipv4_acls is arista.avd.defined %}
 {%     set has_ipv6_acls = ipv6_acl_vrfs | length > 0 or snmp_server.ipv6_acl is arista.avd.defined or snmp_server.ipv6_acls is arista.avd.defined %}
 {%     if has_ipv4_acls or has_ipv6_acls %}
@@ -81,7 +81,7 @@
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     set local_interface_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('local_interface', 'arista.avd.defined') | list %}
+{%     set local_interface_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('local_interface', 'arista.avd.defined') | list %}
 {%     set has_local_interfaces = local_interface_vrfs | length > 0 or snmp_server.local_interface is arista.avd.defined or snmp_server.local_interfaces is arista.avd.defined %}
 {%     if has_local_interfaces %}
 

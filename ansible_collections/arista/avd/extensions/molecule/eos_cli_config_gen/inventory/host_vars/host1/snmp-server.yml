@@ -219,6 +219,9 @@ snmp_server:
   vrfs:
     - name: default
       enable: false
+      ipv4_acl: DEFAULT-IPV4
+      ipv6_acl: DEFAULT-IPV6
+      local_interface: Ethernet333
     - name: MGMT
       enable: true
       ipv4_acl: SNMP-MGMT

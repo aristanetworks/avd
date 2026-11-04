@@ -6,7 +6,7 @@
 {# eos - snmp server #}
 {% if snmp_server is arista.avd.defined %}
 !
-{%     set ipv4_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('ipv4_acl', 'arista.avd.defined') | list %}
+{%     set ipv4_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('ipv4_acl', 'arista.avd.defined') | list %}
 {%     if snmp_server.ipv4_acl is arista.avd.defined %}
 {%         do ipv4_acl_vrfs.extend([{"name": "default", "ipv4_acl": snmp_server.ipv4_acl}]) %}
 {%     endif %}
@@ -27,7 +27,7 @@ snmp-server ipv4 access-list {{ vrf.ipv4_acl }} vrf {{ vrf.name }}
 {{ acl_cli }}
 {%         endfor %}
 {%     endif %}
-{%     set ipv6_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('ipv6_acl', 'arista.avd.defined') | list %}
+{%     set ipv6_acl_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('ipv6_acl', 'arista.avd.defined') | list %}
 {%     if snmp_server.ipv6_acl is arista.avd.defined %}
 {%         do ipv6_acl_vrfs.extend([{"name": "default", "ipv6_acl": snmp_server.ipv6_acl}]) %}
 {%     endif %}
@@ -57,7 +57,7 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is arista.avd.defined %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
-{%     set local_interface_vrfs = snmp_server.vrfs | arista.avd.default([]) | selectattr('local_interface', 'arista.avd.defined') | list %}
+{%     set local_interface_vrfs = snmp_server.vrfs | arista.avd.default([]) | rejectattr('name', 'equalto', 'default') | selectattr('local_interface', 'arista.avd.defined') | list %}
 {%     if local_interface_vrfs or snmp_server.local_interface is arista.avd.defined %}
 {%         if snmp_server.local_interface is arista.avd.defined %}
 snmp-server local-interface {{ snmp_server.local_interface }}
