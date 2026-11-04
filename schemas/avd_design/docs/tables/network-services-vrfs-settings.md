@@ -84,6 +84,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart") | Dictionary |  |  |  | BGP graceful-restart configuration for this VRF.<br>This setting is not supported for VRF default. Use `bgp_graceful_restart` instead.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean | Required |  |  | Enable or disable BGP graceful-restart for this VRF.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_time</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.graceful_restart.restart_time") | Integer |  | `300` | Min: 1<br>Max: 3600 | Restart time in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3") | Dictionary |  |  |  | Redistribution of OSPFv3 routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3.internal") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
@@ -184,6 +187,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart") | Dictionary |  |  |  | BGP graceful-restart configuration for this VRF.<br>This setting is not supported for VRF default. Use `bgp_graceful_restart` instead.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart.enabled") | Boolean | Required |  |  | Enable or disable BGP graceful-restart for this VRF.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_time</samp>](## "network_services.[].vrfs.[].bgp.graceful_restart.restart_time") | Integer |  | `300` | Min: 1<br>Max: 3600 | Restart time in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3") | Dictionary |  |  |  | Redistribution of OSPFv3 routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3.internal") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_services.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "network_services.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
@@ -481,6 +487,14 @@
 
                 # Restart time in seconds.
                 restart_time: <int; 1-3600; default=300>
+
+              # Redistribution of OSPFv3 routes into BGP for this VRF.
+              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
+              redistribute_ospfv3:
+                internal:
+
+                  # Redistribute OSPFv3 internal routes into BGP.
+                  enabled: <bool; default=True>
 
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>
@@ -806,6 +820,14 @@
 
                 # Restart time in seconds.
                 restart_time: <int; 1-3600; default=300>
+
+              # Redistribution of OSPFv3 routes into BGP for this VRF.
+              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
+              redistribute_ospfv3:
+                internal:
+
+                  # Redistribute OSPFv3 internal routes into BGP.
+                  enabled: <bool; default=True>
 
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>
