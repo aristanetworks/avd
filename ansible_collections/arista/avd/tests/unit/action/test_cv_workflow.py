@@ -36,6 +36,7 @@ def _make_validated_args(**overrides: object) -> dict:
         "cv_verify_certs": True,
         "configuration_dir": "/configs",
         "configlet_name_template": "AVD-${hostname}",
+        "inventory_mode": "loose",
         "return_details": False,
     }
     defaults.update(overrides)
@@ -59,6 +60,7 @@ def _make_deploy_result_mock(**overrides: object) -> MagicMock:
     mock.removed_static_config_configlets = []
     mock.removed_device_tags = []
     mock.removed_interface_tags = []
+    mock.removed_devices = []
     for key, value in overrides.items():
         setattr(mock, key, value)
     return mock
@@ -275,6 +277,7 @@ def test_deploy_reads_validated_inputs_from_tmp_dir(
         structured_config_suffix="json",
         configuration_dir="/configs",
         configlet_name_template="AVD-${hostname}",
+        inventory_mode="loose",
     )
 
 
