@@ -10,6 +10,7 @@ import sys
 import warnings
 from asyncio import run
 from concurrent.futures import ProcessPoolExecutor
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from multiprocessing import get_context
 from pathlib import Path
@@ -46,7 +47,6 @@ except ImportError:
     HAS_PYAVD = False
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
-DATETIME_TYPE = datetime
 TARGET_LOGGERS = (
     "",  # Preserve the legacy broad capture of all propagating loggers, including custom ANTA tests.
     "ansible_collections.arista.avd",
@@ -83,6 +83,23 @@ ANTA_VARS = [
     "anta_use_session_auth",
     "anta_tags",
 ]
+
+
+@dataclass(frozen=True, slots=True)
+class RunOverviewData:
+    """Timing metadata used to build the Markdown report Run Overview section."""
+
+    test_execution_start_time: datetime
+    test_execution_end_time: datetime
+
+    def to_dict(self) -> dict[str, Any]:
+        """Build ANTA markdown Run Overview data for test execution timing."""
+        return {
+            "test_execution_start_time": self.test_execution_start_time,
+            "test_execution_end_time": self.test_execution_end_time,
+            "total_duration": self.test_execution_end_time - self.test_execution_start_time,
+        }
+
 
 ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
@@ -128,7 +145,7 @@ ARGUMENT_SPEC = {
         "type": "dict",
         "apply_defaults": True,
         "options": {
-            "include_generation_timestamp": {"type": "bool", "default": False},
+            "generate_run_overview": {"type": "bool", "default": False},
             "expand_results": {"type": "bool", "default": False},
             "generate_custom_field": {"type": "bool", "default": False},
             "csv_output": {"type": "str"},
@@ -278,10 +295,10 @@ class ActionModule(AVDActionPlugin):
             test_execution_end_time = datetime.now(timezone.utc)
 
         # Build the ANTA reports and summary
-        run_overview_data = {
-            "test_execution_start_time": test_execution_start_time,
-            "test_execution_end_time": test_execution_end_time,
-        }
+        run_overview_data = RunOverviewData(
+            test_execution_start_time=test_execution_start_time,
+            test_execution_end_time=test_execution_end_time,
+        )
         anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"), run_overview_data=run_overview_data)
         update_ansible_result(self.result, anta_tests_summary)
 
@@ -308,7 +325,7 @@ def run_anta(devices: list[str]) -> ResultManager:
 def build_reports(
     batch_results: Iterator[ResultManager],
     report_settings: dict[str, Any],
-    run_overview_data: dict[str, Any] | None = None,
+    run_overview_data: RunOverviewData,
 ) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
     exclude_statuses = get(report_settings, "filters.exclude_statuses")
@@ -317,7 +334,7 @@ def build_reports(
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
-    include_generation_timestamp = get(report_settings, "include_generation_timestamp")
+    generate_run_overview = get(report_settings, "generate_run_overview")
     expand_results = get(report_settings, "expand_results")
     generate_custom_field = get(report_settings, "generate_custom_field")
 
@@ -351,17 +368,8 @@ def build_reports(
         path = Path(md_output_path)
         md_report = MDReportGenerator()
         extra_data = {"_report_options": {"expand_results": expand_results, "render_custom_field": generate_custom_field}}
-        if include_generation_timestamp:
-            run_overview_data = run_overview_data or {}
-            default_end_time = datetime.now(timezone.utc)
-            test_execution_end_time = get(run_overview_data, "test_execution_end_time", default=default_end_time)
-            if not isinstance(test_execution_end_time, DATETIME_TYPE):
-                test_execution_end_time = default_end_time
-
-            test_execution_start_time = get(run_overview_data, "test_execution_start_time", default=test_execution_end_time)
-            if not isinstance(test_execution_start_time, DATETIME_TYPE):
-                test_execution_start_time = test_execution_end_time
-            extra_data.update(get_markdown_run_overview_data(test_execution_start_time, test_execution_end_time))
+        if generate_run_overview:
+            extra_data.update(run_overview_data.to_dict())
         md_report.generate(filtered_result_manager, path, extra_data=extra_data)
 
     if json_output_path:
@@ -388,15 +396,6 @@ def build_reports(
             tests_summary["devices_with_test_errors"].append(device)
 
     return tests_summary
-
-
-def get_markdown_run_overview_data(test_execution_start_time: datetime, test_execution_end_time: datetime) -> dict[str, Any]:
-    """Build ANTA markdown Run Overview data for test execution timing."""
-    return {
-        "test_execution_start_time": test_execution_start_time,
-        "test_execution_end_time": test_execution_end_time,
-        "total_duration": test_execution_end_time - test_execution_start_time,
-    }
 
 
 def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_fields: list[str]) -> None:
