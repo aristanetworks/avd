@@ -97,6 +97,7 @@ $defs:
           If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
       vlan_tags:
         type: list
+        min_length: 1
         items:
           type: str
         description: |-

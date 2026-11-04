@@ -12323,6 +12323,7 @@ $defs:
           '
       vlan_tags:
         type: list
+        min_length: 1
         items:
           type: str
         description: 'Allow VLANs on a trunk port based on the `tags` set on network
