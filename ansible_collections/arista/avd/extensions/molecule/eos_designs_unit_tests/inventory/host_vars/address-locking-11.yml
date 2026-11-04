@@ -1,0 +1,155 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-11
+      id: 101
+      bgp_as: 101
+
+# Testing that global configuration is deferred until Address Locking is enabled on a supported client
+# Port-Channels only support disabling Address Locking, so they must not trigger global configuration
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+address_locking_settings:
+  disabled: true
+
+servers:
+  # Test all Port-Channel Address Locking classes. `true` is accepted but does not produce Port-Channel Address Locking configuration
+  - name: ADDRESS_LOCKING_11_SERVER_UNSET
+    adapters:
+      - switches: [address-locking-11]
+        switch_ports: [Ethernet2]
+        description: ADDRESS_LOCKING_11_SERVER_UNSET_MEMBER
+        mode: access
+        vlans: 101
+        port_channel:
+          channel_id: 2
+          mode: active
+          description: ADDRESS_LOCKING_11_SERVER_UNSET
+  - name: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE
+    adapters:
+      - switches: [address-locking-11]
+        switch_ports: [Ethernet3]
+        description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE_MEMBER
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: true
+          ipv6: true
+        port_channel:
+          channel_id: 3
+          mode: active
+          description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_TRUE
+  - name: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE
+    adapters:
+      - switches: [address-locking-11]
+        switch_ports: [Ethernet4]
+        description: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE_MEMBER
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: false
+          ipv6: true
+        port_channel:
+          channel_id: 4
+          mode: active
+          description: ADDRESS_LOCKING_11_SERVER_IPV4_DISABLED_IPV6_TRUE
+  - name: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED
+    adapters:
+      - switches: [address-locking-11]
+        switch_ports: [Ethernet5]
+        description: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED_MEMBER
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: true
+          ipv6: false
+        port_channel:
+          channel_id: 5
+          mode: active
+          description: ADDRESS_LOCKING_11_SERVER_IPV4_TRUE_IPV6_DISABLED
+  - name: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED
+    adapters:
+      - switches: [address-locking-11]
+        switch_ports: [Ethernet6]
+        description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED_MEMBER
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: false
+          ipv6: false
+        port_channel:
+          channel_id: 6
+          mode: active
+          description: ADDRESS_LOCKING_11_SERVER_IPV4_IPV6_DISABLED
+
+network_ports:
+  - switches: [address-locking-11]
+    switch_ports: [Ethernet7]
+    endpoint: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET
+    description: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET_MEMBER
+    mode: access
+    vlans: 101
+    port_channel:
+      channel_id: 7
+      mode: active
+      description: ADDRESS_LOCKING_11_NETWORK_PORT_UNSET
+  - switches: [address-locking-11]
+    switch_ports: [Ethernet8]
+    endpoint: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE
+    description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE_MEMBER
+    mode: access
+    vlans: 101
+    address_locking:
+      ipv4: true
+      ipv6: true
+    port_channel:
+      channel_id: 8
+      mode: active
+      description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_TRUE
+  - switches: [address-locking-11]
+    switch_ports: [Ethernet9]
+    endpoint: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE
+    description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE_MEMBER
+    mode: access
+    vlans: 101
+    address_locking:
+      ipv4: false
+      ipv6: true
+    port_channel:
+      channel_id: 9
+      mode: active
+      description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_DISABLED_IPV6_TRUE
+  - switches: [address-locking-11]
+    switch_ports: [Ethernet10]
+    endpoint: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED
+    description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED_MEMBER
+    mode: access
+    vlans: 101
+    address_locking:
+      ipv4: true
+      ipv6: false
+    port_channel:
+      channel_id: 10
+      mode: active
+      description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_TRUE_IPV6_DISABLED
+  - switches: [address-locking-11]
+    switch_ports: [Ethernet11]
+    endpoint: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED
+    description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED_MEMBER
+    mode: access
+    vlans: 101
+    address_locking:
+      ipv4: false
+      ipv6: false
+    port_channel:
+      channel_id: 11
+      mode: active
+      description: ADDRESS_LOCKING_11_NETWORK_PORT_IPV4_IPV6_DISABLED

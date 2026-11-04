@@ -1,0 +1,40 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-20
+      id: 101
+      bgp_as: 101
+
+# Test that address_locking_settings.disabled: true temporarily deactivates Address Locking while retaining valid IPv4 and IPv6 configuration
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+address_locking_settings:
+  disabled: true
+  locked_address:
+    ipv4_enforcement_disabled: true
+
+servers:
+  - name: ADDRESS_LOCKING_20_IPV6_SERVER
+    adapters:
+      - switches: [address-locking-20]
+        switch_ports: [Ethernet2]
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv6: true
+  - name: ADDRESS_LOCKING_20_IPV4_SERVER
+    adapters:
+      - switches: [address-locking-20]
+        switch_ports: [Ethernet3]
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv4: true

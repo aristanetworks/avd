@@ -819,15 +819,15 @@ class EosDesigns(EosDesignsRootModel):
     class AddressLockingSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class DhcpServerInterfaces(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        DhcpServerInterfaces._item_type = str
-
         class DhcpServersIpv4(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DhcpServersIpv4._item_type = str
+
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
 
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -949,8 +949,8 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str},
-            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
@@ -970,6 +970,17 @@ class EosDesigns(EosDesignsRootModel):
         When
         `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
         exclusive with `dhcp_server_interfaces`.
+        For IPv4 Address Locking with `dhcp_servers_ipv4`,
+        configure this setting or use a resolvable default management interface, together with at least one
+        `dhcp_servers_ipv4` entry.
+        """
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """
+        DHCP server IPv4 addresses for IPv4 Address Locking via DHCP LeaseQuery.
+        Requires `local_interface`
+        or a resolvable default management interface.
+
+        Subclass of AvdList with `str` items.
         """
         dhcp_server_interfaces: DhcpServerInterfaces
         """
@@ -983,8 +994,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
-        dhcp_servers_ipv4: DhcpServersIpv4
-        """Subclass of AvdList with `str` items."""
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -1000,8 +1009,8 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 local_interface: str | UndefinedType | None = Undefined,
-                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -1027,6 +1036,15 @@ class EosDesigns(EosDesignsRootModel):
                        When
                        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
                        exclusive with `dhcp_server_interfaces`.
+                       For IPv4 Address Locking with `dhcp_servers_ipv4`,
+                       configure this setting or use a resolvable default management interface, together with at least one
+                       `dhcp_servers_ipv4` entry.
+                    dhcp_servers_ipv4:
+                       DHCP server IPv4 addresses for IPv4 Address Locking via DHCP LeaseQuery.
+                       Requires `local_interface`
+                       or a resolvable default management interface.
+
+                       Subclass of AvdList with `str` items.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
                        Requires
@@ -1037,7 +1055,6 @@ class EosDesigns(EosDesignsRootModel):
                        version 4.36 or later.
 
                        Subclass of AvdList with `str` items.
-                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
@@ -1062,6 +1079,7 @@ class EosDesigns(EosDesignsRootModel):
             "fix_radius_server_group_tls": {"type": bool, "default": False},
             "fix_virtual_source_nat_address_families": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
+            "only_configure_address_locking_when_used": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
             "only_configure_pvst_border_when_mode_is_mstp": {"type": bool, "default": False},
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
@@ -1206,6 +1224,31 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_address_locking_when_used: bool
+        """
+        Available from AVD 6.5.0.
+        When `false` (the default), render global Address Locking settings
+        whenever `address_locking_settings` has at least one setting.
+        When `true`, render global Address
+        Locking settings only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint, network
+        port, VLAN, or SVI.
+        When `true`, IPv4 Address Locking requires one of the following global
+        configurations:
+          - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`. AVD
+        raises a validation error if the platform does not support this setting.
+          -
+        `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`. If
+        `local_interface` is not set, AVD uses the default management interface, which must resolve to an
+        interface.
+          - `address_locking_settings.dhcp_server_interfaces` with
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.
+        When `true`, IPv6 Address
+        Locking automatically configures `address_locking_settings.locked_address.ipv6_enforcement_disabled:
+        true`. Explicitly setting `address_locking_settings.locked_address.ipv6_enforcement_disabled: false`
+        raises a validation error.
+
+        Default value: `False`
+        """
         only_configure_mlag_vrfs_peer_group_when_used: bool
         """
         Available from AVD 6.2.0.
@@ -1294,6 +1337,7 @@ class EosDesigns(EosDesignsRootModel):
                 fix_radius_server_group_tls: bool | UndefinedType = Undefined,
                 fix_virtual_source_nat_address_families: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
+                only_configure_address_locking_when_used: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
                 only_configure_pvst_border_when_mode_is_mstp: bool | UndefinedType = Undefined,
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
@@ -1393,6 +1437,27 @@ class EosDesigns(EosDesignsRootModel):
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used:
                        Available from AVD 6.2.0.
                        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+                    only_configure_address_locking_when_used:
+                       Available from AVD 6.5.0.
+                       When `false` (the default), render global Address Locking settings
+                       whenever `address_locking_settings` has at least one setting.
+                       When `true`, render global Address
+                       Locking settings only when IPv4 or IPv6 Address Locking is enabled on a connected endpoint, network
+                       port, VLAN, or SVI.
+                       When `true`, IPv4 Address Locking requires one of the following global
+                       configurations:
+                         - `address_locking_settings.locked_address.ipv4_enforcement_disabled: true`. AVD
+                       raises a validation error if the platform does not support this setting.
+                         -
+                       `address_locking_settings.dhcp_servers_ipv4` with `address_locking_settings.local_interface`. If
+                       `local_interface` is not set, AVD uses the default management interface, which must resolve to an
+                       interface.
+                         - `address_locking_settings.dhcp_server_interfaces` with
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`.
+                       When `true`, IPv6 Address
+                       Locking automatically configures `address_locking_settings.locked_address.ipv6_enforcement_disabled:
+                       true`. Explicitly setting `address_locking_settings.locked_address.ipv6_enforcement_disabled: false`
+                       raises a validation error.
                     only_configure_mlag_vrfs_peer_group_when_used:
                        Available from AVD 6.2.0.
                        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
@@ -4650,6 +4715,14 @@ class EosDesigns(EosDesignsRootModel):
             address_locking: AddressLocking
             """
             Address locking settings applied on the port.
+            With
+            `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+            requires compatible global Address Locking settings.
+            See `address_locking_settings` for the IPv4
+            LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+            With the future
+            key set to `false`, AVD renders supported interface Address Locking configuration without validating
+            the global Address Locking operating mode.
 
             Subclass of AvdModel.
             """
@@ -4916,6 +4989,14 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         address_locking:
                            Address locking settings applied on the port.
+                           With
+                           `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                           requires compatible global Address Locking settings.
+                           See `address_locking_settings` for the IPv4
+                           LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                           With the future
+                           key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                           the global Address Locking operating mode.
 
                            Subclass of AvdModel.
                         poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
@@ -26178,6 +26259,15 @@ class EosDesigns(EosDesignsRootModel):
         across any number of levels.
         """
         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+        """
+        With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+        requires compatible global Address Locking settings.
+        See `address_locking_settings` for the IPv4
+        LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+        With the future
+        key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+        `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
+        """
         vni_override: int | None
         """
         By default the VNI will be derived from mac_vrf_vni_base.
@@ -26311,7 +26401,14 @@ class EosDesigns(EosDesignsRootModel):
                        `avd_design_future.allow_recursive_profile_inheritance` to true
                        allows profiles to inherit settings
                        across any number of levels.
-                    address_locking: address_locking
+                    address_locking:
+                       With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                       requires compatible global Address Locking settings.
+                       See `address_locking_settings` for the IPv4
+                       LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                       With the future
+                       key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                       `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
                        The vni_override, allows to override this
@@ -31753,6 +31850,14 @@ class EosDesigns(EosDesignsRootModel):
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
+        With
+        `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+        requires compatible global Address Locking settings.
+        See `address_locking_settings` for the IPv4
+        LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+        With the future
+        key set to `false`, AVD renders supported interface Address Locking configuration without validating
+        the global Address Locking operating mode.
 
         Subclass of AvdModel.
         """
@@ -32013,6 +32118,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
+                       With
+                       `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                       requires compatible global Address Locking settings.
+                       See `address_locking_settings` for the IPv4
+                       LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                       With the future
+                       key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                       the global Address Locking operating mode.
 
                        Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
@@ -37040,9 +37153,13 @@ class EosDesigns(EosDesignsRootModel):
                 """VLAN name."""
                 address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                 """
-                To configure `address_locking.ipv4/v6`, you must define either
-                `address_locking_settings.dhcp_servers_ipv4` or
-                `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                requires compatible global Address Locking settings.
+                See `address_locking_settings` for the IPv4
+                LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                With the future
+                key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                 """
                 profile: str | None
                 """
@@ -37425,9 +37542,13 @@ class EosDesigns(EosDesignsRootModel):
                             id: SVI interface id and VLAN id.
                             name: VLAN name.
                             address_locking:
-                               To configure `address_locking.ipv4/v6`, you must define either
-                               `address_locking_settings.dhcp_servers_ipv4` or
-                               `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                               With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                               requires compatible global Address Locking settings.
+                               See `address_locking_settings` for the IPv4
+                               LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                               With the future
+                               key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                               `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                             profile:
                                SVI profile name to apply.
                                SVI can refer to one svi_profile which again can refer to another
@@ -42279,6 +42400,15 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
             """
             address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+            """
+            With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+            requires compatible global Address Locking settings.
+            See `address_locking_settings` for the IPv4
+            LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+            With the future
+            key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+            `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
+            """
             vni_override: int | None
             """
             By default the VNI will be derived from mac_vrf_vni_base.
@@ -42422,7 +42552,14 @@ class EosDesigns(EosDesignsRootModel):
                            node type settings.
                            Tags are also matched against the node_group name under node type settings.
                            Subclass of AvdList with `str` items.
-                        address_locking: address_locking
+                        address_locking:
+                           With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                           requires compatible global Address Locking settings.
+                           See `address_locking_settings` for the IPv4
+                           LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                           With the future
+                           key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                           `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                         vni_override:
                            By default the VNI will be derived from mac_vrf_vni_base.
                            The vni_override, allows to override this
@@ -51032,6 +51169,14 @@ class EosDesigns(EosDesignsRootModel):
         address_locking: AddressLocking
         """
         Address locking settings applied on the port.
+        With
+        `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+        requires compatible global Address Locking settings.
+        See `address_locking_settings` for the IPv4
+        LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+        With the future
+        key set to `false`, AVD renders supported interface Address Locking configuration without validating
+        the global Address Locking operating mode.
 
         Subclass of AvdModel.
         """
@@ -51253,6 +51398,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     address_locking:
                        Address locking settings applied on the port.
+                       With
+                       `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                       requires compatible global Address Locking settings.
+                       See `address_locking_settings` for the IPv4
+                       LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                       With the future
+                       key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                       the global Address Locking operating mode.
 
                        Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
@@ -83632,6 +83785,14 @@ class EosDesigns(EosDesignsRootModel):
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
+                    With
+                    `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                    requires compatible global Address Locking settings.
+                    See `address_locking_settings` for the IPv4
+                    LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                    With the future
+                    key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                    the global Address Locking operating mode.
 
                     Subclass of AvdModel.
                     """
@@ -83898,6 +84059,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
+                                   With
+                                   `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                                   requires compatible global Address Locking settings.
+                                   See `address_locking_settings` for the IPv4
+                                   LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                                   With the future
+                                   key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                                   the global Address Locking operating mode.
 
                                    Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
@@ -86203,6 +86372,14 @@ class EosDesigns(EosDesignsRootModel):
                     address_locking: AddressLocking
                     """
                     Address locking settings applied on the port.
+                    With
+                    `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                    requires compatible global Address Locking settings.
+                    See `address_locking_settings` for the IPv4
+                    LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                    With the future
+                    key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                    the global Address Locking operating mode.
 
                     Subclass of AvdModel.
                     """
@@ -86469,6 +86646,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdModel.
                                 address_locking:
                                    Address locking settings applied on the port.
+                                   With
+                                   `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                                   requires compatible global Address Locking settings.
+                                   See `address_locking_settings` for the IPv4
+                                   LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                                   With the future
+                                   key set to `false`, AVD renders supported interface Address Locking configuration without validating
+                                   the global Address Locking operating mode.
 
                                    Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
@@ -91614,9 +91799,13 @@ class EosDesigns(EosDesignsRootModel):
                         """VLAN name."""
                         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                         """
-                        To configure `address_locking.ipv4/v6`, you must define either
-                        `address_locking_settings.dhcp_servers_ipv4` or
-                        `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                        With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                        requires compatible global Address Locking settings.
+                        See `address_locking_settings` for the IPv4
+                        LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                        With the future
+                        key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                        `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                         """
                         profile: str | None
                         """
@@ -91999,9 +92188,13 @@ class EosDesigns(EosDesignsRootModel):
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
                                     address_locking:
-                                       To configure `address_locking.ipv4/v6`, you must define either
-                                       `address_locking_settings.dhcp_servers_ipv4` or
-                                       `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                                       With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                                       requires compatible global Address Locking settings.
+                                       See `address_locking_settings` for the IPv4
+                                       LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                                       With the future
+                                       key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                                       `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
@@ -96875,6 +97068,15 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
                     """
                     address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+                    """
+                    With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                    requires compatible global Address Locking settings.
+                    See `address_locking_settings` for the IPv4
+                    LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                    With the future
+                    key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                    `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
+                    """
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -97018,7 +97220,14 @@ class EosDesigns(EosDesignsRootModel):
                                    node type settings.
                                    Tags are also matched against the node_group name under node type settings.
                                    Subclass of AvdList with `str` items.
-                                address_locking: address_locking
+                                address_locking:
+                                   With `avd_design_future.only_configure_address_locking_when_used: true`, enabling an address family
+                                   requires compatible global Address Locking settings.
+                                   See `address_locking_settings` for the IPv4
+                                   LeaseQuery, IPv4 server-interface mode, and IPv6 enforcement-disabled requirements.
+                                   With the future
+                                   key set to `false`, enabling IPv4 or IPv6 Address Locking requires
+                                   `address_locking_settings.dhcp_servers_ipv4` or the matching enforcement-disabled setting.
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this
@@ -121873,7 +122082,34 @@ class EosDesigns(EosDesignsRootModel):
     aaa_settings: AaaSettings
     """Subclass of AvdModel."""
     address_locking_settings: AddressLockingSettings
-    """Subclass of AvdModel."""
+    """
+    Global Address Locking configuration.
+    With
+    `avd_design_future.only_configure_address_locking_when_used: false` (the default), this
+    configuration is rendered
+    whenever it has at least one setting.
+    With
+    `avd_design_future.only_configure_address_locking_when_used: true`, it is rendered only when Address
+    Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
+    When
+    `avd_design_future.only_configure_address_locking_when_used: true`:
+      - IPv4 Address Locking
+    requires one of the following:
+        - `locked_address.ipv4_enforcement_disabled: true` — enforcement-
+    disabled mode, no lease learning required. AVD raises a validation error if the platform does not
+    support this setting.
+        - `dhcp_servers_ipv4` with `local_interface` or a resolvable default
+    management interface — learns leases via DHCP LeaseQuery.
+        - `dhcp_server_interfaces` (EOS 4.36+,
+    requires `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases
+    directly from DHCP server interfaces.
+      - IPv6 Address Locking auto-configures
+    `locked_address.ipv6_enforcement_disabled: true` since enforcement-disabled is the only supported
+    mode.
+        Explicitly setting `locked_address.ipv6_enforcement_disabled: false` while any connected
+    endpoint, network port, VLAN, or SVI has IPv6 Address Locking enabled will raise a validation error.
+    Subclass of AvdModel.
+    """
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
     avd_design_future: AvdDesignFuture
@@ -124403,7 +124639,33 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
-                address_locking_settings: Subclass of AvdModel.
+                address_locking_settings:
+                   Global Address Locking configuration.
+                   With
+                   `avd_design_future.only_configure_address_locking_when_used: false` (the default), this
+                   configuration is rendered
+                   whenever it has at least one setting.
+                   With
+                   `avd_design_future.only_configure_address_locking_when_used: true`, it is rendered only when Address
+                   Locking is enabled on a connected endpoint, network port, VLAN, or SVI.
+                   When
+                   `avd_design_future.only_configure_address_locking_when_used: true`:
+                     - IPv4 Address Locking
+                   requires one of the following:
+                       - `locked_address.ipv4_enforcement_disabled: true` — enforcement-
+                   disabled mode, no lease learning required. AVD raises a validation error if the platform does not
+                   support this setting.
+                       - `dhcp_servers_ipv4` with `local_interface` or a resolvable default
+                   management interface — learns leases via DHCP LeaseQuery.
+                       - `dhcp_server_interfaces` (EOS 4.36+,
+                   requires `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`) — learns leases
+                   directly from DHCP server interfaces.
+                     - IPv6 Address Locking auto-configures
+                   `locked_address.ipv6_enforcement_disabled: true` since enforcement-disabled is the only supported
+                   mode.
+                       Explicitly setting `locked_address.ipv6_enforcement_disabled: false` while any connected
+                   endpoint, network port, VLAN, or SVI has IPv6 Address Locking enabled will raise a validation error.
+                   Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_design_future:
                    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.

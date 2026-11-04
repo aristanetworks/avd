@@ -1,0 +1,28 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-17
+      id: 101
+      bgp_as: 101
+
+# Testing IPv6 enforcement-disabled auto-configured without address_locking_settings.
+# When only IPv6 address locking is used, AVD auto-configures locked_address.ipv6_enforcement_disabled: true.
+avd_design_future:
+  only_configure_address_locking_when_used: true
+
+servers:
+  - name: ADDRESS_LOCKING_17_SERVER
+    adapters:
+      - switches: [address-locking-17]
+        switch_ports: [Ethernet2]
+        mode: access
+        vlans: 101
+        address_locking:
+          ipv6: true

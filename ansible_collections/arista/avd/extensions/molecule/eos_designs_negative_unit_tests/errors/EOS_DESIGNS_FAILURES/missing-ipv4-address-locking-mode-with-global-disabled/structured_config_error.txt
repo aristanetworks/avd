@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: IPv4 address locking is enabled under 'servers[name=server].adapters[0]' but 'address_locking_settings' is not properly configured for any supported IPv4 Address Locking mode. Consult the 'address_locking_settings' key documentation for the supported modes.
