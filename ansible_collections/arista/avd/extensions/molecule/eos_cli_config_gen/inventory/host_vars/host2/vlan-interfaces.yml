@@ -66,7 +66,7 @@ vlan_interfaces:
         area: 0.0.0.0
       ipv6:
         area: 0.0.0.0
-  
+
   - name: Vlan1003
     ospfv3:
       ipv6:
