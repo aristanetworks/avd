@@ -1073,6 +1073,42 @@ enable_password:
   disabled: true
 ```
 
+!!! warning
+
+    Exercise caution when changing a password through profile inheritance. If global or parent
+    settings define `aaa_settings.enable_password.password` and a profile sets
+    `aaa_settings.enable_password.cleartext_password`, inheritance retains both values.
+    `aaa_settings.enable_password.password` takes precedence over
+    `aaa_settings.enable_password.cleartext_password`, so the generated configuration keeps using the
+    old password and ignores the new cleartext password. For local users,
+    `aaa_settings.local_users[name=<username>].sha512_password` takes precedence over
+    `aaa_settings.local_users[name=<username>].cleartext_password` with the same result.
+
+    To rotate both credentials, explicitly clear the inherited hashes in the selected profile:
+
+    ```yaml
+    aaa_settings:
+      enable_password:
+        password: "<inherited-sha512-hash>"
+      local_users:
+        - name: rotating-user
+          sha512_password: "<inherited-sha512-hash>"
+
+    aaa_settings_profiles:
+      - profile: credential_rotation
+        enable_password:
+          password: null
+          cleartext_password: "<new-enable-password>"
+        local_users:
+          - name: rotating-user
+            sha512_password: null
+            cleartext_password: "<new-local-user-password>"
+
+    l3leaf:
+      defaults:
+        aaa_settings_profile: credential_rotation
+    ```
+
 --8<--
 schemas/avd_design/docs/tables/aaa-settings-profiles.md
 --8<--
