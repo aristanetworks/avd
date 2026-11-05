@@ -198,12 +198,14 @@ threat model and update expectations.
 | ----- | ------- | ------ | ----------- |
 | Bootstrap CSS/JS | 5.3.3 | [getbootstrap.com](https://getbootstrap.com/) | Standalone `index.html`; JS lazy-loaded in embeds |
 | Bootstrap Icons | 1.11.3 | [icons.getbootstrap.com](https://icons.getbootstrap.com/) | Lazy-loaded when an explorer mounts |
-| sql.js (WASM) | Vendored build (`sql-wasm.js` + `sql-wasm.wasm`) | [sql-js/sql.js releases](https://github.com/sql-js/sql.js/releases) | Lazy-loaded when an explorer mounts |
+| sql.js (WASM) | 1.10.3 (`sql-wasm.js` + `sql-wasm.wasm`) | [sql-js/sql.js v1.10.3](https://github.com/sql-js/sql.js/releases/tag/v1.10.3) | Lazy-loaded when an explorer mounts |
 
 **Update policy:** bump vendored files deliberately (not via live CDN), refresh
-`integrity=` attributes in `static/index.html` and `RUNTIME_DEPS` in
-`static/js/app.js`, document the version in this table, and run
-the syntax and build checks documented in [SECURITY.md](SECURITY.md#verification).
+`integrity=` attributes in `static/index.html` and the matching `RUNTIME_DEPS`
+entries in `static/js/app.js`. When updating `sql-wasm.wasm`, also refresh its
+separate `SQL_WASM.integrity` hash in `static/js/app.js`; the runtime verifies
+that hash before initializing sql.js. Document the version in this table and
+run the syntax and build checks documented in [SECURITY.md](SECURITY.md#verification).
 
 ## Architecture decisions
 

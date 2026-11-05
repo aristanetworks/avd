@@ -65,8 +65,10 @@ broad artifact publishing** from the MkDocs hook.
 
 See the inventory table in [README.md](README.md#vendored-runtime-dependencies).
 Updates must refresh Subresource Integrity (`integrity=` attributes in
-`static/index.html` and lazy-load metadata in `app.js`) and re-run
-the syntax and build checks below, along with relevant regression tests.
+`static/index.html`, `RUNTIME_DEPS` entries in `static/js/app.js`, and the
+separate `SQL_WASM.integrity` hash when updating `sql-wasm.wasm`). The runtime
+verifies the WASM hash before initializing sql.js. Re-run the syntax and build
+checks below, along with relevant regression tests.
 
 ## Verification
 
