@@ -160,6 +160,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      ospf:
+        enabled: true
       ospfv3:
         enabled: true
   - name: VRF_DUAL_STACK_2
