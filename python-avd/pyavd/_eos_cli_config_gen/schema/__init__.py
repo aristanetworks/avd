@@ -76693,12 +76693,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
                 bfd: bool | None
                 """Enable BFD for OSPFv3 IPv4 on the interface."""
-                area: str
+                area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType | None = Undefined) -> None:
                         """
                         Ipv4.
 
@@ -76717,12 +76717,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
                 bfd: bool | None
                 """Enable BFD for OSPFv3 IPv6 on the interface."""
-                area: str
+                area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType | None = Undefined) -> None:
                         """
                         Ipv6.
 

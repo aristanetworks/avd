@@ -410,7 +410,6 @@ keys:
                   description: Enable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
-                  required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             ipv6:
@@ -421,7 +420,6 @@ keys:
                   description: Enable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
-                  required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             passive_interface:

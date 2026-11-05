@@ -1031,6 +1031,9 @@ interface Dps1
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
 | Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
+| Vlan1003 | OSPFv3 BFD disabled at interface level | default | - | - |
+| Vlan1004 | OSPFv3 address-family BFD without area configuration | default | - | - |
+| Vlan1005 | OSPFv3 IPv6 BFD disabled at address-family level | default | - | - |
 
 ##### IPv4
 
@@ -1040,6 +1043,9 @@ interface Dps1
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
 | Vlan1002 | default | - | - | - | - | - |
+| Vlan1003 | default | - | - | - | - | - |
+| Vlan1004 | default | - | - | - | - | - |
+| Vlan1005 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
@@ -1049,6 +1055,9 @@ interface Dps1
 | Vlan1000 | False | - | True | - | 1000 | - | 0.0.0.0 |
 | Vlan1001 | True | True | - | - | 1000 | - | 0.0.0.0 |
 | Vlan1002 | - | - | - | - | 0.0.0.0 | - | 0.0.0.0 |
+| Vlan1003 | - | - | - | - | - | - | - |
+| Vlan1004 | - | - | - | False | - | True | - |
+| Vlan1005 | - | - | - | - | - | False | - |
 
 ##### ISIS
 
@@ -1096,6 +1105,19 @@ interface Vlan1002
    description Test OSPFv3 without passive-interface settings
    ospfv3 ipv4 area 0.0.0.0
    ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1003
+   description OSPFv3 BFD disabled at interface level
+   no ospfv3 bfd
+!
+interface Vlan1004
+   description OSPFv3 address-family BFD without area configuration
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv6 bfd
+!
+interface Vlan1005
+   description OSPFv3 IPv6 BFD disabled at address-family level
+   no ospfv3 ipv6 bfd
 ```
 
 ### VXLAN Interface

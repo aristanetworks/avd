@@ -66,3 +66,23 @@ vlan_interfaces:
         area: 0.0.0.0
       ipv6:
         area: 0.0.0.0
+
+  - name: Vlan1003
+    description: OSPFv3 BFD disabled at interface level
+    ospfv3:
+      bfd: false
+
+  - name: Vlan1004
+    description: OSPFv3 address-family BFD without area configuration
+    ospfv3:
+      bfd: true
+      ipv4:
+        bfd: false
+      ipv6:
+        bfd: true
+
+  - name: Vlan1005
+    description: OSPFv3 IPv6 BFD disabled at address-family level
+    ospfv3:
+      ipv6:
+        bfd: false
