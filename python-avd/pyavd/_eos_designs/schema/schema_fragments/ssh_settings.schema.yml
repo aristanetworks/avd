@@ -40,6 +40,7 @@ keys:
                 Mutually exclusive with `ipv4_standard_acl`. Setting both raises an error.
                 if `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`, this ACL must be defined in `ipv4_acls` catalog.
                 An error is raised if ACL is not defined under `ipv4_acls`. Field substitution is not supported.
+            ipv4_standard_acl:
               type: str
               description: |-
                 IPv4 standard access-list name.
