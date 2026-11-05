@@ -45277,6 +45277,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
                 Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
                 """
 
                 if TYPE_CHECKING:
@@ -45297,6 +45298,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
                                Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                         """
 
@@ -45397,6 +45399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
                 Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
                 """
 
                 if TYPE_CHECKING:
@@ -45417,6 +45420,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
                                Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                         """
 
@@ -46216,6 +46220,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                 Supported range 4-255.
                 Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
                 """
 
                 if TYPE_CHECKING:
@@ -46236,6 +46241,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                Supported range 4-255.
                                Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                         """
 
@@ -57575,6 +57581,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                     Supported range 4-255.
                     Mutually exclusive with `disabled`.
+                    e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
                     """
 
                     if TYPE_CHECKING:
@@ -57595,6 +57602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
                                    Supported range 4-255.
                                    Mutually exclusive with `disabled`.
+                                   e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                             """
 
