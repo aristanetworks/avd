@@ -4,6 +4,12 @@ cv_settings:
     - name: test
       servers:
         - name: 10.10.10.10
+cv_settings_profiles:
+  - profile: onprem_profile
+    onprem_clusters:
+      - name: test
+        servers:
+          - name: 10.10.10.10
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.0.0/24
@@ -13,3 +19,4 @@ l3leaf:
     - name: missing-ntp-settings-when-cv-server-is-set
       id: 3
       bgp_as: 65101
+      cv_settings_profile: onprem_profile

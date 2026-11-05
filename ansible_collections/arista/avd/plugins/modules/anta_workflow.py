@@ -109,6 +109,13 @@ options:
     description: ANTA report settings. These settings define the output format and location of the ANTA reports.
     type: dict
     suboptions:
+      generate_run_overview:
+        description: |-
+          If `true`, generate the Markdown report Run Overview section with test execution start time, end time, and total duration.
+          Additional run metrics may be added to this section in future releases.
+          Keep disabled when deterministic report content is required across repeated runs.
+        type: bool
+        default: false
       expand_results:
         description: |-
           Controls the granularity of the Markdown report.
@@ -208,6 +215,7 @@ EXAMPLES = r"""
           #     - skipped
           #   sort_fields:
           #     - categories
+          # generate_run_overview: true
           # expand_results: true
           # generate_custom_field: true
 """

@@ -1,0 +1,26 @@
+---
+devices:
+  - name: cv-settings-profile-too-many-servers
+    type: l2leaf
+    cv_settings_profile: child
+
+cv_settings:
+  onprem_clusters:
+    - name: onprem
+      servers:
+        - name: 192.0.2.1
+
+cv_settings_profiles:
+  - profile: parent
+    onprem_clusters:
+      - name: onprem
+        servers:
+          - name: 192.0.2.1
+          - name: 192.0.2.2
+  - profile: child
+    parent_profile: parent
+    onprem_clusters:
+      - name: onprem
+        servers:
+          - name: 192.0.2.3
+          - name: 192.0.2.4
