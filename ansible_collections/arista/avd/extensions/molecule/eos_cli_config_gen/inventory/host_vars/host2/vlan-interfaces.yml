@@ -39,7 +39,6 @@ vlan_interfaces:
     ospfv3:
       ipv4:
         area: 1000
-        cost: 50
       ipv6:
         area: 0.0.0.0
       no_passive_interface: true
@@ -67,3 +66,8 @@ vlan_interfaces:
         area: 0.0.0.0
       ipv6:
         area: 0.0.0.0
+  
+  - name: Vlan1003
+    ospfv3:
+      ipv6:
+        cost: 50
