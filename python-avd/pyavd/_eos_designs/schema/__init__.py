@@ -123371,24 +123371,22 @@ class EosDesigns(EosDesignsRootModel):
     """
     - The following underlay routing protocols are supported:
       - EBGP (default for l3ls-evpn)
-      - IBGP:
-    single-AS fabric with route reflection derived from uplinks.
-        Requires `underlay_rfc5549: true`
-    and `overlay_routing_protocol: none`.
-        See the [iBGP underlay how-
-    to](../../../../../../docs/howto/ibgp_underlay/README.md) for the restrictions.
+      -
+    IBGP*.
       - OSPF.
-      - OSPF-
-    LDP*.
+      - OSPF-LDP**.
       - ISIS.
-      - ISIS-SR*.
-      - ISIS-LDP*.
-      - ISIS-SR-LDP*.
-      - No underlay routing protocol
-    (none)
+      - ISIS-SR**.
+      - ISIS-LDP**.
+      - ISIS-SR-LDP**.
+      - No
+    underlay routing protocol (none)
     - The variables should be applied to all devices in the fabric.
-    *Only supported with
-    core_interfaces data model.
+    *Only supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`. See the [iBGP
+    underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).
+    **Only supported on node
+    types with `mpls_lsr: true`, like the default `p`, `pe` and `rr` node types. Other node types only
+    get OSPF or ISIS, without MPLS.
     """
     unsupported_transceiver: EosCliConfigGen.ServiceUnsupportedTransceiver
     uplink_ptp: UplinkPtp
@@ -125342,24 +125340,22 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_routing_protocol:
                    - The following underlay routing protocols are supported:
                      - EBGP (default for l3ls-evpn)
-                     - IBGP:
-                   single-AS fabric with route reflection derived from uplinks.
-                       Requires `underlay_rfc5549: true`
-                   and `overlay_routing_protocol: none`.
-                       See the [iBGP underlay how-
-                   to](../../../../../../docs/howto/ibgp_underlay/README.md) for the restrictions.
+                     -
+                   IBGP*.
                      - OSPF.
-                     - OSPF-
-                   LDP*.
+                     - OSPF-LDP**.
                      - ISIS.
-                     - ISIS-SR*.
-                     - ISIS-LDP*.
-                     - ISIS-SR-LDP*.
-                     - No underlay routing protocol
-                   (none)
+                     - ISIS-SR**.
+                     - ISIS-LDP**.
+                     - ISIS-SR-LDP**.
+                     - No
+                   underlay routing protocol (none)
                    - The variables should be applied to all devices in the fabric.
-                   *Only supported with
-                   core_interfaces data model.
+                   *Only supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`. See the [iBGP
+                   underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).
+                   **Only supported on node
+                   types with `mpls_lsr: true`, like the default `p`, `pe` and `rr` node types. Other node types only
+                   get OSPF or ISIS, without MPLS.
                 unsupported_transceiver: unsupported_transceiver
                 uplink_ptp:
                    Enable PTP on all infrastructure links.
