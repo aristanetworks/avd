@@ -109,6 +109,8 @@ jobs:
             pyavd:
               - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
+              - 'tools/schema-explorer/**'
+              - 'tools/schema_explorer_markdown.py'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
