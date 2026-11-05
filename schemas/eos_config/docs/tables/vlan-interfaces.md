@@ -169,15 +169,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ipv6_ospf.network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "vlan_interfaces.[].ospfv3") | Dictionary |  |  |  | Mutually exclusive with 'ipv6_ospf' and takes precedence over it.<br>Use only one style throughout the configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vlan_interfaces.[].ospfv3.ipv4") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.ipv4.bfd") | Boolean |  |  |  | Enable BFD for OSPFv3 IPv4 on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.ipv4.bfd") | Boolean |  |  |  | Enable/Disable BFD for OSPFv3 IPv4 on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv4.area") | String |  |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].ospfv3.ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.ipv6.bfd") | Boolean |  |  |  | Enable BFD for OSPFv3 IPv6 on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.ipv6.bfd") | Boolean |  |  |  | Enable/Disable BFD for OSPFv3 IPv6 on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv6.area") | String |  |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interface</samp>](## "vlan_interfaces.[].ospfv3.no_passive_interface") | Boolean |  |  |  | Disable passive interface mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.bfd") | Boolean |  |  |  | Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,<br>the shared BFD setting is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].ospfv3.bfd") | Boolean |  |  |  | Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,<br>the shared BFD setting is ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication_key</samp>](## "vlan_interfaces.[].ospf_authentication_key") | String |  |  |  | Encrypted password. |
@@ -700,14 +700,14 @@
         ospfv3:
           ipv4:
 
-            # Enable BFD for OSPFv3 IPv4 on the interface.
+            # Enable/Disable BFD for OSPFv3 IPv4 on the interface.
             bfd: <bool>
 
             # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
             area: <str>
           ipv6:
 
-            # Enable BFD for OSPFv3 IPv6 on the interface.
+            # Enable/Disable BFD for OSPFv3 IPv6 on the interface.
             bfd: <bool>
 
             # OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
@@ -720,7 +720,7 @@
           no_passive_interface: <bool>
           network_point_to_point: <bool>
 
-          # Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
+          # Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
           # the shared BFD setting is ignored.
           bfd: <bool>
         ospf_cost: <int>

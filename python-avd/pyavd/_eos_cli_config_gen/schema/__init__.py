@@ -76692,7 +76692,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
                 bfd: bool | None
-                """Enable BFD for OSPFv3 IPv4 on the interface."""
+                """Enable/Disable BFD for OSPFv3 IPv4 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
@@ -76706,7 +76706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            bfd: Enable BFD for OSPFv3 IPv4 on the interface.
+                            bfd: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
 
                         """
@@ -76716,7 +76716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
                 bfd: bool | None
-                """Enable BFD for OSPFv3 IPv6 on the interface."""
+                """Enable/Disable BFD for OSPFv3 IPv6 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
 
@@ -76730,7 +76730,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            bfd: Enable BFD for OSPFv3 IPv6 on the interface.
+                            bfd: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
 
                         """
@@ -76754,8 +76754,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             network_point_to_point: bool | None
             bfd: bool | None
             """
-            Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a
-            BFD setting,
+            Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family
+            defines a BFD setting,
             the shared BFD setting is ignored.
             """
 
@@ -76784,8 +76784,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
                         bfd:
-                           Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a
-                           BFD setting,
+                           Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family
+                           defines a BFD setting,
                            the shared BFD setting is ignored.
 
                     """

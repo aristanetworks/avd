@@ -25549,7 +25549,7 @@ keys:
               keys:
                 bfd:
                   type: bool
-                  description: Enable BFD for OSPFv3 IPv4 on the interface.
+                  description: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
                   description: 'OSPF area ID in IPv4 address or decimal format (range:
@@ -25559,7 +25559,7 @@ keys:
               keys:
                 bfd:
                   type: bool
-                  description: Enable BFD for OSPFv3 IPv6 on the interface.
+                  description: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
                   description: 'OSPF area ID in IPv4 address or decimal format (range:
@@ -25575,8 +25575,8 @@ keys:
               type: bool
             bfd:
               type: bool
-              description: 'Enable BFD for OSPFv3 on the interface for both address
-                families. If either address family defines a BFD setting,
+              description: 'Enable/Disable BFD for OSPFv3 on the interface for both
+                address families. If either address family defines a BFD setting,
 
                 the shared BFD setting is ignored.'
         ospf_cost:
