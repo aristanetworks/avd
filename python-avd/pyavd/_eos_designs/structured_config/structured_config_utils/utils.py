@@ -90,3 +90,24 @@ class UtilsMixin(Protocol):
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
         self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+
+    def _validate_ipv4_acl_substitution(
+        self: StructuredConfigUtilsProtocol,
+        acl_name: str,
+        context: str,
+        reference_type: str,
+    ) -> None:
+        """Raise if an IPv4 ACL uses a substitution field unsupported by its reference."""
+        if (ipv4_acl := self.inputs.ipv4_acls.get(acl_name, None)) is None:
+            return
+        for index, entry in enumerate(ipv4_acl.entries):
+            if entry._get("remark"):
+                continue
+            for field in ("source", "destination"):
+                if (field_value := entry._get(field)) in ("interface_ip", "peer_ip"):
+                    msg = (
+                        f"Field substitution of the value '{field_value}' defined under "
+                        f"'ipv4_acls[name={acl_name}].entries[{index}].{field}' "
+                        f"is not supported for {reference_type} '{context}'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
