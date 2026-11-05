@@ -6287,6 +6287,10 @@ keys:
                   at least one OSPFv3-enabled SVI in this VRF is configured on that
                   device.
 
+                  If BGP is configured for the VRF, OSPFv3 internal routes are redistributed
+                  into BGP unless `bgp.redistribute_ospfv3.internal.enabled` is set
+                  to `false`.
+
                   These settings only override the defaults.
 
                   VRF `default` is not supported yet.'
@@ -6336,21 +6340,6 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
-              redistribute_ospfv3:
-                documentation_options:
-                  table: network-services-vrfs-ospfv3-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    default: true
-                    description: 'Redistribute OSPFv3 internal routes into BGP for
-                      this VRF.
-
-                      Ignored on devices where BGP is not configured for this VRF
-                      or where the VRF has no OSPFv3 instance.
-
-                      OSPFv3 external routes are not redistributed.'
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -7426,6 +7415,22 @@ keys:
                         max: 3600
                         default: 300
                         description: Restart time in seconds.
+                  redistribute_ospfv3:
+                    type: dict
+                    description: 'Redistribution of OSPFv3 routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPFv3 internal routes into
+                              BGP.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
