@@ -68308,10 +68308,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """32-bit OSPF router ID as an IP address."""
             bfd_default: bool | None
             """
-            Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
-            setting is defined,
-            the shared BFD command is not rendered. A family BFD command is rendered only
-            when that family setting is true.
+            Enable BFD for OSPFv3 on the interface for both address families in this VRF. An address-family BFD
+            setting suppresses
+            the shared command only when that same address family is enabled (`enabled:
+            true`) in this VRF. A family BFD command
+            is rendered only when the family is enabled and its BFD
+            setting is true.
             """
             bfd_adjacency_state_any: bool | None
             """
@@ -68373,10 +68375,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            VRF 'default' must be configured directly under 'router_ospfv3'.
                         router_id: 32-bit OSPF router ID as an IP address.
                         bfd_default:
-                           Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
-                           setting is defined,
-                           the shared BFD command is not rendered. A family BFD command is rendered only
-                           when that family setting is true.
+                           Enable BFD for OSPFv3 on the interface for both address families in this VRF. An address-family BFD
+                           setting suppresses
+                           the shared command only when that same address family is enabled (`enabled:
+                           true`) in this VRF. A family BFD command
+                           is rendered only when the family is enabled and its BFD
+                           setting is true.
                         bfd_adjacency_state_any:
                            Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled
                            address family defines
@@ -68426,10 +68430,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """32-bit OSPF router ID as an IP address."""
         bfd_default: bool | None
         """
-        Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
-        setting is defined,
-        the shared BFD command is not rendered. A family BFD command is rendered only
-        when that family setting is true.
+        Enable BFD for OSPFv3 on the interface for both address families. An address-family BFD setting
+        suppresses the shared
+        command only when that same address family is enabled (`enabled: true`) under
+        this router OSPFv3 instance. A family
+        BFD command is rendered only when the family is enabled and
+        its BFD setting is true.
         """
         bfd_adjacency_state_any: bool | None
         """
@@ -68490,10 +68496,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     router_id: 32-bit OSPF router ID as an IP address.
                     bfd_default:
-                       Enable BFD for OSPFv3 on the interface for both address families. If either address-family BFD
-                       setting is defined,
-                       the shared BFD command is not rendered. A family BFD command is rendered only
-                       when that family setting is true.
+                       Enable BFD for OSPFv3 on the interface for both address families. An address-family BFD setting
+                       suppresses the shared
+                       command only when that same address family is enabled (`enabled: true`) under
+                       this router OSPFv3 instance. A family
+                       BFD command is rendered only when the family is enabled and
+                       its BFD setting is true.
                     bfd_adjacency_state_any:
                        Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family
                        defines

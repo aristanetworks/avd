@@ -22448,10 +22448,13 @@ keys:
       bfd_default:
         type: bool
         description: 'Enable BFD for OSPFv3 on the interface for both address families.
-          If either address-family BFD setting is defined,
+          An address-family BFD setting suppresses the shared
 
-          the shared BFD command is not rendered. A family BFD command is rendered
-          only when that family setting is true.'
+          command only when that same address family is enabled (`enabled: true`)
+          under this router OSPFv3 instance. A family
+
+          BFD command is rendered only when the family is enabled and its BFD setting
+          is true.'
       bfd_adjacency_state_any:
         type: bool
         description: 'Allow BFD sessions to be established in any OSPFv3 adjacency
@@ -22619,10 +22622,13 @@ keys:
             bfd_default:
               type: bool
               description: 'Enable BFD for OSPFv3 on the interface for both address
-                families. If either address-family BFD setting is defined,
+                families in this VRF. An address-family BFD setting suppresses
 
-                the shared BFD command is not rendered. A family BFD command is rendered
-                only when that family setting is true.'
+                the shared command only when that same address family is enabled (`enabled:
+                true`) in this VRF. A family BFD command
+
+                is rendered only when the family is enabled and its BFD setting is
+                true.'
             bfd_adjacency_state_any:
               type: bool
               description: 'Allow BFD sessions to be established in any OSPFv3 adjacency
