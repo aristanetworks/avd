@@ -14819,7 +14819,7 @@ $defs:
             documentation_options:
               table: node-type-bgp-configuration
             type: str
-            description: 'Set BGP cluster id.
+            description: 'BGP cluster ID.
 
               For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp`
               and for WAN route servers, defaults to the router ID.

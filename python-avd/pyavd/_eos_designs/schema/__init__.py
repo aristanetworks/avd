@@ -12799,7 +12799,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """
-        Set BGP cluster id.
+        BGP cluster ID.
         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
         route servers, defaults to the router ID.
         With `underlay_routing_protocol: ibgp`, required on all
@@ -13733,7 +13733,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id:
-                       Set BGP cluster id.
+                       BGP cluster ID.
                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                        route servers, defaults to the router ID.
                        With `underlay_routing_protocol: ibgp`, required on all
@@ -18502,7 +18502,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """
-        Set BGP cluster id.
+        BGP cluster ID.
         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
         route servers, defaults to the router ID.
         With `underlay_routing_protocol: ibgp`, required on all
@@ -19444,7 +19444,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id:
-                       Set BGP cluster id.
+                       BGP cluster ID.
                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                        route servers, defaults to the router ID.
                        With `underlay_routing_protocol: ibgp`, required on all
@@ -62778,7 +62778,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -63691,7 +63691,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
@@ -68461,7 +68461,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """
-                        Set BGP cluster id.
+                        BGP cluster ID.
                         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                         route servers, defaults to the router ID.
                         With `underlay_routing_protocol: ibgp`, required on all
@@ -69383,7 +69383,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id:
-                                       Set BGP cluster id.
+                                       BGP cluster ID.
                                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                        route servers, defaults to the router ID.
                                        With `underlay_routing_protocol: ibgp`, required on all
@@ -74072,7 +74072,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -74996,7 +74996,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
@@ -79757,7 +79757,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -80679,7 +80679,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
@@ -101802,7 +101802,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -102715,7 +102715,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
@@ -107485,7 +107485,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """
-                        Set BGP cluster id.
+                        BGP cluster ID.
                         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                         route servers, defaults to the router ID.
                         With `underlay_routing_protocol: ibgp`, required on all
@@ -108407,7 +108407,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id:
-                                       Set BGP cluster id.
+                                       BGP cluster ID.
                                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                        route servers, defaults to the router ID.
                                        With `underlay_routing_protocol: ibgp`, required on all
@@ -113096,7 +113096,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -114020,7 +114020,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
@@ -118781,7 +118781,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """
-                    Set BGP cluster id.
+                    BGP cluster ID.
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
@@ -119703,7 +119703,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id:
-                                   Set BGP cluster id.
+                                   BGP cluster ID.
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
