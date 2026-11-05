@@ -55,6 +55,7 @@ servers:
         endpoint_ports: [Eth0]
         dot1x:
           mac_based_access_list: true
+          reauthentication: true
 
 network_ports:
   - switches: [dot1x-settings-6]

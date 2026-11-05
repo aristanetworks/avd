@@ -27,6 +27,8 @@ ethernet_interfaces:
 - name: Ethernet1
   description: SERVER_DOT1X_SERVER_Eth0
   shutdown: false
+  dot1x:
+    reauthentication: true
   metadata:
     peer: DOT1X_SERVER
     peer_interface: Eth0
