@@ -23,6 +23,32 @@ dot1x:
         auth_only: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: SERVER_DOT1X_SERVER_Eth0
+  shutdown: false
+  metadata:
+    peer: DOT1X_SERVER
+    peer_interface: Eth0
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+- name: Ethernet2
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet3
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: DOT1X_MAC_BASED_ACCESS_LIST
+  switchport:
+    enabled: true
 hostname: dot1x-settings-6
 ip_igmp_snooping:
   globally_enabled: true

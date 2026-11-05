@@ -16705,6 +16705,12 @@ $defs:
               description: 'Support for 802.1X BPDU bypass.
 
                 The feature will be ignored on platforms where this is false.'
+            dot1x_mac_based_access_list:
+              type: bool
+              default: true
+              description: 'Support for 802.1X Per-MAC ACL mode on the interfaces.
+
+                The feature will be ignored on platforms where this is false.'
             address_locking:
               type: dict
               keys:

@@ -46514,6 +46514,7 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "dot1x_bpdu_bypass": {"type": bool, "default": True},
+                "dot1x_mac_based_access_list": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -46544,6 +46545,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for 802.1X BPDU bypass.
             The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            dot1x_mac_based_access_list: bool
+            """
+            Support for 802.1X Per-MAC ACL mode on the interfaces.
+            The feature will be ignored on platforms
+            where this is false.
 
             Default value: `True`
             """
@@ -46756,6 +46765,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
+                    dot1x_mac_based_access_list: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -46792,6 +46802,10 @@ class EosDesigns(EosDesignsRootModel):
                         dot1x_bpdu_bypass:
                            Support for 802.1X BPDU bypass.
                            The feature will be ignored on platforms where this is false.
+                        dot1x_mac_based_access_list:
+                           Support for 802.1X Per-MAC ACL mode on the interfaces.
+                           The feature will be ignored on platforms
+                           where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.
@@ -48411,6 +48425,7 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "dot1x_bpdu_bypass": {"type": bool, "default": True},
+                "dot1x_mac_based_access_list": {"type": bool, "default": True},
                 "address_locking": {"type": AddressLocking},
                 "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -48441,6 +48456,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for 802.1X BPDU bypass.
             The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            dot1x_mac_based_access_list: bool
+            """
+            Support for 802.1X Per-MAC ACL mode on the interfaces.
+            The feature will be ignored on platforms
+            where this is false.
 
             Default value: `True`
             """
@@ -48653,6 +48676,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     dot1x_bpdu_bypass: bool | UndefinedType = Undefined,
+                    dot1x_mac_based_access_list: bool | UndefinedType = Undefined,
                     address_locking: AddressLocking | UndefinedType = Undefined,
                     queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
@@ -48689,6 +48713,10 @@ class EosDesigns(EosDesignsRootModel):
                         dot1x_bpdu_bypass:
                            Support for 802.1X BPDU bypass.
                            The feature will be ignored on platforms where this is false.
+                        dot1x_mac_based_access_list:
+                           Support for 802.1X Per-MAC ACL mode on the interfaces.
+                           The feature will be ignored on platforms
+                           where this is false.
                         address_locking: Subclass of AvdModel.
                         queue_monitor:
                            Support for LANZ.

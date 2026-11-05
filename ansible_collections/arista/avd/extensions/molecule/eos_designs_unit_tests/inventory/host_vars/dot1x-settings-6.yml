@@ -16,6 +16,7 @@ custom_platform_settings:
       address_locking:
         supported: false
       dot1x_bpdu_bypass: false
+      dot1x_mac_based_access_list: false
 
 address_locking_settings:
   dhcp_servers_ipv4:
@@ -40,3 +41,26 @@ aaa_settings:
     servers:
       - host: agni.arista.com
         cleartext_key: super-secret-key
+
+port_profiles:
+  - profile: DOT1X_MAC_BASED_ACCESS_LIST
+    dot1x:
+      mac_based_access_list: true
+
+servers:
+  - name: DOT1X_SERVER
+    adapters:
+      - switches: [dot1x-settings-6]
+        switch_ports: [Ethernet1]
+        endpoint_ports: [Eth0]
+        dot1x:
+          mac_based_access_list: true
+
+network_ports:
+  - switches: [dot1x-settings-6]
+    switch_ports: [Ethernet2]
+    dot1x:
+      mac_based_access_list: true
+  - switches: [dot1x-settings-6]
+    switch_ports: [Ethernet3]
+    profile: DOT1X_MAC_BASED_ACCESS_LIST
