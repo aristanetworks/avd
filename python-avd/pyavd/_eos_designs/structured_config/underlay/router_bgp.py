@@ -136,12 +136,12 @@ class RouterBgpMixin(Protocol):
             elif link.type != "underlay_p2p":
                 reason = f"connects with uplinks of type '{link.type}'"
             elif link.peer_bgp_as is None:
-                reason = "is not an underlay router"
+                reason = "has no 'bgp_as'"
 
             if reason is not None:
                 msg = (
-                    "Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires all uplink and downlink switches to be 'ibgp' underlay "
-                    f"routers with 'uplink_type: p2p', but {direction} switch '{link.peer}' {reason}."
+                    "Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires all uplink and downlink switches to use "
+                    f"'underlay_routing_protocol: ibgp' and 'uplink_type: p2p', but {direction} switch '{link.peer}' {reason}."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 

@@ -23,8 +23,8 @@ class UnderlayIbgpMixin(Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
 
     'underlay_ibgp' can be used while generating facts.
-    'validate_underlay_ibgp' reads the facts of this device and its downlink switches, so it must only be used while generating structured config.
-    The route reflector groups and cluster IDs are validated per device while generating facts, in 'eos_designs_facts.underlay_ibgp'.
+    'validate_underlay_ibgp' reads the facts of this node and its downlink switches, so it must only be used while generating structured config.
+    The route reflector groups and cluster IDs are validated per node while generating facts, in 'eos_designs_facts.underlay_ibgp'.
     """
 
     @cached_property
@@ -106,27 +106,24 @@ class UnderlayIbgpMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if self.node_config.uplink_bfd:
-            msg = (
-                f"{MSG_PREFIX} 'uplink_bfd: true' is not supported with 'underlay_routing_protocol: ibgp'; "
-                "use 'bgp_peer_groups.ipv4_underlay_peers.bfd' instead."
-            )
+            msg = f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' does not support 'uplink_bfd: true'; use 'bgp_peer_groups.ipv4_underlay_peers.bfd' instead."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if self.inputs.underlay_filter_peer_as:
-            msg = f"{MSG_PREFIX} 'underlay_filter_peer_as: true' is not supported with 'underlay_routing_protocol: ibgp'; set it to false."
+            msg = f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' does not support 'underlay_filter_peer_as: true'; set it to false."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if self.node_config.bgp_cluster_id is not None and not self.switch_facts.downlink_switches:
             msg = (
-                f"{MSG_PREFIX} 'bgp_cluster_id' is set on a node without downlink switches, "
-                "which is not a route reflector with 'underlay_routing_protocol: ibgp'; remove 'bgp_cluster_id'."
+                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' only uses 'bgp_cluster_id' on route reflectors, "
+                "but this node has no downlink switches, so it is not a route reflector; remove 'bgp_cluster_id'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if (ipv4_underlay_peers_name := self.inputs.bgp_peer_groups.ipv4_underlay_peers.name) == self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name:
             msg = (
-                f"{MSG_PREFIX} 'bgp_peer_groups.ipv4_underlay_peers.name' and 'bgp_peer_groups.rr_clients_underlay_peers.name' must be different "
-                f"with 'underlay_routing_protocol: ibgp', but both are '{ipv4_underlay_peers_name}'."
+                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires different names for 'bgp_peer_groups.ipv4_underlay_peers' "
+                f"and 'bgp_peer_groups.rr_clients_underlay_peers', but both are '{ipv4_underlay_peers_name}'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
@@ -143,9 +140,9 @@ class UnderlayIbgpMixin(Protocol):
                 cleartext_password = bgp_decrypt(ipv4_underlay_peers.password, key=ipv4_underlay_peers.name)
             except ValueError as e:
                 msg = (
-                    f"{MSG_PREFIX} 'bgp_peer_groups.ipv4_underlay_peers.password' must be a type 7 password encrypted with the peer group name "
-                    f"'{ipv4_underlay_peers.name}', since 'underlay_routing_protocol: ibgp' encrypts it again for 'bgp_peer_groups.rr_clients_underlay_peers', "
-                    "but it could not be decrypted. Use 'cleartext_password' or encrypt the password for this peer group name."
+                    f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' encrypts 'bgp_peer_groups.ipv4_underlay_peers.password' again for "
+                    f"'bgp_peer_groups.rr_clients_underlay_peers', but it could not be decrypted with the peer group name '{ipv4_underlay_peers.name}'; "
+                    "use 'cleartext_password' or a type 7 password encrypted with this name."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
         elif (cleartext_password := ipv4_underlay_peers.cleartext_password) is None:

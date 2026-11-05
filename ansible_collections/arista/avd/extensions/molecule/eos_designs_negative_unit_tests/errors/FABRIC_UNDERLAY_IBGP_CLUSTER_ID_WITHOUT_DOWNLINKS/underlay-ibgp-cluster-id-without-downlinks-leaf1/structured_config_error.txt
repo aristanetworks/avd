@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'bgp_cluster_id' is set on a node without downlink switches, which is not a route reflector with 'underlay_routing_protocol: ibgp'; remove 'bgp_cluster_id'.
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' only uses 'bgp_cluster_id' on route reflectors, but this node has no downlink switches, so it is not a route reflector; remove 'bgp_cluster_id'.

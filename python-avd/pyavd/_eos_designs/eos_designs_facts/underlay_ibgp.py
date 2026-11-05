@@ -64,7 +64,7 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
                 self._underlay_ibgp_route_reflectors_by_cluster_id.setdefault(cluster_id, set()).add(route_reflector)
 
     def _validate_underlay_ibgp_uplink_switches(self: EosDesignsFactsGeneratorProtocol) -> None:
-        """Validate that the route reflectors of this device have the same 'bgp_cluster_id'."""
+        """Validate that the route reflectors of this node have the same 'bgp_cluster_id'."""
         cluster_ids = {
             route_reflector: self.get_peer_facts_generator(route_reflector).shared_utils.node_config.bgp_cluster_id
             for route_reflector in natural_sort(self._underlay_ibgp_route_reflectors)
@@ -76,7 +76,7 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
         if len(set(cluster_ids.values())) > 1:
             got = ", ".join(f"'{cluster_id}' on '{route_reflector}'" for route_reflector, cluster_id in cluster_ids.items())
             msg = (
-                f"{MSG_PREFIX} 'bgp_cluster_id' must be the same on all the uplink switches of a node with 'underlay_routing_protocol: ibgp', "
+                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires the same 'bgp_cluster_id' on all uplink switches, "
                 f"since they are route reflectors for the same clients, but got {got}."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
@@ -96,9 +96,8 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
         for client in other_clients:
             if (client_route_reflectors := self.get_peer_facts_generator(client)._underlay_ibgp_route_reflectors) != route_reflectors:
                 msg = (
-                    f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires all clients of a route reflector to have the same 'ibgp' uplink switches, "
-                    f"but the uplink switches of '{first_client}' are {_quoted(route_reflectors)}, "
-                    f"while those of '{client}' are {_quoted(client_route_reflectors)}."
+                    f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires all downlink switches of a route reflector to have the same uplink switches, "
+                    f"but those of '{first_client}' are {_quoted(route_reflectors)}, while those of '{client}' are {_quoted(client_route_reflectors)}."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
@@ -111,6 +110,6 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
         if other_route_reflectors := self._underlay_ibgp_route_reflectors_by_cluster_id[cluster_id] - route_reflectors:
             msg = (
                 f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires a unique 'bgp_cluster_id' per group of route reflectors, "
-                f"but '{cluster_id}' is used by the group {_quoted(route_reflectors)} and also by {_quoted(other_route_reflectors)}."
+                f"but '{cluster_id}' is used by the route reflector group {_quoted(route_reflectors)} and also by {_quoted(other_route_reflectors)}."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
