@@ -1,5 +1,4 @@
 ---
-# Tests with minimum configs for ospfv3 redistribution
 router_ospfv3:
   router_id: 1.1.1.1
   bfd_default: true
