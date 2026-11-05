@@ -1,0 +1,65 @@
+# Arista AVD
+
+> Arista AVD (Architect, Validate, Deploy) automates network configuration, documentation, deployment, and validation for Arista EOS networks. It provides the arista.avd Ansible collection and the PyAVD Python library for data center, campus, and wide area networks.
+
+This index covers the documentation version in which it is published. Resolve relative links against this file's URL, preserving the version path. Use documentation matching the installed arista.avd and PyAVD versions; these packages are co-versioned. The stable documentation tracks the current stable release, while devel describes development code. Consult the porting guide when upgrading across major versions.
+
+Key concepts:
+
+- AVD Design is the network-wide intent model consumed by eos_designs, which produces per-device structured configuration and fabric documentation.
+- EOS Config is the device configuration model consumed by eos_cli_config_gen, which renders EOS CLI configuration and device documentation. Use the custom structured configuration guide to override or extend eos_designs output with EOS Config data.
+- Configuration generation runs offline. Deployment and operational validation are separate workflows with their own roles and requirements.
+- PyAVD exposes Python functions for validation and generation; callers provide inventory and variable management. Use the documented public API and check its limitations.
+
+The links below lead to rendered HTML documentation, including expanded schema tables and API references. Raw repository Markdown can contain unexpanded includes or API directives. For a variable, consult its data-model reference for nesting, types, defaults, constraints, and deprecations, then use the relevant how-to or example for context. The data-model references are large; search for the relevant key or section. The interactive Schema Explorer requires JavaScript; the linked data-model references contain the schema documentation as page content.
+
+## Getting started
+
+- [Project overview](index.html): Supported workflows and reference designs.
+- [Install the Ansible collection](docs/installation/collection-installation.html): Supported dependencies, matching package versions, and installation methods.
+- [Ansible and AVD](docs/user-manual/intro-to-ansible-and-avd.html): Inventory, playbooks, and the configuration generation and deployment workflow.
+- [Ansible usage patterns](docs/user-manual/ansible-usage-patterns.html): Organizing and passing variables between AVD roles.
+- [Containers](docs/containers/overview.html): Container-based environments for using AVD.
+
+## Data models and configuration generation
+
+- [AVD Design data models](ansible_collections/arista/avd/roles/eos_designs/docs/data-models.html): Network intent inputs for eos_designs, with schema tables and YAML examples.
+- [EOS Config data models](ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.html): Device-level structured configuration inputs for eos_cli_config_gen, with schema tables and YAML examples.
+- [eos_designs role](ansible_collections/arista/avd/roles/eos_designs/index.html): Supported designs, inputs, outputs, and links to role configuration.
+- [eos_cli_config_gen role](ansible_collections/arista/avd/roles/eos_cli_config_gen/index.html): Rendering structured configuration into EOS CLI and device documentation.
+- [Custom structured configuration](ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.html): Extending or overriding generated configuration, including precedence and merge behavior.
+
+## Design guides
+
+- [Fabric topology](docs/howto/fabric_topology/index.html): Defining devices, topology, and fabric relationships.
+- [Node types](docs/howto/node_types/index.html): Built-in and custom device roles in a fabric.
+- [IP addressing](docs/howto/ip_addressing/index.html): Address allocation, pools, and customization.
+- [Connected endpoints](docs/howto/connected_endpoints/index.html): Modeling servers and other attached devices and their interfaces.
+- [Network services](docs/howto/network_services/index.html): Defining tenants, VRFs, VLANs, and services.
+- [WAN designs](ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.html): AutoVPN and CloudVision Pathfinder designs.
+
+## Examples
+
+- [Using AVD examples](ansible_collections/arista/avd/examples/index.html): Available example topologies and how to obtain and run them.
+- [Single data center leaf-spine fabric](ansible_collections/arista/avd/examples/single-dc-l3ls/index.html): Worked example with inventory, variables, and playbooks for a Layer 3 leaf-spine fabric.
+- [Campus fabric](ansible_collections/arista/avd/examples/campus-fabric/index.html): Campus topology and configuration workflow.
+
+## Python, deployment, and validation
+
+- [PyAVD](docs/pyavd/pyavd.html): Installation, supported functions, public API reference, and limitations.
+- [CloudVision deployment](ansible_collections/arista/avd/roles/cv_deploy/index.html): Deploying configurations through CloudVision workspaces and change controls.
+- [eAPI deployment](ansible_collections/arista/avd/roles/eos_config_deploy_eapi/index.html): Deploying generated configurations directly to EOS devices.
+- [ANTA validation](ansible_collections/arista/avd/roles/anta_runner/index.html): Generating and running network operational tests and reporting results.
+
+## Releases and compatibility
+
+- [Release notes](docs/release-notes/6.x.x.html): Features, fixes, deprecations, and release-specific changes for AVD 6.x.
+- [Porting guide](docs/porting-guides/6.x.x.html): Migrating from AVD 5.x to 6.x, including changed data models and defaults.
+- [Versioning policy](docs/versioning/semantic-versioning.html): Compatibility guarantees for inputs, outputs, public APIs, and internal implementation details.
+
+## Optional
+
+- [Support](docs/support/support_overview.html): Support options and issue reporting.
+- [Contributing](docs/contribution/overview.html): Contribution process and project guidelines.
+- [Development tooling](docs/contribution/development-tooling.html): Setting up a development environment and running project tooling.
+- [Source repository](https://github.com/aristanetworks/avd): Source code and issue tracking; select the tag corresponding to the documentation version when inspecting implementation details.

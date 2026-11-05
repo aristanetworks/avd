@@ -196,6 +196,8 @@ markdown_extensions:
       separator: "-"
       permalink: true
 hooks:
+  # Copy the root llms.txt after the build; mkdocs-same-dir filters root text files.
+  - tools/llms_txt.py
   # Schema Explorer integration:
   #   * Auto-builds a cached Schema Explorer outside the repo tree when the
   #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
