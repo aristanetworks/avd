@@ -13,9 +13,9 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;allow_recursive_profile_inheritance</samp>](## "avd_design_future.allow_recursive_profile_inheritance") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
+    | [<samp>&nbsp;&nbsp;configure_queue_monitor_streaming_ipv4_acl_from_catalog</samp>](## "avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is set.<br>When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.<br>`queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
-    | [<samp>&nbsp;&nbsp;configure_queue_monitor_streaming_ipv4_acl_from_catalog</samp>](## "avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.<br>When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is enabled.<br>When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.<br>`queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
     | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_ipv6_pool</samp>](## "avd_design_future.fix_mlag_ibgp_peering_ipv6_pool") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the MLAG iBGP peering BGP neighbor in VRFs when using `underlay_ipv6_numbered`.<br>When enabled, the BGP neighbor is derived from the same IPv6 pool as the MLAG iBGP peering SVI,<br>using `mlag_ibgp_peering_ipv6_pool` when set, and `mlag_ibgp_peering_ipv4_pool` is ignored. |
     | [<samp>&nbsp;&nbsp;fix_mlag_ibgp_peering_vrfs_address_families</samp>](## "avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Fix the BGP address families of the MLAG iBGP peerings in VRFs when using `underlay_ipv6_numbered`.<br>These iBGP sessions run over IPv6, so when enabled:<br>- With `overlay_mlag_rfc5549: false`, the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer` peer group activates the IPv6 address family<br>  instead of the IPv4 address family. An error is raised if a VRF with MLAG iBGP peering has IPv4 configured, with either the shared<br>  or the dedicated peer group, since IPv4 routes cannot be exchanged over these sessions without `overlay_mlag_rfc5549: true`.<br>- With `overlay_mlag_rfc5549: true`, both the IPv4 address family (with `next-hop address-family ipv6 originate`) and the IPv6<br>  address family are activated on the MLAG peer group used for VRFs, either the shared `bgp_peer_groups.mlag_ipv4_underlay_peer`<br>  or the dedicated `bgp_peer_groups.mlag_ipv4_vrfs_peer`. `ip routing ipv6 interfaces` is configured globally when using the shared<br>  peer group, and `ip routing ipv6 interfaces vrf <vrf>` and `ipv6 unicast-routing vrf <vrf>` are configured for VRFs with MLAG iBGP peering.<br>  This allows dual-stack VRFs over a numbered IPv6 underlay. |
@@ -56,6 +56,13 @@
       # Configure `inband_mgmt_vrf` for IPv6 inband management.
       configure_inband_mgmt_ipv6_vrf: <bool; default=False>
 
+      # Available from AVD 6.5.0.
+      # Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
+      # When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is set.
+      # When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
+      # `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
+      configure_queue_monitor_streaming_ipv4_acl_from_catalog: <bool; default=False>
+
       # Available from AVD 6.2.0.
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
       # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
@@ -65,13 +72,6 @@
       # Fix support for `address_locking_settings.dhcp_server_interfaces`.
       # When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
       fix_address_locking_dhcp_server_interfaces: <bool; default=False>
-
-      # Available from AVD 6.5.0.
-      # Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
-      # When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is enabled.
-      # When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
-      # `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
-      configure_queue_monitor_streaming_ipv4_acl_from_catalog: <bool; default=False>
 
       # Available from AVD 6.4.0.
       # Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`

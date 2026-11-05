@@ -1054,9 +1054,9 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "configure_queue_monitor_streaming_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
-            "configure_queue_monitor_streaming_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_ipv6_pool": {"type": bool, "default": False},
             "fix_mlag_ibgp_peering_vrfs_address_families": {"type": bool, "default": False},
@@ -1110,6 +1110,20 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.5.0.
+        Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
+        under `ipv4_acls`.
+        When enabled, configure the referenced extended access-list on devices where
+        queue-monitor streaming is set.
+        When disabled, only configure the access-group reference without
+        requiring or configuring an access-list definition from the catalog.
+        `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
+        regardless of this setting.
+
+        Default value: `False`
+        """
         consistent_uplink_vlans: bool
         """
         Available from AVD 6.2.0.
@@ -1127,20 +1141,6 @@ class EosDesigns(EosDesignsRootModel):
         When
         enabled, `address_locking_settings.dhcp_server_interfaces` and
         `address_locking_settings.local_interface` are mutually exclusive.
-
-        Default value: `False`
-        """
-        configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
-        """
-        Available from AVD 6.5.0.
-        Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
-        under `ipv4_acls`.
-        When enabled, configure the referenced extended access-list on devices where
-        queue-monitor streaming is enabled.
-        When disabled, only configure the access-group reference without
-        requiring or configuring an access-list definition from the catalog.
-        `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
-        regardless of this setting.
 
         Default value: `False`
         """
@@ -1301,9 +1301,9 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
-                configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_ipv6_pool: bool | UndefinedType = Undefined,
                 fix_mlag_ibgp_peering_vrfs_address_families: bool | UndefinedType = Undefined,
@@ -1344,6 +1344,16 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+                       Available from AVD 6.5.0.
+                       Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
+                       under `ipv4_acls`.
+                       When enabled, configure the referenced extended access-list on devices where
+                       queue-monitor streaming is set.
+                       When disabled, only configure the access-group reference without
+                       requiring or configuring an access-list definition from the catalog.
+                       `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
+                       regardless of this setting.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -1356,16 +1366,6 @@ class EosDesigns(EosDesignsRootModel):
                        When
                        enabled, `address_locking_settings.dhcp_server_interfaces` and
                        `address_locking_settings.local_interface` are mutually exclusive.
-                    configure_queue_monitor_streaming_ipv4_acl_from_catalog:
-                       Available from AVD 6.5.0.
-                       Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
-                       under `ipv4_acls`.
-                       When enabled, configure the referenced extended access-list on devices where
-                       queue-monitor streaming is enabled.
-                       When disabled, only configure the access-group reference without
-                       requiring or configuring an access-list definition from the catalog.
-                       `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
-                       regardless of this setting.
                     fix_match_ipv6_prefix_list_on_mlag_route_map:
                        Available from AVD 6.4.0.
                        Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match

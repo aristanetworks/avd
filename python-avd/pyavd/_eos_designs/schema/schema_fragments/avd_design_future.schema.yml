@@ -41,6 +41,15 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
+          When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is set.
+          When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
+          `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
       consistent_uplink_vlans:
         type: bool
         description: |-
@@ -55,15 +64,6 @@ keys:
           Available from AVD 6.4.0.
           Fix support for `address_locking_settings.dhcp_server_interfaces`.
           When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive.
-      configure_queue_monitor_streaming_ipv4_acl_from_catalog:
-        type: bool
-        default: false
-        description: |-
-          Available from AVD 6.5.0.
-          Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
-          When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is enabled.
-          When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
-          `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
       fix_match_ipv6_prefix_list_on_mlag_route_map:
         type: bool
         default: false
