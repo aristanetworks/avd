@@ -1,0 +1,53 @@
+---
+name: Schema Explorer check
+
+"on":
+  pull_request:
+    paths:
+      - "tools/schema-explorer/**"
+      - "tools/schema_explorer_markdown.py"
+      - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/schema-explorer-check.yml"
+  merge_group:
+    types: [checks_requested]
+  push:
+    branches:
+      - devel
+    paths:
+      - "tools/schema-explorer/**"
+      - "tools/schema_explorer_markdown.py"
+      - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/schema-explorer-check.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  schema-explorer-check:
+    name: Schema Explorer guardrails
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install Python dependencies
+        run: uv sync --group doc --group pytest --frozen
+      - name: Run schema-explorer-check
+        run: make schema-explorer-check
