@@ -5,11 +5,11 @@ import vm from "node:vm";
 
 const appSource = await readFile(new URL("../static/js/app.js", import.meta.url), "utf8");
 
-function loadApp() {
+function loadApp(detailHost = null) {
   const document = {
     addEventListener() {},
-    getElementById() {
-      return null;
+    getElementById(id) {
+      return id === "app" ? detailHost : null;
     },
     getElementsByTagName() {
       return [];
@@ -21,7 +21,11 @@ function loadApp() {
   const context = { console, document, window: {} };
   context.globalThis = context;
   vm.createContext(context);
-  vm.runInContext(appSource, context, { filename: "app.js" });
+  // Exercise rendering without starting the runtime asset and database loader.
+  const bootStart = appSource.indexOf("(async function boot() {");
+  const bootEnd = appSource.indexOf('document.addEventListener("change"', bootStart);
+  assert.ok(bootStart >= 0 && bootEnd > bootStart, "app startup boundaries must be present");
+  vm.runInContext(appSource.slice(0, bootStart) + appSource.slice(bootEnd), context, { filename: "app.js" });
   return context;
 }
 
@@ -68,4 +72,38 @@ test("search selects the original match instead of an injected ancestor", () => 
   app.renderReferenceResults(target, null, "eos_cli_config_gen", state, [match, parent]);
 
   assert.equal(state.currentRowId, "eos_cli_config_gen:ethernet_interfaces[].name");
+});
+
+test("variable detail renders a reference to another allowed schema module", () => {
+  const host = { innerHTML: "" };
+  const detailApp = loadApp(host);
+  const variable = {
+    module: "eos_designs",
+    key_path: "structured_config",
+    var_type: "dict",
+    cross_ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors",
+  };
+  const db = {
+    prepare() {
+      let pending = true;
+      return {
+        bind(params) {
+          assert.deepEqual(Array.from(params), ["eos_designs", "structured_config"]);
+        },
+        step() {
+          const hasRow = pending;
+          pending = false;
+          return hasRow;
+        },
+        getAsObject() { return variable; },
+        free() {},
+      };
+    },
+  };
+
+  detailApp.renderVarDetail(db, "eos_designs", "structured_config");
+
+  assert.match(host.innerHTML, /Cross-schema<\/td>/);
+  assert.ok(host.innerHTML.includes('href="#/eos_cli_config_gen/router_bgp.neighbors"'));
+  assert.ok(host.innerHTML.includes("<code>eos_cli_config_gen</code>"));
 });

@@ -6,6 +6,7 @@
 
 // HTML escaping and cross-schema link helpers (extracted for test_sanitize.mjs).
 // sanitize-helpers-start
+/** Escape HTML metacharacters in text rendered through HTML templates. */
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
@@ -16,6 +17,7 @@ function escapeHtml(value) {
   }[character]));
 }
 
+/** Escape dynamic values used inside quoted HTML attributes. */
 function escapeAttr(value) {
   return escapeHtml(value).replace(/"/g, "&quot;");
 }

@@ -52,3 +52,11 @@ test("renderCrossRefRow rejects unknown modules and javascript: refs", () => {
   assert.equal(renderCrossRefRow("evil_module#/keys/foo", { eos_designs: {} }), "");
   assert.equal(renderCrossRefRow("javascript:alert(1)#/", { eos_designs: {} }), "");
 });
+
+test("renderCrossRefRow escapes hostile key-path labels and encodes their links", () => {
+  const { renderCrossRefRow } = loadSanitizeHelpers();
+  const row = renderCrossRefRow('eos_cli_config_gen#/keys/"><img src=x onerror=alert(1)>', { eos_cli_config_gen: {} });
+  assert.ok(row.includes('<code>&quot;&gt;&lt;img src=x onerror=alert(1)&gt;</code>'));
+  assert.ok(row.includes('href="#/eos_cli_config_gen/%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E"'));
+  assert.doesNotMatch(row, /<img|<script/i);
+});
