@@ -37,7 +37,7 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: RR-UNDERLAY-PEERS
+  - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     next_hop_self: true
@@ -48,14 +48,14 @@ router_bgp:
     remote_as: '65000'
     metadata:
       peer: underlay-ibgp-node-type-keys-leaf1
-    peer_group: RR-UNDERLAY-PEERS
+    peer_group: IPv4-UNDERLAY-PEERS
     description: underlay-ibgp-node-type-keys-leaf1_Ethernet10
   redistribute:
     connected:
       enabled: true
   address_family_ipv4:
     peer_groups:
-    - name: RR-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
       activate: true
       next_hop:
         address_family_ipv6:

@@ -161,8 +161,8 @@ class RouterBgpMixin(Protocol):
         uplink_peers = set(self.facts.uplink_peers)
         for link in self._underlay_p2p_links:
             if link.peer in uplink_peers:
-                self.structured_config_utils.set_once_peer_group_rr_underlay_peers()
-                peer_group = self.inputs.bgp_peer_groups.rr_underlay_peers.name
+                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers_ibgp()
+                peer_group = self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
             else:
                 self.structured_config_utils.set_once_peer_group_rr_clients_underlay_peers()
                 peer_group = self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name

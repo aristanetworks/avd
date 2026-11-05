@@ -75,6 +75,7 @@ router_bgp:
   - name: RR-CLIENTS-UNDERLAY-PEERS
     metadata:
       type: ipv4
+    description: Towards downlink route reflector clients
     route_reflector_client: true
     bfd: true
     next_hop_self: true
@@ -89,7 +90,7 @@ router_bgp:
     next_hop_self: true
     password: DXSzy3wx6R+lZX+VX+pgMw==
     send_community: all
-    maximum_routes: 256000
+    maximum_routes: 0
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65000'

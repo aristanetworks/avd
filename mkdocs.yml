@@ -275,6 +275,8 @@ nav:
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
       - Authoring eos_cli_config_gen Role Guide: docs/contribution/authoring_eos_cli_config_gen.md
+      - Architecture Decision Records:
+          - 0001 iBGP Underlay: docs/adr/0001-ibgp-underlay.md
   - Support:
       - Overview: docs/support/support_overview.md
       - Versioning: docs/versioning/semantic-versioning.md

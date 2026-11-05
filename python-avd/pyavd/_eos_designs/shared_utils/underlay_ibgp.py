@@ -7,12 +7,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils.password_utils.password import bgp_decrypt
-from pyavd._utils.undefined import Undefined
+from pyavd._utils.password_utils.password import bgp_decrypt, bgp_encrypt
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import SharedUtilsProtocol
 
 MSG_PREFIX = "Invalid combination of inputs."
@@ -27,8 +24,7 @@ class UnderlayIbgpMixin(Protocol):
 
     'underlay_ibgp' can be used while generating facts.
     'validate_underlay_ibgp' reads the facts of this device and its downlink switches, so it must only be used while generating structured config.
-    The route reflector groups and cluster IDs are validated once for the whole fabric while generating facts,
-    in 'eos_designs_facts.underlay_ibgp'.
+    The route reflector groups and cluster IDs are validated per device while generating facts, in 'eos_designs_facts.underlay_ibgp'.
     """
 
     @cached_property
@@ -109,17 +105,10 @@ class UnderlayIbgpMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-        if self.inputs.bgp_peer_groups._get_defined_attr("ipv4_underlay_peers") is not Undefined:
-            msg = (
-                f"{MSG_PREFIX} 'bgp_peer_groups.ipv4_underlay_peers' is not used with 'underlay_routing_protocol: ibgp'; "
-                "move its settings to 'bgp_peer_groups.rr_underlay_peers' and 'bgp_peer_groups.rr_clients_underlay_peers'."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
         if self.node_config.uplink_bfd:
             msg = (
                 f"{MSG_PREFIX} 'uplink_bfd: true' is not supported with 'underlay_routing_protocol: ibgp'; "
-                "use 'bgp_peer_groups.rr_underlay_peers.bfd' and 'bgp_peer_groups.rr_clients_underlay_peers.bfd' instead."
+                "use 'bgp_peer_groups.ipv4_underlay_peers.bfd' instead."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
@@ -134,59 +123,32 @@ class UnderlayIbgpMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-        self._validate_underlay_ibgp_peer_groups()
-
-    def _validate_underlay_ibgp_peer_groups(self: SharedUtilsProtocol) -> None:
-        """
-        Validate that the two iBGP underlay peer groups can form sessions with each other.
-
-        Each session uses 'rr_underlay_peers' on the client and 'rr_clients_underlay_peers' on the route reflector,
-        so the names must differ while the password and BFD must match.
-        """
-        rr_underlay_peers = self.inputs.bgp_peer_groups.rr_underlay_peers
-        rr_clients_underlay_peers = self.inputs.bgp_peer_groups.rr_clients_underlay_peers
-        if rr_underlay_peers.name == rr_clients_underlay_peers.name:
+        if (ipv4_underlay_peers_name := self.inputs.bgp_peer_groups.ipv4_underlay_peers.name) == self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name:
             msg = (
-                f"{MSG_PREFIX} 'bgp_peer_groups.rr_underlay_peers.name' and 'bgp_peer_groups.rr_clients_underlay_peers.name' must be different, "
-                f"but both are '{rr_underlay_peers.name}'."
+                f"{MSG_PREFIX} 'bgp_peer_groups.ipv4_underlay_peers.name' and 'bgp_peer_groups.rr_clients_underlay_peers.name' must be different "
+                f"with 'underlay_routing_protocol: ibgp', but both are '{ipv4_underlay_peers_name}'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-        if self._get_underlay_ibgp_cleartext_password(rr_underlay_peers, "rr_underlay_peers") != self._get_underlay_ibgp_cleartext_password(
-            rr_clients_underlay_peers, "rr_clients_underlay_peers"
-        ):
-            msg = (
-                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires the same password on 'bgp_peer_groups.rr_underlay_peers' and "
-                "'bgp_peer_groups.rr_clients_underlay_peers', since every session uses one on each end."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
-        if rr_underlay_peers.bfd != rr_clients_underlay_peers.bfd:
-            msg = (
-                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires the same 'bfd' on 'bgp_peer_groups.rr_underlay_peers' and "
-                f"'bgp_peer_groups.rr_clients_underlay_peers', since every session uses one on each end, but got '{rr_underlay_peers.bfd}' "
-                f"and '{rr_clients_underlay_peers.bfd}'."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
-    def _get_underlay_ibgp_cleartext_password(
-        self: SharedUtilsProtocol,
-        peer_group: EosDesigns.BgpPeerGroups.RrUnderlayPeers | EosDesigns.BgpPeerGroups.RrClientsUnderlayPeers,
-        key: str,
-    ) -> str | None:
+    @cached_property
+    def underlay_ibgp_rr_clients_password(self: SharedUtilsProtocol) -> str | None:
         """
-        Return the cleartext of the password rendered for the given peer group.
+        Type 7 password of 'rr_clients_underlay_peers', derived from the password of 'ipv4_underlay_peers'.
 
-        The type 7 'password' takes precedence over 'cleartext_password', like in 'get_bgp_password'.
-        EOS decrypts it with the peer group name, so two groups with different names render different type 7 strings for the same password.
+        EOS encrypts BGP type 7 passwords with the peer group name, so the same password renders a different type 7 string on each peer group.
         """
-        if peer_group.password is None:
-            return peer_group.cleartext_password
-        try:
-            return bgp_decrypt(peer_group.password, key=peer_group.name)
-        except ValueError as e:
-            msg = (
-                f"{MSG_PREFIX} 'bgp_peer_groups.{key}.password' must be a type 7 password encrypted with the peer group name '{peer_group.name}', "
-                "but it could not be decrypted. Use 'cleartext_password' or encrypt the password for this peer group name."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
+        ipv4_underlay_peers = self.inputs.bgp_peer_groups.ipv4_underlay_peers
+        if ipv4_underlay_peers.password is not None:
+            try:
+                cleartext_password = bgp_decrypt(ipv4_underlay_peers.password, key=ipv4_underlay_peers.name)
+            except ValueError as e:
+                msg = (
+                    f"{MSG_PREFIX} 'bgp_peer_groups.ipv4_underlay_peers.password' must be a type 7 password encrypted with the peer group name "
+                    f"'{ipv4_underlay_peers.name}', since 'underlay_routing_protocol: ibgp' encrypts it again for 'bgp_peer_groups.rr_clients_underlay_peers', "
+                    "but it could not be decrypted. Use 'cleartext_password' or encrypt the password for this peer group name."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
+        elif (cleartext_password := ipv4_underlay_peers.cleartext_password) is None:
+            return None
+
+        return bgp_encrypt(cleartext_password, key=self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name)

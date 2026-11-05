@@ -66,6 +66,7 @@ router_bgp:
       type: ipv4
     route_reflector_client: true
     next_hop_self: true
+    password: oU8X5y3u4epoPjIAyBowQg==
     send_community: all
     maximum_routes: 256000
   neighbor_interfaces:

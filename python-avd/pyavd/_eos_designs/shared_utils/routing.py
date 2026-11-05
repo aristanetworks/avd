@@ -16,8 +16,6 @@ if TYPE_CHECKING:
 
     BgpPeerGroupOrNeighbor = (
         EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers
-        | EosDesigns.BgpPeerGroups.RrUnderlayPeers
-        | EosDesigns.BgpPeerGroups.RrClientsUnderlayPeers
         | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer
         | EosDesigns.BgpPeerGroups.WanOverlayPeers
         | EosDesigns.BgpPeerGroups.WanRrOverlayPeers

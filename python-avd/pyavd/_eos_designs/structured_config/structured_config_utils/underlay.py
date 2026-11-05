@@ -11,8 +11,6 @@ from pyavd._utils.as_path_list_match_from_bgp_asns import as_path_list_match_fro
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import StructuredConfigUtilsProtocol
 
 
@@ -68,39 +66,58 @@ class UnderlayMixin(Protocol):
             )
 
     @run_once_method
-    def set_once_peer_group_rr_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
-        """Add the iBGP underlay peer group towards uplink switches (route reflectors) to structured_config."""
-        self._set_underlay_ibgp_peer_group(self.inputs.bgp_peer_groups.rr_underlay_peers, route_reflector_client=False)
+    def set_once_peer_group_ipv4_underlay_peers_ibgp(self: StructuredConfigUtilsProtocol) -> None:
+        """Add the 'ipv4_underlay_peers' peer group for 'underlay_routing_protocol: ibgp', towards uplink switches (route reflectors)."""
+        ipv4_underlay_peers = self.inputs.bgp_peer_groups.ipv4_underlay_peers
+        self._set_underlay_ibgp_peer_group(
+            ipv4_underlay_peers.name,
+            self.shared_utils.get_bgp_password(ipv4_underlay_peers),
+            ipv4_underlay_peers.structured_config,
+            route_reflector_client=False,
+        )
 
     @run_once_method
     def set_once_peer_group_rr_clients_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
         """Add the iBGP underlay peer group towards downlink switches (route reflector clients) to structured_config."""
-        self._set_underlay_ibgp_peer_group(self.inputs.bgp_peer_groups.rr_clients_underlay_peers, route_reflector_client=True)
+        rr_clients_underlay_peers = self.inputs.bgp_peer_groups.rr_clients_underlay_peers
+        self._set_underlay_ibgp_peer_group(
+            rr_clients_underlay_peers.name,
+            self.shared_utils.underlay_ibgp_rr_clients_password,
+            rr_clients_underlay_peers.structured_config,
+            route_reflector_client=True,
+        )
 
     def _set_underlay_ibgp_peer_group(
         self: StructuredConfigUtilsProtocol,
-        pg_input: EosDesigns.BgpPeerGroups.RrUnderlayPeers | EosDesigns.BgpPeerGroups.RrClientsUnderlayPeers,
+        name: str,
+        password: str | None,
+        structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem,
         *,
         route_reflector_client: bool,
     ) -> None:
-        """Add an iBGP underlay peer group and its IPv4 address-family config to structured_config. Only RFC5549 is supported."""
+        """
+        Add an iBGP underlay peer group and its IPv4 address-family config to structured_config. Only RFC5549 is supported.
+
+        The 'bfd' and 'maximum_routes' of 'ipv4_underlay_peers' apply to both groups, since every session uses one group on each end.
+        """
+        ipv4_underlay_peers = self.inputs.bgp_peer_groups.ipv4_underlay_peers
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=pg_input.name,
-            password=self.shared_utils.get_bgp_password(pg_input),
-            bfd=pg_input.bfd or None,
-            maximum_routes=pg_input.maximum_routes,
+            name=name,
+            password=password,
+            bfd=ipv4_underlay_peers.bfd or None,
+            maximum_routes=ipv4_underlay_peers.maximum_routes,
             send_community="all",
             next_hop_self=True,
             route_reflector_client=route_reflector_client or None,
         )
         peer_group.metadata.type = "ipv4"
-        if pg_input.structured_config:
-            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(pg_input.name)._deepmerge(
-                pg_input.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+        if structured_config:
+            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(name)._deepmerge(
+                structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
         self.structured_config.router_bgp.peer_groups.append(peer_group)
 
-        address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(name=pg_input.name, activate=True)
+        address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(name=name, activate=True)
         address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
         self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
 
