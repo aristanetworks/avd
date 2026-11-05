@@ -407,7 +407,7 @@ keys:
               keys:
                 bfd:
                   type: bool
-                  description: Enable BFD for OSPFv3 IPv4 on the interface.
+                  description: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
                   description: |-
@@ -417,7 +417,7 @@ keys:
               keys:
                 bfd:
                   type: bool
-                  description: Enable BFD for OSPFv3 IPv6 on the interface.
+                  description: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
                   description: |-
@@ -433,7 +433,7 @@ keys:
             bfd:
               type: bool
               description: |-
-                Enable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
+                Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
                 the shared BFD setting is ignored.
         ospf_cost:
           type: int
