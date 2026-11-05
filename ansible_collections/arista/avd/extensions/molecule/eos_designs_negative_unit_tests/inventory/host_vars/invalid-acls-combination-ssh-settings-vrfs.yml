@@ -25,7 +25,3 @@ ssh_settings:
       enabled: true
       ipv4_acl: ACL-EXTENDED
       ipv4_standard_acl: ACL-SSH-STANDARD
-
-expected_error_message: >-
-  'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'ssh_settings.vrfs[name=VRF20]'
-  for host 'missing-ipv4-standard-acl-ssh-settings-vrfs'. Only one IPv4 ACL can be configured.

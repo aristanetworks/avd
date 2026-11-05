@@ -10894,12 +10894,6 @@ keys:
               description: Enable SSH in VRF.
             ipv4_acl:
               type: str
-              description: 'IPv4 extended access-list name.
-
-                Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
-                error.'
-            ipv4_standard_acl:
-              type: str
               description: 'IPv4 standard access-list name.
 
                 This ACL must be defined in `ipv4_standard_acls` catalog. When it
@@ -10907,7 +10901,9 @@ keys:
 
                 it will be automatically generated in the device configuration.
 
-                Mutually exclusive with `ipv4_acl`. Setting both raises an error.'
+                Mutually exclusive with `ipv4_acl`. Setting both raises an error.
+
+                Field substitution is not supported.'
             ipv6_acl:
               type: str
               description: IPv6 access-list name.
