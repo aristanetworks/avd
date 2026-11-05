@@ -64,6 +64,11 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
     - pip: `--upgrade --upgrade-strategy eager`
     - uv: `--upgrade`
 
+!!! note
+
+    Before using a `uv` tab, create or activate the intended virtual environment.
+    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
+
 Install the `pyavd` Python package:
 
 === "pip"

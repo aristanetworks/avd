@@ -44,6 +44,11 @@ server and can be automatically installed on your system.
     - pip: `--upgrade --upgrade-strategy eager`
     - uv: `--upgrade`
 
+!!! note
+
+    Before using a `uv` tab, create or activate the intended virtual environment.
+    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
+
 ### Latest version
 
 These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
@@ -160,13 +165,6 @@ After an upgrade, some python requirements may have changed. Make sure to also u
     ```shell
     uv pip install --upgrade "pyavd[ansible]==6.0.0"
     ```
-
-### Python requirements installation
-
-Python requirements can be installed with `pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"`.
-The installed version of PyAVD **must** match the version of the `arista.avd` collection.
-
-See the [collection installation](#install-collection-from-ansible-galaxy) section for details of each installation method.
 
 ## Ansible configuration file
 
