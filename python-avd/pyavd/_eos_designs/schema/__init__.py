@@ -13276,10 +13276,10 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "dns_settings_profile": {"type": str},
-            "cv_settings_profile": {"type": str},
-            "ntp_settings_profile": {"type": str},
             "aaa_settings_profile": {"type": str},
+            "cv_settings_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
+            "ntp_settings_profile": {"type": str},
         }
         name: str
         """Profile Name"""
@@ -14293,13 +14293,13 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        dns_settings_profile: str | None
+        aaa_settings_profile: str | None
         """
-        Name of the DNS settings profile to apply to this device.
+        Name of the AAA settings profile to apply to this device.
         The profile must be defined under
-        `dns_settings_profiles`.
+        `aaa_settings_profiles`.
         The selected profile settings will be merged over the general
-        `dns_settings`.
+        `aaa_settings`.
         """
         cv_settings_profile: str | None
         """
@@ -14308,6 +14308,14 @@ class EosDesigns(EosDesignsRootModel):
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
         """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
+        """
         ntp_settings_profile: str | None
         """
         Name of the NTP settings profile to apply to this device.
@@ -14315,14 +14323,6 @@ class EosDesigns(EosDesignsRootModel):
         `ntp_settings_profiles`.
         The selected profile settings will be merged over the general
         `ntp_settings`.
-        """
-        aaa_settings_profile: str | None
-        """
-        Name of the AAA settings profile to apply to this device.
-        The profile must be defined under
-        `aaa_settings_profiles`.
-        The selected profile settings will be merged over the general
-        `aaa_settings`.
         """
 
         if TYPE_CHECKING:
@@ -14462,10 +14462,10 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
-                dns_settings_profile: str | UndefinedType | None = Undefined,
-                cv_settings_profile: str | UndefinedType | None = Undefined,
-                ntp_settings_profile: str | UndefinedType | None = Undefined,
                 aaa_settings_profile: str | UndefinedType | None = Undefined,
+                cv_settings_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
+                ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DeviceProfilesItem.
@@ -15197,29 +15197,29 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
-                    dns_settings_profile:
-                       Name of the DNS settings profile to apply to this device.
-                       The profile must be defined under
-                       `dns_settings_profiles`.
-                       The selected profile settings will be merged over the general
-                       `dns_settings`.
-                    cv_settings_profile:
-                       Name of the CloudVision settings profile to apply to this device.
-                       The profile must be defined under
-                       `cv_settings_profiles`.
-                       The selected profile settings will be merged over the general `cv_settings`.
-                    ntp_settings_profile:
-                       Name of the NTP settings profile to apply to this device.
-                       The profile must be defined under
-                       `ntp_settings_profiles`.
-                       The selected profile settings will be merged over the general
-                       `ntp_settings`.
                     aaa_settings_profile:
                        Name of the AAA settings profile to apply to this device.
                        The profile must be defined under
                        `aaa_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `aaa_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
+                    dns_settings_profile:
+                       Name of the DNS settings profile to apply to this device.
+                       The profile must be defined under
+                       `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -18989,10 +18989,10 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "dns_settings_profile": {"type": str},
-            "cv_settings_profile": {"type": str},
-            "ntp_settings_profile": {"type": str},
             "aaa_settings_profile": {"type": str},
+            "cv_settings_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
+            "ntp_settings_profile": {"type": str},
         }
         name: str
         """The Node Name is used as "hostname"."""
@@ -20015,13 +20015,13 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        dns_settings_profile: str | None
+        aaa_settings_profile: str | None
         """
-        Name of the DNS settings profile to apply to this device.
+        Name of the AAA settings profile to apply to this device.
         The profile must be defined under
-        `dns_settings_profiles`.
+        `aaa_settings_profiles`.
         The selected profile settings will be merged over the general
-        `dns_settings`.
+        `aaa_settings`.
         """
         cv_settings_profile: str | None
         """
@@ -20030,6 +20030,14 @@ class EosDesigns(EosDesignsRootModel):
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
         """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
+        """
         ntp_settings_profile: str | None
         """
         Name of the NTP settings profile to apply to this device.
@@ -20037,14 +20045,6 @@ class EosDesigns(EosDesignsRootModel):
         `ntp_settings_profiles`.
         The selected profile settings will be merged over the general
         `ntp_settings`.
-        """
-        aaa_settings_profile: str | None
-        """
-        Name of the AAA settings profile to apply to this device.
-        The profile must be defined under
-        `aaa_settings_profiles`.
-        The selected profile settings will be merged over the general
-        `aaa_settings`.
         """
 
         if TYPE_CHECKING:
@@ -20185,10 +20185,10 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
-                dns_settings_profile: str | UndefinedType | None = Undefined,
-                cv_settings_profile: str | UndefinedType | None = Undefined,
-                ntp_settings_profile: str | UndefinedType | None = Undefined,
                 aaa_settings_profile: str | UndefinedType | None = Undefined,
+                cv_settings_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
+                ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
                 DevicesItem.
@@ -20927,29 +20927,29 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
-                    dns_settings_profile:
-                       Name of the DNS settings profile to apply to this device.
-                       The profile must be defined under
-                       `dns_settings_profiles`.
-                       The selected profile settings will be merged over the general
-                       `dns_settings`.
-                    cv_settings_profile:
-                       Name of the CloudVision settings profile to apply to this device.
-                       The profile must be defined under
-                       `cv_settings_profiles`.
-                       The selected profile settings will be merged over the general `cv_settings`.
-                    ntp_settings_profile:
-                       Name of the NTP settings profile to apply to this device.
-                       The profile must be defined under
-                       `ntp_settings_profiles`.
-                       The selected profile settings will be merged over the general
-                       `ntp_settings`.
                     aaa_settings_profile:
                        Name of the AAA settings profile to apply to this device.
                        The profile must be defined under
                        `aaa_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `aaa_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
+                    dns_settings_profile:
+                       Name of the DNS settings profile to apply to this device.
+                       The profile must be defined under
+                       `dns_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `dns_settings`.
+                    ntp_settings_profile:
+                       Name of the NTP settings profile to apply to this device.
+                       The profile must be defined under
+                       `ntp_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `ntp_settings`.
 
                 """
 
@@ -63347,10 +63347,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -64339,13 +64339,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -64354,6 +64354,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -64361,14 +64369,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -64505,10 +64505,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -65222,29 +65222,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -69039,10 +69039,10 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "dns_settings_profile": {"type": str},
-                            "cv_settings_profile": {"type": str},
-                            "ntp_settings_profile": {"type": str},
                             "aaa_settings_profile": {"type": str},
+                            "cv_settings_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
+                            "ntp_settings_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -70041,13 +70041,13 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        dns_settings_profile: str | None
+                        aaa_settings_profile: str | None
                         """
-                        Name of the DNS settings profile to apply to this device.
+                        Name of the AAA settings profile to apply to this device.
                         The profile must be defined under
-                        `dns_settings_profiles`.
+                        `aaa_settings_profiles`.
                         The selected profile settings will be merged over the general
-                        `dns_settings`.
+                        `aaa_settings`.
                         """
                         cv_settings_profile: str | None
                         """
@@ -70056,6 +70056,14 @@ class EosDesigns(EosDesignsRootModel):
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
                         """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
+                        """
                         ntp_settings_profile: str | None
                         """
                         Name of the NTP settings profile to apply to this device.
@@ -70063,14 +70071,6 @@ class EosDesigns(EosDesignsRootModel):
                         `ntp_settings_profiles`.
                         The selected profile settings will be merged over the general
                         `ntp_settings`.
-                        """
-                        aaa_settings_profile: str | None
-                        """
-                        Name of the AAA settings profile to apply to this device.
-                        The profile must be defined under
-                        `aaa_settings_profiles`.
-                        The selected profile settings will be merged over the general
-                        `aaa_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -70209,10 +70209,10 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
-                                dns_settings_profile: str | UndefinedType | None = Undefined,
-                                cv_settings_profile: str | UndefinedType | None = Undefined,
-                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                                 aaa_settings_profile: str | UndefinedType | None = Undefined,
+                                cv_settings_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -70933,29 +70933,29 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
-                                    dns_settings_profile:
-                                       Name of the DNS settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `dns_settings_profiles`.
-                                       The selected profile settings will be merged over the general
-                                       `dns_settings`.
-                                    cv_settings_profile:
-                                       Name of the CloudVision settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `cv_settings_profiles`.
-                                       The selected profile settings will be merged over the general `cv_settings`.
-                                    ntp_settings_profile:
-                                       Name of the NTP settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `ntp_settings_profiles`.
-                                       The selected profile settings will be merged over the general
-                                       `ntp_settings`.
                                     aaa_settings_profile:
                                        Name of the AAA settings profile to apply to this device.
                                        The profile must be defined under
                                        `aaa_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `aaa_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
+                                    dns_settings_profile:
+                                       Name of the DNS settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -74666,10 +74666,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     group: str
                     """
@@ -75671,13 +75671,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -75686,6 +75686,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -75693,14 +75701,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -75839,10 +75839,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -76565,29 +76565,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -80373,10 +80373,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -81375,13 +81375,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -81390,6 +81390,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -81397,14 +81405,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -81543,10 +81543,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -82267,29 +82267,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -102476,10 +102476,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -103468,13 +103468,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -103483,6 +103483,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -103490,14 +103498,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -103634,10 +103634,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -104351,29 +104351,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -108168,10 +108168,10 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "dns_settings_profile": {"type": str},
-                            "cv_settings_profile": {"type": str},
-                            "ntp_settings_profile": {"type": str},
                             "aaa_settings_profile": {"type": str},
+                            "cv_settings_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
+                            "ntp_settings_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -109170,13 +109170,13 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        dns_settings_profile: str | None
+                        aaa_settings_profile: str | None
                         """
-                        Name of the DNS settings profile to apply to this device.
+                        Name of the AAA settings profile to apply to this device.
                         The profile must be defined under
-                        `dns_settings_profiles`.
+                        `aaa_settings_profiles`.
                         The selected profile settings will be merged over the general
-                        `dns_settings`.
+                        `aaa_settings`.
                         """
                         cv_settings_profile: str | None
                         """
@@ -109185,6 +109185,14 @@ class EosDesigns(EosDesignsRootModel):
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
                         """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
+                        """
                         ntp_settings_profile: str | None
                         """
                         Name of the NTP settings profile to apply to this device.
@@ -109192,14 +109200,6 @@ class EosDesigns(EosDesignsRootModel):
                         `ntp_settings_profiles`.
                         The selected profile settings will be merged over the general
                         `ntp_settings`.
-                        """
-                        aaa_settings_profile: str | None
-                        """
-                        Name of the AAA settings profile to apply to this device.
-                        The profile must be defined under
-                        `aaa_settings_profiles`.
-                        The selected profile settings will be merged over the general
-                        `aaa_settings`.
                         """
 
                         if TYPE_CHECKING:
@@ -109338,10 +109338,10 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
-                                dns_settings_profile: str | UndefinedType | None = Undefined,
-                                cv_settings_profile: str | UndefinedType | None = Undefined,
-                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                                 aaa_settings_profile: str | UndefinedType | None = Undefined,
+                                cv_settings_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -110062,29 +110062,29 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
-                                    dns_settings_profile:
-                                       Name of the DNS settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `dns_settings_profiles`.
-                                       The selected profile settings will be merged over the general
-                                       `dns_settings`.
-                                    cv_settings_profile:
-                                       Name of the CloudVision settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `cv_settings_profiles`.
-                                       The selected profile settings will be merged over the general `cv_settings`.
-                                    ntp_settings_profile:
-                                       Name of the NTP settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `ntp_settings_profiles`.
-                                       The selected profile settings will be merged over the general
-                                       `ntp_settings`.
                                     aaa_settings_profile:
                                        Name of the AAA settings profile to apply to this device.
                                        The profile must be defined under
                                        `aaa_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `aaa_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
+                                    dns_settings_profile:
+                                       Name of the DNS settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `dns_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `dns_settings`.
+                                    ntp_settings_profile:
+                                       Name of the NTP settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `ntp_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `ntp_settings`.
 
                                 """
 
@@ -113795,10 +113795,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     group: str
                     """
@@ -114800,13 +114800,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -114815,6 +114815,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -114822,14 +114830,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -114968,10 +114968,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -115694,29 +115694,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
@@ -119502,10 +119502,10 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
-                        "cv_settings_profile": {"type": str},
-                        "ntp_settings_profile": {"type": str},
                         "aaa_settings_profile": {"type": str},
+                        "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
+                        "ntp_settings_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -120504,13 +120504,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -120519,6 +120519,14 @@ class EosDesigns(EosDesignsRootModel):
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
                     """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
+                    """
                     ntp_settings_profile: str | None
                     """
                     Name of the NTP settings profile to apply to this device.
@@ -120526,14 +120534,6 @@ class EosDesigns(EosDesignsRootModel):
                     `ntp_settings_profiles`.
                     The selected profile settings will be merged over the general
                     `ntp_settings`.
-                    """
-                    aaa_settings_profile: str | None
-                    """
-                    Name of the AAA settings profile to apply to this device.
-                    The profile must be defined under
-                    `aaa_settings_profiles`.
-                    The selected profile settings will be merged over the general
-                    `aaa_settings`.
                     """
 
                     if TYPE_CHECKING:
@@ -120672,10 +120672,10 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
-                            cv_settings_profile: str | UndefinedType | None = Undefined,
-                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                             aaa_settings_profile: str | UndefinedType | None = Undefined,
+                            cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -121396,29 +121396,29 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                dns_settings_profile:
-                                   Name of the DNS settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `dns_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
-                                ntp_settings_profile:
-                                   Name of the NTP settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `ntp_settings_profiles`.
-                                   The selected profile settings will be merged over the general
-                                   `ntp_settings`.
                                 aaa_settings_profile:
                                    Name of the AAA settings profile to apply to this device.
                                    The profile must be defined under
                                    `aaa_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
+                                dns_settings_profile:
+                                   Name of the DNS settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `dns_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `dns_settings`.
+                                ntp_settings_profile:
+                                   Name of the NTP settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `ntp_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `ntp_settings`.
 
                             """
 
