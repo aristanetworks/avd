@@ -55,8 +55,7 @@ class PortChannelInterfacesMixin(Protocol):
                     f"L3 Port-Channels at paths {', '.join(repr(path) for path in l3_port_channel_paths)} must each have at least one member interface defined."
                 )
             warnings.warn(
-                f"Host '{self.shared_utils.hostname}': {msg} This configuration will not be supported in AVD 7.0.",
-                AvdFutureBehaviorWarning,
+                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", future_version="7.0"),
                 stacklevel=2,
             )
 

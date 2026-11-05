@@ -144,9 +144,10 @@ class PortChannelInterfacesMixin(Protocol):
                 f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels[name={l3_port_channel.name}]"
             )
             warnings.warn(
-                f"Host '{self.shared_utils.hostname}': L3 Port-Channel at path '{l3_port_channel_path}' must have at least one member interface defined. "
-                "This configuration will not be supported in AVD 7.0.",
-                AvdFutureBehaviorWarning,
+                AvdFutureBehaviorWarning(
+                    f"Host '{self.shared_utils.hostname}': L3 Port-Channel at path '{l3_port_channel_path}' must have at least one member interface defined.",
+                    future_version="7.0",
+                ),
                 stacklevel=2,
             )
 

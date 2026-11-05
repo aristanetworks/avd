@@ -1053,7 +1053,10 @@ def dump_runtime_deprecations(deprecations: list[warnings.WarningMessage], confi
     error_dir = config.full_error_dir.joinpath(config.fabric_name)
     error_dir = error_dir.joinpath(device) if device else error_dir
     error_dir.mkdir(parents=True, exist_ok=True)
-    err_lines = [f"{warning.category.__module__}.{warning.category.__name__}: {warning.message}" for warning in deprecations]
+    err_lines = [
+        f"{warning.category.__module__}.{warning.category.__name__}: {typing.cast('AvdFutureBehaviorWarning', warning.message).detailed_message}"
+        for warning in deprecations
+    ]
     error_dir.joinpath(f"{stage}_deprecations.txt").write_text("\n".join(err_lines) + "\n")
 
 

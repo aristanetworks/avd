@@ -1,1 +1,1 @@
-pyavd._errors.AvdFutureBehaviorWarning: Host 'address-locking-3': Setting both 'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' is not supported. Only one of these settings should be configured.
+pyavd._errors.AvdFutureBehaviorWarning: Host 'address-locking-3': Setting both 'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' is not supported. Only one of these settings should be configured. This configuration will not be supported in AVD 7.0.
