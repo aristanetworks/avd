@@ -816,6 +816,826 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class AaaSettingsProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EnablePassword(AvdModel):
+            """Subclass of AvdModel."""
+
+            PasswordType: TypeAlias = Literal["sha512"]
+            _fields: ClassVar[dict] = {"password": {"type": str}, "cleartext_password": {"type": str}, "password_type": {"type": str, "default": "sha512"}}
+            password: str | None
+            """
+            SHA512 hashed password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext enable password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    password: str | UndefinedType | None = Undefined,
+                    cleartext_password: str | UndefinedType | None = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EnablePassword.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        password:
+                           SHA512 hashed password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault.
+                        cleartext_password:
+                           Cleartext enable password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
+
+                    """
+
+        class Tacacs(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Groups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Groups._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "timeout": {"type": int},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
+                host: str
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
+                groups: Groups
+                """
+                List of Tacacs group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
+                vrf: str | None
+                """
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will
+                configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if
+                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will
+                configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if
+                inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure
+                the VRF and source-interface for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+                """
+                timeout: int | None
+                """Timeout in seconds."""
+                key: str | None
+                """
+                Encrypted Type 7 key.
+                Takes precedence over `cleartext_key` if both are provided.
+                Either `key` or
+                `cleartext_key` must be set to render the configuration;
+                otherwise, an error will be raised.
+                """
+                cleartext_key: str | None
+                """
+                Plaintext password that will be encrypted to Type 7 by AVD.
+                To protect the password at rest it is
+                strongly recommended to make use of a vault or similar.
+                Either `key` or `cleartext_key` must be set
+                to render the configuration;
+                otherwise, an error will be raised.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        host: str | UndefinedType = Undefined,
+                        groups: Groups | UndefinedType = Undefined,
+                        vrf: str | UndefinedType | None = Undefined,
+                        timeout: int | UndefinedType | None = Undefined,
+                        key: str | UndefinedType | None = Undefined,
+                        cleartext_key: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
+                            groups:
+                               List of Tacacs group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
+                            vrf:
+                               VRF name.
+                               The value will be interpreted according to these rules:
+                               - `use_mgmt_interface_vrf` will
+                               configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
+                                 An error will be raised if
+                               `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will
+                               configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if
+                               inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure
+                               the VRF and source-interface for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
+                            timeout: Timeout in seconds.
+                            key:
+                               Encrypted Type 7 key.
+                               Takes precedence over `cleartext_key` if both are provided.
+                               Either `key` or
+                               `cleartext_key` must be set to render the configuration;
+                               otherwise, an error will be raised.
+                            cleartext_key:
+                               Plaintext password that will be encrypted to Type 7 by AVD.
+                               To protect the password at rest it is
+                               strongly recommended to make use of a vault or similar.
+                               Either `key` or `cleartext_key` must be set
+                               to render the configuration;
+                               otherwise, an error will be raised.
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            class VrfsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+                name: str
+                """VRF Name."""
+                source_interface: str | None
+                """
+                Source interface to use for TACACS hosts in this VRF.
+                If not set, the source interface may be set
+                automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                or `use_default_mgmt_method_vrf`.
+                If set for the VRFs defined by `mgmt_interface_vrf` or
+                `inband_mgmt_vrf`, this setting will take precedence.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        VrfsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: VRF Name.
+                            source_interface:
+                               Source interface to use for TACACS hosts in this VRF.
+                               If not set, the source interface may be set
+                               automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                               or `use_default_mgmt_method_vrf`.
+                               If set for the VRFs defined by `mgmt_interface_vrf` or
+                               `inband_mgmt_vrf`, this setting will take precedence.
+
+                        """
+
+            class Vrfs(AvdIndexedList[str, VrfsItem]):
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Vrfs._item_type = VrfsItem
+
+            class Policy(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ignore_unknown_mandatory_attribute": {"type": bool, "default": False}}
+                ignore_unknown_mandatory_attribute: bool
+                """Default value: `False`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ignore_unknown_mandatory_attribute: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Policy.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ignore_unknown_mandatory_attribute: ignore_unknown_mandatory_attribute
+
+                        """
+
+            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}, "policy": {"type": Policy}}
+            servers: Servers
+            """Subclass of AvdList with `ServersItem` items."""
+            vrfs: Vrfs
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+            policy: Policy
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined, policy: Policy | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Tacacs.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        servers: Subclass of AvdList with `ServersItem` items.
+                        vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                        policy: Subclass of AvdModel.
+
+                    """
+
+        class Radius(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Groups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Groups._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "timeout": {"type": int},
+                    "retransmit": {"type": int},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                    "tls": {"type": EosCliConfigGen.RadiusServer.ServersItem.Tls},
+                }
+                host: str
+                """
+                Host IP address or name.
+                Multiple servers with the same hostname/IP address can be configured for
+                TLS and no TLS.
+                """
+                groups: Groups
+                """
+                List of Radius group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
+                vrf: str | None
+                """
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will
+                configure the Radius host under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if
+                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will
+                configure the Radius host under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if
+                inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure
+                the VRF and source-interface for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+                """
+                timeout: int | None
+                retransmit: int | None
+                key: str | None
+                """
+                Encrypted type-7 key.
+                Takes precedence over `cleartext_key`.
+                """
+                cleartext_key: str | None
+                """
+                Cleartext password.
+                Encrypted to Type 7 by AVD.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
+                tls: EosCliConfigGen.RadiusServer.ServersItem.Tls
+                """
+                When TLS is configured, `key` and `cleartext_key` are ignored.
+                For proper functionality to render
+                TLS settings on the
+                server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                true`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        host: str | UndefinedType = Undefined,
+                        groups: Groups | UndefinedType = Undefined,
+                        vrf: str | UndefinedType | None = Undefined,
+                        timeout: int | UndefinedType | None = Undefined,
+                        retransmit: int | UndefinedType | None = Undefined,
+                        key: str | UndefinedType | None = Undefined,
+                        cleartext_key: str | UndefinedType | None = Undefined,
+                        tls: EosCliConfigGen.RadiusServer.ServersItem.Tls | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            host:
+                               Host IP address or name.
+                               Multiple servers with the same hostname/IP address can be configured for
+                               TLS and no TLS.
+                            groups:
+                               List of Radius group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
+                            vrf:
+                               VRF name.
+                               The value will be interpreted according to these rules:
+                               - `use_mgmt_interface_vrf` will
+                               configure the Radius host under the VRF set with `mgmt_interface_vrf`.
+                                 An error will be raised if
+                               `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will
+                               configure the Radius host under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if
+                               inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure
+                               the VRF and source-interface for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
+                            timeout: timeout
+                            retransmit: retransmit
+                            key:
+                               Encrypted type-7 key.
+                               Takes precedence over `cleartext_key`.
+                            cleartext_key:
+                               Cleartext password.
+                               Encrypted to Type 7 by AVD.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
+                            tls:
+                               When TLS is configured, `key` and `cleartext_key` are ignored.
+                               For proper functionality to render
+                               TLS settings on the
+                               server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                               true`.
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            class VrfsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+                name: str
+                """VRF Name."""
+                source_interface: str | None
+                """
+                Source interface to use for RADIUS hosts in this VRF.
+                If not set, the source interface may be set
+                automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                or `use_default_mgmt_method_vrf`.
+                If set for the VRFs defined by `mgmt_interface_vrf` or
+                `inband_mgmt_vrf`, this setting will take precedence.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        VrfsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: VRF Name.
+                            source_interface:
+                               Source interface to use for RADIUS hosts in this VRF.
+                               If not set, the source interface may be set
+                               automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                               or `use_default_mgmt_method_vrf`.
+                               If set for the VRFs defined by `mgmt_interface_vrf` or
+                               `inband_mgmt_vrf`, this setting will take precedence.
+
+                        """
+
+            class Vrfs(AvdIndexedList[str, VrfsItem]):
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Vrfs._item_type = VrfsItem
+
+            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
+            servers: Servers
+            """Subclass of AvdList with `ServersItem` items."""
+            vrfs: Vrfs
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                    """
+                    Radius.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        servers: Subclass of AvdList with `ServersItem` items.
+                        vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "login": {"type": EosCliConfigGen.AaaAuthentication.Login},
+                "enable": {"type": EosCliConfigGen.AaaAuthentication.Enable},
+                "policies": {"type": EosCliConfigGen.AaaAuthentication.Policies},
+            }
+            login: EosCliConfigGen.AaaAuthentication.Login
+            enable: EosCliConfigGen.AaaAuthentication.Enable
+            policies: EosCliConfigGen.AaaAuthentication.Policies
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    login: EosCliConfigGen.AaaAuthentication.Login | UndefinedType = Undefined,
+                    enable: EosCliConfigGen.AaaAuthentication.Enable | UndefinedType = Undefined,
+                    policies: EosCliConfigGen.AaaAuthentication.Policies | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        login: login
+                        enable: enable
+                        policies: policies
+
+                    """
+
+        class Authorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "policy": {"type": EosCliConfigGen.AaaAuthorization.Policy},
+                "exec": {"type": EosCliConfigGen.AaaAuthorization.Exec},
+                "config_commands": {"type": bool},
+                "serial_console": {"type": bool},
+                "commands": {"type": EosCliConfigGen.AaaAuthorization.Commands},
+            }
+            policy: EosCliConfigGen.AaaAuthorization.Policy
+            exec: EosCliConfigGen.AaaAuthorization.Exec
+            config_commands: bool | None
+            serial_console: bool | None
+            commands: EosCliConfigGen.AaaAuthorization.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: EosCliConfigGen.AaaAuthorization.Policy | UndefinedType = Undefined,
+                    exec: EosCliConfigGen.AaaAuthorization.Exec | UndefinedType = Undefined,
+                    config_commands: bool | UndefinedType | None = Undefined,
+                    serial_console: bool | UndefinedType | None = Undefined,
+                    commands: EosCliConfigGen.AaaAuthorization.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: policy
+                        exec: exec
+                        config_commands: config_commands
+                        serial_console: serial_console
+                        commands: commands
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "exec": {"type": EosCliConfigGen.AaaAccounting.Exec},
+                "system": {"type": EosCliConfigGen.AaaAccounting.System},
+                "commands": {"type": EosCliConfigGen.AaaAccounting.Commands},
+            }
+            exec: EosCliConfigGen.AaaAccounting.Exec
+            system: EosCliConfigGen.AaaAccounting.System
+            commands: EosCliConfigGen.AaaAccounting.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    exec: EosCliConfigGen.AaaAccounting.Exec | UndefinedType = Undefined,
+                    system: EosCliConfigGen.AaaAccounting.System | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAccounting.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        exec: exec
+                        system: system
+                        commands: commands
+
+                    """
+
+        class RootLogin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "sha512_password": {"type": str}}
+            enabled: bool
+            """Default value: `False`"""
+            sha512_password: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, sha512_password: str | UndefinedType | None = Undefined) -> None:
+                    """
+                    RootLogin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        sha512_password: sha512_password
+
+                    """
+
+        class LocalUsersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            PasswordType: TypeAlias = Literal["sha512"]
+            Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "sha512_password": {"type": str},
+                "cleartext_password": {"type": str},
+                "password_type": {"type": str, "default": "sha512"},
+                "disabled": {"type": bool},
+                "privilege": {"type": int},
+                "role": {"type": str},
+                "no_password": {"type": bool},
+                "ssh_key": {"type": str},
+                "secondary_ssh_key": {"type": str},
+                "shell": {"type": str},
+            }
+            name: str
+            """Username."""
+            sha512_password: str | None
+            """
+            SHA512 Hash of Password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext user password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
+            disabled: bool | None
+            """
+            If true, the user will be removed and all other settings are ignored.
+            Useful for removing the
+            default "admin" user.
+            """
+            privilege: int | None
+            """Initial privilege level with local EXEC authorization."""
+            role: str | None
+            """EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"."""
+            no_password: bool | None
+            """
+            If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+            this user.
+            """
+            ssh_key: str | None
+            secondary_ssh_key: str | None
+            shell: Shell | None
+            """Specify shell for the user."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    sha512_password: str | UndefinedType | None = Undefined,
+                    cleartext_password: str | UndefinedType | None = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                    disabled: bool | UndefinedType | None = Undefined,
+                    privilege: int | UndefinedType | None = Undefined,
+                    role: str | UndefinedType | None = Undefined,
+                    no_password: bool | UndefinedType | None = Undefined,
+                    ssh_key: str | UndefinedType | None = Undefined,
+                    secondary_ssh_key: str | UndefinedType | None = Undefined,
+                    shell: Shell | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    LocalUsersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Username.
+                        sha512_password:
+                           SHA512 Hash of Password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        cleartext_password:
+                           Cleartext user password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
+                        disabled:
+                           If true, the user will be removed and all other settings are ignored.
+                           Useful for removing the
+                           default "admin" user.
+                        privilege: Initial privilege level with local EXEC authorization.
+                        role: EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
+                        no_password:
+                           If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+                           this user.
+                        ssh_key: ssh_key
+                        secondary_ssh_key: secondary_ssh_key
+                        shell: Specify shell for the user.
+
+                    """
+
+        class LocalUsers(AvdIndexedList[str, LocalUsersItem]):
+            """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        LocalUsers._item_type = LocalUsersItem
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "enable_password": {"type": EnablePassword},
+            "tacacs": {"type": Tacacs},
+            "radius": {"type": Radius},
+            "authentication": {"type": Authentication},
+            "authorization": {"type": Authorization},
+            "accounting": {"type": Accounting},
+            "root_login": {"type": RootLogin},
+            "local_users": {"type": LocalUsers},
+        }
+        profile: str
+        """AAA settings profile name."""
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `aaa_settings_profiles`.
+        The settings from this
+        profile override settings inherited from the parent profile.
+        """
+        enable_password: EnablePassword
+        """Subclass of AvdModel."""
+        tacacs: Tacacs
+        """Subclass of AvdModel."""
+        radius: Radius
+        """Subclass of AvdModel."""
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        authorization: Authorization
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
+        root_login: RootLogin
+        """Subclass of AvdModel."""
+        local_users: LocalUsers
+        """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | UndefinedType | None = Undefined,
+                enable_password: EnablePassword | UndefinedType = Undefined,
+                tacacs: Tacacs | UndefinedType = Undefined,
+                radius: Radius | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                authorization: Authorization | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
+                root_login: RootLogin | UndefinedType = Undefined,
+                local_users: LocalUsers | UndefinedType = Undefined,
+            ) -> None:
+                """
+                AaaSettingsProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: AAA settings profile name.
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `aaa_settings_profiles`.
+                       The settings from this
+                       profile override settings inherited from the parent profile.
+                    enable_password: Subclass of AvdModel.
+                    tacacs: Subclass of AvdModel.
+                    radius: Subclass of AvdModel.
+                    authentication: Subclass of AvdModel.
+                    authorization: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
+                    root_login: Subclass of AvdModel.
+                    local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
+
+                """
+
+    class AaaSettingsProfiles(AvdIndexedList[str, AaaSettingsProfilesItem]):
+        """Subclass of AvdIndexedList with `AaaSettingsProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    AaaSettingsProfiles._item_type = AaaSettingsProfilesItem
+
     class AddressLockingSettings(AvdModel):
         """Subclass of AvdModel."""
 
@@ -12456,8 +13276,9 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "dns_settings_profile": {"type": str},
+            "aaa_settings_profile": {"type": str},
             "cv_settings_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
             "ntp_settings_profile": {"type": str},
         }
         name: str
@@ -13472,13 +14293,13 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        dns_settings_profile: str | None
+        aaa_settings_profile: str | None
         """
-        Name of the DNS settings profile to apply to this device.
+        Name of the AAA settings profile to apply to this device.
         The profile must be defined under
-        `dns_settings_profiles`.
+        `aaa_settings_profiles`.
         The selected profile settings will be merged over the general
-        `dns_settings`.
+        `aaa_settings`.
         """
         cv_settings_profile: str | None
         """
@@ -13486,6 +14307,14 @@ class EosDesigns(EosDesignsRootModel):
         The profile must be defined under
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
+        """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
         """
         ntp_settings_profile: str | None
         """
@@ -13633,8 +14462,9 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
-                dns_settings_profile: str | UndefinedType | None = Undefined,
+                aaa_settings_profile: str | UndefinedType | None = Undefined,
                 cv_settings_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
                 ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
@@ -14367,17 +15197,23 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
+                    aaa_settings_profile:
+                       Name of the AAA settings profile to apply to this device.
+                       The profile must be defined under
+                       `aaa_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `aaa_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
                     dns_settings_profile:
                        Name of the DNS settings profile to apply to this device.
                        The profile must be defined under
                        `dns_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `dns_settings`.
-                    cv_settings_profile:
-                       Name of the CloudVision settings profile to apply to this device.
-                       The profile must be defined under
-                       `cv_settings_profiles`.
-                       The selected profile settings will be merged over the general `cv_settings`.
                     ntp_settings_profile:
                        Name of the NTP settings profile to apply to this device.
                        The profile must be defined under
@@ -18153,8 +18989,9 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "dns_settings_profile": {"type": str},
+            "aaa_settings_profile": {"type": str},
             "cv_settings_profile": {"type": str},
+            "dns_settings_profile": {"type": str},
             "ntp_settings_profile": {"type": str},
         }
         name: str
@@ -19178,13 +20015,13 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        dns_settings_profile: str | None
+        aaa_settings_profile: str | None
         """
-        Name of the DNS settings profile to apply to this device.
+        Name of the AAA settings profile to apply to this device.
         The profile must be defined under
-        `dns_settings_profiles`.
+        `aaa_settings_profiles`.
         The selected profile settings will be merged over the general
-        `dns_settings`.
+        `aaa_settings`.
         """
         cv_settings_profile: str | None
         """
@@ -19192,6 +20029,14 @@ class EosDesigns(EosDesignsRootModel):
         The profile must be defined under
         `cv_settings_profiles`.
         The selected profile settings will be merged over the general `cv_settings`.
+        """
+        dns_settings_profile: str | None
+        """
+        Name of the DNS settings profile to apply to this device.
+        The profile must be defined under
+        `dns_settings_profiles`.
+        The selected profile settings will be merged over the general
+        `dns_settings`.
         """
         ntp_settings_profile: str | None
         """
@@ -19340,8 +20185,9 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | UndefinedType | None = Undefined,
-                dns_settings_profile: str | UndefinedType | None = Undefined,
+                aaa_settings_profile: str | UndefinedType | None = Undefined,
                 cv_settings_profile: str | UndefinedType | None = Undefined,
+                dns_settings_profile: str | UndefinedType | None = Undefined,
                 ntp_settings_profile: str | UndefinedType | None = Undefined,
             ) -> None:
                 """
@@ -20081,17 +20927,23 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
+                    aaa_settings_profile:
+                       Name of the AAA settings profile to apply to this device.
+                       The profile must be defined under
+                       `aaa_settings_profiles`.
+                       The selected profile settings will be merged over the general
+                       `aaa_settings`.
+                    cv_settings_profile:
+                       Name of the CloudVision settings profile to apply to this device.
+                       The profile must be defined under
+                       `cv_settings_profiles`.
+                       The selected profile settings will be merged over the general `cv_settings`.
                     dns_settings_profile:
                        Name of the DNS settings profile to apply to this device.
                        The profile must be defined under
                        `dns_settings_profiles`.
                        The selected profile settings will be merged over the general
                        `dns_settings`.
-                    cv_settings_profile:
-                       Name of the CloudVision settings profile to apply to this device.
-                       The profile must be defined under
-                       `cv_settings_profiles`.
-                       The selected profile settings will be merged over the general `cv_settings`.
                     ntp_settings_profile:
                        Name of the NTP settings profile to apply to this device.
                        The profile must be defined under
@@ -62669,8 +63521,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
@@ -63660,13 +64513,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -63674,6 +64527,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -63818,8 +64679,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -64534,17 +65396,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -68345,8 +69213,9 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "dns_settings_profile": {"type": str},
+                            "aaa_settings_profile": {"type": str},
                             "cv_settings_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
                             "ntp_settings_profile": {"type": str},
                         }
                         name: str
@@ -69346,13 +70215,13 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        dns_settings_profile: str | None
+                        aaa_settings_profile: str | None
                         """
-                        Name of the DNS settings profile to apply to this device.
+                        Name of the AAA settings profile to apply to this device.
                         The profile must be defined under
-                        `dns_settings_profiles`.
+                        `aaa_settings_profiles`.
                         The selected profile settings will be merged over the general
-                        `dns_settings`.
+                        `aaa_settings`.
                         """
                         cv_settings_profile: str | None
                         """
@@ -69360,6 +70229,14 @@ class EosDesigns(EosDesignsRootModel):
                         The profile must be defined under
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
+                        """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
                         """
                         ntp_settings_profile: str | None
                         """
@@ -69506,8 +70383,9 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
-                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                aaa_settings_profile: str | UndefinedType | None = Undefined,
                                 cv_settings_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
                                 ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -70229,17 +71107,23 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
+                                    aaa_settings_profile:
+                                       Name of the AAA settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `aaa_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `aaa_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
                                     dns_settings_profile:
                                        Name of the DNS settings profile to apply to this device.
                                        The profile must be defined under
                                        `dns_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
-                                    cv_settings_profile:
-                                       Name of the CloudVision settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `cv_settings_profiles`.
-                                       The selected profile settings will be merged over the general `cv_settings`.
                                     ntp_settings_profile:
                                        Name of the NTP settings profile to apply to this device.
                                        The profile must be defined under
@@ -73956,8 +74840,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     group: str
@@ -74960,13 +75845,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -74974,6 +75859,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -75120,8 +76013,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -75845,17 +76739,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -79647,8 +80547,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     name: str
@@ -80648,13 +81549,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -80662,6 +81563,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -80808,8 +81717,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -81531,17 +82441,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -101916,8 +102832,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     id: int | None
@@ -102907,13 +103824,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -102921,6 +103838,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -103065,8 +103990,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -103781,17 +104707,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -107592,8 +108524,9 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "dns_settings_profile": {"type": str},
+                            "aaa_settings_profile": {"type": str},
                             "cv_settings_profile": {"type": str},
+                            "dns_settings_profile": {"type": str},
                             "ntp_settings_profile": {"type": str},
                         }
                         name: str
@@ -108593,13 +109526,13 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        dns_settings_profile: str | None
+                        aaa_settings_profile: str | None
                         """
-                        Name of the DNS settings profile to apply to this device.
+                        Name of the AAA settings profile to apply to this device.
                         The profile must be defined under
-                        `dns_settings_profiles`.
+                        `aaa_settings_profiles`.
                         The selected profile settings will be merged over the general
-                        `dns_settings`.
+                        `aaa_settings`.
                         """
                         cv_settings_profile: str | None
                         """
@@ -108607,6 +109540,14 @@ class EosDesigns(EosDesignsRootModel):
                         The profile must be defined under
                         `cv_settings_profiles`.
                         The selected profile settings will be merged over the general `cv_settings`.
+                        """
+                        dns_settings_profile: str | None
+                        """
+                        Name of the DNS settings profile to apply to this device.
+                        The profile must be defined under
+                        `dns_settings_profiles`.
+                        The selected profile settings will be merged over the general
+                        `dns_settings`.
                         """
                         ntp_settings_profile: str | None
                         """
@@ -108753,8 +109694,9 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | UndefinedType | None = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | UndefinedType | None = Undefined,
-                                dns_settings_profile: str | UndefinedType | None = Undefined,
+                                aaa_settings_profile: str | UndefinedType | None = Undefined,
                                 cv_settings_profile: str | UndefinedType | None = Undefined,
+                                dns_settings_profile: str | UndefinedType | None = Undefined,
                                 ntp_settings_profile: str | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -109476,17 +110418,23 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
+                                    aaa_settings_profile:
+                                       Name of the AAA settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `aaa_settings_profiles`.
+                                       The selected profile settings will be merged over the general
+                                       `aaa_settings`.
+                                    cv_settings_profile:
+                                       Name of the CloudVision settings profile to apply to this device.
+                                       The profile must be defined under
+                                       `cv_settings_profiles`.
+                                       The selected profile settings will be merged over the general `cv_settings`.
                                     dns_settings_profile:
                                        Name of the DNS settings profile to apply to this device.
                                        The profile must be defined under
                                        `dns_settings_profiles`.
                                        The selected profile settings will be merged over the general
                                        `dns_settings`.
-                                    cv_settings_profile:
-                                       Name of the CloudVision settings profile to apply to this device.
-                                       The profile must be defined under
-                                       `cv_settings_profiles`.
-                                       The selected profile settings will be merged over the general `cv_settings`.
                                     ntp_settings_profile:
                                        Name of the NTP settings profile to apply to this device.
                                        The profile must be defined under
@@ -113203,8 +114151,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     group: str
@@ -114207,13 +115156,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -114221,6 +115170,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -114367,8 +115324,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -115092,17 +116050,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -118894,8 +119858,9 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "dns_settings_profile": {"type": str},
+                        "aaa_settings_profile": {"type": str},
                         "cv_settings_profile": {"type": str},
+                        "dns_settings_profile": {"type": str},
                         "ntp_settings_profile": {"type": str},
                     }
                     name: str
@@ -119895,13 +120860,13 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    dns_settings_profile: str | None
+                    aaa_settings_profile: str | None
                     """
-                    Name of the DNS settings profile to apply to this device.
+                    Name of the AAA settings profile to apply to this device.
                     The profile must be defined under
-                    `dns_settings_profiles`.
+                    `aaa_settings_profiles`.
                     The selected profile settings will be merged over the general
-                    `dns_settings`.
+                    `aaa_settings`.
                     """
                     cv_settings_profile: str | None
                     """
@@ -119909,6 +120874,14 @@ class EosDesigns(EosDesignsRootModel):
                     The profile must be defined under
                     `cv_settings_profiles`.
                     The selected profile settings will be merged over the general `cv_settings`.
+                    """
+                    dns_settings_profile: str | None
+                    """
+                    Name of the DNS settings profile to apply to this device.
+                    The profile must be defined under
+                    `dns_settings_profiles`.
+                    The selected profile settings will be merged over the general
+                    `dns_settings`.
                     """
                     ntp_settings_profile: str | None
                     """
@@ -120055,8 +121028,9 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | UndefinedType | None = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | UndefinedType | None = Undefined,
-                            dns_settings_profile: str | UndefinedType | None = Undefined,
+                            aaa_settings_profile: str | UndefinedType | None = Undefined,
                             cv_settings_profile: str | UndefinedType | None = Undefined,
+                            dns_settings_profile: str | UndefinedType | None = Undefined,
                             ntp_settings_profile: str | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -120778,17 +121752,23 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
+                                aaa_settings_profile:
+                                   Name of the AAA settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `aaa_settings_profiles`.
+                                   The selected profile settings will be merged over the general
+                                   `aaa_settings`.
+                                cv_settings_profile:
+                                   Name of the CloudVision settings profile to apply to this device.
+                                   The profile must be defined under
+                                   `cv_settings_profiles`.
+                                   The selected profile settings will be merged over the general `cv_settings`.
                                 dns_settings_profile:
                                    Name of the DNS settings profile to apply to this device.
                                    The profile must be defined under
                                    `dns_settings_profiles`.
                                    The selected profile settings will be merged over the general
                                    `dns_settings`.
-                                cv_settings_profile:
-                                   Name of the CloudVision settings profile to apply to this device.
-                                   The profile must be defined under
-                                   `cv_settings_profiles`.
-                                   The selected profile settings will be merged over the general `cv_settings`.
                                 ntp_settings_profile:
                                    Name of the NTP settings profile to apply to this device.
                                    The profile must be defined under
@@ -120939,6 +121919,7 @@ class EosDesigns(EosDesignsRootModel):
 
     _fields: ClassVar[dict] = {
         "aaa_settings": {"type": AaaSettings},
+        "aaa_settings_profiles": {"type": AaaSettingsProfiles},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_design_future": {"type": AvdDesignFuture},
@@ -122228,6 +123209,21 @@ class EosDesigns(EosDesignsRootModel):
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
     """Subclass of AvdModel."""
+    aaa_settings_profiles: AaaSettingsProfiles
+    """
+    List of AAA settings profiles that can be applied to devices using `aaa_settings_profile` under node
+    definitions.
+    Profiles support inheritance using `parent_profile`, allowing common AAA settings to be
+    shared and selectively overridden per profile.
+    Note: For TACACS and RADIUS, `vrfs` entries merge by
+    `name` across global settings and the profile chain, with the most specific settings taking
+    precedence.
+    A defined `servers` list replaces the inherited list for that protocol; if omitted, the
+    inherited list is retained.
+
+    Subclass of AvdIndexedList with `AaaSettingsProfilesItem` items.
+    Primary key is `profile` (`str`).
+    """
     address_locking_settings: AddressLockingSettings
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
@@ -124520,6 +125516,7 @@ class EosDesigns(EosDesignsRootModel):
             self,
             *,
             aaa_settings: AaaSettings | UndefinedType = Undefined,
+            aaa_settings_profiles: AaaSettingsProfiles | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
@@ -124759,6 +125756,19 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
+                aaa_settings_profiles:
+                   List of AAA settings profiles that can be applied to devices using `aaa_settings_profile` under node
+                   definitions.
+                   Profiles support inheritance using `parent_profile`, allowing common AAA settings to be
+                   shared and selectively overridden per profile.
+                   Note: For TACACS and RADIUS, `vrfs` entries merge by
+                   `name` across global settings and the profile chain, with the most specific settings taking
+                   precedence.
+                   A defined `servers` list replaces the inherited list for that protocol; if omitted, the
+                   inherited list is retained.
+
+                   Subclass of AvdIndexedList with `AaaSettingsProfilesItem` items.
+                   Primary key is `profile` (`str`).
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_design_future:

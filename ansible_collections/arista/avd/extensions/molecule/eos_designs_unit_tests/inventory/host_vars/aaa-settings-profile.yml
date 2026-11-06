@@ -1,0 +1,24 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    aaa_settings_profile: leaf_aaa_profile
+  nodes:
+    - name: aaa-settings-profile
+
+aaa_settings:
+  authentication:
+    login:
+      default: local
+
+aaa_settings_profiles:
+  - profile: common_aaa_profile
+    authentication:
+      login:
+        console: group tacacs+ local
+
+  - profile: leaf_aaa_profile
+    parent_profile: common_aaa_profile
+    authentication:
+      login:
+        command_api: local
