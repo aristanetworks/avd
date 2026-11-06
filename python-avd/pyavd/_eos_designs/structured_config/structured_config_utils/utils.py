@@ -80,7 +80,7 @@ class UtilsMixin(Protocol):
             direction_label = "ingress " if direction == "in" else "egress "
         msg = (
             f"'ipv4_acl{suffix}' and 'ipv4_standard_acl{suffix}' are mutually exclusive on {target}'{context}'. "
-            f"Only one {direction_label}IPv4 ACL can be configured for host: {self.shared_utils.hostname}."
+            f"Only one {direction_label}IPv4 ACL can be configured for host '{self.shared_utils.hostname}'."
         )
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
