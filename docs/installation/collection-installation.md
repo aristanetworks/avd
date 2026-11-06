@@ -75,8 +75,8 @@ all required Ansible collections:
 === "uv"
 
     !!! note
-    Before using the `uv pip` command, create or activate the intended virtual environment.
-    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
+        Before using the `uv pip` command, create or activate the intended virtual environment.
+        For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
 
     ```shell
     # Install or upgrade to the latest version
