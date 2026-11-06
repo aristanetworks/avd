@@ -1,0 +1,79 @@
+---
+all:
+  vars:
+    fabric_name: CONNECTED_ENDPOINTS_TESTS
+  children:
+    CONNECTED_ENDPOINTS_TESTS:
+      children:
+        CONNECTED_ENDPOINT_SWITCHES:
+          vars:
+            type: l2spine
+            l2spine:
+              defaults:
+                platform: cEOSLab
+                spanning_tree_mode: mstp
+              node_groups:
+                - group: TEST_SWITCHES
+                  nodes:
+                    - name: ce-test-1
+                      id: 1
+          hosts:
+            ce-test-1:
+        CONNECTED_ENDPOINT_INPUTS:
+          children:
+            CONNECTED_ENDPOINT_SWITCHES:
+          vars:
+            custom_structured_configuration_list_merge: append_rp
+            enable_trunk_groups: true
+
+            connected_endpoints_keys:
+              - key: servers
+                type: server
+
+            port_profiles:
+              - profile: ACCESS_PROFILE
+                mode: access
+                vlans: "10"
+                spanning_tree_portfast: edge
+              - profile: TRUNK_PROFILE
+                mode: trunk
+                vlans: "10-12"
+                trunk_groups: [BASE, SHARED]
+
+            servers:
+              - name: single-attached-server
+                adapters:
+                  - endpoint_ports: [eth0]
+                    switch_ports: [Ethernet1]
+                    switches: [ce-test-1]
+                    profile: ACCESS_PROFILE
+                    structured_config:
+                      description: CUSTOM_single-attached-server
+              - name: port-channel-server
+                adapters:
+                  - endpoint_ports: [eth0, eth1]
+                    switch_ports: [Ethernet2, Ethernet3]
+                    switches: [ce-test-1, ce-test-1]
+                    profile: TRUNK_PROFILE
+                    port_channel:
+                      mode: active
+                      channel_id: 23
+                      structured_config:
+                        switchport:
+                          trunk:
+                            groups: [SHARED, CUSTOM]
+              - name: subinterface-router
+                adapters:
+                  - endpoint_ports: [eth0]
+                    switch_ports: [Ethernet4]
+                    switches: [ce-test-1]
+                    subinterfaces:
+                      - number: 100
+                        description: "{endpoint}_{subinterface}"
+                        vlan_id: 10
+
+            network_ports:
+              - switches: [ce-test-1]
+                switch_ports: [Ethernet10-11]
+                endpoint: network-port-range
+                profile: ACCESS_PROFILE

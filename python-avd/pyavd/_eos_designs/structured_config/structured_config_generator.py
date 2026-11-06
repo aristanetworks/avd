@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from functools import wraps
-from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
+from typing import TYPE_CHECKING, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
     from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
+    from pyavd._schema.models.avd_base import AvdListMergeStrategy
 
     T_StructuredConfigGeneratorSubclass = TypeVar("T_StructuredConfigGeneratorSubclass", bound="StructuredConfigGeneratorProtocol")
 
@@ -101,10 +102,10 @@ class StructCfgs:
 
     root: list[EosCliConfigGen] = field(default_factory=list)
     nested: EosCliConfigGen = field(default_factory=EosCliConfigGen)
-    list_merge_strategy: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique"
+    list_merge_strategy: AvdListMergeStrategy = "append_unique"
 
     @classmethod
-    def new_from_ansible_list_merge_strategy(cls, ansible_strategy: Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"]) -> StructCfgs:
+    def new_from_ansible_list_merge_strategy(cls, ansible_strategy: EosDesigns.CustomStructuredConfigurationListMerge) -> StructCfgs:
         merge_strategy_map = {
             "append_rp": "append_unique",
             "prepend_rp": "prepend_unique",
@@ -114,7 +115,7 @@ class StructCfgs:
             msg = f"Unsupported list merge strategy: {ansible_strategy}"
             raise ValueError(msg)
 
-        list_merge_strategy = cast("Literal['append_unique', 'append', 'replace', 'keep', 'prepend', 'prepend_unique']", list_merge_strategy)
+        list_merge_strategy = cast("AvdListMergeStrategy", list_merge_strategy)
         return cls(list_merge_strategy=list_merge_strategy)
 
 

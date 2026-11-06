@@ -5,12 +5,12 @@ from __future__ import annotations
 
 import re
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
+from typing import TYPE_CHECKING, Any, ClassVar, Generic, cast, overload
 
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils.undefined import Undefined, UndefinedType
 
-from .avd_base import AvdBase
+from .avd_base import AvdBase, AvdListMergeStrategy
 from .avd_model import AvdModel
 from .type_vars import T, T_AvdList, T_ItemType
 
@@ -167,7 +167,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
         cls = type(self)
         return cls(filter(function, self._items))
 
-    def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
+    def _deepmerge(self, other: Self, list_merge: AvdListMergeStrategy = "append_unique") -> None:
         """
         Update instance by appending or replacing the items from the other instance.
 

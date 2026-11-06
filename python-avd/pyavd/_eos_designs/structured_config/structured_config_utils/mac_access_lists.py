@@ -9,19 +9,15 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from . import AvdStructuredConfigConnectedEndpointsProtocol
+    from . import StructuredConfigUtilsProtocol
 
 
 class MacAccessListsMixin(Protocol):
-    """
-    Mixin Class used to generate structured config for one key.
+    """Mixin providing shared MAC access-list structured-config generation."""
 
-    Class should only be used as Mixin to a AvdStructuredConfig class.
-    """
-
-    def _set_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
+    def _set_mac_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         """
-        Returns structured_config for mac_acl when mac_acl is referenced.
+        Add a referenced input MAC ACL to structured config.
 
         The complexity of the logic building is due to imperfect EOS config model for mac_access_lists.
         This logic will be simplified when EOS config model is improved.
