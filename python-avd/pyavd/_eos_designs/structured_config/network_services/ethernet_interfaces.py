@@ -184,14 +184,14 @@ class EthernetInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_in, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_in = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
+        elif l3_interface.ipv4_standard_acl_in:
+            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
+            interface.access_group_in = l3_interface.ipv4_standard_acl_in
         if l3_interface.ipv4_acl_out:
             acl = self.shared_utils.get_ipv4_acl(name=l3_interface.ipv4_acl_out, interface_name=interface.name, interface_ip=interface_ip)
             interface.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
-        if l3_interface.ipv4_standard_acl_in:
-            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
-            interface.access_group_in = l3_interface.ipv4_standard_acl_in
-        if l3_interface.ipv4_standard_acl_out:
+        elif l3_interface.ipv4_standard_acl_out:
             self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_out)
             interface.access_group_out = l3_interface.ipv4_standard_acl_out
         self._update_ethernet_interface_ospf(interface, l3_interface=l3_interface, vrf=vrf, tenant=tenant)
