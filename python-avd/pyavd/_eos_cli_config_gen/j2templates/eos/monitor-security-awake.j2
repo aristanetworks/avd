@@ -1,0 +1,44 @@
+{#
+ Copyright (c) 2025-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# monitor security awake #}
+{% if monitor_security.awake is arista.avd.defined %}
+!
+monitor security awake
+
+{%     if monitor_security.awake.disabled is arista.avd.defined(true) %}
+   disabled
+{%     else %}
+   no disabled
+{%     endif %}
+{%     if monitor_security.awake.topic is arista.avd.defined %}
+   topic {{ monitor_security.awake.topic }}
+{%     endif %}
+{%     if monitor_security.awake.monitor_point_identifier is arista.avd.defined %}
+   monitor-point identifier {{ monitor_security.awake.monitor_point_identifier }}
+{%     endif %}
+{%     if monitor_security.awake.flow_table_size is arista.avd.defined %}
+   flow table size {{ monitor_security.awake.flow_table_size }} entries
+{%     endif %}
+{%     if monitor_security.awake.ipfix_listener_port is arista.avd.defined %}
+   ipfix listener port {{ monitor_security.awake.ipfix_listener_port }}
+{%     endif %}
+{%     if monitor_security.awake.ndr_application.unknown_udp is arista.avd.defined(true) %}
+   ndr application unknown udp
+{%     endif %}
+{%     for nucleus in monitor_security.awake.nucleus | arista.avd.default([]) %}
+   !
+   nucleus {{ nucleus.name }}
+{%         if nucleus.local_interface is arista.avd.defined %}
+      local interface {{ nucleus.local_interface }}
+{%         endif %}
+{%         if nucleus.destination is arista.avd.defined %}
+      destination {{ nucleus.destination }}{{ (' port ' ~ nucleus.port ) if nucleus.port is arista.avd.defined else '' }}
+{%         endif %}
+{%         if nucleus.ssl_profile is arista.avd.defined %}
+      ssl profile {{ nucleus.ssl_profile }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

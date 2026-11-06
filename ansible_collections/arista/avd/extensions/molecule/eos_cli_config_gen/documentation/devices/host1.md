@@ -11871,6 +11871,21 @@ monitor loop-protection
    disabled-time 100
 ```
 
+!
+
+#### Monitor security awake
+
+| Disabled | flow table size entries | ipfix listener port | monitor point identifier | unknown udp ndr application | topic |
+| -------- | ----------------------- | ------------------- | ------------------------ | --------------------------- | ----- |
+| False | 16000 | 4739 | 25 | True | packet-analysis-sessions |
+
+#### Nucleus
+
+| Name | Local Interface | Destination IP | Port | SSL Profile |
+| ---- | --------------- | -------------- | ---- | ----------- |
+| nucleus1.example.com | Loopback0 | 192.0.2.10 | 9094 | AWAKE_SSL |
+| nucleus2.example.com | Loopback0 | 192.0.2.11 | 9095 | AWAKE_SSL |
+
 ## MPLS
 
 ### MPLS and LDP
