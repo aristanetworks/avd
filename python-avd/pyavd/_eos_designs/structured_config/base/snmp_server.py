@@ -294,6 +294,7 @@ class SnmpServerMixin(Protocol):
                     acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name)
                     self.structured_config_utils._set_ipv4_acl(acl)
             elif vrf.ipv4_standard_acl is not None:
+                self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_standard_acl, vrf=vrf_name if vrf_name != "default" else None)
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
 
             if vrf.ipv6_acl is not None:

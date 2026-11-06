@@ -35,6 +35,8 @@ snmp_server:
   - name: SNMP-COMMUNITY-3
   ipv4_acls:
   - name: acl-for-vrf-default
+  - name: SNMP-VRF-ACL
+    vrf: MGMT
   ipv6_acls:
   - name: acl-for-vrf-default
   - name: acl-for-vrf-MGMT
