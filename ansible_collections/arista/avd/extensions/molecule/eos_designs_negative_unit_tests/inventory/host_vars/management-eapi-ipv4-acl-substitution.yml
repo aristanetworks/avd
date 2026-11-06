@@ -26,6 +26,5 @@ ipv4_acls:
         destination: any
 
 expected_error_message: >-
-  Field substitution of the value 'interface_ip' defined under
-  'ipv4_acls[name=FILTER].entries[0].source'
-  is not supported for eAPI reference 'management_eapi.vrfs[name=MGMT].ipv4_acl'.
+  Unable to perform substitution of the value 'interface_ip' defined under
+  'ipv4_acls[name=FILTER].entries[0].source', since no interface was specified.
