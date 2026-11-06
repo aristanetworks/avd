@@ -1933,11 +1933,12 @@ class EosDesigns(EosDesignsRootModel):
         configure_snmp_server_vrfs_ipv4_acl_from_catalog: bool
         """
         Available from AVD 6.5.0.
-        Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
-        not defined under `ipv4_acls`.
-        When enabled, configure the referenced extended ACL on the device.
-        When disabled, only configure the ACL reference without requiring or configuring an ACL definition
-        from the catalog.
+        Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
+        `ipv4_acls` for enabled SNMP VRFs.
+        An error will be raised if the referenced ACL is not defined
+        under `ipv4_acls`.
+        If the referenced ACL is a standard ACL, use
+        `snmp_settings.vrfs[].ipv4_standard_acl` instead.
 
         Default value: `False`
         """
@@ -2163,11 +2164,12 @@ class EosDesigns(EosDesignsRootModel):
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     configure_snmp_server_vrfs_ipv4_acl_from_catalog:
                        Available from AVD 6.5.0.
-                       Raise an error if an ACL referenced by `snmp_settings.vrfs[].ipv4_acl` is
-                       not defined under `ipv4_acls`.
-                       When enabled, configure the referenced extended ACL on the device.
-                       When disabled, only configure the ACL reference without requiring or configuring an ACL definition
-                       from the catalog.
+                       Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
+                       `ipv4_acls` for enabled SNMP VRFs.
+                       An error will be raised if the referenced ACL is not defined
+                       under `ipv4_acls`.
+                       If the referenced ACL is a standard ACL, use
+                       `snmp_settings.vrfs[].ipv4_standard_acl` instead.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
