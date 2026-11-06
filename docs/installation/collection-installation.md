@@ -53,7 +53,7 @@ server and can be automatically installed on your system.
 !!! warning
     Depending on your operating system settings, `pip` might be replaced by `pip3`.
 
-These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
+These commands install all Python requirements including `ansible-core` and then install the `arista.avd` Ansible collection including
 all required Ansible collections:
 
 === "pip"
