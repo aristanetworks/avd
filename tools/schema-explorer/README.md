@@ -48,7 +48,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 
 | Path                                                                    | What it is                                                                                                                                                                                   |
 | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tools/schema-explorer/generate.py`                                     | CLI: loads the YAML schemas and metaschema, resolves them through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, and copies the SPA assets.                         |
+| `tools/schema-explorer/generate.py`                                     | CLI: exports field rows using pyavd-utils-gen, imports JSONL into `schema.sqlite`, and copies the SPA assets.                                                                                |
 | `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                    |
 | `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                              |
 | `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.                    |
@@ -63,7 +63,7 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 ## Build pipeline
 
 ```text
-        combined YAML schemas + metaschema
+               combined YAML schemas
                           │
                           ▼
  mkdocs build / serve  →  mkdocs_hook.py  →  generate.py  ──►  temp cache outside repo/
@@ -94,27 +94,42 @@ Two key invariants:
 
 ### What `generate.py` does
 
-Loads unresolved schemas directly from the checked-in source files:
+Passes the combined source schemas to `pyavd_utils_gen.schema_generation.generate_schema_explorer_jsonl_from_paths`:
 
 - `python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml`
 - `python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml`
-- `python-avd/pyavd/_schema/avd_meta_schema.json` for the resolver's metaschema
 
 It does not read or regenerate `schemas.json.gz`, `schemas.rkyv`, or the
-resolved schema pickles. Keeping the explorer on the combined YAML sources
-avoids the archive metaschema mismatch while preserving the docs-shaped trees.
+resolved schema pickles. The generator compiles the source schemas in memory;
+it does not require the authoring metaschema. Generation does not alter the
+runtime validation archive.
 
-Then each module is processed through pyavd's `schema_tools` resolver so:
+The generator exports one JSONL row per visible field occurrence:
 
 - `dynamic_keys` placeholders (`<node_type_keys.key>`,
   `<connected_endpoints_keys.key>`, …) are fully expanded.
 - Same-schema `$ref` blocks are resolved.
-- Cross-schema `$ref` with `documentation_options.hide_keys: true` (for example
-  `structured_config` → `eos_cli_config_gen#`) is neutralized before resolution
-  and surfaced as a `cross_ref` column on the leaf row, matching generated schema
-  tables. Other cross-schema `$ref` values (for example reuse under
+- Dictionary `documentation_options.hide_keys: true` stops child traversal,
+  including for local schemas, same-schema references, and dictionary list items.
+  The dictionary's effective properties are retained. Hidden cross-schema
+  references (for example `structured_config` → `eos_cli_config_gen#`) also
+  appear as a `cross_ref` link. Other cross-schema `$ref` values (for example reuse under
   `aaa_settings.authentication.login`) are resolved so children appear under the
   `eos_designs` path in reference and YAML views.
+- List-item dictionaries supply path, primary-key, and documentation-table
+  context without producing their own rows. Deprecated lists retain item
+  restrictions. Removed fields remain in the reference database and are
+  excluded from browser-generated YAML examples.
+
+The script streams those rows into SQLite in their exported order, preserving
+schema-order row IDs. Defaults and constraints are encoded as JSON text columns.
+It owns the database tables and indexes; schema interpretation lives in
+pyavd-utils-gen. The JSONL and intermediate database live in a temporary
+directory. A successful build replaces only the requested database, never
+cleans its parent directory, and leaves the old database intact on failure.
+
+Browser presentation remains in the static assets:
+
 - Reference search keeps the hierarchical nav (segment labels and indentation),
   loads ancestor rows for each match, auto-expands branches on the path, and
   mutes ancestor-only rows that matched only as context.
@@ -130,7 +145,8 @@ Then each module is processed through pyavd's `schema_tools` resolver so:
 Two callbacks:
 
 - **`on_config`** — auto-builds a temp/cache Schema Explorer when the SQLite
-  artifact is missing or stale, then appends the SPA's `style.css` and `app.js`
+  artifact is missing or stale, including after generator-version changes or
+  editable Rust extension rebuilds, then appends the SPA's `style.css` and `app.js`
   to `extra_css` / `extra_javascript`. Every page gets the lightweight loader;
   `app.js` no-ops on pages without a `<schema-explorer>` element or a standalone
   `#app` mount. Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only

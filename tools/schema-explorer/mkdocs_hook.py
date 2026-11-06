@@ -33,9 +33,12 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from importlib.metadata import version
 from pathlib import Path
 from types import ModuleType
 from typing import Any
+
+import pyavd_utils_gen._bindings as generation_bindings  # pyright: ignore[reportMissingModuleSource]
 
 HERE = Path(__file__).resolve().parent
 STATIC_DIR = HERE / "static"
@@ -44,7 +47,6 @@ GENERATE_SCRIPT = HERE / "generate.py"
 AVD_ROOT = HERE.parents[1]
 BUILD_DIR = Path(tempfile.gettempdir()) / "avd-schema-explorer" / hashlib.sha256(str(AVD_ROOT).encode()).hexdigest()[:16]
 SCHEMA_INPUTS = (
-    AVD_ROOT / "python-avd" / "pyavd" / "_schema" / "avd_meta_schema.json",
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_designs" / "schema" / "eos_designs.schema.yml",
     AVD_ROOT / "python-avd" / "pyavd" / "_eos_cli_config_gen" / "schema" / "eos_cli_config_gen.schema.yml",
 )
@@ -125,12 +127,17 @@ def _copy_static_assets() -> None:
 
 def _schema_input_paths() -> tuple[Path, ...]:
     """Paths that invalidate the SQLite when newer than the artifact."""
-    return (GENERATE_SCRIPT, *SCHEMA_INPUTS)
+    # The extension timestamp also invalidates editable Rust builds whose
+    # package version has not changed.
+    return (GENERATE_SCRIPT, *SCHEMA_INPUTS, Path(generation_bindings.__file__))
 
 
 def _database_is_current(sqlite_marker: Path) -> bool:
     """Return True when the generated SQLite is newer than build inputs."""
     if not sqlite_marker.is_file():
+        return False
+    version_marker = sqlite_marker.with_suffix(".generator-version")
+    if not version_marker.is_file() or version_marker.read_text(encoding="UTF-8") != version("pyavd-utils-gen"):
         return False
     sqlite_mtime = sqlite_marker.stat().st_mtime
     input_paths = (*_schema_input_paths(), *_iter_static_files())
@@ -163,6 +170,7 @@ def _ensure_build() -> None:
             str(BUILD_DIR),
         ],
     )
+    sqlite_marker.with_suffix(".generator-version").write_text(version("pyavd-utils-gen"), encoding="UTF-8")
 
 
 def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa: ARG001
