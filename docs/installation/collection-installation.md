@@ -128,10 +128,7 @@ duplicate_dict_key=error
 
 ## Arista CloudVision requirements
 
-If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, your CV instance must be supported by [CloudVision Ansible collection](https://aristanetworks.github.io/ansible-cvp/)
-
-!!! note
-    When using ansible-cvp modules, the user who is executing the ansible-playbook must have access to both CVP and the EOS CLI.
+If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, the cv_deploy role is **only** supported on **CloudVision as a Service (CVaaS)** or "on-prem" **CloudVision 2024.1.0** or later.
 
 ## Ansible Documentation
 
