@@ -21,6 +21,16 @@
 
 ## Python dependencies
 
+The installed version of PyAVD **must** match the version of the `arista.avd` collection.
+
+!!! important "Keep Python dependencies up to date"
+
+    When installing or upgrading PyAVD, update its Python dependencies to the
+    latest compatible releases to pick up available security fixes using:
+
+    - pip: `--upgrade --upgrade-strategy eager`
+    - uv: `--upgrade`
+
 ```text
 --8<--
 docs/avd-requirements.txt:4:
@@ -35,14 +45,6 @@ To set up a development environment, please follow the [development tooling](../
 **arista.avd** can also be consumed using the ["Universal" container](../containers/overview.md#how-to-use-dev-containers).
 The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd)
 server and can be automatically installed on your system.
-
-!!! important "Keep Python dependencies up to date"
-
-    When installing or upgrading PyAVD, update its Python dependencies to the
-    latest compatible releases to pick up available security fixes using:
-
-    - pip: `--upgrade --upgrade-strategy eager`
-    - uv: `--upgrade`
 
 !!! note
 
