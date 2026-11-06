@@ -168,7 +168,6 @@ port_profiles:
     ptp:
       enabled: true
     sflow: false
-    parent_profile: profile4
 
 servers:
   - name: server01_MLAG

@@ -37,9 +37,9 @@ class ConnectedEndpointsMixin(Protocol):
                 filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
-                    adapter_settings = self.get_merged_adapter_settings(adapter)
-                    if not adapter_settings.switches or self.hostname not in adapter_settings.switches:
+                    if not adapter.switches or self.hostname not in adapter.switches:
                         continue
+                    adapter_settings = self.get_merged_adapter_settings(adapter)
 
                     # Verify that length of all lists are the same
                     nodes_length = len(adapter_settings.switches)
@@ -71,14 +71,13 @@ class ConnectedEndpointsMixin(Protocol):
         filtered_network_ports = EosDesigns.NetworkPorts()
         for index, network_port in enumerate(self.inputs.network_ports):
             network_port._internal_data.context = f"network_ports[{index}]"
+            if not network_port.switches and not network_port.platforms:
+                continue
+            if network_port.switches and not self.match_regexes(network_port.switches, self.hostname):
+                continue
+            if network_port.platforms and (not self.platform or not self.match_regexes(network_port.platforms, self.platform)):
+                continue
             network_port_settings = self.get_merged_adapter_settings(network_port)
-
-            if not network_port_settings.switches and not network_port_settings.platforms:
-                continue
-            if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, self.hostname):
-                continue
-            if network_port_settings.platforms and (not self.platform or not self.match_regexes(network_port_settings.platforms, self.platform)):
-                continue
 
             filtered_network_ports.append(network_port_settings)
 
