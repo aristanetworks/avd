@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires different names for 'bgp_peer_groups.ipv4_underlay_peers' and 'bgp_peer_groups.rr_clients_underlay_peers', but both are 'UNDERLAY-PEERS'.

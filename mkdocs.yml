@@ -225,6 +225,7 @@ nav:
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
       - IP Addressing: docs/howto/ip_addressing/README.md
       - IPv6 Addressing: docs/howto/ipv6_numbered/README.md
+      - iBGP Underlay: docs/howto/ibgp_underlay/README.md
       - Node Types: docs/howto/node_types/README.md
       - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
@@ -274,6 +275,8 @@ nav:
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
       - Authoring eos_cli_config_gen Role Guide: docs/contribution/authoring_eos_cli_config_gen.md
+      - Architecture Decision Records:
+          - 0001 iBGP Underlay: docs/adr/0001-ibgp-underlay.md
   - Support:
       - Overview: docs/support/support_overview.md
       - Versioning: docs/versioning/semantic-versioning.md

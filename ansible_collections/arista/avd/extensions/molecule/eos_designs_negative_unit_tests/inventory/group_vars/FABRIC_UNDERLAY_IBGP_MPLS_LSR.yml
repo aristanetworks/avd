@@ -1,0 +1,9 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_MPLS_LSR
+
+p:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-mpls-lsr-p1
+      id: 1

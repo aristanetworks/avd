@@ -14,6 +14,7 @@ from .mlag import MlagMixin
 from .overlay import OverlayMixin
 from .schema import EosDesignsFacts, EosDesignsFactsProtocol
 from .short_esi import ShortEsiMixin
+from .underlay_ibgp import UnderlayIbgpMixin
 from .uplinks import UplinksMixin
 from .utils import UtilsMixin
 from .vlans import VlansMixin
@@ -27,7 +28,17 @@ if TYPE_CHECKING:
 
 
 class EosDesignsFactsGeneratorProtocol(
-    MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, UtilsMixin, VlansMixin, EosDesignsFactsProtocol, AvdFactsProtocol, Protocol
+    MlagMixin,
+    ShortEsiMixin,
+    OverlayMixin,
+    WanMixin,
+    UnderlayIbgpMixin,
+    UplinksMixin,
+    UtilsMixin,
+    VlansMixin,
+    EosDesignsFactsProtocol,
+    AvdFactsProtocol,
+    Protocol,
 ):
     """
     This Protocol is only used by EosDesignsFactsGenerator.
@@ -45,6 +56,9 @@ class EosDesignsFactsGeneratorProtocol(
 
     # Dict of mlag_groups shared between all devices.
     _mlag_groups: dict[str, set[str]]
+
+    # Dict of 'underlay_routing_protocol: ibgp' route reflectors by 'bgp_cluster_id' shared between all devices.
+    _underlay_ibgp_route_reflectors_by_cluster_id: dict[str, set[str]]
 
     @remove_cached_property_type
     @cached_property
@@ -366,6 +380,8 @@ class EosDesignsFactsGeneratorProtocol(
 
         Used for fabric docs
         """
+        if self.shared_utils.underlay_ibgp:
+            self._validate_underlay_ibgp_route_reflector_group()
         return self._downlink_switches
 
     @remove_cached_property_type
@@ -398,6 +414,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         peer_generators: dict[str, EosDesignsFactsGenerator],
         shared_utils: SharedUtilsProtocol,
         mlag_groups: dict[str, set[str]],
+        underlay_ibgp_route_reflectors_by_cluster_id: dict[str, set[str]],
     ) -> None:
         super().__init__(hostvars, inputs, shared_utils)
         self.peer_generators = peer_generators
@@ -407,6 +424,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         self._evpn_route_server_clients = EosDesignsFactsProtocol.EvpnRouteServerClients()
         self._mpls_route_reflector_clients = EosDesignsFactsProtocol.MplsRouteReflectorClients()
         self._mlag_groups = mlag_groups
+        self._underlay_ibgp_route_reflectors_by_cluster_id = underlay_ibgp_route_reflectors_by_cluster_id
 
     def update_mlag_groups(self) -> None:
         """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
@@ -422,6 +440,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         self._populate_downlink_switches_on_peers()
         self._populate_evpn_route_server_clients_on_peers()
         self._populate_mpls_route_reflector_clients_on_peers()
+        self._populate_underlay_ibgp_route_reflectors_by_cluster_id()
 
     def render(self) -> EosDesignsFacts:
         """Returns an instance of the EosDesignsFacts schemas class populated by the generator."""

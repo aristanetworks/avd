@@ -1,0 +1,164 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_underlay-ibgp-pod1-leaf1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-pod1-leaf1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_underlay-ibgp-pod1-leaf2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-pod1-leaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_underlay-ibgp-pod1-leaf3_Ethernet1
+  shutdown: true
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-pod1-leaf3
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_underlay-ibgp-ssp1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ssp1
+    peer_interface: Ethernet1
+    peer_type: super-spine
+  switchport:
+    enabled: false
+- name: Ethernet8
+  description: P2P_underlay-ibgp-ssp2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: underlay-ibgp-ssp2
+    peer_interface: Ethernet1
+    peer_type: super-spine
+  switchport:
+    enabled: false
+hostname: underlay-ibgp-pod1-spine1
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.254.1.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_bgp:
+  as: '65000'
+  router_id: 10.254.1.1
+  maximum_paths:
+    paths: 128
+    ecmp: 128
+  updates:
+    wait_install: true
+  bgp_cluster_id: 10.255.0.2
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: RR-CLIENTS-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    description: Towards downlink route reflector clients
+    route_reflector_client: true
+    bfd: true
+    next_hop_self: true
+    password: oU8X5y3u4epoPjIAyBowQg==
+    send_community: all
+    maximum_routes: 0
+  - name: RR-UPLINK-PEERS
+    metadata:
+      type: ipv4
+    description: Towards uplink route reflectors
+    bfd: true
+    next_hop_self: true
+    password: DXSzy3wx6R+lZX+VX+pgMw==
+    send_community: all
+    maximum_routes: 0
+  neighbor_interfaces:
+  - name: Ethernet1
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-pod1-leaf1
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-pod1-leaf1_Ethernet1
+  - name: Ethernet2
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-pod1-leaf2
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-pod1-leaf2_Ethernet1
+  - name: Ethernet3
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-pod1-leaf3
+    peer_group: RR-CLIENTS-UNDERLAY-PEERS
+    description: underlay-ibgp-pod1-leaf3_Ethernet1
+  - name: Ethernet7
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-ssp1
+    peer_group: RR-UPLINK-PEERS
+    description: underlay-ibgp-ssp1_Ethernet1
+  - name: Ethernet8
+    remote_as: '65000'
+    metadata:
+      peer: underlay-ibgp-ssp2
+    peer_group: RR-UPLINK-PEERS
+    description: underlay-ibgp-ssp2_Ethernet1
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: RR-CLIENTS-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+    - name: RR-UPLINK-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

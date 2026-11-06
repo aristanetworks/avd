@@ -1,0 +1,25 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_DIFFERENT_CLUSTER_IDS
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-different-cluster-ids-spine1
+      id: 1
+      bgp_cluster_id: 2.2.2.2
+    - name: underlay-ibgp-different-cluster-ids-spine2
+      id: 2
+      bgp_cluster_id: 3.3.3.3
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-different-cluster-ids-leaf1
+      id: 1
+      uplink_switches: [underlay-ibgp-different-cluster-ids-spine1, underlay-ibgp-different-cluster-ids-spine2]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]

@@ -53,6 +53,9 @@ def get_facts(
     mlag_groups: dict[str, set[str]] = {}
     """Placeholder for map of mlag_group to devices. Used to identify MLAG pairs from the mlag_group variable."""
 
+    underlay_ibgp_route_reflectors_by_cluster_id: dict[str, set[str]] = {}
+    """Placeholder for map of bgp_cluster_id to 'underlay_routing_protocol: ibgp' route reflectors. Used to check that cluster IDs are unique per group."""
+
     if all_hostvars is None:
         all_hostvars = {}
 
@@ -64,7 +67,15 @@ def get_facts(
             inputs = AVDDesign._from_dict(inputs)
 
         peer_facts_generators[hostname] = _create_generator_instance(
-            hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
+            hostname,
+            inputs,
+            hostvars,
+            templar,
+            pool_manager,
+            digital_twin,
+            peer_facts_generators,
+            mlag_groups,
+            underlay_ibgp_route_reflectors_by_cluster_id,
         )
 
     for generator in peer_facts_generators.values():
@@ -95,6 +106,7 @@ def _create_generator_instance(
     digital_twin: bool,
     peer_facts_generators: dict[str, EosDesignsFactsGenerator],
     mlag_groups: dict[str, set[str]],
+    underlay_ibgp_route_reflectors_by_cluster_id: dict[str, set[str]],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
     shared_utils = SharedUtils(
@@ -106,4 +118,11 @@ def _create_generator_instance(
         pool_manager=pool_manager,
         digital_twin=digital_twin,
     )
-    return EosDesignsFactsGenerator(hostvars=hostvars, inputs=inputs, peer_generators=peer_facts_generators, shared_utils=shared_utils, mlag_groups=mlag_groups)
+    return EosDesignsFactsGenerator(
+        hostvars=hostvars,
+        inputs=inputs,
+        peer_generators=peer_facts_generators,
+        shared_utils=shared_utils,
+        mlag_groups=mlag_groups,
+        underlay_ibgp_route_reflectors_by_cluster_id=underlay_ibgp_route_reflectors_by_cluster_id,
+    )

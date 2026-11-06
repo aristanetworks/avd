@@ -872,6 +872,10 @@ keys:
     keys:
       ipv4_underlay_peers:
         type: dict
+        description: 'With `underlay_routing_protocol: ibgp`, sessions towards uplink
+          switches (route reflectors), with `next-hop-self`.
+
+          The password, `bfd` and `maximum_routes` also apply to `rr_clients_underlay_peers`.'
         keys:
           name:
             type: str
@@ -897,6 +901,34 @@ keys:
             default: 256000
             min: 0
             max: 4294967294
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for the EOS Config schema.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      rr_clients_underlay_peers:
+        type: dict
+        description: 'Only used with `underlay_routing_protocol: ibgp`, on the route
+          reflectors.
+
+          Sessions towards downlink switches (route reflector clients), with `route-reflector-client`
+          and `next-hop-self`.
+
+          Sessions towards uplink switches use `ipv4_underlay_peers`.
+
+          The password, `bfd` and `maximum_routes` are taken from `ipv4_underlay_peers`,
+          since every session uses one group on each end.
+
+          A type 7 `password` is decrypted with the `ipv4_underlay_peers` name and
+          encrypted again with the name of this group.'
+        keys:
+          name:
+            type: str
+            default: RR-CLIENTS-UNDERLAY-PEERS
+            description: Name of peer group. Must be different from the name of `ipv4_underlay_peers`.
           structured_config:
             type: dict
             relaxed_validation: true
@@ -11527,9 +11559,9 @@ keys:
   underlay_rfc5549:
     documentation_options:
       table: fabric-settings
-    description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
+    description: 'Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.
 
-      Requires "underlay_routing_protocol: ebgp".
+      Requires "underlay_routing_protocol: ebgp" or "underlay_routing_protocol: ibgp".
 
       '
     type: bool
@@ -11540,12 +11572,16 @@ keys:
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - OSPF.\n  - OSPF-LDP*.\n  - ISIS.\n  - ISIS-SR*.\n
-      \ - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - No underlay routing protocol (none)\n-
-      The variables should be applied to all devices in the fabric.\n*Only supported
-      with core_interfaces data model.\n"
+      (default for l3ls-evpn)\n  - IBGP*.\n  - OSPF.\n  - OSPF-LDP**.\n  - ISIS.\n
+      \ - ISIS-SR**.\n  - ISIS-LDP**.\n  - ISIS-SR-LDP**.\n  - No underlay routing
+      protocol (none)\n- The variables should be applied to all devices in the fabric.\n*Only
+      supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`.
+      See the [iBGP underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).\n**Only
+      supported on node types with `mpls_lsr: true`, like the default `p`, `pe` and
+      `rr` node types. Other node types only get OSPF or ISIS, without MPLS.\n"
     valid_values:
     - ebgp
+    - ibgp
     - ospf
     - ospf-ldp
     - isis
@@ -14882,9 +14918,18 @@ $defs:
               description: Inventory_hostname_of_mpls_route_reflectors.
           bgp_cluster_id:
             documentation_options:
-              table: node-type-mpls-configuration
+              table: node-type-bgp-configuration
             type: str
-            description: Set BGP cluster id.
+            description: 'BGP cluster ID.
+
+              For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp`
+              and for WAN route servers, defaults to the router ID.
+
+              With `underlay_routing_protocol: ibgp`, required on all route reflectors,
+              which are the nodes with downlink switches.
+
+              It must be the same on all the route reflectors sharing the same clients,
+              and unique per group of route reflectors.'
           kernel_ecmp_cli:
             documentation_options:
               table: node-type-common-configuration

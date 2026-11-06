@@ -1,0 +1,13 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_FILTER_PEER_AS
+
+underlay_filter_peer_as: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-filter-peer-as-leaf1
+      id: 1

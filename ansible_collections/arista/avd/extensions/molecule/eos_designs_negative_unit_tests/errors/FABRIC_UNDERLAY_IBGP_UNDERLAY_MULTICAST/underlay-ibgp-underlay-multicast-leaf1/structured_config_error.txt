@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support underlay multicast; disable 'underlay_multicast_pim_sm', 'underlay_multicast_static' and the node 'underlay_multicast' settings.

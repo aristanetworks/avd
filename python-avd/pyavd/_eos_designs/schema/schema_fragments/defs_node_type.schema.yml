@@ -1297,9 +1297,13 @@ $defs:
               description: Inventory_hostname_of_mpls_route_reflectors.
           bgp_cluster_id:
             documentation_options:
-              table: node-type-mpls-configuration
+              table: node-type-bgp-configuration
             type: str
-            description: Set BGP cluster id.
+            description: |-
+              BGP cluster ID.
+              For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN route servers, defaults to the router ID.
+              With `underlay_routing_protocol: ibgp`, required on all route reflectors, which are the nodes with downlink switches.
+              It must be the same on all the route reflectors sharing the same clients, and unique per group of route reflectors.
           kernel_ecmp_cli:
             documentation_options:
               table: node-type-common-configuration
