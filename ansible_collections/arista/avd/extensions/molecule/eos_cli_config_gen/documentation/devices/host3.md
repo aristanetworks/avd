@@ -354,6 +354,30 @@ spanning-tree mst configuration
 
 ## Routing
 
+### IP Routing
+
+#### IP Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
+#### IP Routing Device Configuration
+
+```eos
+no ip routing vrf MGMT
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
 ### Router OSPF
 
 #### Router OSPF Summary
@@ -528,6 +552,21 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
 ```
 
 ## Group-Based Multi-domain Segmentation Services (MSS-Group)

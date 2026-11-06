@@ -75,12 +75,14 @@ daemon TerminAttr
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
 | IPv6_ROUTING_ENABLED_VRF | False |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
+no ip routing vrf MGMT
 ```
 
 ### IPv6 Routing
@@ -92,6 +94,7 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 | default | True |
 | FUTURE_IPV6_INTERFACES | False |
 | IPv6_ROUTING_ENABLED_VRF | True |
+| MGMT | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -258,6 +261,7 @@ router multicast
 | -------- | ---------- |
 | FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
 | IPv6_ROUTING_ENABLED_VRF | disabled |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -266,4 +270,6 @@ router multicast
 vrf instance FUTURE_IPV6_INTERFACES
 !
 vrf instance IPv6_ROUTING_ENABLED_VRF
+!
+vrf instance MGMT
 ```

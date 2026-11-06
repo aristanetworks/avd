@@ -1,0 +1,5 @@
+---
+### VRFs ###
+vrfs:
+  - name: MGMT
+    ip_routing: true
