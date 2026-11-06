@@ -11,6 +11,8 @@ from .ethernet_interfaces import EthernetInterfacesMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .router_bgp import RouterBgpMixin
 from .router_ospf import RouterOspfMixin
+from .static_routes import StaticRoutesMixin
+from .tunnel_interfaces import TunnelInterfacesMixin
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -22,6 +24,8 @@ DATA_MODELS: list[Literal["core_interfaces", "l3_edge"]] = ["core_interfaces", "
 class AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol(
     EthernetInterfacesMixin,
     PortChannelInterfacesMixin,
+    TunnelInterfacesMixin,
+    StaticRoutesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
     UtilsMixin,

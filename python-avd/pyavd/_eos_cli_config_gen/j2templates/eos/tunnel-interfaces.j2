@@ -133,6 +133,151 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.underlay_vrf is arista.avd.defined %}
    tunnel underlay vrf {{ tunnel_interface.underlay_vrf }}
 {%     endif %}
+{%     if tunnel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%     endif %}
+{%     if tunnel_interface.mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif tunnel_interface.mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
+{%     if tunnel_interface.mpls.ip is arista.avd.defined(true) %}
+   mpls ip
+{%     elif tunnel_interface.mpls.ip is arista.avd.defined(false) %}
+   no mpls ip
+{%     endif %}
+{%     if tunnel_interface.ospf_cost is arista.avd.defined %}
+   ip ospf cost {{ tunnel_interface.ospf_cost }}
+{%     endif %}
+{%     if tunnel_interface.ospf_network_point_to_point is arista.avd.defined(true) %}
+   ip ospf network point-to-point
+{%     endif %}
+{%     if tunnel_interface.ospf_authentication is arista.avd.defined('simple') %}
+   ip ospf authentication
+{%     elif tunnel_interface.ospf_authentication is arista.avd.defined('message-digest') %}
+   ip ospf authentication message-digest
+{%     endif %}
+{%     if tunnel_interface.ospf_authentication_key is arista.avd.defined %}
+   ip ospf authentication-key {{ tunnel_interface.ospf_authentication_key_type | arista.avd.default("7") }} {{ tunnel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
+{%     endif %}
+{%     if tunnel_interface.ospf_area is arista.avd.defined %}
+   ip ospf area {{ tunnel_interface.ospf_area }}
+{%     endif %}
+{%     for ospf_message_digest_key in tunnel_interface.ospf_message_digest_keys | arista.avd.natural_sort(sort_key='id') %}
+{%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
+{%         endif %}
+{%     endfor %}
+{%     if tunnel_interface.isis_enable is arista.avd.defined %}
+   isis enable {{ tunnel_interface.isis_enable }}
+{%     endif %}
+{%     if tunnel_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
+{%     endif %}
+{%     if tunnel_interface.isis_circuit_type is arista.avd.defined %}
+   isis circuit-type {{ tunnel_interface.isis_circuit_type }}
+{%     endif %}
+{%     if tunnel_interface.isis_metric is arista.avd.defined %}
+   isis metric {{ tunnel_interface.isis_metric }}
+{%     endif %}
+{%     if tunnel_interface.isis_passive is arista.avd.defined(true) %}
+   isis passive
+{%     endif %}
+{%     if tunnel_interface.isis_hello_padding is arista.avd.defined(false) %}
+   no isis hello padding
+{%     elif tunnel_interface.isis_hello_padding is arista.avd.defined(true) %}
+   isis hello padding
+{%     endif %}
+{%     if tunnel_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+   isis network point-to-point
+{%     endif %}
+{%     if tunnel_interface.isis_authentication is arista.avd.defined %}
+{%         if tunnel_interface.isis_authentication.both.mode is arista.avd.defined
+              and (tunnel_interface.isis_authentication.both.mode in ["md5", "text"]
+                   or (tunnel_interface.isis_authentication.both.mode == "sha" and tunnel_interface.isis_authentication.both.sha.key_id is arista.avd.defined)
+                   or (tunnel_interface.isis_authentication.both.mode == "shared-secret" and tunnel_interface.isis_authentication.both.shared_secret is arista.avd.defined)) %}
+{%             set isis_auth_cli = "isis authentication mode " ~ tunnel_interface.isis_authentication.both.mode %}
+{%             if tunnel_interface.isis_authentication.both.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ tunnel_interface.isis_authentication.both.sha.key_id %}
+{%             elif tunnel_interface.isis_authentication.both.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ tunnel_interface.isis_authentication.both.shared_secret.profile ~ " algorithm " ~ tunnel_interface.isis_authentication.both.shared_secret.algorithm %}
+{%             endif %}
+{%             if tunnel_interface.isis_authentication.both.rx_disabled is arista.avd.defined(true) %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%             endif %}
+   {{ isis_auth_cli }}
+{%         else %}
+{%             if tunnel_interface.isis_authentication.level_1.mode is arista.avd.defined
+                   and (tunnel_interface.isis_authentication.level_1.mode in ["md5", "text"]
+                   or (tunnel_interface.isis_authentication.level_1.mode == "sha" and tunnel_interface.isis_authentication.level_1.sha.key_id is arista.avd.defined)
+                   or (tunnel_interface.isis_authentication.level_1.mode == "shared-secret"
+                       and tunnel_interface.isis_authentication.level_1.shared_secret is arista.avd.defined)) %}
+{%                 set isis_auth_cli = "isis authentication mode " ~ tunnel_interface.isis_authentication.level_1.mode %}
+{%                 if tunnel_interface.isis_authentication.level_1.mode == "sha" %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " key-id " ~ tunnel_interface.isis_authentication.level_1.sha.key_id %}
+{%                 elif tunnel_interface.isis_authentication.level_1.mode == "shared-secret" %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " profile " ~ tunnel_interface.isis_authentication.level_1.shared_secret.profile ~ " algorithm " ~ tunnel_interface.isis_authentication.level_1.shared_secret.algorithm %}
+{%                 endif %}
+{%                 if tunnel_interface.isis_authentication.level_1.rx_disabled is arista.avd.defined(true) %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%                 endif %}
+   {{ isis_auth_cli }} level-1
+{%             endif %}
+{%             if tunnel_interface.isis_authentication.level_2.mode is arista.avd.defined
+                   and (tunnel_interface.isis_authentication.level_2.mode in ["md5", "text"]
+                   or (tunnel_interface.isis_authentication.level_2.mode == "sha" and tunnel_interface.isis_authentication.level_2.sha.key_id is arista.avd.defined)
+                   or (tunnel_interface.isis_authentication.level_2.mode == "shared-secret"
+                       and tunnel_interface.isis_authentication.level_2.shared_secret is arista.avd.defined)) %}
+{%                 set isis_auth_cli = "isis authentication mode " ~ tunnel_interface.isis_authentication.level_2.mode %}
+{%                 if tunnel_interface.isis_authentication.level_2.mode == "sha" %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " key-id " ~ tunnel_interface.isis_authentication.level_2.sha.key_id %}
+{%                 elif tunnel_interface.isis_authentication.level_2.mode == "shared-secret" %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " profile " ~ tunnel_interface.isis_authentication.level_2.shared_secret.profile ~ " algorithm " ~ tunnel_interface.isis_authentication.level_2.shared_secret.algorithm %}
+{%                 endif %}
+{%                 if tunnel_interface.isis_authentication.level_2.rx_disabled is arista.avd.defined(true) %}
+{%                     set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%                 endif %}
+   {{ isis_auth_cli }} level-2
+{%             endif %}
+{%         endif %}
+{%         set both_key_ids = [] %}
+{%         for auth_key in tunnel_interface.isis_authentication.both.key_ids | arista.avd.natural_sort(sort_key="id") %}
+{%             do both_key_ids.append(auth_key.id) %}
+{%             if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
+{%             else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
+{%             endif %}
+{%         endfor %}
+{%         for auth_key in tunnel_interface.isis_authentication.level_1.key_ids | arista.avd.natural_sort(sort_key="id") %}
+{%             if auth_key.id not in both_key_ids %}
+{%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-1
+{%                 else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-1
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%         for auth_key in tunnel_interface.isis_authentication.level_2.key_ids | arista.avd.natural_sort(sort_key="id") %}
+{%             if auth_key.id not in both_key_ids %}
+{%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-2
+{%                 else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-2
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%         if tunnel_interface.isis_authentication.both.key_type is arista.avd.defined and tunnel_interface.isis_authentication.both.key is arista.avd.defined %}
+   isis authentication key {{ tunnel_interface.isis_authentication.both.key_type }} {{ tunnel_interface.isis_authentication.both.key | arista.avd.hide_passwords(hide_passwords) }}
+{%         else %}
+{%             if tunnel_interface.isis_authentication.level_1.key_type is arista.avd.defined and tunnel_interface.isis_authentication.level_1.key is arista.avd.defined %}
+   isis authentication key {{ tunnel_interface.isis_authentication.level_1.key_type }} {{ tunnel_interface.isis_authentication.level_1.key | arista.avd.hide_passwords(hide_passwords) }} level-1
+{%             endif %}
+{%             if tunnel_interface.isis_authentication.level_2.key_type is arista.avd.defined and tunnel_interface.isis_authentication.level_2.key is arista.avd.defined %}
+   isis authentication key {{ tunnel_interface.isis_authentication.level_2.key_type }} {{ tunnel_interface.isis_authentication.level_2.key | arista.avd.hide_passwords(hide_passwords) }} level-2
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     if tunnel_interface.eos_cli is arista.avd.defined %}
    {{ tunnel_interface.eos_cli | indent(3, false) }}
 {%     endif %}
