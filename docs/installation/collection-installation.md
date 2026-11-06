@@ -22,6 +22,7 @@
 ## Python dependencies
 
 The installed version of PyAVD **must** match the version of the `arista.avd` collection.
+Installation instructions are included under the [Install Collection from Ansible Galaxy](#install-collection-from-ansible-galaxy) section.
 
 !!! important "Keep Python dependencies up to date"
 
