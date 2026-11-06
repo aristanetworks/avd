@@ -21,7 +21,7 @@ AVD Documentation:
 
 The AVD collection has the following requirements:
 
-- Python 3.10 to 3.14
+- Python 3.11 to 3.14
 - Ansible Core 2.16.0 to 2.22.x (Ansible Core 2.22 requires Python 3.13 or newer)
 - the Python package `pyavd[ansible-collection]` matching the collection version
 
@@ -59,7 +59,7 @@ Follow the [installation guide](https://avd.arista.com/stable/docs/installation/
 Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
 
 ```shell
-ansible-galaxy collection install arista.avd
+ansible-galaxy collection install arista.avd --upgrade
 ```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
@@ -81,7 +81,7 @@ ansible-galaxy collection install arista.avd --upgrade
 You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 6.3.0:
 
 ```shell
-ansible-galaxy collection install arista.avd:==6.3.0
+ansible-galaxy collection install arista.avd:==6.3.0 --upgrade
 ```
 
 See [using Ansible collections](https://docs.ansible.com/ansible/devel/collections_guide/index.html) for more details.
