@@ -16041,7 +16041,8 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
 
             Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
             and `ipv4_standard_acl_in` raises an error.'
@@ -16061,6 +16062,9 @@ $defs:
             ingress direction.
 
             The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
 
             Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
             `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
@@ -16120,7 +16124,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
@@ -16357,7 +16361,8 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
 
             Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
             and `ipv4_standard_acl_in` raises an error.'
@@ -16377,6 +16382,9 @@ $defs:
             ingress direction.
 
             The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
 
             Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
             `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
@@ -16436,7 +16444,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
