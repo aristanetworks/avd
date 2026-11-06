@@ -78,7 +78,7 @@ all required Ansible collections:
         When installing from devel, collection dependencies like `arista.eos` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
 
     ```shell
-    pip install --force-reinstall --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    pip install --force-reinstall "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
     ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
 
@@ -109,7 +109,7 @@ all required Ansible collections:
         With ansible-galaxy --upgrade flag, Ansible can replace a preinstalled Git dependency with a newer compatible Galaxy release.
 
     ```shell
-    uv pip install --force-reinstall --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    uv pip install --force-reinstall "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
     ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
 
