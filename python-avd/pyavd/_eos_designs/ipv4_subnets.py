@@ -161,7 +161,7 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
 
     # Reserve exact deterministic claims before allocating any automatic endpoint.
     for device, subnet in requests:
-        if device.inputs.fabric_ip_addressing.management.ipv4_subnet.algorithm != "device_id":
+        if device.inputs.fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm != "device_id":
             continue
         address = subnet.device_address(device.id)
         registry.claim(device.fabric_name, device.mgmt_interface_vrf, address, device.hostname, subnet.name)
@@ -175,7 +175,7 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
     requested_devices = {device.hostname: (device, subnet) for device, subnet in requests}
     for hostname in natural_sort(sorted(requested_devices), ignore_case=False):
         device, subnet = requested_devices[hostname]
-        if device.inputs.fabric_ip_addressing.management.ipv4_subnet.algorithm != "auto":
+        if device.inputs.fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm != "auto":
             continue
         if device.pool_manager is None:
             msg = f"Management IPv4 allocation mode 'auto' requires a PoolManager for host '{device.hostname}'."

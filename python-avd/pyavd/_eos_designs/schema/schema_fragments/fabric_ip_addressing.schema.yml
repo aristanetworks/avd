@@ -9,7 +9,7 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
-      management:
+      oob_mgmt:
         type: dict
         keys:
           ipv4_subnet:

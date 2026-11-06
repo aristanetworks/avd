@@ -1218,7 +1218,7 @@ mgmt_interface_settings:
   ipv4_subnet: DC1_OOB
 
 fabric_ip_addressing:
-  management:
+  oob_mgmt:
     ipv4_subnet:
       algorithm: auto  # device_id | auto
 
