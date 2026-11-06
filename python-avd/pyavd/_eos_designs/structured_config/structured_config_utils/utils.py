@@ -43,6 +43,27 @@ class UtilsMixin(Protocol):
         """Append an IPv4 ACL to structured config ip_access_lists."""
         self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
 
+    def _validate_ipv4_acl_substitution(
+        self: StructuredConfigUtilsProtocol,
+        acl_name: str,
+        context: str,
+        reference_type: str,
+    ) -> None:
+        """Raise if an IPv4 ACL uses a substitution field unsupported by its reference."""
+        if (ipv4_acl := self.inputs.ipv4_acls.get(acl_name, None)) is None:
+            return
+        for index, entry in enumerate(ipv4_acl.entries):
+            if entry._get("remark"):
+                continue
+            for field in ("source", "destination"):
+                if (field_value := entry._get(field)) in ("interface_ip", "peer_ip"):
+                    msg = (
+                        f"Field substitution of the value '{field_value}' defined under "
+                        f"'ipv4_acls[name={acl_name}].entries[{index}].{field}' "
+                        f"is not supported for {reference_type} '{context}'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
     def _set_ipv6_acl(self: StructuredConfigUtilsProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
         """Append an IPv6 ACL to structured config ipv6_access_lists."""
         self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))
@@ -67,16 +88,22 @@ class UtilsMixin(Protocol):
         self: StructuredConfigUtilsProtocol,
         ipv4_acl: str | None,
         ipv4_standard_acl: str | None,
+        ipv4_acl_key_name: str,
+        ipv4_standard_acl_key_name: str,
         context: str,
-        direction: str,
+        direction: str | None = None,
     ) -> None:
-        """Raise if both IPv4 ACL types are set for the same direction, identifying the full input path in context."""
+        """Raise if both IPv4 ACL types are set for the same target and direction."""
         if not (ipv4_acl and ipv4_standard_acl):
             return
-        direction_label = "ingress" if direction == "in" else "egress"
+        suffix = f"_{direction}" if direction is not None else ""
+        target = "interface " if direction is not None else ""
+        direction_label = ""
+        if direction is not None:
+            direction_label = "ingress " if direction == "in" else "egress "
         msg = (
-            f"'ipv4_acl_{direction}' and 'ipv4_standard_acl_{direction}' are mutually exclusive on interface '{context}'. "
-            f"Only one {direction_label} IPv4 ACL can be configured."
+            f"'{ipv4_acl_key_name}{suffix}' and '{ipv4_standard_acl_key_name}{suffix}' are mutually exclusive on {target}'{context}'. "
+            f"Only one {direction_label}IPv4 ACL can be configured."
         )
         raise AristaAvdInvalidInputsError(msg)
 

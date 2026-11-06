@@ -98,8 +98,22 @@ class VlanInterfacesMixin(Protocol):
         vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]"
-        self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_in, svi.ipv4_standard_acl_in, context, "in")
-        self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_out, svi.ipv4_standard_acl_out, context, "out")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            svi.ipv4_acl_in,
+            svi.ipv4_standard_acl_in,
+            "ipv4_acl",
+            "ipv4_standard_acl",
+            context,
+            "in",
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            svi.ipv4_acl_out,
+            svi.ipv4_standard_acl_out,
+            "ipv4_acl",
+            "ipv4_standard_acl",
+            context,
+            "out",
+        )
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(

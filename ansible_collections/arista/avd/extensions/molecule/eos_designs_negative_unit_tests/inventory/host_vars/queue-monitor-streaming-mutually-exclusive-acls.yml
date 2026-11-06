@@ -1,0 +1,14 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: queue-monitor-streaming-mutually-exclusive-acls
+
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: QMS-EXTENDED
+  ip_standard_access_group: QMS-STANDARD
+
+expected_error_message: >-
+  'ip_access_group' and 'ip_standard_access_group' are mutually exclusive on 'queue-monitor streaming'. Only one IPv4 ACL can be configured.

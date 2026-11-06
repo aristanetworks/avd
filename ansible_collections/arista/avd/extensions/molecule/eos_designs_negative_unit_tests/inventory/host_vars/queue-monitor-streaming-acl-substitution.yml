@@ -1,0 +1,27 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: queue-monitor-streaming-acl-substitution
+
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: QMS-EXTENDED
+
+avd_design_future:
+  configure_queue_monitor_streaming_ipv4_acl_from_catalog: true
+
+ipv4_acls:
+  - name: QMS-EXTENDED
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+
+expected_error_message: >-
+  Field substitution of the value 'interface_ip' defined under
+  'ipv4_acls[name=QMS-EXTENDED].entries[0].source' is not supported for
+  queue-monitor streaming reference 'queue_monitor_streaming.ip_access_group'.

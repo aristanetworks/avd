@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ip_access_group' and 'ip_standard_access_group' are mutually exclusive on 'queue-monitor streaming'. Only one IPv4 ACL can be configured.
