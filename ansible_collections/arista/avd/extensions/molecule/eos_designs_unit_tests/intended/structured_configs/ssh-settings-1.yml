@@ -33,6 +33,7 @@ management_ssh:
     ip_access_group_in: ACL-SSH-MGMT-INTERFACE
   - name: VRF10
     enable: true
+    ip_access_group_in: ACL-SSH-STANDARD
     ipv6_access_group_in: ACL-SSH6
   - name: VRF12
     enable: false
@@ -43,6 +44,12 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: ACL-SSH-STANDARD
+  entries:
+  - sequence: 10
+    action: permit
+    source: any
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

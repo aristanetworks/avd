@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'ssh_settings.vrfs[name=VRF20]'. Only one IPv4 ACL can be configured.
