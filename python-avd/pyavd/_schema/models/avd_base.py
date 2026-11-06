@@ -9,8 +9,7 @@ from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
-
-    from typing_extensions import Self
+    from typing import Self
 
     from .type_vars import T_AvdBase
 

@@ -9,9 +9,9 @@ from pyavd._utils.json_path_to_string import json_path_to_string
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
+    from typing import Self
 
     from pyavd_utils.validation import Violation
-    from typing_extensions import Self
 
 
 class AristaAvdError(Exception):
