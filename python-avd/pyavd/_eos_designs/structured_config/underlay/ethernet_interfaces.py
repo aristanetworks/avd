@@ -42,7 +42,7 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=link.interface,
                 description=description or None,
-                speed=link.speed,
+                speed=self.structured_config_utils.get_interface_speed(link.speed),
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
             ethernet_interface.metadata._update(peer_interface=link.peer_interface, peer=link.peer, peer_type=link.peer_type)
@@ -257,7 +257,7 @@ class EthernetInterfacesMixin(Protocol):
 
         interface._update(
             description=interface_description or None,
-            speed=l3_interface.speed,
+            speed=self.structured_config_utils.get_interface_speed(l3_interface.speed),
         )
         interface.metadata._update(peer_interface=l3_interface.peer_interface, peer_type="l3_interface")
         if l3_interface.ipv6_addresses:
@@ -329,7 +329,7 @@ class EthernetInterfacesMixin(Protocol):
                 name=member_intf.name,
                 description=interface_description or None,
                 shutdown=not l3_port_channel.enabled,
-                speed=member_intf.speed or None,
+                speed=self.structured_config_utils.get_interface_speed(member_intf.speed),
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
                 metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                     peer_interface=member_intf.peer_interface,

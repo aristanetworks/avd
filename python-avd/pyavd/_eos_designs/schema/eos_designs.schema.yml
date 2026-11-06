@@ -16808,6 +16808,14 @@ $defs:
               description: 'Support for storm-control.
 
                 The feature will be ignored on platforms where this is false.'
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: 'Support for explicit `speed auto <mode>` commands on Ethernet
+                interfaces.
+
+                When set to false, these commands are omitted while `speed auto` and
+                fixed speed commands are preserved.'
             poe:
               type: bool
               default: false

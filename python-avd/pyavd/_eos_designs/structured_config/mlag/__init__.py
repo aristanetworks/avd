@@ -226,7 +226,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     ),
                 ),
                 shutdown=False,
-                speed=default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed),
+                speed=self.structured_config_utils.get_interface_speed(
+                    default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed)
+                ),
             )
             ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")

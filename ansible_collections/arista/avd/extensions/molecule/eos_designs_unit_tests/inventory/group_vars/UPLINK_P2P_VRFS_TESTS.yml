@@ -71,6 +71,8 @@ l3leaf:
     - name: uplink-p2p-vrfs-tests-leaf1
       id: 3
       uplink_switch_interfaces: [Ethernet1, Ethernet2]
+      # Suppressed on this leaf and rendered on its spine peers.
+      uplink_interface_speed: auto 10000full
 
     # Test leaf with underlay_ipv6_numbered (set in hostvars) and p2p_uplinks_vrf
     - name: uplink-p2p-vrfs-tests-leaf2

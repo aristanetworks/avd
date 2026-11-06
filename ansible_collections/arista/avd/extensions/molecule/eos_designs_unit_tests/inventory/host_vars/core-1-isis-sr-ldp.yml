@@ -2,3 +2,7 @@
 underlay_routing_protocol: isis-sr-ldp
 # Use router id from router general configuration
 use_router_general_for_router_id: true
+platform_settings:
+  - platforms: [default]
+    feature_support:
+      explicit_interface_speed_auto_mode: false
