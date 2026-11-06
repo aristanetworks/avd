@@ -3469,7 +3469,7 @@ keys:
                 valid_values:
                 - device_id
                 - auto
-                description: 'Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
+                description: 'Allocation mode for `mgmt_ipv4_subnet`.
 
                   `device_id` selects the host at offset `id - 1` in the subnet''s
                   address ordering and fails on conflicts.
@@ -4256,8 +4256,7 @@ keys:
       table: management-interface-settings
     description: 'Named IPv4 subnets used for address allocation.
 
-      Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB
-      management addresses.
+      Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.
 
       Address conflicts are checked across participating OOB management endpoints
       in the same fabric and VRF.'
@@ -4872,16 +4871,6 @@ keys:
       These settings override the corresponding global variables where applicable.'
     type: dict
     keys:
-      ipv4_subnet:
-        type: str
-        description: 'Name of an `ipv4_subnets` entry used to generate the OOB management
-          IPv4 address.
-
-          An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
-
-          Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
-
-          Gateway settings are unchanged; the gateway is not inferred from the subnet.'
       description:
         type: str
         description: Interface description configured on the management interface.
@@ -13276,6 +13265,19 @@ $defs:
               are ignored since the DHCP server is expected to provide the gateway
               and the default route.'
             type: str
+          mgmt_ipv4_subnet:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of an `ipv4_subnets` entry used to generate the OOB
+              management IPv4 address.
+
+              An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
+
+              Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+
+              Gateway settings are unchanged; the gateway is not inferred from the
+              subnet.'
           mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration

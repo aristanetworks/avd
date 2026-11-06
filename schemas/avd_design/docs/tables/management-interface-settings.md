@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_mgmt_method</samp>](## "default_mgmt_method") | String |  | `oob` | Valid Values:<br>- <code>oob</code><br>- <code>inband</code><br>- <code>none</code> | `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with AVD Design:<br>  - `aaa_settings`<br>  - `cv_settings`<br>  - `logging_settings`<br>  - `management_eapi`<br>  - `ntp_settings`<br>  - `sflow_settings`<br>  - `snmp_settings`<br>  - `ssh_settings`<br><br>`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.<br>`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.<br>`none` means the VRF and or interface must be manually set for each protocol.<br>This can be overridden under the settings for each protocol.<br> |
-    | [<samp>ipv4_subnets</samp>](## "ipv4_subnets") | List, items: Dictionary |  |  |  | Named IPv4 subnets used for address allocation.<br>Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.<br>Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF. |
+    | [<samp>ipv4_subnets</samp>](## "ipv4_subnets") | List, items: Dictionary |  |  |  | Named IPv4 subnets used for address allocation.<br>Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.<br>Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_subnets.[].name") | String | Required, Unique |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "ipv4_subnets.[].subnet") | String | Required |  |  | Canonical IPv4 network in CIDR notation. Host bits must be zero. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "ipv4_subnets.[].range") | String |  |  |  | Optional inclusive host range within the subnet, for example `192.0.2.10-192.0.2.200`.<br>Defaults to all usable hosts. Network and broadcast addresses are excluded except for /31 and /32 subnets. |
@@ -23,7 +23,6 @@
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") <span style="color:red">deprecated</span> | String |  | `Management1` |  | OOB Management interface.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.interface</samp> instead.</span> |
     | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") <span style="color:red">deprecated</span> | String |  | `OOB_MANAGEMENT` |  | Management interface description.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.description</samp> instead.</span> |
     | [<samp>mgmt_interface_settings</samp>](## "mgmt_interface_settings") | Dictionary |  |  |  | Out-of-Band (OOB) management interface settings.<br>These settings override the corresponding global variables where applicable. |
-    | [<samp>&nbsp;&nbsp;ipv4_subnet</samp>](## "mgmt_interface_settings.ipv4_subnet") | String |  |  |  | Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.<br>An explicit node `mgmt_ip`, including `dhcp`, takes precedence.<br>Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.<br>Gateway settings are unchanged; the gateway is not inferred from the subnet. |
     | [<samp>&nbsp;&nbsp;description</samp>](## "mgmt_interface_settings.description") | String |  | `OOB_MANAGEMENT` |  | Interface description configured on the management interface. |
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface. |
     | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF. |
@@ -55,7 +54,7 @@
     default_mgmt_method: <str; "oob" | "inband" | "none"; default="oob">
 
     # Named IPv4 subnets used for address allocation.
-    # Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.
+    # Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.
     # Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF.
     ipv4_subnets:
       - name: <str; length >=1; required; unique>
@@ -118,12 +117,6 @@
     # Out-of-Band (OOB) management interface settings.
     # These settings override the corresponding global variables where applicable.
     mgmt_interface_settings:
-
-      # Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
-      # An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
-      # Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
-      # Gateway settings are unchanged; the gateway is not inferred from the subnet.
-      ipv4_subnet: <str>
 
       # Interface description configured on the management interface.
       description: <str; default="OOB_MANAGEMENT">

@@ -82,11 +82,11 @@ class MgmtMixin(Protocol):
         An ACT Digital Twin override takes precedence when OOB management is configured explicitly or through a named subnet.
         """
         # Configuration workers consume the effective address already resolved during facts generation.
-        if self.inputs.mgmt_interface_settings.ipv4_subnet is not None and isinstance(self.switch_facts, EosDesignsFacts):
+        if self.node_config.mgmt_ipv4_subnet is not None and isinstance(self.switch_facts, EosDesignsFacts):
             return self.switch_facts.mgmt_ip
 
         mgmt_ip = default(self.node_config.mgmt_ip, self._allocated_mgmt_ip)
-        if self.is_act_digital_twin and (mgmt_ip is not None or self.inputs.mgmt_interface_settings.ipv4_subnet is not None):
+        if self.is_act_digital_twin and (mgmt_ip is not None or self.node_config.mgmt_ipv4_subnet is not None):
             return default(self.node_config.digital_twin.mgmt_ip, mgmt_ip)
 
         return mgmt_ip
@@ -106,7 +106,7 @@ class MgmtMixin(Protocol):
         """
         regular_mgmt_gateway = default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
 
-        if self.is_act_digital_twin and (self.node_config.mgmt_ip is not None or self.inputs.mgmt_interface_settings.ipv4_subnet is not None):
+        if self.is_act_digital_twin and (self.node_config.mgmt_ip is not None or self.node_config.mgmt_ipv4_subnet is not None):
             return default(self.node_config.digital_twin.mgmt_gateway, regular_mgmt_gateway)
 
         return regular_mgmt_gateway

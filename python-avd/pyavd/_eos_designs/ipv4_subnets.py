@@ -86,7 +86,7 @@ class Ipv4SubnetRegistry:
         self.claims[key] = (owner, subnet)
 
     def subnet(self, shared_utils: SharedUtilsProtocol) -> Ipv4Subnet:
-        name = shared_utils.inputs.mgmt_interface_settings.ipv4_subnet
+        name = shared_utils.node_config.mgmt_ipv4_subnet
         # The allocator only resolves a subnet after filtering out unselected devices.
         assert name is not None  # noqa: S101
         definition = shared_utils.inputs.ipv4_subnets.get(name, None)
@@ -119,7 +119,7 @@ class Ipv4SubnetRegistry:
 def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str, tuple[Ipv4AllocationCollection, dict[str, Ipv4Allocation]]]:
     """Resolve management addresses before facts rendering; stage persistence only after a successful facts build."""
     devices = list(devices)
-    enabled_fabrics = {device.fabric_name for device in devices if device.inputs.mgmt_interface_settings.ipv4_subnet is not None}
+    enabled_fabrics = {device.fabric_name for device in devices if device.node_config.mgmt_ipv4_subnet is not None}
     if not enabled_fabrics:
         return {}
     devices = [device for device in devices if device.fabric_name in enabled_fabrics]
@@ -143,7 +143,7 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
             collection = device.pool_manager.get_ipv4_allocation_collection(device.fabric_name)
             collections[device.fabric_name] = (collection, collection.assignments.copy())
         mgmt_ip = device.node_config.mgmt_ip
-        if device.is_act_digital_twin and (mgmt_ip is not None or device.inputs.mgmt_interface_settings.ipv4_subnet is not None):
+        if device.is_act_digital_twin and (mgmt_ip is not None or device.node_config.mgmt_ipv4_subnet is not None):
             mgmt_ip = default(device.node_config.digital_twin.mgmt_ip, mgmt_ip)
         if mgmt_ip is not None:
             if mgmt_ip != "dhcp":
@@ -154,7 +154,7 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
                     raise AristaAvdInvalidInputsError(msg) from error
                 registry.claim(device.fabric_name, device.mgmt_interface_vrf, address, device.hostname, "explicit mgmt_ip")
             continue
-        if device.inputs.mgmt_interface_settings.ipv4_subnet is None:
+        if device.node_config.mgmt_ipv4_subnet is None:
             continue
         subnet = registry.subnet(device)
         requests.append((device, subnet))

@@ -24,10 +24,10 @@ def inputs(nodes: dict[str, dict], algorithm: str = "auto", **settings: Any) -> 
     base = {
         "fabric_name": "MGMT_TEST",
         "type": "l2leaf",
-        "mgmt_interface_settings": {"ipv4_subnet": "OOB", "vrf": "MGMT"},
+        "mgmt_interface_settings": {"vrf": "MGMT"},
         "ipv4_subnets": [{"name": "OOB", "subnet": "192.0.2.0/24", "range": "192.0.2.10-192.0.2.20"}],
         "fabric_ip_addressing": {"oob_mgmt": {"ipv4_subnet": {"algorithm": algorithm}}},
-        "devices": [{"name": name, "type": "l2leaf", **node} for name, node in nodes.items()],
+        "devices": [{"name": name, "type": "l2leaf", "mgmt_ipv4_subnet": "OOB", **node} for name, node in nodes.items()],
         **settings,
     }
     return {name: deepcopy(base) for name in nodes}
@@ -124,7 +124,7 @@ def overrides_and_collisions(directory: Path) -> None:
     collision["leaf2"]["mgmt_interface_settings"]["vrf"] = "OTHER"
     assert set(addresses(get_avd_facts(collision)).values()) == {"192.0.2.10/24"}
     collision["leaf2"]["mgmt_interface_settings"]["vrf"] = "MGMT"
-    collision["leaf2"]["mgmt_interface_settings"]["ipv4_subnet"] = "ALIAS"
+    collision["leaf2"]["devices"][1]["mgmt_ipv4_subnet"] = "ALIAS"
     collision["leaf2"]["ipv4_subnets"][0]["name"] = "ALIAS"
     with fails("conflicts between"):
         get_avd_facts(collision)
@@ -138,6 +138,69 @@ def overrides_and_collisions(directory: Path) -> None:
         get_avd_facts(gateway)
     gateway["leaf"]["fabric_ip_addressing"]["oob_mgmt"]["ipv4_subnet"]["algorithm"] = "auto"
     assert get_avd_facts(gateway, pool_manager=PoolManager(directory))["leaf"].mgmt_ip == "192.0.2.11/24"
+
+
+def node_subnet_inheritance(directory: Path) -> None:
+    """Node selectors inherit through both input models and retain explicit-address precedence."""
+    subnets = [
+        {"name": "OOB", "subnet": "192.0.2.0/24", "range": "192.0.2.10-192.0.2.20"},
+        {"name": "GROUP", "subnet": "198.51.100.0/24", "range": "198.51.100.10-198.51.100.20"},
+        {"name": "NODE", "subnet": "203.0.113.0/24", "range": "203.0.113.10-203.0.113.20"},
+    ]
+    expected = {"inherited": "192.0.2.10/24", "grouped": "198.51.100.10/24", "overridden": "203.0.113.10/24"}
+    for algorithm in ("device_id", "auto"):
+        for model in ("legacy", "profiles"):
+            base = inputs({"inherited": {}}, algorithm, ipv4_subnets=subnets)["inherited"]
+            if model == "legacy":
+                del base["devices"]
+                base["l2leaf"] = {
+                    "defaults": {"mgmt_ipv4_subnet": "OOB"},
+                    "nodes": [{"name": "inherited", "id": 1}],
+                    "node_groups": [
+                        {
+                            "group": "GROUP",
+                            "mlag": False,
+                            "mgmt_ipv4_subnet": "GROUP",
+                            "nodes": [
+                                {"name": "grouped", "id": 1},
+                                {"name": "overridden", "id": 1, "mgmt_ipv4_subnet": "NODE"},
+                            ],
+                        }
+                    ],
+                }
+            else:
+                base["device_profiles"] = [
+                    {"name": "PARENT", "mgmt_ipv4_subnet": "OOB"},
+                    {"name": "CHILD", "parent_profile": "PARENT"},
+                    {"name": "GROUP", "parent_profile": "PARENT", "mgmt_ipv4_subnet": "GROUP"},
+                ]
+                base["devices"] = [
+                    {"name": "inherited", "type": "l2leaf", "profile": "CHILD", "id": 1},
+                    {"name": "grouped", "type": "l2leaf", "profile": "GROUP", "id": 1},
+                    {"name": "overridden", "type": "l2leaf", "profile": "GROUP", "id": 1, "mgmt_ipv4_subnet": "NODE"},
+                ]
+            data = {hostname: deepcopy(base) for hostname in expected}
+            for host_inputs in data.values():
+                assert validate_inputs(host_inputs).validated_data is not None
+            manager = PoolManager(directory / algorithm / model)
+            facts = get_avd_facts(data, pool_manager=manager)
+            assert addresses(facts) == expected
+            for hostname, address in expected.items():
+                config = get_device_structured_config(hostname, data[hostname], facts)._dump()
+                assert config["management_interfaces"][0]["ip_address"] == address
+
+        # Explicit addresses bypass even an unknown subnet reference; unselected nodes need no manager or ID.
+        explicit = inputs(
+            {
+                "static": {"mgmt_ipv4_subnet": "MISSING", "mgmt_ip": "192.0.2.50/24"},
+                "dhcp": {"mgmt_ipv4_subnet": "MISSING", "mgmt_ip": "dhcp"},
+            },
+            algorithm,
+        )
+        assert addresses(get_avd_facts(explicit)) == {"static": "192.0.2.50/24", "dhcp": "dhcp"}
+        unselected = inputs({"unselected": {}}, algorithm)
+        del unselected["unselected"]["devices"][0]["mgmt_ipv4_subnet"]
+        assert get_avd_facts(unselected)["unselected"].mgmt_ip is None
 
 
 def subnet_boundaries(directory: Path) -> None:
@@ -300,14 +363,13 @@ def state_safety(directory: Path) -> None:
     with fails("No available IPv4 addresses"):
         get_avd_facts(
             inputs(
-                {"leaf3": {}, "leaf4": {}},
+                {"leaf3": {"mgmt_ipv4_subnet": "TINY"}, "leaf4": {"mgmt_ipv4_subnet": "TINY"}},
                 ipv4_subnets=[
                     {
                         "name": "TINY",
                         "subnet": "198.51.100.1/32",
                     }
                 ],
-                mgmt_interface_settings={"ipv4_subnet": "TINY"},
             ),
             pool_manager=failed,
         )
@@ -347,7 +409,15 @@ def main() -> None:
     schema_contract()
     with TemporaryDirectory(prefix="avd-ipv4-allocation-tests-") as temporary:
         root = Path(temporary)
-        for test in (persistent_builds, overrides_and_collisions, subnet_boundaries, facts_to_configuration, digital_twin_allocations, state_safety):
+        for test in (
+            persistent_builds,
+            overrides_and_collisions,
+            node_subnet_inheritance,
+            subnet_boundaries,
+            facts_to_configuration,
+            digital_twin_allocations,
+            state_safety,
+        ):
             test(root / test.__name__)
     print("IPv4 management allocation integration checks passed.")  # noqa: T201
 

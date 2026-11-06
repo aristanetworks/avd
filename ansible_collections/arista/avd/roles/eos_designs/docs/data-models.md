@@ -1123,7 +1123,7 @@ schemas/avd_design/docs/tables/management-eapi.md
 
 ### Management interface
 
-Named IPv4 subnets can supply OOB management addresses. Management interface settings select a named subnet, while `fabric_ip_addressing` selects the allocation mode:
+Named IPv4 subnets can supply OOB management addresses. Node configuration selects a named subnet with `mgmt_ipv4_subnet`, while `fabric_ip_addressing` selects the allocation mode:
 
 ```yaml
 ipv4_subnets:
@@ -1132,9 +1132,6 @@ ipv4_subnets:
     range: 192.0.2.10-192.0.2.200
     allocation_policy:
       algorithm: ascend
-
-mgmt_interface_settings:
-  ipv4_subnet: DC1_OOB
 
 fabric_ip_addressing:
   oob_mgmt:
@@ -1146,14 +1143,17 @@ mgmt_gateway: 192.0.2.1
 devices:
   - name: leaf1
     type: l2leaf
+    mgmt_ipv4_subnet: DC1_OOB
   - name: leaf2
     type: l2leaf
+    mgmt_ipv4_subnet: DC1_OOB
     mgmt_ip: 192.0.2.50/24
 ```
 
 An explicit node `mgmt_ip`, including `dhcp`, takes precedence and creates no new generated assignment.
 Static addresses and configured gateways are reserved before allocating new automatic addresses.
-Gateway configuration and existing node/profile inheritance are unchanged.
+The subnet reference follows the existing node defaults, node-group, and device-profile inheritance.
+Gateway configuration is unchanged.
 
 The default `device_id` mode selects the address at offset `id - 1` in the allowed range's ascending or descending order.
 Repeated IDs are allowed when their resulting addresses differ; conflicting addresses in the same fabric and VRF fail with both owners.
