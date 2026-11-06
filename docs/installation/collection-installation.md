@@ -132,7 +132,7 @@ and update your `ansible.cfg`:
 
 ```shell
 # Install collection under ${PWD}/collections/
-$ ansible-galaxy collection install arista.avd -p collections/
+$ ansible-galaxy collection install arista.avd --upgrade -p collections/
 ```
 
 ```ini title="ansible.cfg"
