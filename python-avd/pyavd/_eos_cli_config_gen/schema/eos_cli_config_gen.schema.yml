@@ -25549,17 +25549,33 @@ keys:
               keys:
                 area:
                   type: str
-                  required: true
                   description: 'OSPF area ID in IPv4 address or decimal format (range:
                     0 to 4294967295).'
+                cost:
+                  type: int
+                  min: 1
+                  max: 65535
+                  description: Set OSPFv3 IPv4 cost on the interface.
             ipv6:
               type: dict
               keys:
                 area:
                   type: str
-                  required: true
                   description: 'OSPF area ID in IPv4 address or decimal format (range:
                     0 to 4294967295).'
+                cost:
+                  type: int
+                  min: 1
+                  max: 65535
+                  description: Set OSPFv3 IPv6 cost on the interface.
+            cost:
+              type: int
+              min: 1
+              max: 65535
+              description: 'Set OSPFv3 cost on the interface for both address families.
+                If either address family defines a ospfv3 cost,
+
+                the shared ospfv3 cost setting is ignored.'
             passive_interface:
               type: bool
               description: Include interface but without actively running OSPF. Takes
