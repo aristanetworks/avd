@@ -283,9 +283,9 @@ class UtilsMixin(Protocol):
             conflicting_standard_key = "traffic_allow_ipv4_standard_acl" if ipv4_standard_acl else "traffic_allow_access_list"
             msg = (
                 f"'traffic_allow_ipv4_acl' and '{conflicting_standard_key}' are mutually exclusive under "
-                f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action'."
+                f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action' for host '{self.shared_utils.hostname}'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if ipv4_standard_acl:
             self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
             dot1x.aaa.unresponsive.action.traffic_allow_access_list = ipv4_standard_acl
