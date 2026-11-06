@@ -10,6 +10,10 @@ PyAVD is a Python package that serves as the foundation for the Arista AVD proje
 
 See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd/pyavd.html) for details.
 
+## Requirements
+
+PyAVD supports Python 3.10 to 3.14. The optional `pyavd[ansible]` dependencies support Ansible Core 2.16.0 to 2.22.x. Ansible Core 2.22 requires Python 3.13 or newer.
+
 ## License
 
 Copyright (c) 2023-2025 Arista Networks, Inc.
