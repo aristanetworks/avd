@@ -6166,6 +6166,9 @@ keys:
 
                   explicitly turned off with "redistribute_ospf: false".
 
+                  Note: `redistribute_ospf` is going to be removed from version: 7.0.0
+                  and will be replaced with "bgp.redistribute_ospf.internal.enabled".
+
                   '
                 keys:
                   enabled:

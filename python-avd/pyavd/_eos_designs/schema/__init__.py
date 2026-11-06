@@ -41657,6 +41657,8 @@ class EosDesigns(EosDesignsRootModel):
             will also cause automatic OSPF redistribution into BGP unless
             explicitly turned off with
             "redistribute_ospf: false".
+            Note: `redistribute_ospf` is going to be removed from version: 7.0.0 and
+            will be replaced with "bgp.redistribute_ospf.internal.enabled".
 
 
             Subclass of AvdModel.
@@ -42001,6 +42003,8 @@ class EosDesigns(EosDesignsRootModel):
                            will also cause automatic OSPF redistribution into BGP unless
                            explicitly turned off with
                            "redistribute_ospf: false".
+                           Note: `redistribute_ospf` is going to be removed from version: 7.0.0 and
+                           will be replaced with "bgp.redistribute_ospf.internal.enabled".
 
 
                            Subclass of AvdModel.
@@ -96426,6 +96430,8 @@ class EosDesigns(EosDesignsRootModel):
                     will also cause automatic OSPF redistribution into BGP unless
                     explicitly turned off with
                     "redistribute_ospf: false".
+                    Note: `redistribute_ospf` is going to be removed from version: 7.0.0 and
+                    will be replaced with "bgp.redistribute_ospf.internal.enabled".
 
 
                     Subclass of AvdModel.
@@ -96770,6 +96776,8 @@ class EosDesigns(EosDesignsRootModel):
                                    will also cause automatic OSPF redistribution into BGP unless
                                    explicitly turned off with
                                    "redistribute_ospf: false".
+                                   Note: `redistribute_ospf` is going to be removed from version: 7.0.0 and
+                                   will be replaced with "bgp.redistribute_ospf.internal.enabled".
 
 
                                    Subclass of AvdModel.
