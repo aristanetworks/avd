@@ -116,7 +116,7 @@ You can place the Ansible builder dependencies with your current project or leve
 
     ```
 
-    The Python dependencies listed here are from the [collection installation](../../docs/installation/collection-installation.md#python-requirements-installation) instructions. Please update the requirements for the specific version of the `arista.avd` collection you are leveraging.
+    The Python dependencies listed here are from the [collection installation](../../docs/installation/collection-installation.md#python-dependencies) instructions. Please update the requirements for the specific version of the `arista.avd` collection you are leveraging.
 
 #### Build the image
 

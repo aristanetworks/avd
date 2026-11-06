@@ -87,7 +87,7 @@ Python dependencies are automatically installed with above command.
 
 ### Optional requirements
 
-To install Ansible [AVD collection Python requirements](../installation/collection-installation.md#python-requirements-installation) install with extra `ansible`:
+To install Ansible [AVD collection Python requirements](../installation/collection-installation.md#python-dependencies) install with extra `ansible`:
 
 === "pip"
 
