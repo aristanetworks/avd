@@ -381,11 +381,22 @@ def test_reporter_does_not_infer_no_else_endif_arc_from_true_branch(tmp_path: Pa
     assert (2, 4) not in JinjaTemplateFileReporter(str(source_file)).translate_arcs([(2, 3)])
 
 
-def test_reporter_does_not_alias_no_else_endif_arc_outside_loop(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    ("source", "recorded_arcs", "false_arc"),
+    [
+        ("{% if enabled %}\n{{ name }}\n{% endif %}\n", [(1, -1)], (1, 3)),
+        ("heading\n{% if enabled %}\n{{ name }}\n{% endif %}\n", [(1, -1)], (2, 4)),
+        ("heading\n{% if enabled %}\n{{ name }}\n{% endif %}\n", [(1, -17)], (2, 4)),
+        ("{% if wrapper %}\nheading\n{% endif %}\n{% if enabled %}\n{{ name }}\n{% endif %}\n", [(2, 6)], (4, 6)),
+    ],
+)
+def test_reporter_does_not_alias_no_else_endif_arc_outside_loop(
+    tmp_path: Path, source: str, recorded_arcs: list[tuple[int, int]], false_arc: tuple[int, int]
+) -> None:
     source_file = tmp_path / "template.j2"
-    source_file.write_text("{% if enabled %}\n{{ name }}\n{% endif %}\n", encoding="utf-8")
+    source_file.write_text(source, encoding="utf-8")
 
-    assert (1, 3) not in JinjaTemplateFileReporter(str(source_file)).translate_arcs([(1, -1)])
+    assert false_arc not in JinjaTemplateFileReporter(str(source_file)).translate_arcs(recorded_arcs)
 
 
 def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Path) -> None:

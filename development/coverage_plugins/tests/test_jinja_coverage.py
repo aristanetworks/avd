@@ -5,14 +5,17 @@ from __future__ import annotations
 
 import importlib.util
 import shutil
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import pytest
 from coverage_plugins.jinja import JinjaTemplateCoveragePlugin, JinjaTemplateFileReporter
-from jinja2 import Environment, FileSystemLoader, ModuleLoader
+from coverage_plugins.jinja.compiled_parser import parse_compiled_template
+from coverage_plugins.jinja.instrument import instrument_compiled_templates
+from jinja2 import Environment, FileSystemLoader, ModuleLoader, StrictUndefined, UndefinedError
 from jinja_helpers import _analyze_rendered_template, _analyze_rendered_template_contexts, _coverage_for_template
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
     from pathlib import Path
 
 
@@ -465,6 +468,134 @@ def test_top_level_optional_guard_is_not_counted_as_missing_branch(tmp_path: Pat
 
     assert analysis.no_branch == {1}
     assert not analysis.missing_branch_arcs()
+
+
+@pytest.mark.parametrize(
+    ("source", "condition", "body", "endif"),
+    [
+        ("{% if wrapper %}\n{% if enabled %}\nyes\n{% endif %}\n{% endif %}\n", 2, 3, 4),
+        ("{% if wrapper %}\n{% if enabled %}\n{% set value = 'yes' %}\n{% endif %}\n{% endif %}\n", 2, 3, 4),
+        ("{% if wrapper %}\n{% if enabled %}\n{% do values.append('yes') %}\n{% endif %}\n{% endif %}\n", 2, 3, 4),
+        ("{% if wrapper %}\n{% if enabled or\n other %}\nyes\n{% endif %}\n{% endif %}\n", 2, 4, 5),
+        ("{% if wrapper %}\n{% if prior %}\nprior\n{% elif enabled %}\nyes\n{% endif %}\n{% endif %}\n", 4, 5, 6),
+        ("{% if wrapper %}\n{% if enabled %}\nearly\n{% endif %}\n{% if enabled %}\nyes\n{% endif %}\n{% endif %}\n", 5, 6, 7),
+    ],
+)
+@pytest.mark.parametrize("enabled_values", [[True], [False], [True, False], []], ids=["true-only", "false-only", "both", "unvisited"])
+@pytest.mark.parametrize("prior", [False, True], ids=["earlier-arm-false", "earlier-arm-true"])
+def test_coverage_tracks_instrumented_terminal_false_paths(
+    tmp_path: Path,
+    source: str,
+    condition: int,
+    body: int,
+    endif: int,
+    enabled_values: list[bool],
+    prior: bool,
+) -> None:
+    contexts = [{"wrapper": True, "enabled": enabled, "other": False, "prior": prior, "values": []} for enabled in enabled_values] or [{"wrapper": False}]
+    baseline_path = tmp_path / "baseline"
+    baseline_path.mkdir()
+    baseline = _analyze_rendered_template_contexts(baseline_path, source, contexts, trim_blocks=True)
+    measured_path = tmp_path / "instrumented"
+    measured_path.mkdir()
+    analysis = _analyze_rendered_template_contexts(measured_path, source, contexts, instrument=True, trim_blocks=True)
+    compiled_root = measured_path / "j2templates/compiled_templates"
+    parsed = parse_compiled_template(next(compiled_root.glob("*.py")), compiled_root)
+    assert parsed is not None
+    assert endif in dict(parsed.debug_map).values()
+    assert (condition, endif) not in baseline.arcs_executed
+    if prior and "{% elif" in source:
+        enabled_values = []
+
+    assert ((condition, body) in analysis.arcs_executed) == (True in enabled_values)
+    assert ((condition, endif) in analysis.arcs_executed) == (False in enabled_values)
+    assert (body in analysis.executed) == (True in enabled_values)
+    assert analysis.branch_stats()[condition] == (2, len(enabled_values))
+    missing = sorted(target for present, target in ((True in enabled_values, body), (False in enabled_values, endif)) if not present)
+    assert analysis.missing_branch_arcs().get(condition, []) == missing
+
+
+@pytest.mark.parametrize("failure_location", ["condition", "body", "body-same-line", "undefined", "heading-condition", "closed-after-heading"])
+def test_terminal_exception_does_not_cover_false_path(tmp_path: Path, failure_location: str) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    compiled_root.mkdir(parents=True)
+    source_file = template_root / "template.j2"
+    if failure_location == "body-same-line":
+        source = "{% if wrapper %}\n{% if enabled %}{{ fail() }}\n{% endif %}\n{% endif %}\n"
+        condition = 2
+        endif = 3
+    elif failure_location in {"heading-condition", "closed-after-heading"}:
+        source = "{% if wrapper %}\nheading\n{% if enabled %}\n{{ fail() }}\n{% endif %}\n{% endif %}\n"
+        condition = 3
+        endif = 5
+    else:
+        source = "{% if wrapper %}\n{% if enabled %}\n{{ fail() }}\n{% endif %}\n{% endif %}\n"
+        condition = 2
+        endif = 4
+    source_file.write_text(source, encoding="utf-8")
+    environment = Environment(loader=FileSystemLoader(template_root), undefined=StrictUndefined, trim_blocks=True, lstrip_blocks=True)  # noqa: S701
+    environment.compile_templates(compiled_root, zip=None, ignore_errors=False)
+    original_modules = {path: path.read_text(encoding="utf-8") for path in compiled_root.glob("*.py")}
+    instrument_compiled_templates(compiled_root)
+    instrumented_modules = {path: path.read_text(encoding="utf-8") for path in compiled_root.glob("*.py")}
+    assert instrument_compiled_templates(compiled_root) == 0
+    assert {path: path.read_text(encoding="utf-8") for path in compiled_root.glob("*.py")} == instrumented_modules
+    assert original_modules != instrumented_modules
+    environment.loader = ModuleLoader(compiled_root)
+
+    def fail() -> None:
+        failure_message = "guard or body failed"
+        raise RuntimeError(failure_message)
+
+    class RaisingBool:
+        def __bool__(self) -> bool:
+            fail()
+            return False
+
+    context: dict[str, object] = {"wrapper": True, "fail": fail}
+    if failure_location != "undefined":
+        context["enabled"] = RaisingBool() if failure_location in {"condition", "heading-condition"} else True
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
+    coverage.start()
+    try:
+        if failure_location == "closed-after-heading":
+            iterator = cast("Generator[str, None, None]", environment.get_template("template.j2").generate(**context))
+            assert next(iterator) == "heading\n"
+            iterator.close()
+        else:
+            with pytest.raises((RuntimeError, UndefinedError)):
+                environment.get_template("template.j2").render(**context)
+    finally:
+        coverage.stop()
+    analysis = coverage._analyze(str(source_file.resolve()))
+    assert (condition, endif) not in analysis.arcs_executed
+    assert endif in analysis.missing_branch_arcs().get(condition, [])
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "{% if enabled %}{% endif %}\n",
+        "{% if enabled %}yes{% endif %}\n",
+        "{% for item in items %}\n{% if item.enabled %}\nyes\n{% endif %}\n{% endfor %}\n",
+        "{% macro render(enabled) %}\n{% if enabled %}\nyes\n{% endif %}\n{% endmacro %}\n{{ render(enabled) }}\n",
+        "{% block content %}\n{% if enabled %}\nyes\n{% endif %}\n{% endblock %}\n",
+        "{% filter upper %}\n{% if enabled %}\nyes\n{% endif %}\n{% endfilter %}\n",
+        "{% if enabled %}\nyes\n{% else %}\nno\n{% endif %}\n",
+    ],
+)
+def test_instrumentation_leaves_ambiguous_or_nonterminal_guards_unchanged(tmp_path: Path, source: str) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    compiled_root.mkdir(parents=True)
+    (template_root / "template.j2").write_text(source, encoding="utf-8")
+    Environment(loader=FileSystemLoader(template_root), trim_blocks=True, lstrip_blocks=True).compile_templates(  # noqa: S701
+        compiled_root, zip=None, ignore_errors=False
+    )
+    original = {path: path.read_text(encoding="utf-8") for path in compiled_root.glob("*.py")}
+    assert instrument_compiled_templates(compiled_root) == 0
+    assert {path: path.read_text(encoding="utf-8") for path in compiled_root.glob("*.py")} == original
 
 
 def test_nested_optional_input_shape_reports_missing_inner_output(tmp_path: Path) -> None:
