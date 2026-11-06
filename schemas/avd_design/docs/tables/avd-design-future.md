@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_inband_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_inband_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.3.0.<br>Configure inband management interface to accept DHCP default route when the inband management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;allow_recursive_profile_inheritance</samp>](## "avd_design_future.allow_recursive_profile_inheritance") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Allow `parent_profile` to inherit from its own `parent_profile` in `port_profiles`, `device_profiles`, `svi_profiles` and `l2vlan_profiles`. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
+    | [<samp>&nbsp;&nbsp;configure_management_eapi_ipv4_acl_from_catalog</samp>](## "avd_design_future.configure_management_eapi_ipv4_acl_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from `ipv4_acls` for enabled eAPI VRFs.<br>An error will be raised if the referenced ACL is not defined under `ipv4_acls`.<br>If the referenced ACL is a standard ACL, use `management_eapi.vrfs[].ipv4_standard_acl` instead. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_address_locking_dhcp_server_interfaces</samp>](## "avd_design_future.fix_address_locking_dhcp_server_interfaces") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix support for `address_locking_settings.dhcp_server_interfaces`.<br>When enabled, `address_locking_settings.dhcp_server_interfaces` and `address_locking_settings.local_interface` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;fix_match_ipv6_prefix_list_on_mlag_route_map</samp>](## "avd_design_future.fix_match_ipv6_prefix_list_on_mlag_route_map") | Boolean |  | `False` |  | Available from AVD 6.4.0.<br>Fix to properly configure the `RM-CONN-2-BGP-VRFS` route-map with `match ipv6 address prefix-list`<br>instead of `match ip address prefix-list` when using `underlay_ipv6_numbered`. |
@@ -54,6 +55,12 @@
       # Available from AVD 6.2.0.
       # Configure `inband_mgmt_vrf` for IPv6 inband management.
       configure_inband_mgmt_ipv6_vrf: <bool; default=False>
+
+      # Available from AVD 6.5.0.
+      # Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from `ipv4_acls` for enabled eAPI VRFs.
+      # An error will be raised if the referenced ACL is not defined under `ipv4_acls`.
+      # If the referenced ACL is a standard ACL, use `management_eapi.vrfs[].ipv4_standard_acl` instead.
+      configure_management_eapi_ipv4_acl_from_catalog: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends

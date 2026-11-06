@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to perform substitution of the value 'interface_ip' defined under 'ipv4_acls[name=FILTER].entries[0].source', since no interface was specified.
