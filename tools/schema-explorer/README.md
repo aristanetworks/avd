@@ -189,6 +189,24 @@ The MkDocs hook freshness check tracks the combined YAML sources and the
 metaschema. Fragment-only edits can look stale until the repository schema
 workflow regenerates the combined YAML files.
 
+## Vendored runtime dependencies
+
+Same-origin copies under `static/vendor/`. See [SECURITY.md](SECURITY.md) for
+threat model and update expectations.
+
+| Asset | Version | Source | Loaded from |
+| ----- | ------- | ------ | ----------- |
+| Bootstrap CSS/JS | 5.3.3 | [getbootstrap.com](https://getbootstrap.com/) | Standalone `index.html`; JS lazy-loaded in embeds |
+| Bootstrap Icons | 1.11.3 | [icons.getbootstrap.com](https://icons.getbootstrap.com/) | Lazy-loaded when an explorer mounts |
+| sql.js (WASM) | 1.10.3 (`sql-wasm.js` + `sql-wasm.wasm`) | [sql-js/sql.js v1.10.3](https://github.com/sql-js/sql.js/releases/tag/v1.10.3) | Lazy-loaded when an explorer mounts |
+
+**Update policy:** bump vendored files deliberately (not via live CDN), refresh
+`integrity=` attributes in `static/index.html` and the matching `RUNTIME_DEPS`
+entries in `static/js/app.js`. When updating `sql-wasm.wasm`, also refresh its
+separate `SQL_WASM.integrity` hash in `static/js/app.js`; the runtime verifies
+that hash before initializing sql.js. Document the version in this table and
+run the syntax and build checks documented in [SECURITY.md](SECURITY.md#verification).
+
 ## Architecture decisions
 
 See `aristanetworks/avd-internal#503` for the full thread. Short version:
