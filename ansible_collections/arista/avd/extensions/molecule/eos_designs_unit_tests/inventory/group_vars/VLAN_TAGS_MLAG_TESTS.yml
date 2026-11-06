@@ -1,0 +1,46 @@
+---
+# Testing 'vlan_tags' with 'filter.only_vlans_in_use' on an MLAG pair.
+# The endpoint using 'vlan_tags' is only connected to leaf1a, but both MLAG peers must configure the tagged VLANs.
+# Expected: VLANs 110 and 600 are configured on both leafs, VLAN 601 is configured on neither.
+l2leaf:
+  defaults:
+    mlag_interfaces: [Ethernet47, Ethernet48]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    filter:
+      only_vlans_in_use: true
+  node_groups:
+    - group: VLAN_TAGS_MLAG_L2LEAF1
+      nodes:
+        - name: vlan-tags-mlag-l2leaf1a
+          id: 1
+          mgmt_ip: 192.168.0.11/24
+        - name: vlan-tags-mlag-l2leaf1b
+          id: 2
+          mgmt_ip: 192.168.0.12/24
+
+type: l2leaf
+
+servers:
+  - name: single_homed_esx
+    adapters:
+      - switches: [vlan-tags-mlag-l2leaf1a]
+        switch_ports: [Ethernet1]
+        mode: trunk
+        vlan_tags: [ESX]
+        description: vlan_tags=[ESX] -> 110,600
+
+tenants:
+  - name: TENANT_A
+    vrfs:
+      - name: VRF_A
+        svis:
+          - id: 110
+            name: SVI_ESX
+            tags: [ESX]
+    l2vlans:
+      - id: 600
+        name: L2VLAN_ESX
+        tags: [ESX]
+      - id: 601
+        name: L2VLAN_NOT_IN_USE
+        tags: [OTHER]

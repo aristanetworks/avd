@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'vlan_tags' cannot be combined with 'vlans: defined_vlans'. Found under 'servers[name=server_1].adapters[0]'.

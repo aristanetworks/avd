@@ -1,0 +1,24 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-vlan-tags-invalid-vlans
+
+servers:
+  - name: server_1
+    adapters:
+      - switches: [connected-endpoints-vlan-tags-invalid-vlans, connected-endpoints-vlan-tags-invalid-vlans]
+        switch_ports: [Ethernet1, Ethernet2]
+        mode: trunk
+        vlans: defined_vlans
+        vlan_tags: [ESX]
+        port_channel:
+          mode: active
+
+tenants:
+  - name: TENANT_A
+    l2vlans:
+      - id: 600
+        name: L2VLAN_ESX
+        tags: [ESX]

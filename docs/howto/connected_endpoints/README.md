@@ -45,6 +45,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 
 - `mode`: Can be `access` or `trunk`.
 - `vlans`: For `access` mode, the single VLAN ID. For `trunk` mode, the list of allowed VLANs.
+- `vlan_tags`: For `trunk` mode, allow every VLAN on the switch with a matching tag. See [Allowing VLANs by tags](#allowing-vlans-by-tags).
 - `port_channel`: Defines Port-Channel settings like `mode` (`active` for LACP) and `channel_id`.
 - `spanning_tree_portfast`: Set to `edge` for server ports.
 - `native_vlan`: For trunk ports, defines the native VLAN.
@@ -71,6 +72,35 @@ Adapters define the physical mapping between the endpoint and the switch fabric:
     The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
 
 Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#connected-endpoints-settings) for all available keys.
+
+### Allowing VLANs by tags
+
+In larger fabrics, hypervisor ports often need every VLAN that a group of switches carries. Instead of maintaining the same VLAN list in both `network_services` and the port profile, set `vlan_tags` on a trunk port profile, adapter or network port. Every `l2vlan` and `svi` configured on the switch with at least one matching `tags` entry is then allowed on the trunk.
+
+```yaml
+port_profiles:
+  - profile: ESX_HOSTS
+    mode: trunk
+    vlans: "10"          # Optional. Combined with the tagged VLANs.
+    vlan_tags: [ESX]
+
+tenants:
+  - name: TENANT_A
+    l2vlans:
+      - id: 600
+        name: PROJECT_A
+        tags: [ESX]
+      - id: 601
+        name: PROJECT_B
+        tags: [ESX]
+```
+
+With the profile above, `switchport trunk allowed vlan 10,600-601` is generated on switches where VLANs 600 and 601 are configured.
+
+- `vlan_tags` does not change which VLANs are configured on a switch. That is still controlled by `filter.tags` and `filter.tenants`, and only tag-matched VLANs that are configured on the switch are allowed on the port. VLANs listed in `vlans` are added as given.
+- With `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are treated as in use.
+- If no VLAN matches and `vlans` is not set, the trunk is configured with `switchport trunk allowed vlan none` instead of allowing all VLANs.
+- `vlan_tags` requires `mode: trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
 
 ### Define port profiles
 

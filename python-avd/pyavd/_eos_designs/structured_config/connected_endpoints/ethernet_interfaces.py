@@ -125,6 +125,7 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
+        self._validate_adapter_vlan_tags(adapter)
         if adapter.subinterfaces:
             # TODO: Consider checking for switchport related inputs and error if we have conflicts instead of silently ignoring.
             ethernet_interface.switchport.enabled = False
