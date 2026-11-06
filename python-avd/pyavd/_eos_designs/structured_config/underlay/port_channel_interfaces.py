@@ -3,11 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.default import default
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -135,9 +136,20 @@ class PortChannelInterfacesMixin(Protocol):
                 msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
                 raise AristaAvdInvalidInputsError(msg)
         # Validation: Non-subinterface port-channels must have at least one member interface
-        elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+        elif not l3_port_channel.member_interfaces:
             msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
-            raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.avd_design_future.raise_for_port_channels_without_members:
+                raise AristaAvdInvalidInputsError(msg)
+            l3_port_channel_path = (
+                f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels[name={l3_port_channel.name}]"
+            )
+            warnings.warn(
+                AvdFutureBehaviorWarning(
+                    f"Host '{self.shared_utils.hostname}': L3 Port-Channel at path '{l3_port_channel_path}' must have at least one member interface defined.",
+                    future_version="7.0",
+                ),
+                stacklevel=2,
+            )
 
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
