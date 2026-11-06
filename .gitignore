@@ -34,7 +34,7 @@ dist/
 .tox/
 .pytest_cache/
 # Ansible collection test artifacts
-/ansible_collections/arista/avd/tests/integration/inventory/
+/ansible_collections/arista/avd/tests/integration/inventory
 /ansible_collections/arista/avd/tests/output/
 ## pyenv
 .python-version
