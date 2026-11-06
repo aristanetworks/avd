@@ -1,0 +1,94 @@
+aaa_root:
+  disabled: true
+aaa_server_groups:
+- name: CHILD_RADIUS_GLOBAL_VRF
+  type: radius
+  servers:
+  - server: 198.51.100.22
+    vrf: GLOBAL_RADIUS
+- name: CHILD_RADIUS_PARENT_VRF
+  type: radius
+  servers:
+  - server: 198.51.100.23
+    vrf: PARENT_RADIUS
+- name: CHILD_RADIUS_SHARED_VRF
+  type: radius
+  servers:
+  - server: 198.51.100.24
+    vrf: SHARED_RADIUS
+- name: CHILD_TACACS_GLOBAL_VRF
+  type: tacacs+
+  servers:
+  - server: 198.51.100.12
+    vrf: GLOBAL_TACACS
+- name: CHILD_TACACS_PARENT_VRF
+  type: tacacs+
+  servers:
+  - server: 198.51.100.13
+    vrf: PARENT_TACACS
+- name: CHILD_TACACS_SHARED_VRF
+  type: tacacs+
+  servers:
+  - server: 198.51.100.14
+    vrf: SHARED_TACACS
+config_end: true
+enable_password:
+  disabled: true
+hostname: aaa-settings-profile-vrf-merge-server-replace
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius:
+  vrfs:
+  - name: GLOBAL_RADIUS
+    source_interface: Loopback1
+  - name: PARENT_RADIUS
+    source_interface: Loopback3
+  - name: SHARED_RADIUS
+    source_interface: Loopback9
+ip_tacacs:
+  vrfs:
+  - name: GLOBAL_TACACS
+    source_interface: Loopback0
+  - name: PARENT_TACACS
+    source_interface: Loopback2
+  - name: SHARED_TACACS
+    source_interface: Loopback6
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+radius_server:
+  vrfs:
+  - name: GLOBAL_RADIUS
+    servers:
+    - host: 198.51.100.22
+      key: 071B245F5A
+  - name: PARENT_RADIUS
+    servers:
+    - host: 198.51.100.23
+      key: 071B245F5A
+  - name: SHARED_RADIUS
+    servers:
+    - host: 198.51.100.24
+      key: 071B245F5A
+service_routing_protocols_model: multi-agent
+tacacs_servers:
+  hosts:
+  - host: 198.51.100.12
+    vrf: GLOBAL_TACACS
+    key: 071B245F5A
+  - host: 198.51.100.13
+    vrf: PARENT_TACACS
+    key: 071B245F5A
+  - host: 198.51.100.14
+    vrf: SHARED_TACACS
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
