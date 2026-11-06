@@ -1,0 +1,74 @@
+---
+fabric_name: SFLOW_NETWORK_SERVICES_L3_INTERFACES_TESTS
+type: spine
+underlay_routing_protocol: none
+overlay_routing_protocol: none
+bgp_as: 65000
+
+node_type_keys:
+  - key: spine
+    type: spine
+    network_services:
+      l3: true
+
+avd_design_future:
+  fix_sflow_parent_subinterface_conflicts: true
+
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: default
+
+fabric_sflow:
+  l3_interfaces: true
+
+spine:
+  defaults:
+    platform: 7280R
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    # Future enabled. A physical parent with sflow: false permits child sFlow from fabric_sflow.l3_interfaces.
+    - name: sflow-network-services-l3-interfaces-explicit-parent-disabled-tests-spine
+      id: 5
+    # Future disabled. fabric_sflow.l3_interfaces enables sFlow on both explicitly configured parent and child interfaces.
+    - name: sflow-network-services-l3-interfaces-future-disabled-explicit-tests-spine
+      id: 4
+    # Future disabled. An automatically created physical parent has no explicit sFlow configuration.
+    - name: sflow-network-services-l3-interfaces-future-disabled-tests-spine
+      id: 1
+    # Unsupported platform. 7050X3 does not support sFlow on subinterfaces, so no sFlow is rendered.
+    - name: sflow-network-services-l3-interfaces-non-r-series-tests-spine
+      id: 2
+      platform: 7050X3
+    # Future enabled. Child sFlow causes the automatically created physical parent to render no sflow enable.
+    - name: sflow-network-services-l3-interfaces-tests-spine
+      id: 3
+
+tenants:
+  - name: SFLOW
+    vrfs:
+      - name: default
+        vrf_id: 1
+        l3_interfaces:
+          - nodes: [sflow-network-services-l3-interfaces-explicit-parent-disabled-tests-spine]
+            interfaces: [Ethernet2.100]
+            ip_addresses: [10.5.100.1/24]
+          - nodes: [sflow-network-services-l3-interfaces-explicit-parent-disabled-tests-spine]
+            interfaces: [Ethernet2]
+            ip_addresses: [10.5.2.1/24]
+            sflow: false
+          - nodes: [sflow-network-services-l3-interfaces-future-disabled-explicit-tests-spine]
+            interfaces: [Ethernet1.100]
+            ip_addresses: [10.4.100.1/24]
+          - nodes: [sflow-network-services-l3-interfaces-future-disabled-explicit-tests-spine]
+            interfaces: [Ethernet1]
+            ip_addresses: [10.4.1.1/24]
+          - nodes: [sflow-network-services-l3-interfaces-future-disabled-tests-spine]
+            interfaces: [Ethernet1.100]
+            ip_addresses: [10.1.100.1/24]
+          - nodes: [sflow-network-services-l3-interfaces-non-r-series-tests-spine]
+            interfaces: [Ethernet1.100]
+            ip_addresses: [10.2.100.1/24]
+          - nodes: [sflow-network-services-l3-interfaces-tests-spine]
+            interfaces: [Ethernet1.100]
+            ip_addresses: [10.3.100.1/24]

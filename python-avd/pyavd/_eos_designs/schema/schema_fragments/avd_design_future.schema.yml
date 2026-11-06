@@ -41,6 +41,15 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      fix_sflow_parent_subinterface_conflicts:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.5.0.
+          Resolve sFlow conflicts between physical interfaces and their subinterfaces on platforms that support sFlow subinterfaces.
+          For AVD-managed fabric links, sFlow is disabled on child subinterfaces when it is enabled on the physical link.
+          For node-level and Network Services `l3_interfaces`, sFlow is explicitly disabled on an automatically created physical parent when it is enabled on a child subinterface.
+          For these `l3_interfaces` data models, an error is raised when both a physical interface and one of its child subinterfaces are explicitly configured with sFlow enabled.
       consistent_uplink_vlans:
         type: bool
         description: |-

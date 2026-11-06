@@ -1,0 +1,57 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1.100
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  ip_address: 10.4.100.1/24
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+- name: Ethernet1
+  shutdown: false
+  ip_address: 10.4.1.1/24
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+hostname: sflow-network-services-l3-interfaces-future-disabled-explicit-tests-spine
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.4/32
+metadata:
+  is_deployed: true
+  platform: 7280R
+  fabric_name: SFLOW_NETWORK_SERVICES_L3_INTERFACES_TESTS
+platform:
+  sand:
+    lag:
+      hardware_only: true
+service_routing_protocols_model: multi-agent
+sflow:
+  destinations:
+  - destination: 10.10.10.10
+  run: true
+spanning_tree:
+  mode: none
+tcam_profile:
+  system: vxlan-routing
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

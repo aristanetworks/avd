@@ -203,7 +203,12 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_subinterface.metadata._update(peer_interface=subinterface.peer_interface, peer=link.peer, peer_type=link.peer_type)
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    ethernet_subinterface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
+                    ethernet_subinterface.sflow.enable = self.structured_config_utils.get_interface_sflow(
+                        ethernet_subinterface.name,
+                        None
+                        if self.inputs.avd_design_future.fix_sflow_parent_subinterface_conflicts and ethernet_interface.sflow.enable
+                        else link.sflow_enabled,
+                    )
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
@@ -297,6 +302,21 @@ class EthernetInterfacesMixin(Protocol):
                     break
 
         if "." in l3_interface.name:
+            parent_interface_name = l3_interface.name.split(".", maxsplit=1)[0]
+            if self.inputs.avd_design_future.fix_sflow_parent_subinterface_conflicts and interface.sflow.enable is True:
+                if self.shared_utils.l3_interfaces.get(parent_interface_name):
+                    parent_sflow = self.structured_config_utils.get_interface_sflow(
+                        parent_interface_name,
+                        self.inputs.fabric_sflow.l3_interfaces,
+                    )
+                    if parent_sflow is True:
+                        msg = (
+                            f"sFlow cannot be enabled on both physical interface '{parent_interface_name}' and "
+                            f"subinterface '{l3_interface.name}' when 'avd_design_future.fix_sflow_parent_subinterface_conflicts' is enabled."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                else:
+                    self.structured_config_utils.parent_interfaces_tracker.mark_required_ethernet_parent_to_disable_sflow(parent_interface_name)
             self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(l3_interface.name)
         else:
             self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(l3_interface.name)
