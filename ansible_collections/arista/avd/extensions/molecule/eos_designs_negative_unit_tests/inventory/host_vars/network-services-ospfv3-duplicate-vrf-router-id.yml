@@ -38,6 +38,3 @@ tenants:
             ipv6_address: 2001:db8:111::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for VrfsItem.

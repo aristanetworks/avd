@@ -16,6 +16,3 @@ l3leaf:
             - name: Ethernet1/19
               rx_queue:
                 count: 10
-
-expected_error_message: >-
-  'rx_queue.count' for interface 'Ethernet1/19' exceeds maximum supported '6' for this platform.

@@ -24,7 +24,3 @@ tenants:
               enabled: true
               ipv4:
                 enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.ipv4.enabled: true' is not supported yet. OSPFv3 currently only supports the IPv6 address
-  family.

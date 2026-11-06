@@ -17,6 +17,3 @@ spine:
           ipv6_acl_in: NON-EXISTENT-IPV6-ACL
 
 # ipv6_acls is intentionally omitted / NON-EXISTENT-IPV6-ACL is not defined.
-
-expected_error_message: >-
-  'ipv6_acls[name=NON-EXISTENT-IPV6-ACL]' is required but was not found.

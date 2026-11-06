@@ -373,6 +373,40 @@ keys:
               valid_values:
               - sha512
               default: sha512
+  aaa_settings_profiles:
+    documentation_options:
+      table: aaa-settings-profiles
+    type: list
+    primary_key: profile
+    description: 'List of AAA settings profiles that can be applied to devices using
+      `aaa_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common AAA settings
+      to be shared and selectively overridden per profile.
+
+      Note: For TACACS and RADIUS, `vrfs` entries merge by `name` across global settings
+      and the profile chain, with the most specific settings taking precedence.
+
+      A defined `servers` list replaces the inherited list for that protocol; if omitted,
+      the inherited list is retained.'
+    items:
+      type: dict
+      documentation_options:
+        table: aaa-settings-profiles
+      $ref: eos_designs#/keys/aaa_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: AAA settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `aaa_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   address_locking_settings:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
@@ -540,6 +574,19 @@ keys:
 
           Fix to configure TLS on RADIUS server group members to match their global
           RADIUS server configurations.'
+      fix_virtual_source_nat_address_families:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Fix the selection of the addresses used for the IPv4 and IPv6 virtual source-nat
+          of a VRF.
+
+          When enabled, each address family uses the first loopback in the VRF with
+          an address of that family.
+
+          The VTEP diagnostic loopback is used first, followed by the VRF loopbacks
+          in input order.'
       only_configure_ipv6_inband_mgmt_prefix_list_when_used:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -1931,11 +1978,16 @@ keys:
               pattern: '[a-zA-Z0-9-_]+'
             servers:
               type: list
-              required: true
               min_length: 1
               max_length: 3
               primary_key: name
-              description: CloudVision servers that makes up one cluster.
+              description: 'CloudVision servers that make up one cluster.
+
+                May be omitted when inherited from a parent CloudVision settings profile
+                or global `cv_settings`.
+
+                After resolving profile and global settings, each on-prem cluster
+                must have at least one server.'
               items:
                 type: dict
                 keys:
@@ -2011,6 +2063,63 @@ keys:
           Can be set to `false` to avoid changes when migrating from the old `cv_instances`
           model.'
         default: true
+  cv_settings_profiles:
+    documentation_options:
+      table: cloudvision-settings-profiles
+    type: list
+    primary_key: profile
+    description: 'List of CloudVision settings profiles that can be applied to devices
+      using `cv_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common CloudVision
+      settings to be shared and selectively overridden per profile.'
+    items:
+      type: dict
+      documentation_options:
+        table: cloudvision-settings-profiles
+      $ref: eos_designs#/keys/cv_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: CloudVision settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `cv_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
+        cvaas:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: false
+        onprem_clusters:
+          type: list
+          items:
+            type: dict
+            keys:
+              servers:
+                type: list
+                description: 'CloudVision servers that make up one cluster.
+
+                  May be omitted when inherited from a parent CloudVision settings
+                  profile or global `cv_settings`.
+
+                  After resolving profile and global settings, each on-prem cluster
+                  must have at least one server.
+
+
+                  Note: Servers from this profile are merged with servers for the
+                  same cluster from the parent profile and global
+
+                  `cv_settings`, so the combined list must not exceed three servers.
+
+                  If a server has the same `name` as an inherited server, values from
+                  this profile override the inherited values.'
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -2716,6 +2825,14 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          port:
+            type: int
+            min: 0
+            max: 65535
+            description: 'UDP port used for RADIUS dynamic authorization requests.
+
+              Applied only when `dot1x_settings.dynamic_authorization.enabled` is
+              `true`.'
           additional_groups:
             type: list
             description: 'List of additional RADIUS server groups for dynamic authorization
@@ -6204,6 +6321,10 @@ keys:
                   at least one OSPFv3-enabled SVI in this VRF is configured on that
                   device.
 
+                  If BGP is configured for the VRF, OSPFv3 internal routes are redistributed
+                  into BGP unless `bgp.redistribute_ospfv3.internal.enabled` is set
+                  to `false`.
+
                   These settings only override the defaults.
 
                   VRF `default` is not supported yet.'
@@ -6253,21 +6374,6 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
-              redistribute_ospfv3:
-                documentation_options:
-                  table: network-services-vrfs-ospfv3-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    default: true
-                    description: 'Redistribute OSPFv3 internal routes into BGP for
-                      this VRF.
-
-                      Ignored on devices where BGP is not configured for this VRF
-                      or where the VRF has no OSPFv3 instance.
-
-                      OSPFv3 external routes are not redistributed.'
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -7343,6 +7449,22 @@ keys:
                         max: 3600
                         default: 300
                         description: Restart time in seconds.
+                  redistribute_ospfv3:
+                    type: dict
+                    description: 'Redistribution of OSPFv3 routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPFv3 internal routes into
+                              BGP.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -7902,8 +8024,6 @@ keys:
       network_services:
         l3: true
   ntp_settings:
-    documentation_options:
-      table: time-configuration
     type: dict
     description: NTP settings
     keys:
@@ -8013,6 +8133,26 @@ keys:
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
+  ntp_settings_profiles:
+    type: list
+    primary_key: profile
+    description: NTP settings
+    items:
+      type: dict
+      $ref: eos_designs#/keys/ntp_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: NTP settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `ntp_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   only_local_vlan_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -11005,7 +11145,7 @@ keys:
       remove_in_version: 6.0.0
   timezone:
     documentation_options:
-      table: time-configuration
+      table: ntp-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
@@ -15248,6 +15388,57 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+          validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the validation profile to apply to this device.
+
+              The profile must be defined under `validation_profiles`.
+
+              Validation profiles define requirements (e.g., hardware and logging)
+              used by the `anta_runner` role during post-deployment validation.'
+          aaa_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the AAA settings profile to apply to this device.
+
+              The profile must be defined under `aaa_settings_profiles`.
+
+              The selected profile settings will be merged over the general `aaa_settings`.'
+          cv_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the CloudVision settings profile to apply to this
+              device.
+
+              The profile must be defined under `cv_settings_profiles`.
+
+              The selected profile settings will be merged over the general `cv_settings`.'
+          dns_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the DNS settings profile to apply to this device.
+
+              The profile must be defined under `dns_settings_profiles`.
+
+              The selected profile settings will be merged over the general `dns_settings`.'
+          ntp_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the NTP settings profile to apply to this device.
+
+              The profile must be defined under `ntp_settings_profiles`.
+
+              The selected profile settings will be merged over the general `ntp_settings`.'
           uplink_structured_config:
             documentation_options:
               table: node-type-uplink-configuration
@@ -15259,25 +15450,6 @@ $defs:
               remove_in_version: 6.0.0
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
                 or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
-          validation_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
-            description: 'Name of the validation profile to apply to this device.
-
-              The profile must be defined under `validation_profiles`.
-
-              Validation profiles define requirements (e.g., hardware and logging)
-              used by the `anta_runner` role during post-deployment validation.'
-          dns_settings_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
-            description: 'Name of the DNS settings profile to apply to this device.
-
-              The profile must be defined under `dns_settings_profiles`.
-
-              The selected profile settings will be merged over the general `dns_settings`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -17466,13 +17638,18 @@ $defs:
         description: 'Name of the IPv4 access-list to be assigned in the ingress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_in`. Setting both raises an error.'
         type: str
       ipv4_acl_out:
         description: 'Name of the IPv4 Access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
-          of the field "interface_ip".'
+          of the field "interface_ip".
+
+          Mutually exclusive with `ipv4_standard_acl_out`. Setting both raises an
+          error.'
         type: str
       ipv6_acl_in:
         description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -17497,6 +17674,25 @@ $defs:
 
           Deprecated token "interface_ip" is also accepted as an alias for "interface_ipv6"
           and will be removed in AVD 7.0.0.'
+        type: str
+      ipv4_standard_acl_in:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          ingress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_in`. Use `ipv4_acl_in` instead when field
+          substitution for "interface_ip" is required, setting both raises an error.'
+        type: str
+      ipv4_standard_acl_out:
+        description: 'Name of the IPv4 standard access-list to be assigned in the
+          egress direction.
+
+          The access-list must be defined under `ipv4_standard_acls`.
+
+          Mutually exclusive with `ipv4_acl_out`. Use `ipv4_acl_out` instead when
+          field substitution for "interface_ip" is required, setting both raises an
+          error.'
         type: str
       ip_helpers:
         type: list

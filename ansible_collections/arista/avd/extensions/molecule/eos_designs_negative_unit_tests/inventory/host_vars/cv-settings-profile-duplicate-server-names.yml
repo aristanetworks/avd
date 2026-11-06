@@ -1,0 +1,19 @@
+---
+devices:
+  - name: cv-settings-profile-duplicate-server-names
+    type: l2leaf
+    cv_settings_profile: duplicate_server_names
+
+cv_settings:
+  onprem_clusters:
+    - name: global
+      servers:
+        - name: 192.0.2.1
+
+cv_settings_profiles:
+  - profile: duplicate_server_names
+    cvaas: null  # Ensuring we are not raising for missing enabled when given null.
+    onprem_clusters:
+      - name: profile
+        servers:
+          - name: 192.0.2.1

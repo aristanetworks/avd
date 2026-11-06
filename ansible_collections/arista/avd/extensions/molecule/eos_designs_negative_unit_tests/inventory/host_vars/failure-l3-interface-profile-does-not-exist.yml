@@ -15,7 +15,3 @@ l3leaf:
         - name: Ethernet1
           profile: THIS-PROFILE-DOES-NOT-EXIST
           ip_address: 10.12.12.12/24
-
-expected_error_message: >-
-  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under l3_interface 'Ethernet1' does
-  not exist in `l3_interface_profiles`.

@@ -351,6 +351,14 @@ These settings control the format and content of the generated reports.
 
 `anta_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
 
+`anta_report_run_overview`: Controls whether the Markdown report Run Overview section is generated. It currently includes test execution start time, end time, and total duration.
+
+!!! tip
+    Keep this disabled when deterministic report content is required in CI change-detection workflows.
+
+!!! note
+    Additional run metrics may be added to the Run Overview section in future releases.
+
 !!! info
     ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
 
@@ -369,6 +377,8 @@ These settings control the format and content of the generated reports.
         anta_report_expand_results: true
         # Generate the custom_field column in the Markdown report
         anta_report_custom_field: true
+        # Generate Run Overview section in Markdown report
+        anta_report_run_overview: true
 ```
 
 ### Extra Fabric Validation

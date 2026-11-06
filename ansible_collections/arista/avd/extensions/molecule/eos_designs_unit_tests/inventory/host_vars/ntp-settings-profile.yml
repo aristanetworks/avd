@@ -1,0 +1,18 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    ntp_settings_profile: leaf1_ntp_profile
+  nodes:
+    - name: ntp-settings-profile
+
+ntp_settings:
+  authenticate: true
+
+ntp_settings_profiles:
+  - profile: leaf1_ntp_profile
+    server_vrf: default
+    trusted_keys: 1
+    servers:
+      - name: 192.0.2.123
+        iburst: true
