@@ -1392,3 +1392,25 @@ port_channel_interfaces:
         static: true
         boundaries:
           - boundary: ff02::/16
+
+  # OSPFv3 coverage
+  - name: Port-Channel901
+    description: OSPFv3 passive + AF area coverage
+    switchport:
+      enabled: false
+    ospfv3:
+      passive_interface: true
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.1"
+      ipv6:
+        area: "0.0.9.2"
+
+  - name: Port-Channel902
+    description: OSPFv3 no passive coverage
+    switchport:
+      enabled: false
+    ospfv3:
+      no_passive_interface: true
+      ipv4:
+        area: "0.0.9.3"
