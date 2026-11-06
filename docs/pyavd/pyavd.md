@@ -50,6 +50,12 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Installation
 
+PyAVD supports Python **3.10-3.15**. The [Ansible collection](../installation/collection-installation.md) supports Python 3.15 with `ansible-core` 2.22.
+
+!!! note "Python 3.15 dependencies"
+
+    PyYAML does not currently publish Python 3.15 wheels. Install a C compiler, Python development headers, and the libyaml development headers before installing PyAVD so that PyYAML can build its required C extension.
+
 !!! warning "Python 3.10 end of life"
 
     Python 3.10 has reached [end of life](https://devguide.python.org/versions/) and no longer receives security updates.
