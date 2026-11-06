@@ -99,19 +99,11 @@ class VlanInterfacesMixin(Protocol):
 
         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]"
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            svi.ipv4_acl_in,
-            svi.ipv4_standard_acl_in,
-            "ipv4_acl_in",
-            "ipv4_standard_acl_in",
-            context,
-            "in")
+            svi.ipv4_acl_in, svi.ipv4_standard_acl_in, "ipv4_acl_in", "ipv4_standard_acl_in", context, "in"
+        )
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            svi.ipv4_acl_out,
-            svi.ipv4_standard_acl_out,
-            "ipv4_acl_out",
-            "ipv4_standard_acl_out",
-            context,
-            "out")
+            svi.ipv4_acl_out, svi.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context, "out"
+        )
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
                 name=svi.ipv4_acl_in,

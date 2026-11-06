@@ -46,12 +46,7 @@ class ManagementSshMixin(Protocol):
             if vrf_name == "default":
                 self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
                 self.structured_config_utils._validate_ipv4_acl_exclusion(
-                    vrf.ipv4_acl,
-                    vrf.ipv4_standard_acl,
-                    "ipv4_acl",
-                    "ipv4_standard_acl",
-                    context=f"ssh_settings.vrfs[name={vrf.name}]",
-                    direction=None
+                    vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
                 )
                 if vrf.enabled:
                     self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
