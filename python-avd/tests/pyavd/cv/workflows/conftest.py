@@ -37,6 +37,9 @@ def mock_cv_client() -> MagicMock:
     client.set_tag_assignments = AsyncMock()
     client.delete_tag_assignments = AsyncMock()
 
+    client.stage_devices_for_decommission = AsyncMock()
+    client.wait_for_device_decommission_staging = AsyncMock()
+
     return client
 
 
