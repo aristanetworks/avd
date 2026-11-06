@@ -1,0 +1,9 @@
+---
+# Verify the warning for the deprecated AAA timeout ACL key.
+port_profiles:
+  - profile: DEPRECATED-AAA-ACL
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: DEPRECATED-AAA-ACL
