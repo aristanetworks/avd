@@ -1,0 +1,31 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: snmp-settings-hosts-duplicate-vrf-source-interface
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_ip: 10.20.30.40/24
+      inband_mgmt_gateway: 10.20.30.1
+      inband_mgmt_vrf: MGMT
+
+mgmt_interface_settings:
+  vrf: MGMT
+
+avd_design_future:
+  sort_snmp_acls_and_local_interfaces_by_vrf: true
+
+snmp_settings:
+  hosts:
+    - host: 192.0.2.1
+      vrf: use_mgmt_interface_vrf
+      version: 2c
+      community: community
+    - host: 192.0.2.2
+      vrf: use_inband_mgmt_vrf
+      version: 2c
+      community: community
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for snmp_settings.hosts.
+  {'vrf': 'MGMT', 'source_interface': 'Vlan4092'} conflicts with {'vrf': 'MGMT', 'source_interface': 'Management1'}.
