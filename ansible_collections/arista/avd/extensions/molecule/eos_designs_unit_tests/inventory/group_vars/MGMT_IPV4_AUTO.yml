@@ -10,7 +10,7 @@ ipv4_subnets:
     subnet: 192.0.2.0/24
     range: 192.0.2.10-192.0.2.20
 fabric_ip_addressing:
-  management:
+  oob_mgmt:
     ipv4_subnet:
       algorithm: auto
 l2leaf:

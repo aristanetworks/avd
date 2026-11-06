@@ -3457,7 +3457,7 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
-      management:
+      oob_mgmt:
         type: dict
         keys:
           ipv4_subnet:
@@ -4879,7 +4879,7 @@ keys:
 
           An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
 
-          Allocation mode is selected with `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+          Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
 
           Gateway settings are unchanged; the gateway is not inferred from the subnet.'
       description:

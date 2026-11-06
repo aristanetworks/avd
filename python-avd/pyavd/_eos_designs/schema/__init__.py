@@ -22755,7 +22755,7 @@ class EosDesigns(EosDesignsRootModel):
     class FabricIpAddressing(AvdModel):
         """Subclass of AvdModel."""
 
-        class Management(AvdModel):
+        class OobMgmt(AvdModel):
             """Subclass of AvdModel."""
 
             class Ipv4Subnet(AvdModel):
@@ -22815,7 +22815,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 def __init__(self, *, ipv4_subnet: Ipv4Subnet | UndefinedType = Undefined) -> None:
                     """
-                    Management.
+                    OobMgmt.
 
 
                     Subclass of AvdModel.
@@ -22988,13 +22988,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "management": {"type": Management},
+            "oob_mgmt": {"type": OobMgmt},
             "loopback": {"type": Loopback},
             "mlag": {"type": Mlag},
             "p2p_uplinks": {"type": P2pUplinks},
             "wan_ha": {"type": WanHa},
         }
-        management: Management
+        oob_mgmt: OobMgmt
         """Subclass of AvdModel."""
         loopback: Loopback
         """Subclass of AvdModel."""
@@ -23014,7 +23014,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                management: Management | UndefinedType = Undefined,
+                oob_mgmt: OobMgmt | UndefinedType = Undefined,
                 loopback: Loopback | UndefinedType = Undefined,
                 mlag: Mlag | UndefinedType = Undefined,
                 p2p_uplinks: P2pUplinks | UndefinedType = Undefined,
@@ -23027,7 +23027,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    management: Subclass of AvdModel.
+                    oob_mgmt: Subclass of AvdModel.
                     loopback: Subclass of AvdModel.
                     mlag: Subclass of AvdModel.
                     p2p_uplinks: Subclass of AvdModel.
@@ -28936,7 +28936,7 @@ class EosDesigns(EosDesignsRootModel):
         An explicit node
         `mgmt_ip`, including `dhcp`, takes precedence.
         Allocation mode is selected with
-        `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
         Gateway settings are unchanged; the gateway
         is not inferred from the subnet.
         """
@@ -28995,7 +28995,7 @@ class EosDesigns(EosDesignsRootModel):
                        An explicit node
                        `mgmt_ip`, including `dhcp`, takes precedence.
                        Allocation mode is selected with
-                       `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
                        Gateway settings are unchanged; the gateway
                        is not inferred from the subnet.
                     description: Interface description configured on the management interface.

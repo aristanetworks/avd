@@ -23,7 +23,7 @@
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") <span style="color:red">deprecated</span> | String |  | `Management1` |  | OOB Management interface.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.interface</samp> instead.</span> |
     | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") <span style="color:red">deprecated</span> | String |  | `OOB_MANAGEMENT` |  | Management interface description.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.description</samp> instead.</span> |
     | [<samp>mgmt_interface_settings</samp>](## "mgmt_interface_settings") | Dictionary |  |  |  | Out-of-Band (OOB) management interface settings.<br>These settings override the corresponding global variables where applicable. |
-    | [<samp>&nbsp;&nbsp;ipv4_subnet</samp>](## "mgmt_interface_settings.ipv4_subnet") | String |  |  |  | Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.<br>An explicit node `mgmt_ip`, including `dhcp`, takes precedence.<br>Allocation mode is selected with `fabric_ip_addressing.management.ipv4_subnet.algorithm`.<br>Gateway settings are unchanged; the gateway is not inferred from the subnet. |
+    | [<samp>&nbsp;&nbsp;ipv4_subnet</samp>](## "mgmt_interface_settings.ipv4_subnet") | String |  |  |  | Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.<br>An explicit node `mgmt_ip`, including `dhcp`, takes precedence.<br>Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.<br>Gateway settings are unchanged; the gateway is not inferred from the subnet. |
     | [<samp>&nbsp;&nbsp;description</samp>](## "mgmt_interface_settings.description") | String |  | `OOB_MANAGEMENT` |  | Interface description configured on the management interface. |
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface. |
     | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF. |
@@ -121,7 +121,7 @@
 
       # Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
       # An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
-      # Allocation mode is selected with `fabric_ip_addressing.management.ipv4_subnet.algorithm`.
+      # Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
       # Gateway settings are unchanged; the gateway is not inferred from the subnet.
       ipv4_subnet: <str>
 

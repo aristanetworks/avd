@@ -1,5 +1,5 @@
 ---
 fabric_ip_addressing:
-  management:
+  oob_mgmt:
     ipv4_subnet:
       algorithm: device_id

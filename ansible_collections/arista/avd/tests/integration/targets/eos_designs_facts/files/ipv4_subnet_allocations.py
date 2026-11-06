@@ -26,7 +26,7 @@ def inputs(nodes: dict[str, dict], algorithm: str = "auto", **settings: Any) -> 
         "type": "l2leaf",
         "mgmt_interface_settings": {"ipv4_subnet": "OOB", "vrf": "MGMT"},
         "ipv4_subnets": [{"name": "OOB", "subnet": "192.0.2.0/24", "range": "192.0.2.10-192.0.2.20"}],
-        "fabric_ip_addressing": {"management": {"ipv4_subnet": {"algorithm": algorithm}}},
+        "fabric_ip_addressing": {"oob_mgmt": {"ipv4_subnet": {"algorithm": algorithm}}},
         "devices": [{"name": name, "type": "l2leaf", **node} for name, node in nodes.items()],
         **settings,
     }
@@ -136,7 +136,7 @@ def overrides_and_collisions(directory: Path) -> None:
     gateway = inputs({"leaf": {"id": 1}}, "device_id", mgmt_gateway="192.0.2.10")
     with fails("management gateway"):
         get_avd_facts(gateway)
-    gateway["leaf"]["fabric_ip_addressing"]["management"]["ipv4_subnet"]["algorithm"] = "auto"
+    gateway["leaf"]["fabric_ip_addressing"]["oob_mgmt"]["ipv4_subnet"]["algorithm"] = "auto"
     assert get_avd_facts(gateway, pool_manager=PoolManager(directory))["leaf"].mgmt_ip == "192.0.2.11/24"
 
 
