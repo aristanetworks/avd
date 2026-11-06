@@ -78,14 +78,14 @@ all required Ansible collections:
         When installing from devel, collection dependencies like `arista.eos` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
 
     ```shell
-    pip install --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    pip install --force-reinstall --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
     ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
 
 === "uv"
 
     !!! note
-        Before using the `uv pip` command, create or activate the intended virtual environment.
+        Before running these commands, create a virtual environment if needed and activate the intended virtual environment.
         For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
 
     ### Install or upgrade to the latest version
@@ -106,9 +106,10 @@ all required Ansible collections:
 
     !!! note
         When installing from devel, collection dependencies like `arista.eos` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
+        With ansible-galaxy --upgrade flag, Ansible can replace a preinstalled Git dependency with a newer compatible Galaxy release.
 
     ```shell
-    uv pip install --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    uv pip install --force-reinstall --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
     ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
 
