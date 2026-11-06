@@ -10,7 +10,7 @@ keys:
       table: management-interface-settings
     description: |-
       Named IPv4 subnets used for address allocation.
-      Reference a subnet using `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.
+      Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.
       Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF.
     items:
       type: dict

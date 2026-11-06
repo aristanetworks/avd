@@ -13368,6 +13368,7 @@ class EosDesigns(EosDesignsRootModel):
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
+            "mgmt_ipv4_subnet": {"type": str},
             "mgmt_gateway": {"type": str},
             "ipv6_mgmt_ip": {"type": str},
             "ipv6_mgmt_gateway": {"type": str},
@@ -13582,6 +13583,16 @@ class EosDesigns(EosDesignsRootModel):
         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
         `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
         expected to provide the gateway and the default route.
+        """
+        mgmt_ipv4_subnet: str | None
+        """
+        Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+        An explicit node
+        `mgmt_ip`, including `dhcp`, takes precedence.
+        Allocation mode is selected with
+        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+        Gateway settings are unchanged; the gateway
+        is not inferred from the subnet.
         """
         mgmt_gateway: str | None
         """
@@ -14554,6 +14565,7 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
+                mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                 mgmt_gateway: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -14757,6 +14769,14 @@ class EosDesigns(EosDesignsRootModel):
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                        expected to provide the gateway and the default route.
+                    mgmt_ipv4_subnet:
+                       Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                       An explicit node
+                       `mgmt_ip`, including `dhcp`, takes precedence.
+                       Allocation mode is selected with
+                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                       Gateway settings are unchanged; the gateway
+                       is not inferred from the subnet.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -19279,6 +19299,7 @@ class EosDesigns(EosDesignsRootModel):
             "serial_number": {"type": str},
             "rack": {"type": str},
             "mgmt_ip": {"type": str},
+            "mgmt_ipv4_subnet": {"type": str},
             "mgmt_gateway": {"type": str},
             "ipv6_mgmt_ip": {"type": str},
             "ipv6_mgmt_gateway": {"type": str},
@@ -19502,6 +19523,16 @@ class EosDesigns(EosDesignsRootModel):
         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
         `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
         expected to provide the gateway and the default route.
+        """
+        mgmt_ipv4_subnet: str | None
+        """
+        Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+        An explicit node
+        `mgmt_ip`, including `dhcp`, takes precedence.
+        Allocation mode is selected with
+        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+        Gateway settings are unchanged; the gateway
+        is not inferred from the subnet.
         """
         mgmt_gateway: str | None
         """
@@ -20475,6 +20506,7 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
+                mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                 mgmt_gateway: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -20685,6 +20717,14 @@ class EosDesigns(EosDesignsRootModel):
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                        expected to provide the gateway and the default route.
+                    mgmt_ipv4_subnet:
+                       Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                       An explicit node
+                       `mgmt_ip`, including `dhcp`, takes precedence.
+                       Allocation mode is selected with
+                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                       Gateway settings are unchanged; the gateway
+                       is not inferred from the subnet.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -24797,18 +24837,19 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {"algorithm": {"type": str, "default": "device_id"}}
                 algorithm: Algorithm
                 """
-                Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
-                `device_id` selects the host at offset
-                `id - 1` in the subnet's address ordering and fails on conflicts.
-                `auto` retains an existing
-                assignment or allocates the next free address independently of node ID.
-                Automatic assignments are
-                persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`
-                under the output
-                directory. PyAVD callers must supply a PoolManager and save it after successful facts generation.
-                Keep the state file to preserve assignments. Absent owners remain reserved until explicitly removed
-                from state.
-                Invalid existing assignments fail instead of silently renumbering a device.
+                Allocation mode for `mgmt_ipv4_subnet`.
+                `device_id` selects the host at offset `id - 1` in the
+                subnet's address ordering and fails on conflicts.
+                `auto` retains an existing assignment or allocates
+                the next free address independently of node ID.
+                Automatic assignments are persisted by the Pool
+                Manager in `data/<fabric_name>-ipv4-allocations.yml`
+                under the output directory. PyAVD callers must
+                supply a PoolManager and save it after successful facts generation.
+                Keep the state file to preserve
+                assignments. Absent owners remain reserved until explicitly removed from state.
+                Invalid existing
+                assignments fail instead of silently renumbering a device.
 
                 Default value: `"device_id"`
                 """
@@ -24824,18 +24865,19 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             algorithm:
-                               Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
-                               `device_id` selects the host at offset
-                               `id - 1` in the subnet's address ordering and fails on conflicts.
-                               `auto` retains an existing
-                               assignment or allocates the next free address independently of node ID.
-                               Automatic assignments are
-                               persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`
-                               under the output
-                               directory. PyAVD callers must supply a PoolManager and save it after successful facts generation.
-                               Keep the state file to preserve assignments. Absent owners remain reserved until explicitly removed
-                               from state.
-                               Invalid existing assignments fail instead of silently renumbering a device.
+                               Allocation mode for `mgmt_ipv4_subnet`.
+                               `device_id` selects the host at offset `id - 1` in the
+                               subnet's address ordering and fails on conflicts.
+                               `auto` retains an existing assignment or allocates
+                               the next free address independently of node ID.
+                               Automatic assignments are persisted by the Pool
+                               Manager in `data/<fabric_name>-ipv4-allocations.yml`
+                               under the output directory. PyAVD callers must
+                               supply a PoolManager and save it after successful facts generation.
+                               Keep the state file to preserve
+                               assignments. Absent owners remain reserved until explicitly removed from state.
+                               Invalid existing
+                               assignments fail instead of silently renumbering a device.
 
                         """
 
@@ -31007,7 +31049,6 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "ipv4_subnet": {"type": str},
             "description": {"type": str, "default": "OOB_MANAGEMENT"},
             "vrf": {"type": str, "default": "MGMT"},
             "vrf_routing": {"type": bool, "default": False},
@@ -31015,16 +31056,6 @@ class EosDesigns(EosDesignsRootModel):
             "shutdown": {"type": str, "default": "false"},
             "lldp": {"type": Lldp},
         }
-        ipv4_subnet: str | None
-        """
-        Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
-        An explicit node
-        `mgmt_ip`, including `dhcp`, takes precedence.
-        Allocation mode is selected with
-        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
-        Gateway settings are unchanged; the gateway
-        is not inferred from the subnet.
-        """
         description: str
         """
         Interface description configured on the management interface.
@@ -31077,7 +31108,6 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                ipv4_subnet: str | UndefinedType | None = Undefined,
                 description: str | UndefinedType = Undefined,
                 vrf: str | UndefinedType = Undefined,
                 vrf_routing: bool | UndefinedType = Undefined,
@@ -31092,14 +31122,6 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    ipv4_subnet:
-                       Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
-                       An explicit node
-                       `mgmt_ip`, including `dhcp`, takes precedence.
-                       Allocation mode is selected with
-                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
-                       Gateway settings are unchanged; the gateway
-                       is not inferred from the subnet.
                     description: Interface description configured on the management interface.
                     vrf: VRF name used for the management interface.
                     vrf_routing: Enable IP routing in the management VRF.
@@ -64636,6 +64658,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -64825,6 +64848,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -65793,6 +65826,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -65979,6 +66013,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -70526,6 +70568,7 @@ class EosDesigns(EosDesignsRootModel):
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
+                            "mgmt_ipv4_subnet": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "ipv6_mgmt_ip": {"type": str},
                             "ipv6_mgmt_gateway": {"type": str},
@@ -70725,6 +70768,16 @@ class EosDesigns(EosDesignsRootModel):
                         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                         `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                         expected to provide the gateway and the default route.
+                        """
+                        mgmt_ipv4_subnet: str | None
+                        """
+                        Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                        An explicit node
+                        `mgmt_ip`, including `dhcp`, takes precedence.
+                        Allocation mode is selected with
+                        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                        Gateway settings are unchanged; the gateway
+                        is not inferred from the subnet.
                         """
                         mgmt_gateway: str | None
                         """
@@ -71695,6 +71748,7 @@ class EosDesigns(EosDesignsRootModel):
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -71888,6 +71942,14 @@ class EosDesigns(EosDesignsRootModel):
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                        expected to provide the gateway and the default route.
+                                    mgmt_ipv4_subnet:
+                                       Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                       An explicit node
+                                       `mgmt_ip`, including `dhcp`, takes precedence.
+                                       Allocation mode is selected with
+                                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                       Gateway settings are unchanged; the gateway
+                                       is not inferred from the subnet.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -76351,6 +76413,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -76553,6 +76616,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -77523,6 +77596,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -77718,6 +77792,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -82256,6 +82338,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -82455,6 +82538,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -83425,6 +83518,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -83618,6 +83712,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -104859,6 +104961,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -105048,6 +105151,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -106016,6 +106129,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -106202,6 +106316,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -110749,6 +110871,7 @@ class EosDesigns(EosDesignsRootModel):
                             "serial_number": {"type": str},
                             "rack": {"type": str},
                             "mgmt_ip": {"type": str},
+                            "mgmt_ipv4_subnet": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "ipv6_mgmt_ip": {"type": str},
                             "ipv6_mgmt_gateway": {"type": str},
@@ -110948,6 +111071,16 @@ class EosDesigns(EosDesignsRootModel):
                         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                         `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                         expected to provide the gateway and the default route.
+                        """
+                        mgmt_ipv4_subnet: str | None
+                        """
+                        Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                        An explicit node
+                        `mgmt_ip`, including `dhcp`, takes precedence.
+                        Allocation mode is selected with
+                        `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                        Gateway settings are unchanged; the gateway
+                        is not inferred from the subnet.
                         """
                         mgmt_gateway: str | None
                         """
@@ -111918,6 +112051,7 @@ class EosDesigns(EosDesignsRootModel):
                                 serial_number: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
+                                mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -112111,6 +112245,14 @@ class EosDesigns(EosDesignsRootModel):
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                        expected to provide the gateway and the default route.
+                                    mgmt_ipv4_subnet:
+                                       Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                       An explicit node
+                                       `mgmt_ip`, including `dhcp`, takes precedence.
+                                       Allocation mode is selected with
+                                       `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                       Gateway settings are unchanged; the gateway
+                                       is not inferred from the subnet.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -116574,6 +116716,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -116776,6 +116919,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -117746,6 +117899,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -117941,6 +118095,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -122479,6 +122641,7 @@ class EosDesigns(EosDesignsRootModel):
                         "serial_number": {"type": str},
                         "rack": {"type": str},
                         "mgmt_ip": {"type": str},
+                        "mgmt_ipv4_subnet": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
                         "ipv6_mgmt_gateway": {"type": str},
@@ -122678,6 +122841,16 @@ class EosDesigns(EosDesignsRootModel):
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                     expected to provide the gateway and the default route.
+                    """
+                    mgmt_ipv4_subnet: str | None
+                    """
+                    Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                    An explicit node
+                    `mgmt_ip`, including `dhcp`, takes precedence.
+                    Allocation mode is selected with
+                    `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                    Gateway settings are unchanged; the gateway
+                    is not inferred from the subnet.
                     """
                     mgmt_gateway: str | None
                     """
@@ -123648,6 +123821,7 @@ class EosDesigns(EosDesignsRootModel):
                             serial_number: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
+                            mgmt_ipv4_subnet: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_gateway: str | UndefinedType | None = Undefined,
@@ -123841,6 +124015,14 @@ class EosDesigns(EosDesignsRootModel):
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
                                    expected to provide the gateway and the default route.
+                                mgmt_ipv4_subnet:
+                                   Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+                                   An explicit node
+                                   `mgmt_ip`, including `dhcp`, takes precedence.
+                                   Allocation mode is selected with
+                                   `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+                                   Gateway settings are unchanged; the gateway
+                                   is not inferred from the subnet.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -127025,13 +127207,13 @@ class EosDesigns(EosDesignsRootModel):
     ipv4_subnets: Ipv4Subnets
     """
     Named IPv4 subnets used for address allocation.
-    Reference a subnet using
-    `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.
-    Address conflicts are
-    checked across participating OOB management endpoints in the same fabric and VRF.
+    Reference a subnet using `mgmt_ipv4_subnet` to
+    generate OOB management addresses.
+    Address conflicts are checked across participating OOB management
+    endpoints in the same fabric and VRF.
 
-    Subclass of
-    AvdIndexedList with `Ipv4SubnetsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4SubnetsItem` items.
+    Primary key is `name` (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -129318,13 +129500,13 @@ class EosDesigns(EosDesignsRootModel):
                    (`str`).
                 ipv4_subnets:
                    Named IPv4 subnets used for address allocation.
-                   Reference a subnet using
-                   `mgmt_interface_settings.ipv4_subnet` to generate OOB management addresses.
-                   Address conflicts are
-                   checked across participating OOB management endpoints in the same fabric and VRF.
+                   Reference a subnet using `mgmt_ipv4_subnet` to
+                   generate OOB management addresses.
+                   Address conflicts are checked across participating OOB management
+                   endpoints in the same fabric and VRF.
 
-                   Subclass of
-                   AvdIndexedList with `Ipv4SubnetsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4SubnetsItem` items.
+                   Primary key is `name` (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be

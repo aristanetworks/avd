@@ -20,7 +20,7 @@ keys:
                 default: device_id
                 valid_values: [device_id, auto]
                 description: |-
-                  Allocation mode for `mgmt_interface_settings.ipv4_subnet`.
+                  Allocation mode for `mgmt_ipv4_subnet`.
                   `device_id` selects the host at offset `id - 1` in the subnet's address ordering and fails on conflicts.
                   `auto` retains an existing assignment or allocates the next free address independently of node ID.
                   Automatic assignments are persisted by the Pool Manager in `data/<fabric_name>-ipv4-allocations.yml`

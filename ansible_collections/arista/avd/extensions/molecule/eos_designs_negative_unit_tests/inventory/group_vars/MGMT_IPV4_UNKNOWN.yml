@@ -5,9 +5,9 @@ ipv4_subnets:
   - name: OOB
     subnet: 192.0.2.0/24
     range: 192.0.2.10-192.0.2.20
-mgmt_interface_settings:
-  ipv4_subnet: MISSING
 l2leaf:
+  defaults:
+    mgmt_ipv4_subnet: MISSING
   nodes:
     - name: mgmt-ipv4-unknown
       id: 1
