@@ -4,3 +4,12 @@ bgp_mesh_pes: true
 
 # Test when evpn_overlay_bgp_rtc is true
 evpn_overlay_bgp_rtc: true
+
+# Exercise a shared eBGP peer-group name with different settings on each edge node.
+custom_structured_configuration_router_bgp:
+  peer_groups:
+    - name: DOCUMENTATION-EBGP-PEERS
+      remote_as: '65101'
+      update_source: Loopback0
+      bfd: true
+      send_community: all
