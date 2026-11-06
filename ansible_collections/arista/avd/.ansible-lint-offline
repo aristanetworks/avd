@@ -1,0 +1,24 @@
+---
+# Offline variant of .ansible-lint. Use explicitly with:
+# ansible-lint -c .ansible-lint-offline --profile=production
+profile: production
+offline: true
+
+mock_modules:
+  # These task files depend on arista.eos. Mocking preserves lint coverage
+  # when collection dependencies cannot be installed.
+  - arista.eos.eos_config
+  - arista.eos.eos_command
+
+kinds:
+  - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
+  - yaml: "**/extensions/molecule/howto/artifacts.yml"
+exclude_paths:
+  - tests/integration
+  - tests/unit
+  - extensions/molecule
+  - extensions/scripts
+  - changelogs
+
+warn_list:
+  - no-log-password
