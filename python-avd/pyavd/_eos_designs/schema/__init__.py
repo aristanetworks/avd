@@ -1874,6 +1874,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "configure_snmp_server_vrfs_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
@@ -1926,6 +1927,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        configure_snmp_server_vrfs_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.5.0.
+        Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
+        `ipv4_acls` for enabled SNMP VRFs.
+        An error will be raised if the referenced ACL is not defined
+        under `ipv4_acls`.
+        If the referenced ACL is a standard ACL, use
+        `snmp_settings.vrfs[].ipv4_standard_acl` instead.
 
         Default value: `False`
         """
@@ -2106,6 +2119,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                configure_snmp_server_vrfs_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
@@ -2148,6 +2162,14 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    configure_snmp_server_vrfs_ipv4_acl_from_catalog:
+                       Available from AVD 6.5.0.
+                       Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
+                       `ipv4_acls` for enabled SNMP VRFs.
+                       An error will be raised if the referenced ACL is not defined
+                       under `ipv4_acls`.
+                       If the referenced ACL is a standard ACL, use
+                       `snmp_settings.vrfs[].ipv4_standard_acl` instead.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -52940,6 +52962,7 @@ class EosDesigns(EosDesignsRootModel):
                 "enable": {"type": bool},
                 "source_interface": {"type": str},
                 "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
                 "ipv6_acl": {"type": str},
             }
             name: str
@@ -52971,6 +52994,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             ipv4_acl: str | None
             """IPv4 access-list name."""
+            ipv4_standard_acl: str | None
+            """IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`."""
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -52983,6 +53008,7 @@ class EosDesigns(EosDesignsRootModel):
                     enable: bool | UndefinedType | None = Undefined,
                     source_interface: str | UndefinedType | None = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -53015,6 +53041,7 @@ class EosDesigns(EosDesignsRootModel):
                            If set for the VRFs defined by `mgmt_interface_vrf` or
                            `inband_mgmt_vrf`, this setting will take precedence.
                         ipv4_acl: IPv4 access-list name.
+                        ipv4_standard_acl: IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
                         ipv6_acl: IPv6 access-list name.
 
                     """

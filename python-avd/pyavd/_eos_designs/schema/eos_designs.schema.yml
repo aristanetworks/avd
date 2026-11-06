@@ -508,6 +508,18 @@ keys:
 
           Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
+      configure_snmp_server_vrfs_ipv4_acl_from_catalog:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from `ipv4_acls`
+          for enabled SNMP VRFs.
+
+          An error will be raised if the referenced ACL is not defined under `ipv4_acls`.
+
+          If the referenced ACL is a standard ACL, use `snmp_settings.vrfs[].ipv4_standard_acl`
+          instead.'
+        default: false
       consistent_uplink_vlans:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -10599,6 +10611,10 @@ keys:
             ipv4_acl:
               type: str
               description: IPv4 access-list name.
+            ipv4_standard_acl:
+              type: str
+              description: IPv4 standard access-list name. The access-list must be
+                defined under `ipv4_standard_acls`.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.

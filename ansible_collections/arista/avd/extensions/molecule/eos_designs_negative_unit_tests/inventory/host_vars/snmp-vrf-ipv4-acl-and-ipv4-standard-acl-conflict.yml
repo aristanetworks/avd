@@ -1,0 +1,22 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-vrf-ipv4-acl-and-ipv4-standard-acl-conflict
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+snmp_settings:
+  vrfs:
+    - name: default
+      enable: true
+      ipv4_acl: acl-for-vrf-default
+      ipv4_standard_acl: acl-for-vrf-default
+
+expected_error_message: >-
+  'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'snmp_settings.vrfs[name=default]'. Only one IPv4 ACL can be configured.
