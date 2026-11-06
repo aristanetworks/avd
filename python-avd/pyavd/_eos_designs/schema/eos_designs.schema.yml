@@ -6200,6 +6200,9 @@ keys:
 
                   explicitly turned off with "redistribute_ospf: false".
 
+                  Note: `redistribute_ospf` is going to be removed from version: 7.0.0
+                  and will be replaced with "bgp.redistribute_ospf.internal.enabled".
+
                   '
                 keys:
                   enabled:
@@ -6374,6 +6377,11 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: bgp.redistribute_ospf.internal.enabled
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -7465,6 +7473,60 @@ keys:
                             default: true
                             description: Redistribute OSPFv3 internal routes into
                               BGP.
+                  redistribute_ospf:
+                    type: dict
+                    description: 'Redistribution of OSPF routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPF instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPF internal routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF external routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      nssa_external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF NSSA external routes into
+                              BGP.
+                          nssa_type:
+                            type: int
+                            valid_values:
+                            - 1
+                            - 2
+                            description: NSSA type for the redistributed routes.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF

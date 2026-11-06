@@ -1,0 +1,182 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospf-bgp-redistribute
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.90.50/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.91.50/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.90.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.91.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65190'
+  router_id: 192.168.90.50
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vrfs:
+  - name: VRF-OSPF-EXTERNAL-NSSA
+    rd: 192.168.90.50:51
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '51:51'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '51:51'
+    router_id: 192.168.90.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        match_external:
+          enabled: true
+          route_map: RM-OSPF-TO-BGP-EXTERNAL
+          include_leaked: true
+        match_nssa_external:
+          enabled: true
+          nssa_type: 1
+          route_map: RM-OSPF-TO-BGP-NSSA
+  - name: VRF-OSPF-INTERNAL
+    rd: 192.168.90.50:50
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+    router_id: 192.168.90.50
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+        route_map: RM-OSPF-TO-BGP-INTERNAL
+        include_leaked: true
+router_ospf:
+  process_ids:
+  - id: 51
+    vrf: VRF-OSPF-EXTERNAL-NSSA
+    passive_interface_default: true
+    router_id: 192.168.90.50
+    no_passive_interfaces:
+    - Vlan510
+    redistribute:
+      bgp:
+        enabled: true
+  - id: 50
+    vrf: VRF-OSPF-INTERNAL
+    passive_interface_default: true
+    router_id: 192.168.90.50
+    no_passive_interfaces:
+    - Vlan500
+    redistribute:
+      bgp:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan510
+  description: VRF-OSPF-EXTERNAL-NSSA-510
+  shutdown: false
+  vrf: VRF-OSPF-EXTERNAL-NSSA
+  ip_address: 10.1.51.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+- name: Vlan500
+  description: VRF-OSPF-INTERNAL-500
+  shutdown: false
+  vrf: VRF-OSPF-INTERNAL
+  ip_address: 10.1.50.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 510
+  name: VRF-OSPF-EXTERNAL-NSSA-510
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+- id: 500
+  name: VRF-OSPF-INTERNAL-500
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF-OSPF-EXTERNAL-NSSA
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+- name: VRF-OSPF-INTERNAL
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT-OSPF-BGP
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospf-bgp-redistribute_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+      - name: VRF-OSPF-EXTERNAL-NSSA
+        vni: 51
+      - name: VRF-OSPF-INTERNAL
+        vni: 50

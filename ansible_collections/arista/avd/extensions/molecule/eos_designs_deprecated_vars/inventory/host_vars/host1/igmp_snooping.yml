@@ -39,6 +39,11 @@ tenants:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST"
         vrf_vni: 41
+        # adding a test for deprecated redistribute_ospf key
+        vrf_id: 14
+        ospf:
+          enabled: true
+        redistribute_ospf: true
         svis:
           - id: 22
             name: "VLAN_22"
