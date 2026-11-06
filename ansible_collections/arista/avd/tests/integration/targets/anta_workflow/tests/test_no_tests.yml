@@ -1,0 +1,53 @@
+---
+- name: Test no deployed devices
+  arista.avd.anta_workflow:
+    device_list: [anta-undeployed]
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/json"
+    runner:
+      dry_run: true
+  ignore_errors: true
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == 'No ANTA tests were run.'
+      - result.anta_tests_summary.total_tests == 0
+
+- name: Create structured configuration without eAPI
+  ansible.builtin.copy:
+    content: "{{ {'hostname': 'anta-no-eapi'} | to_nice_yaml }}"
+    dest: "{{ actual_output_dir }}/structured_configs/anta-no-eapi.yml"
+    mode: '0644'
+
+- name: Create device without eAPI
+  ansible.builtin.add_host:
+    name: anta-no-eapi
+
+- name: Test device without eAPI
+  arista.avd.anta_workflow:
+    device_list: [anta-no-eapi]
+    avd_catalogs:
+      structured_config_dir: "{{ actual_output_dir }}/structured_configs"
+    runner:
+      dry_run: true
+  ignore_errors: true
+  register: result
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == 'No ANTA tests were run.'
+      - result.anta_tests_summary.total_tests == 0

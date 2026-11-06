@@ -1,0 +1,43 @@
+---
+- name: Test invalid ANTA workflow arguments
+  arista.avd.anta_workflow: "{{ item.args }}"
+  ignore_errors: true
+  register: invalid_results
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  loop:
+    - args:
+        device_list: []
+      expected_error: "'device_list' cannot be empty"
+    - args:
+        device_list: "{{ anta_test_devices }}"
+        avd_catalogs:
+          enabled: false
+      expected_error: "At least one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be set to True"
+    - args:
+        device_list: "{{ anta_test_devices }}"
+      expected_error: >-
+        When 'avd_catalogs.enabled' is True, a directory with device structured configurations
+        must be provided using the 'avd_catalogs.structured_config_dir' argument
+    - args:
+        device_list: "{{ anta_test_devices }}"
+        avd_catalogs:
+          enabled: false
+        user_catalogs:
+          enabled: true
+      expected_error: >-
+        When 'user_catalogs.enabled' is True, a directory with user-defined ANTA catalogs
+        must be provided using the 'user_catalogs.input_dir' argument
+  loop_control:
+    label: "{{ item.expected_error }}"
+
+- name: Validate results
+  ansible.builtin.assert:
+    that:
+      - item is failed
+      - >-
+        item.msg == "Error during plugin 'arista.avd.anta_workflow' execution: " ~ item.item.expected_error
+  loop: "{{ invalid_results.results }}"
+  loop_control:
+    label: "{{ item.item.expected_error }}"

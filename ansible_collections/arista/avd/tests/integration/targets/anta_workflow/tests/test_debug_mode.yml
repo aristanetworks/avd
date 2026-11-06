@@ -1,0 +1,15 @@
+---
+- name: Test ANTA debug environment in a separate Ansible process
+  ansible.builtin.command:
+    argv:
+      - ansible-playbook
+      - "{{ role_path }}/files/debug_mode.yml"
+      - --inventory
+      - localhost,
+      - --connection
+      - local
+      - --extra-vars
+      - "{{ {'catalog_dir': actual_output_dir ~ '/catalogs/yml'} | to_json }}"
+  environment:
+    ANTA_DEBUG: 'true'
+  changed_when: false
