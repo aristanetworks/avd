@@ -1058,22 +1058,19 @@ l3leaf:
     aaa_settings_profile: restricted_aaa
 ```
 
-The AAA-related structured configuration generated for an `l3leaf` using `restricted_aaa` is:
+The effective `aaa_settings` after applying profiles are:
 
 ```yaml
-aaa_authentication:
-  login:
-    default: group tacacs+ local
-aaa_authorization:
-  exec:
-    default: local
-aaa_root:
-  disabled: true
-enable_password:
-  disabled: true
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+    authorization:
+      exec:
+        default: local
 ```
 
-!!! warning
+!!! note
 
     Exercise caution when changing a password through profile inheritance. If global or parent
     settings define `aaa_settings.enable_password.password` and a profile sets
@@ -1084,29 +1081,29 @@ enable_password:
     `aaa_settings.local_users[name=<username>].sha512_password` takes precedence over
     `aaa_settings.local_users[name=<username>].cleartext_password` with the same result.
 
-    To rotate both credentials, explicitly clear the inherited hashes in the selected profile:
+    To override both credentials, explicitly clear the inherited hashes in the selected profile:
 
     ```yaml
     aaa_settings:
       enable_password:
-        password: "<inherited-sha512-hash>"
+        password: "<sha512-hash>"
       local_users:
         - name: rotating-user
-          sha512_password: "<inherited-sha512-hash>"
+          sha512_password: "<sha512-hash>"
 
     aaa_settings_profiles:
-      - profile: credential_rotation
+      - profile: vaulted_passwords
         enable_password:
-          password: null
-          cleartext_password: "<new-enable-password>"
+          password: null  # Overriding the value in base aaa_settings
+          cleartext_password: "<enable-password-from-vault>"
         local_users:
           - name: rotating-user
-            sha512_password: null
-            cleartext_password: "<new-local-user-password>"
+            sha512_password: null  # Overriding the value in base aaa_settings
+            cleartext_password: "<local-user-password-from-vault>"
 
     l3leaf:
       defaults:
-        aaa_settings_profile: credential_rotation
+        aaa_settings_profile: vaulted_passwords
     ```
 
 --8<--
