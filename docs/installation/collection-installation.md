@@ -47,127 +47,53 @@ To set up a development environment, please follow the [development tooling](../
 The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd)
 server and can be automatically installed on your system.
 
-!!! note
-
-    Before using a `uv` tab, create or activate the intended virtual environment.
-    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
-
-### Latest version
-
-These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
-all required Ansible collections.
-
-=== "pip"
-
-    ```shell
-    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
-    ```
-
-=== "uv"
-
-    ```shell
-    uv pip install --upgrade "pyavd[ansible]"
-    ```
-
-Then install the Ansible collection:
-
-```shell
-ansible-galaxy collection install arista.avd --upgrade
-```
-
 !!! warning
     If you have an `ansible.cfg` file in the directory where you run `ansible-galaxy`, it may affect the directory under which the collection and dependencies will be installed.
 
 !!! warning
     Depending on your operating system settings, `pip` might be replaced by `pip3`.
 
-### Install a specific version
+These commands install all Python requirements including `ansible-core` and then installs the `arista.avd` Ansible collection including
+all required Ansible collections:
 
 === "pip"
 
     ```shell
+    # Install or upgrade to the latest version
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
+    ansible-galaxy collection install arista.avd --upgrade
+
+    # Install a specific version
     pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.1.0"
-    ```
+    ansible-galaxy collection install arista.avd:==6.1.0 --upgrade
 
-=== "uv"
-
-    ```shell
-    uv pip install --upgrade "pyavd[ansible]==6.1.0"
-    ```
-
-Then install the Ansible collection:
-
-```shell
-ansible-galaxy collection install arista.avd:==6.1.0 --upgrade
-```
-
-### Install latest `devel` version from AVD GitHub
-
-=== "pip"
-
-    ```shell
+    # Install latest `devel` version from AVD GitHub
     pip install --upgrade --upgrade-strategy eager "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
 
 === "uv"
 
+    !!! note
+    Before using the `uv pip` command, create or activate the intended virtual environment.
+    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
+
     ```shell
+    # Install or upgrade to the latest version
+    uv pip install --upgrade "pyavd[ansible]"
+    ansible-galaxy collection install arista.avd --upgrade
+
+    # Install a specific version
+    uv pip install --upgrade "pyavd[ansible]==6.1.0"
+    ansible-galaxy collection install arista.avd:==6.1.0 --upgrade
+
+    # Install latest `devel` version from AVD GitHub
     uv pip install --upgrade "pyavd[ansible] @ git+https://github.com/aristanetworks/avd.git@devel#subdirectory=python-avd"
+    ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
     ```
-
-Then install the Ansible collection:
-
-```shell
-ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#/ansible_collections/arista/avd/,devel --upgrade
-```
 
 !!! note
-    Installing from `devel` will require minimum Python 3.10, since the PyAVD package will be built during installation, and some
-    of the build tooling requires minimum 3.10.
-
-!!! note
-    Collection dependencies like `ansible-cvp` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
-
-### Install in a specific directory
-
-If you want to install collection in a specific directory part of your project, you can call `ansible-galaxy` with the `-p` option
-and update your `ansible.cfg`:
-
-```shell
-# Install collection under ${PWD}/collections/
-$ ansible-galaxy collection install arista.avd --upgrade -p collections/
-```
-
-```ini title="ansible.cfg"
-# Update ansible.cfg file
-[defaults]
-collections_path = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible/collections
-```
-
-### Upgrade installed AVD collection
-
-You can use `-U` to upgrade to a new version for any installed collection:
-
-```shell
-$ ansible-galaxy collection install -U arista.avd
-Process install dependency map
-Starting collection install process
-Installing 'arista.avd:6.0.0' to '/home/arista/.ansible/collections/ansible_collections/arista/avd'
-```
-
-After an upgrade, some python requirements may have changed. Make sure to also update the Python requirements for the same version (the version given below matches the installed collection above):
-
-=== "pip"
-
-    ```shell
-    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]==6.0.0"
-    ```
-
-=== "uv"
-
-    ```shell
-    uv pip install --upgrade "pyavd[ansible]==6.0.0"
-    ```
+    When installing from devel, collection dependencies like `arista.eos` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
 
 ## Ansible configuration file
 
