@@ -106,11 +106,21 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -127,6 +137,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | - |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -143,6 +155,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```eos
 !
 router ospfv3
+   bfd default
+   !
    address-family ipv4
       router-id 2.2.2.2
       auto-cost reference-bandwidth 2000
@@ -153,6 +167,7 @@ router ospfv3
    !
    address-family ipv6
       router-id 3.3.3.3
+      bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal
