@@ -1,0 +1,37 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - name: ipv4-acl-duplicate-names-cross-feature
+      id: 1
+      bgp_as: 65000
+      loopback_ipv4_pool: 192.168.0.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv4_acl_in: FILTER
+
+snmp_settings:
+  communities:
+    - name: TEST-COMMUNITY
+      access: ro
+      ipv4_standard_acl: FILTER
+
+ipv4_acls:
+  - name: FILTER
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+ipv4_standard_acls:
+  - name: FILTER
+    entries:
+      - action: permit
+        source: any
+
+expected_error_message: >-
+  ACL 'FILTER' is configured in both 'ip_access_lists' and 'standard_access_lists'.
+  Only one IPv4 ACL type can be configured with the same name.

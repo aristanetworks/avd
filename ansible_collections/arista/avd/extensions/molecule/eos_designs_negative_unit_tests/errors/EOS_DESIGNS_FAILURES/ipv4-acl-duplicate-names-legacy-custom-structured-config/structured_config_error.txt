@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: ACL 'FILTER' is configured in both 'access_lists' and 'standard_access_lists'. Only one IPv4 ACL type can be configured with the same name.
