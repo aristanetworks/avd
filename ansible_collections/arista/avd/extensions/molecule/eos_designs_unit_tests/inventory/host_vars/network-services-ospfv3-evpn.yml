@@ -188,8 +188,10 @@ tenants:
           router_id: diagnostic_loopback
           redistribute_bgp:
             enabled: false
-        redistribute_ospfv3:
-          enabled: false
+        bgp:
+          redistribute_ospfv3:
+            internal:
+              enabled: false
         svis:
           - id: 212
             name: VRF_C_TRANSIT
@@ -199,7 +201,7 @@ tenants:
             ospfv3:
               enabled: true
 
-      # No router ID and the documented workaround to redistribute OSPFv3 external routes into BGP.
+      # No router ID, and OSPFv3 external routes redistributed into BGP with 'bgp.structured_config'.
       - name: VRF_D
         vrf_id: 13
         ospfv3:
@@ -244,8 +246,10 @@ tenants:
         vrf_id: 15
         ospf:
           enabled: true
-        redistribute_ospfv3:
-          enabled: false
+        bgp:
+          redistribute_ospfv3:
+            internal:
+              enabled: false
         svis:
           - id: 215
             name: VRF_DUAL_STACK_2_TRANSIT
@@ -276,11 +280,12 @@ tenants:
         vrf_id: 16
         bgp:
           enabled: false
+          redistribute_ospfv3:
+            internal:
+              enabled: true
         ospfv3:
           redistribute_bgp:
             enabled: true
-        redistribute_ospfv3:
-          enabled: true
         svis:
           - id: 216
             name: VRF_NO_BGP_TRANSIT
