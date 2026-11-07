@@ -46,6 +46,8 @@ theme:
   include_search_page: false
   search_index_only: true
   custom_dir: docs/overrides
+  static_templates:
+    - llms.txt
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -88,6 +90,8 @@ plugins:
         - site/*
         - README.md
         - contributing.md
+        # Render this through theme.static_templates instead of copying raw Jinja.
+        - docs/overrides/llms.txt
         - pylintrc-ansible
         - ansible_collections/arista/avd/bindep.txt
         - ansible_collections/arista/avd/CHANGELOG.rst
@@ -196,8 +200,6 @@ markdown_extensions:
       separator: "-"
       permalink: true
 hooks:
-  # Copy the root llms.txt after the build; mkdocs-same-dir filters root text files.
-  - tools/llms_txt.py
   # Schema Explorer integration:
   #   * Auto-builds a cached Schema Explorer outside the repo tree when the
   #     SQLite artifact is missing or stale, then copies the SPA + SQLite into

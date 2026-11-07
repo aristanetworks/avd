@@ -4,10 +4,6 @@
  that can be found in the LICENSE file.
 #}
 {% extends "base.html" %}
-{% block extrahead %}
-    {{ super() }}
-    <link rel="describedby" href="{{ 'llms.txt' | url }}">
-{% endblock %}
 {% block htmltitle %}
 {% if page.meta and page.meta.title %}
     <title>AVD - {{ page.meta.title }}</title>
