@@ -15,6 +15,8 @@
 {% endmacro -%}
 # {{ config.site_description }}
 
+> Index of documentation pages for this AVD version.
+
 {% for item in nav -%}
 {% set links = entries(item.children if item.is_section else [item]) -%}
 {% if links.strip() -%}
