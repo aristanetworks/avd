@@ -139,7 +139,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: 25bcf95026b96e2dd3c0aec3090c3d6ef6ca2e6c  # frozen: v0.17.3
+    rev: c0f278f1254ccc8fb09676bcdb8d847e7db493e5  # frozen: v0.17.4
     hooks:
       # Run the linter.
       - id: ruff
@@ -214,7 +214,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: c92afdf2c6ca336aaa8f39e2bd8d48f62dbd8e1f  # frozen: v1.31.1
+    rev: 06a39750ec31860bb44f2acf67182c40016cd1e7  # frozen: v1.32.0
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -223,7 +223,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "e606033b17c119997fa65ffe4553ce25d09f066e"  # frozen: 2.29.5
+    rev: "37d7d0752ef067f311d2a19cb82d5ae6e06040ec"  # frozen: 2.29.7
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
