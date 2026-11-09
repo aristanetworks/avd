@@ -11,9 +11,6 @@ schema flattening, a generated SQLite file, client-side `sql.js` queries, and
 HTML rendering in the browser. There is no backend, authentication, telemetry,
 or write path.
 
-Parent tracking: [aristanetworks/avd-internal#503](https://github.com/aristanetworks/avd-internal/issues/503),
-security review: [aristanetworks/avd-internal#641](https://github.com/aristanetworks/avd-internal/issues/641).
-
 ## Threat model
 
 | Actor | Capability | Goal |
@@ -79,7 +76,5 @@ node --check tools/schema-explorer/static/js/app.js
 make schema-explorer-build
 ```
 
-Run relevant regression tests when available in your checkout. Additional
-automated checks and CI integration are tracked in
-[aristanetworks/avd-internal#687](https://github.com/aristanetworks/avd-internal/issues/687).
+Run relevant regression tests when available in your checkout.
 Maintainer rules for agents and contributors: [AGENTS.md](AGENTS.md).

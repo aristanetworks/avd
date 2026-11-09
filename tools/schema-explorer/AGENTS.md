@@ -38,6 +38,4 @@ node --check tools/schema-explorer/static/js/app.js
 make schema-explorer-build
 ```
 
-Run the relevant regression tests when available in your checkout. Additional
-automated guardrails are tracked in
-[aristanetworks/avd-internal#687](https://github.com/aristanetworks/avd-internal/issues/687).
+Run the relevant regression tests when available in your checkout.

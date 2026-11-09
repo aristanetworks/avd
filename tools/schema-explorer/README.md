@@ -11,8 +11,6 @@ A static, [sql.js](https://github.com/sql-js/sql.js)-based browser of the AVD
 docs site. All queries run in the browser against a local SQLite file —
 no backend, no managed runtime, no live database.
 
-Tracked in `aristanetworks/avd-internal#503`.
-
 ## Two ways to consume it
 
 | Mode | Syntax / URL | When to use |
@@ -209,13 +207,10 @@ run the syntax and build checks documented in [SECURITY.md](SECURITY.md#verifica
 
 ## Architecture decisions
 
-See `aristanetworks/avd-internal#503` for the full thread. Short version:
-
 - **MkDocs static + sql.js**, not App Engine — picked at the May 8th
   maintainers call.
-- **`schema_tools` resolver**, not raw `yaml.safe_load` — see
-  `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
-  same-schema `$ref` hole. Cross-schema `$ref` with `hide_keys` stays a leaf
+- **`schema_tools` resolver**, not raw `yaml.safe_load` — resolves
+  `dynamic_keys` and same-schema `$ref` values. Cross-schema `$ref` with `hide_keys` stays a leaf
   `cross_ref` link; other cross-schema reuse is resolved like schema docs.
 - **Embedded views via a Markdown fence**, not iframe / template override
   — picked at the May 15th maintainers call. Docs authors use
