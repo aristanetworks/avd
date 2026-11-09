@@ -22,7 +22,7 @@ Results are reported in various formats, including JSON, CSV, and Markdown.
 
 ## Requirements
 
-Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-requirements-installation) documentation.
+Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-dependencies) documentation.
 
 ## Basic Example
 

@@ -1,0 +1,35 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  aaa_settings_profiles:
+    documentation_options:
+      table: aaa-settings-profiles
+    type: list
+    primary_key: profile
+    description: |-
+      List of AAA settings profiles that can be applied to devices using `aaa_settings_profile` under node definitions.
+      Profiles support inheritance using `parent_profile`, allowing common AAA settings to be shared and selectively overridden per profile.
+      Note: For TACACS and RADIUS, `vrfs` entries merge by `name` across global settings and the profile chain, with the most specific settings taking precedence.
+      A defined `servers` list replaces the inherited list for that protocol; if omitted, the inherited list is retained.
+    items:
+      type: dict
+      documentation_options:
+        table: aaa-settings-profiles
+      $ref: "eos_designs#/keys/aaa_settings"
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: AAA settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: |-
+            Inherit settings from a parent profile defined under `aaa_settings_profiles`.
+            The settings from this profile override settings inherited from the parent profile.
