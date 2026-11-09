@@ -10,6 +10,7 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.13"
+    nodejs: "22"
   jobs:
     install:
       # Since the install step is overridden, pip is no longer updated automatically.

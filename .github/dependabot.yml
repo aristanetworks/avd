@@ -32,3 +32,14 @@ updates:
       prefix: "CI: "
     cooldown:
       default-days: 7
+  # Runtime assets are installed during the Schema Explorer docs build.
+  - package-ecosystem: "npm"
+    directory: "/tools/schema-explorer"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "Bump(requirements): "
+      prefix-development: "CI(requirements):"
+    cooldown:
+      default-days: 7
