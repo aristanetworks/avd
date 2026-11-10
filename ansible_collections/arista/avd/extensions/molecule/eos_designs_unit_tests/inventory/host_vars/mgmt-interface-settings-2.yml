@@ -15,3 +15,9 @@ mgmt_interface_settings:
   vrf_routing: true
   interface: Management0
   shutdown: true
+  ipv6: # This would be ignored because node_config.ipv6_mgmt_ip is set
+    slaac: true
+    accept_default_route: true
+  ipv4: # This would be ignored because node_config.mgmt_ip is set
+    dhcp: true
+    accept_default_route: true

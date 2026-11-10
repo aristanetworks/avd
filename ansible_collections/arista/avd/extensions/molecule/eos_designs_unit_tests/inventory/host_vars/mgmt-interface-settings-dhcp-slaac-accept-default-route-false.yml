@@ -1,0 +1,15 @@
+# Test DHCP and SLAAC without accepting default routes from DHCP or router advertisements.
+type: l2leaf
+mgmt_interface_settings:
+  vrf: MGMT
+  description: "Management Interface - DHCP"
+  ipv4:
+    dhcp: true
+    accept_default_route: false
+  ipv6:
+    slaac: true
+    accept_default_route: false
+l2leaf:
+  nodes:
+    - name: mgmt-interface-settings-dhcp-slaac-accept-default-route-false
+      id: 201

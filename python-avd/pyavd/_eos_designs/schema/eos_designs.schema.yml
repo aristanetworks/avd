@@ -5035,6 +5035,28 @@ keys:
           ztp_vlan:
             type: int
             description: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).
+      ipv4:
+        type: dict
+        keys:
+          dhcp:
+            type: bool
+            description: Enable DHCP (Dynamic Host Configuration Protocol) for IPv4
+              address assignment.
+          accept_default_route:
+            type: bool
+            default: true
+            description: Accept the default route from DHCP assignment.
+      ipv6:
+        type: dict
+        keys:
+          slaac:
+            type: bool
+            description: Enable SLAAC (Stateless Address Auto-Configuration) for IPv6
+              address assignment.
+          accept_default_route:
+            type: bool
+            default: true
+            description: Accept the default route from router advertisements.
   mgmt_interface_vrf:
     documentation_options:
       table: management-interface-settings

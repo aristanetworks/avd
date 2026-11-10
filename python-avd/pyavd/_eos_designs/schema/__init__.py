@@ -30841,6 +30841,62 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Ipv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"dhcp": {"type": bool}, "accept_default_route": {"type": bool, "default": True}}
+            dhcp: bool | None
+            """Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment."""
+            accept_default_route: bool
+            """
+            Accept the default route from DHCP assignment.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, dhcp: bool | UndefinedType | None = Undefined, accept_default_route: bool | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        dhcp: Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.
+                        accept_default_route: Accept the default route from DHCP assignment.
+
+                    """
+
+        class Ipv6(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"slaac": {"type": bool}, "accept_default_route": {"type": bool, "default": True}}
+            slaac: bool | None
+            """Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment."""
+            accept_default_route: bool
+            """
+            Accept the default route from router advertisements.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, slaac: bool | UndefinedType | None = Undefined, accept_default_route: bool | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        slaac: Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.
+                        accept_default_route: Accept the default route from router advertisements.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "description": {"type": str, "default": "OOB_MANAGEMENT"},
             "vrf": {"type": str, "default": "MGMT"},
@@ -30848,6 +30904,8 @@ class EosDesigns(EosDesignsRootModel):
             "interface": {"type": str, "default": "Management1"},
             "shutdown": {"type": str, "default": "false"},
             "lldp": {"type": Lldp},
+            "ipv4": {"type": Ipv4},
+            "ipv6": {"type": Ipv6},
         }
         description: str
         """
@@ -30895,6 +30953,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        ipv4: Ipv4
+        """Subclass of AvdModel."""
+        ipv6: Ipv6
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -30907,6 +30969,8 @@ class EosDesigns(EosDesignsRootModel):
                 interface: str | UndefinedType = Undefined,
                 shutdown: Shutdown | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
+                ipv4: Ipv4 | UndefinedType = Undefined,
+                ipv6: Ipv6 | UndefinedType = Undefined,
             ) -> None:
                 """
                 MgmtInterfaceSettings.
@@ -30935,6 +30999,8 @@ class EosDesigns(EosDesignsRootModel):
                        LLDP settings for the management interface.
 
                        Subclass of AvdModel.
+                    ipv4: Subclass of AvdModel.
+                    ipv6: Subclass of AvdModel.
 
                 """
 
