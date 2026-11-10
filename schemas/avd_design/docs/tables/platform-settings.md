@@ -1652,6 +1652,7 @@
               - vEOS
               - vEOS-lab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
@@ -1734,6 +1735,7 @@
               - ceos
               - cEOSLab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
@@ -1814,6 +1816,7 @@
           - platforms:
               - CloudEOS
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_install: false
               interface_storm_control: false
               per_interface_l2_mru: false

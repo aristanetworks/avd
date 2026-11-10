@@ -72,7 +72,6 @@ $defs:
               description: |-
                 Support for 802.1X BPDU bypass.
                 The feature will be ignored on platforms where this is false.
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
             dot1x_mac_based_access_list:
               type: bool
               default: true
