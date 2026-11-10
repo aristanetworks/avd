@@ -20,7 +20,19 @@ class AristaAvdError(Exception):
     def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None) -> None:
         self.host = host
         self.message = message
+        self._host_context_added = False
         super().__init__(self.message)
+
+    def _add_host_context(self, host: str) -> None:
+        """Add host context once, preserving an existing host and the exception instance."""
+        if not self.host:
+            self.host = host
+        if self._host_context_added or not self.host:
+            return
+
+        self.message = f"{self.message.removesuffix('.')} for host '{self.host}'."
+        self.args = (self.message,)
+        self._host_context_added = True
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
@@ -41,6 +53,8 @@ class AristaAvdMissingVariableError(AristaAvdError):
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
         super().__init__(message, host=host)
+        # This constructor already includes a nonempty host in its diagnostic.
+        self._host_context_added = bool(host)
 
 
 class AvdValidationError(AristaAvdError):
