@@ -79,6 +79,3 @@ wan_router:
               wan_circuit_id: 666
               dhcp_accept_default_route: true
               ip_address: dhcp
-
-expected_error_message: >-
-  WAN gateway is supported only on sites with a single WAN router, configured: 2

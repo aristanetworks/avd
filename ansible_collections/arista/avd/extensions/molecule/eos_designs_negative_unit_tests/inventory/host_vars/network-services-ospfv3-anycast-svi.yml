@@ -1,0 +1,26 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+  nodes:
+    - name: network-services-ospfv3-anycast-svi
+      id: 1
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: ANYCAST_IPV6
+            vxlan: false
+            ipv6_address_virtuals:
+              - 2001:db8:110::1/64
+            ospfv3:
+              enabled: true

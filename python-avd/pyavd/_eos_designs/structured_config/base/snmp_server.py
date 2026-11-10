@@ -202,10 +202,7 @@ class SnmpServerMixin(Protocol):
                         local_engine_id: str = engine_ids.local  # type: ignore[assignment]  # non-None guaranteed by compute_v3_user_localized_key check above
                         key_type = user.key_type
                         auth_hash = snmp_hash({"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id})
-                        if key_type == "0":
-                            user_dict.auth_key_type = "0"
-                            user_dict.auth_key = auth_hash
-                        elif key_type == "7":
+                        if key_type == "7":
                             user_dict.auth_key_type = "7"
                             user_dict.auth_key = simple_7_encrypt(auth_hash, 7)
                         else:
@@ -214,10 +211,7 @@ class SnmpServerMixin(Protocol):
                         if user.priv is not None and user.priv_passphrase is not None:
                             user_dict.priv = user.priv
                             priv_hash = snmp_hash({"passphrase": user.priv_passphrase, "auth": user.auth, "priv": user.priv, "engine_id": local_engine_id})
-                            if key_type == "0":
-                                user_dict.priv_key_type = "0"
-                                user_dict.priv_key = priv_hash
-                            elif key_type == "7":
+                            if key_type == "7":
                                 user_dict.priv_key_type = "7"
                                 user_dict.priv_key = simple_7_encrypt(priv_hash, 7)
                             else:

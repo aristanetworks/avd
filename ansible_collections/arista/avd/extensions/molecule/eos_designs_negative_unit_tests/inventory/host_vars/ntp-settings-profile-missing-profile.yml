@@ -1,0 +1,8 @@
+---
+devices:
+  - name: ntp-settings-profile-missing-profile
+    type: l2leaf
+    ntp_settings_profile: missing_profile
+
+ntp_settings_profiles:
+  - profile: existing_profile

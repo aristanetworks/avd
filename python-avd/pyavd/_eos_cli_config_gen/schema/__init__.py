@@ -43282,7 +43282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"port": {"type": int}, "tls_ssl_profile": {"type": str}}
             port: int | None
-            """TCP Port."""
+            """UDP port used for RADIUS dynamic authorization requests."""
             tls_ssl_profile: str | None
             """Name of TLS profile."""
 
@@ -43296,7 +43296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        port: TCP Port.
+                        port: UDP port used for RADIUS dynamic authorization requests.
                         tls_ssl_profile: Name of TLS profile.
 
                     """
@@ -77960,13 +77960,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}}
+            class Qos(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"input": {"type": str}}
+                input: str | None
+                """Quality of Service Policy-map name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, input: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        Qos.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            input: Quality of Service Policy-map name.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pbr": {"type": Pbr}, "qos": {"type": Qos}}
             pbr: Pbr
+            """Subclass of AvdModel."""
+            qos: Qos
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined) -> None:
+                def __init__(self, *, pbr: Pbr | UndefinedType = Undefined, qos: Qos | UndefinedType = Undefined) -> None:
                     """
                     ServicePolicy.
 
@@ -77975,6 +77998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         pbr: Subclass of AvdModel.
+                        qos: Subclass of AvdModel.
 
                     """
 

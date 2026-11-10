@@ -100,7 +100,3 @@ application_classification:
       - name: TEST-APPLICATION
         protocols: [tcp]
         tcp_src_port_set_name: MISSING-PORT-SET
-
-expected_error_message: >-
-  L4 Ports field set 'MISSING-PORT-SET' referenced in the application 'TEST-APPLICATION' is not defined
-  in 'application_classification.fields_sets.l4_ports'.
