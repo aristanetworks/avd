@@ -29,6 +29,10 @@ plugins:
       description: Replace a value by "<removed>"
       name: hide_passwords
       version_added: 4.0.0
+    ip_address_sort:
+      description: Sort a list by IP address.
+      name: ip_address_sort
+      version_added: 6.5.0
     is_in_filter:
       description: Returns `True` if the input hostname matches the `hostname_filter`.
       name: is_in_filter
@@ -125,4 +129,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 6.4.0
+version: 6.5.0

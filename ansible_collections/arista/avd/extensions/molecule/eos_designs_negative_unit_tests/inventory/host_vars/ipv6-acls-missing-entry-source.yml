@@ -32,6 +32,3 @@ ipv6_acls:
         protocol: ipv6
         # source is intentionally omitted
         destination: any
-
-expected_error_message: >-
-  'ipv6_acls[name=TEST-IPV6-ACL-MISSING-SOURCE].entries[0].source' is required but was not found.

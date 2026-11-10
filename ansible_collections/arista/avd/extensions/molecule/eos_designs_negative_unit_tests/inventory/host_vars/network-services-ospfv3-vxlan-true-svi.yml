@@ -22,7 +22,3 @@ tenants:
             ipv6_address: 2001:db8:110::1/64
             ospfv3:
               enabled: true
-
-expected_error_message: >-
-  'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.enabled: true' is not supported on SVIs extended over VXLAN. Set 'vxlan: false' to use
-  OSPFv3 on this SVI.

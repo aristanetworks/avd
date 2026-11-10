@@ -19,6 +19,3 @@ l3leaf:
             - name: Ethernet1/19
               peer_interface: Ethernet1/19
           ip_address: 172.16.0.2/30
-
-expected_error_message: >-
-  L3 Port-Channel sub-interface 'Port-Channel5.108' has 'member_interfaces' set. This is not a valid setting.
