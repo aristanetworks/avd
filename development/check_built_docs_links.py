@@ -150,7 +150,9 @@ def check_links(site_dir: Path, *, check_anchors: bool, ignored_html_patterns: l
             continue
 
         target_path, fragment = resolve_target(site_dir, link.source, link.target)
-        if not target_path.exists():
+        if target_path.is_dir():
+            target_path /= "index.html"
+        if not target_path.is_file():
             errors.append(
                 f"{format_path(link.source, site_dir)}:{link.line}: {link.attribute} points to missing file {link.target!r} "
                 f"(resolved as {format_path(target_path, site_dir)!r})"
