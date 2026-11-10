@@ -303,8 +303,8 @@ jobs:
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.12"
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.22.0"
-            python_version: "3.14"
+            ansible_version: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.12"
           # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core>=2.22.0,<2.23.0"
@@ -473,6 +473,10 @@ jobs:
               3.10
               3.11
               3.12
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.12"
           - ansible_version: latest_stable
             pip_installation: "ansible-core>=2.22.0,<2.23.0"
             python_version: |
@@ -520,6 +524,11 @@ jobs:
         include:
           - ansible_version: latest_stable
             pip_installation: "ansible-core>=2.22.0,<2.23.0"
+            integration_args: ""
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            python_version: "3.12"
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
             integration_args: ""
           # Exercise the minimum supported Python and Ansible controller versions.
           - ansible_version: first_stable
@@ -608,8 +617,7 @@ jobs:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          # distlib is required when using manifest
-          pip install "ansible-core>=2.22.0,<2.23.0" distlib --upgrade
+          pip install "ansible-core>=2.22.0,<2.23.0" --upgrade
       - name: Set Ansible collection cache key
         id: collection_cache_key
         env:
