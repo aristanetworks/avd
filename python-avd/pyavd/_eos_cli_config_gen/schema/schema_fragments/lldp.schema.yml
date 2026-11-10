@@ -15,16 +15,12 @@ keys:
         type: int
         min: 1
         max: 10
-        convert_types:
-          - str
       holdtime:
         type: int
       management_address:
         type: str
       vrf:
         type: str
-        convert_types:
-          - int
       receive_packet_tagged_drop:
         type: bool
       tlvs:

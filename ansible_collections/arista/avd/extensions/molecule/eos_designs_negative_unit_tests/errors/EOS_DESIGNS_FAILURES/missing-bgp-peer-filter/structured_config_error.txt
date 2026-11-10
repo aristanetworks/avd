@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'bgp_peer_filters_catalog[name=peerfilter]' is required but was not found.

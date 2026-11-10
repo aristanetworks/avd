@@ -26,8 +26,6 @@ keys:
           keys:
             id:
               type: int
-              convert_types:
-                - str
             hash_algorithm:
               type: str
               valid_values:
@@ -40,8 +38,6 @@ keys:
             cleartext_key:
               type: str
               required: true
-              convert_types:
-                - int
               description: |-
                 Cleartext key for OSPF message-digest authentication
                 To protect the password at rest it is strongly recommended to make use of a vault or similar.

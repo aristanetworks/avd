@@ -102,9 +102,13 @@ extra_javascript:
 plugins:
   - include_dir_to_nav
   - git-revision-date-localized:
+      # Docker docs containers often mount a git worktree without the host
+      # absolute gitdir target, so disable this plugin there via env.
+      enabled: !ENV [AVD_ENABLE_GIT_REVISION_DATE, true]
       type: date
   - search:
       lang: en
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -136,6 +140,7 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path:
         - "./"
+      check_paths: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -151,6 +156,15 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: true
+hooks:
+  # Schema Explorer integration:
+  #   * Auto-builds a cached Schema Explorer outside the repo tree when the
+  #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
+  #     <site_dir>/_assets/schema-explorer/ on build.
+  #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
+  #     are lazy-loaded by app.js when a page hosts the explorer.
+  - tools/schema-explorer/mkdocs_hook.py
+
 # TOC
 docs_dir: .
 nav:
@@ -181,11 +195,13 @@ nav:
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
       - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
+      - Digital Twin: docs/howto/digital_twin/README.md
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
+          - Schema Explorer: docs/schema-explorer.md
       - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
       - Ansible Usage Patterns: docs/user-manual/ansible-usage-patterns.md
       - Ansible Collection:
@@ -212,6 +228,9 @@ nav:
   - Contribute:
       - Overview: docs/contribution/overview.md
       - Development Tooling: docs/contribution/development-tooling.md
+      - End-to-End Test Tool:
+          - Using the Tool: docs/contribution/e2e-test/using-the-tool.md
+          - Tool Flow: docs/contribution/e2e-test/tool-flow.md
       - Code Style: docs/contribution/style-guide.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md

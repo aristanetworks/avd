@@ -14,22 +14,16 @@ keys:
     keys:
       interval:
         type: int
-        convert_types:
-          - str
         min: 50
         max: 60000
         required: true
       min_rx:
         type: int
-        convert_types:
-          - str
         min: 50
         max: 60000
         required: true
       multiplier:
         type: int
-        convert_types:
-          - str
         min: 3
         max: 50
         required: true

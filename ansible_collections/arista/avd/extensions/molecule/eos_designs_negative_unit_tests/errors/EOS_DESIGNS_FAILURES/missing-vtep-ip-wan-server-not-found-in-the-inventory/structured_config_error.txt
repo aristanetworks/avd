@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'vtep_ip' is missing for peering with missing-vtep-ip-wan-server which was not found in the inventory. Either set it under 'wan_route_servers' or check your inventory.

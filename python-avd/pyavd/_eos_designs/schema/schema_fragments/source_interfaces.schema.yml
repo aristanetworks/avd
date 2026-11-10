@@ -48,6 +48,11 @@ keys:
             description: |-
               Configure an IP SSH Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
               `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ssh_settings.client_vrfs
       tacacs:
         type: dict
         deprecation:

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: '`ntp_settings.authentication_keys[id=666].key` or `ntp_settings.authentication_keys[id=666].cleartext_key`' is required but was not found.

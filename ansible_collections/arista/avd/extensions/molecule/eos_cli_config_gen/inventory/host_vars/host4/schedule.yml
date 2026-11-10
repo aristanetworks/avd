@@ -1,0 +1,8 @@
+---
+schedule:
+  jobs:
+    - name: interval_basic
+      interval: 10
+      timeout: 5
+      max_log_files: 1
+      command: show version

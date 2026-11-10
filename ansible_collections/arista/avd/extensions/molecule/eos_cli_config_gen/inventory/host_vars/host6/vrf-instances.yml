@@ -8,3 +8,5 @@ vrfs:
     ip_routing: true
   - name: TENANT_B
     ip_routing_ipv6_interfaces: true
+  - name: TENANT_C
+    ipv6_routing: true

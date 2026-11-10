@@ -424,4 +424,4 @@ For a list of available methods, refer to the pyavd [documentation](../../pyavd/
 - [Node Type VTEP and Loopback Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-loopback-and-vtep-configuration)
 - [Fabric IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#fabric-ip-addressing)
 - [MLAG Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-l2-and-mlag-configuration)
-- [Custom IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#context-for-ip_addressing-templatesl)
+- [Custom IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#context-for-ip_addressing-templates)

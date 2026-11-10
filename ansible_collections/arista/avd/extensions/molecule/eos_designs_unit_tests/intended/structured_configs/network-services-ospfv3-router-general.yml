@@ -1,0 +1,178 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospfv3-router-general
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vrfs:
+  - name: VRF_EXPLICIT_ROUTER_ID
+    rd: 192.168.255.1:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+  - name: VRF_MAIN_ROUTER_ID
+    rd: 192.168.255.1:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    redistribute:
+      connected:
+        enabled: true
+      ospfv3:
+        enabled: true
+router_general:
+  router_id:
+    ipv4: 192.168.255.1
+router_ospfv3:
+  vrfs:
+  - name: VRF_EXPLICIT_ROUTER_ID
+    router_id: 10.255.11.1
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_MAIN_ROUTER_ID
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan111
+  description: VRF_EXPLICIT_ROUTER_ID_TRANSIT
+  shutdown: false
+  vrf: VRF_EXPLICIT_ROUTER_ID
+  ipv6_addresses:
+  - 2001:db8:111::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan110
+  description: VRF_MAIN_ROUTER_ID_TRANSIT
+  shutdown: false
+  vrf: VRF_MAIN_ROUTER_ID
+  ipv6_addresses:
+  - 2001:db8:110::1/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 111
+  name: VRF_EXPLICIT_ROUTER_ID_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 110
+  name: VRF_MAIN_ROUTER_ID_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_EXPLICIT_ROUTER_ID
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_MAIN_ROUTER_ID
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospfv3-router-general_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+      - name: VRF_EXPLICIT_ROUTER_ID
+        vni: 11
+      - name: VRF_MAIN_ROUTER_ID
+        vni: 10

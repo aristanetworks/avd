@@ -25,8 +25,6 @@ keys:
       software_forwarding_hardware_offload_mtu:
         description: MTU value for software-forwarded packets across all vrfs that use hardware offload.
         type: int
-        convert_types:
-          - str
         min: 68
         max: 65535
       vrfs:
@@ -38,8 +36,6 @@ keys:
             name:
               type: str
               description: Destination-VRF.
-              convert_types:
-                - int
             leak_routes:
               type: list
               items:
@@ -48,8 +44,6 @@ keys:
                   source_vrf:
                     type: str
                     required: true
-                    convert_types:
-                      - int
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
@@ -75,8 +69,6 @@ keys:
                 MTU value for software-forwarded packets within a specific VRF that use hardware offload.
                 This setting overrides the global config for a specific vrf.
               type: int
-              convert_types:
-                - str
               min: 68
               max: 65535
       control_functions:

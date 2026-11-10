@@ -1,0 +1,63 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: ntp-settings-3
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.204/24
+  ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:100::2/64
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    source_address: 192.168.0.204
+    preferred: true
+  - name: 2001:db8:200::2
+    source_address: 2001:db8:100::2
+  vrf: MGMT
+service_routing_protocols_model: multi-agent
+static_routes:
+- prefix: 0.0.0.0/0
+  next_hop: 10.254.254.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  ip_address: 10.254.254.6/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false
+  ipv6_routing: false

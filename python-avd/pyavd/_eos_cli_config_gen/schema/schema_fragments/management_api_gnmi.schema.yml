@@ -30,8 +30,6 @@ keys:
                 vrf:
                   type: str
                   description: VRF name is optional.
-                  convert_types:
-                    - int
                 notification_timestamp:
                   type: str
                   valid_values: ["send-time", "last-change-time"]
@@ -50,8 +48,6 @@ keys:
                   description: |
                       GNMI port.
                       Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.
-                  convert_types:
-                    - str
                 authorization_requests:
                   type: bool
                   description: Use per-RPC authorization.
@@ -76,8 +72,6 @@ keys:
                 vrf:
                   type: str
                   description: VRF name.
-                  convert_types:
-                    - int
                 destination:
                   type: dict
                   keys:
@@ -90,8 +84,6 @@ keys:
                       min: 1
                       max: 65535
                       required: true
-                      convert_types:
-                        - str
                       description: TCP Port.
                 local_interface:
                   type: dict
@@ -105,8 +97,6 @@ keys:
                       min: 1
                       max: 65535
                       required: true
-                      convert_types:
-                        - str
                       description: TCP Port.
                 target:
                   type: dict

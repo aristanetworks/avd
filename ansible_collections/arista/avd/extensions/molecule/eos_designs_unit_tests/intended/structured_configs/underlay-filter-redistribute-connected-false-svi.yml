@@ -76,6 +76,7 @@ vlan_interfaces:
 - name: Vlan1008
   description: SVI_1
   shutdown: false
+  no_autostate: true
   metadata:
     tenants:
     - SIT

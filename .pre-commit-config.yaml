@@ -25,6 +25,7 @@ ci:
     - docs-plugin-lookup
     - docs-plugin-test
     - docs-plugin-vars
+    - collection-files
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -48,6 +49,7 @@ repos:
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
           |pickle$
+          |^python-avd/pyavd/_schema/schemas\.rkyv$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
@@ -60,8 +62,8 @@ repos:
     hooks:
       - id: insert-license
         name: Check and insert license on Python files.
-        exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
         files: .*\.pyi?$
+        exclude: ansible_collections/arista/avd/tests/unit(/module_utils|/modules|)/__init__.py
         args:
           - --license-filepath
           - development/license-short.txt
@@ -137,7 +139,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: c59bba8fb259db0fec2bbb77ad8ba51ea7341b56  # frozen: v0.15.20
+    rev: c0f278f1254ccc8fb09676bcdb8d847e7db493e5  # frozen: v0.17.4
     hooks:
       # Run the linter.
       - id: ruff
@@ -147,7 +149,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: 392b6ba8e54be6d603e02e9f8d601d27b7a48d12  # frozen: v1.1.411
+    rev: 1aa6dfeb849ae43fb6f16fc17228bcbd358a19c3  # frozen: v1.1.414
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -157,25 +159,28 @@ repos:
         # as well.
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.22.0'
-          - 'anta==1.8.0'
-          - 'coverage[toml]==7.14.0'
+          - 'anta>=1.10.0'
+          - 'coverage[toml]==7.15.2'
           - 'deepmerge>=1.1.0'
+          - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.5'
-          - 'pydantic>=2.3.0'
-          - 'pytest>=8.2.0'
+          - 'pyavd-utils==0.0.14'
+          - 'pyavd-utils-gen==0.0.14'
+          - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.11.11'
+          - 'ruff==0.17.2'
+          - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "8a396357098337ba8be714fffdf2d00947a9778c"  # frozen: v4.0.6
+    rev: "233ae8862a1a94c1797ec664813e1aeef3142622"  # frozen: v4.1.3
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
+        exclude: ^ansible_collections/arista/avd/
       - id: pylint # Use pylintrc-ansible file for Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
@@ -196,20 +201,20 @@ repos:
         args: [--strict, -c=.github/yamllintrc]
 
   - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "ba3ae401e723b8e359ea675274d6733340f96582"  # frozen: v1.2.0
+    rev: "cbfa056d80612e8afc9dcda7fadcf1359849dadd"  # frozen: v1.3.0
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a  # frozen: v2.4.2
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8  # frozen: v2.4.3
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: e3eebf65325ccc992422292cb7a4baee967cf815  # frozen: v1.26.1
+    rev: 06a39750ec31860bb44f2acf67182c40016cd1e7  # frozen: v1.32.0
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -218,7 +223,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "feb66b6b753448b11d37d202f4cb88aba815ab30"  # frozen: 2.28.0
+    rev: "37d7d0752ef067f311d2a19cb82d5ae6e06040ec"  # frozen: 2.29.7
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -236,6 +241,14 @@ repos:
   - repo: local
     hooks:
 
+      - id: collection-files
+        name: Check files included in the Ansible collection.
+        entry: python tools/generate_collection_files.py
+        language: python
+        files: ^(ansible_collections/arista/avd/|tools/generate_collection_files\.py$)
+        pass_filenames: false
+        additional_dependencies: ['ansible-core==2.16.0']
+
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
         entry: >-
@@ -244,7 +257,7 @@ repos:
         language: python
         types: [python]
         # Issue with Ansible 2.19 and the doc extractor.
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
@@ -254,7 +267,7 @@ repos:
           --markdown "docs/plugins/Filter_plugins/"
         language: python
         types_or: [python, yaml]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/filter/
         exclude: ^(ansible_collections/arista/avd/plugins/filter/deprecated_filters.py)$
 
@@ -265,7 +278,7 @@ repos:
           --markdown "docs/plugins/Lookup_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
@@ -275,7 +288,7 @@ repos:
           --markdown "docs/plugins/Test_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
@@ -285,7 +298,7 @@ repos:
           --markdown "docs/plugins/Vars_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
@@ -294,7 +307,13 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
+        additional_dependencies:
+          - deepmerge>=1.1.0
+          - PyYAML>=6.0.0
+          - pyavd-utils-gen==0.0.14
+          - jsonschema-rs>=0.24
+          - referencing>=0.35.0
+          - ruff==0.17.2
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -317,7 +336,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -325,10 +344,10 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 534166213006ec869b773b7ed8c6ebeaad1165d0  # frozen: v0.23.0
+    rev: 341e2a331ba578029e66c2e01183e7a6b5ca9ab4  # frozen: v0.24.0
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.

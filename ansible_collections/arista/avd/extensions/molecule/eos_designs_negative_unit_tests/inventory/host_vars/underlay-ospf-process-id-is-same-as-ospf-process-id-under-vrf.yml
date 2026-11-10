@@ -24,6 +24,3 @@ tenants:
           - id: 42
             name: test-1
             vni_override: 50111
-
-expected_error_message: >-
-  'tenants[name=Tenant-A].vrfs[name=ospf-vrf].ospf.process_id[process_id=101]' should not match the underlay OSPF process id '101'.

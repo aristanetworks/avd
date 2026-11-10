@@ -277,6 +277,10 @@ cv_register_detailed_results: false
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
 cv_workspace_build_timeout: 300
 
+# Maximum number of retry attempts to synchronize Workspace.
+# Requires CloudVision 2026.2.0 or later.
+cv_workspace_max_sync_retries: 5
+
 # Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
 # See the "Static Configuration Studio" section below for more details.
 # cv_static_config_manifest:
@@ -634,6 +638,26 @@ Click "Save" to exit the dialogue box.
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
 To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+
+!!! note
+
+    The role ignores proxy-related environment variables, including lowercase and uppercase variants of `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`. Use the `proxy_host`, `proxy_port`, `proxy_username`, and `proxy_password` role inputs to configure a proxy server for CloudVision connections.
+
+!!! note
+
+    To explicitly use an existing `<schema/scope>_proxy` environment variable, map its URL to the `cv_deploy`'s `proxy_*` role inputs in your playbook.
+
+    Example:
+    ```yaml
+    cv_proxy_url: "{{ lookup('ansible.builtin.env', 'https_proxy') }}"
+
+    proxy_host: "{{ cv_proxy_url | ansible.builtin.urlsplit('hostname') }}"
+    proxy_port: "{{ cv_proxy_url | ansible.builtin.urlsplit('port') | default(8080, true) }}"
+    proxy_username: "{{ cv_proxy_url | ansible.builtin.urlsplit('username') }}"
+    proxy_password: "{{ cv_proxy_url | ansible.builtin.urlsplit('password') }}"
+    ```
+
+    The URL must identify an HTTP CONNECT proxy, for example `http://http-connect-proxy.local:3128`. When the URL does not include a port, the role default of `8080` is used. URL-encode credentials containing URI-reserved characters.
 
 !!! Warning
 

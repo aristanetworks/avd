@@ -13,6 +13,10 @@ hostname: general-settings
 ip_icmp_redirect: false
 ip_igmp_snooping:
   globally_enabled: true
+ip_software_forwarding:
+  mtu:
+    size: 9000
+    exceed_action_drop: true
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -30,6 +34,15 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 1001
+  name: unused
+  state: suspend
+- id: 101
+  name: suspend
+  state: suspend
+- id: 10
+  state: suspend
 vrfs:
 - name: MGMT
   ip_routing: false

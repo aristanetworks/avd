@@ -1,0 +1,2 @@
+eos_config_future:
+  only_render_separator_with_boot_secret_key: true

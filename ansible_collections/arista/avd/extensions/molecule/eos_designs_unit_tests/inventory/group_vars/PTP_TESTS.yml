@@ -22,6 +22,18 @@ core_interfaces:
         enabled: true
         roles: ["master", "dynamic"]
       include_in_underlay_protocol: false
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: ptp-tests-spine1
+            interfaces: [Ethernet20, Ethernet21]
+          - node: ptp-tests-spine2
+            interfaces: [Ethernet20, Ethernet21]
+      ptp:
+        enabled: true
+        profile: myptpprofile
+      include_in_underlay_protocol: false
 
 # Testing the same as above with l3_edge
 l3_edge:
@@ -36,11 +48,52 @@ l3_edge:
       ptp:
         enabled: true
       include_in_underlay_protocol: false
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: ptp-tests-spine1
+            interfaces: [Ethernet22, Ethernet23]
+          - node: ptp-tests-spine2
+            interfaces: [Ethernet22, Ethernet23]
+      ptp:
+        enabled: true
+        profile: myptpprofile
+      include_in_underlay_protocol: false
 
 ptp_settings:
   enabled: true
   # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
   # domain: < 0-255 | default -> 127 >
+
+# Since adapters default to the "aes67-r16-2016" profile, it must be included when defining custom PTP profiles.
+ptp_profiles:
+  - profile: port-channel-management-drop
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    management:
+      drop: true
+  - profile: aes67-r16-2016
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  - profile: smpte2059-2
+    announce:
+      interval: -2
+      timeout: 3
+    delay_req: -4
+    sync_message:
+      interval: -4
+    transport: ipv4
 
 tenants:
   - name: PTP

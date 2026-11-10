@@ -1,0 +1,28 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    dns_settings_profile: child_dns_profile
+  nodes:
+    - name: dns-settings-profile-only-parent-chain
+
+dns_settings_profiles:
+  - profile: common_dns_profile
+    domain: common.example.com
+    vrfs:
+      - name: default
+        source_interface: Loopback0
+    servers:
+      - ip_address: 192.0.2.53
+        vrf: default
+        priority: 1
+  - profile: regional_dns_profile
+    parent_profile: common_dns_profile
+    domain_list:
+      - regional.example.com
+  - profile: child_dns_profile
+    parent_profile: regional_dns_profile
+    ip_hosts:
+      - hostname: child-host
+        ipv4_addresses:
+          - 192.0.2.10

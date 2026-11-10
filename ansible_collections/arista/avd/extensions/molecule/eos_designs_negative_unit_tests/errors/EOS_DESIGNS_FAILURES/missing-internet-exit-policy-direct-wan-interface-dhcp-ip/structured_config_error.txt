@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'l3_interfaces[name=Ethernet1].dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, 'dhcp_ip' is used in the NAT ACL.

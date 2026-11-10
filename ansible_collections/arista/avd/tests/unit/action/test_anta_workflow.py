@@ -4,7 +4,11 @@
 from __future__ import annotations
 
 import logging
+import os
+import re
 import sys
+from datetime import datetime, timezone
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
 
@@ -24,14 +28,22 @@ from ansible_collections.arista.avd.plugins.action.anta_workflow import (
     load_user_catalogs,
     run_anta,
     setup_anta_debug_mode,
+    update_ansible_result,
 )
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
+    from typing import Any
+
+    from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import LoggingOutcome
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.anta_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
+DEFAULT_RUN_OVERVIEW_DATA = anta_module.RunOverviewData(
+    test_execution_start_time=datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
+    test_execution_end_time=datetime(2026, 1, 1, 0, 0, 1, tzinfo=timezone.utc),
+)
 
 
 def test_get_ansible_vars_logs_info_when_device_not_deployed(caplog: pytest.LogCaptureFixture) -> None:
@@ -186,9 +198,9 @@ def test_setup_anta_debug_mode_logs_debug_messages(
     assert expected_msg in caplog.messages
 
 
-def test_action_module_run_logs_warning_when_user_catalog_has_no_tests(action_module: Callable[..., ActionModule], caplog: pytest.LogCaptureFixture) -> None:
+def test_action_module_run_logs_warning_when_user_catalog_has_no_tests(action_module: Callable[..., ActionModule]) -> None:
     """A WARNING is emitted and the task exits early when user catalogs are empty and AVD catalogs are disabled."""
-    module = action_module(ActionModule)
+    module = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
     validated_args = {
         "device_list": ["leaf1"],
         "avd_catalogs": {"enabled": False},
@@ -198,17 +210,15 @@ def test_action_module_run_logs_warning_when_user_catalog_has_no_tests(action_mo
     empty_catalog.tests = []
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch(f"{MODULE_PATH}.setup_queue_listener", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.setup_parent_process_logging"),
+        patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
         patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
         patch(f"{MODULE_PATH}.strip_empties_from_dict", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
         patch(f"{MODULE_PATH}.ActionPluginVars"),
         patch(f"{MODULE_PATH}.load_user_catalogs", return_value=empty_catalog),
-        caplog.at_level(logging.WARNING, logger=AVD_LOGGER_NAME),
     ):
-        module.run(task_vars={})
-    assert "No tests found in the user-defined ANTA catalogs, exiting" in caplog.messages
+        result = module.run(task_vars={})
+    assert result["logs"]["warnings"] == ["[anta-workflow] No tests found in the user-defined ANTA catalogs, exiting"]
 
 
 @pytest.mark.parametrize(
@@ -228,9 +238,9 @@ def test_run_anta_logs_info_for_start_and_completion(
     """INFO logs are emitted when ANTA starts and completes for the given devices and run mode."""
     monkeypatch.setattr(anta_module, "PLUGIN_ARGS", {"runner": {"dry_run": dry_run, "tags": []}})
     with (
-        patch(f"{MODULE_PATH}.setup_child_process_logging"),
         patch(f"{MODULE_PATH}.build_anta_runner_objects", return_value=(MagicMock(), MagicMock(), MagicMock())),
-        patch(f"{MODULE_PATH}.anta_runner", return_value=MagicMock()),
+        # `run` is mocked below, so use a synchronous stub for the async runner to avoid creating an unawaited coroutine.
+        patch(f"{MODULE_PATH}.anta_runner", new=MagicMock(return_value=MagicMock())),
         patch(f"{MODULE_PATH}.run"),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
@@ -266,17 +276,30 @@ def test_build_reports_logs_warning_when_all_results_hidden_by_filters(caplog: p
         patch(f"{MODULE_PATH}.sort_result_manager"),
         caplog.at_level(logging.WARNING, logger=AVD_LOGGER_NAME),
     ):
-        build_reports(iter([batch_manager]), report_settings)
+        build_reports(iter([batch_manager]), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
 
     assert "The report is empty because all results were hidden by the provided status filters: success" in caplog.messages
 
 
 @pytest.mark.parametrize(
-    ("report_settings_extra", "expected_log"),
+    ("report_settings_extra", "expected_log", "expect_markdown_report_call", "expect_run_overview_data"),
     [
-        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", id="csv"),
-        pytest.param({"md_output": "/out/report.md"}, "Generating Markdown report at /out/report.md", id="markdown"),
-        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", id="json"),
+        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", False, False, id="csv"),
+        pytest.param(
+            {"md_output": "/out/report.md"},
+            "Generating Markdown report at /out/report.md",
+            True,
+            False,
+            id="markdown-default-no-run-overview",
+        ),
+        pytest.param(
+            {"md_output": "/out/report.md", "generate_run_overview": True},
+            "Generating Markdown report at /out/report.md",
+            True,
+            True,
+            id="markdown-run-overview",
+        ),
+        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", False, False, id="json"),
     ],
 )
 def test_build_reports_logs_info_for_each_report_type(
@@ -284,6 +307,8 @@ def test_build_reports_logs_info_for_each_report_type(
     *,
     report_settings_extra: dict,
     expected_log: str,
+    expect_markdown_report_call: bool,
+    expect_run_overview_data: bool,
 ) -> None:
     """An INFO log naming the output path is emitted for each report format that is configured."""
     mock_result_manager = MagicMock()
@@ -303,23 +328,64 @@ def test_build_reports_logs_info_for_each_report_type(
         patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
         patch(f"{MODULE_PATH}.sort_result_manager"),
         patch(f"{MODULE_PATH}.ReportCsv"),
-        patch(f"{MODULE_PATH}.MDReportGenerator"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
         patch("pathlib.Path.open", mock_open()),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
-        build_reports(iter([]), report_settings)
+        build_reports(iter([]), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
 
     assert expected_log in caplog.messages
+    assert mock_md_report.return_value.generate.called is expect_markdown_report_call
+    if expect_markdown_report_call:
+        md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+        run_overview_keys = {"test_execution_start_time", "test_execution_end_time", "total_duration"}
+        assert run_overview_keys.issubset(md_extra_data) is expect_run_overview_data
+
+
+def test_build_reports_adds_markdown_run_overview_when_enabled() -> None:
+    """The Markdown report includes start time, end time and duration in Run Overview when enabled."""
+    mock_result_manager = MagicMock()
+    mock_result_manager.results = []
+    mock_result_manager.get_total_results.return_value = 0
+    mock_result_manager.device_stats = {}
+    test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
+    test_execution_end_time = datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
+    report_settings = {
+        "md_output": "/out/report.md",
+        "generate_run_overview": True,
+        "sorting": {
+            "sort_fields": ["device", "test"],
+            "status_priority": ["error", "failure", "skipped", "success", "unset"],
+        },
+    }
+    with (
+        patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
+        patch(f"{MODULE_PATH}.sort_result_manager"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
+    ):
+        build_reports(
+            iter([]),
+            report_settings,
+            run_overview_data=anta_module.RunOverviewData(
+                test_execution_start_time=test_execution_start_time,
+                test_execution_end_time=test_execution_end_time,
+            ),
+        )
+
+    md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+    assert md_extra_data["test_execution_start_time"] == test_execution_start_time
+    assert md_extra_data["test_execution_end_time"] == test_execution_end_time
+    assert md_extra_data["total_duration"] == test_execution_end_time - test_execution_start_time
 
 
 def test_action_module_run_raises_when_pyavd_missing(action_module: Callable[..., ActionModule]) -> None:
     """run() raises AnsibleActionFail with the full message when HAS_PYAVD is False."""
-    module = action_module(ActionModule)
+    module = action_module(ActionModule, ansible_name=PLUGIN_NAME)
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         pytest.raises(
             AnsibleActionFail,
-            match=rf"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error",
+            match=rf"Error during plugin '{PLUGIN_NAME}' execution: The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error",
         ),
     ):
         module.run(task_vars={})
@@ -366,42 +432,157 @@ def test_action_module_run_raises_on_invalid_args(
     module = action_module(ActionModule)
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch(f"{MODULE_PATH}.setup_queue_listener", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.setup_parent_process_logging"),
+        patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
         patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
         patch(f"{MODULE_PATH}.strip_empties_from_dict", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
         patch(f"{MODULE_PATH}.ActionPluginVars"),
-        pytest.raises(AnsibleActionFail, match=error_match),
+        pytest.raises(AnsibleActionFail, match=rf"Error during plugin '{re.escape(PLUGIN_NAME)}' execution: {error_match}"),
     ):
         module.run(task_vars={})
 
 
-def test_action_module_run_wraps_unexpected_exception_via_raise_action_fail(
+def test_action_module_run_wraps_unexpected_exception(
     action_module: Callable[..., ActionModule],
 ) -> None:
-    """Any exception inside the try block is passed to raise_action_fail as 'Error during plugin execution: <error>'."""
-    module = action_module(ActionModule)
+    """The shared action base recasts unexpected exceptions with plugin context."""
+    module = action_module(ActionModule, ansible_name=PLUGIN_NAME)
     validated_args = {
         "device_list": ["leaf1"],
         "avd_catalogs": {"enabled": False},
         "user_catalogs": {"enabled": True, "input_dir": "/some/catalogs"},
     }
-    mock_raise_action_fail = MagicMock()
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch(f"{MODULE_PATH}.setup_queue_listener", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.setup_parent_process_logging"),
+        patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
         patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
         patch(f"{MODULE_PATH}.strip_empties_from_dict", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
         patch(f"{MODULE_PATH}.ActionPluginVars"),
         patch(f"{MODULE_PATH}.load_user_catalogs", side_effect=RuntimeError("disk on fire")),
-        patch(f"{MODULE_PATH}.raise_action_fail", mock_raise_action_fail),
+        pytest.raises(AnsibleActionFail, match=rf"Error during plugin '{PLUGIN_NAME}' execution: disk on fire"),
     ):
         module.run(task_vars={})
-    mock_raise_action_fail.assert_called_once()
-    assert mock_raise_action_fail.call_args[0][0] == "Error during plugin execution: disk on fire"
+
+
+@pytest.mark.parametrize(
+    ("summary", "expected_failed", "expected_message"),
+    [
+        pytest.param(
+            {"total_tests": 0, "tests_failed": 0, "tests_error": 0},
+            True,
+            "No ANTA tests were run.",
+            id="no_tests",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 1, "tests_error": 0},
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test_failure",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 0, "tests_error": 1},
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test_error",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 0, "tests_error": 0},
+            False,
+            "ANTA tests completed without reported failures/errors.",
+            id="success",
+        ),
+    ],
+)
+def test_update_ansible_result_uses_only_test_outcomes(summary: dict[str, int], expected_failed: bool, expected_message: str) -> None:
+    """ANTA domain outcomes, rather than logging severity, determine task failure."""
+    result: dict = {}
+
+    updated_result = update_ansible_result(result, summary)
+
+    assert updated_result is result
+    assert result.get("failed", False) is expected_failed
+    assert result["msg"] == expected_message
+    assert result["anta_tests_summary"] is summary
+
+
+def test_error_log_fails_successful_anta_result(action_module: Callable[..., ActionModule]) -> None:
+    """ANTA retains its plugin-specific policy of failing an otherwise successful result on error logs."""
+    summary = {"total_tests": 1, "tests_failed": 0, "tests_error": 0}
+    module = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
+
+    def successful_main(_task_vars: dict) -> None:
+        update_ansible_result(module.result, summary)
+        module.logger.error("ANTA worker error")
+
+    with patch.object(module, "main", side_effect=successful_main):
+        result = module.run()
+
+    assert result["failed"] is True
+    assert result["msg"] == "Errors detected during ANTA workflow execution."
+
+
+@pytest.mark.parametrize(
+    ("log_level", "expected_failed", "log_key"),
+    [
+        pytest.param(logging.WARNING, False, "warnings", id="warning_does_not_fail"),
+        pytest.param(logging.ERROR, True, "errors", id="error_fails"),
+        pytest.param(logging.CRITICAL, True, "errors", id="critical_fails"),
+    ],
+)
+def test_worker_log_controls_final_anta_result(action_module: Callable[..., ActionModule], log_level: int, expected_failed: bool, log_key: str) -> None:
+    """Actual forked run_anta logs are drained before ANTA applies its final task-failure policy."""
+    module = action_module(ActionModule, task_args={"save_logs": True, "live_display": False})
+    parent_pid = os.getpid()
+    validated_args = {
+        "device_list": ["leaf1"],
+        "avd_catalogs": {"enabled": False},
+        "user_catalogs": {"enabled": True, "input_dir": "/some/catalogs"},
+        "runner": {"batch_size": 1, "tags": [], "dry_run": False},
+        "report": {"sorting": {"sort_fields": ["device"], "status_priority": ["success"]}},
+    }
+
+    async def successful_runner(result_manager: Any, *_args: Any, **_kwargs: Any) -> None:
+        """Stub network execution, but emit a log and return a real successful ANTA result in the worker."""
+        assert os.getpid() != parent_pid
+        result_manager.add(anta_module.TestResult(name="leaf1", test="ExampleTest", categories=[], description="Example test", result="success"))
+        anta_module.LOGGER.log(log_level, "Worker log from process %s", os.getpid())
+
+    original_handle_logging_outcome = module._handle_logging_outcome
+
+    def observe_logging_outcome(logging_outcome: LoggingOutcome) -> None:
+        """Verify worker records are already available when the plugin's result policy runs."""
+        assert logging_outcome.has_errors is expected_failed
+        assert module.result["anta_tests_summary"]["tests_passed"] == 1
+        assert len(module.result["logs"][log_key]) == 1
+        original_handle_logging_outcome(logging_outcome)
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch(f"{MODULE_PATH}.PLUGIN_ARGS", new=None),
+        patch(f"{MODULE_PATH}.ANSIBLE_VARS", new=None),
+        patch(f"{MODULE_PATH}.USER_CATALOG", new=None),
+        patch(f"{MODULE_PATH}.setup_anta_debug_mode"),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.get_ansible_vars", return_value={"leaf1": {}}),
+        patch(f"{MODULE_PATH}.ActionPluginVars"),
+        patch(f"{MODULE_PATH}.load_user_catalogs", return_value=MagicMock(tests=["ExampleTest"])),
+        patch(f"{MODULE_PATH}.build_anta_runner_objects", return_value=(anta_module.ResultManager(), MagicMock(), MagicMock())),
+        patch(f"{MODULE_PATH}.anta_runner", new=successful_runner),
+        patch.object(module, "_handle_logging_outcome", side_effect=observe_logging_outcome) as policy_hook,
+    ):
+        result = module.run(task_vars={"ansible_forks": 2})
+
+    policy_hook.assert_called_once()
+    assert result.get("failed", False) is expected_failed
+    assert result["anta_tests_summary"]["total_tests"] == 1
+    assert result["anta_tests_summary"]["tests_failed"] == 0
+    assert result["anta_tests_summary"]["tests_error"] == 0
+    assert re.fullmatch(r"\[anta-run-[0-9a-f]{8}\] Worker log from process \d+", result["logs"][log_key][0])
+    if expected_failed:
+        assert result["msg"] == "Errors detected during ANTA workflow execution."
+    else:
+        assert result["msg"] == "ANTA tests completed without reported failures/errors."
 
 
 def test_setup_anta_debug_mode_raises_when_anta_logger_absent() -> None:
@@ -420,6 +601,35 @@ def test_setup_anta_debug_mode_raises_when_anta_logger_absent() -> None:
         setup_anta_debug_mode(verbosity=0)
 
 
+@pytest.mark.parametrize(
+    ("device_vars_extra", "expected_use_session_auth"),
+    [
+        pytest.param({"anta_use_session_auth": True}, True, id="enabled"),
+        pytest.param({"anta_use_session_auth": False}, False, id="disabled"),
+        pytest.param({}, False, id="default_false"),
+    ],
+)
+def test_build_anta_device_passes_use_session_auth(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    device_vars_extra: dict,
+    expected_use_session_auth: bool,
+) -> None:
+    """`anta_use_session_auth` from inventory is forwarded to AsyncEOSDevice as `use_session_auth`."""
+    device_vars = {
+        "inventory_hostname": "leaf1",
+        "ansible_host": "10.0.0.1",
+        "ansible_user": "admin",
+        "ansible_password": "secret",
+        **device_vars_extra,
+    }
+    monkeypatch.setattr(anta_module, "ANSIBLE_VARS", {"leaf1": device_vars})
+    monkeypatch.setattr(anta_module, "PLUGIN_ARGS", {"runner": {"timeout": 30.0}})
+    with patch(f"{MODULE_PATH}.AsyncEOSDevice") as mock_device:
+        build_anta_device("leaf1")
+    assert mock_device.call_args.kwargs["use_session_auth"] is expected_use_session_auth
+
+
 def test_build_anta_device_raises_when_required_settings_missing(monkeypatch: pytest.MonkeyPatch) -> None:
     """ValueError with the device name is raised when host, username, or password cannot be resolved."""
     monkeypatch.setattr(anta_module, "ANSIBLE_VARS", {"leaf1": {}})
@@ -435,7 +645,296 @@ def test_build_anta_device_raises_when_required_settings_missing(monkeypatch: py
         build_anta_device("leaf1")
 
 
+def test_validate_argument_spec_materializes_runner_defaults(action_module: Callable[..., ActionModule]) -> None:
+    """`apply_defaults` materializes runner defaults even when the runner block is omitted."""
+    module = action_module(ActionModule, task_args={"device_list": ["leaf1"]})
+
+    _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
+    validated_args = anta_module.strip_empties_from_dict(validated_args)
+
+    assert validated_args["runner"]["timeout"] == 30.0
+    assert validated_args["runner"]["batch_size"] == 5
+    assert validated_args["runner"]["dry_run"] is False
+
+
+@pytest.mark.parametrize(
+    "task_args_extra",
+    [
+        pytest.param({"report": {}}, id="with_report"),
+        pytest.param({}, id="without_report"),
+    ],
+)
+def test_validate_argument_spec_materializes_report_sorting_defaults(
+    action_module: Callable[..., ActionModule],
+    *,
+    task_args_extra: dict,
+) -> None:
+    """`apply_defaults` materializes report.sorting defaults whether report is omitted or provided without sorting."""
+    module = action_module(
+        ActionModule,
+        task_args={
+            "device_list": ["leaf1"],
+            **task_args_extra,
+        },
+    )
+
+    _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
+    validated_args = anta_module.strip_empties_from_dict(validated_args)
+
+    assert validated_args["report"]["generate_run_overview"] is False
+    assert validated_args["report"]["sorting"]["status_priority"] == ["error", "failure", "skipped", "success", "unset"]
+    assert validated_args["report"]["sorting"]["sort_fields"] == ["device", "categories", "test", "description", "custom_field"]
+
+
 def test_load_one_structured_config_raises_for_missing_file(tmp_path: Path) -> None:
     """FileNotFoundError is raised when the structured config file does not exist."""
     with pytest.raises(FileNotFoundError, match=r"Structured configuration file for device 'leaf1' not found"):
         load_one_structured_config("leaf1", str(tmp_path), "yml")
+
+
+@pytest.mark.parametrize(
+    ("summary_overrides", "has_errors", "expected_failed", "expected_msg"),
+    [
+        pytest.param(
+            {"total_tests": 2},
+            False,
+            False,
+            "ANTA tests completed without reported failures/errors.",
+            id="success",
+        ),
+        pytest.param(
+            {"total_tests": 2},
+            True,
+            True,
+            "Errors detected during ANTA workflow execution.",
+            id="workflow-error",
+        ),
+        pytest.param(
+            {"total_tests": 0},
+            False,
+            True,
+            "No ANTA tests were run.",
+            id="no-tests",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 1},
+            False,
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test-failure",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_error": 1, "tests_failed": 1},
+            True,
+            True,
+            "Errors detected during ANTA workflow execution. ANTA tests reported failures/errors.",
+            id="workflow-and-test-errors",
+        ),
+    ],
+)
+def test_update_ansible_result_maps_all_outcomes(
+    action_module: Callable[..., ActionModule],
+    *,
+    summary_overrides: dict[str, int],
+    has_errors: bool,
+    expected_failed: bool,
+    expected_msg: str,
+) -> None:
+    """Workflow log errors and ANTA test statistics produce the documented Ansible result."""
+    summary = {
+        "total_tests": 2,
+        "tests_passed": 2,
+        "tests_failed": 0,
+        "tests_error": 0,
+        "tests_skipped": 0,
+        "tests_unset": 0,
+        "devices_with_test_failures": [],
+        "devices_with_test_errors": [],
+        **summary_overrides,
+    }
+
+    module = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
+
+    def main(_task_vars: dict) -> None:
+        update_ansible_result(module.result, summary)
+        if has_errors:
+            module.logger.error("ANTA workflow error")
+
+    with patch.object(module, "main", side_effect=main):
+        result = module.run()
+
+    assert result.get("failed", False) is expected_failed
+    assert result["msg"] == expected_msg
+    assert result["anta_tests_summary"] is summary
+
+
+def test_sort_result_manager_orders_status_then_requested_fields() -> None:
+    """Known statuses use the configured rank and unknown statuses sort last alphabetically."""
+    results = [
+        SimpleNamespace(result="success", name="leaf2", categories=["routing"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["a"], test="TestB", description="b", custom_field=None),
+        SimpleNamespace(result="success", name="leaf4", categories=["z"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="mystery", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="failure", name="leaf3", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="success", name="leaf1", categories=["routing"], test="TestA", description="a", custom_field=None),
+        SimpleNamespace(result="unset", name="leaf0", categories=["routing"], test="TestA", description="a", custom_field=None),
+    ]
+    result_manager = SimpleNamespace(results=results)
+
+    anta_module.sort_result_manager(result_manager, ["failure", "success"], ["device", "test"])
+
+    assert [(result.result, result.name, result.test) for result in result_manager.results] == [
+        ("failure", "leaf3", "TestA"),
+        ("success", "leaf1", "TestA"),
+        ("success", "leaf2", "TestB"),
+        ("success", "leaf4", "TestA"),
+        ("success", "leaf4", "TestB"),
+        ("mystery", "leaf1", "TestA"),
+        ("unset", "leaf0", "TestA"),
+    ]
+
+
+def test_build_reports_aggregates_results_and_device_statistics() -> None:
+    """Batch results are merged and converted into the summary consumed by Ansible."""
+
+    class FakeResultManager:
+        def __init__(self) -> None:
+            self.results = []
+            self.device_stats = {
+                "leaf1": SimpleNamespace(tests_failure_count=1, tests_error_count=0),
+                "leaf2": SimpleNamespace(tests_failure_count=0, tests_error_count=1),
+            }
+
+        def add(self, result: SimpleNamespace) -> None:
+            self.results.append(result)
+
+        def get_total_results(self, statuses: set[str] | None = None) -> int:
+            if statuses is None:
+                return len(self.results)
+            return sum(result.result in statuses for result in self.results)
+
+    batch_results = [
+        SimpleNamespace(
+            results=[
+                SimpleNamespace(result="failure", name="leaf1", categories=[], test="TestB", description="b", custom_field=None),
+                SimpleNamespace(result="success", name="leaf2", categories=[], test="TestA", description="a", custom_field=None),
+            ],
+        ),
+        SimpleNamespace(
+            results=[SimpleNamespace(result="error", name="leaf2", categories=[], test="TestC", description="c", custom_field=None)],
+        ),
+    ]
+    report_settings = {
+        "sorting": {"sort_fields": ["device", "test"], "status_priority": ["error", "failure", "success"]},
+        "filters": {},
+    }
+
+    with patch(f"{MODULE_PATH}.ResultManager", FakeResultManager):
+        summary = build_reports(iter(batch_results), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
+
+    assert summary == {
+        "total_tests": 3,
+        "tests_passed": 1,
+        "tests_failed": 1,
+        "tests_error": 1,
+        "tests_skipped": 0,
+        "tests_unset": 0,
+        "devices_with_test_failures": ["leaf1"],
+        "devices_with_test_errors": ["leaf2"],
+    }
+
+
+def test_build_anta_runner_objects_builds_catalog_and_inventory_without_connecting(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Catalog generation and device construction can be tested without invoking ANTA or eAPI."""
+    structured_config = {"leaf1": {"management_api_http": {"enable_https": True}}}
+    monkeypatch.setattr(anta_module, "STRUCTURED_CONFIGS", structured_config)
+    monkeypatch.setattr(anta_module, "FABRIC_DATA", MagicMock(name="fabric_data"))
+    monkeypatch.setattr(
+        anta_module,
+        "PLUGIN_ARGS",
+        {
+            "avd_catalogs": {
+                "extra_fabric_validation": True,
+                "output_dir": "/out",
+                "filters": [{"device_list": ["leaf1"], "run_tests": ["TestBGP"]}],
+            },
+        },
+    )
+    user_catalog = MagicMock(name="user_catalog")
+    monkeypatch.setattr(anta_module, "USER_CATALOG", user_catalog)
+    inventory = MagicMock(name="inventory")
+    device = MagicMock(name="device")
+    generated_catalog = MagicMock(name="generated_catalog")
+    merged_catalog = MagicMock(name="merged_catalog")
+
+    with (
+        patch(f"{MODULE_PATH}.ResultManager", return_value=MagicMock()) as result_manager,
+        patch(f"{MODULE_PATH}.AntaInventory", return_value=inventory),
+        patch(f"{MODULE_PATH}.AntaCatalog") as catalog,
+        patch(f"{MODULE_PATH}.AVDCatalogGenerationSettings", return_value=MagicMock()) as settings,
+        patch(f"{MODULE_PATH}.get_device_test_catalog", return_value=generated_catalog) as get_catalog,
+        patch(f"{MODULE_PATH}.build_anta_device", return_value=device),
+    ):
+        catalog.merge_catalogs.return_value = merged_catalog
+        returned_result_manager, returned_inventory, returned_catalog = build_anta_runner_objects(["leaf1"])
+
+    assert returned_result_manager is result_manager.return_value
+    assert returned_inventory is inventory
+    assert returned_catalog is merged_catalog
+    settings.assert_called_once_with(extra_fabric_validation=True, output_dir="/out", run_tests=["TestBGP"], skip_tests=[])
+    get_catalog.assert_called_once_with(
+        hostname="leaf1",
+        structured_config=structured_config["leaf1"],
+        fabric_data=anta_module.FABRIC_DATA,
+        settings=settings.return_value,
+    )
+    inventory.add_device.assert_called_once_with(device)
+    catalog.merge_catalogs.assert_called_once_with([user_catalog, generated_catalog])
+
+
+def test_build_anta_device_applies_anta_overrides_and_connection_defaults(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Explicit ANTA inventory variables override their Ansible equivalents."""
+    monkeypatch.setattr(
+        anta_module,
+        "ANSIBLE_VARS",
+        {
+            "leaf1": {
+                "inventory_hostname": "leaf1",
+                "ansible_host": "10.0.0.1",
+                "ansible_user": "ansible-user",
+                "ansible_password": "ansible-password",
+                "ansible_httpapi_port": 443,
+                "ansible_httpapi_use_ssl": True,
+                "anta_user": "anta-user",
+                "anta_password": "anta-password",
+                "anta_enable": True,
+                "anta_enable_password": "enable-password",
+                "anta_port": 8443,
+                "anta_use_ssl": False,
+                "anta_tags": ["fabric"],
+                "anta_use_session_auth": True,
+            },
+        },
+    )
+    monkeypatch.setattr(anta_module, "PLUGIN_ARGS", {"runner": {"timeout": 42.0}})
+
+    with patch(f"{MODULE_PATH}.AsyncEOSDevice") as device:
+        build_anta_device("leaf1")
+
+    device.assert_called_once_with(
+        name="leaf1",
+        host="10.0.0.1",
+        username="anta-user",
+        password="anta-password",  # noqa: S106 - deliberate connection precedence test value
+        enable=True,
+        enable_password="enable-password",  # noqa: S106 - deliberate connection precedence test value
+        port=8443,
+        proto="http",
+        timeout=42.0,
+        tags={"fabric"},
+        use_session_auth=True,
+    )

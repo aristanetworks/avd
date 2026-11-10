@@ -676,6 +676,7 @@ def _find_jinja_arc_aliases_cached(
     possible_arc_set = set(possible_arcs)
     reportable_line_set = set(reportable_lines)
     endif_lines_by_conditional_line = if_endif_lines(source)
+    endif_lines = set(endif_lines_by_conditional_line.values())
     aliases: dict[tuple[int, int], tuple[int, int]] = {}
 
     def visit_statements(statements: list[Any], enclosing_for_lines: tuple[int, ...] = ()) -> None:
@@ -695,6 +696,7 @@ def _find_jinja_arc_aliases_cached(
                     statement,
                     enclosing_for_lines,
                     endif_lines_by_conditional_line,
+                    endif_lines,
                     possible_arc_set,
                     reportable_line_set,
                 )
@@ -716,11 +718,12 @@ def _add_no_else_if_loop_backedge_aliases(
     node: Any,
     enclosing_for_lines: tuple[int, ...],
     endif_lines_by_conditional_line: Mapping[int, int],
+    endif_lines: set[int],
     possible_arcs: set[tuple[int, int]],
     reportable_lines: set[int],
 ) -> None:
-    """Add aliases from loop backedges to canonical no-else ``if`` false arcs."""
-    if not enclosing_for_lines or node.else_:
+    """Add aliases from generated structural fall-throughs to canonical no-else ``if`` false arcs."""
+    if node.else_:
         return
 
     final_conditional_node = node.elif_[-1] if node.elif_ else node
@@ -729,6 +732,10 @@ def _add_no_else_if_loop_backedge_aliases(
         return
 
     canonical_arc = (final_conditional_node.lineno, endif_line)
+    for structural_line in endif_lines:
+        if structural_line != endif_line:
+            aliases[(final_conditional_node.lineno, structural_line)] = canonical_arc
+
     for for_line in enclosing_for_lines:
         aliases[(final_conditional_node.lineno, for_line)] = canonical_arc
 

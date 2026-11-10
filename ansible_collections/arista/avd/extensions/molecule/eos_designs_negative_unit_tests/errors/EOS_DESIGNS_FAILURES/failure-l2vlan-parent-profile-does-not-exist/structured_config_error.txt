@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under L2VLAN Profile 'child_profile' does not exist in 'l2vlan_profiles'.

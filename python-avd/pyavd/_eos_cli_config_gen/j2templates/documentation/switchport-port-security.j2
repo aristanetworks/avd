@@ -6,9 +6,9 @@
 {# doc - switchport port-security #}
 {% if switchport_port_security is arista.avd.defined %}
 
-## Switchport Port-security
+### Switchport Port-security
 
-### Switchport Port-security Summary
+#### Switchport Port-security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -25,7 +25,7 @@
 | Violation Protect Chip-based | {{ switchport_port_security.violation_protect_chip_based }} |
 {%     endif %}
 
-### Switchport Port-security Device Configuration
+#### Switchport Port-security Device Configuration
 
 ```eos
 {%     include 'eos/switchport-port-security.j2' %}

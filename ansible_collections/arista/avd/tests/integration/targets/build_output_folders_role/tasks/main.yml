@@ -1,0 +1,128 @@
+---
+- name: Create isolated test directory
+  ansible.builtin.tempfile:
+    state: directory
+    prefix: avd-build-output-folders-
+  register: test_directory
+
+- name: Test output folder management
+  vars:
+    stale_files:
+      - "{{ expected_configs }}/old.cfg"
+      - "{{ expected_structured }}/old.yml"
+      - "{{ expected_cvp }}/old.yml"
+      - "{{ expected_output }}/obsolete/nested/old.txt"
+      - "{{ expected_avd_catalogs }}/old.yml"
+      - "{{ expected_reports }}/old.csv"
+      - "{{ expected_anta }}/obsolete/nested/old.txt"
+    preserved_files:
+      - "{{ expected_documentation }}/keep.txt"
+      - "{{ expected_fabric }}/keep.txt"
+      - "{{ expected_devices }}/keep.txt"
+      - "{{ expected_pre_backup }}/keep.txt"
+      - "{{ expected_post_backup }}/keep.txt"
+      - "{{ expected_snapshots }}/keep.txt"
+      - "{{ expected_user_catalogs }}/nested/keep.yml"
+      - "{{ expected_anta }}/keep.txt"
+  block:
+    - name: Test default directory names
+      ansible.builtin.include_tasks: test.yml
+      vars:
+        test_check_mode: true
+        root_dir: "{{ test_directory.path }}/defaults"
+        expected_output: "{{ root_dir }}/intended"
+        expected_structured: "{{ expected_output }}/structured_configs"
+        expected_cvp: "{{ expected_structured }}/cvp"
+        expected_configs: "{{ expected_output }}/configs"
+        expected_documentation: "{{ root_dir }}/documentation"
+        expected_fabric: "{{ expected_documentation }}/fabric"
+        expected_devices: "{{ expected_documentation }}/devices"
+        expected_pre_backup: "{{ root_dir }}/config_backup"
+        expected_post_backup: "{{ root_dir }}/config_backup"
+        expected_snapshots: "{{ root_dir }}/snapshots"
+        expected_anta: "{{ root_dir }}/anta"
+        expected_user_catalogs: "{{ expected_anta }}/user_catalogs"
+        expected_avd_catalogs: "{{ expected_anta }}/avd_catalogs"
+        expected_reports: "{{ expected_anta }}/reports"
+
+    - name: Test custom directory names
+      ansible.builtin.include_tasks: test.yml
+      vars:
+        root_dir: "{{ test_directory.path }}/names"
+        output_dir_name: generated
+        structured_dir_name: data
+        structured_cvp_dir_name: cloudvision
+        eos_config_dir_name: cli
+        documentation_dir_name: docs
+        fabric_dir_name: topology
+        devices_dir_name: switches
+        pre_running_config_backup_dir_name: before
+        post_running_config_backup_dir_name: after
+        snapshots_backup_dir_name: state
+        anta_dir_name: tests
+        user_catalogs_dir_name: custom
+        avd_catalogs_dir_name: catalogs
+        anta_reports_dir_name: results
+        expected_output: "{{ root_dir }}/generated"
+        expected_structured: "{{ expected_output }}/data"
+        expected_cvp: "{{ expected_structured }}/cloudvision"
+        expected_configs: "{{ expected_output }}/cli"
+        expected_documentation: "{{ root_dir }}/docs"
+        expected_fabric: "{{ expected_documentation }}/topology"
+        expected_devices: "{{ expected_documentation }}/switches"
+        expected_pre_backup: "{{ root_dir }}/before"
+        expected_post_backup: "{{ root_dir }}/after"
+        expected_snapshots: "{{ root_dir }}/state"
+        expected_anta: "{{ root_dir }}/tests"
+        expected_user_catalogs: "{{ expected_anta }}/custom"
+        expected_avd_catalogs: "{{ expected_anta }}/catalogs"
+        expected_reports: "{{ expected_anta }}/results"
+
+    - name: Test explicit directory paths outside root_dir
+      ansible.builtin.include_tasks: test.yml
+      vars:
+        root_dir: "{{ test_directory.path }}/unused"
+        output_dir: "{{ test_directory.path }}/paths/generated"
+        structured_dir: "{{ output_dir }}/data"
+        structured_cvp_dir: "{{ structured_dir }}/cloudvision"
+        eos_config_dir: "{{ output_dir }}/cli"
+        documentation_dir: "{{ test_directory.path }}/paths/docs"
+        fabric_dir: "{{ documentation_dir }}/topology"
+        devices_dir: "{{ documentation_dir }}/switches"
+        pre_running_config_backup_dir: "{{ test_directory.path }}/paths/before"
+        post_running_config_backup_dir: "{{ test_directory.path }}/paths/after"
+        snapshots_backup_dir: "{{ test_directory.path }}/paths/state"
+        anta_dir: "{{ test_directory.path }}/paths/tests"
+        user_catalogs_dir_name: custom
+        user_catalogs_dir: "{{ anta_dir }}/custom"
+        avd_catalogs_dir: "{{ anta_dir }}/catalogs"
+        anta_reports_dir: "{{ anta_dir }}/results"
+        expected_output: "{{ test_directory.path }}/paths/generated"
+        expected_structured: "{{ expected_output }}/data"
+        expected_cvp: "{{ expected_structured }}/cloudvision"
+        expected_configs: "{{ expected_output }}/cli"
+        expected_documentation: "{{ test_directory.path }}/paths/docs"
+        expected_fabric: "{{ expected_documentation }}/topology"
+        expected_devices: "{{ expected_documentation }}/switches"
+        expected_pre_backup: "{{ test_directory.path }}/paths/before"
+        expected_post_backup: "{{ test_directory.path }}/paths/after"
+        expected_snapshots: "{{ test_directory.path }}/paths/state"
+        expected_anta: "{{ test_directory.path }}/paths/tests"
+        expected_user_catalogs: "{{ expected_anta }}/custom"
+        expected_avd_catalogs: "{{ expected_anta }}/catalogs"
+        expected_reports: "{{ expected_anta }}/results"
+
+    - name: Inspect unused root directory
+      ansible.builtin.stat:
+        path: "{{ test_directory.path }}/unused"
+      register: unused_root
+
+    - name: Verify explicit paths do not create root_dir
+      ansible.builtin.assert:
+        that: not unused_root.stat.exists
+
+  always:
+    - name: Remove isolated test directory
+      ansible.builtin.file:
+        path: "{{ test_directory.path }}"
+        state: absent

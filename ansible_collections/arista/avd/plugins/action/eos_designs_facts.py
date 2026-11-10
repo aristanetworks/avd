@@ -3,40 +3,39 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import cProfile
 import json
-import pstats
-from collections import ChainMap
+from collections import ChainMap, UserDict
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
-from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
+    LazyJsonFileMapping,
+    cprofile,
     get_eos_designs_facts_path,
     get_templar,
     get_tmp_paths,
-    raise_action_fail,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
+    from collections.abc import Mapping, MutableMapping
+
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
     from pyavd.j2filters import natural_sort
 
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
     from pyavd.j2filters import natural_sort
@@ -46,33 +45,40 @@ except ImportError:
     HAS_PYAVD = False
 
 
-class ActionModule(ActionBase):
+ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
+    "output_dir": {"type": "str", "required": True},
+    "template_output": {"type": "bool", "default": False},
+    "digital_twin": {"type": "bool", "default": False},
+    "cprofile_file": {"type": "str"},
+}
+
+
+class ActionModule(AVDActionPlugin):
     _task: Task
     _templar: Templar
+    _logging_config = AVDLoggingConfig(add_role_context=True)
     tmp_dir: str
 
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        if task_vars is None:
-            task_vars = {}
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
+    @cprofile()
+    def main(self, task_vars: dict[str, Any]) -> None:
+        """Load validated eos_designs inputs and render avd_switch_facts."""
         if not HAS_PYAVD:
-            msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
-            raise AnsibleActionFail(msg)
+            msg = "plugin requires the 'pyavd' Python library. Got import error"
+            raise ImportError(msg)
 
-        self._task.args = cast("dict", self._task.args)
+        self.logger.debug("Validating task arguments...")
+        validated_args = self.validate_args()
+        self.logger.debug("Validating task arguments [done].")
 
-        cprofile_file = self._task.args.get("cprofile_file")
-        if cprofile_file:
-            profiler = cProfile.Profile()
-            profiler.enable()
+        self.tmp_dir = validated_args["tmp_dir"]
 
         # Only template output on ansible versions < 2.19.
-        self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
+        self.template_output = validated_args["template_output"] and not ANSIBLE_ABOVE_2_19
 
-        self._digital_twin = self._task.args.get("digital_twin", False)
-        output_dir = self._task.args.get("output_dir")
-        self.tmp_dir = self._task.args.get("tmp_dir")
+        self._digital_twin = validated_args["digital_twin"]
+        output_dir = validated_args["output_dir"]
+
         # Get target path and clean any previously generated facts.
         avd_switch_facts_path = get_eos_designs_facts_path(self.tmp_dir, clean=True)
 
@@ -90,48 +96,47 @@ class ActionModule(ActionBase):
                 "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
-            raise AnsibleActionFail(msg)
+            raise ValueError(msg)
 
+        self.logger.debug("Loading validated inputs...")
         all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
+        self.logger.debug("Loading validated inputs [done].")
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
+        self.logger.debug("Rendering eos_designs facts...")
         pool_manager = PoolManager(Path(output_dir))
 
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
+        self.logger.debug("Rendering eos_designs facts [done].")
 
         # Dump facts to file.
         self.dump_facts(avd_switch_facts, avd_switch_facts_path)
 
         # Save any updated pools.
-        result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
+        self.result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
 
-        if cprofile_file:
-            profiler.disable()
-            stats = pstats.Stats(profiler).sort_stats("cumtime")
-            stats.dump_stats(cprofile_file)
+    def validate_args(self) -> dict[str, Any]:
+        """Get task arguments and validate them."""
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
 
-        return result
+        # Converting to json and back to remove any AnsibleUnsafe types.
+        return json.loads(json.dumps(validated_args))
 
-    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list[str]) -> tuple[dict[str, AVDDesign], Mapping[str, MutableMapping[str, Any]]]:
         """
-        Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
+        Load validated inputs and retain lazy access to raw hostvars for all hosts.
 
         Args:
             fabric_hosts: List of inventory hostnames.
 
         Returns:
-            Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
-            and one dict of the raw hostvars also keyed by hostnames.
+            Tuple containing dictionaries of validated inputs and lazily loaded hostvars keyed by hostname.
 
-        TODO: Since hostvars are only used for custom templates, we should just give the raw hostvars object instead.
-              This will allow us to only serialize and deserialize what is relevant to the schema, and drop everything else.
-              As long as we support dynamic keys it would only be possible to drop the keys after validation, where we have
-              identified the relevant keys correctly.
         """
         all_inputs: dict[str, AVDDesign] = {}
-        all_hostvars: dict[str, dict] = {}
+        all_hostvars: dict[str, LazyJsonFileMapping] = {}
 
         _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
 
@@ -142,22 +147,26 @@ class ActionModule(ActionBase):
                     f"Missing validated inputs for host '{host}'. "
                     "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
                 )
-                raise AnsibleActionFail(message=msg)
+                raise FileNotFoundError(msg)
 
             # Read, unvault, and parse the JSON file
             vault_handler = AVDVaultHandler(self._loader)
             file_handler = AVDFileHandler(vault_handler)
-            host_hostvars = file_handler.load_json(file_path)
-
             # Load host hostvars into the AVDDesign data class.
-            all_inputs[host] = AVDDesign._from_dict(host_hostvars)
-            all_hostvars[host] = host_hostvars
+            all_inputs[host] = AVDDesign._from_dict(file_handler.load_json(file_path))
+            all_hostvars[host] = LazyJsonFileMapping(file_handler, file_path)
 
         return all_inputs, all_hostvars
 
-    def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
+    def render_facts(
+        self,
+        all_inputs: dict[str, AVDDesign],
+        pool_manager: PoolManager,
+        all_hostvars: Mapping[str, MutableMapping[str, Any]],
+        templar: Templar,
+    ) -> dict[str, dict]:
         """
-        Render facts, reraising errors as AnsibleActionFail.
+        Render facts.
 
         Args:
             all_inputs: EosDesigns instances for each device.
@@ -167,14 +176,8 @@ class ActionModule(ActionBase):
 
         Returns:
             Facts as dict for each device.
-
-        Raises:
-            AnsibleActionFail for every AristaAvdError raised by pyavd.
         """
-        try:
-            all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
-        except AristaAvdError as e:
-            raise_action_fail(str(e), e)
+        all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():
@@ -184,7 +187,10 @@ class ActionModule(ActionBase):
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
             if self.template_output:
-                available_variables = ChainMap({"switch": facts_dict}, all_hostvars[host])
+                # The Ansible Jinja engine only accepts concrete dicts as ChainMap layers.
+                available_variables = ChainMap(
+                    {"switch": facts_dict}, all_hostvars[host].data if isinstance(all_hostvars[host], UserDict) else dict(all_hostvars[host])
+                )
                 with self._templar.set_temporary_context(available_variables=available_variables):
                     facts_dict = self._templar.template(facts_dict, fail_on_undefined=False)
 

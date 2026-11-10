@@ -1,0 +1,34 @@
+---
+- name: Ensure invalid json input directory exists
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/tmp_validate_inputs_invalid_json_input"
+    state: directory
+    mode: "0755"
+
+- name: Write invalid json input file
+  ansible.builtin.copy:
+    dest: "{{ actual_output_dir }}/tmp_validate_inputs_invalid_json_input/testhost.json"
+    mode: "0644"
+    content: "{"
+
+- name: Validate inputs with invalid json file
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    input_dir: "{{ actual_output_dir }}/tmp_validate_inputs_invalid_json_input"
+    input_suffix: json
+    read_from_input_dir: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_validate_inputs_invalid_json"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  ignore_errors: true
+  register: result
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - result.msg == expected_error
+  vars:
+    expected_error: >-
+      Error during plugin 'arista.avd.validate_inputs' execution: Unexpected errors occurred while processing 1 host(s): testhost.

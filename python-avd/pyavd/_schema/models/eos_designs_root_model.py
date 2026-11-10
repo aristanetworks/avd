@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, TypeVar
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.store import create_store
 from pyavd._schema.utils import get_instance_with_defaults
-from pyavd._utils import get_all
+from pyavd._utils.get_all import get_all
 
 from .avd_list import AvdList
 from .avd_model import AvdModel

@@ -5,3 +5,4 @@ mcs_client:
   cvx_secondary:
     name: default
     shutdown: true
+    source_interface: Management0

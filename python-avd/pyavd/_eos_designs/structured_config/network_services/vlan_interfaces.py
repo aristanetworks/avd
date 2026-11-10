@@ -8,7 +8,8 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_ip_from_ip_prefix
+from pyavd._utils.default import default
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -85,11 +86,20 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        if svi.autostate is False:
+            vlan_interface_config.no_autostate = True
         if svi.ipv6_address:
             vlan_interface_config.ipv6_addresses.append(svi.ipv6_address)
+        # OSPFv3 runs over the IPv6 link-local address. This must be set before the VARPv6 handling below.
+        if svi.ospfv3.enabled and not vlan_interface_config.ipv6_addresses:
+            vlan_interface_config.ipv6_enable = default(vlan_interface_config.ipv6_enable, True)  # noqa: FBT003
         vlan_interface_config.metadata.tenants.append(tenant.name)
         # Historic behavior is to not output the default ["all"]
         vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
+
+        context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]"
+        self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_in, svi.ipv4_standard_acl_in, context, "in")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_out, svi.ipv4_standard_acl_out, context, "out")
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
@@ -98,7 +108,11 @@ class VlanInterfacesMixin(Protocol):
                 interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        elif svi.ipv4_standard_acl_in:
+            self.structured_config_utils._set_ipv4_standard_acl(svi.ipv4_standard_acl_in)
+            vlan_interface_config.access_group_in = svi.ipv4_standard_acl_in
 
         if svi.ipv4_acl_out:
             acl = self.shared_utils.get_ipv4_acl(
@@ -107,25 +121,29 @@ class VlanInterfacesMixin(Protocol):
                 interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        elif svi.ipv4_standard_acl_out:
+            self.structured_config_utils._set_ipv4_standard_acl(svi.ipv4_standard_acl_out)
+            vlan_interface_config.access_group_out = svi.ipv4_standard_acl_out
 
         if svi.ipv6_acl_in:
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_in,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
         if svi.ipv6_acl_out:
             acl = self.shared_utils.get_ipv6_acl(
                 name=svi.ipv6_acl_out,
                 interface_name=interface_name,
-                interface_ip=ipv6_interface_ip,
+                interface_ipv6=ipv6_interface_ip,
             )
             vlan_interface_config.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
         if (lifetime := svi.ipv6_nd.ra_dns_servers.dns_servers_lifetime) is not None:
             vlan_interface_config.ipv6_nd.ra.dns_servers_lifetime = lifetime

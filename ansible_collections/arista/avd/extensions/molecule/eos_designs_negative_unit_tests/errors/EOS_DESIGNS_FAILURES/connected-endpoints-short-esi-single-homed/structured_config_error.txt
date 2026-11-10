@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The length of 'servers[name=server01_ESI].adapters[0].switches' should be greater than 1 to configure short ESI.

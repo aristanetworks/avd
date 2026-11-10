@@ -15,8 +15,6 @@ keys:
       keys:
         id:
           type: int
-          convert_types:
-            - str
           description: VLAN ID.
         name:
           type: str
@@ -62,8 +60,6 @@ keys:
               valid_values: ["community", "isolated"]
             primary_vlan:
               type: int
-              convert_types:
-                - str
               description: Primary VLAN ID.
         metadata:
           type: dict

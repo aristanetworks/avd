@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: PTP Profile 'PROFILE DOES NOT EXIST' referenced under l3_edge.p2p_links does not exist in `ptp_profiles`.

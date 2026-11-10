@@ -22,8 +22,6 @@ keys:
         keys:
           size:
             type: int
-            convert_types:
-              - str
             min: 10
             max: 2147483647
           level:
@@ -85,8 +83,6 @@ keys:
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: VRF name.
             source_interface:
               type: str
@@ -115,8 +111,6 @@ keys:
                     type: list
                     items:
                       type: int
-                      convert_types:
-                        - str
                   ssl_profile:
                     type: str
                     description: Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
@@ -144,8 +138,6 @@ keys:
         keys:
           congestion_drops_interval:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 65535
             description: Logging interval in seconds.
@@ -161,8 +153,6 @@ keys:
                     type: bool
                   interval:
                     type: int
-                    convert_types:
-                      - str
                     min: 10
                     max: 65535
                     description: Logging interval in seconds.
@@ -178,8 +168,6 @@ keys:
             severity:
               type: str
               required: true
-              convert_types:
-                - int
               description: |-
                 Severity of facility. Below are the supported severities.
                 emergencies    System is unusable                (severity=0)

@@ -22,8 +22,6 @@ keys:
           - none
       priority:
         type: int
-        convert_types:
-          - str
         default: 32768
         description: |-
           Spanning-tree priority configured for the selected mode.
@@ -40,4 +38,8 @@ keys:
       loop_guard_default:
         type: bool
         description: Enable loopguard by default on all ports.
+        default: false
+      edge_port_bpduguard_default:
+        type: bool
+        description: Enable BPDU Guard on portfast interfaces.
         default: false

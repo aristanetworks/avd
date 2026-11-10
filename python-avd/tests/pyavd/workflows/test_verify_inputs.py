@@ -19,13 +19,15 @@ from pyavd._cv.workflows.verify_inputs import identify_duplicated_devices, verif
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 TWO_DUPED_SERIAL_PATTERNS = [
-    "\\('Duplicated devices found in inventory.*\\{"
-    "'serial1': \\["
-    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
-    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*"
-    "'serial3': \\["
-    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*serial_number='serial3'.*"
-    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*serial_number='serial3'.*",
+    (
+        "\\('Duplicated devices found in inventory.*\\{"
+        "'serial1': \\["
+        "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
+        "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*"
+        "'serial3': \\["
+        "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*serial_number='serial3'.*"
+        "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*serial_number='serial3'.*"
+    ),
 ]
 
 NO_DUPS_DEVICES = [
@@ -386,10 +388,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exceptions
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'aa:bb:cc:dd:ee:f1': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'aa:bb:cc:dd:ee:f1': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -406,13 +410,15 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exception
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'aa:bb:cc:dd:ee:f1': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "'aa:bb:cc:dd:ee:f3': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'aa:bb:cc:dd:ee:f1': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "'aa:bb:cc:dd:ee:f3': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -424,24 +430,28 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Warnings
             1,
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'aa:bb:cc:dd:ee:f3': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "'aa:bb:cc:dd:ee:f5': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'aa:bb:cc:dd:ee:f3': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "'aa:bb:cc:dd:ee:f5': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
+                ),
             ],
             # Logs
             1,
             [
-                "verify_inputs: Devices with duplicated system_mac_address and unique serial_number discovered in inventory \\(structured config\\): \\{"
-                "'aa:bb:cc:dd:ee:f3': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*serial_number='serial3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*serial_number='serial4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "'aa:bb:cc:dd:ee:f5': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*serial_number='serial5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*serial_number='serial6'.*system_mac_address='aa:bb:cc:dd:ee:f5.*",
+                (
+                    "verify_inputs: Devices with duplicated system_mac_address and unique serial_number discovered in inventory \\(structured config\\): \\{"
+                    "'aa:bb:cc:dd:ee:f3': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*serial_number='serial3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*serial_number='serial4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "'aa:bb:cc:dd:ee:f5': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*serial_number='serial5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*serial_number='serial6'.*system_mac_address='aa:bb:cc:dd:ee:f5.*"
+                ),
             ],
             # Exceptions
             [],
@@ -460,13 +470,15 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exceptions
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'aa:bb:cc:dd:ee:f3': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "'aa:bb:cc:dd:ee:f5': \\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'aa:bb:cc:dd:ee:f3': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "'aa:bb:cc:dd:ee:f5': \\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch5'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch6'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -483,10 +495,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exceptions
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'serial1':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'serial1':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -503,13 +517,15 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exceptions
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'serial1':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*"
-                "'aa:bb:cc:dd:ee:f3':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'serial1':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*"
+                    "'aa:bb:cc:dd:ee:f3':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch3'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -526,10 +542,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exception
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'serial1':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'serial1':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address
@@ -546,13 +564,15 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             [],
             # Exception
             [
-                "\\('Duplicated devices found in inventory.*\\{"
-                "'serial1':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "'aa:bb:cc:dd:ee:f1':.*\\["
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
-                "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
+                (
+                    "\\('Duplicated devices found in inventory.*\\{"
+                    "'serial1':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "'aa:bb:cc:dd:ee:f1':.*\\["
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch1'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                    "CVDevice\\(avd_device=AvdDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*"
+                ),
             ],
             pytest.raises(CVDuplicatedDevices),
             # strict_system_mac_address

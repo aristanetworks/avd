@@ -20,12 +20,8 @@ keys:
           valid_values: ["cos", "dscp", "disabled"]
         cos:
           type: int
-          convert_types:
-            - str
         dscp:
           type: int
-          convert_types:
-            - str
         shape:
           type: dict
           keys:
@@ -51,17 +47,11 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 description: TX-Queue ID.
               bandwidth_percent:
                 type: int
-                convert_types:
-                  - str
               bandwidth_guaranteed_percent:
                 type: int
-                convert_types:
-                  - str
               priority:
                 type: str
                 valid_values: ["priority strict", "no priority"]
@@ -98,29 +88,21 @@ keys:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: Random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: Random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: Random-detect ECN weight.
                   drop:
                     description: Set WRED parameters.
@@ -144,30 +126,22 @@ keys:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: WRED minimum-threshold.
                           max:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: WRED maximum-threshold.
                           drop_probability:
                             type: int
                             required: true
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: WRED drop probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: WRED weight.
 
         uc_tx_queues:
@@ -178,17 +152,11 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 description: UC TX queue ID.
               bandwidth_percent:
                 type: int
-                convert_types:
-                  - str
               bandwidth_guaranteed_percent:
                 type: int
-                convert_types:
-                  - str
               priority:
                 type: str
                 valid_values: ["priority strict", "no priority"]
@@ -225,29 +193,21 @@ keys:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: Random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: Random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: Random-detect ECN weight.
                   drop:
                     description: Set WRED parameters.
@@ -271,30 +231,22 @@ keys:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: WRED minimum-threshold.
                           max:
                             type: int
                             required: true
                             min: 1
-                            convert_types:
-                              - str
                             description: WRED maximum-threshold.
                           drop_probability:
                             type: int
                             required: true
                             min: 1
                             max: 100
-                            convert_types:
-                              - str
                             description: WRED drop probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
-                            convert_types:
-                              - str
                             description: WRED weight.
 
         mc_tx_queues:
@@ -305,17 +257,11 @@ keys:
             keys:
               id:
                 type: int
-                convert_types:
-                  - str
                 description: MC TX queue ID.
               bandwidth_percent:
                 type: int
-                convert_types:
-                  - str
               bandwidth_guaranteed_percent:
                 type: int
-                convert_types:
-                  - str
               priority:
                 type: str
                 valid_values: ["priority strict", "no priority"]
@@ -366,9 +312,6 @@ keys:
                       type: str
                       required: true
                       pattern: "\\d+(\\.\\d{1,2})?"
-                      convert_types:
-                        - int
-                        - float
                       description: |
                         Timeout in seconds after which port should be errdisabled or
                         should start dropping on congested priorities.
@@ -378,9 +321,6 @@ keys:
                       type: str
                       required: true
                       pattern: "auto|\\d+(\\.\\d{1,3})?"
-                      convert_types:
-                        - int
-                        - float
                       description: |
                         Time interval in seconds at which the watchdog should poll the queues.
                         This should be decimal with up to 3 decimal point or set
@@ -390,9 +330,6 @@ keys:
                       type: str
                       required: true
                       pattern: "\\d+(\\.\\d{1,2})?"
-                      convert_types:
-                        - int
-                        - float
                       description: |
                         Recovery-time in seconds after which stuck queue should
                         recover and start forwarding again.
@@ -416,8 +353,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    convert_types:
-                      - str
                     description: |
                       Priority queue number (COS value).
                   no_drop:

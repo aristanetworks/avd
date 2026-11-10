@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: '`aaa_settings.tacacs.servers[host=10.10.10.11].key` or `aaa_settings.tacacs.servers[host=10.10.10.11].cleartext_key`' is required but was not found.

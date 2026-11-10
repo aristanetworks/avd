@@ -1,0 +1,6 @@
+inventory_file = "inventory/hosts.yml"
+avd_design = false
+
+[documentation]
+device_docs = false
+fabric_doc = false

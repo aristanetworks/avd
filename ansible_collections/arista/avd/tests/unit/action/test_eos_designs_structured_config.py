@@ -16,6 +16,7 @@ from ansible_collections.arista.avd.plugins.action.eos_designs_structured_config
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from pathlib import Path
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_designs_structured_config"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
@@ -40,7 +41,6 @@ def _run_full_happy_path(module: ActionModule, task_args: dict) -> dict:
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
         patch(f"{MODULE_PATH}.write_file", return_value=True),
-        patch(f"{MODULE_PATH}.AvdSchema"),
         patch(f"{MODULE_PATH}.templater", return_value="extra: value\n"),
         patch(f"{MODULE_PATH}.merge"),
     ):
@@ -109,21 +109,52 @@ def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModul
     assert formatted == [], f"Unexpected warnings emitted by run(): {formatted}"
 
 
+def test_run_merges_custom_template_output_with_eos_config_schema(action_module: Callable[..., ActionModule]) -> None:
+    """Custom-template output is merged using the EOS Config schema."""
+    module = action_module(
+        ActionModule,
+        {
+            "tmp_dir": MOCK_TMP_DIR,
+            "eos_designs_custom_templates": [{"template": "custom.j2"}],
+        },
+        ansible_name="arista.avd.eos_designs_structured_config",
+    )
+    merge_mock = MagicMock()
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch(f"{MODULE_PATH}.get_templar", return_value=MagicMock()),
+        patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
+        patch.object(ActionModule, "load_facts", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
+        patch(f"{MODULE_PATH}.templater", return_value="extra: value\n"),
+        patch(f"{MODULE_PATH}.strip_null_from_data", side_effect=lambda d: d),
+        patch(f"{MODULE_PATH}.merge", merge_mock),
+    ):
+        module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
+
+    merge_mock.assert_called_once_with({"hostname": MOCK_HOSTNAME}, {"extra": "value"}, list_merge="append_rp", schema_name="eos_config")
+
+
 # ---------------------------------------------------------------------------
 # Error handling
 # ---------------------------------------------------------------------------
 
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
-    """AnsibleActionFail is raised with the documented message when pyavd is missing."""
-    module = action_module(ActionModule)
+    """FileNotFoundError is raised with the documented message when pyavd is missing."""
+    module = action_module(ActionModule, ansible_name="arista.avd.eos_designs_structured_config")
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         pytest.raises(
             AnsibleActionFail,
-            match=r"The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' Python library. Got import error",
+            match=(
+                r"Error during plugin 'arista.avd.eos_designs_structured_config' execution: "
+                r"Requires the 'pyavd' Python library. Got import error"
+            ),
         ),
     ):
         module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
@@ -134,29 +165,30 @@ def test_run_wraps_get_structured_config_exception_with_no_logs(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """When get_structured_config raises, run() chains the original via __cause__ and emits no logs."""
-    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR})
+    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR}, ansible_name="arista.avd.eos_designs_structured_config")
     original_error = RuntimeError("pyavd exploded")
 
     with (
-        caplog.at_level(logging.DEBUG),
+        caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch(f"{MODULE_PATH}.get_templar", return_value=MagicMock()),
         patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, side_effect=original_error),
-        pytest.raises(AnsibleActionFail, match=r"^pyavd exploded$") as exc_info,
+        pytest.raises(AnsibleActionFail, match=r"^Error during plugin 'arista.avd.eos_designs_structured_config' execution: pyavd exploded") as exc_info,
     ):
         module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
 
-    assert exc_info.value.__cause__ is original_error
+    assert isinstance(exc_info.value.__cause__, RuntimeError)
+    assert "Error during plugin 'arista.avd.eos_designs_structured_config' execution: pyavd exploded" in str(exc_info.value)
     formatted = [f"{r.levelname} {r.name}: {r.getMessage()}" for r in caplog.records]
     assert formatted == [], f"Unexpected log records emitted on error path: {formatted}"
 
 
 def test_run_wraps_get_structured_config_exception_with_no_warnings(action_module: Callable[..., ActionModule]) -> None:
     """When get_structured_config raises, run() must not emit any Python warnings."""
-    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR})
+    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR}, ansible_name="arista.avd.eos_designs_structured_config")
 
     with warnings.catch_warnings(record=True) as recorded:
         warnings.simplefilter("always")
@@ -183,8 +215,9 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
             "tmp_dir": MOCK_TMP_DIR,
             "eos_designs_custom_templates": [{"template": "bad.j2"}],
         },
+        ansible_name="arista.avd.eos_designs_structured_config",
     )
-    original_error = ValueError("merge failed")
+    original_error = RuntimeError("merge failed")
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
@@ -193,19 +226,19 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
         patch.object(ActionModule, "load_validated_inputs", return_value=(MagicMock(), {})),
         patch.object(ActionModule, "load_facts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.get_structured_config", create=True, return_value=_structured_config_stub()),
-        patch(f"{MODULE_PATH}.AvdSchema"),
         patch(f"{MODULE_PATH}.templater", return_value="key: value\n"),
         patch(f"{MODULE_PATH}.strip_null_from_data", side_effect=lambda d: d),
         patch(f"{MODULE_PATH}.merge", side_effect=original_error),
-        pytest.raises(AnsibleActionFail, match=r"^merge failed$") as exc_info,
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin 'arista.avd.eos_designs_structured_config' execution: merge failed") as exc_info,
     ):
         module.run(task_vars={"inventory_hostname": MOCK_HOSTNAME})
 
-    assert exc_info.value.__cause__ is original_error
+    assert isinstance(exc_info.value.__cause__, RuntimeError)
+    assert "Error during plugin 'arista.avd.eos_designs_structured_config' execution: merge failed" in str(exc_info.value)
 
 
 def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
-    """load_validated_inputs raises AnsibleActionFail with the documented message when the file is missing."""
+    """load_validated_inputs raises FileNotFoundError with the documented message when the file is missing."""
     module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
@@ -219,7 +252,7 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=(
                 r"Missing validated inputs for host 'my-spine-1'. "
                 r"Ensure the 'arista.avd.validate_inputs' task ran successfully for this host "
@@ -230,8 +263,37 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
         module.load_validated_inputs(MOCK_HOSTNAME)
 
 
+def test_load_validated_inputs_retains_lazy_hostvars(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
+    """Raw hostvars are not reloaded after constructing AVDDesign until a consumer accesses them."""
+    module = action_module(ActionModule)
+    module.tmp_dir = MOCK_TMP_DIR
+    validated_path = tmp_path / "validated"
+    validated_path.mkdir()
+    file_path = validated_path / f"{MOCK_HOSTNAME}.json"
+    file_path.touch()
+    raw_hostvars = {"custom_key": "custom_value"}
+    avd_design = MagicMock()
+    file_handler = MagicMock()
+    file_handler.load_json.return_value = raw_hostvars
+
+    with (
+        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), validated_path)),
+        patch(f"{MODULE_PATH}.AVDVaultHandler"),
+        patch(f"{MODULE_PATH}.AVDFileHandler", return_value=file_handler),
+        patch(f"{MODULE_PATH}.AVDDesign._from_dict", return_value=avd_design) as from_dict,
+    ):
+        loaded_avd_design, host_hostvars = module.load_validated_inputs(MOCK_HOSTNAME)
+
+    assert loaded_avd_design is avd_design
+    from_dict.assert_called_once_with(raw_hostvars)
+    file_handler.load_json.assert_called_once_with(file_path)
+
+    assert host_hostvars["custom_key"] == "custom_value"
+    assert file_handler.load_json.call_count == 2
+
+
 def test_load_facts_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
-    """load_facts raises AnsibleActionFail naming both the host and the missing file path."""
+    """load_facts raises FileNotFoundError naming both the host and the missing file path."""
     module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
@@ -247,7 +309,7 @@ def test_load_facts_raises_when_file_missing(action_module: Callable[..., Action
     with (
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=_MissingFactsPath()),
         pytest.raises(
-            AnsibleActionFail,
+            FileNotFoundError,
             match=(
                 r"Missing AVD eos_designs facts for host 'my-spine-1' "
                 rf"\({facts_path_str}\). "

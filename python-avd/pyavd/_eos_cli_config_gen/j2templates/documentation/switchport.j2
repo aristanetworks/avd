@@ -1,0 +1,14 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - switchport #}
+{% if switchport.ethernet_llc_validation is arista.avd.defined or switchport.vlan_tag_validation is arista.avd.defined or switchport_port_security is arista.avd.defined %}
+
+## Switchport
+{## Switchport Port-security #}
+{%     include 'documentation/switchport-port-security.j2' %}
+{## Switchport Validation #}
+{%     include 'documentation/switchport-validation.j2' %}
+{% endif %}

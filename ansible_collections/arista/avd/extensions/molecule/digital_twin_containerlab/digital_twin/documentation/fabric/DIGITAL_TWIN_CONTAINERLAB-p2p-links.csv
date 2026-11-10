@@ -1,0 +1,5 @@
+Type,Node,Serial Number,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Peer IP Address
+l3leaf,dc1-leaf1a,,Ethernet1,10.255.255.1/31,spine,dc1-spine1,,Ethernet1,10.255.255.0/31
+l3leaf,dc1-leaf1a,,Ethernet1/2,10.255.255.3/31,spine,dc1-spine2,,Ethernet1/2,10.255.255.2/31
+l3leaf,dc1-leaf2a,,Ethernet1/1,10.255.255.5/31,spine,dc1-spine1,,Ethernet1/3,10.255.255.4/31
+l3leaf,dc1-leaf2a,,Ethernet2,10.255.255.7/31,spine,dc1-spine2,,Ethernet2,10.255.255.6/31

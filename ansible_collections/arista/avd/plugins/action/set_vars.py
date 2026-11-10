@@ -3,14 +3,12 @@
 # that can be found in the LICENSE file.
 from typing import Any
 
-from ansible.plugins.action import ActionBase
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 
-class ActionModule(ActionBase):
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:  # noqa: ARG002
-        if task_vars is None:
-            task_vars = {}
+class ActionModule(AVDActionPlugin):
+    _logging_config = AVDLoggingConfig(add_hostname_context=True)
 
-        result = {}
-        result["ansible_facts"] = self._task.args
-        return result
+    def main(self, _task_vars: dict[str, Any]) -> None:
+        """Set task arguments as ansible_facts."""
+        self.result["ansible_facts"] = self._task.args

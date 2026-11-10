@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Failed to convert 'sdf4' to an integer when converting the BGP AS asdot notation`.

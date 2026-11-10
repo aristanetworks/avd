@@ -17,8 +17,6 @@ keys:
         keys:
           cos:
             type: int
-            convert_types:
-              - str
             min: 0
             max: 7
           trunk:
@@ -27,8 +25,6 @@ keys:
           vlan:
             type: int
             description: VLAN ID.
-            convert_types:
-              - str
             min: 1
             max: 4094
           access_list_bypass:

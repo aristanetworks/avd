@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: 'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True' for host 'overlay-routing-protocol-address-family-ipv6'.

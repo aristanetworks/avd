@@ -14,8 +14,6 @@ keys:
         vrf:
           type: str
           description: VRF Name.
-          convert_types:
-            - int
         prefix:
           type: str
           description: IPv4_network/Mask.
@@ -30,14 +28,10 @@ keys:
           description: Track next-hop using BFD.
         distance:
           type: int
-          convert_types:
-            - str
           min: 1
           max: 255
         tag:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 4294967295
         name:
@@ -45,8 +39,6 @@ keys:
           description: Description.
         metric:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 4294967295
         destination_address_prefix:

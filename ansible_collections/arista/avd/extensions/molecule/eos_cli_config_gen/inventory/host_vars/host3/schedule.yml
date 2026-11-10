@@ -1,0 +1,24 @@
+---
+schedule:
+  config:
+    max_concurrent_jobs: 3
+  jobs:
+    # at <time> <date> interval <N> (covers at-with-interval branch)
+    - name: at_interval_nodate
+      at:
+        time: "10:00:00"
+        date: "2028-03-10"
+      interval: 60
+      max_log_files: 1
+      command: show clock
+    # at <time> <date> — no once, no interval this will not generate cli command.
+    - name: at_time_only
+      at:
+        time: "12:00:00"
+        date: "2028-06-15"
+      max_log_files: 1
+      command: show interfaces
+    # no period type — covers doc template period="-" (else branch)
+    - name: no_at
+      max_log_files: 1
+      command: show interfaces

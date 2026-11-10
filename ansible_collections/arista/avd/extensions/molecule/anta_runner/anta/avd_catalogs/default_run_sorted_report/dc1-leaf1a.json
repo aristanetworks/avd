@@ -537,6 +537,8 @@
             "dc1-leaf1a"
           ]
         },
+        "minimum_established_time": 10000,
+        "check_tcp_queues": false,
         "bgp_peers": [
           {
             "peer_address": "10.1.1.1",

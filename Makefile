@@ -131,3 +131,56 @@ bump-patch: ## Bump patch release. 6.2.4 -> 6.2.5-dev0
 .PHONY: config-diff
 config-diff: ## Run git diff comparing molecule configs with 'devel' using our special config diff ignoring reordering of config lines.
 	@GIT_EXTERNAL_DIFF=development/compare.py git diff devel --ext-diff -- **/configs/*.cfg
+
+#########################################
+# Documentation                         #
+#########################################
+
+SCHEMA_EXPLORER_SRC   = tools/schema-explorer
+SCHEMA_EXPLORER_BUILD = tools/schema-explorer/build
+
+.PHONY: schema-explorer-build
+schema-explorer-build: ## Build the Schema Explorer (static assets + SQLite) into tools/schema-explorer/build/ for local inspection.
+	uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py \
+		--avd-root . --site-dir $(SCHEMA_EXPLORER_BUILD)
+
+.PHONY: docs-serve
+docs-serve: ## Run `mkdocs serve` on http://127.0.0.1:8000. The Schema Explorer hook builds its own cache outside the watched repo tree.
+	uv run --group doc mkdocs serve --dev-addr=127.0.0.1:8000 -f mkdocs.yml
+
+.PHONY: docs-serve-docker
+docs-serve-docker: ## Same as docs-serve, but inside the webdoc_avd container (no host deps required).
+	docker compose -f development/docker-compose.yml up
+
+
+##########################
+# Run End-to-end tests #
+##########################
+
+.PHONY: e2e
+e2e: ## Run end-to-end tests, regenerating all outputs and capturing errors to files.
+	@uv run --no-project tools/e2e-test-avd.py $$(find . -type f -name e2e-test.toml -print | sort)
+
+# Find all e2e-test.toml files recursively
+# NOTE we only look under ansible_collections for now to avoid other local paths which might contain such files.
+ALL_CONFIGS := $(shell find ansible_collections -type f -name e2e-test.toml -print)
+
+# For each config, extract the last 2 directories and prefix with "e2e-"
+TARGET_MAPPINGS := $(shell for f in $(ALL_CONFIGS); do \
+    dir=$$(dirname "$$f"); \
+    last2=$$(echo "$$dir" | awk -F/ '{print $$(NF-1)"/"$$NF}'); \
+    echo "e2e-$$last2:$$f"; \
+done)
+
+# 3. Extract just the target names to register them as .PHONY targets
+SHORT_TARGETS := $(foreach pair,$(TARGET_MAPPINGS),$(word 1,$(subst :, ,$(pair))))
+.PHONY: $(SHORT_TARGETS)
+
+$(SHORT_TARGETS):
+	@$(eval MATCHED_PAIRS := $(filter $@%,$(TARGET_MAPPINGS))) \
+	if [ -z "$(MATCHED_PAIRS)" ]; then \
+		echo "Error: Target $@ does not match any configurations."; \
+		exit 1; \
+	fi; \
+	$(eval ACTUAL_FILES := $(foreach pair,$(MATCHED_PAIRS),$(word 2,$(subst :, ,$(pair))))) \
+	uv run --no-project tools/e2e-test-avd.py $(ACTUAL_FILES)

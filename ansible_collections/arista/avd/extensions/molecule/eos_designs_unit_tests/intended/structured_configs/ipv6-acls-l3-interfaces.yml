@@ -1,0 +1,248 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  shutdown: false
+  ip_address: 172.16.0.2/30
+  ipv6_addresses:
+  - 2001:db8:1::2/64
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet1
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet2
+  shutdown: false
+  ip_address: 172.17.0.2/30
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet3
+  shutdown: false
+  ip_address: 172.18.0.2/30
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet4
+  shutdown: false
+  ip_address: 172.19.0.2/30
+  ipv6_addresses:
+  - 2001:db8:4::2/64
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet4
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet5/1
+  shutdown: false
+  ip_address: 172.20.0.2/30
+  ipv6_addresses:
+  - 2001:db8:5::2/64
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet5_1
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet6/6.6
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 6
+  ip_address: 172.21.0.2/30
+  ipv6_addresses:
+  - 2001:db8:6::2/64
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
+  metadata:
+    peer_type: l3_interface
+- name: Ethernet7
+  shutdown: false
+  ip_address: 172.23.0.2/30
+  ipv6_addresses:
+  - 2001:db8:7::2/64
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: peer1_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: peer1
+    peer_interface: Ethernet1
+    peer_type: l3_port_channel_member
+- name: Ethernet6/6
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+hostname: ipv6-acls-l3-interfaces
+ip_routing: true
+ipv6_access_lists:
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:1::2
+    sequence: 15
+    action: deny
+    copy_captive_portal: true
+  - protocol: ipv6
+    source: 2001:db8:1::1
+    destination: 2001:db8:1::2
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet1
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ipv6
+    source: 2001:db8:1::2
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+  entries:
+  - protocol: ipv6
+    source: 2001:db8:ffff::1
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+  entries:
+  - protocol: ipv6
+    source: 2001:db8:ffff::1
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet4
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:4::2
+    sequence: 15
+    action: deny
+    copy_captive_portal: true
+  - protocol: ipv6
+    source: 2001:db8:4::1
+    destination: 2001:db8:4::2
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet5_1
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ipv6
+    source: 2001:db8:5::2
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ipv6
+    source: 2001:db8:6::2
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-INTERFACE-IPV6-FIELD_Ethernet7
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:7::2
+    action: permit
+  - protocol: ipv6
+    source: 2001:db8:7::2
+    destination: any
+    action: deny
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Port-Channel1
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:10::2
+    sequence: 15
+    action: deny
+    copy_captive_portal: true
+  - protocol: ipv6
+    source: 2001:db8:10::1
+    destination: 2001:db8:10::2
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Port-Channel1
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ipv6
+    source: 2001:db8:10::2
+    destination: any
+    action: permit
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.1.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: peer1_Port-Channel10
+  shutdown: false
+  ip_address: 172.22.0.2/30
+  ipv6_addresses:
+  - 2001:db8:10::2/64
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Port-Channel1
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Port-Channel1
+  metadata:
+    peer: peer1
+    peer_interface: Port-Channel10
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.1.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 192.168.1.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

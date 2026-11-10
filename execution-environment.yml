@@ -13,7 +13,6 @@ build_arg_defaults:
 dependencies:
   galaxy: ansible_collections/arista/avd/requirements.yml
   python: ansible_collections/arista/avd/requirements.txt
-  system: ansible_collections/arista/avd/bindep.txt
 
 additional_build_steps:
   append:

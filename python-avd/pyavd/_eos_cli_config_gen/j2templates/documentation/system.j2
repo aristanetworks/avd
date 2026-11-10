@@ -4,6 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# doc - system #}
+{% if system.mac_address is arista.avd.defined %}
+
+### System MAC Address
+
+**MAC address:** {{ system.mac_address }}
+{% endif %}
 {% if system.control_plane is arista.avd.defined %}
 
 ### System Control-Plane

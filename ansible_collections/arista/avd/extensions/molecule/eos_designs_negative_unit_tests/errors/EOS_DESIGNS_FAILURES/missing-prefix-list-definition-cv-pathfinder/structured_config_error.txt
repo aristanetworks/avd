@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv4_prefix_list_catalog[name=PL1]' is required but was not found.

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: At least one server must be provided in DNS configuration

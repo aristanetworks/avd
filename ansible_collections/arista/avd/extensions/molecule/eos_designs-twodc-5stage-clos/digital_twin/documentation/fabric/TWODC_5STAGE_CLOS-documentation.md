@@ -37,7 +37,7 @@
 | DC1 | overlay-controller | DC1-RS2 | 192.168.1.4/24 | vEOS-LAB | Provisioned | - |
 | DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned | - |
 | DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned | - |
-| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | 192.168.1.8/16 | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | 192.168.1.8/24 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 192.168.1.25/24 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned | - |

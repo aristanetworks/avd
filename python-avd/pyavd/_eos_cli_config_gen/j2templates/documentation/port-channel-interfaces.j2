@@ -126,6 +126,52 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# Multicast Routing #}
+{%     set multicast_interfaces = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%         if port_channel_interface.multicast.ipv4 is arista.avd.defined or port_channel_interface.multicast.ipv6 is arista.avd.defined  %}
+{%             do multicast_interfaces.append(port_channel_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if multicast_interfaces | length > 0 %}
+
+##### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
+{%         for multicast_interface in multicast_interfaces %}
+{%             if multicast_interface.multicast.ipv4 is arista.avd.defined %}
+{%                 set static = multicast_interface.multicast.ipv4.static | arista.avd.default('-') %}
+{%                 if multicast_interface.multicast.ipv4.boundaries is arista.avd.defined %}
+{%                     set boundaries_list = [] %}
+{%                     for boundary in multicast_interface.multicast.ipv4.boundaries %}
+{%                         set boundary_str = boundary.boundary %}
+{%                         if boundary.out is arista.avd.defined(true) %}
+{%                             set boundary_str = boundary_str ~ ' (out)' %}
+{%                         endif %}
+{%                         do boundaries_list.append(boundary_str) %}
+{%                     endfor %}
+{%                     set boundaries = boundaries_list | join(', ') %}
+{%                 else %}
+{%                     set boundaries = '-' %}
+{%                 endif %}
+| {{ multicast_interface.name }} | IPv4 | {{ static }} | {{ boundaries }} |
+{%             endif %}
+{%             if multicast_interface.multicast.ipv6 is arista.avd.defined %}
+{%                 set static = multicast_interface.multicast.ipv6.static | arista.avd.default('-') %}
+{%                 if multicast_interface.multicast.ipv6.boundaries is arista.avd.defined %}
+{%                     set boundaries_list = [] %}
+{%                     for boundary in multicast_interface.multicast.ipv6.boundaries %}
+{%                         do boundaries_list.append(boundary.boundary ~ ' (out)') %}
+{%                     endfor %}
+{%                     set boundaries = boundaries_list | join(', ') %}
+{%                 else %}
+{%                     set boundaries = '-' %}
+{%                 endif %}
+| {{ multicast_interface.name }} | IPv6 | {{ static }} | {{ boundaries }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# VLAN Translations #}
 {%     set port_channel_interface_vlan_xlate = namespace() %}
 {%     set port_channel_interface_vlan_xlate.configured = false %}

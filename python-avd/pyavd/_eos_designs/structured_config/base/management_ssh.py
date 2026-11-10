@@ -23,16 +23,19 @@ class ManagementSshMixin(Protocol):
     @structured_config_contributor
     def management_ssh(self: AvdStructuredConfigBaseProtocol) -> None:
         """management_ssh set based on "ssh_settings" data-model."""
-        if not (ssh_settings := self.inputs.ssh_settings):
-            return
+        if ssh_settings := self.inputs.ssh_settings:
+            if ssh_settings.idle_timeout is not None:
+                self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
-        if ssh_settings.idle_timeout is not None:
-            self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
+            if ssh_settings.enabled is not None:
+                self.structured_config.management_ssh.enable = ssh_settings.enabled
 
-        if ssh_settings.enabled is not None:
-            self.structured_config.management_ssh.enable = ssh_settings.enabled
+            self._set_vrfs_and_acls(ssh_settings)
 
-        self._set_vrfs_and_acls(ssh_settings)
+        # Enforce SSH management access in default VRF for ACT Digital Twin if required
+        if self._act_ensure_ssh_access:
+            self.structured_config.management_ssh.vrfs.obtain("default").enable = True
+            self.structured_config.management_ssh.ip_access_group_in = None
 
     def _set_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""

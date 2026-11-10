@@ -8,6 +8,4 @@ type: dict
 keys:
   ip_access_lists_max_entries:
     type: int
-    convert_types:
-      - str
     description: Limit ACL entries defined under the `ip_access_lists`.

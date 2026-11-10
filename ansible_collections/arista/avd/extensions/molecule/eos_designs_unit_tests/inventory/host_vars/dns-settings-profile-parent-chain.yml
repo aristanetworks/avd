@@ -1,0 +1,59 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    dns_settings_profile: child_dns_profile
+  nodes:
+    - name: dns-settings-profile-parent-chain
+
+dns_settings:
+  domain: global.example.com
+  domain_list:
+    - global.example.com
+  servers:
+    - ip_address: 192.0.2.51
+      vrf: default
+      priority: 1
+
+dns_settings_profiles:
+  - profile: common_dns_profile
+    domain: common.example.com
+    vrfs:
+      - name: default
+        source_interface: Loopback0
+    servers:
+      - ip_address: 192.0.2.53
+        vrf: default
+        priority: 1
+  - profile: regional_dns_profile
+    parent_profile: common_dns_profile
+    domain: regional.example.com
+    domain_list:
+      - regional.example.com
+  - profile: child_dns_profile
+    parent_profile: regional_dns_profile
+    # Child scalar values win, and ordinary lists replace inherited lists.
+    domain: child.example.com
+    # Add a VRF while retaining the default VRF inherited from the common profile.
+    vrfs:
+      - name: DNS
+        source_interface: Loopback1
+    servers:
+      - ip_address: 192.0.2.54
+        vrf: default
+        priority: 1
+      - ip_address: 192.0.2.55
+        vrf: DNS
+        priority: 1
+    ip_hosts:
+      - hostname: child-host
+        ipv4_addresses:
+          - 192.0.2.10
+
+  # Invalid inheritance chains must not affect resolution when they are unused.
+  - profile: unused_missing_parent
+    parent_profile: nonexistent_profile
+  - profile: unused_cycle_a
+    parent_profile: unused_cycle_b
+  - profile: unused_cycle_b
+    parent_profile: unused_cycle_a

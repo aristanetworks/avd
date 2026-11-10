@@ -24,8 +24,6 @@ $defs:
               format: ipv4_pool
             prefix_size:
               type: int
-              convert_types:
-                - str
               description: Subnet mask size.
               default: 31
               min: 8
@@ -36,8 +34,6 @@ $defs:
               format: ipv6_pool
             ipv6_prefix_size:
               type: int
-              convert_types:
-                - str
               description: IPv6 prefix size.
               default: 127
               min: 32

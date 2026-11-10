@@ -16,7 +16,6 @@ scenario:
     - converge
   test_sequence:
     - syntax
-    - create
     - converge
     - idempotence
   cleanup_sequence:

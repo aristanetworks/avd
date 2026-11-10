@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mgmt_ip' for CVX Server missing-peer-ip-l3-interface is required.
