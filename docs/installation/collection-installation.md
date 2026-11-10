@@ -14,7 +14,9 @@
   - Note: This will install the supported ansible-core version and all required [Python dependencies](#python-dependencies).
 - Install [arista.avd](https://galaxy.ansible.com/ui/repo/published/arista/avd/) Ansible collection.
 
-Python 3.10 is no longer supported. Upgrade to Python 3.11 or later before installing or upgrading AVD.
+!!! warning "Python 3.10 is no longer supported"
+
+    Upgrade to Python 3.11 or later before installing or upgrading AVD.
 
 ## Python dependencies
 

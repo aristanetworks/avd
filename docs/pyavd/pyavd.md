@@ -50,7 +50,9 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Installation
 
-PyAVD requires Python 3.11 or later. Python 3.10 is no longer supported.
+!!! warning "Python 3.10 is no longer supported"
+
+    Upgrade to Python 3.11 or later before installing or upgrading PyAVD.
 
 !!! important "Keep Python dependencies up to date"
 

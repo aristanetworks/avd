@@ -683,9 +683,7 @@ def test_action_module_main_success(action_module: "Callable[..., ActionBase]", 
     ):
         mocked_sys.version_info = VersionInfo(3, python_minor, 42, "final", 0)
         mocked_sys.path = sys.path
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
-            result = module.run(task_vars=DEFAULT_TASK_VARS)
+        result = module.run(task_vars=DEFAULT_TASK_VARS)
 
     assert result["failed"] is False
     assert "msg" not in result
