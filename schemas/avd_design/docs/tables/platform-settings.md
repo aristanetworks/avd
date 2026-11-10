@@ -1655,6 +1655,7 @@
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               queue_monitor_length_notify: false
               subinterface_mtu: false
               per_interface_l2_mtu: false
@@ -1737,6 +1738,7 @@
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               queue_monitor_length_notify: false
               subinterface_mtu: false
               per_interface_l2_mtu: false
@@ -1816,6 +1818,7 @@
             feature_support:
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               per_interface_l2_mru: false
               queue_monitor_length_notify: false
               sflow: false

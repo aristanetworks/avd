@@ -127,7 +127,6 @@ $defs:
               description: |-
                 Support for storm-control.
                 The feature will be ignored on platforms where this is false.
-            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
             explicit_interface_speed_auto_mode:
               type: bool
               default: true
