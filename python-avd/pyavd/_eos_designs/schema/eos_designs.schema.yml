@@ -4921,6 +4921,20 @@ keys:
         type: str
         description: Name of the management interface (e.g. Management0, Management1).
         default: Management1
+      shutdown:
+        type: str
+        default: 'false'
+        description: 'Administratively enable or disable the network interface.
+
+          If set to "auto" and there''s no IP or DHCP/SLAAC configuration provided,
+
+          the interface would shutdown.'
+        valid_values:
+        - 'true'
+        - 'false'
+        - auto
+        - 'True'
+        - 'False'
       lldp:
         type: dict
         description: LLDP settings for the management interface.

@@ -22,17 +22,18 @@ class ManagementInterfaceMixin(Protocol):
     @structured_config_contributor
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
+        mgmt_settings = self.inputs.mgmt_interface_settings
+
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
             self.structured_config_utils.set_once_oob_mgmt_vrf()
 
             # Check if mgmt_ip is set to "dhcp"
             is_dhcp = self.shared_utils.oob_mgmt_ip == "dhcp"
             is_auto_config = self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config"
-
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
-                shutdown=False,
+                shutdown=mgmt_settings.shutdown.lower() == "true",  # mgmt_settings.shutdown == "auto" means no shutdown
                 vrf=self.shared_utils.mgmt_interface_vrf,
                 ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
@@ -58,6 +59,14 @@ class ManagementInterfaceMixin(Protocol):
                 )
                 interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
 
-            if self.inputs.mgmt_interface_settings.lldp:
-                interface_settings.lldp = self.inputs.mgmt_interface_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)
+            if mgmt_settings.lldp:
+                interface_settings.lldp = mgmt_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)
+            self.structured_config.management_interfaces.append(interface_settings)
+
+        elif (shutdown := mgmt_settings._get("shutdown")) is not None:
+            # Add management interface section if "shutdown" is set explicitly
+            shutdown = shutdown.lower() in ("auto", "true")
+            interface_settings = EosCliConfigGen.ManagementInterfacesItem(
+                name=self.shared_utils.mgmt_interface, description=self.shared_utils.mgmt_interface_description, shutdown=shutdown
+            )
             self.structured_config.management_interfaces.append(interface_settings)

@@ -1,0 +1,12 @@
+---
+# Test for mgmt_interface_settings with shutdown option provided
+# Even if shutdown is false, the config is generated for the interface to be enabled, even if
+# there's no other configuration in it.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: mgmt-interface-settings-4
+mgmt_interface_settings:
+  interface: Management0
+  # If shutdown is omitted, even though it has a default value, the config won't generate for management interface.
+  shutdown: false

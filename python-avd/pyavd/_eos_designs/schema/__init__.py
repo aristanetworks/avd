@@ -30242,6 +30242,8 @@ class EosDesigns(EosDesignsRootModel):
     class MgmtInterfaceSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        Shutdown: TypeAlias = Literal["true", "false", "auto", "True", "False"]
+
         class Lldp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30280,6 +30282,7 @@ class EosDesigns(EosDesignsRootModel):
             "vrf": {"type": str, "default": "MGMT"},
             "vrf_routing": {"type": bool, "default": False},
             "interface": {"type": str, "default": "Management1"},
+            "shutdown": {"type": str, "default": "false"},
             "lldp": {"type": Lldp},
         }
         description: str
@@ -30306,6 +30309,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"Management1"`
         """
+        shutdown: Shutdown
+        """
+        Administratively enable or disable the network interface.
+        If set to "auto" and there's no IP or
+        DHCP/SLAAC configuration provided,
+        the interface would shutdown.
+
+        Default value: `"false"`
+        """
         lldp: Lldp
         """
         LLDP settings for the management interface.
@@ -30322,6 +30334,7 @@ class EosDesigns(EosDesignsRootModel):
                 vrf: str | UndefinedType = Undefined,
                 vrf_routing: bool | UndefinedType = Undefined,
                 interface: str | UndefinedType = Undefined,
+                shutdown: Shutdown | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30335,6 +30348,11 @@ class EosDesigns(EosDesignsRootModel):
                     vrf: VRF name used for the management interface.
                     vrf_routing: Enable IP routing in the management VRF.
                     interface: Name of the management interface (e.g. Management0, Management1).
+                    shutdown:
+                       Administratively enable or disable the network interface.
+                       If set to "auto" and there's no IP or
+                       DHCP/SLAAC configuration provided,
+                       the interface would shutdown.
                     lldp:
                        LLDP settings for the management interface.
 
