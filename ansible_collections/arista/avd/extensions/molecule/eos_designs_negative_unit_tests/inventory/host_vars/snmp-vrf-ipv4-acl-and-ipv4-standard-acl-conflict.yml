@@ -17,6 +17,3 @@ snmp_settings:
       enable: true
       ipv4_acl: acl-for-vrf-default
       ipv4_standard_acl: acl-for-vrf-default
-
-expected_error_message: >-
-  'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'snmp_settings.vrfs[name=default]'. Only one IPv4 ACL can be configured.
