@@ -20,8 +20,6 @@ mgmt_gateway: 10.10.10.1
 
 snmp_settings:
   vrfs:
-    # Testing automatically picking up the oob VRF with the 'use_default_mgmt_method_vrf' keyword.
-    # This errors if mgmt_ip is missing.
     - name: use_default_mgmt_method_vrf
       enable: true
       ipv4_standard_acl: SNMP-VRF-ACL
