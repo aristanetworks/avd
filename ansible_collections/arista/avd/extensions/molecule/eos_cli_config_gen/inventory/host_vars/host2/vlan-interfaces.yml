@@ -86,3 +86,10 @@ vlan_interfaces:
     ospfv3:
       ipv6:
         bfd: false
+
+  - name: Vlan1006
+    description: OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence
+    ospfv3:
+      ipv4:
+        bfd: true
+      bfd: true

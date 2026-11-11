@@ -433,8 +433,8 @@ keys:
             bfd:
               type: bool
               description: |-
-                Enable/Disable BFD for OSPFv3 on the interface for both address families. If either address family defines a BFD setting,
-                the shared BFD setting is ignored.
+                Enable/Disable BFD for OSPFv3 on the interface for both address families.
+                If either `ipv4.bfd` or `ipv6.bfd` is defined, this setting is ignored.
         ospf_cost:
           type: int
         ospf_authentication:
