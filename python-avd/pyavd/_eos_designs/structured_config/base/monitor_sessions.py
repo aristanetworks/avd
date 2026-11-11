@@ -54,33 +54,34 @@ class MonitorSessionsMixin(Protocol):
             # Convert iterator to list since we can only access it once.
             session_configs_list = list(session_configs)
             merged_settings = session_configs_list[0].monitor_session._deepcopy()
-            for session_data in session_configs_list[1:]:
-                merged_settings._deepmerge(session_data.monitor_session)
+            for session_config in session_configs_list[1:]:
+                merged_settings._deepmerge(session_config.monitor_session)
 
             if merged_settings.session_settings._get("access_group"):
-                for session_data in session_configs_list:
-                    if session_data.monitor_session.source_settings.access_group:
+                for session in session_configs_list:
+                    if session.monitor_session.source_settings.access_group:
                         msg = (
                             f"Cannot set an ACL for both `session_settings` and `source_settings`"
-                            f" under the monitor session '{session_data.name}' for {session_data.interface_data.context}."
+                            f" under the monitor session '{session.name}' for {session.interface_data.context}."
                         )
                         raise AristaAvdInvalidInputsError(msg)
 
             monitor_session = EosCliConfigGen.MonitorSessionsItem(name=session_name)
-            for session_data in session_configs_list:
-                if session_data.monitor_session.role == "destination":
-                    monitor_session.destinations.append(session_data.interface_data.interface)
+            for session in session_configs_list:
+                if session.monitor_session.role == "destination":
+                    monitor_session.destinations.append(session.interface_data.interface)
 
-            source_sessions = [session_data for session_data in session_configs_list if session_data.monitor_session.role == "source"]
+            source_sessions = [session for session in session_configs_list if session.monitor_session.role == "source"]
 
-            for session_data in source_sessions:
-                session = session_data.monitor_session
+            for session in source_sessions:
                 source = EosCliConfigGen.MonitorSessionsItem.SourcesItem(
-                    name=session_data.interface_data.interface,
-                    direction=session.source_settings.direction,
+                    name=session.interface_data.interface,
+                    direction=session.monitor_session.source_settings.direction,
                 )
-                if session.source_settings.access_group.name:
-                    source.access_group = session.source_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup)
+                if session.monitor_session.source_settings.access_group.name:
+                    source.access_group = session.monitor_session.source_settings.access_group._cast_as(
+                        EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup
+                    )
                 monitor_session.sources.append(source)
 
             if session_settings := merged_settings.session_settings:
