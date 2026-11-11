@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -52,8 +53,10 @@ class ManagementSshMixin(Protocol):
                     self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            acl = self.shared_utils.get_ipv4_acl(vrf.ipv4_acl, interface_name=vrf_name)
-                            self.structured_config_utils._set_ipv4_acl(acl)
+                            if vrf.ipv4_acl not in self.inputs.ipv4_acls:
+                                msg = f"ipv4_acls[name={vrf.ipv4_acl}]"
+                                raise AristaAvdMissingVariableError(msg, self.shared_utils.hostname)
+                            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[vrf.ipv4_acl])
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
@@ -68,8 +71,10 @@ class ManagementSshMixin(Protocol):
                 if vrf.enabled:
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            acl = self.shared_utils.get_ipv4_acl(vrf.ipv4_acl, interface_name=vrf_name)
-                            self.structured_config_utils._set_ipv4_acl(acl)
+                            if vrf.ipv4_acl not in self.inputs.ipv4_acls:
+                                msg = f"ipv4_acls[name={vrf.ipv4_acl}]"
+                                raise AristaAvdMissingVariableError(msg, self.shared_utils.hostname)
+                            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[vrf.ipv4_acl])
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)

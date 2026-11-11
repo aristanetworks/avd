@@ -2098,13 +2098,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         configure_ssh_settings_vrfs_ipv4_acl_from_catalog: bool
         """
-        Available from AVD 6.5.0.
+        Available from AVD 6.6.0.
         When this is set to `true`, the presence of access-list
         `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
         An error is raised if the
         referenced ACL is not defined under `ipv4_acls`.
-        If the referenced ACL is a standard ACL, use
-        `ssh_settings.vrfs[].ipv4_standard_acl` instead.
 
         Default value: `False`
         """
@@ -2269,13 +2267,11 @@ class EosDesigns(EosDesignsRootModel):
                        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
                     configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                       Available from AVD 6.5.0.
+                       Available from AVD 6.6.0.
                        When this is set to `true`, the presence of access-list
                        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
                        An error is raised if the
                        referenced ACL is not defined under `ipv4_acls`.
-                       If the referenced ACL is a standard ACL, use
-                       `ssh_settings.vrfs[].ipv4_standard_acl` instead.
 
                 """
 
@@ -53940,9 +53936,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_standard_acl: str | None
             """
             IPv4 standard access-list name.
-            This ACL must be defined in `ipv4_standard_acls` catalog. When it is
-            defined in catalog,
-            it will be automatically generated in the device configuration.
+            This ACL must be defined in `ipv4_standard_acls` catalog.
             Mutually
             exclusive with `ipv4_acl`. Setting both raises an error.
             Field substitution is not supported.
@@ -53994,9 +53988,7 @@ class EosDesigns(EosDesignsRootModel):
                            `ipv4_acls`. Field substitution is not supported.
                         ipv4_standard_acl:
                            IPv4 standard access-list name.
-                           This ACL must be defined in `ipv4_standard_acls` catalog. When it is
-                           defined in catalog,
-                           it will be automatically generated in the device configuration.
+                           This ACL must be defined in `ipv4_standard_acls` catalog.
                            Mutually
                            exclusive with `ipv4_acl`. Setting both raises an error.
                            Field substitution is not supported.
