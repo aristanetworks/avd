@@ -71,3 +71,4 @@ vlan_interfaces:
     ospfv3:
       ipv6:
         cost: 50
+      cost: 40 # won't render on global because cost is set on IPv6 address family

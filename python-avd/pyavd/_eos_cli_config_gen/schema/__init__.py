@@ -76749,9 +76749,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             cost: int | None
             """
-            Set OSPFv3 cost on the interface for both address families. If either address family defines a
-            ospfv3 cost,
-            the shared ospfv3 cost setting is ignored.
+            Set OSPFv3 cost on the interface for both address families.
+            Mutually exclusive with `ipv4.cost` /
+            `ipv6.cost`, so it is ignored if either is set.
             """
             passive_interface: bool | None
             """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
@@ -76781,9 +76781,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
                         cost:
-                           Set OSPFv3 cost on the interface for both address families. If either address family defines a
-                           ospfv3 cost,
-                           the shared ospfv3 cost setting is ignored.
+                           Set OSPFv3 cost on the interface for both address families.
+                           Mutually exclusive with `ipv4.cost` /
+                           `ipv6.cost`, so it is ignored if either is set.
                         passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point

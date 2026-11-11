@@ -25573,9 +25573,9 @@ keys:
               min: 1
               max: 65535
               description: 'Set OSPFv3 cost on the interface for both address families.
-                If either address family defines a ospfv3 cost,
 
-                the shared ospfv3 cost setting is ignored.'
+                Mutually exclusive with `ipv4.cost` / `ipv6.cost`, so it is ignored
+                if either is set.'
             passive_interface:
               type: bool
               description: Include interface but without actively running OSPF. Takes

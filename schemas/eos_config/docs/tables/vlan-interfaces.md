@@ -174,7 +174,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].ospfv3.ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ospfv3.ipv6.area") | String |  |  |  | OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "vlan_interfaces.[].ospfv3.ipv6.cost") | Integer |  |  | Min: 1<br>Max: 65535 | Set OSPFv3 IPv6 cost on the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "vlan_interfaces.[].ospfv3.cost") | Integer |  |  | Min: 1<br>Max: 65535 | Set OSPFv3 cost on the interface for both address families. If either address family defines a ospfv3 cost,<br>the shared ospfv3 cost setting is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "vlan_interfaces.[].ospfv3.cost") | Integer |  |  | Min: 1<br>Max: 65535 | Set OSPFv3 cost on the interface for both address families.<br>Mutually exclusive with `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface</samp>](## "vlan_interfaces.[].ospfv3.passive_interface") | Boolean |  |  |  | Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_passive_interface</samp>](## "vlan_interfaces.[].ospfv3.no_passive_interface") | Boolean |  |  |  | Disable passive interface mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ospfv3.network_point_to_point") | Boolean |  |  |  |  |
@@ -713,8 +713,8 @@
             # Set OSPFv3 IPv6 cost on the interface.
             cost: <int; 1-65535>
 
-          # Set OSPFv3 cost on the interface for both address families. If either address family defines a ospfv3 cost,
-          # the shared ospfv3 cost setting is ignored.
+          # Set OSPFv3 cost on the interface for both address families.
+          # Mutually exclusive with `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set.
           cost: <int; 1-65535>
 
           # Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
