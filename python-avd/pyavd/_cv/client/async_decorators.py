@@ -244,7 +244,7 @@ class GRPCRequestHandler:
         for attempt in range(1, self.max_retries + 2):
             try:
                 return await self.func(*call_args, **call_kwargs)
-            except Exception as e:  # noqa: PERF203
+            except Exception as e:
                 match e:
                     case CVClientException():
                         raise

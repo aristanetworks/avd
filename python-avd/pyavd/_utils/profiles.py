@@ -11,7 +11,7 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._schema.models.type_vars import T_AvdModel
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    from typing import Self
 
     from pyavd._schema.models.avd_indexed_list import AvdIndexedList
     from pyavd._schema.models.avd_model import AvdModel
