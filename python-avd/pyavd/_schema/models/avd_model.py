@@ -18,8 +18,7 @@ from .avd_indexed_list import AvdIndexedList
 
 if TYPE_CHECKING:
     from collections.abc import ItemsView
-
-    from typing_extensions import Self
+    from typing import Self
 
     from .type_vars import T_AvdModel
 
