@@ -42,8 +42,7 @@ keys:
           - "true"
           - "false"
           - "auto"
-          - "True"
-          - "False"
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.

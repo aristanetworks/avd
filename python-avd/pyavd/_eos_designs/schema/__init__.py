@@ -30242,7 +30242,7 @@ class EosDesigns(EosDesignsRootModel):
     class MgmtInterfaceSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        Shutdown: TypeAlias = Literal["true", "false", "auto", "True", "False"]
+        Shutdown: TypeAlias = Literal["true", "false", "auto"]
 
         class Lldp(AvdModel):
             """Subclass of AvdModel."""

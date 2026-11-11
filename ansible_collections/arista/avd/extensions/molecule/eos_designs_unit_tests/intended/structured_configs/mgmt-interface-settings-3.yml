@@ -10,6 +10,7 @@ management_interfaces:
 - name: Management0
   description: OOB_MANAGEMENT
   shutdown: true
+  vrf: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

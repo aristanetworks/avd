@@ -33,7 +33,7 @@ class ManagementInterfaceMixin(Protocol):
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
-                shutdown=mgmt_settings.shutdown.lower() == "true",  # mgmt_settings.shutdown == "auto" means no shutdown
+                shutdown=mgmt_settings.shutdown == "true",  # mgmt_settings.shutdown == "auto" means no shutdown
                 vrf=self.shared_utils.mgmt_interface_vrf,
                 ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
@@ -65,8 +65,13 @@ class ManagementInterfaceMixin(Protocol):
 
         elif (shutdown := mgmt_settings._get("shutdown")) is not None:
             # Add management interface section if "shutdown" is set explicitly
-            shutdown = shutdown.lower() in ("auto", "true")
+            self.structured_config_utils.set_once_oob_mgmt_vrf()
+            shutdown = shutdown in ("auto", "true")
+
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
-                name=self.shared_utils.mgmt_interface, description=self.shared_utils.mgmt_interface_description, shutdown=shutdown
+                name=self.shared_utils.mgmt_interface,
+                description=self.shared_utils.mgmt_interface_description,
+                shutdown=shutdown,
+                vrf=self.shared_utils.mgmt_interface_vrf,
             )
             self.structured_config.management_interfaces.append(interface_settings)

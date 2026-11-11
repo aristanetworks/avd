@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface. |
     | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF. |
     | [<samp>&nbsp;&nbsp;interface</samp>](## "mgmt_interface_settings.interface") | String |  | `Management1` |  | Name of the management interface (e.g. Management0, Management1). |
-    | [<samp>&nbsp;&nbsp;shutdown</samp>](## "mgmt_interface_settings.shutdown") | String |  | `false` | Valid Values:<br>- <code>true</code><br>- <code>false</code><br>- <code>auto</code><br>- <code>True</code><br>- <code>False</code> | Administratively enable or disable the network interface.<br>If set to "auto" and there's no IP or DHCP/SLAAC configuration provided,<br>the interface would shutdown. |
+    | [<samp>&nbsp;&nbsp;shutdown</samp>](## "mgmt_interface_settings.shutdown") | String |  | `false` | Value is converted to lower case.<br>Valid Values:<br>- <code>true</code><br>- <code>false</code><br>- <code>auto</code> | Administratively enable or disable the network interface.<br>If set to "auto" and there's no IP or DHCP/SLAAC configuration provided,<br>the interface would shutdown. |
     | [<samp>&nbsp;&nbsp;lldp</samp>](## "mgmt_interface_settings.lldp") | Dictionary |  |  |  | LLDP settings for the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "mgmt_interface_settings.lldp.transmit") | Boolean |  |  |  | Enable LLDP transmission on the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "mgmt_interface_settings.lldp.receive") | Boolean |  |  |  | Enable LLDP reception on the management interface. |
@@ -109,7 +109,7 @@
       # Administratively enable or disable the network interface.
       # If set to "auto" and there's no IP or DHCP/SLAAC configuration provided,
       # the interface would shutdown.
-      shutdown: <str; "true" | "false" | "auto" | "True" | "False"; default="false">
+      shutdown: <str; "true" | "false" | "auto"; default="false">
 
       # LLDP settings for the management interface.
       lldp:
