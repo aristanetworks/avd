@@ -9,8 +9,7 @@ from .avd_model import AvdModel
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
-
-    from typing_extensions import Self
+    from typing import Self
 
 
 class EosCliConfigGenRootModel(AvdModel):
