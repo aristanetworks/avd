@@ -52993,6 +52993,10 @@ class EosDesigns(EosDesignsRootModel):
             IPv4 access-list name.
             Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and
             `ipv4_standard_acl` raises an error.
+            When
+            `avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog` is enabled, the access-list
+            must be defined under `ipv4_acls`
+            otherwise an error will be raised.
             """
             ipv4_standard_acl: str | None
             """
@@ -53048,6 +53052,10 @@ class EosDesigns(EosDesignsRootModel):
                            IPv4 access-list name.
                            Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and
                            `ipv4_standard_acl` raises an error.
+                           When
+                           `avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog` is enabled, the access-list
+                           must be defined under `ipv4_acls`
+                           otherwise an error will be raised.
                         ipv4_standard_acl:
                            IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
                            Mutually
