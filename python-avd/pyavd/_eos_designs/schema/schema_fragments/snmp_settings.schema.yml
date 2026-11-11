@@ -62,7 +62,16 @@ keys:
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
             ipv4_acl:
               type: str
-              description: IPv4 access-list name.
+              description: |-
+                IPv4 access-list name.
+                Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
+                When `avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog` is enabled, the access-list must be defined under `ipv4_acls`
+                otherwise an error will be raised.
+            ipv4_standard_acl:
+              type: str
+              description: |-
+                IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
             ipv6_acl:
               type: str
               description: IPv6 access-list name.

@@ -41,6 +41,13 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      configure_snmp_server_vrfs_ipv4_acl_from_catalog:
+        type: bool
+        description: |-
+          Available from AVD 6.6.0.
+          Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from `ipv4_acls` for enabled/disabled SNMP VRFs.
+          An error will be raised if the referenced ACL is not defined under `ipv4_acls`.
+        default: false
       consistent_uplink_vlans:
         type: bool
         description: |-

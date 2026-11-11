@@ -15,7 +15,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_settings.vrfs.[].enable") | Boolean |  |  |  | Enable/disable SNMP for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "snmp_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for SNMP hosts in this VRF.<br>If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name.<br>Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.<br>When `avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog` is enabled, the access-list must be defined under `ipv4_acls`<br>otherwise an error will be raised. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "snmp_settings.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.<br>Mutually exclusive with `ipv4_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | `False` |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
     | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | `rfc3411_type5` | Valid Values:<br>- <code>rfc3411_type5</code><br>- <code>rfc3411_type3</code><br>- <code>system_mac</code><br>- <code>hostname_and_ip</code> | `compute_local_engineid_source` supports:<br>- `rfc3411_type5` use the value of `local_engineid_ip` to find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname + local_engineid_ip)<br>- `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.<br>  To use this, `system_mac_address` MUST be set for the device.<br>  The formula is 8000757103 + system_mac_address.<br>- `system_mac` generate the Engine ID similar to the default EOS behavior.<br>  To use this, `system_mac_address` MUST be set for the device.<br>  The formula is f5717f + system_mac_address + 00.<br>- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via the concatenation of the hostname plus the out-of-band management IP.<br>    sha1(hostname + mgmt_ip)<br>  `local_engineid_ip` does not have any effect when using `compute_local_engineid_source: hostname_and_ip`.<br>  Note that this is a legacy method kept for backward compatibility; it does not follow RFC 3411 and does not properly support in-band management. |
@@ -112,7 +113,14 @@
           source_interface: <str>
 
           # IPv4 access-list name.
+          # Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
+          # When `avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog` is enabled, the access-list must be defined under `ipv4_acls`
+          # otherwise an error will be raised.
           ipv4_acl: <str>
+
+          # IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+          # Mutually exclusive with `ipv4_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
+          ipv4_standard_acl: <str>
 
           # IPv6 access-list name.
           ipv6_acl: <str>
