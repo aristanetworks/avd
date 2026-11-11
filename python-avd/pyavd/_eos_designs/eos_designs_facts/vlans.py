@@ -56,6 +56,12 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return vlans, trunk_groups
         # Update vlans set if adapter_settings.vlans is an actual range of vlan(s)
         if adapter_settings.vlans and adapter_settings.vlans not in ["all", "defined_vlans"]:
+            if set(range_expand(adapter_settings.vlans)).issubset(set(self._available_vlans)):
+                msg = (
+                    f"Adapter {adapter_settings._internal_data.context} is configured with VLANs '{adapter_settings.vlans}'"
+                    f" which are not available on this switch. Available VLANs are: '{list_compress(list(self._available_vlans))}'"
+                )
+                raise ValueError(msg)
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
