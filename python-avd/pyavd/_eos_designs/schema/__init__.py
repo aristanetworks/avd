@@ -52989,9 +52989,17 @@ class EosDesigns(EosDesignsRootModel):
             `inband_mgmt_vrf`, this setting will take precedence.
             """
             ipv4_acl: str | None
-            """IPv4 access-list name."""
+            """
+            IPv4 access-list name.
+            Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and
+            `ipv4_standard_acl` raises an error.
+            """
             ipv4_standard_acl: str | None
-            """IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`."""
+            """
+            IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+            Mutually
+            exclusive with `ipv4_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
+            """
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -53036,8 +53044,14 @@ class EosDesigns(EosDesignsRootModel):
                            `use_default_mgmt_method_vrf`.
                            If set for the VRFs defined by `mgmt_interface_vrf` or
                            `inband_mgmt_vrf`, this setting will take precedence.
-                        ipv4_acl: IPv4 access-list name.
-                        ipv4_standard_acl: IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+                        ipv4_acl:
+                           IPv4 access-list name.
+                           Mutually exclusive with `ipv4_standard_acl`, setting both `ipv4_acl` and
+                           `ipv4_standard_acl` raises an error.
+                        ipv4_standard_acl:
+                           IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+                           Mutually
+                           exclusive with `ipv4_acl`, setting both `ipv4_acl` and `ipv4_standard_acl` raises an error.
                         ipv6_acl: IPv6 access-list name.
 
                     """
