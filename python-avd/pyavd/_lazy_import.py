@@ -36,14 +36,10 @@ def get_lazy_attr(name: str, lazy_imports: LazyImports, namespace: dict[str, Any
         if isinstance(error, AttributeError):
             # AttributeError makes `from package import name` fall back to a same-named submodule, potentially returning the module instead.
             import_error = ImportError(str(error))
-            # TODO: Call import_error.add_note directly once support for Python 3.10 is removed.
-            if callable(add_note := getattr(import_error, "add_note", None)):
-                add_note(note)
+            import_error.add_note(note)
             raise import_error from error
 
-        # TODO: Call error.add_note directly once support for Python 3.10 is removed.
-        if callable(add_note := getattr(error, "add_note", None)):
-            add_note(note)
+        error.add_note(note)
         raise
 
     namespace[name] = value
