@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import re
 import sys
-import warnings
 from importlib import import_module
 from importlib.metadata import Distribution, PackageNotFoundError, version
 from logging import getLogger
@@ -39,8 +38,7 @@ except ImportError:
 LOGGER = getLogger("ansible_collections.arista.avd")
 DISPLAY = Display()
 
-MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
-DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = True
+MIN_PYTHON_SUPPORTED_VERSION = (3, 11)
 COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
@@ -71,16 +69,6 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
     if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
         LOGGER.error("Python Version running %s - Minimum Version required is %s", running_version, min_version)
         return False
-    if DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION and sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
-        msg = (
-            f"You are currently running Python {running_version}. "
-            f"Python {min_version} has reached end of life and no longer receives security updates. "
-            f"AVD will drop support for Python {min_version} in a future release. "
-            "Please upgrade to a newer Python version supported by AVD. "
-            "See the https://avd.arista.com/stable/docs/installation/collection-installation.html#ansible-collection-installation guide for supported versions."
-        )
-        warnings.warn(msg, DeprecationWarning, stacklevel=2)
-
     return True
 
 
