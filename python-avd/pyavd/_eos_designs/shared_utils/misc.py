@@ -188,12 +188,20 @@ class MiscMixin(Protocol):
         return configured_mtu
 
     def get_ipv4_acl(
-        self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
+        self: SharedUtilsProtocol,
+        name: str,
+        interface_name: str | None = None,
+        *,
+        interface_ip: str | None = None,
+        peer_ip: str | None = None,
+        substitution_support: bool = True,
+        context: str | None = None,
     ) -> EosDesigns.Ipv4AclsItem:
         """
         Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
 
         If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        When interface_name is None, substitution fields are not supported.
         """
         if name not in self.inputs.ipv4_acls:
             msg = f"ipv4_acls[name={name}]"
@@ -211,19 +219,25 @@ class MiscMixin(Protocol):
                 continue
 
             err_context = f"ipv4_acls[name={name}].entries[{index}]"
-            if not entry.source:
-                msg = f"{err_context}.source"
-                raise AristaAvdMissingVariableError(msg)
-            if not entry.destination:
-                msg = f"{err_context}.destination"
-                raise AristaAvdMissingVariableError(msg)
+            for field in ("source", "destination"):
+                if not (field_value := entry._get(field)):
+                    msg = f"{err_context}.{field}"
+                    raise AristaAvdMissingVariableError(msg)
+                if field_value not in ip_replacements:
+                    continue
+                if substitution_support is False:
+                    msg = f"Field substitution of the value '{field_value}' defined under '{err_context}.{field}' is not supported for data model '{context}'."
+                    raise AristaAvdInvalidInputsError(msg)
+                if interface_name is None:
+                    msg = (
+                        f"Unable to perform substitution of the value '{field_value}' defined under '{err_context}.{field}', since no interface was specified."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                replacement = self._get_acl_field_with_substitution(field_value, ip_replacements, f"{err_context}.{field}", interface_name)
+                setattr(entry, field, replacement)
+                changed |= replacement != field_value
 
-            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
-            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
-            if entry.source != org_ipv4_acl.entries[index].source or entry.destination != org_ipv4_acl.entries[index].destination:
-                changed = True
-
-        if changed:
+        if changed and interface_name is not None:
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 

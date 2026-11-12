@@ -1,0 +1,18 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-standard-acl-missing
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_standard_acl: FILTER
+
+expected_error_message: >-
+  'ipv4_standard_acls[name=FILTER]' is required but was not found for host 'management-eapi-ipv4-standard-acl-missing'.

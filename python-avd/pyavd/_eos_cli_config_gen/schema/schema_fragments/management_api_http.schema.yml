@@ -38,10 +38,10 @@ keys:
               description: VRF Name.
               type: str
             access_group:
-              description: Standard IPv4 ACL name.
+              description: IPv4 standard or extended ACL name.
               type: str
             ipv6_access_group:
-              description: Standard IPv6 ACL name.
+              description: IPv6 standard or extended ACL name.
               type: str
       protocol_https_certificate:
         type: dict

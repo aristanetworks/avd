@@ -68,19 +68,24 @@ class UtilsMixin(Protocol):
         ipv4_acl: str | None,
         ipv4_standard_acl: str | None,
         context: str,
-        direction: str,
+        direction: str | None = None,
     ) -> None:
-        """Raise if both IPv4 ACL types are set for the same direction, identifying the full input path in context."""
+        """Raise if both IPv4 ACL types are set for the same target and direction."""
         if not (ipv4_acl and ipv4_standard_acl):
             return
-        direction_label = "ingress" if direction == "in" else "egress"
+        suffix = f"_{direction}" if direction is not None else ""
+        target = "interface " if direction is not None else ""
+        direction_label = ""
+        if direction is not None:
+            direction_label = "ingress " if direction == "in" else "egress "
         msg = (
-            f"'ipv4_acl_{direction}' and 'ipv4_standard_acl_{direction}' are mutually exclusive on interface '{context}'. "
-            f"Only one {direction_label} IPv4 ACL can be configured."
+            f"'ipv4_acl{suffix}' and 'ipv4_standard_acl{suffix}' are mutually exclusive on {target}'{context}'. "
+            f"Only one {direction_label}IPv4 ACL can be configured."
         )
         raise AristaAvdInvalidInputsError(msg)
 
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
+        """Validate and append an IPv4 standard ACL from the catalog."""
         if acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)

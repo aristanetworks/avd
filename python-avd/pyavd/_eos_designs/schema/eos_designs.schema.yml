@@ -508,6 +508,18 @@ keys:
 
           Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
+      configure_management_eapi_ipv4_acl_from_catalog:
+        type: bool
+        description: 'Available from AVD 6.5.0.
+
+          Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from `ipv4_acls`
+          for enabled eAPI VRFs.
+
+          An error will be raised if the referenced ACL is not defined under `ipv4_acls`.
+
+          If the referenced ACL is a standard ACL, use `management_eapi.vrfs[].ipv4_standard_acl`
+          instead.'
+        default: false
       consistent_uplink_vlans:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -4140,6 +4152,11 @@ keys:
 
       They will only be configured on devices where they are in use.
 
+      They can also be referenced using `management_eapi.vrfs[].ipv4_acl` when `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog`
+      is enabled.
+
+      Field substitution is not supported for eAPI references.
+
 
       The substitution is useful when assigning the same access-list on multiple interfaces
       where certain fields require unique values.
@@ -4260,7 +4277,9 @@ keys:
     primary_key: name
     description: 'IPv4 standard access-lists catalog.
 
-      These access-lists will only be configured on devices where they are in use.'
+      These access-lists will only be configured on devices where they are in use.
+
+      Field substitution is not supported.'
     items:
       type: dict
       keys:
@@ -4832,7 +4851,24 @@ keys:
               description: Enable/disable Management eAPI for this VRF.
             ipv4_acl:
               type: str
-              description: IPv4 access-list name.
+              description: 'IPv4 extended access-list name.
+
+                For an enabled eAPI VRF, when `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog`
+                is enabled, the access-list must be defined under `ipv4_acls`.
+
+                Otherwise, no catalog entry is required.
+
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl`
+                are set for an enabled eAPI VRF.
+
+                Field substitution is not supported for eAPI references.'
+            ipv4_standard_acl:
+              type: str
+              description: 'IPv4 standard access-list name. For an enabled eAPI VRF,
+                the access-list must be defined under `ipv4_standard_acls`.
+
+                An error will be raised if both `ipv4_acl` and `ipv4_standard_acl`
+                are set for an enabled eAPI VRF.'
             ipv6_acl:
               type: str
               description: IPv6 access-list name.

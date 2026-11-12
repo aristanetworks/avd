@@ -41,6 +41,14 @@ keys:
           Available from AVD 6.2.0.
           Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
+      configure_management_eapi_ipv4_acl_from_catalog:
+        type: bool
+        description: |-
+          Available from AVD 6.5.0.
+          Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from `ipv4_acls` for enabled eAPI VRFs.
+          An error will be raised if the referenced ACL is not defined under `ipv4_acls`.
+          If the referenced ACL is a standard ACL, use `management_eapi.vrfs[].ipv4_standard_acl` instead.
+        default: false
       consistent_uplink_vlans:
         type: bool
         description: |-
