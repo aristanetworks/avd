@@ -72,6 +72,7 @@ class UnderlayMixin(Protocol):
         self._set_underlay_ibgp_peer_group(
             ipv4_underlay_peers.name,
             self.shared_utils.get_bgp_password(ipv4_underlay_peers),
+            ipv4_underlay_peers.maximum_routes,
             ipv4_underlay_peers.structured_config,
             route_reflector_client=False,
         )
@@ -83,6 +84,7 @@ class UnderlayMixin(Protocol):
         self._set_underlay_ibgp_peer_group(
             rr_clients_underlay_peers.name,
             self.shared_utils.underlay_ibgp_rr_clients_password,
+            rr_clients_underlay_peers.maximum_routes,
             rr_clients_underlay_peers.structured_config,
             route_reflector_client=True,
         )
@@ -91,6 +93,7 @@ class UnderlayMixin(Protocol):
         self: StructuredConfigUtilsProtocol,
         name: str,
         password: str | None,
+        maximum_routes: int,
         structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem,
         *,
         route_reflector_client: bool,
@@ -98,14 +101,13 @@ class UnderlayMixin(Protocol):
         """
         Add an iBGP underlay peer group and its IPv4 address-family config to structured_config. Only RFC5549 is supported.
 
-        The 'bfd' and 'maximum_routes' of 'ipv4_underlay_peers' apply to both groups, since every session uses one group on each end.
+        The 'bfd' of 'ipv4_underlay_peers' applies to both groups, since every session uses one group on each end.
         """
-        ipv4_underlay_peers = self.inputs.bgp_peer_groups.ipv4_underlay_peers
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=name,
             password=password,
-            bfd=ipv4_underlay_peers.bfd or None,
-            maximum_routes=ipv4_underlay_peers.maximum_routes,
+            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
+            maximum_routes=maximum_routes,
             send_community="all",
             next_hop_self=True,
             route_reflector_client=route_reflector_client or None,

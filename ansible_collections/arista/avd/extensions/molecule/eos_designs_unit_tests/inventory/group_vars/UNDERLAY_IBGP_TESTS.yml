@@ -4,6 +4,7 @@
 # - The cluster ID is set at node group level for the POD1 spines, and at node type level for the POD2 spines and the super-spines.
 # - The password is set as type 7 on 'ipv4_underlay_peers' and encrypted again for 'rr_clients_underlay_peers',
 #   since EOS encrypts type 7 BGP passwords with the peer group name.
+# - 'maximum_routes' differs between 'ipv4_underlay_peers' and 'rr_clients_underlay_peers'.
 # - underlay-ibgp-pod1-leaf3 is not deployed.
 
 default_node_types:
@@ -32,6 +33,7 @@ bgp_peer_groups:
     structured_config:
       description: Towards uplink route reflectors
   rr_clients_underlay_peers:
+    maximum_routes: 1000
     structured_config:
       description: Towards downlink route reflector clients
 

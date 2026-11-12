@@ -105,8 +105,6 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
         if (cluster_id := self.shared_utils.node_config.bgp_cluster_id) is None:
             return
 
-        # TODO: Verify if EOS accepts the integer form of the cluster ID, like '33686018' for '2.2.2.2'.
-        # If it does, compare normalized values here. If not, add a pattern for the dotted form to the 'bgp_cluster_id' schema.
         if other_route_reflectors := self._underlay_ibgp_route_reflectors_by_cluster_id[cluster_id] - route_reflectors:
             msg = (
                 f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires a unique 'bgp_cluster_id' per group of route reflectors, "

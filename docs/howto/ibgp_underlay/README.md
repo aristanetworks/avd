@@ -15,8 +15,9 @@ With `underlay_routing_protocol: ibgp`, every fabric node uses the same BGP AS, 
 - Every session uses `next-hop-self`, so routes are reachable from every tier.
 
 !!! note "Supported designs"
-    For now, `ibgp` only supports RFC 5549 (IPv4 over IPv6 link-local) underlays with no overlay, as commonly used in AI frontend and backend fabrics.
-    Support for overlays can be added later as required.
+    For now, `ibgp` only supports isolated fabrics with an RFC 5549 (IPv4 over IPv6 link-local) underlay, no overlay and no connectivity outside the fabric, like AI backend fabrics.
+    AI frontend fabrics are not supported yet, since they need eBGP sessions towards external routers for north-south traffic.
+    Support for external connectivity and overlays can be added later as required.
     See [Restrictions](#restrictions) for the full list.
 
 ## Enabling the iBGP underlay
@@ -31,7 +32,7 @@ bgp_as: "65000"
 
 bgp_peer_groups:
   # Sessions towards uplink switches (the route reflectors).
-  # The password, bfd and maximum_routes also apply to rr_clients_underlay_peers.
+  # The password and bfd also apply to rr_clients_underlay_peers.
   ipv4_underlay_peers:
     name: IPv4-UNDERLAY-PEERS  # Default
     cleartext_password: arista123
@@ -39,18 +40,20 @@ bgp_peer_groups:
   # Sessions towards downlink switches (the route reflector clients).
   rr_clients_underlay_peers:
     name: RR-CLIENTS-UNDERLAY-PEERS  # Default
+    maximum_routes: 256000  # Default
 ```
 
 `ibgp` is also valid for `node_type_keys[].default_underlay_routing_protocol`.
 
-`rr_clients_underlay_peers` only has `name` and `structured_config`. Every session uses `ipv4_underlay_peers` on the client and `rr_clients_underlay_peers` on the route reflector,
-so both ends always get the same password, `bfd` and `maximum_routes`.
+`rr_clients_underlay_peers` only has `name`, `maximum_routes` and `structured_config`. Every session uses `ipv4_underlay_peers` on the client and `rr_clients_underlay_peers` on the route reflector,
+so both ends always get the same password and `bfd`.
+`maximum_routes` only limits the routes received on each end, so each group has its own.
 
 EOS encrypts a type 7 BGP password with the peer group name. A type 7 `password` must therefore be encrypted with the `ipv4_underlay_peers` name, and AVD encrypts it again with the `rr_clients_underlay_peers` name.
 The same password therefore renders different type 7 strings on the two groups.
 
 !!! info "Why two peer groups"
-    RFC 5549 `neighbor interface` statements only accept a peer group, a remote AS, a peer filter and a description.
+    RFC 5549 `neighbor interface` statements only accept a peer group, and a remote AS or a peer filter.
     The route reflector attributes must therefore live on peer groups, and a spine needs one per direction.
 
 ## What AVD renders
@@ -68,7 +71,7 @@ The same password therefore renders different type 7 strings on the two groups.
 
 The route reflectors that serve the same clients form an RR group, and share one cluster ID:
 
-- `bgp_cluster_id` is required on every route reflector, which is any node with downlink switches.
+- `bgp_cluster_id` is required on every route reflector, which is any node with downlink iBGP switches.
 - It must be the same on all the route reflectors of the group, and unique across RR groups.
 
 Leaves have no downlink switches, so they render no cluster ID and must not set `bgp_cluster_id`.
@@ -125,21 +128,23 @@ A leaf only renders `IPv4-UNDERLAY-PEERS` and its uplink neighbor interfaces. A 
 
 - One BGP AS for the whole fabric.
 - Any number of tiers.
-- Full mesh between adjacent tiers. All clients of a route reflector must have the same uplink switches, and all those uplink switches must have the same downlink switches.
+- Each RR group forms a full mesh with its clients: all clients of a route reflector must have the same uplink switches, and all those uplink switches must have the same downlink switches.
+  For example, all the leaves of a POD connect to all the spines of that POD, but not to the spines of other PODs.
   Partial meshes and links that skip a tier raise an error, since a shared cluster ID would then drop valid routes.
 
 ## Why route reflectors share a cluster ID
 
 Using a distinct cluster ID per route reflector, like the router ID default used for overlay route reflectors, causes hairpin ECMP paths.
-For example, with two spines per POD below two super-spines:
+For example, with leaf1 connected to spine1 and spine2 of its POD, and both spines connected to two super-spines:
 
-1. A leaf advertises its loopback to both spines of its POD.
-2. Each super-spine learns the route from both spines, and reflects its best path to the other spines, including the spine that has the leaf directly connected.
-3. That spine sees a cluster list that does not contain its own cluster ID, so it accepts the reflected routes.
-4. The spine installs three ECMP paths to its own directly connected leaf: the direct one, and two through the super-spines.
+1. leaf1 advertises its loopback to spine1 and spine2. Each spine reflects it to the super-spines and adds its own cluster ID to the cluster list.
+2. Each super-spine reflects its best path to all the spines, so spine2 receives the path learned from spine1, with the cluster list of spine1 and the super-spine.
+3. That cluster list does not contain the cluster ID of spine2, so spine2 accepts the path.
+4. spine2 installs three ECMP paths to its directly connected leaf1: the direct one, and two through the super-spines.
 
-When both spines of the POD share one cluster ID, the spine drops the routes reflected through the other POD spine, so only the direct path to the leaf loopback remains.
-On a leaf-to-spine link failure, the spine then has no path to the leaf and withdraws it, which matches eBGP behavior.
+When spine1 and spine2 share one cluster ID, like `2.2.2.2`, spine2 finds `2.2.2.2` in the cluster list of the paths the super-spines learned from spine1, and drops them.
+Only the direct path to the leaf1 loopback remains.
+On a failure of the leaf1 to spine2 link, spine2 then has no path to leaf1 and withdraws it, which matches eBGP behavior.
 
 This only applies to prefixes learned from clients. A route reflector does not add its own cluster ID to the prefixes it originates, like its loopback.
 For example, spine 2 advertises its loopback to the super-spines without a cluster list. A super-spine reflects it to spine 1 with the super-spine cluster ID only, so spine 1 accepts it and reflects it to its leaves.
@@ -173,8 +178,8 @@ The topology and cluster ID checks of the route reflector groups run while gener
 | WAN router (`wan_role` set) | WAN logic lives on the underlay peer group. |
 | An uplink or downlink switch is not an `ibgp` underlay router with `p2p` uplinks (L2 switches, other protocols) | Keeps the route reflector client sets clean. |
 | Local and peer BGP AS differ on a fabric link, also with AS ranges | Strict iBGP. |
-| An `l3_edge` or `core_interfaces` link has `include_in_underlay_protocol: true` (the default) or `routing_protocol: ebgp` | These links have no up or down direction, and external routes are not supported yet. |
-| Node `l3_interfaces` or `l3_port_channels` with BGP peers | External routes are not supported yet. |
+| An `l3_edge` or `core_interfaces` link has `include_in_underlay_protocol: true` (the default) or `routing_protocol: ebgp` | These links have no up or down direction, and north-south connectivity is not supported yet. |
+| Node `l3_interfaces` or `l3_port_channels` with BGP peers | North-south connectivity, like eBGP towards external routers, is not supported yet. |
 | Network services (VRFs or L2 VLANs) on the node after filtering | Not supported yet. |
 | Inband management or inband ZTP, on the node or its downlink switches | Inband host routes are only exported with eBGP today. |
 | Underlay multicast (PIM-SM or static, fabric or node level) | Not supported yet. |

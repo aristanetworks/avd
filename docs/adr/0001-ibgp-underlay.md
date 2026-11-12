@@ -7,7 +7,7 @@
 # ADR 0001 - iBGP underlay with derived route reflection
 
 - Status: Accepted
-- Date: 2026-11-02
+- Date: 2026-11-12
 
 ## Context
 
@@ -16,15 +16,16 @@ The uplinks already describe the hierarchy, so the route reflection can be deriv
 
 ## Decisions
 
-1. **Narrow scope.** `underlay_routing_protocol: ibgp` only supports RFC 5549 with no overlay. Everything else raises an error instead of being ignored, so relaxing a guard is a deliberate change with tests.
+1. **Narrow scope.** `underlay_routing_protocol: ibgp` only supports isolated fabrics with RFC 5549, no overlay and no north-south connectivity, like AI backend fabrics. AI frontend fabrics need eBGP towards external routers and are not supported yet. Everything else raises an error instead of being ignored, so relaxing a guard is a deliberate change with tests.
 2. **Derived route reflection.** A node with downlink switches is a route reflector (RR) for them. Every session uses `next-hop-self`. There is no RR role input.
 3. **One cluster ID per RR group.** The RRs serving the same clients form a group. `bgp_cluster_id` is mandatory on every RR, the same in a group and unique across groups.
    - A distinct ID per RR, like the router ID default, creates hairpin ECMP paths through the upper tier.
    - The same ID in two groups drops routes between them, through cluster list loop detection.
-   - A shared ID is only safe with a full mesh between adjacent tiers, so partial meshes and tier skips are rejected.
-4. **Two peer groups, one set of session settings.** Uplinks use `ipv4_underlay_peers`. Downlinks use `rr_clients_underlay_peers`, which only has `name` and `structured_config` and inherits the password, `bfd` and `maximum_routes`.
+   - A shared ID is only safe when each RR group forms a full mesh with its clients, so partial meshes and tier skips are rejected.
+4. **Two peer groups, shared session settings.** Uplinks use `ipv4_underlay_peers`. Downlinks use `rr_clients_underlay_peers`, which only has `name`, `maximum_routes` and `structured_config` and inherits the password and `bfd`.
    - RFC 5549 `neighbor interface` only takes a peer group, so `route-reflector-client` must live on a peer group, and a spine needs one per direction.
-   - Both ends of a session read the same inputs, so they can't mismatch. A use case for different values can add keys later.
+   - Both ends of a session read the same password and `bfd` inputs, so they can't mismatch. A use case for different values can add keys later.
+   - `maximum_routes` only limits the routes received on each end, so each group has its own.
    - EOS encrypts a type 7 BGP password with the peer group name, so AVD decrypts it with the `ipv4_underlay_peers` name and encrypts it again with the `rr_clients_underlay_peers` name. Passwords never go into facts.
 5. **Topology checks in facts, per device.** Clients check that their RRs share one cluster ID. RRs check that all their clients have the same RRs, and use a shared cluster ID registry, filled during `cross_pollinate()` like `mlag_groups`, for uniqueness.
    - Per device, so the checks fit a future facts stage processed in parallel per device. The registry is the only cross-device state.
