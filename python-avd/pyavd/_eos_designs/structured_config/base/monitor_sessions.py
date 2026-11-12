@@ -6,7 +6,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from functools import cached_property
-from ipaddress import IPv4Address, IPv6Address
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -14,7 +13,6 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.interface_data import InterfaceData
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd._utils.groupby import groupby_obj
 from pyavd.j2filters import range_expand
 
@@ -141,7 +139,7 @@ class MonitorSessionsMixin(Protocol):
     ) -> list[MonitorSessionInterfaceData]:
         """Return list of monitor session configs extracted from every interface."""
         monitor_session_configs = []
-        adapter_monitor_session_type = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
+        adapter_monitor_sessions_type = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessions
         for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.monitor_sessions:
@@ -181,7 +179,7 @@ class MonitorSessionsMixin(Protocol):
                     monitor_session_configs.extend(
                         self._get_monitor_session_interface_data(
                             interface_data,
-                            (monitor_session._cast_as(adapter_monitor_session_type) for monitor_session in network_port.monitor_sessions),
+                            network_port.monitor_sessions._cast_as(adapter_monitor_sessions_type),
                         )
                     )
                     continue
@@ -191,7 +189,7 @@ class MonitorSessionsMixin(Protocol):
                 monitor_session_configs.extend(
                     self._get_monitor_session_interface_data(
                         interface_data,
-                        (monitor_session._cast_as(adapter_monitor_session_type) for monitor_session in network_port.monitor_sessions),
+                        network_port.monitor_sessions._cast_as(adapter_monitor_sessions_type),
                     )
                 )
 
@@ -205,10 +203,6 @@ class MonitorSessionsMixin(Protocol):
                             continue
 
                         interface_name = l3_interface.interfaces[node_index]
-                        ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
-                        interface_ip = IPv4Address(get_ip_from_ip_prefix(ip_address)) if ip_address and "/" in ip_address else None
-                        ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
-                        interface_ipv6 = IPv6Address(get_ip_from_ip_prefix(ipv6_address)) if ipv6_address and "/" in ipv6_address else None
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
                         # TODO: DO not raise the error for digital twin
                         if "." in interface_name and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
@@ -220,17 +214,14 @@ class MonitorSessionsMixin(Protocol):
                         interface_data = InterfaceData(
                             interface=interface_name,
                             context=context,
-                            interface_ip=interface_ip,
-                            interface_ipv6=interface_ipv6,
                         )
                         for monitor_session in l3_interface.monitor_sessions:
                             self._validate_monitor_session_on_subinterface(interface_name, monitor_session, context)
 
-                        # We merge using the adapter datamodel to catch conflicts in direction.
                         monitor_session_configs.extend(
                             self._get_monitor_session_interface_data(
                                 interface_data,
-                                (monitor_session._cast_as(adapter_monitor_session_type) for monitor_session in l3_interface.monitor_sessions),
+                                l3_interface.monitor_sessions._cast_as(adapter_monitor_sessions_type),
                             )
                         )
 
