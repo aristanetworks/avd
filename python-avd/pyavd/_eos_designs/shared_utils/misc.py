@@ -294,6 +294,9 @@ class MiscMixin(Protocol):
 
         If a replacement is done, but the value is None, an error will be raised.
         """
+        if field_value not in replacements:
+            return field_value
+
         if (replacement_value := replacements[field_value]) is None:
             msg = (
                 f"Unable to perform substitution of the value '{field_value}' defined under '{field_context}', "
