@@ -5,13 +5,16 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from copy import deepcopy
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Literal, TypeAlias
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
     from typing import Self
 
     from .type_vars import T_AvdBase
+
+AvdListMergeStrategy: TypeAlias = Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"]
+"""Strategies accepted by AvdBase._deepmerge for nested AvdList and AvdIndexedList values."""
 
 
 class InternalData:
@@ -108,7 +111,7 @@ class AvdBase(ABC):
         """Recast a class instance as another similar subclass if they are compatible."""
 
     @abstractmethod
-    def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
+    def _deepmerge(self, other: Self, list_merge: AvdListMergeStrategy = "append_unique") -> None:
         """
         Update instance by deepmerging the other instance in.
 
@@ -131,9 +134,7 @@ class AvdBase(ABC):
     def _compare(self, other: Self) -> bool:
         """Compare two instances. Optionally ignoring fields for the outermost AvdModel."""
 
-    def _deepmerged(
-        self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique"
-    ) -> Self:
+    def _deepmerged(self, other: Self, list_merge: AvdListMergeStrategy = "append_unique") -> Self:
         """
         Return new instance with the result of the deepmerge of "other" on this instance.
 
