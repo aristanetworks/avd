@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: Field substitution of the value 'interface_ip' defined under 'ipv4_acls[name=QMS-EXTENDED].entries[0].source' is not supported for queue-monitor streaming reference 'queue_monitor_streaming.ip_access_group'.
+pyavd._errors.AristaAvdInvalidInputsError: Field substitution of the value 'interface_ip' defined under 'ipv4_acls[name=QMS-EXTENDED].entries[0].source' is not supported for reference 'queue_monitor_streaming.ip_access_group'.
