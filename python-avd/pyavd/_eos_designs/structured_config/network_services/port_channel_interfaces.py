@@ -55,7 +55,7 @@ class PortChannelInterfacesMixin(Protocol):
                     f"L3 Port-Channels at paths {', '.join(repr(path) for path in l3_port_channel_paths)} must each have at least one member interface defined."
                 )
             warnings.warn(
-                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", future_version="7.0"),
+                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", version="7.0.0"),
                 stacklevel=2,
             )
 
@@ -69,6 +69,9 @@ class PortChannelInterfacesMixin(Protocol):
         Raises:
             AristaAvdInvalidInputsError:
                 if any subinterface is using a non supported key.
+
+        Returns:
+            list[str]: Paths to L3 Port-Channels without member interfaces.
         """
         l3_port_channel_paths_without_members: list[str] = []
         for vrf in tenant.vrfs:

@@ -335,7 +335,7 @@ class RouterBgpMixin(Protocol):
                     "or disable the MLAG iBGP peering for these VRFs with 'enable_mlag_ibgp_peering_vrfs: false'."
                 )
             warnings.warn(
-                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", future_version="7.0"),
+                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", version="7.0.0"),
                 stacklevel=2,
             )
 

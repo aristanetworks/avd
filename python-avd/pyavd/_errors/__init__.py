@@ -101,17 +101,17 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
 class AvdFutureBehaviorWarning(FutureWarning):
     """Warning for behavior that will change when a future-behavior knob becomes the default."""
 
-    def __init__(self, message: str, *, future_version: str | None = None) -> None:
+    def __init__(self, message: str, *, version: str | None = None) -> None:
         self.message = message
-        self.future_version = future_version
+        self.version = version
         super().__init__(message)
 
     @property
     def detailed_message(self) -> str:
         """Return the warning message including the version where the configuration becomes unsupported."""
-        if self.future_version is None:
+        if self.version is None:
             return self.message
-        return f"{self.message} This configuration will not be supported in AVD {self.future_version}."
+        return f"{self.message} This configuration is deprecated and will no longer be supported in AVD {self.version}."
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):

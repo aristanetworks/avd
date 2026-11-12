@@ -36,7 +36,7 @@ class AddressLockingMixin(Protocol):
                 AvdFutureBehaviorWarning(
                     f"Host '{self.shared_utils.hostname}': Setting both 'address_locking_settings.local_interface' and "
                     "'address_locking_settings.dhcp_server_interfaces' is not supported. Only one of these settings should be configured.",
-                    future_version="7.0",
+                    version="7.0.0",
                 ),
                 stacklevel=2,
             )

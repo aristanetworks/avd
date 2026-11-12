@@ -135,9 +135,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     node_config_path = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}]"
                     warnings.warn(
                         AvdFutureBehaviorWarning(
-                            f"Host '{self.shared_utils.hostname}': Setting '{node_config_path}.underlay_router: true' with "
-                            f"'{node_config_path}.uplink_type: port-channel' is not supported.",
-                            future_version="7.0",
+                            f"Host '{self.shared_utils.hostname}': The node at path '{node_config_path}' has effective settings "
+                            "'underlay_router: true' and 'uplink_type: port-channel', which are not supported together.",
+                            version="7.0.0",
                         ),
                         stacklevel=2,
                     )

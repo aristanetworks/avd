@@ -600,6 +600,20 @@ class TestAVDActionPlugin:
                 id="future_behavior_warning",
             ),
             pytest.param(
+                AvdFutureBehaviorWarning("This is a future behavior warning.", version="7.0.0"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "This is a future behavior warning.",
+                            "version": "7.0.0",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="future_behavior_warning_with_version",
+            ),
+            pytest.param(
                 AvdDeprecationWarning(["old_key"], remove_in_version="7.0.0"),
                 {
                     "warnings": [],

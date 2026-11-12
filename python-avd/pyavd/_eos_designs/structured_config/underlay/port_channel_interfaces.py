@@ -116,7 +116,28 @@ class PortChannelInterfacesMixin(Protocol):
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces
-        for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
+        l3_port_channels = self.shared_utils.node_config.l3_port_channels
+        if not self.inputs.avd_design_future.raise_for_port_channels_without_members:
+            node_config_path = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}]"
+            l3_port_channel_paths_without_members = [
+                f"{node_config_path}.l3_port_channels[name={l3_port_channel.name}]"
+                for l3_port_channel in l3_port_channels
+                if "." not in l3_port_channel.name and not l3_port_channel.member_interfaces
+            ]
+            if l3_port_channel_paths_without_members:
+                if len(l3_port_channel_paths_without_members) == 1:
+                    msg = f"L3 Port-Channel at path '{l3_port_channel_paths_without_members[0]}' must have at least one member interface defined."
+                else:
+                    msg = (
+                        f"L3 Port-Channels at paths {', '.join(repr(path) for path in l3_port_channel_paths_without_members)} "
+                        "must each have at least one member interface defined."
+                    )
+                warnings.warn(
+                    AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", version="7.0.0"),
+                    stacklevel=2,
+                )
+
+        for l3_port_channel in l3_port_channels:
             self._set_l3_port_channel(l3_port_channel)
 
         # WAN HA interface for direct connection
@@ -136,20 +157,9 @@ class PortChannelInterfacesMixin(Protocol):
                 msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
                 raise AristaAvdInvalidInputsError(msg)
         # Validation: Non-subinterface port-channels must have at least one member interface
-        elif not l3_port_channel.member_interfaces:
+        elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
             msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
-            if self.inputs.avd_design_future.raise_for_port_channels_without_members:
-                raise AristaAvdInvalidInputsError(msg)
-            l3_port_channel_path = (
-                f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels[name={l3_port_channel.name}]"
-            )
-            warnings.warn(
-                AvdFutureBehaviorWarning(
-                    f"Host '{self.shared_utils.hostname}': L3 Port-Channel at path '{l3_port_channel_path}' must have at least one member interface defined.",
-                    future_version="7.0",
-                ),
-                stacklevel=2,
-            )
+            raise AristaAvdInvalidInputsError(msg)
 
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
