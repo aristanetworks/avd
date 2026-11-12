@@ -437,7 +437,7 @@ keys:
               min: 1
               max: 65535
               description: |-
-                Set OSPFv3 cost on the interface for both address families.
+                Set OSPFv3 cost on the interface for both IPv4 and IPv6 address families.
                 Mutually exclusive with `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set.
             passive_interface:
               type: bool
