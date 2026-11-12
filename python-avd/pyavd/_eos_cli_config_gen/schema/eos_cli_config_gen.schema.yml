@@ -22445,6 +22445,23 @@ keys:
       router_id:
         type: str
         description: 32-bit OSPF router ID as an IP address.
+      bfd_default:
+        type: bool
+        description: 'Enable BFD for OSPFv3 on the interface for both address families.
+          An address-family BFD setting suppresses the shared
+
+          command only when that same address family is enabled (`enabled: true`)
+          under this router OSPFv3 instance. A family
+
+          BFD command is rendered only when the family is enabled and its BFD setting
+          is true.'
+      bfd_adjacency_state_any:
+        type: bool
+        description: 'Allow BFD sessions to be established in any OSPFv3 adjacency
+          state. If an enabled address family defines
+
+          this setting, the shared BFD adjacency command is not rendered. A family
+          BFD adjacency command is rendered only when that family setting is true.'
       passive_interface_default:
         type: bool
       auto_cost_reference_bandwidth:
@@ -22468,6 +22485,13 @@ keys:
           router_id:
             type: str
             description: 32-bit OSPF router ID as an IP address.
+          bfd_default:
+            type: bool
+            description: Enable BFD for this OSPFv3 address family.
+          bfd_adjacency_state_any:
+            type: bool
+            description: Allow BFD sessions to be established in any OSPFv3 adjacency
+              state for this address family.
           passive_interface_default:
             type: bool
           auto_cost_reference_bandwidth:
@@ -22595,6 +22619,24 @@ keys:
             router_id:
               type: str
               description: 32-bit OSPF router ID as an IP address.
+            bfd_default:
+              type: bool
+              description: 'Enable BFD for OSPFv3 on the interface for both address
+                families in this VRF. An address-family BFD setting suppresses
+
+                the shared command only when that same address family is enabled (`enabled:
+                true`) in this VRF. A family BFD command
+
+                is rendered only when the family is enabled and its BFD setting is
+                true.'
+            bfd_adjacency_state_any:
+              type: bool
+              description: 'Allow BFD sessions to be established in any OSPFv3 adjacency
+                state in this VRF. If an enabled address family defines
+
+                this setting, the shared BFD adjacency command is not rendered. A
+                family BFD adjacency command is rendered only when that family setting
+                is true.'
             passive_interface_default:
               type: bool
             auto_cost_reference_bandwidth:
