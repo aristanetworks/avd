@@ -188,7 +188,14 @@ class MiscMixin(Protocol):
         return configured_mtu
 
     def get_ipv4_acl(
-        self: SharedUtilsProtocol, name: str, interface_name: str | None = None, *, interface_ip: str | None = None, peer_ip: str | None = None
+        self: SharedUtilsProtocol,
+        name: str,
+        interface_name: str | None = None,
+        *,
+        interface_ip: str | None = None,
+        peer_ip: str | None = None,
+        substitution_support: bool = True,
+        context: str | None = None,
     ) -> EosDesigns.Ipv4AclsItem:
         """
         Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
@@ -218,6 +225,9 @@ class MiscMixin(Protocol):
                     raise AristaAvdMissingVariableError(msg)
                 if field_value not in ip_replacements:
                     continue
+                if substitution_support is False:
+                    msg = f"Field substitution of the value '{field_value}' defined under '{err_context}.{field}' is not supported for data model '{context}'."
+                    raise AristaAvdInvalidInputsError(msg)
                 if interface_name is None:
                     msg = (
                         f"Unable to perform substitution of the value '{field_value}' defined under '{err_context}.{field}', since no interface was specified."
@@ -284,9 +294,6 @@ class MiscMixin(Protocol):
 
         If a replacement is done, but the value is None, an error will be raised.
         """
-        if field_value not in replacements:
-            return field_value
-
         if (replacement_value := replacements[field_value]) is None:
             msg = (
                 f"Unable to perform substitution of the value '{field_value}' defined under '{field_context}', "

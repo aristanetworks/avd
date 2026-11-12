@@ -465,10 +465,7 @@ class AvdStructuredConfigBaseProtocol(
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                 enable_vrf._update(access_group=vrf.ipv4_standard_acl, ipv6_access_group=vrf.ipv6_acl)
             elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.configure_management_eapi_ipv4_acl_from_catalog:
-                if vrf.ipv4_acl not in self.inputs.ipv4_acls:
-                    msg = f"ipv4_acls[name={vrf.ipv4_acl}]"
-                    raise AristaAvdMissingVariableError(msg, self.shared_utils.hostname)
-                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl)
+                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, substitution_support=False, context=context)
                 self.structured_config_utils._set_ipv4_acl(acl)
                 enable_vrf._update(access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
             else:
