@@ -237,7 +237,10 @@ class MiscMixin(Protocol):
             if entry._get("remark"):
                 continue
             for field in ("source", "destination"):
-                if (field_value := entry._get(field)) in ("interface_ip", "peer_ip"):
+                if not (field_value := entry._get(field)):
+                    msg = f"ipv4_acls[name={name}].entries[{index}].{field}"
+                    raise AristaAvdMissingVariableError(msg, host=self.hostname)
+                if field_value in ("interface_ip", "peer_ip"):
                     msg = (
                         f"Field substitution of the value '{field_value}' defined under "
                         f"'ipv4_acls[name={name}].entries[{index}].{field}' "

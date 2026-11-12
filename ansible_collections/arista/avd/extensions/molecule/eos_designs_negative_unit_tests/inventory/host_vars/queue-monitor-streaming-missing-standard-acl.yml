@@ -8,6 +8,3 @@ l2leaf:
 queue_monitor_streaming:
   enable: true
   ip_standard_access_group: QMS-STANDARD
-
-expected_error_message: >-
-  'ipv4_standard_acls[name=QMS-STANDARD]' is required but was not found

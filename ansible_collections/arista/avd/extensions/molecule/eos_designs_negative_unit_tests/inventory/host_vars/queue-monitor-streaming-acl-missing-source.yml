@@ -1,0 +1,21 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: queue-monitor-streaming-acl-missing-source
+
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: QMS-EXTENDED
+
+avd_design_future:
+  configure_queue_monitor_streaming_ipv4_acl_from_catalog: true
+
+ipv4_acls:
+  - name: QMS-EXTENDED
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        destination: any
