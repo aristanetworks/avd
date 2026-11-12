@@ -1,6 +1,18 @@
 ---
 # This yml file is being used to test the various supported schema attributes for L3 Port-Channel
 # for cv-pathfinder deployment use-case.
+ipv4_standard_acls:
+  - name: STD-PC-ACL-IN
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.0/8
+  - name: STD-PC-ACL-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 172.16.0.0/12
+
 type: wan_router
 
 cv_pathfinder_regions:
@@ -173,6 +185,19 @@ wan_router:
                 - 2001:db8:2::1/64
               peer: peer5
               peer_port_channel: Port-Channel46
+            - # ipv4_standard_acl_in/out on node_type l3_port_channel
+              name: Port-Channel50
+              mode: active
+              member_interfaces:
+                - name: Ethernet5
+                  peer: peer6
+                  peer_interface: Ethernet1
+              ip_address: 192.168.50.1/31
+              peer: peer6
+              peer_port_channel: Port-Channel50
+              peer_ip: 192.168.50.2
+              ipv4_standard_acl_in: STD-PC-ACL-IN
+              ipv4_standard_acl_out: STD-PC-ACL-OUT
 wan_carriers:
   - name: Cybercast
     path_group: INET
