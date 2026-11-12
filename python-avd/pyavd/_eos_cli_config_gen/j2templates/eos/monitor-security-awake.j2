@@ -21,7 +21,8 @@ monitor security awake
    ipfix listener port {{ monitor_security.awake.ipfix_listener_port }}
 {%     endif %}
 {%     if monitor_security.awake.ndr_application.unknown_udp is arista.avd.defined(true) %}
-   ndr application unknown udp
+   ndr application
+      unknown-udp
 {%     endif %}
 {%     for nucleus in monitor_security.awake.nucleus | arista.avd.default([]) %}
    !
