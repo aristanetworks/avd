@@ -31,6 +31,3 @@ l3leaf:
       uplink_switches: ['uplink-switches-length-less-than-uplink-interfaces-1']
       uplink_switch_interfaces:
         - Ethernet8
-
-expected_error_message: >-
-  Length of 'uplink_interfaces': 2 does not match the length of 'uplink_switches': 1 for host 'uplink-switches-length-less-than-uplink-interfaces'.

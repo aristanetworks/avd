@@ -23,6 +23,7 @@ from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
         pytest.param(ChangeControlStatus.SCHEDULED, False, None, "scheduled", id="scheduled"),
         pytest.param(ChangeControlStatus.SCHEDULED, True, None, "scheduled", id="scheduled-approved"),
         pytest.param(ChangeControlStatus.NOT_STARTED, False, None, "pending approval", id="not-started-pending-approval"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, None, None, "pending approval", id="not-started-approval-unset"),
         pytest.param(ChangeControlStatus.NOT_STARTED, True, None, "approved", id="not-started-approved"),
         pytest.param(ChangeControlStatus.UNSPECIFIED, False, None, "pending approval", id="unspecified-pending-approval"),
         pytest.param(ChangeControlStatus.UNSPECIFIED, True, None, "approved", id="unspecified-approved"),
@@ -35,10 +36,11 @@ from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
         pytest.param(ChangeControlStatus.UNSPECIFIED, False, "Something went wrong", "failed", id="unspecified-failed"),
         pytest.param(ChangeControlStatus.UNSPECIFIED, True, "Something went wrong", "approved", id="unspecified-approved-failed"),
         pytest.param(ChangeControlStatus.NOT_STARTED, False, "Something went wrong", "failed", id="not-started-failed"),
+        pytest.param(ChangeControlStatus.NOT_STARTED, None, "Something went wrong", "failed", id="not-started-approval-unset-failed"),
         pytest.param(ChangeControlStatus.NOT_STARTED, True, "Something went wrong", "approved", id="not-started-approved-failed"),
     ],
 )
-def test_get_change_control_state(status: ChangeControlStatus, approved: bool, error: str | None, expected_state: str) -> None:
+def test_get_change_control_state(status: ChangeControlStatus, approved: bool | None, error: str | None, expected_state: str) -> None:
     """Test that every supported Change Control status is mapped explicitly."""
     cv_change_control = create_grpc_change_control(status=status, approved=approved, error=error)
 

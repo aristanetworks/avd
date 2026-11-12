@@ -1,0 +1,24 @@
+---
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        region: auto
+        vrf: default
+  set_source_interfaces: false
+  terminattr:
+    flowdns: false
+
+ntp_settings:
+  server_vrf: default
+  servers:
+    - name: 192.0.2.123
+
+dns_settings_profiles:
+  - profile: ztp_dns_profile
+    servers:
+      - ip_address: 192.0.2.53
+        vrf: default
+      - ip_address: 192.0.2.54
+        vrf: default

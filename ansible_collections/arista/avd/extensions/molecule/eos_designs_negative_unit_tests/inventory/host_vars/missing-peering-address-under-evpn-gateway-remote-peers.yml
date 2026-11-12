@@ -17,6 +17,3 @@ l3leaf:
         remote_peers:
           - hostname: missing-mgmt-ip-cvx-servers
             bgp_as: 65555
-
-expected_error_message: >-
-  Unable to determine the remote IP address to use for the EVPN Gateway peer 'missing-mgmt-ip-cvx-servers'.

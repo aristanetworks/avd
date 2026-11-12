@@ -5,6 +5,7 @@
 import json
 import logging
 import sys
+import warnings
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
@@ -51,6 +52,7 @@ class VersionInfo(NamedTuple):
     ("mocked_version", "expected_return"),
     [
         ((2, 2, 2, "final", 0), False),
+        ((3, 10, 42, "final", 0), False),
         ((MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1], 42, "final", 0), True),
         ((MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1] + 1, 42, "final", 0), True),
     ],
@@ -58,9 +60,14 @@ class VersionInfo(NamedTuple):
 def test__validate_python_version(mocked_version: tuple[int, int, int, str, int], expected_return: bool) -> None:
     """TODO: - could add the expected stderr."""
     info = {}
-    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
+        warnings.catch_warnings(record=True) as recorded_warnings,
+    ):
+        warnings.simplefilter("always")
         mocked_sys.version_info = VersionInfo(*mocked_version)
         ret = _validate_python_version(info)
+    assert not recorded_warnings
     assert ret == expected_return
     assert info["python_version_info"] == {
         "major": mocked_version[0],
@@ -70,29 +77,6 @@ def test__validate_python_version(mocked_version: tuple[int, int, int, str, int]
         "serial": mocked_version[4],
     }
     assert bool(info["python_path"])
-
-
-def test__validate_python_version_deprecation_message() -> None:
-    """Test to verify the deprecation message."""
-    info: dict[str, str | int] = {}
-    with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", new=True),
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
-    ):
-        mocked_sys.version_info = VersionInfo(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        with pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings:
-            ret = _validate_python_version(info)
-    assert ret is True
-    assert info["python_version_info"] == {
-        "major": MIN_PYTHON_SUPPORTED_VERSION[0],
-        "minor": MIN_PYTHON_SUPPORTED_VERSION[1],
-        "micro": 42,
-        "releaselevel": "final",
-        "serial": 0,
-    }
-    assert bool(info["python_path"])
-    # Check for deprecation of PYTHON min version
-    assert len(recorded_warnings) == 1
 
 
 @pytest.mark.parametrize(
@@ -680,21 +664,28 @@ def test_action_module_main_source_changes(action_module: "Callable[..., ActionB
     assert module.result["failed"] is False
 
 
-def test_action_module_main_success(action_module: "Callable[..., ActionBase]") -> None:
-    """When all validators pass and avd_ignore_requirements is False, result['failed'] is False."""
+@pytest.mark.parametrize("python_minor", [11, 12, 13, 14])
+@pytest.mark.parametrize("running_from_source", [False, True])
+def test_action_module_main_success(action_module: "Callable[..., ActionBase]", python_minor: int, running_from_source: bool) -> None:
+    """Successful execution does not report Python deprecations for supported versions."""
     module = action_module(ActionModule, task_args={"requirements": ["test-dep>=1.0"]})
 
     with (
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch(f"{MODULE_PATH}._get_running_collection_version", side_effect=_mock_get_running_collection_version),
-        patch(f"{MODULE_PATH}.check_running_from_source", return_value=False),
-        patch(f"{MODULE_PATH}._validate_python_version", return_value=True),
+        patch(f"{MODULE_PATH}.check_running_from_source", return_value=running_from_source),
+        patch(f"{MODULE_PATH}.sys") as mocked_sys,
         patch(f"{MODULE_PATH}._validate_python_requirements", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_version", return_value=True),
         patch(f"{MODULE_PATH}._validate_ansible_collections", return_value=True),
         patch(f"{MODULE_PATH}.DISPLAY"),
-        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=False),
+        patch(f"{MODULE_PATH}.RUNNING_FROM_SOURCE", new=running_from_source),
     ):
-        module.main(task_vars=DEFAULT_TASK_VARS)
+        mocked_sys.version_info = VersionInfo(3, python_minor, 42, "final", 0)
+        mocked_sys.path = sys.path
+        result = module.run(task_vars=DEFAULT_TASK_VARS)
 
-    assert module.result["failed"] is False
-    assert "msg" not in module.result
+    assert result["failed"] is False
+    assert "msg" not in result
+    assert not result.get("warnings")
+    assert not result.get("deprecations")

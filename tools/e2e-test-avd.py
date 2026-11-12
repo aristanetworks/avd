@@ -23,6 +23,7 @@ import pathlib
 import pickle
 import shutil
 import sys
+import tomllib
 import traceback
 import typing
 import weakref
@@ -33,7 +34,6 @@ from multiprocessing import get_context, shared_memory
 
 import git
 import pyavd_utils
-import tomllib
 import yaml
 from ansible.cli import CLI
 from ansible.inventory.manager import InventoryManager
@@ -48,10 +48,9 @@ from yaml import CLoader as YamlLoader
 
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
-    from typing import TypeVar
+    from typing import Self, TypeVar
 
     from ansible.inventory.host import Host
-    from typing_extensions import Self
 
     from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.schemas import AVDDesign
@@ -794,7 +793,7 @@ class AvdV6Build:
                     sort_keys=False,
                     indent=2,
                     width=130,
-                    explicit_start=isinstance(output.digital_twin, ContainerlabDigitalTwin),
+                    explicit_start=True,
                 )
 
         return True

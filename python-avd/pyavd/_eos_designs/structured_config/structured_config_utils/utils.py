@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.run_once import run_once_method
 from pyavd._utils.undefined import Undefined, UndefinedType
 
@@ -53,6 +53,36 @@ class UtilsMixin(Protocol):
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
+
+    @run_once_method
+    def set_once_oob_mgmt_vrf(self: StructuredConfigUtilsProtocol) -> None:
+        """Set OOB management VRF once when required."""
+        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
+
+        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
+            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
+        self.structured_config.vrfs.append(vrf_settings)
+
+    def _validate_ipv4_acl_exclusion(
+        self: StructuredConfigUtilsProtocol,
+        ipv4_acl: str | None,
+        ipv4_standard_acl: str | None,
+        context: str,
+        direction: str | None = None,
+    ) -> None:
+        """Raise if both extended and standard IPv4 ACLs are configured together on the same target."""
+        if not (ipv4_acl and ipv4_standard_acl):
+            return
+        suffix = f"_{direction}" if direction is not None else ""
+        target = "interface " if direction is not None else ""
+        direction_label = ""
+        if direction is not None:
+            direction_label = "ingress " if direction == "in" else "egress "
+        msg = (
+            f"'ipv4_acl{suffix}' and 'ipv4_standard_acl{suffix}' are mutually exclusive on {target}'{context}'. "
+            f"Only one {direction_label}IPv4 ACL can be configured for host '{self.shared_utils.hostname}'."
+        )
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.ipv4_standard_acls:

@@ -405,19 +405,40 @@ keys:
             ipv4:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
-                  required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+                cost:
+                  type: int
+                  min: 1
+                  max: 65535
+                  description: Set OSPFv3 IPv4 cost on the interface.
             ipv6:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
-                  required: true
                   description: |-
                     OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+                cost:
+                  type: int
+                  min: 1
+                  max: 65535
+                  description: Set OSPFv3 IPv6 cost on the interface.
+            cost:
+              type: int
+              min: 1
+              max: 65535
+              description: |-
+                Set OSPFv3 cost on the interface for both IPv4 and IPv6 address families.
+                Mutually exclusive with `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set.
             passive_interface:
               type: bool
               description: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
@@ -426,6 +447,11 @@ keys:
               description: Disable passive interface mode.
             network_point_to_point:
               type: bool
+            bfd:
+              type: bool
+              description: |-
+                Enable/Disable BFD for OSPFv3 on the interface for both address families.
+                If either `ipv4.bfd` or `ipv6.bfd` is defined, this setting is ignored.
         ospf_cost:
           type: int
         ospf_authentication:
@@ -687,6 +713,12 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  description: Quality of Service Policy-map name.
         tcp_mss_ceiling:
           type: dict
           keys:

@@ -1029,10 +1029,153 @@ schemas/avd_design/docs/tables/wan-cv-pathfinder-zscaler-integration.md
 schemas/avd_design/docs/tables/aaa-settings.md
 --8<--
 
+AAA settings profiles can be selected from node type defaults, node groups, or nodes using `aaa_settings_profile`.
+Profiles without a `parent_profile` inherit from global `aaa_settings`; child profiles inherit their parent, and the chain falls back to global settings.
+Child profile values override matching values from their parent.
+For TACACS and RADIUS, `vrfs` entries merge by name across global settings and the profile chain; a more specific entry overrides matching fields.
+A defined `servers` list replaces the inherited list for that protocol, while an omitted list keeps the inherited servers.
+
+```yaml
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+
+aaa_settings_profiles:
+  - profile: common_aaa
+    authorization:
+      exec:
+        default: group tacacs+ local
+
+  - profile: restricted_aaa
+    parent_profile: common_aaa
+    authorization:
+      exec:
+        default: local
+
+l3leaf:
+  defaults:
+    aaa_settings_profile: restricted_aaa
+```
+
+The effective `aaa_settings` after applying profiles are:
+
+```yaml
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+    authorization:
+      exec:
+        default: local
+```
+
+!!! note
+
+    Exercise caution when changing a password through profile inheritance. If global or parent
+    settings define `aaa_settings.enable_password.password` and a profile sets
+    `aaa_settings.enable_password.cleartext_password`, inheritance retains both values.
+    `aaa_settings.enable_password.password` takes precedence over
+    `aaa_settings.enable_password.cleartext_password`, so the generated configuration keeps using the
+    old password and ignores the new cleartext password. For local users,
+    `aaa_settings.local_users[name=<username>].sha512_password` takes precedence over
+    `aaa_settings.local_users[name=<username>].cleartext_password` with the same result.
+
+    To override both credentials, explicitly clear the inherited hashes in the selected profile:
+
+    ```yaml
+    aaa_settings:
+      enable_password:
+        password: "<sha512-hash>"
+      local_users:
+        - name: rotating-user
+          sha512_password: "<sha512-hash>"
+
+    aaa_settings_profiles:
+      - profile: vaulted_passwords
+        enable_password:
+          password: null  # Overriding the value in base aaa_settings
+          cleartext_password: "<enable-password-from-vault>"
+        local_users:
+          - name: rotating-user
+            sha512_password: null  # Overriding the value in base aaa_settings
+            cleartext_password: "<local-user-password-from-vault>"
+
+    l3leaf:
+      defaults:
+        aaa_settings_profile: vaulted_passwords
+    ```
+
+--8<--
+schemas/avd_design/docs/tables/aaa-settings-profiles.md
+--8<--
+
 ### DNS
 
 --8<--
 schemas/avd_design/docs/tables/dns-settings.md
+--8<--
+
+It is possible to define DNS settings profiles and apply them from node type defaults, node groups, nodes, devices, or device profiles.
+
+In this example, `leaf1` uses `leaf1_dns_profile`, which inherits from `common_dns_profile`. The common profile inherits the DNS server from the global `dns_settings`.
+
+```yaml
+fabric_name: FABRIC
+
+dns_settings:
+  servers:
+    - ip_address: 192.0.2.53
+      vrf: default
+      priority: 1
+
+dns_settings_profiles:
+  - profile: common_dns_profile
+    domain: example.com
+    vrfs:
+      - name: default
+        source_interface: Loopback0
+
+  - profile: leaf1_dns_profile
+    parent_profile: common_dns_profile
+    domain_list:
+      - leaf1.example.com
+    ip_hosts:
+      - hostname: leaf1
+        ipv4_addresses:
+          - 192.0.2.10
+
+l3leaf:
+  defaults:
+    dns_settings_profile: common_dns_profile
+  nodes:
+    - name: leaf1
+      dns_settings_profile: leaf1_dns_profile
+```
+
+The DNS-related structured configuration generated for `leaf1` is:
+
+```yaml
+dns_domain: example.com
+domain_list:
+  - leaf1.example.com
+ip_name_server:
+  vrfs:
+    - name: default
+      servers:
+        - ip_address: 192.0.2.53
+          priority: 1
+ip_domain_lookup:
+  source_interfaces:
+    - name: Loopback0
+ip_hosts:
+  - hostname: leaf1
+    ipv4_addresses:
+      - 192.0.2.10
+```
+
+--8<--
+schemas/avd_design/docs/tables/dns-settings-profiles.md
 --8<--
 
 ### Event handlers
@@ -1068,7 +1211,61 @@ schemas/avd_design/docs/tables/management-interface-settings.md
 ### Time configuration
 
 --8<--
-schemas/avd_design/docs/tables/time-configuration.md
+schemas/avd_design/docs/tables/ntp-settings.md
+--8<--
+
+NTP settings profiles can be selected from node type defaults, node groups, or nodes using `ntp_settings_profile`.
+
+In this example, `leaf1` uses `leaf1_ntp_profile`, which inherits the NTP server and VRF from `common_ntp_profile`. Both profiles inherit the global `authenticate` and `set_first_ntp_server_as_preferred` settings from `ntp_settings`.
+
+```yaml
+fabric_name: FABRIC
+type: l2leaf
+
+ntp_settings:
+  authenticate: true
+  set_first_ntp_server_as_preferred: false
+
+ntp_settings_profiles:
+  - profile: common_ntp_profile
+    server_vrf: default
+    trusted_keys: "1"
+    servers:
+      - name: 192.0.2.123
+        iburst: true
+
+  - profile: leaf1_ntp_profile
+    parent_profile: common_ntp_profile
+    authenticate_servers_only: true
+    servers:
+      - name: 192.0.2.124
+        burst: true
+
+l2leaf:
+  defaults:
+    ntp_settings_profile: common_ntp_profile
+  nodes:
+    - name: leaf1
+      ntp_settings_profile: leaf1_ntp_profile
+```
+
+The NTP-related structured configuration generated for `leaf1` is:
+
+```yaml
+ntp:
+  servers:
+    - name: 192.0.2.124
+      burst: true
+    - name: 192.0.2.123
+      iburst: true
+  vrf: default
+  authenticate: true
+  authenticate_servers_only: true
+  trusted_keys: "1"
+```
+
+--8<--
+schemas/avd_design/docs/tables/ntp-settings-profiles.md
 --8<--
 
 ### sFlow
@@ -1155,6 +1352,63 @@ schemas/avd_design/docs/tables/system-settings.md
 
 --8<--
 schemas/avd_design/docs/tables/cloudvision-settings.md
+--8<--
+
+CloudVision settings profiles can be selected from node type defaults, node groups, or nodes using `cv_settings_profile`. A profile inherits the global `cv_settings` values, and profiles can inherit from a `parent_profile`.
+
+In this example, `leaf1` uses `europe_cv_profile`, which inherits TerminAttr settings from `common_cv_profile` and overrides the CVaaS region. The remaining values come from the global `cv_settings`.
+
+```yaml
+fabric_name: CV_SETTINGS_PROFILE_EXAMPLE
+type: l2leaf
+default_mgmt_method: oob
+
+# CVaaS requires DNS and NTP settings. Omitting them for demonstration purposes
+# ...
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        region: auto
+
+cv_settings_profiles:
+  - profile: common_cv_profile
+    terminattr:
+      disable_aaa: true
+  - profile: europe_cv_profile
+    parent_profile: common_cv_profile
+    cvaas:
+      clusters:
+        - name: cvaas
+          region: eu-3
+
+l2leaf:
+  defaults:
+    cv_settings_profile: europe_cv_profile
+  nodes:
+    - name: leaf1
+      mgmt_ip: 192.0.2.10/24
+```
+
+The CloudVision-related structured configuration generated for `leaf1` is:
+
+```yaml
+daemon_terminattr:
+  cvaddrs:
+    - apiserver.cv-prod-eu-3.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+```
+
+--8<--
+schemas/avd_design/docs/tables/cloudvision-settings-profiles.md
 --8<--
 
 ## CloudVision Tags Settings
@@ -1631,6 +1885,12 @@ schemas/avd_design/docs/tables/network-services-vrfs-bgp-settings.md
 
 --8<--
 schemas/avd_design/docs/tables/network-services-vrfs-ospf-settings.md
+--8<--
+
+#### Network services VRF OSPFv3 configuration
+
+--8<--
+schemas/avd_design/docs/tables/network-services-vrfs-ospfv3-settings.md
 --8<--
 
 #### Network services L2 VLANs configuration

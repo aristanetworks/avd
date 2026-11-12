@@ -5,17 +5,22 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING
+from os import environ
+from typing import TYPE_CHECKING, Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
+from ansible.plugins.filter.urlsplit import split_url
 
 from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
+from pyavd._cv.workflows.models import CloudVision, DeployToCvResult
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from pathlib import Path
+
+    from pyavd._cv.workflows.models import CVDeviceDeployment
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.cv_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
@@ -174,6 +179,129 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
     assert result["changed"] is True
     assert result_object.errors == ["cv-error"]
     assert result_object.warnings == ["cv-warning", "logger-warning"]
+
+
+@pytest.mark.parametrize("cv_password", [None, "fake-cv-password"])
+def test_deploy_redacts_credentials_in_detailed_result(
+    action_module: Callable[..., ActionModule],
+    cv_password: str | None,
+) -> None:
+    """Detailed results mask supplied credentials without changing the credentials used for deployment."""
+    module = action_module(ActionModule)
+    fake_token = "fake-cv-token"  # noqa: S105 - deliberate redaction test value
+    fake_proxy_password = "fake-proxy-password"  # noqa: S105 - deliberate redaction test value
+    validated_args = _make_validated_args(
+        return_details=True,
+        cv_token=fake_token,
+        cv_password=cv_password,
+        proxy_password=fake_proxy_password,
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    assert cloudvision_class.call_args.kwargs["password"] == cv_password
+    assert result["cloudvision"]["password"] == ("<removed>" if cv_password is not None else None)
+    assert result["cloudvision"]["token"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    assert result["cloudvision"]["proxy_password"] == "<removed>"  # noqa: S105 - deliberate redaction test
+    for credential in (fake_token, cv_password, fake_proxy_password):
+        if credential is not None:
+            assert credential not in str(result)
+
+
+@pytest.mark.parametrize(
+    ("https_proxy", "expected_proxy_settings"),
+    [
+        pytest.param(
+            "http://http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": None, "proxy_password": None},
+            id="EXPLICIT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://http-connect-proxy.local",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 8080, "proxy_username": None, "proxy_password": None},
+            id="DEFAULT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd_user:avd_password@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd_user", "proxy_password": "avd_password"},
+            id="EXPLICIT_PORT_WITH_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd%40user:avd%3Apassword@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd%40user", "proxy_password": "avd%3Apassword"},
+            id="URL_ENCODED_CREDENTIALS",
+        ),
+    ],
+)
+def test_deploy_uses_proxy_settings_parsed_from_https_proxy(
+    action_module: Callable[..., ActionModule],
+    https_proxy: str,
+    expected_proxy_settings: dict[str, str | int | None],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test that the suggested/documented https_proxy recipe passes normalized settings to the workflow."""
+    monkeypatch.setenv("https_proxy", https_proxy)
+    cv_proxy_url = environ["https_proxy"]
+    validated_args = _make_validated_args(
+        proxy_host=split_url(cv_proxy_url, "hostname"),
+        proxy_port=split_url(cv_proxy_url, "port") or 8080,
+        proxy_username=split_url(cv_proxy_url, "username"),
+        proxy_password=split_url(cv_proxy_url, "password"),
+    )
+    module = action_module(ActionModule)
+    result_object = _make_deploy_result_mock()
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+        patch(f"{MODULE_PATH}.CVDeployFuture", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=result_object),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=result_object),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    assert {key: cloudvision_class.call_args.kwargs[key] for key in expected_proxy_settings} == expected_proxy_settings
+
+
+def test_run_snapshots_detailed_inputs_before_deployment(
+    action_module: Callable[..., ActionModule],
+    tmp_path: Path,
+) -> None:
+    """Device discovery changes deployment results without rewriting the input snapshot."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(configuration_dir=str(tmp_path), device_list=["leaf1"], return_details=True)
+
+    async def discover_device(device_deployments: list[CVDeviceDeployment], **_kwargs: Any) -> DeployToCvResult:
+        deployment = device_deployments[0]
+        assert deployment.eos_config is not None
+        deployment.device.serial_number = "DISCOVERED-SERIAL"
+        deployment.device.exists_on_cv = True
+        return DeployToCvResult(deployed_configs=[deployment.eos_config])
+
+    # The legacy root handler is not cleaned up by the plugin. Isolate it from other tests.
+    root_logger = logging.getLogger()
+    with (
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
+        patch(f"{MODULE_PATH}.deploy_to_cv", side_effect=discover_device),
+        patch.object(root_logger, "handlers", []),
+        patch.object(root_logger, "level", logging.WARNING),
+    ):
+        result = module.run(task_vars={})
+
+    assert result["configs"][0]["device"]["serial_number"] is None
+    assert result["configs"][0]["device"]["exists_on_cv"] is None
+    assert result["deployed_configs"][0]["device"]["serial_number"] == "DISCOVERED-SERIAL"
+    assert result["deployed_configs"][0]["device"]["exists_on_cv"] is True
+    assert result["changed"] is True
+    assert result["failed"] is False
 
 
 def test_deploy_reads_validated_inputs_from_tmp_dir(

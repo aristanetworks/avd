@@ -11,7 +11,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -20,7 +19,7 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "anta>=1.10.0",
     "aristaproto>=0.1.1",
@@ -28,7 +27,7 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.13",
+    "pyavd-utils==0.0.14",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -51,10 +50,10 @@ ansible-collection = [
 requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
-    "pyavd-utils-gen==0.0.13",
+    "pyavd-utils-gen==0.0.14",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.16.10",
+    "ruff==0.17.3",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -82,7 +81,7 @@ version = {attr = "pyavd.__version__"}
 [dependency-groups]
 # helping pdm generate the flat list of requirements in pre-commit
 self = [
-  "pyavd==6.5.0.dev1"
+  "pyavd==6.6.0.dev0"
 ]
 
 [tool.black]

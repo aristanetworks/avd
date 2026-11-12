@@ -106,11 +106,21 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -127,6 +137,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | - |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -143,6 +155,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```eos
 !
 router ospfv3
+   bfd default
+   !
    address-family ipv4
       router-id 2.2.2.2
       auto-cost reference-bandwidth 2000
@@ -153,6 +167,7 @@ router ospfv3
    !
    address-family ipv6
       router-id 3.3.3.3
+      bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal
@@ -174,10 +189,36 @@ ASN Notation: asplain
 | ---------- |
 | bgp additional-paths send backup |
 
+#### Router BGP Peer Groups
+
+##### evpn-overlay-peers
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPV4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+
 #### Router BGP EVPN Address Family
 
 - Next-hop-unchanged is explicitly configured (default behaviour)
 - Next-hop MPLS resolution Primary-RIB : tunnel-rib host5-rib
+
+#### Router BGP IPv4 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| evpn-overlay-peers | True | - | - | - | - | - | - |
+| IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -186,10 +227,24 @@ ASN Notation: asplain
 router bgp 65005
    router-id 192.0.2.5
    bgp additional-paths send backup
+   neighbor IPV4-UNDERLAY-PEERS peer group
+   neighbor evpn-overlay-peers peer group
    !
    address-family evpn
       bgp next-hop-unchanged
       next-hop mpls resolution ribs tunnel-rib host5-rib
+   !
+   address-family ipv4
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv4 labeled-unicast
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
+   !
+   address-family ipv6
+      neighbor IPV4-UNDERLAY-PEERS activate
+      neighbor evpn-overlay-peers activate
 ```
 
 ## Multicast

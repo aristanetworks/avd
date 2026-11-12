@@ -7879,6 +7879,7 @@ interface Tunnel7
 | Vlan90 | SVI Description | default | - | - |
 | Vlan91 | PBR Description | default | - | True |
 | Vlan92 | SVI Description | default | - | - |
+| Vlan93 | QoS Description | default | - | True |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
 | Vlan111 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
 | Vlan112 | Multicast IPv4 static without boundaries | default | - | - |
@@ -7956,6 +7957,7 @@ interface Tunnel7
 | Vlan90 | default | 10.10.83.1/24 | - | - | - | - |
 | Vlan91 | default | - | - | - | - | - |
 | Vlan92 | default | 10.10.92.1/24 | - | - | - | - |
+| Vlan93 | default | - | - | - | - | - |
 | Vlan110 | Tenant_A | 10.0.101.1/24 | - | - | - | - |
 | Vlan111 | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - | - | - |
 | Vlan112 | default | - | - | - | - | - |
@@ -8324,6 +8326,11 @@ interface Vlan92
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+!
+interface Vlan93
+   description QoS Description
+   shutdown
+   service-policy type qos input MyQosPolicy
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping
@@ -10470,6 +10477,7 @@ router bgp 65101
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
    bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
    bgp bestpath d-path
+   neighbor default received attribute discard disabled
    neighbor default send-community
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
@@ -10502,13 +10510,6 @@ router bgp 65101
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor EXTENDED-COMMUNITY maximum-advertised-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
-   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
    neighbor IPV6-UNDERLAY password 7 <removed>
@@ -10523,6 +10524,13 @@ router bgp 65101
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG missing-policy address-family all include sub-route-map direction in action deny
    no neighbor IPV6-UNDERLAY-MLAG remove-private-as ingress
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
+   no neighbor IPv4-UNDERLAY-PEERS rib-in pre-policy retain
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-accepted-routes 0 warning-limit 140
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
    neighbor LOCAL-AS peer group
@@ -10588,8 +10596,10 @@ router bgp 65101
    neighbor SEDI-shut description BGP Peer Shutdown
    neighbor SR-TE-PG-1 peer group
    neighbor SR-TE-PG-1 remote-as 65000
+   neighbor SR-TE-PG-1 received attribute discard 10,11,12-35
    neighbor SR-TE-PG-2 peer group
    neighbor SR-TE-PG-2 remote-as 65000
+   neighbor SR-TE-PG-2 received attribute discard disabled
    neighbor SR-TE-PG-2 maximum-advertised-routes 120000
    neighbor STARDARD-COMMUNITY peer group
    neighbor STARDARD-COMMUNITY send-community standard
@@ -10601,6 +10611,13 @@ router bgp 65101
    no neighbor TEST-ENFORCE-FIRST-AS-FALSE enforce-first-as
    neighbor TEST-ENFORCE-FIRST-AS-TRUE peer group
    neighbor TEST-ENFORCE-FIRST-AS-TRUE enforce-first-as
+   neighbor TEST-PASSIVE peer group
+   neighbor TEST-PASSIVE remote-as 65003
+   neighbor TEST-PASSIVE passive
+   neighbor TEST-PASSIVE description BGP Connection in passive mode
+   neighbor WELCOME_ROUTERS peer group
+   neighbor WELCOME_ROUTERS remote-as 65001
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
@@ -10610,15 +10627,8 @@ router bgp 65101
    neighbor test-link-bandwidth2 link-bandwidth
    neighbor test-passive peer group
    neighbor test-passive passive
-   neighbor TEST-PASSIVE peer group
-   neighbor TEST-PASSIVE remote-as 65003
-   neighbor TEST-PASSIVE passive
-   neighbor TEST-PASSIVE description BGP Connection in passive mode
    neighbor test-session-tracker peer group
    neighbor test-session-tracker session tracker ST2
-   neighbor WELCOME_ROUTERS peer group
-   neighbor WELCOME_ROUTERS remote-as 65001
-   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
    neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST
@@ -10704,6 +10714,7 @@ router bgp 65101
    neighbor 192.168.255.3 maximum-accepted-routes 51000 warning-limit 90 percent
    neighbor 192.168.255.3 missing-policy address-family all direction in action deny
    neighbor 192.168.255.4 remote-as 65004
+   neighbor 192.168.255.4 received attribute discard 10,11,12-35
    neighbor 192.168.255.4 send-community
    neighbor 192.168.255.4 maximum-advertised-routes 120000
    neighbor 192.168.255.11 password 8a <removed>
@@ -10714,9 +10725,11 @@ router bgp 65101
    neighbor 192.168.255.21 peer-tag in PEER_TAG_IN
    neighbor 192.168.255.21 peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor 192.168.255.101 peer group MPLS-IBGP-PEERS
+   neighbor 192.168.255.101 received attribute discard 10
    neighbor 192.168.255.101 maximum-accepted-routes 100 warning-limit 90
    neighbor 192.168.255.101 maximum-advertised-routes 120000 warning-limit 10 percent
    neighbor 192.168.255.201 peer group MPLS-IBGP-PEERS
+   neighbor 192.168.255.201 received attribute discard disabled
    neighbor 192.168.255.201 maximum-advertised-routes 120000 warning-limit 11236
    neighbor 2001:cafe:192:168::4 remote-as 65004
    neighbor 2001:cafe:192:168::4 send-community
@@ -10941,11 +10954,6 @@ router bgp 65101
       bgp additional-paths send ecmp limit 20
       next-hop resolution disabled
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor foo additional-paths receive
-      neighbor foo prefix-list PL-BAR-v4-IN in
-      neighbor foo prefix-list PL-BAR-v4-OUT out
-      neighbor foo default-originate route-map RM-FOO-MATCH always
-      neighbor foo additional-paths send ecmp limit 20 prefix-list PL1
       neighbor FOOBAR activate
       neighbor FOOBAR next-hop address-family ipv6 originate
       neighbor IPV4-UNDERLAY activate
@@ -10975,6 +10983,11 @@ router bgp 65101
       neighbor TEST_RCF maximum-advertised-routes 120000 warning-limit 10
       neighbor WELCOME_ROUTERS activate
       neighbor WELCOME_ROUTERS additional-paths send any
+      neighbor foo additional-paths receive
+      neighbor foo prefix-list PL-BAR-v4-IN in
+      neighbor foo prefix-list PL-BAR-v4-OUT out
+      neighbor foo default-originate route-map RM-FOO-MATCH always
+      neighbor foo additional-paths send ecmp limit 20 prefix-list PL1
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
       no neighbor 10.2.3.8 next-hop address-family ipv6
@@ -11137,11 +11150,6 @@ router bgp 65101
       bgp additional-paths receive
       bgp additional-paths send any
       next-hop resolution disabled
-      neighbor baz additional-paths receive
-      neighbor baz prefix-list PL-BAR-v6-IN in
-      neighbor baz prefix-list PL-BAR-v6-OUT out
-      neighbor baz default-originate route-map RM-FOO always
-      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
       no neighbor FOOBAR activate
       neighbor FOOBAR1 activate
       neighbor FOOBAR1 default-originate
@@ -11166,6 +11174,11 @@ router bgp 65101
       neighbor TEST_RCF additional-paths send limit 11
       neighbor TEST_RCF maximum-accepted-routes 1000
       neighbor TEST_RCF maximum-advertised-routes 120000
+      neighbor baz additional-paths receive
+      neighbor baz prefix-list PL-BAR-v6-IN in
+      neighbor baz prefix-list PL-BAR-v6-OUT out
+      neighbor baz default-originate route-map RM-FOO always
+      neighbor baz additional-paths send ecmp limit 20 prefix-list PL2
       neighbor 2001:db8::1 additional-paths receive
       neighbor 2001:db8::1 route-map Address_Family_IPV6_In in
       neighbor 2001:db8::1 route-map Address_Family_IPV6_Out out
@@ -11351,10 +11364,12 @@ router bgp 65101
       neighbor 10.1.1.0 peer group OBS_WAN
       neighbor 10.1.1.0 as-path prepend-own disabled
       no neighbor 10.1.1.0 route-reflector-client
+      neighbor 10.1.1.0 received attribute discard 10,11,12-35
       neighbor 10.255.1.1 peer group WELCOME_ROUTERS
       neighbor 10.255.1.1 as-path remote-as replace out
       neighbor 10.255.1.1 weight 65535
       neighbor 10.255.1.1 route-reflector-client
+      neighbor 10.255.1.1 received attribute discard disabled
       neighbor 101.0.3.1 peer group SEDI
       neighbor 101.0.3.1 weight 100
       neighbor 101.0.3.2 peer group SEDI

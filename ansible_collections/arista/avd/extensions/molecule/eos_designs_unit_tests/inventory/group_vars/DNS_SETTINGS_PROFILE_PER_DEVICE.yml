@@ -1,0 +1,48 @@
+---
+underlay_routing_protocol: none
+overlay_routing_protocol: none
+
+dns_settings:
+  set_source_interfaces: true
+  vrfs:
+    - name: default
+      source_interface: Loopback0
+  servers:
+    - ip_address: 192.0.2.53
+      vrf: default
+      priority: 1
+
+devices:
+  - name: dns-settings-profile-per-device-l3leaf
+    profile: common_device_profile
+    type: l3leaf
+    id: 1
+    # The local DNS selector overrides the one inherited from the device profile.
+    dns_settings_profile: l3leaf_dns_profile
+    loopback_ipv4_pool: 192.0.2.0/24
+    vtep_loopback_ipv4_pool: 192.0.3.0/24
+
+  - name: dns-settings-profile-per-device-l3spine
+    profile: common_device_profile
+    type: l3spine
+    id: 2
+    # The DNS selector is inherited from the device profile.
+    loopback_ipv4_pool: 192.0.4.0/24
+
+device_profiles:
+  - name: common_device_profile
+    dns_settings_profile: l3spine_dns_profile
+
+dns_settings_profiles:
+  # Complementary fields expose any settings leaking between the two devices.
+  - profile: l3leaf_dns_profile
+    domain: l3leaf.example.com
+    set_source_interfaces: false
+    ip_hosts:
+      - hostname: leaf-only
+        ipv4_addresses:
+          - 192.0.2.10
+
+  - profile: l3spine_dns_profile
+    domain_list:
+      - l3spine.example.com

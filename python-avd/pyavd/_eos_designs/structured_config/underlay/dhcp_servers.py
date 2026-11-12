@@ -36,7 +36,7 @@ class DhcpServersMixin(Protocol):
         self._update_ipv4_ztp_boot_file(dhcp_server)
         # Set DNS servers
         # TODO: Figure out if / how we should filter on VRFs. Currently just adding all servers.
-        if dns_servers := self.inputs.dns_settings.servers:
+        if dns_servers := self.shared_utils.dns_settings_servers:
             for dns_server in dns_servers:
                 dhcp_server.dns_servers_ipv4.append(dns_server.ip_address)
         # Set NTP servers
@@ -46,12 +46,12 @@ class DhcpServersMixin(Protocol):
 
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""
-        if self.inputs.cv_settings.cvaas.enabled:
-            region = next(iter(self.inputs.cv_settings.cvaas.clusters)).region
+        if self.shared_utils.cv_settings.cvaas.enabled:
+            region = next(iter(self.shared_utils.cv_settings.cvaas.clusters)).region
             return f"{CVAAS_API_PREFIX}.{CV_REGION_TO_SERVER_MAP[region]}"
 
-        if self.inputs.cv_settings.onprem_clusters:
-            return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name
+        if self.shared_utils.cv_settings.onprem_clusters:
+            return next(iter(next(iter(self.shared_utils.cv_settings.onprem_clusters)).servers)).name
 
         return None
 
@@ -72,7 +72,7 @@ class DhcpServersMixin(Protocol):
 
     def _update_ntp_servers(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
         """Set list of NTP servers."""
-        ntp_servers_settings = self.inputs.ntp_settings.servers
+        ntp_servers_settings = self.shared_utils.ntp_settings.servers
         if not ntp_servers_settings:
             return
 
