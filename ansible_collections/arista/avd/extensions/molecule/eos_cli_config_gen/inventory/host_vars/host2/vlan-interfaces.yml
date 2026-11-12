@@ -26,14 +26,21 @@ vlan_interfaces:
     ospfv3:
       ipv4:
         area: 0.0.0.0
+        bfd: true
+        cost: 10
       ipv6:
         area: 1000
+        bfd: true
+        cost: 20
+      cost: 40 # won't render on global because cost is set on address families
+      bfd: true
       passive_interface: true
       network_point_to_point: true
 
   - name: Vlan1000
     description: Vlan with minimal ospfv3 configurations
     ospfv3:
+      bfd: true
       ipv4:
         area: 1000
       ipv6:
@@ -49,6 +56,7 @@ vlan_interfaces:
         area: 0.0.0.0
       passive_interface: true
       network_point_to_point: true
+      cost: 30
     ipv6_ospf:
       process:
         id: 100
@@ -62,3 +70,33 @@ vlan_interfaces:
         area: 0.0.0.0
       ipv6:
         area: 0.0.0.0
+
+  - name: Vlan1003
+    description: OSPFv3 BFD disabled at interface level
+    ospfv3:
+      bfd: false
+      ipv6:
+        cost: 50
+      cost: 40 # won't render on global because cost is set on IPv6 address family
+
+  - name: Vlan1004
+    description: OSPFv3 address-family BFD without area configuration
+    ospfv3:
+      bfd: true
+      ipv4:
+        bfd: false
+      ipv6:
+        bfd: true
+
+  - name: Vlan1005
+    description: OSPFv3 IPv6 BFD disabled at address-family level
+    ospfv3:
+      ipv6:
+        bfd: false
+
+  - name: Vlan1006
+    description: OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence
+    ospfv3:
+      ipv4:
+        bfd: true
+      bfd: true

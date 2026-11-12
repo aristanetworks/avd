@@ -11744,6 +11744,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
@@ -11861,13 +11863,38 @@ class EosDesigns(EosDesignsRootModel):
             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required
             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-            `wan_carriers`.
+            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+            Mutually exclusive with `ipv4_standard_acl_in`,
+            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Mutually
+            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+            raises an error.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Required for all WAN interfaces (`wan_carrier` is set) unless
+            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+            Mutually exclusive
+            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`, setting both
+            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+            substitution for "interface_ip" or "peer_ip" is required.
             """
             ipv6_acl_in: str | None
             """
@@ -11902,7 +11929,7 @@ class EosDesigns(EosDesignsRootModel):
             This is used to infer the path-groups in which this
             interface should be configured.
             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-            `ipv4_acl_in` is also required on all WAN interfaces.
+            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
             """
             wan_circuit_id: str | None
             """
@@ -11966,6 +11993,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -12053,11 +12082,32 @@ class EosDesigns(EosDesignsRootModel):
                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                            Required
                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                           `wan_carriers`.
+                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                           Mutually exclusive with `ipv4_standard_acl_in`,
+                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Mutually
+                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                           raises an error.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                           Mutually exclusive
+                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`, setting both
+                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                           substitution for "interface_ip" or "peer_ip" is required.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -12083,7 +12133,7 @@ class EosDesigns(EosDesignsRootModel):
                            This is used to infer the path-groups in which this
                            interface should be configured.
                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                           `ipv4_acl_in` is also required on all WAN interfaces.
+                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         wan_circuit_id:
                            The WAN circuit ID for this interface.
                            This is not rendered in the configuration but used for WAN
@@ -12516,6 +12566,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
@@ -12630,13 +12682,38 @@ class EosDesigns(EosDesignsRootModel):
             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required
             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-            `wan_carriers`.
+            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+            Mutually exclusive with `ipv4_standard_acl_in`,
+            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Mutually
+            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+            raises an error.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Required for all WAN interfaces (`wan_carrier` is set) unless
+            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+            Mutually exclusive
+            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`, setting both
+            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+            substitution for "interface_ip" or "peer_ip" is required.
             """
             ipv6_acl_in: str | None
             """
@@ -12671,7 +12748,7 @@ class EosDesigns(EosDesignsRootModel):
             This is used to infer the path-groups in which this
             interface should be configured.
             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-            `ipv4_acl_in` is also required on all WAN interfaces.
+            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
             """
             wan_circuit_id: str | None
             """
@@ -12720,6 +12797,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -12804,11 +12883,32 @@ class EosDesigns(EosDesignsRootModel):
                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                            Required
                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                           `wan_carriers`.
+                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                           Mutually exclusive with `ipv4_standard_acl_in`,
+                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Mutually
+                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                           raises an error.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                           Mutually exclusive
+                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`, setting both
+                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                           substitution for "interface_ip" or "peer_ip" is required.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -12834,7 +12934,7 @@ class EosDesigns(EosDesignsRootModel):
                            This is used to infer the path-groups in which this
                            interface should be configured.
                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                           `ipv4_acl_in` is also required on all WAN interfaces.
+                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         wan_circuit_id:
                            The WAN circuit ID for this interface.
                            This is not rendered in the configuration but used for WAN
@@ -17456,6 +17556,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
@@ -17573,13 +17675,38 @@ class EosDesigns(EosDesignsRootModel):
             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required
             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-            `wan_carriers`.
+            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+            Mutually exclusive with `ipv4_standard_acl_in`,
+            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Mutually
+            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+            raises an error.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Required for all WAN interfaces (`wan_carrier` is set) unless
+            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+            Mutually exclusive
+            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`, setting both
+            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+            substitution for "interface_ip" or "peer_ip" is required.
             """
             ipv6_acl_in: str | None
             """
@@ -17614,7 +17741,7 @@ class EosDesigns(EosDesignsRootModel):
             This is used to infer the path-groups in which this
             interface should be configured.
             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-            `ipv4_acl_in` is also required on all WAN interfaces.
+            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
             """
             wan_circuit_id: str | None
             """
@@ -17678,6 +17805,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -17765,11 +17894,32 @@ class EosDesigns(EosDesignsRootModel):
                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                            Required
                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                           `wan_carriers`.
+                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                           Mutually exclusive with `ipv4_standard_acl_in`,
+                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Mutually
+                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                           raises an error.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                           Mutually exclusive
+                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`, setting both
+                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                           substitution for "interface_ip" or "peer_ip" is required.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -17795,7 +17945,7 @@ class EosDesigns(EosDesignsRootModel):
                            This is used to infer the path-groups in which this
                            interface should be configured.
                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                           `ipv4_acl_in` is also required on all WAN interfaces.
+                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         wan_circuit_id:
                            The WAN circuit ID for this interface.
                            This is not rendered in the configuration but used for WAN
@@ -18228,6 +18378,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp": {"type": Bgp},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv4_standard_acl_in": {"type": str},
+                "ipv4_standard_acl_out": {"type": str},
                 "ipv6_acl_in": {"type": str},
                 "ipv6_acl_out": {"type": str},
                 "static_routes": {"type": StaticRoutes},
@@ -18342,13 +18494,38 @@ class EosDesigns(EosDesignsRootModel):
             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required
             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-            `wan_carriers`.
+            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+            Mutually exclusive with `ipv4_standard_acl_in`,
+            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
             """
             ipv4_acl_out: str | None
             """
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Mutually
+            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+            raises an error.
+            """
+            ipv4_standard_acl_in: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Required for all WAN interfaces (`wan_carrier` is set) unless
+            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+            Mutually exclusive
+            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+            """
+            ipv4_standard_acl_out: str | None
+            """
+            Name of the IPv4 standard access-list to be assigned in the egress direction.
+            The access-list must
+            be defined under `ipv4_standard_acls`.
+            Mutually exclusive with `ipv4_acl_out`, setting both
+            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+            substitution for "interface_ip" or "peer_ip" is required.
             """
             ipv6_acl_in: str | None
             """
@@ -18383,7 +18560,7 @@ class EosDesigns(EosDesignsRootModel):
             This is used to infer the path-groups in which this
             interface should be configured.
             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-            `ipv4_acl_in` is also required on all WAN interfaces.
+            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
             """
             wan_circuit_id: str | None
             """
@@ -18432,6 +18609,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -18516,11 +18695,32 @@ class EosDesigns(EosDesignsRootModel):
                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                            Required
                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                           `wan_carriers`.
+                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                           Mutually exclusive with `ipv4_standard_acl_in`,
+                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         ipv4_acl_out:
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Mutually
+                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                           raises an error.
+                        ipv4_standard_acl_in:
+                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                           Mutually exclusive
+                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        ipv4_standard_acl_out:
+                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                           The access-list must
+                           be defined under `ipv4_standard_acls`.
+                           Mutually exclusive with `ipv4_acl_out`, setting both
+                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                           substitution for "interface_ip" or "peer_ip" is required.
                         ipv6_acl_in:
                            Name of the IPv6 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -18546,7 +18746,7 @@ class EosDesigns(EosDesignsRootModel):
                            This is used to infer the path-groups in which this
                            interface should be configured.
                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                           `ipv4_acl_in` is also required on all WAN interfaces.
+                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         wan_circuit_id:
                            The WAN circuit ID for this interface.
                            This is not rendered in the configuration but used for WAN
@@ -29315,6 +29515,8 @@ class EosDesigns(EosDesignsRootModel):
             "bgp": {"type": Bgp},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
+            "ipv4_standard_acl_in": {"type": str},
+            "ipv4_standard_acl_out": {"type": str},
             "ipv6_acl_in": {"type": str},
             "ipv6_acl_out": {"type": str},
             "static_routes": {"type": StaticRoutes},
@@ -29435,13 +29637,38 @@ class EosDesigns(EosDesignsRootModel):
         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
         Required
         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-        `wan_carriers`.
+        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+        Mutually exclusive with `ipv4_standard_acl_in`,
+        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
         """
         ipv4_acl_out: str | None
         """
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+        Mutually
+        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+        raises an error.
+        """
+        ipv4_standard_acl_in: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Required for all WAN interfaces (`wan_carrier` is set) unless
+        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+        Mutually exclusive
+        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+        """
+        ipv4_standard_acl_out: str | None
+        """
+        Name of the IPv4 standard access-list to be assigned in the egress direction.
+        The access-list must
+        be defined under `ipv4_standard_acls`.
+        Mutually exclusive with `ipv4_acl_out`, setting both
+        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+        substitution for "interface_ip" or "peer_ip" is required.
         """
         ipv6_acl_in: str | None
         """
@@ -29476,7 +29703,7 @@ class EosDesigns(EosDesignsRootModel):
         This is used to infer the path-groups in which this
         interface should be configured.
         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-        `ipv4_acl_in` is also required on all WAN interfaces.
+        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
         """
         wan_circuit_id: str | None
         """
@@ -29540,6 +29767,8 @@ class EosDesigns(EosDesignsRootModel):
                 bgp: Bgp | UndefinedType = Undefined,
                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -29629,11 +29858,32 @@ class EosDesigns(EosDesignsRootModel):
                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                        Required
                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                       `wan_carriers`.
+                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                       Mutually exclusive with `ipv4_standard_acl_in`,
+                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                     ipv4_acl_out:
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                       Mutually
+                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                       raises an error.
+                    ipv4_standard_acl_in:
+                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                       Mutually exclusive
+                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                    ipv4_standard_acl_out:
+                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                       The access-list must
+                       be defined under `ipv4_standard_acls`.
+                       Mutually exclusive with `ipv4_acl_out`, setting both
+                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                       substitution for "interface_ip" or "peer_ip" is required.
                     ipv6_acl_in:
                        Name of the IPv6 access-list to be assigned in the ingress direction.
                        The access-list must be
@@ -29659,7 +29909,7 @@ class EosDesigns(EosDesignsRootModel):
                        This is used to infer the path-groups in which this
                        interface should be configured.
                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                       `ipv4_acl_in` is also required on all WAN interfaces.
+                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                     wan_circuit_id:
                        The WAN circuit ID for this interface.
                        This is not rendered in the configuration but used for WAN
@@ -33631,6 +33881,7 @@ class EosDesigns(EosDesignsRootModel):
                 "description": {"type": str},
                 "shutdown": {"type": bool},
                 "as_path": {"type": AsPath},
+                "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                 "remove_private_as": {"type": RemovePrivateAs},
                 "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                 "next_hop_unchanged": {"type": bool},
@@ -33725,6 +33976,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+            """Received path attribute configuration."""
             remove_private_as: RemovePrivateAs
             """
             Remove private AS numbers in outbound AS path.
@@ -33824,6 +34077,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
+                    received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                     next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -33907,6 +34161,7 @@ class EosDesigns(EosDesignsRootModel):
                            BGP AS-PATH options.
 
                            Subclass of AvdModel.
+                        received_attribute_discard: Received path attribute configuration.
                         remove_private_as:
                            Remove private AS numbers in outbound AS path.
 
@@ -39135,6 +39390,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv4_standard_acl_in": {"type": str},
+                    "ipv4_standard_acl_out": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
                     "ospf": {"type": Ospf},
@@ -39195,7 +39452,39 @@ class EosDesigns(EosDesignsRootModel):
                 """Default value: `True`"""
                 mtu: int | None
                 ipv4_acl_in: str | None
+                """
+                Name of the IPv4 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                Mutually exclusive
+                with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                """
                 ipv4_acl_out: str | None
+                """
+                Name of the IPv4 access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv4_acls` and supports field substitution for "interface_ip".
+                Mutually exclusive with
+                `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                """
+                ipv4_standard_acl_in: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_in`, setting both
+                `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                substitution for "interface_ip" is required.
+                """
+                ipv4_standard_acl_out: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the egress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_out`, setting both
+                `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                substitution for "interface_ip" is required.
+                """
                 ipv6_acl_in: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -39289,6 +39578,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | UndefinedType | None = Undefined,
                         ipv4_acl_in: str | UndefinedType | None = Undefined,
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -39340,8 +39631,32 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdList with `str` items.
                             enabled: enabled
                             mtu: mtu
-                            ipv4_acl_in: ipv4_acl_in
-                            ipv4_acl_out: ipv4_acl_out
+                            ipv4_acl_in:
+                               Name of the IPv4 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                               Mutually exclusive
+                               with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                            ipv4_acl_out:
+                               Name of the IPv4 access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv4_acls` and supports field substitution for "interface_ip".
+                               Mutually exclusive with
+                               `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                            ipv4_standard_acl_in:
+                               Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_in`, setting both
+                               `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                               substitution for "interface_ip" is required.
+                            ipv4_standard_acl_out:
+                               Name of the IPv4 standard access-list to be assigned in the egress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_out`, setting both
+                               `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                               substitution for "interface_ip" is required.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
@@ -39899,6 +40214,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv4_standard_acl_in": {"type": str},
+                    "ipv4_standard_acl_out": {"type": str},
                     "ipv6_acl_in": {"type": str},
                     "ipv6_acl_out": {"type": str},
                     "static_routes": {"type": StaticRoutes},
@@ -39969,9 +40286,39 @@ class EosDesigns(EosDesignsRootModel):
                 mtu: int | None
                 """MTU can only be set on the parent Port-Channel."""
                 ipv4_acl_in: str | None
-                """Name of the IPv4 access-list to be assigned in the ingress direction."""
+                """
+                Name of the IPv4 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                Mutually exclusive
+                with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                """
                 ipv4_acl_out: str | None
-                """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                """
+                Name of the IPv4 Access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv4_acls` and supports field substitution for "interface_ip".
+                Mutually exclusive with
+                `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                """
+                ipv4_standard_acl_in: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_in`, setting both
+                `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                substitution for "interface_ip" is required.
+                """
+                ipv4_standard_acl_out: str | None
+                """
+                Name of the IPv4 standard access-list to be assigned in the egress direction.
+                The access-list must
+                be defined under `ipv4_standard_acls`.
+                Mutually exclusive with `ipv4_acl_out`, setting both
+                `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                substitution for "interface_ip" is required.
+                """
                 ipv6_acl_in: str | None
                 """
                 Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -40044,6 +40391,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | UndefinedType | None = Undefined,
                         ipv4_acl_in: str | UndefinedType | None = Undefined,
                         ipv4_acl_out: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                        ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                         ipv6_acl_in: str | UndefinedType | None = Undefined,
                         ipv6_acl_out: str | UndefinedType | None = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -40094,8 +40443,32 @@ class EosDesigns(EosDesignsRootModel):
                             peer: The peer device name. Used for description and documentation.
                             peer_port_channel: The peer device port-channel interface. Used for description and documentation.
                             mtu: MTU can only be set on the parent Port-Channel.
-                            ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
-                            ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                            ipv4_acl_in:
+                               Name of the IPv4 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                               Mutually exclusive
+                               with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                            ipv4_acl_out:
+                               Name of the IPv4 Access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv4_acls` and supports field substitution for "interface_ip".
+                               Mutually exclusive with
+                               `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                            ipv4_standard_acl_in:
+                               Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_in`, setting both
+                               `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                               substitution for "interface_ip" is required.
+                            ipv4_standard_acl_out:
+                               Name of the IPv4 standard access-list to be assigned in the egress direction.
+                               The access-list must
+                               be defined under `ipv4_standard_acls`.
+                               Mutually exclusive with `ipv4_acl_out`, setting both
+                               `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                               substitution for "interface_ip" is required.
                             ipv6_acl_in:
                                Name of the IPv6 access-list to be assigned in the ingress direction.
                                The access-list must be
@@ -41628,6 +42001,7 @@ class EosDesigns(EosDesignsRootModel):
                     "description": {"type": str},
                     "shutdown": {"type": bool},
                     "as_path": {"type": AsPath},
+                    "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                     "next_hop_unchanged": {"type": bool},
@@ -41726,6 +42100,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                """Received path attribute configuration."""
                 remove_private_as: RemovePrivateAs
                 """
                 Remove private AS numbers in outbound AS path.
@@ -41825,6 +42201,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: str | UndefinedType | None = Undefined,
                         shutdown: bool | UndefinedType | None = Undefined,
                         as_path: AsPath | UndefinedType = Undefined,
+                        received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                         next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -41912,6 +42289,7 @@ class EosDesigns(EosDesignsRootModel):
                                BGP AS-PATH options.
 
                                Subclass of AvdModel.
+                            received_attribute_discard: Received path attribute configuration.
                             remove_private_as:
                                Remove private AS numbers in outbound AS path.
 
@@ -61847,6 +62225,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -61964,13 +62344,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -62005,7 +62410,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -62069,6 +62474,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -62156,11 +62563,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -62186,7 +62614,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -62619,6 +63047,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -62733,13 +63163,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -62774,7 +63229,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -62823,6 +63278,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -62907,11 +63364,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -62937,7 +63415,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -67535,6 +68013,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
@@ -67652,13 +68132,38 @@ class EosDesigns(EosDesignsRootModel):
                             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             Required
                             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                            `wan_carriers`.
+                            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                            Mutually exclusive with `ipv4_standard_acl_in`,
+                            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            Mutually
+                            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                            raises an error.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Required for all WAN interfaces (`wan_carrier` is set) unless
+                            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                            Mutually exclusive
+                            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`, setting both
+                            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                            substitution for "interface_ip" or "peer_ip" is required.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -67693,7 +68198,7 @@ class EosDesigns(EosDesignsRootModel):
                             This is used to infer the path-groups in which this
                             interface should be configured.
                             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                            `ipv4_acl_in` is also required on all WAN interfaces.
+                            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                             """
                             wan_circuit_id: str | None
                             """
@@ -67757,6 +68262,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -67844,11 +68351,32 @@ class EosDesigns(EosDesignsRootModel):
                                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                            Required
                                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                           `wan_carriers`.
+                                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                           Mutually exclusive with `ipv4_standard_acl_in`,
+                                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           Mutually
+                                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                           raises an error.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                           Mutually exclusive
+                                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`, setting both
+                                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                           substitution for "interface_ip" or "peer_ip" is required.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -67874,7 +68402,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This is used to infer the path-groups in which this
                                            interface should be configured.
                                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                           `ipv4_acl_in` is also required on all WAN interfaces.
+                                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                         wan_circuit_id:
                                            The WAN circuit ID for this interface.
                                            This is not rendered in the configuration but used for WAN
@@ -68309,6 +68837,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
@@ -68423,13 +68953,38 @@ class EosDesigns(EosDesignsRootModel):
                             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             Required
                             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                            `wan_carriers`.
+                            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                            Mutually exclusive with `ipv4_standard_acl_in`,
+                            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            Mutually
+                            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                            raises an error.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Required for all WAN interfaces (`wan_carrier` is set) unless
+                            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                            Mutually exclusive
+                            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`, setting both
+                            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                            substitution for "interface_ip" or "peer_ip" is required.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -68464,7 +69019,7 @@ class EosDesigns(EosDesignsRootModel):
                             This is used to infer the path-groups in which this
                             interface should be configured.
                             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                            `ipv4_acl_in` is also required on all WAN interfaces.
+                            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                             """
                             wan_circuit_id: str | None
                             """
@@ -68513,6 +69068,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -68597,11 +69154,32 @@ class EosDesigns(EosDesignsRootModel):
                                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                            Required
                                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                           `wan_carriers`.
+                                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                           Mutually exclusive with `ipv4_standard_acl_in`,
+                                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           Mutually
+                                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                           raises an error.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                           Mutually exclusive
+                                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`, setting both
+                                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                           substitution for "interface_ip" or "peer_ip" is required.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -68627,7 +69205,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This is used to infer the path-groups in which this
                                            interface should be configured.
                                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                           `ipv4_acl_in` is also required on all WAN interfaces.
+                                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                         wan_circuit_id:
                                            The WAN circuit ID for this interface.
                                            This is not rendered in the configuration but used for WAN
@@ -73164,6 +73742,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -73281,13 +73861,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -73322,7 +73927,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -73386,6 +73991,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -73473,11 +74080,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -73503,7 +74131,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -73936,6 +74564,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -74050,13 +74680,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -74091,7 +74746,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -74140,6 +74795,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -74224,11 +74881,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -74254,7 +74932,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -78871,6 +79549,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -78988,13 +79668,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -79029,7 +79734,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -79093,6 +79798,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -79180,11 +79887,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -79210,7 +79938,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -79643,6 +80371,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -79757,13 +80487,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -79798,7 +80553,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -79847,6 +80602,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -79931,11 +80688,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -79961,7 +80739,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -88270,6 +89048,7 @@ class EosDesigns(EosDesignsRootModel):
                         "description": {"type": str},
                         "shutdown": {"type": bool},
                         "as_path": {"type": AsPath},
+                        "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                         "remove_private_as": {"type": RemovePrivateAs},
                         "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                         "next_hop_unchanged": {"type": bool},
@@ -88364,6 +89143,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                    """Received path attribute configuration."""
                     remove_private_as: RemovePrivateAs
                     """
                     Remove private AS numbers in outbound AS path.
@@ -88463,6 +89244,7 @@ class EosDesigns(EosDesignsRootModel):
                             description: str | UndefinedType | None = Undefined,
                             shutdown: bool | UndefinedType | None = Undefined,
                             as_path: AsPath | UndefinedType = Undefined,
+                            received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                             remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                             remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                             next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -88546,6 +89328,7 @@ class EosDesigns(EosDesignsRootModel):
                                    BGP AS-PATH options.
 
                                    Subclass of AvdModel.
+                                received_attribute_discard: Received path attribute configuration.
                                 remove_private_as:
                                    Remove private AS numbers in outbound AS path.
 
@@ -93805,6 +94588,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "ospf": {"type": Ospf},
@@ -93865,7 +94650,39 @@ class EosDesigns(EosDesignsRootModel):
                         """Default value: `True`"""
                         mtu: int | None
                         ipv4_acl_in: str | None
+                        """
+                        Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive
+                        with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                        """
                         ipv4_acl_out: str | None
+                        """
+                        Name of the IPv4 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with
+                        `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                        substitution for "interface_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" is required.
+                        """
                         ipv6_acl_in: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -93959,6 +94776,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType | None = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -94010,8 +94829,32 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `str` items.
                                     enabled: enabled
                                     mtu: mtu
-                                    ipv4_acl_in: ipv4_acl_in
-                                    ipv4_acl_out: ipv4_acl_out
+                                    ipv4_acl_in:
+                                       Name of the IPv4 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                                       Mutually exclusive
+                                       with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                                    ipv4_acl_out:
+                                       Name of the IPv4 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv4_acls` and supports field substitution for "interface_ip".
+                                       Mutually exclusive with
+                                       `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_in`, setting both
+                                       `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                                       substitution for "interface_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -94569,6 +95412,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -94639,9 +95484,39 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None
                         """MTU can only be set on the parent Port-Channel."""
                         ipv4_acl_in: str | None
-                        """Name of the IPv4 access-list to be assigned in the ingress direction."""
+                        """
+                        Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive
+                        with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                        """
                         ipv4_acl_out: str | None
-                        """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        """
+                        Name of the IPv4 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with
+                        `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                        substitution for "interface_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" is required.
+                        """
                         ipv6_acl_in: str | None
                         """
                         Name of the IPv6 access-list to be assigned in the ingress direction.
@@ -94714,6 +95589,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType | None = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -94764,8 +95641,32 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: The peer device name. Used for description and documentation.
                                     peer_port_channel: The peer device port-channel interface. Used for description and documentation.
                                     mtu: MTU can only be set on the parent Port-Channel.
-                                    ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
-                                    ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    ipv4_acl_in:
+                                       Name of the IPv4 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                                       Mutually exclusive
+                                       with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
+                                    ipv4_acl_out:
+                                       Name of the IPv4 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv4_acls` and supports field substitution for "interface_ip".
+                                       Mutually exclusive with
+                                       `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_in`, setting both
+                                       `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field
+                                       substitution for "interface_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -96306,6 +97207,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "shutdown": {"type": bool},
                             "as_path": {"type": AsPath},
+                            "received_attribute_discard": {"type": EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard},
                             "remove_private_as": {"type": RemovePrivateAs},
                             "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                             "next_hop_unchanged": {"type": bool},
@@ -96404,6 +97306,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard
+                        """Received path attribute configuration."""
                         remove_private_as: RemovePrivateAs
                         """
                         Remove private AS numbers in outbound AS path.
@@ -96503,6 +97407,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | UndefinedType | None = Undefined,
                                 shutdown: bool | UndefinedType | None = Undefined,
                                 as_path: AsPath | UndefinedType = Undefined,
+                                received_attribute_discard: EosCliConfigGen.RouterBgp.NeighborsItem.ReceivedAttributeDiscard | UndefinedType = Undefined,
                                 remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                                 remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                                 next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -96590,6 +97495,7 @@ class EosDesigns(EosDesignsRootModel):
                                        BGP AS-PATH options.
 
                                        Subclass of AvdModel.
+                                    received_attribute_discard: Received path attribute configuration.
                                     remove_private_as:
                                        Remove private AS numbers in outbound AS path.
 
@@ -100976,6 +101882,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -101093,13 +102001,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -101134,7 +102067,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -101198,6 +102131,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -101285,11 +102220,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -101315,7 +102271,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -101748,6 +102704,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -101862,13 +102820,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -101903,7 +102886,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -101952,6 +102935,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -102036,11 +103021,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -102066,7 +103072,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -106664,6 +107670,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
@@ -106781,13 +107789,38 @@ class EosDesigns(EosDesignsRootModel):
                             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             Required
                             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                            `wan_carriers`.
+                            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                            Mutually exclusive with `ipv4_standard_acl_in`,
+                            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            Mutually
+                            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                            raises an error.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Required for all WAN interfaces (`wan_carrier` is set) unless
+                            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                            Mutually exclusive
+                            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`, setting both
+                            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                            substitution for "interface_ip" or "peer_ip" is required.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -106822,7 +107855,7 @@ class EosDesigns(EosDesignsRootModel):
                             This is used to infer the path-groups in which this
                             interface should be configured.
                             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                            `ipv4_acl_in` is also required on all WAN interfaces.
+                            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                             """
                             wan_circuit_id: str | None
                             """
@@ -106886,6 +107919,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -106973,11 +108008,32 @@ class EosDesigns(EosDesignsRootModel):
                                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                            Required
                                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                           `wan_carriers`.
+                                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                           Mutually exclusive with `ipv4_standard_acl_in`,
+                                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           Mutually
+                                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                           raises an error.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                           Mutually exclusive
+                                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`, setting both
+                                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                           substitution for "interface_ip" or "peer_ip" is required.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -107003,7 +108059,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This is used to infer the path-groups in which this
                                            interface should be configured.
                                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                           `ipv4_acl_in` is also required on all WAN interfaces.
+                                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                         wan_circuit_id:
                                            The WAN circuit ID for this interface.
                                            This is not rendered in the configuration but used for WAN
@@ -107438,6 +108494,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "bgp": {"type": Bgp},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv4_standard_acl_in": {"type": str},
+                                "ipv4_standard_acl_out": {"type": str},
                                 "ipv6_acl_in": {"type": str},
                                 "ipv6_acl_out": {"type": str},
                                 "static_routes": {"type": StaticRoutes},
@@ -107552,13 +108610,38 @@ class EosDesigns(EosDesignsRootModel):
                             defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                             Required
                             for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                            `wan_carriers`.
+                            `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                            Mutually exclusive with `ipv4_standard_acl_in`,
+                            setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                             """
                             ipv4_acl_out: str | None
                             """
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                            Mutually
+                            exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                            raises an error.
+                            """
+                            ipv4_standard_acl_in: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Required for all WAN interfaces (`wan_carrier` is set) unless
+                            the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                            Mutually exclusive
+                            with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                            `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                            """
+                            ipv4_standard_acl_out: str | None
+                            """
+                            Name of the IPv4 standard access-list to be assigned in the egress direction.
+                            The access-list must
+                            be defined under `ipv4_standard_acls`.
+                            Mutually exclusive with `ipv4_acl_out`, setting both
+                            `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                            substitution for "interface_ip" or "peer_ip" is required.
                             """
                             ipv6_acl_in: str | None
                             """
@@ -107593,7 +108676,7 @@ class EosDesigns(EosDesignsRootModel):
                             This is used to infer the path-groups in which this
                             interface should be configured.
                             Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                            `ipv4_acl_in` is also required on all WAN interfaces.
+                            `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                             """
                             wan_circuit_id: str | None
                             """
@@ -107642,6 +108725,8 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp: Bgp | UndefinedType = Undefined,
                                     ipv4_acl_in: str | UndefinedType | None = Undefined,
                                     ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                    ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                     ipv6_acl_in: str | UndefinedType | None = Undefined,
                                     ipv6_acl_out: str | UndefinedType | None = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -107726,11 +108811,32 @@ class EosDesigns(EosDesignsRootModel):
                                            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                            Required
                                            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                           `wan_carriers`.
+                                           `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                           Mutually exclusive with `ipv4_standard_acl_in`,
+                                           setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                         ipv4_acl_out:
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                           Mutually
+                                           exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                           raises an error.
+                                        ipv4_standard_acl_in:
+                                           Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Required for all WAN interfaces (`wan_carrier` is set) unless
+                                           the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                           Mutually exclusive
+                                           with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                           `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                        ipv4_standard_acl_out:
+                                           Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                           The access-list must
+                                           be defined under `ipv4_standard_acls`.
+                                           Mutually exclusive with `ipv4_acl_out`, setting both
+                                           `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                           substitution for "interface_ip" or "peer_ip" is required.
                                         ipv6_acl_in:
                                            Name of the IPv6 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -107756,7 +108862,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This is used to infer the path-groups in which this
                                            interface should be configured.
                                            Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                           `ipv4_acl_in` is also required on all WAN interfaces.
+                                           `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                         wan_circuit_id:
                                            The WAN circuit ID for this interface.
                                            This is not rendered in the configuration but used for WAN
@@ -112293,6 +113399,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -112410,13 +113518,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -112451,7 +113584,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -112515,6 +113648,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -112602,11 +113737,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -112632,7 +113788,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -113065,6 +114221,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -113179,13 +114337,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -113220,7 +114403,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -113269,6 +114452,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -113353,11 +114538,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -113383,7 +114589,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -118000,6 +119206,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -118117,13 +119325,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -118158,7 +119391,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -118222,6 +119455,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -118309,11 +119544,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -118339,7 +119595,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
@@ -118772,6 +120028,8 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp": {"type": Bgp},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv4_standard_acl_in": {"type": str},
+                            "ipv4_standard_acl_out": {"type": str},
                             "ipv6_acl_in": {"type": str},
                             "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
@@ -118886,13 +120144,38 @@ class EosDesigns(EosDesignsRootModel):
                         defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                         Required
                         for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                        `wan_carriers`.
+                        `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                        Mutually exclusive with `ipv4_standard_acl_in`,
+                        setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                         """
                         ipv4_acl_out: str | None
                         """
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        Mutually
+                        exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                        raises an error.
+                        """
+                        ipv4_standard_acl_in: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Required for all WAN interfaces (`wan_carrier` is set) unless
+                        the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                        Mutually exclusive
+                        with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                        `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                        """
+                        ipv4_standard_acl_out: str | None
+                        """
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must
+                        be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                        substitution for "interface_ip" or "peer_ip" is required.
                         """
                         ipv6_acl_in: str | None
                         """
@@ -118927,7 +120210,7 @@ class EosDesigns(EosDesignsRootModel):
                         This is used to infer the path-groups in which this
                         interface should be configured.
                         Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                        `ipv4_acl_in` is also required on all WAN interfaces.
+                        `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                         """
                         wan_circuit_id: str | None
                         """
@@ -118976,6 +120259,8 @@ class EosDesigns(EosDesignsRootModel):
                                 bgp: Bgp | UndefinedType = Undefined,
                                 ipv4_acl_in: str | UndefinedType | None = Undefined,
                                 ipv4_acl_out: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_in: str | UndefinedType | None = Undefined,
+                                ipv4_standard_acl_out: str | UndefinedType | None = Undefined,
                                 ipv6_acl_in: str | UndefinedType | None = Undefined,
                                 ipv6_acl_out: str | UndefinedType | None = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
@@ -119060,11 +120345,32 @@ class EosDesigns(EosDesignsRootModel):
                                        defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
                                        Required
                                        for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
-                                       `wan_carriers`.
+                                       `wan_carriers`, or `ipv4_standard_acl_in` is set.
+                                       Mutually exclusive with `ipv4_standard_acl_in`,
+                                       setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                                     ipv4_acl_out:
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                                       Mutually
+                                       exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out`
+                                       raises an error.
+                                    ipv4_standard_acl_in:
+                                       Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Required for all WAN interfaces (`wan_carrier` is set) unless
+                                       the carrier is marked as 'trusted' under `wan_carriers`, or `ipv4_acl_in` is set.
+                                       Mutually exclusive
+                                       with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use
+                                       `ipv4_acl_in` instead when field substitution for "interface_ip" or "peer_ip" is required.
+                                    ipv4_standard_acl_out:
+                                       Name of the IPv4 standard access-list to be assigned in the egress direction.
+                                       The access-list must
+                                       be defined under `ipv4_standard_acls`.
+                                       Mutually exclusive with `ipv4_acl_out`, setting both
+                                       `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field
+                                       substitution for "interface_ip" or "peer_ip" is required.
                                     ipv6_acl_in:
                                        Name of the IPv6 access-list to be assigned in the ingress direction.
                                        The access-list must be
@@ -119090,7 +120396,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This is used to infer the path-groups in which this
                                        interface should be configured.
                                        Unless the carrier is marked as 'trusted' under `wan_carriers`,
-                                       `ipv4_acl_in` is also required on all WAN interfaces.
+                                       `ipv4_acl_in` or `ipv4_standard_acl_in` is also required on all WAN interfaces.
                                     wan_circuit_id:
                                        The WAN circuit ID for this interface.
                                        This is not rendered in the configuration but used for WAN
