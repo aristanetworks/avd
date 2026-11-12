@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2025-2026 Arista Networks, Inc.
+ Copyright (c) 2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -8,11 +8,6 @@
 !
 monitor security awake
 
-{%     if monitor_security.awake.disabled is arista.avd.defined(true) %}
-   disabled
-{%     else %}
-   no disabled
-{%     endif %}
 {%     if monitor_security.awake.topic is arista.avd.defined %}
    topic {{ monitor_security.awake.topic }}
 {%     endif %}
@@ -41,4 +36,7 @@ monitor security awake
       ssl profile {{ nucleus.ssl_profile }}
 {%         endif %}
 {%     endfor %}
+{%     if monitor_security.awake.disabled is arista.avd.defined(true) %}
+   disabled
+{%     endif %}
 {% endif %}
