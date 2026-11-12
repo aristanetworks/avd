@@ -411,6 +411,8 @@ router ospf 702
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -427,6 +429,8 @@ router ospf 702
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -445,6 +449,8 @@ router ospf 702
 router ospfv3
    address-family ipv4
       router-id 2.2.2.2
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal route-map map1
@@ -453,6 +459,7 @@ router ospfv3
    !
    address-family ipv6
       router-id 3.3.3.3
+      bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal route-map map1

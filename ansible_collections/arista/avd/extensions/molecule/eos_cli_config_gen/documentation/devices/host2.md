@@ -1053,6 +1053,10 @@ interface Dps1
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
 | Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
+| Vlan1003 | OSPFv3 BFD disabled at interface level | default | - | - |
+| Vlan1004 | OSPFv3 address-family BFD without area configuration | default | - | - |
+| Vlan1005 | OSPFv3 IPv6 BFD disabled at address-family level | default | - | - |
+| Vlan1006 | OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence | default | - | - |
 
 ##### IPv4
 
@@ -1062,15 +1066,23 @@ interface Dps1
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
 | Vlan1002 | default | - | - | - | - | - |
+| Vlan1003 | default | - | - | - | - | - |
+| Vlan1004 | default | - | - | - | - | - |
+| Vlan1005 | default | - | - | - | - | - |
+| Vlan1006 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | False | - | 1000 | 0.0.0.0 |
-| Vlan1001 | True | True | 1000 | 0.0.0.0 |
-| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | - | - | True | 0.0.0.0 | 10 | True | 1000 | 20 |
+| Vlan1000 | False | - | True | - | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1001 | True | True | - | 30 | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1002 | - | - | - | - | - | 0.0.0.0 | - | - | 0.0.0.0 | - |
+| Vlan1003 | - | - | False | - | - | - | - | - | - | 50 |
+| Vlan1004 | - | - | - | - | False | - | - | True | - | - |
+| Vlan1005 | - | - | - | - | - | - | - | False | - | - |
+| Vlan1006 | - | - | - | - | True | - | - | - | - | - |
 
 ##### ISIS
 
@@ -1091,7 +1103,11 @@ interface Vlan85
    no mpls ip
    ospfv3 passive-interface
    ospfv3 network point-to-point
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 10
    ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 20
    ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
@@ -1100,6 +1116,7 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   ospfv3 bfd
    no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
@@ -1107,6 +1124,7 @@ interface Vlan1000
 interface Vlan1001
    description Test VLAN with both ospfv3 and ipv6_ospf configurations
    ospfv3 passive-interface
+   ospfv3 cost 30
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
@@ -1115,6 +1133,24 @@ interface Vlan1002
    description Test OSPFv3 without passive-interface settings
    ospfv3 ipv4 area 0.0.0.0
    ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1003
+   description OSPFv3 BFD disabled at interface level
+   no ospfv3 bfd
+   ospfv3 ipv6 cost 50
+!
+interface Vlan1004
+   description OSPFv3 address-family BFD without area configuration
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv6 bfd
+!
+interface Vlan1005
+   description OSPFv3 IPv6 BFD disabled at address-family level
+   no ospfv3 ipv6 bfd
+!
+interface Vlan1006
+   description OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence
+   ospfv3 ipv4 bfd
 ```
 
 ### VXLAN Interface
@@ -1297,6 +1333,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1332,6 +1370,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1351,6 +1391,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 4.4.4.4 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1370,6 +1412,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -1378,6 +1422,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1396,6 +1442,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1417,6 +1465,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1433,6 +1483,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1449,6 +1501,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1457,6 +1511,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1465,6 +1521,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1483,6 +1541,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1504,6 +1564,8 @@ router ospf 701
 router ospfv3 vrf FULL
    address-family ipv4
       router-id 3.3.3.3
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1515,6 +1577,8 @@ router ospfv3 vrf FULL
    !
    address-family ipv6
       router-id 4.4.4.4
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1584,6 +1648,8 @@ router ospfv3 vrf data
       redistribute static route-map map1
 !
 router ospfv3
+   bfd default
+   bfd adjacency state any
    passive-interface default
    !
    address-family ipv4
@@ -1769,6 +1835,7 @@ router bgp 65101
    bgp route-reflector preserve-attributes
    no bgp additional-paths receive
    no bgp additional-paths send
+   neighbor default received attribute discard 10-23
    neighbor default send-community large
    bgp redistribute-internal
    redistribute connected include leaked route-map RM-CONN-2-BGP
