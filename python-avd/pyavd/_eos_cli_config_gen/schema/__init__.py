@@ -45261,12 +45261,64 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             SendCommunity: TypeAlias = Literal[
                 "all", "large", "extended", "standard", "extended large", "standard large", "standard extended", "standard extended large"
             ]
-            _fields: ClassVar[dict] = {"send_community": {"type": str}}
+
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
+                               Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+
+                        """
+
+            _fields: ClassVar[dict] = {"send_community": {"type": str}, "received_attribute_discard": {"type": ReceivedAttributeDiscard}}
             send_community: SendCommunity | None
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, send_community: SendCommunity | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    send_community: SendCommunity | UndefinedType | None = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
+                ) -> None:
                     """
                     NeighborDefault.
 
@@ -45275,6 +45327,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         send_community: send_community
+                        received_attribute_discard:
+                           Received path attribute configuration.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -45325,6 +45381,46 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             remote_as_replace_out: Replace AS number with local AS number.
                             prepend_own_disabled: Disable prepending own AS number to AS path.
+
+                        """
+
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
+                               Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                         """
 
@@ -45733,6 +45829,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "description": {"type": str},
                 "shutdown": {"type": bool},
                 "as_path": {"type": AsPath},
+                "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                 "remove_private_as": {"type": RemovePrivateAs},
                 "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
                 "next_hop_unchanged": {"type": bool},
@@ -45792,6 +45889,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             as_path: AsPath
             """
             BGP AS-PATH options.
+
+            Subclass of AvdModel.
+            """
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
 
             Subclass of AvdModel.
             """
@@ -45889,6 +45992,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: str | UndefinedType | None = Undefined,
                     shutdown: bool | UndefinedType | None = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                     remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                     remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
                     next_hop_unchanged: bool | UndefinedType | None = Undefined,
@@ -45948,6 +46052,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         shutdown: shutdown
                         as_path:
                            BGP AS-PATH options.
+
+                           Subclass of AvdModel.
+                        received_attribute_discard:
+                           Received path attribute configuration.
 
                            Subclass of AvdModel.
                         remove_private_as:
@@ -46094,6 +46202,46 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             interval: Interval in milliseconds.
                             min_rx: Rate in milliseconds.
                             multiplier: multiplier
+
+                        """
+
+            class ReceivedAttributeDiscard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                disabled: bool | None
+                """
+                Explicitly disable this configuration.
+                Mutually exclusive with `type_codes` and takes precedence
+                over it.
+                """
+                type_codes: str | None
+                """
+                BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                Supported range 4-255.
+                Mutually exclusive with `disabled`.
+                e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        ReceivedAttributeDiscard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled:
+                               Explicitly disable this configuration.
+                               Mutually exclusive with `type_codes` and takes precedence
+                               over it.
+                            type_codes:
+                               BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                               Supported range 4-255.
+                               Mutually exclusive with `disabled`.
+                               e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
 
                         """
 
@@ -46483,6 +46631,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "timers": {"type": str},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                 "peer_tag_in": {"type": str},
                 "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
@@ -46555,6 +46704,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            received_attribute_discard: ReceivedAttributeDiscard
+            """
+            Received path attribute configuration.
+
+            Subclass of AvdModel.
+            """
             peer_tag_in: str | None
             """Inbound peer tag name."""
             peer_tag_out_discard: str | None
@@ -46638,6 +46793,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timers: str | UndefinedType | None = Undefined,
                     route_map_in: str | UndefinedType | None = Undefined,
                     route_map_out: str | UndefinedType | None = Undefined,
+                    received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                     peer_tag_in: str | UndefinedType | None = Undefined,
                     peer_tag_out_discard: str | UndefinedType | None = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
@@ -46702,6 +46858,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        received_attribute_discard:
+                           Received path attribute configuration.
+
+                           Subclass of AvdModel.
                         peer_tag_in: Inbound peer tag name.
                         peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
@@ -57406,6 +57566,46 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class ReceivedAttributeDiscard(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"disabled": {"type": bool}, "type_codes": {"type": str}}
+                    disabled: bool | None
+                    """
+                    Explicitly disable this configuration.
+                    Mutually exclusive with `type_codes` and takes precedence
+                    over it.
+                    """
+                    type_codes: str | None
+                    """
+                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                    Supported range 4-255.
+                    Mutually exclusive with `disabled`.
+                    e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, disabled: bool | UndefinedType | None = Undefined, type_codes: str | UndefinedType | None = Undefined) -> None:
+                            """
+                            ReceivedAttributeDiscard.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                disabled:
+                                   Explicitly disable this configuration.
+                                   Mutually exclusive with `type_codes` and takes precedence
+                                   over it.
+                                type_codes:
+                                   BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                                   Supported range 4-255.
+                                   Mutually exclusive with `disabled`.
+                                   e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
+
+                            """
+
                 class AsPath(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -57697,6 +57897,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "passive": {"type": bool},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
+                    "received_attribute_discard": {"type": ReceivedAttributeDiscard},
                     "weight": {"type": int},
                     "local_as": {"type": str},
                     "as_path": {"type": AsPath},
@@ -57749,6 +57950,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 remove_private_as_ingress: RemovePrivateAsIngress
                 """Subclass of AvdModel."""
+                received_attribute_discard: ReceivedAttributeDiscard
+                """
+                Received path attribute configuration.
+
+                Subclass of AvdModel.
+                """
                 weight: int | None
                 local_as: str | None
                 """
@@ -57829,6 +58036,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive: bool | UndefinedType | None = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
+                        received_attribute_discard: ReceivedAttributeDiscard | UndefinedType = Undefined,
                         weight: int | UndefinedType | None = Undefined,
                         local_as: str | UndefinedType | None = Undefined,
                         as_path: AsPath | UndefinedType = Undefined,
@@ -57881,6 +58089,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                Subclass of AvdModel.
                             remove_private_as_ingress: Subclass of AvdModel.
+                            received_attribute_discard:
+                               Received path attribute configuration.
+
+                               Subclass of AvdModel.
                             weight: weight
                             local_as:
                                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -67081,6 +67293,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "router_id": {"type": str},
+                "bfd_default": {"type": bool},
+                "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
                 "redistribute": {"type": Redistribute},
@@ -67089,6 +67303,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Activate the address family."""
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
+            bfd_default: bool | None
+            """Enable BFD for this OSPFv3 address family."""
+            bfd_adjacency_state_any: bool | None
+            """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -67106,6 +67324,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
+                    bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
@@ -67119,6 +67339,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: Activate the address family.
                         router_id: 32-bit OSPF router ID as an IP address.
+                        bfd_default: Enable BFD for this OSPFv3 address family.
+                        bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         redistribute:
@@ -67460,6 +67682,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "redistribute": {"type": Redistribute},
                 "enabled": {"type": bool},
                 "router_id": {"type": str},
+                "bfd_default": {"type": bool},
+                "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
             }
@@ -67473,6 +67697,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Activate the address family."""
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
+            bfd_default: bool | None
+            """Enable BFD for this OSPFv3 address family."""
+            bfd_adjacency_state_any: bool | None
+            """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -67485,6 +67713,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     redistribute: Redistribute | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
+                    bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                 ) -> None:
@@ -67501,6 +67731,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         enabled: Activate the address family.
                         router_id: 32-bit OSPF router ID as an IP address.
+                        bfd_default: Enable BFD for this OSPFv3 address family.
+                        bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
@@ -67818,6 +68050,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str},
+                    "bfd_default": {"type": bool},
+                    "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
                     "redistribute": {"type": Redistribute},
@@ -67826,6 +68060,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Activate the address family."""
                 router_id: str | None
                 """32-bit OSPF router ID as an IP address."""
+                bfd_default: bool | None
+                """Enable BFD for this OSPFv3 address family."""
+                bfd_adjacency_state_any: bool | None
+                """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
@@ -67843,6 +68081,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         enabled: bool | UndefinedType = Undefined,
                         router_id: str | UndefinedType | None = Undefined,
+                        bfd_default: bool | UndefinedType | None = Undefined,
+                        bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
@@ -67856,6 +68096,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled: Activate the address family.
                             router_id: 32-bit OSPF router ID as an IP address.
+                            bfd_default: Enable BFD for this OSPFv3 address family.
+                            bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             redistribute:
@@ -68202,6 +68444,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "redistribute": {"type": Redistribute},
                     "enabled": {"type": bool},
                     "router_id": {"type": str},
+                    "bfd_default": {"type": bool},
+                    "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
                 }
@@ -68215,6 +68459,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Activate the address family."""
                 router_id: str | None
                 """32-bit OSPF router ID as an IP address."""
+                bfd_default: bool | None
+                """Enable BFD for this OSPFv3 address family."""
+                bfd_adjacency_state_any: bool | None
+                """Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family."""
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
@@ -68227,6 +68475,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         redistribute: Redistribute | UndefinedType = Undefined,
                         enabled: bool | UndefinedType = Undefined,
                         router_id: str | UndefinedType | None = Undefined,
+                        bfd_default: bool | UndefinedType | None = Undefined,
+                        bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     ) -> None:
@@ -68243,6 +68493,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             enabled: Activate the address family.
                             router_id: 32-bit OSPF router ID as an IP address.
+                            bfd_default: Enable BFD for this OSPFv3 address family.
+                            bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
 
@@ -68251,6 +68503,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "router_id": {"type": str},
+                "bfd_default": {"type": bool},
+                "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
@@ -68264,6 +68518,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             router_id: str | None
             """32-bit OSPF router ID as an IP address."""
+            bfd_default: bool | None
+            """
+            Enable BFD for OSPFv3 on the interface for both address families in this VRF. An address-family BFD
+            setting suppresses
+            the shared command only when that same address family is enabled (`enabled:
+            true`) in this VRF. A family BFD command
+            is rendered only when the family is enabled and its BFD
+            setting is true.
+            """
+            bfd_adjacency_state_any: bool | None
+            """
+            Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled
+            address family defines
+            this setting, the shared BFD adjacency command is not rendered. A family BFD
+            adjacency command is rendered only when that family setting is true.
+            """
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
@@ -68297,6 +68567,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     router_id: str | UndefinedType | None = Undefined,
+                    bfd_default: bool | UndefinedType | None = Undefined,
+                    bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
@@ -68314,6 +68586,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            VRF name.
                            VRF 'default' must be configured directly under 'router_ospfv3'.
                         router_id: 32-bit OSPF router ID as an IP address.
+                        bfd_default:
+                           Enable BFD for OSPFv3 on the interface for both address families in this VRF. An address-family BFD
+                           setting suppresses
+                           the shared command only when that same address family is enabled (`enabled:
+                           true`) in this VRF. A family BFD command
+                           is rendered only when the family is enabled and its BFD
+                           setting is true.
+                        bfd_adjacency_state_any:
+                           Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled
+                           address family defines
+                           this setting, the shared BFD adjacency command is not rendered. A family BFD
+                           adjacency command is rendered only when that family setting is true.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         address_family_ipv4:
@@ -68345,6 +68629,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "router_id": {"type": str},
+            "bfd_default": {"type": bool},
+            "bfd_adjacency_state_any": {"type": bool},
             "passive_interface_default": {"type": bool},
             "auto_cost_reference_bandwidth": {"type": int},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
@@ -68354,6 +68640,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         router_id: str | None
         """32-bit OSPF router ID as an IP address."""
+        bfd_default: bool | None
+        """
+        Enable BFD for OSPFv3 on the interface for both address families. An address-family BFD setting
+        suppresses the shared
+        command only when that same address family is enabled (`enabled: true`) under
+        this router OSPFv3 instance. A family
+        BFD command is rendered only when the family is enabled and
+        its BFD setting is true.
+        """
+        bfd_adjacency_state_any: bool | None
+        """
+        Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family
+        defines
+        this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency
+        command is rendered only when that family setting is true.
+        """
         passive_interface_default: bool | None
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
@@ -68388,6 +68690,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 router_id: str | UndefinedType | None = Undefined,
+                bfd_default: bool | UndefinedType | None = Undefined,
+                bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                 passive_interface_default: bool | UndefinedType | None = Undefined,
                 auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
@@ -68403,6 +68707,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     router_id: 32-bit OSPF router ID as an IP address.
+                    bfd_default:
+                       Enable BFD for OSPFv3 on the interface for both address families. An address-family BFD setting
+                       suppresses the shared
+                       command only when that same address family is enabled (`enabled: true`) under
+                       this router OSPFv3 instance. A family
+                       BFD command is rendered only when the family is enabled and
+                       its BFD setting is true.
+                    bfd_adjacency_state_any:
+                       Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family
+                       defines
+                       this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency
+                       command is rendered only when that family setting is true.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                     address_family_ipv4:
@@ -76690,7 +77006,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"area": {"type": str}, "cost": {"type": int}}
+                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}, "cost": {"type": int}}
+                bfd: bool | None
+                """Enable/Disable BFD for OSPFv3 IPv4 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
                 cost: int | None
@@ -76698,7 +77016,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, area: str | UndefinedType | None = Undefined, cost: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        bfd: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType | None = Undefined,
+                        cost: int | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -76706,6 +77030,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            bfd: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
                             cost: Set OSPFv3 IPv4 cost on the interface.
 
@@ -76714,7 +77039,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"area": {"type": str}, "cost": {"type": int}}
+                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}, "cost": {"type": int}}
+                bfd: bool | None
+                """Enable/Disable BFD for OSPFv3 IPv6 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
                 cost: int | None
@@ -76722,7 +77049,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, area: str | UndefinedType | None = Undefined, cost: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        bfd: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType | None = Undefined,
+                        cost: int | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         Ipv6.
 
@@ -76730,6 +77063,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            bfd: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
                             cost: Set OSPFv3 IPv6 cost on the interface.
 
@@ -76742,6 +77076,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "passive_interface": {"type": bool},
                 "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
+                "bfd": {"type": bool},
             }
             ipv4: Ipv4
             """Subclass of AvdModel."""
@@ -76758,6 +77093,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             no_passive_interface: bool | None
             """Disable passive interface mode."""
             network_point_to_point: bool | None
+            bfd: bool | None
+            """
+            Enable/Disable BFD for OSPFv3 on the interface for both address families.
+            If either `ipv4.bfd` or
+            `ipv6.bfd` is defined, this setting is ignored.
+            """
 
             if TYPE_CHECKING:
 
@@ -76770,6 +77111,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     passive_interface: bool | UndefinedType | None = Undefined,
                     no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
+                    bfd: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     Ospfv3.
@@ -76787,6 +77129,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point
+                        bfd:
+                           Enable/Disable BFD for OSPFv3 on the interface for both address families.
+                           If either `ipv4.bfd` or
+                           `ipv6.bfd` is defined, this setting is ignored.
 
                     """
 

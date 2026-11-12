@@ -405,6 +405,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                 area:
                   type: str
                   description: |-
@@ -417,6 +420,9 @@ keys:
             ipv6:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                 area:
                   type: str
                   description: |-
@@ -441,6 +447,11 @@ keys:
               description: Disable passive interface mode.
             network_point_to_point:
               type: bool
+            bfd:
+              type: bool
+              description: |-
+                Enable/Disable BFD for OSPFv3 on the interface for both address families.
+                If either `ipv4.bfd` or `ipv6.bfd` is defined, this setting is ignored.
         ospf_cost:
           type: int
         ospf_authentication:
