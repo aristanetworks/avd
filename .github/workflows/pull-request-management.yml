@@ -44,6 +44,7 @@ jobs:
       - e2e_coverage
       - test_pyavd
       - generate_pyavd_coverage_report
+      - check_built_docs_links
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +64,7 @@ jobs:
       pyavd: ${{ steps.filter.outputs.pyavd }}
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
+      docs: ${{ steps.filter.outputs.docs }}
       e2e: ${{ steps.filter.outputs.e2e }}
       e2e_test_matrix: ${{ steps.e2e_test_matrix.outputs.matrix }}
     steps:
@@ -117,6 +119,22 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
+            docs:
+              - '.github/workflows/pull-request-management.yml'
+              - '.readthedocs.yaml'
+              - 'development/check_built_docs_links.py'
+              - 'docs/**'
+              - 'index.md'
+              - 'assets/**'
+              - 'python-avd/pyavd/**'
+              - 'mkdocs.yml'
+              - 'pyproject.toml'
+              - 'ansible_collections/arista/avd/examples/**'
+              - 'ansible_collections/arista/avd/roles/*/README.md'
+              - 'ansible_collections/arista/avd/roles/*/docs/**'
+              - 'schemas/**'
+              - 'tools/schema-explorer/**'
+              - 'tools/schema_explorer_markdown.py'
             e2e:
               - '.github/workflows/pull-request-management.yml'
               - 'Makefile'
@@ -715,6 +733,29 @@ jobs:
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
+
+  # ----------------------------------- #
+  # Check links in built docs
+  # ----------------------------------- #
+  check_built_docs_links:
+    name: Check links in built documentation
+    runs-on: ubuntu-latest
+    needs: [file-changes]
+    if: needs.file-changes.outputs.docs == 'true' || github.event_name == 'merge_group'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Install documentation dependencies
+        run: pip install --group doc --upgrade
+      - name: Build documentation
+        run: mkdocs build --strict --clean --site-dir /tmp/avd-doc-site
+      - name: Check internal links in built documentation
+        run: python development/check_built_docs_links.py /tmp/avd-doc-site
 
   # ----------------------------------- #
   # End-to-end tests
