@@ -193,7 +193,6 @@ rr1:
       vtep_loopback_ipv6_pool: 2001:db8:600d:caff::/64
       uplink_ipv6_pool: 2001:db8:a11:feef::/64
       id: 1
-      bgp_as: 1
       router_id_pool: 10.255.2.0/24
       mpls_route_reflectors: [bgp-peer-groups-2]
 
