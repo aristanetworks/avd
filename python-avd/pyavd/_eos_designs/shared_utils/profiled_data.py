@@ -66,6 +66,23 @@ class ProfiledDataMixin(Protocol):
         )
 
     @cached_property
+    def aaa_settings(self: SharedUtilsProtocol) -> EosDesigns.AaaSettings:
+        """
+        AAA settings with the node's `aaa_settings_profile` resolved and merged in.
+
+        If `aaa_settings_profile` is not defined, the root-level `aaa_settings` is returned.
+        """
+        if not self.node_config.aaa_settings_profile:
+            return self.inputs.aaa_settings
+
+        return resolve_profile(
+            self.inputs.aaa_settings,
+            self.inputs.aaa_settings_profiles,
+            self.node_config.aaa_settings_profile,
+            target_name="aaa_settings",
+        )
+
+    @cached_property
     def cv_settings(self: SharedUtilsProtocol) -> EosDesigns.CvSettings:
         """
         CloudVision settings with the node's `cv_settings_profile` resolved and merged in.
