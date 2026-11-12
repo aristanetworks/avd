@@ -6362,6 +6362,118 @@ class EosDesigns(EosDesignsRootModel):
             CampusLinkType._item_type = str
 
             RoutingProtocol: TypeAlias = Literal["ebgp"]
+
+            class Tunnel(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["gre", "ipsec"]
+
+                class SourceInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceInterfaces._item_type = str
+
+                class SourceIps(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceIps._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "mode": {"type": str},
+                    "source_interfaces": {"type": SourceInterfaces},
+                    "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
+                    "ipsec_profile": {"type": str},
+                    "path_mtu_discovery": {"type": bool},
+                }
+                mode: Mode | None
+                """Tunnel encapsulation mode."""
+                source_interfaces: SourceInterfaces
+                """
+                Physical interface names for each node.
+                Positional - first entry for the first node, second for the
+                second.
+                These interfaces are also used as the tunnel source interface.
+
+
+                Subclass of AvdList with
+                `str` items.
+                """
+                source_ips: SourceIps
+                """
+                IPv4 addresses on the source interfaces, one per node.
+                The tunnel destination is automatically
+                derived from the peer's source IP (without mask).
+                The static route next-hop is derived from the
+                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
+
+
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
+                """
+                ipsec_profile: str | None
+                """IPsec profile name. Only used when mode is 'ipsec'."""
+                path_mtu_discovery: bool | None
+                """Enable Path MTU Discovery on the tunnel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+                        source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
+                        ipsec_profile: str | UndefinedType | None = Undefined,
+                        path_mtu_discovery: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Tunnel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Tunnel encapsulation mode.
+                            source_interfaces:
+                               Physical interface names for each node.
+                               Positional - first entry for the first node, second for the
+                               second.
+                               These interfaces are also used as the tunnel source interface.
+
+
+                               Subclass of AvdList with
+                               `str` items.
+                            source_ips:
+                               IPv4 addresses on the source interfaces, one per node.
+                               The tunnel destination is automatically
+                               derived from the peer's source IP (without mask).
+                               The static route next-hop is derived from the
+                               local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
+
+
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
+                            ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
+                            path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -6400,6 +6512,8 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
+                "tunnel": {"type": Tunnel},
+                "tunnel_structured_config": {"type": EosCliConfigGen.TunnelInterfacesItem},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -6591,6 +6705,21 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
+            tunnel: Tunnel
+            """
+            Tunnel configuration for this P2P link.
+            When set, the `interfaces` field defines tunnel interface
+            names (e.g., Tunnel1).
+            Physical source interfaces connect to crypto/WAN devices.
+            A static route is
+            auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+            Subclass of
+            AvdModel.
+            """
+            tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem
+            """Custom structured config for the tunnel interface."""
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -6638,6 +6767,8 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     routing_protocol: RoutingProtocol | UndefinedType | None = Undefined,
+                    tunnel: Tunnel | UndefinedType = Undefined,
+                    tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -6774,6 +6905,18 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
+                        tunnel:
+                           Tunnel configuration for this P2P link.
+                           When set, the `interfaces` field defines tunnel interface
+                           names (e.g., Tunnel1).
+                           Physical source interfaces connect to crypto/WAN devices.
+                           A static route is
+                           auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+                           Subclass of
+                           AvdModel.
+                        tunnel_structured_config: Custom structured config for the tunnel interface.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -7166,6 +7309,118 @@ class EosDesigns(EosDesignsRootModel):
             CampusLinkType._item_type = str
 
             RoutingProtocol: TypeAlias = Literal["ebgp"]
+
+            class Tunnel(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["gre", "ipsec"]
+
+                class SourceInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceInterfaces._item_type = str
+
+                class SourceIps(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceIps._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "mode": {"type": str},
+                    "source_interfaces": {"type": SourceInterfaces},
+                    "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
+                    "ipsec_profile": {"type": str},
+                    "path_mtu_discovery": {"type": bool},
+                }
+                mode: Mode | None
+                """Tunnel encapsulation mode."""
+                source_interfaces: SourceInterfaces
+                """
+                Physical interface names for each node.
+                Positional - first entry for the first node, second for the
+                second.
+                These interfaces are also used as the tunnel source interface.
+
+
+                Subclass of AvdList with
+                `str` items.
+                """
+                source_ips: SourceIps
+                """
+                IPv4 addresses on the source interfaces, one per node.
+                The tunnel destination is automatically
+                derived from the peer's source IP (without mask).
+                The static route next-hop is derived from the
+                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
+
+
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
+                """
+                ipsec_profile: str | None
+                """IPsec profile name. Only used when mode is 'ipsec'."""
+                path_mtu_discovery: bool | None
+                """Enable Path MTU Discovery on the tunnel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+                        source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
+                        ipsec_profile: str | UndefinedType | None = Undefined,
+                        path_mtu_discovery: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Tunnel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Tunnel encapsulation mode.
+                            source_interfaces:
+                               Physical interface names for each node.
+                               Positional - first entry for the first node, second for the
+                               second.
+                               These interfaces are also used as the tunnel source interface.
+
+
+                               Subclass of AvdList with
+                               `str` items.
+                            source_ips:
+                               IPv4 addresses on the source interfaces, one per node.
+                               The tunnel destination is automatically
+                               derived from the peer's source IP (without mask).
+                               The static route next-hop is derived from the
+                               local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
+
+
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
+                            ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
+                            path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -7204,6 +7459,8 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
+                "tunnel": {"type": Tunnel},
+                "tunnel_structured_config": {"type": EosCliConfigGen.TunnelInterfacesItem},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -7395,6 +7652,21 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
+            tunnel: Tunnel
+            """
+            Tunnel configuration for this P2P link.
+            When set, the `interfaces` field defines tunnel interface
+            names (e.g., Tunnel1).
+            Physical source interfaces connect to crypto/WAN devices.
+            A static route is
+            auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+            Subclass of
+            AvdModel.
+            """
+            tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem
+            """Custom structured config for the tunnel interface."""
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -7442,6 +7714,8 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     routing_protocol: RoutingProtocol | UndefinedType | None = Undefined,
+                    tunnel: Tunnel | UndefinedType = Undefined,
+                    tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -7578,6 +7852,18 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
+                        tunnel:
+                           Tunnel configuration for this P2P link.
+                           When set, the `interfaces` field defines tunnel interface
+                           names (e.g., Tunnel1).
+                           Physical source interfaces connect to crypto/WAN devices.
+                           A static route is
+                           auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+                           Subclass of
+                           AvdModel.
+                        tunnel_structured_config: Custom structured config for the tunnel interface.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -27884,6 +28170,118 @@ class EosDesigns(EosDesignsRootModel):
             CampusLinkType._item_type = str
 
             RoutingProtocol: TypeAlias = Literal["ebgp"]
+
+            class Tunnel(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["gre", "ipsec"]
+
+                class SourceInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceInterfaces._item_type = str
+
+                class SourceIps(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceIps._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "mode": {"type": str},
+                    "source_interfaces": {"type": SourceInterfaces},
+                    "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
+                    "ipsec_profile": {"type": str},
+                    "path_mtu_discovery": {"type": bool},
+                }
+                mode: Mode | None
+                """Tunnel encapsulation mode."""
+                source_interfaces: SourceInterfaces
+                """
+                Physical interface names for each node.
+                Positional - first entry for the first node, second for the
+                second.
+                These interfaces are also used as the tunnel source interface.
+
+
+                Subclass of AvdList with
+                `str` items.
+                """
+                source_ips: SourceIps
+                """
+                IPv4 addresses on the source interfaces, one per node.
+                The tunnel destination is automatically
+                derived from the peer's source IP (without mask).
+                The static route next-hop is derived from the
+                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
+
+
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
+                """
+                ipsec_profile: str | None
+                """IPsec profile name. Only used when mode is 'ipsec'."""
+                path_mtu_discovery: bool | None
+                """Enable Path MTU Discovery on the tunnel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+                        source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
+                        ipsec_profile: str | UndefinedType | None = Undefined,
+                        path_mtu_discovery: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Tunnel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Tunnel encapsulation mode.
+                            source_interfaces:
+                               Physical interface names for each node.
+                               Positional - first entry for the first node, second for the
+                               second.
+                               These interfaces are also used as the tunnel source interface.
+
+
+                               Subclass of AvdList with
+                               `str` items.
+                            source_ips:
+                               IPv4 addresses on the source interfaces, one per node.
+                               The tunnel destination is automatically
+                               derived from the peer's source IP (without mask).
+                               The static route next-hop is derived from the
+                               local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
+
+
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
+                            ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
+                            path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -27922,6 +28320,8 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
+                "tunnel": {"type": Tunnel},
+                "tunnel_structured_config": {"type": EosCliConfigGen.TunnelInterfacesItem},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -28113,6 +28513,21 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
+            tunnel: Tunnel
+            """
+            Tunnel configuration for this P2P link.
+            When set, the `interfaces` field defines tunnel interface
+            names (e.g., Tunnel1).
+            Physical source interfaces connect to crypto/WAN devices.
+            A static route is
+            auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+            Subclass of
+            AvdModel.
+            """
+            tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem
+            """Custom structured config for the tunnel interface."""
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -28160,6 +28575,8 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     routing_protocol: RoutingProtocol | UndefinedType | None = Undefined,
+                    tunnel: Tunnel | UndefinedType = Undefined,
+                    tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -28296,6 +28713,18 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
+                        tunnel:
+                           Tunnel configuration for this P2P link.
+                           When set, the `interfaces` field defines tunnel interface
+                           names (e.g., Tunnel1).
+                           Physical source interfaces connect to crypto/WAN devices.
+                           A static route is
+                           auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+                           Subclass of
+                           AvdModel.
+                        tunnel_structured_config: Custom structured config for the tunnel interface.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -28688,6 +29117,118 @@ class EosDesigns(EosDesignsRootModel):
             CampusLinkType._item_type = str
 
             RoutingProtocol: TypeAlias = Literal["ebgp"]
+
+            class Tunnel(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["gre", "ipsec"]
+
+                class SourceInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceInterfaces._item_type = str
+
+                class SourceIps(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SourceIps._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "mode": {"type": str},
+                    "source_interfaces": {"type": SourceInterfaces},
+                    "source_ips": {"type": SourceIps},
+                    "source_ip_pool": {"type": str},
+                    "ipsec_profile": {"type": str},
+                    "path_mtu_discovery": {"type": bool},
+                }
+                mode: Mode | None
+                """Tunnel encapsulation mode."""
+                source_interfaces: SourceInterfaces
+                """
+                Physical interface names for each node.
+                Positional - first entry for the first node, second for the
+                second.
+                These interfaces are also used as the tunnel source interface.
+
+
+                Subclass of AvdList with
+                `str` items.
+                """
+                source_ips: SourceIps
+                """
+                IPv4 addresses on the source interfaces, one per node.
+                The tunnel destination is automatically
+                derived from the peer's source IP (without mask).
+                The static route next-hop is derived from the
+                local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is
+                set.
+
+
+                Subclass of AvdList with `str` items.
+                """
+                source_ip_pool: str | None
+                """
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per
+                P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
+                """
+                ipsec_profile: str | None
+                """IPsec profile name. Only used when mode is 'ipsec'."""
+                path_mtu_discovery: bool | None
+                """Enable Path MTU Discovery on the tunnel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Mode | UndefinedType | None = Undefined,
+                        source_interfaces: SourceInterfaces | UndefinedType = Undefined,
+                        source_ips: SourceIps | UndefinedType = Undefined,
+                        source_ip_pool: str | UndefinedType | None = Undefined,
+                        ipsec_profile: str | UndefinedType | None = Undefined,
+                        path_mtu_discovery: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Tunnel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Tunnel encapsulation mode.
+                            source_interfaces:
+                               Physical interface names for each node.
+                               Positional - first entry for the first node, second for the
+                               second.
+                               These interfaces are also used as the tunnel source interface.
+
+
+                               Subclass of AvdList with
+                               `str` items.
+                            source_ips:
+                               IPv4 addresses on the source interfaces, one per node.
+                               The tunnel destination is automatically
+                               derived from the peer's source IP (without mask).
+                               The static route next-hop is derived from the
+                               local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                               Not required when `source_ip_pool` is
+                               set.
+
+
+                               Subclass of AvdList with `str` items.
+                            source_ip_pool:
+                               Name of an IP pool defined under `p2p_links_ip_pools`.
+                               A /31 subnet will be taken from the pool per
+                               P2P link to assign source IPs.
+                               Requires `id` to be set on the P2P link.
+                            ipsec_profile: IPsec profile name. Only used when mode is 'ipsec'.
+                            path_mtu_discovery: Enable Path MTU Discovery on the tunnel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -28726,6 +29267,8 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
+                "tunnel": {"type": Tunnel},
+                "tunnel_structured_config": {"type": EosCliConfigGen.TunnelInterfacesItem},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -28917,6 +29460,21 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
+            tunnel: Tunnel
+            """
+            Tunnel configuration for this P2P link.
+            When set, the `interfaces` field defines tunnel interface
+            names (e.g., Tunnel1).
+            Physical source interfaces connect to crypto/WAN devices.
+            A static route is
+            auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+            Subclass of
+            AvdModel.
+            """
+            tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem
+            """Custom structured config for the tunnel interface."""
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -28964,6 +29522,8 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | UndefinedType | None = Undefined,
                     routing_protocol: RoutingProtocol | UndefinedType | None = Undefined,
+                    tunnel: Tunnel | UndefinedType = Undefined,
+                    tunnel_structured_config: EosCliConfigGen.TunnelInterfacesItem | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -29100,6 +29660,18 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
+                        tunnel:
+                           Tunnel configuration for this P2P link.
+                           When set, the `interfaces` field defines tunnel interface
+                           names (e.g., Tunnel1).
+                           Physical source interfaces connect to crypto/WAN devices.
+                           A static route is
+                           auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+
+
+                           Subclass of
+                           AvdModel.
+                        tunnel_structured_config: Custom structured config for the tunnel interface.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 

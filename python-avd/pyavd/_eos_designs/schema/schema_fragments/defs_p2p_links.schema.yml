@@ -272,6 +272,59 @@ $defs:
           description: |-
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured.
+        tunnel:
+          type: dict
+          description: |
+            Tunnel configuration for this P2P link.
+            When set, the `interfaces` field defines tunnel interface names (e.g., Tunnel1).
+            Physical source interfaces connect to crypto/WAN devices.
+            A static route is auto-generated to reach the remote tunnel endpoint via the crypto device peer IP.
+          keys:
+            mode:
+              type: str
+              valid_values: ["gre", "ipsec"]
+              description: Tunnel encapsulation mode.
+            source_interfaces:
+              type: list
+              min_length: 2
+              max_length: 2
+              items:
+                type: str
+              description: |
+                Physical interface names for each node.
+                Positional - first entry for the first node, second for the second.
+                These interfaces are also used as the tunnel source interface.
+            source_ips:
+              type: list
+              min_length: 2
+              max_length: 2
+              items:
+                type: str
+                description: IPv4 address with mask (e.g., 10.0.0.0/31).
+              description: |
+                IPv4 addresses on the source interfaces, one per node.
+                The tunnel destination is automatically derived from the peer's source IP (without mask).
+                The static route next-hop is derived from the local subnet's peer address (e.g., 10.0.0.1 for 10.0.0.0/31).
+                Not required when `source_ip_pool` is set.
+            source_ip_pool:
+              type: str
+              description: |
+                Name of an IP pool defined under `p2p_links_ip_pools`.
+                A /31 subnet will be taken from the pool per P2P link to assign source IPs.
+                Requires `id` to be set on the P2P link.
+            ipsec_profile:
+              type: str
+              description: IPsec profile name. Only used when mode is 'ipsec'.
+            path_mtu_discovery:
+              type: bool
+              description: Enable Path MTU Discovery on the tunnel.
+        tunnel_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: "eos_cli_config_gen#/keys/tunnel_interfaces/items"
+          description: Custom structured config for the tunnel interface.
+          documentation_options:
+            hide_keys: true
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
