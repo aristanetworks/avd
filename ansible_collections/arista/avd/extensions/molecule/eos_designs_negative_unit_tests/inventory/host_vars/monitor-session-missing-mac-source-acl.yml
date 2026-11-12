@@ -1,0 +1,29 @@
+---
+# The ACL exists only in the IPv4 catalog; the MAC catalog must be used.
+type: l2leaf
+avd_design_future:
+  raise_for_missing_monitor_session_acls: true
+l2leaf:
+  nodes:
+    - name: monitor-session-missing-mac-source-acl
+ipv4_acls:
+  - name: MONITOR-ACL
+    entries:
+      - action: permit
+        protocol: ip
+        source: any
+        destination: any
+network_ports:
+  - switches:
+      - monitor-session-missing-mac-source-acl
+    switch_ports:
+      - Ethernet1
+    monitor_sessions:
+      - name: CAPTURE
+        role: source
+        source_settings:
+          access_group:
+            type: mac
+            name: MONITOR-ACL
+expected_error_message: >-
+  'mac_acls[name=MONITOR-ACL]' is required but was not found for host 'monitor-session-missing-mac-source-acl'.

@@ -1,5 +1,7 @@
 ---
 # Match the password used by the regular EVPN neighbor returning from the Route Server.
+avd_design_future:
+  raise_for_missing_monitor_session_acls: true
 override_router_bgp:
   neighbors:
     # dc1-spine1

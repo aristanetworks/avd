@@ -1889,6 +1889,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
+            "raise_for_missing_monitor_session_acls": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -2095,6 +2096,20 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_missing_monitor_session_acls: bool
+        """
+        Available from AVD 6.5.0.
+        When enabled, raise an error if a monitor-session access group of type
+        `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+        and configure the
+        referenced ACL definition from that catalog.
+        When disabled (default), skip catalog validation and
+        automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
+        IPv4
+        standard monitor-session ACLs are always validated and configured.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -2121,6 +2136,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
+                raise_for_missing_monitor_session_acls: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -2254,6 +2270,16 @@ class EosDesigns(EosDesignsRootModel):
                        VRF.
                        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
+                    raise_for_missing_monitor_session_acls:
+                       Available from AVD 6.5.0.
+                       When enabled, raise an error if a monitor-session access group of type
+                       `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+                       and configure the
+                       referenced ACL definition from that catalog.
+                       When disabled (default), skip catalog validation and
+                       automatic ACL configuration for these types, so their definitions can be supplied elsewhere.
+                       IPv4
+                       standard monitor-session ACLs are always validated and configured.
 
                 """
 
@@ -4880,10 +4906,18 @@ class EosDesigns(EosDesignsRootModel):
                     class AccessGroup(AvdModel):
                         """Subclass of AvdModel."""
 
-                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                        type: Type | None
-                        name: str | None
+                        type: Type
+                        """
+                        ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                        `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                        IPv4 standard ACLs must exist in
+                        `ipv4_standard_acls` and their definitions are configured.
+                        For `ip`, `ipv6`, and `mac`, catalog
+                        validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                        """
+                        name: str
                         """ACL name."""
                         priority: int | None
 
@@ -4892,8 +4926,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | UndefinedType | None = Undefined,
-                                name: str | UndefinedType | None = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                name: str | UndefinedType = Undefined,
                                 priority: int | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -4903,7 +4937,13 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    type: type
+                                    type:
+                                       ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                       `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                       IPv4 standard ACLs must exist in
+                                       `ipv4_standard_acls` and their definitions are configured.
+                                       For `ip`, `ipv6`, and `mac`, catalog
+                                       validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     name: ACL name.
                                     priority: priority
 
@@ -4944,15 +4984,23 @@ class EosDesigns(EosDesignsRootModel):
                     class AccessGroup(AvdModel):
                         """Subclass of AvdModel."""
 
-                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                        type: Type | None
-                        name: str | None
+                        type: Type
+                        """
+                        ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                        `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                        IPv4 standard ACLs must exist in
+                        `ipv4_standard_acls` and their definitions are configured.
+                        For `ip`, `ipv6`, and `mac`, catalog
+                        validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                        """
+                        name: str
                         """ACL name."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                 """
                                 AccessGroup.
 
@@ -4960,7 +5008,13 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    type: type
+                                    type:
+                                       ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                       `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                       IPv4 standard ACLs must exist in
+                                       `ipv4_standard_acls` and their definitions are configured.
+                                       For `ip`, `ipv6`, and `mac`, catalog
+                                       validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                     name: ACL name.
 
                                 """
@@ -31986,10 +32040,18 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    IPv4 standard ACLs must exist in
+                    `ipv4_standard_acls` and their definitions are configured.
+                    For `ip`, `ipv6`, and `mac`, catalog
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                    """
+                    name: str
                     """ACL name."""
                     priority: int | None
 
@@ -31998,8 +32060,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Type | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            type: Type | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
                             priority: int | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -32009,7 +32071,13 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   IPv4 standard ACLs must exist in
+                                   `ipv4_standard_acls` and their definitions are configured.
+                                   For `ip`, `ipv6`, and `mac`, catalog
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
                                 priority: priority
 
@@ -32050,15 +32118,23 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    IPv4 standard ACLs must exist in
+                    `ipv4_standard_acls` and their definitions are configured.
+                    For `ip`, `ipv6`, and `mac`, catalog
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                    """
+                    name: str
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -32066,7 +32142,13 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   IPv4 standard ACLs must exist in
+                                   `ipv4_standard_acls` and their definitions are configured.
+                                   For `ip`, `ipv6`, and `mac`, catalog
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
 
                             """
@@ -39127,10 +39209,18 @@ class EosDesigns(EosDesignsRootModel):
                         class AccessGroup(AvdModel):
                             """Subclass of AvdModel."""
 
-                            Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                            Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                            type: Type | None
-                            name: str | None
+                            type: Type
+                            """
+                            ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                            `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                            IPv4 standard ACLs must exist in
+                            `ipv4_standard_acls` and their definitions are configured.
+                            For `ip`, `ipv6`, and `mac`, catalog
+                            validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                            """
+                            name: str
                             """ACL name."""
                             priority: int | None
 
@@ -39139,8 +39229,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    type: Type | UndefinedType | None = Undefined,
-                                    name: str | UndefinedType | None = Undefined,
+                                    type: Type | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     priority: int | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -39150,7 +39240,13 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        type: type
+                                        type:
+                                           ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                           `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                           IPv4 standard ACLs must exist in
+                                           `ipv4_standard_acls` and their definitions are configured.
+                                           For `ip`, `ipv6`, and `mac`, catalog
+                                           validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                         name: ACL name.
                                         priority: priority
 
@@ -39191,15 +39287,23 @@ class EosDesigns(EosDesignsRootModel):
                         class AccessGroup(AvdModel):
                             """Subclass of AvdModel."""
 
-                            Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                            Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                            type: Type | None
-                            name: str | None
+                            type: Type
+                            """
+                            ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                            `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                            IPv4 standard ACLs must exist in
+                            `ipv4_standard_acls` and their definitions are configured.
+                            For `ip`, `ipv6`, and `mac`, catalog
+                            validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                            """
+                            name: str
                             """ACL name."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                     """
                                     AccessGroup.
 
@@ -39207,7 +39311,13 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        type: type
+                                        type:
+                                           ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                           `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                           IPv4 standard ACLs must exist in
+                                           `ipv4_standard_acls` and their definitions are configured.
+                                           For `ip`, `ipv6`, and `mac`, catalog
+                                           validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                         name: ACL name.
 
                                     """
@@ -51715,10 +51825,18 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    IPv4 standard ACLs must exist in
+                    `ipv4_standard_acls` and their definitions are configured.
+                    For `ip`, `ipv6`, and `mac`, catalog
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                    """
+                    name: str
                     """ACL name."""
                     priority: int | None
 
@@ -51727,8 +51845,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Type | UndefinedType | None = Undefined,
-                            name: str | UndefinedType | None = Undefined,
+                            type: Type | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
                             priority: int | UndefinedType | None = Undefined,
                         ) -> None:
                             """
@@ -51738,7 +51856,13 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   IPv4 standard ACLs must exist in
+                                   `ipv4_standard_acls` and their definitions are configured.
+                                   For `ip`, `ipv6`, and `mac`, catalog
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
                                 priority: priority
 
@@ -51779,15 +51903,23 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type | None
-                    name: str | None
+                    type: Type
+                    """
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    IPv4 standard ACLs must exist in
+                    `ipv4_standard_acls` and their definitions are configured.
+                    For `ip`, `ipv6`, and `mac`, catalog
+                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                    """
+                    name: str
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -51795,7 +51927,13 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                type: type
+                                type:
+                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                   IPv4 standard ACLs must exist in
+                                   `ipv4_standard_acls` and their definitions are configured.
+                                   For `ip`, `ipv6`, and `mac`, catalog
+                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                 name: ACL name.
 
                             """
@@ -84724,10 +84862,18 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                IPv4 standard ACLs must exist in
+                                `ipv4_standard_acls` and their definitions are configured.
+                                For `ip`, `ipv6`, and `mac`, catalog
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                """
+                                name: str
                                 """ACL name."""
                                 priority: int | None
 
@@ -84736,8 +84882,8 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Type | UndefinedType | None = Undefined,
-                                        name: str | UndefinedType | None = Undefined,
+                                        type: Type | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         priority: int | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
@@ -84747,7 +84893,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               IPv4 standard ACLs must exist in
+                                               `ipv4_standard_acls` and their definitions are configured.
+                                               For `ip`, `ipv6`, and `mac`, catalog
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
                                             priority: priority
 
@@ -84788,15 +84940,23 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                IPv4 standard ACLs must exist in
+                                `ipv4_standard_acls` and their definitions are configured.
+                                For `ip`, `ipv6`, and `mac`, catalog
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                """
+                                name: str
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -84804,7 +84964,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               IPv4 standard ACLs must exist in
+                                               `ipv4_standard_acls` and their definitions are configured.
+                                               For `ip`, `ipv6`, and `mac`, catalog
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
 
                                         """
@@ -87295,10 +87461,18 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                IPv4 standard ACLs must exist in
+                                `ipv4_standard_acls` and their definitions are configured.
+                                For `ip`, `ipv6`, and `mac`, catalog
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                """
+                                name: str
                                 """ACL name."""
                                 priority: int | None
 
@@ -87307,8 +87481,8 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Type | UndefinedType | None = Undefined,
-                                        name: str | UndefinedType | None = Undefined,
+                                        type: Type | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         priority: int | UndefinedType | None = Undefined,
                                     ) -> None:
                                         """
@@ -87318,7 +87492,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               IPv4 standard ACLs must exist in
+                                               `ipv4_standard_acls` and their definitions are configured.
+                                               For `ip`, `ipv6`, and `mac`, catalog
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
                                             priority: priority
 
@@ -87359,15 +87539,23 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
+                                type: Type
+                                """
+                                ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                IPv4 standard ACLs must exist in
+                                `ipv4_standard_acls` and their definitions are configured.
+                                For `ip`, `ipv6`, and `mac`, catalog
+                                validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                """
+                                name: str
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -87375,7 +87563,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            type: type
+                                            type:
+                                               ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                               `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                               IPv4 standard ACLs must exist in
+                                               `ipv4_standard_acls` and their definitions are configured.
+                                               For `ip`, `ipv6`, and `mac`, catalog
+                                               validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                             name: ACL name.
 
                                         """
@@ -94283,10 +94477,18 @@ class EosDesigns(EosDesignsRootModel):
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                    type: Type | None
-                                    name: str | None
+                                    type: Type
+                                    """
+                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                    IPv4 standard ACLs must exist in
+                                    `ipv4_standard_acls` and their definitions are configured.
+                                    For `ip`, `ipv6`, and `mac`, catalog
+                                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                    """
+                                    name: str
                                     """ACL name."""
                                     priority: int | None
 
@@ -94295,8 +94497,8 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
-                                            type: Type | UndefinedType | None = Undefined,
-                                            name: str | UndefinedType | None = Undefined,
+                                            type: Type | UndefinedType = Undefined,
+                                            name: str | UndefinedType = Undefined,
                                             priority: int | UndefinedType | None = Undefined,
                                         ) -> None:
                                             """
@@ -94306,7 +94508,13 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                type: type
+                                                type:
+                                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                                   IPv4 standard ACLs must exist in
+                                                   `ipv4_standard_acls` and their definitions are configured.
+                                                   For `ip`, `ipv6`, and `mac`, catalog
+                                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                                 name: ACL name.
                                                 priority: priority
 
@@ -94347,17 +94555,23 @@ class EosDesigns(EosDesignsRootModel):
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                    Type: TypeAlias = Literal["ip", "ipv4_standard", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                    type: Type | None
-                                    name: str | None
+                                    type: Type
+                                    """
+                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                    `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                    IPv4 standard ACLs must exist in
+                                    `ipv4_standard_acls` and their definitions are configured.
+                                    For `ip`, `ipv6`, and `mac`, catalog
+                                    validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
+                                    """
+                                    name: str
                                     """ACL name."""
 
                                     if TYPE_CHECKING:
 
-                                        def __init__(
-                                            self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined
-                                        ) -> None:
+                                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
                                             """
                                             AccessGroup.
 
@@ -94365,7 +94579,13 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                type: type
+                                                type:
+                                                   ACL catalog type. `ip` references `ipv4_acls`, `ipv4_standard` references `ipv4_standard_acls`,
+                                                   `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                                                   IPv4 standard ACLs must exist in
+                                                   `ipv4_standard_acls` and their definitions are configured.
+                                                   For `ip`, `ipv6`, and `mac`, catalog
+                                                   validation and configuration require `avd_design_future.raise_for_missing_monitor_session_acls`.
                                                 name: ACL name.
 
                                             """
