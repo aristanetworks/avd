@@ -874,7 +874,8 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
-      github.event_name == 'merge_group'
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/devel')
     strategy:
       fail-fast: false
       matrix:
