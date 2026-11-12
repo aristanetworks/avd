@@ -351,7 +351,7 @@ If it is not set, AVD falls back to the regular management gateway configuration
 
 ACT supports the `serial_number` and `system_mac_address` topology keys only for `veos` and `cloudeos` node types.
 AVD omits these keys for all other ACT node types, even when they are configured in the Digital Twin settings.
-The Digital Twin `serial_number_template` and `system_mac_address_template` settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
+The Digital Twin hardware identity settings described in this section are ignored when `digital_twin.environment` is `containerlab`.
 
 When running in ACT Digital Twin mode, production `serial_number` and `system_mac_address` values are excluded from AVD metadata to prevent CloudVision matching failures — ACT virtual nodes do not possess the production hardware identity values.
 If no Digital Twin system MAC address is configured, the production `system_mac_address` is still used for EOS configuration such as SNMPv3 engine ID generation.
@@ -379,7 +379,7 @@ digital_twin:
     serial_number_template: "DT-{hostname!u}"
 ```
 
-If neither fabric-level `serial_number_template` nor a node-level `digital_twin.serial_number_template` override is set, no serial number is written to the ACT topology for that device. The same applies to `system_mac_address_template`.
+If neither fabric-level `serial_number_template` nor a node-level `digital_twin.serial_number` override is set, no serial number is written to the ACT topology for that device. The same applies to fabric-level `system_mac_address_template` and node-level `digital_twin.system_mac_address`.
 
 Individual nodes can override the fabric-level template with a fixed value or their own template:
 
@@ -390,11 +390,11 @@ l3leaf:
       serial_number: PRODLEAF1
       system_mac_address: 02:1c:73:00:00:01
       digital_twin:
-        serial_number_template: DTLEAF1
-        system_mac_address_template: 02:1c:73:11:11:10
+        serial_number: DTLEAF1
+        system_mac_address: 02:1c:73:11:11:10
 ```
 
-Node-level `digital_twin.serial_number_template` and `digital_twin.system_mac_address_template` support the same AVD string formatter template syntax and variables as the fabric-level templates.
+Node-level `digital_twin.serial_number` and `digital_twin.system_mac_address` accept fixed values and support the same AVD string formatter template syntax and variables as the fabric-level templates.
 
 #### ACT ZTP Configuration
 

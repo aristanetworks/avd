@@ -71,7 +71,7 @@ keys:
             description: |-
               AVD string formatter template for generating the serial number of ACT Digital Twin devices.
               When set, the rendered value is written into the device metadata and provided as the serial number in the ACT topology.
-              Can be overridden per device with `digital_twin.serial_number_template` at node level.
+              Can be overridden per device with `digital_twin.serial_number` at node level.
               Supported template variables: `serial_number` (production serial number), `system_mac_address` (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
               The rendered value should be unique across all devices in the fabric. AVD does not enforce uniqueness automatically.
               If unset, no serial number is included in the metadata or the ACT topology.
@@ -83,7 +83,7 @@ keys:
             description: |-
               AVD string formatter template for generating the system MAC address of ACT Digital Twin devices.
               When set, the rendered value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device metadata, and provided as the system MAC address in the ACT topology.
-              Can be overridden per device with `digital_twin.system_mac_address_template` at node level.
+              Can be overridden per device with `digital_twin.system_mac_address` at node level.
               Supported template variables: `serial_number` (production serial number), `system_mac_address` (production system MAC address), `hostname`, `device_id`, `fabric_name`.
               The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
               Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.

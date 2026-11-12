@@ -12,8 +12,8 @@ l2leaf:
       serial_number: PROD-THIRD-PARTY-SERIAL
       system_mac_address: 02:1c:73:00:00:13
       digital_twin:
-        serial_number_template: DTTHIRDPARTYSERIAL
-        system_mac_address_template: 02:1c:73:00:10:13
+        serial_number: DTTHIRDPARTYSERIAL
+        system_mac_address: 02:1c:73:00:10:13
 
 custom_platform_settings:
   - platforms:

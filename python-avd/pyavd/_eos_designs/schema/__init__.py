@@ -13169,8 +13169,8 @@ class EosDesigns(EosDesignsRootModel):
                 "mgmt_ip": {"type": str},
                 "mgmt_gateway": {"type": str},
                 "act_internet_access": {"type": bool},
-                "serial_number_template": {"type": str},
-                "system_mac_address_template": {"type": str},
+                "serial_number": {"type": str},
+                "system_mac_address": {"type": str},
                 "ztp": {"type": bool},
             }
             act_os_version: str | None
@@ -13203,11 +13203,11 @@ class EosDesigns(EosDesignsRootModel):
             Overrides
             global `digital_twin.fabric.act_internet_access` flag.
             """
-            serial_number_template: str | None
+            serial_number: str | None
             """
-            Serial number for this ACT Digital Twin device.
-            Overrides the global
-            `digital_twin.fabric.serial_number_template` for this device.
+            Serial number or AVD string formatter template for this ACT Digital Twin device.
+            Overrides the
+            global `digital_twin.fabric.serial_number_template` for this device.
             When set, the rendered value is
             written into the device metadata and provided as the serial number in the ACT topology.
             Supports the
@@ -13220,16 +13220,16 @@ class EosDesigns(EosDesignsRootModel):
             Ignored when `digital_twin.environment` is
             `containerlab`.
             """
-            system_mac_address_template: str | None
+            system_mac_address: str | None
             """
-            System MAC address for this ACT Digital Twin device.
-            Overrides the global
-            `digital_twin.fabric.system_mac_address_template` for this device.
-            When set, the rendered value is
-            used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-            metadata, and provided as the system MAC address in the ACT topology.
-            Supports the same AVD string
-            formatter template syntax, variables, MAC address formats, and normalization as
+            System MAC address or AVD string formatter template for this ACT Digital Twin device.
+            Overrides the
+            global `digital_twin.fabric.system_mac_address_template` for this device.
+            When set, the rendered
+            value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+            device metadata, and provided as the system MAC address in the ACT topology.
+            Supports the same AVD
+            string formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address_template`.
             The rendered value should be unique across all
             devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -13257,8 +13257,8 @@ class EosDesigns(EosDesignsRootModel):
                     mgmt_ip: str | UndefinedType | None = Undefined,
                     mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
-                    serial_number_template: str | UndefinedType | None = Undefined,
-                    system_mac_address_template: str | UndefinedType | None = Undefined,
+                    serial_number: str | UndefinedType | None = Undefined,
+                    system_mac_address: str | UndefinedType | None = Undefined,
                     ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -13290,10 +13290,10 @@ class EosDesigns(EosDesignsRootModel):
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                            Overrides
                            global `digital_twin.fabric.act_internet_access` flag.
-                        serial_number_template:
-                           Serial number for this ACT Digital Twin device.
-                           Overrides the global
-                           `digital_twin.fabric.serial_number_template` for this device.
+                        serial_number:
+                           Serial number or AVD string formatter template for this ACT Digital Twin device.
+                           Overrides the
+                           global `digital_twin.fabric.serial_number_template` for this device.
                            When set, the rendered value is
                            written into the device metadata and provided as the serial number in the ACT topology.
                            Supports the
@@ -13305,15 +13305,15 @@ class EosDesigns(EosDesignsRootModel):
                            node types. Ignored for all other ACT node types.
                            Ignored when `digital_twin.environment` is
                            `containerlab`.
-                        system_mac_address_template:
-                           System MAC address for this ACT Digital Twin device.
-                           Overrides the global
-                           `digital_twin.fabric.system_mac_address_template` for this device.
-                           When set, the rendered value is
-                           used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                           metadata, and provided as the system MAC address in the ACT topology.
-                           Supports the same AVD string
-                           formatter template syntax, variables, MAC address formats, and normalization as
+                        system_mac_address:
+                           System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                           Overrides the
+                           global `digital_twin.fabric.system_mac_address_template` for this device.
+                           When set, the rendered
+                           value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                           device metadata, and provided as the system MAC address in the ACT topology.
+                           Supports the same AVD
+                           string formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address_template`.
                            The rendered value should be unique across all
                            devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -19069,8 +19069,8 @@ class EosDesigns(EosDesignsRootModel):
                 "mgmt_ip": {"type": str},
                 "mgmt_gateway": {"type": str},
                 "act_internet_access": {"type": bool},
-                "serial_number_template": {"type": str},
-                "system_mac_address_template": {"type": str},
+                "serial_number": {"type": str},
+                "system_mac_address": {"type": str},
                 "ztp": {"type": bool},
             }
             act_os_version: str | None
@@ -19103,11 +19103,11 @@ class EosDesigns(EosDesignsRootModel):
             Overrides
             global `digital_twin.fabric.act_internet_access` flag.
             """
-            serial_number_template: str | None
+            serial_number: str | None
             """
-            Serial number for this ACT Digital Twin device.
-            Overrides the global
-            `digital_twin.fabric.serial_number_template` for this device.
+            Serial number or AVD string formatter template for this ACT Digital Twin device.
+            Overrides the
+            global `digital_twin.fabric.serial_number_template` for this device.
             When set, the rendered value is
             written into the device metadata and provided as the serial number in the ACT topology.
             Supports the
@@ -19120,16 +19120,16 @@ class EosDesigns(EosDesignsRootModel):
             Ignored when `digital_twin.environment` is
             `containerlab`.
             """
-            system_mac_address_template: str | None
+            system_mac_address: str | None
             """
-            System MAC address for this ACT Digital Twin device.
-            Overrides the global
-            `digital_twin.fabric.system_mac_address_template` for this device.
-            When set, the rendered value is
-            used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-            metadata, and provided as the system MAC address in the ACT topology.
-            Supports the same AVD string
-            formatter template syntax, variables, MAC address formats, and normalization as
+            System MAC address or AVD string formatter template for this ACT Digital Twin device.
+            Overrides the
+            global `digital_twin.fabric.system_mac_address_template` for this device.
+            When set, the rendered
+            value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+            device metadata, and provided as the system MAC address in the ACT topology.
+            Supports the same AVD
+            string formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address_template`.
             The rendered value should be unique across all
             devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -19157,8 +19157,8 @@ class EosDesigns(EosDesignsRootModel):
                     mgmt_ip: str | UndefinedType | None = Undefined,
                     mgmt_gateway: str | UndefinedType | None = Undefined,
                     act_internet_access: bool | UndefinedType | None = Undefined,
-                    serial_number_template: str | UndefinedType | None = Undefined,
-                    system_mac_address_template: str | UndefinedType | None = Undefined,
+                    serial_number: str | UndefinedType | None = Undefined,
+                    system_mac_address: str | UndefinedType | None = Undefined,
                     ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -19190,10 +19190,10 @@ class EosDesigns(EosDesignsRootModel):
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                            Overrides
                            global `digital_twin.fabric.act_internet_access` flag.
-                        serial_number_template:
-                           Serial number for this ACT Digital Twin device.
-                           Overrides the global
-                           `digital_twin.fabric.serial_number_template` for this device.
+                        serial_number:
+                           Serial number or AVD string formatter template for this ACT Digital Twin device.
+                           Overrides the
+                           global `digital_twin.fabric.serial_number_template` for this device.
                            When set, the rendered value is
                            written into the device metadata and provided as the serial number in the ACT topology.
                            Supports the
@@ -19205,15 +19205,15 @@ class EosDesigns(EosDesignsRootModel):
                            node types. Ignored for all other ACT node types.
                            Ignored when `digital_twin.environment` is
                            `containerlab`.
-                        system_mac_address_template:
-                           System MAC address for this ACT Digital Twin device.
-                           Overrides the global
-                           `digital_twin.fabric.system_mac_address_template` for this device.
-                           When set, the rendered value is
-                           used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                           metadata, and provided as the system MAC address in the ACT topology.
-                           Supports the same AVD string
-                           formatter template syntax, variables, MAC address formats, and normalization as
+                        system_mac_address:
+                           System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                           Overrides the
+                           global `digital_twin.fabric.system_mac_address_template` for this device.
+                           When set, the rendered
+                           value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                           device metadata, and provided as the system MAC address in the ACT topology.
+                           Supports the same AVD
+                           string formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address_template`.
                            The rendered value should be unique across all
                            devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -21412,7 +21412,7 @@ class EosDesigns(EosDesignsRootModel):
             When
             set, the rendered value is written into the device metadata and provided as the serial number in the
             ACT topology.
-            Can be overridden per device with `digital_twin.serial_number_template` at node level.
+            Can be overridden per device with `digital_twin.serial_number` at node level.
             Supported template variables: `serial_number` (production serial number), `system_mac_address`
             (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
             The rendered value
@@ -21429,12 +21429,13 @@ class EosDesigns(EosDesignsRootModel):
             AVD string formatter template for generating the system MAC address of ACT Digital Twin devices.
             When set, the rendered value is used throughout the device's EOS configuration (e.g., SNMPv3 engine
             ID), written into the device metadata, and provided as the system MAC address in the ACT topology.
-            Can be overridden per device with `digital_twin.system_mac_address_template` at node level.
-            Supported template variables: `serial_number` (production serial number), `system_mac_address`
-            (production system MAC address), `hostname`, `device_id`, `fabric_name`.
-            The rendered value must be
-            a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h`
-            is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+            Can be overridden per device with `digital_twin.system_mac_address` at node level.
+            Supported
+            template variables: `serial_number` (production serial number), `system_mac_address` (production
+            system MAC address), `hostname`, `device_id`, `fabric_name`.
+            The rendered value must be a unicast
+            MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a
+            hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
             Regardless of the
             input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
             The rendered value should
@@ -21514,7 +21515,7 @@ class EosDesigns(EosDesignsRootModel):
                            When
                            set, the rendered value is written into the device metadata and provided as the serial number in the
                            ACT topology.
-                           Can be overridden per device with `digital_twin.serial_number_template` at node level.
+                           Can be overridden per device with `digital_twin.serial_number` at node level.
                            Supported template variables: `serial_number` (production serial number), `system_mac_address`
                            (resolved production system MAC address), `hostname`, `device_id`, `fabric_name`.
                            The rendered value
@@ -21529,12 +21530,13 @@ class EosDesigns(EosDesignsRootModel):
                            AVD string formatter template for generating the system MAC address of ACT Digital Twin devices.
                            When set, the rendered value is used throughout the device's EOS configuration (e.g., SNMPv3 engine
                            ID), written into the device metadata, and provided as the system MAC address in the ACT topology.
-                           Can be overridden per device with `digital_twin.system_mac_address_template` at node level.
-                           Supported template variables: `serial_number` (production serial number), `system_mac_address`
-                           (production system MAC address), `hostname`, `device_id`, `fabric_name`.
-                           The rendered value must be
-                           a unicast MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h`
-                           is a hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
+                           Can be overridden per device with `digital_twin.system_mac_address` at node level.
+                           Supported
+                           template variables: `serial_number` (production serial number), `system_mac_address` (production
+                           system MAC address), `hostname`, `device_id`, `fabric_name`.
+                           The rendered value must be a unicast
+                           MAC address in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a
+                           hexadecimal digit). The all-zero address is reserved and not accepted by EOS.
                            Regardless of the
                            input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
                            The rendered value should
@@ -63900,8 +63902,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -63934,11 +63936,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -63951,16 +63953,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -63988,8 +63990,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -64021,10 +64023,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -64036,15 +64038,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -69778,8 +69780,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "mgmt_ip": {"type": str},
                                 "mgmt_gateway": {"type": str},
                                 "act_internet_access": {"type": bool},
-                                "serial_number_template": {"type": str},
-                                "system_mac_address_template": {"type": str},
+                                "serial_number": {"type": str},
+                                "system_mac_address": {"type": str},
                                 "ztp": {"type": bool},
                             }
                             act_os_version: str | None
@@ -69812,11 +69814,11 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides
                             global `digital_twin.fabric.act_internet_access` flag.
                             """
-                            serial_number_template: str | None
+                            serial_number: str | None
                             """
-                            Serial number for this ACT Digital Twin device.
-                            Overrides the global
-                            `digital_twin.fabric.serial_number_template` for this device.
+                            Serial number or AVD string formatter template for this ACT Digital Twin device.
+                            Overrides the
+                            global `digital_twin.fabric.serial_number_template` for this device.
                             When set, the rendered value is
                             written into the device metadata and provided as the serial number in the ACT topology.
                             Supports the
@@ -69829,16 +69831,16 @@ class EosDesigns(EosDesignsRootModel):
                             Ignored when `digital_twin.environment` is
                             `containerlab`.
                             """
-                            system_mac_address_template: str | None
+                            system_mac_address: str | None
                             """
-                            System MAC address for this ACT Digital Twin device.
-                            Overrides the global
-                            `digital_twin.fabric.system_mac_address_template` for this device.
-                            When set, the rendered value is
-                            used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                            metadata, and provided as the system MAC address in the ACT topology.
-                            Supports the same AVD string
-                            formatter template syntax, variables, MAC address formats, and normalization as
+                            System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                            Overrides the
+                            global `digital_twin.fabric.system_mac_address_template` for this device.
+                            When set, the rendered
+                            value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                            device metadata, and provided as the system MAC address in the ACT topology.
+                            Supports the same AVD
+                            string formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address_template`.
                             The rendered value should be unique across all
                             devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -69866,8 +69868,8 @@ class EosDesigns(EosDesignsRootModel):
                                     mgmt_ip: str | UndefinedType | None = Undefined,
                                     mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
-                                    serial_number_template: str | UndefinedType | None = Undefined,
-                                    system_mac_address_template: str | UndefinedType | None = Undefined,
+                                    serial_number: str | UndefinedType | None = Undefined,
+                                    system_mac_address: str | UndefinedType | None = Undefined,
                                     ztp: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -69899,10 +69901,10 @@ class EosDesigns(EosDesignsRootModel):
                                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                            Overrides
                                            global `digital_twin.fabric.act_internet_access` flag.
-                                        serial_number_template:
-                                           Serial number for this ACT Digital Twin device.
-                                           Overrides the global
-                                           `digital_twin.fabric.serial_number_template` for this device.
+                                        serial_number:
+                                           Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                           Overrides the
+                                           global `digital_twin.fabric.serial_number_template` for this device.
                                            When set, the rendered value is
                                            written into the device metadata and provided as the serial number in the ACT topology.
                                            Supports the
@@ -69914,15 +69916,15 @@ class EosDesigns(EosDesignsRootModel):
                                            node types. Ignored for all other ACT node types.
                                            Ignored when `digital_twin.environment` is
                                            `containerlab`.
-                                        system_mac_address_template:
-                                           System MAC address for this ACT Digital Twin device.
-                                           Overrides the global
-                                           `digital_twin.fabric.system_mac_address_template` for this device.
-                                           When set, the rendered value is
-                                           used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                           metadata, and provided as the system MAC address in the ACT topology.
-                                           Supports the same AVD string
-                                           formatter template syntax, variables, MAC address formats, and normalization as
+                                        system_mac_address:
+                                           System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                           Overrides the
+                                           global `digital_twin.fabric.system_mac_address_template` for this device.
+                                           When set, the rendered
+                                           value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                           device metadata, and provided as the system MAC address in the ACT topology.
+                                           Supports the same AVD
+                                           string formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address_template`.
                                            The rendered value should be unique across all
                                            devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -75593,8 +75595,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -75627,11 +75629,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -75644,16 +75646,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -75681,8 +75683,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -75714,10 +75716,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -75729,15 +75731,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -81488,8 +81490,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -81522,11 +81524,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -81539,16 +81541,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -81576,8 +81578,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -81609,10 +81611,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -81624,15 +81626,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -103909,8 +103911,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -103943,11 +103945,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -103960,16 +103962,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -103997,8 +103999,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -104030,10 +104032,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -104045,15 +104047,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -109787,8 +109789,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "mgmt_ip": {"type": str},
                                 "mgmt_gateway": {"type": str},
                                 "act_internet_access": {"type": bool},
-                                "serial_number_template": {"type": str},
-                                "system_mac_address_template": {"type": str},
+                                "serial_number": {"type": str},
+                                "system_mac_address": {"type": str},
                                 "ztp": {"type": bool},
                             }
                             act_os_version: str | None
@@ -109821,11 +109823,11 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides
                             global `digital_twin.fabric.act_internet_access` flag.
                             """
-                            serial_number_template: str | None
+                            serial_number: str | None
                             """
-                            Serial number for this ACT Digital Twin device.
-                            Overrides the global
-                            `digital_twin.fabric.serial_number_template` for this device.
+                            Serial number or AVD string formatter template for this ACT Digital Twin device.
+                            Overrides the
+                            global `digital_twin.fabric.serial_number_template` for this device.
                             When set, the rendered value is
                             written into the device metadata and provided as the serial number in the ACT topology.
                             Supports the
@@ -109838,16 +109840,16 @@ class EosDesigns(EosDesignsRootModel):
                             Ignored when `digital_twin.environment` is
                             `containerlab`.
                             """
-                            system_mac_address_template: str | None
+                            system_mac_address: str | None
                             """
-                            System MAC address for this ACT Digital Twin device.
-                            Overrides the global
-                            `digital_twin.fabric.system_mac_address_template` for this device.
-                            When set, the rendered value is
-                            used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                            metadata, and provided as the system MAC address in the ACT topology.
-                            Supports the same AVD string
-                            formatter template syntax, variables, MAC address formats, and normalization as
+                            System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                            Overrides the
+                            global `digital_twin.fabric.system_mac_address_template` for this device.
+                            When set, the rendered
+                            value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                            device metadata, and provided as the system MAC address in the ACT topology.
+                            Supports the same AVD
+                            string formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address_template`.
                             The rendered value should be unique across all
                             devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -109875,8 +109877,8 @@ class EosDesigns(EosDesignsRootModel):
                                     mgmt_ip: str | UndefinedType | None = Undefined,
                                     mgmt_gateway: str | UndefinedType | None = Undefined,
                                     act_internet_access: bool | UndefinedType | None = Undefined,
-                                    serial_number_template: str | UndefinedType | None = Undefined,
-                                    system_mac_address_template: str | UndefinedType | None = Undefined,
+                                    serial_number: str | UndefinedType | None = Undefined,
+                                    system_mac_address: str | UndefinedType | None = Undefined,
                                     ztp: bool | UndefinedType | None = Undefined,
                                 ) -> None:
                                     """
@@ -109908,10 +109910,10 @@ class EosDesigns(EosDesignsRootModel):
                                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                            Overrides
                                            global `digital_twin.fabric.act_internet_access` flag.
-                                        serial_number_template:
-                                           Serial number for this ACT Digital Twin device.
-                                           Overrides the global
-                                           `digital_twin.fabric.serial_number_template` for this device.
+                                        serial_number:
+                                           Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                           Overrides the
+                                           global `digital_twin.fabric.serial_number_template` for this device.
                                            When set, the rendered value is
                                            written into the device metadata and provided as the serial number in the ACT topology.
                                            Supports the
@@ -109923,15 +109925,15 @@ class EosDesigns(EosDesignsRootModel):
                                            node types. Ignored for all other ACT node types.
                                            Ignored when `digital_twin.environment` is
                                            `containerlab`.
-                                        system_mac_address_template:
-                                           System MAC address for this ACT Digital Twin device.
-                                           Overrides the global
-                                           `digital_twin.fabric.system_mac_address_template` for this device.
-                                           When set, the rendered value is
-                                           used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                           metadata, and provided as the system MAC address in the ACT topology.
-                                           Supports the same AVD string
-                                           formatter template syntax, variables, MAC address formats, and normalization as
+                                        system_mac_address:
+                                           System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                           Overrides the
+                                           global `digital_twin.fabric.system_mac_address_template` for this device.
+                                           When set, the rendered
+                                           value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                           device metadata, and provided as the system MAC address in the ACT topology.
+                                           Supports the same AVD
+                                           string formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address_template`.
                                            The rendered value should be unique across all
                                            devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -115602,8 +115604,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -115636,11 +115638,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -115653,16 +115655,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -115690,8 +115692,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -115723,10 +115725,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -115738,15 +115740,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -121497,8 +121499,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "act_internet_access": {"type": bool},
-                            "serial_number_template": {"type": str},
-                            "system_mac_address_template": {"type": str},
+                            "serial_number": {"type": str},
+                            "system_mac_address": {"type": str},
                             "ztp": {"type": bool},
                         }
                         act_os_version: str | None
@@ -121531,11 +121533,11 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides
                         global `digital_twin.fabric.act_internet_access` flag.
                         """
-                        serial_number_template: str | None
+                        serial_number: str | None
                         """
-                        Serial number for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.serial_number_template` for this device.
+                        Serial number or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.serial_number_template` for this device.
                         When set, the rendered value is
                         written into the device metadata and provided as the serial number in the ACT topology.
                         Supports the
@@ -121548,16 +121550,16 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when `digital_twin.environment` is
                         `containerlab`.
                         """
-                        system_mac_address_template: str | None
+                        system_mac_address: str | None
                         """
-                        System MAC address for this ACT Digital Twin device.
-                        Overrides the global
-                        `digital_twin.fabric.system_mac_address_template` for this device.
-                        When set, the rendered value is
-                        used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                        metadata, and provided as the system MAC address in the ACT topology.
-                        Supports the same AVD string
-                        formatter template syntax, variables, MAC address formats, and normalization as
+                        System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                        Overrides the
+                        global `digital_twin.fabric.system_mac_address_template` for this device.
+                        When set, the rendered
+                        value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                        device metadata, and provided as the system MAC address in the ACT topology.
+                        Supports the same AVD
+                        string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
                         The rendered value should be unique across all
                         devices in the fabric. AVD does not enforce uniqueness automatically.
@@ -121585,8 +121587,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 act_internet_access: bool | UndefinedType | None = Undefined,
-                                serial_number_template: str | UndefinedType | None = Undefined,
-                                system_mac_address_template: str | UndefinedType | None = Undefined,
+                                serial_number: str | UndefinedType | None = Undefined,
+                                system_mac_address: str | UndefinedType | None = Undefined,
                                 ztp: bool | UndefinedType | None = Undefined,
                             ) -> None:
                                 """
@@ -121618,10 +121620,10 @@ class EosDesigns(EosDesignsRootModel):
                                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
                                        Overrides
                                        global `digital_twin.fabric.act_internet_access` flag.
-                                    serial_number_template:
-                                       Serial number for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.serial_number_template` for this device.
+                                    serial_number:
+                                       Serial number or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.serial_number_template` for this device.
                                        When set, the rendered value is
                                        written into the device metadata and provided as the serial number in the ACT topology.
                                        Supports the
@@ -121633,15 +121635,15 @@ class EosDesigns(EosDesignsRootModel):
                                        node types. Ignored for all other ACT node types.
                                        Ignored when `digital_twin.environment` is
                                        `containerlab`.
-                                    system_mac_address_template:
-                                       System MAC address for this ACT Digital Twin device.
-                                       Overrides the global
-                                       `digital_twin.fabric.system_mac_address_template` for this device.
-                                       When set, the rendered value is
-                                       used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the device
-                                       metadata, and provided as the system MAC address in the ACT topology.
-                                       Supports the same AVD string
-                                       formatter template syntax, variables, MAC address formats, and normalization as
+                                    system_mac_address:
+                                       System MAC address or AVD string formatter template for this ACT Digital Twin device.
+                                       Overrides the
+                                       global `digital_twin.fabric.system_mac_address_template` for this device.
+                                       When set, the rendered
+                                       value is used throughout the device's EOS configuration (e.g., SNMPv3 engine ID), written into the
+                                       device metadata, and provided as the system MAC address in the ACT topology.
+                                       Supports the same AVD
+                                       string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
                                        The rendered value should be unique across all
                                        devices in the fabric. AVD does not enforce uniqueness automatically.

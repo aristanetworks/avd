@@ -11,7 +11,7 @@ l2leaf:
       custom_system_mac_address: "021c.7300.{device_id:04x}"
       digital_twin:
         # Expected ACT Digital Twin system_mac_address: "02:1c:73:01:00:14"
-        system_mac_address_template: "021c.7301.{device_id:04x}"
+        system_mac_address: "021c.7301.{device_id:04x}"
 
 digital_twin:
   fabric:
