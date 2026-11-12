@@ -39,5 +39,7 @@ monitor security awake
 {%     endfor %}
 {%     if monitor_security.awake.disabled is arista.avd.defined(true) %}
    disabled
+{%     else %}
+   no disabled
 {%     endif %}
 {% endif %}
