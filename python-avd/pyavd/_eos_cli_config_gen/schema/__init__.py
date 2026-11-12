@@ -77006,15 +77006,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
+                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}, "cost": {"type": int}}
                 bfd: bool | None
                 """Enable/Disable BFD for OSPFv3 IPv4 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+                cost: int | None
+                """Set OSPFv3 IPv4 cost on the interface."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        bfd: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType | None = Undefined,
+                        cost: int | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -77024,21 +77032,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             bfd: Enable/Disable BFD for OSPFv3 IPv4 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+                            cost: Set OSPFv3 IPv4 cost on the interface.
 
                         """
 
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}}
+                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "area": {"type": str}, "cost": {"type": int}}
                 bfd: bool | None
                 """Enable/Disable BFD for OSPFv3 IPv6 on the interface."""
                 area: str | None
                 """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+                cost: int | None
+                """Set OSPFv3 IPv6 cost on the interface."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, bfd: bool | UndefinedType | None = Undefined, area: str | UndefinedType | None = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        bfd: bool | UndefinedType | None = Undefined,
+                        area: str | UndefinedType | None = Undefined,
+                        cost: int | UndefinedType | None = Undefined,
+                    ) -> None:
                         """
                         Ipv6.
 
@@ -77048,12 +77065,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             bfd: Enable/Disable BFD for OSPFv3 IPv6 on the interface.
                             area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+                            cost: Set OSPFv3 IPv6 cost on the interface.
 
                         """
 
             _fields: ClassVar[dict] = {
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
+                "cost": {"type": int},
                 "passive_interface": {"type": bool},
                 "no_passive_interface": {"type": bool},
                 "network_point_to_point": {"type": bool},
@@ -77063,6 +77082,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ipv6: Ipv6
             """Subclass of AvdModel."""
+            cost: int | None
+            """
+            Set OSPFv3 cost on the interface for both IPv4 and IPv6 address families.
+            Mutually exclusive with
+            `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set.
+            """
             passive_interface: bool | None
             """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
             no_passive_interface: bool | None
@@ -77082,6 +77107,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
+                    cost: int | UndefinedType | None = Undefined,
                     passive_interface: bool | UndefinedType | None = Undefined,
                     no_passive_interface: bool | UndefinedType | None = Undefined,
                     network_point_to_point: bool | UndefinedType | None = Undefined,
@@ -77096,6 +77122,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+                        cost:
+                           Set OSPFv3 cost on the interface for both IPv4 and IPv6 address families.
+                           Mutually exclusive with
+                           `ipv4.cost` / `ipv6.cost`, so it is ignored if either is set.
                         passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
                         no_passive_interface: Disable passive interface mode.
                         network_point_to_point: network_point_to_point

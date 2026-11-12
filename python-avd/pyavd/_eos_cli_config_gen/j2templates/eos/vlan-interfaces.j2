@@ -375,6 +375,9 @@ interface {{ vlan_interface.name }}
 {%         elif vlan_interface.ospfv3.no_passive_interface is arista.avd.defined(true) %}
    no ospfv3 passive-interface
 {%         endif %}
+{%         if vlan_interface.ospfv3.cost is arista.avd.defined and vlan_interface.ospfv3.ipv4.cost is not arista.avd.defined and vlan_interface.ospfv3.ipv6.cost is not arista.avd.defined %}
+   ospfv3 cost {{ vlan_interface.ospfv3.cost }}
+{%         endif %}
 {%         if vlan_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
    ospfv3 network point-to-point
 {%         endif %}
@@ -383,6 +386,9 @@ interface {{ vlan_interface.name }}
    ospfv3 ipv4 bfd
 {%             elif vlan_interface.ospfv3.ipv4.bfd is arista.avd.defined(false) %}
    no ospfv3 ipv4 bfd
+{%             endif %}
+{%             if vlan_interface.ospfv3.ipv4.cost is arista.avd.defined %}
+   ospfv3 ipv4 cost {{ vlan_interface.ospfv3.ipv4.cost }}
 {%             endif %}
 {%             if vlan_interface.ospfv3.ipv4.area is arista.avd.defined %}
    ospfv3 ipv4 area {{ vlan_interface.ospfv3.ipv4.area }}
@@ -393,6 +399,9 @@ interface {{ vlan_interface.name }}
    ospfv3 ipv6 bfd
 {%             elif vlan_interface.ospfv3.ipv6.bfd is arista.avd.defined(false) %}
    no ospfv3 ipv6 bfd
+{%             endif %}
+{%             if vlan_interface.ospfv3.ipv6.cost is arista.avd.defined %}
+   ospfv3 ipv6 cost {{ vlan_interface.ospfv3.ipv6.cost }}
 {%             endif %}
 {%             if vlan_interface.ospfv3.ipv6.area is arista.avd.defined %}
    ospfv3 ipv6 area {{ vlan_interface.ospfv3.ipv6.area }}
