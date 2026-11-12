@@ -1249,6 +1249,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1284,6 +1286,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1303,6 +1307,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 4.4.4.4 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1322,6 +1328,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -1330,6 +1338,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1348,6 +1358,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1369,6 +1381,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1385,6 +1399,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1401,6 +1417,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1409,6 +1427,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1417,6 +1437,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1435,6 +1457,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1456,6 +1480,8 @@ router ospf 701
 router ospfv3 vrf FULL
    address-family ipv4
       router-id 3.3.3.3
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1467,6 +1493,8 @@ router ospfv3 vrf FULL
    !
    address-family ipv6
       router-id 4.4.4.4
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1536,6 +1564,8 @@ router ospfv3 vrf data
       redistribute static route-map map1
 !
 router ospfv3
+   bfd default
+   bfd adjacency state any
    passive-interface default
    !
    address-family ipv4
@@ -1721,6 +1751,7 @@ router bgp 65101
    bgp route-reflector preserve-attributes
    no bgp additional-paths receive
    no bgp additional-paths send
+   neighbor default received attribute discard 10-23
    neighbor default send-community large
    bgp redistribute-internal
    redistribute connected include leaked route-map RM-CONN-2-BGP

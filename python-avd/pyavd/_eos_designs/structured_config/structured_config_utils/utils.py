@@ -93,7 +93,7 @@ class UtilsMixin(Protocol):
         context: str,
         direction: str | None = None,
     ) -> None:
-        """Raise if both IPv4 ACL types are set for the same target and direction."""
+        """Raise if both extended and standard IPv4 ACLs are configured together on the same target."""
         if not (ipv4_acl and ipv4_standard_acl):
             return
         suffix = f"_{direction}" if direction is not None else ""
@@ -105,7 +105,7 @@ class UtilsMixin(Protocol):
             f"'{ipv4_acl_key_name}{suffix}' and '{ipv4_standard_acl_key_name}{suffix}' are mutually exclusive on {target}'{context}'. "
             f"Only one {direction_label}IPv4 ACL can be configured."
         )
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.ipv4_standard_acls:

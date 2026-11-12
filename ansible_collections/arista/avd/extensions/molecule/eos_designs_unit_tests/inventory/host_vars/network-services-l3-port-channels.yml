@@ -1,5 +1,17 @@
 ---
 # This yml file is being used to test the various supported schema attributes for L3 Port-Channel
+ipv4_standard_acls:
+  - name: STD-NS-PC-ACL-IN
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.0/8
+  - name: STD-NS-PC-ACL-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 172.16.0.0/12
+
 ipv4_acls:
   - name: inACL
     entries:
@@ -218,6 +230,15 @@ tenants:
           - name: Port-Channel1111.199
             enabled: true
             ip_address: 1.1.1.40/29
+            node: network-services-l3-port-channels
+          - name: Port-Channel1111.201
+            peer: inet-cloud
+            peer_port_channel: Po1111.201
+            encapsulation_dot1q_vlan: 400
+            enabled: true
+            ip_address: 1.1.2.30/29
+            ipv4_standard_acl_in: STD-NS-PC-ACL-IN
+            ipv4_standard_acl_out: STD-NS-PC-ACL-OUT
             node: network-services-l3-port-channels
           - name: Port-Channel1111.200
             peer: inet-cloud

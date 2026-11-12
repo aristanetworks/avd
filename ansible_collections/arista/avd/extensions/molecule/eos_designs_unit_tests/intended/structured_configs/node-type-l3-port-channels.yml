@@ -115,6 +115,16 @@ ethernet_interfaces:
     peer: peer5
     peer_interface: Ethernet1
     peer_type: l3_port_channel_member
+- name: Ethernet5
+  description: peer6_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 50
+    mode: active
+  metadata:
+    peer: peer6
+    peer_interface: Ethernet1
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -252,6 +262,10 @@ metadata:
       - name: Type
         value: lan
     - interface: Port-Channel46.10
+      tags:
+      - name: Type
+        value: lan
+    - interface: Port-Channel50
       tags:
       - name: Type
         value: lan
@@ -399,6 +413,18 @@ port_channel_interfaces:
     peer: peer5
     peer_interface: Port-Channel46
     peer_type: l3_port_channel
+- name: Port-Channel50
+  description: peer6_Port-Channel50
+  shutdown: false
+  ip_address: 192.168.50.1/31
+  access_group_in: STD-PC-ACL-IN
+  access_group_out: STD-PC-ACL-OUT
+  metadata:
+    peer: peer6
+    peer_interface: Port-Channel50
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -518,6 +544,17 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+standard_access_lists:
+- name: STD-PC-ACL-IN
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.0/8
+- name: STD-PC-ACL-OUT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 172.16.0.0/12
 static_routes:
 - prefix: 0.0.0.0/0
   next_hop: 192.168.1.103

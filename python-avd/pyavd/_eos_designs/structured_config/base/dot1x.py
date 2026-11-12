@@ -220,11 +220,11 @@ class Dot1xMixin(Protocol):
 
     def _validate_radius_servers(self: AvdStructuredConfigBaseProtocol) -> None:
         """Validate that there is at least one RADIUS server defined in `aaa_settings.radius.servers`."""
-        if len(self.inputs.aaa_settings.radius.servers) == 0:
+        if len(self.shared_utils.aaa_settings.radius.servers) == 0:
             msg = "At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication."
             raise AristaAvdInvalidInputsError(msg)
 
     @cached_property
     def _radius_server_groups(self: AvdStructuredConfigBaseProtocol) -> set[str]:
         """Return a set of all RADIUS server group names defined under `aaa_settings.radius.servers`."""
-        return {group for server in self.inputs.aaa_settings.radius.servers for group in server.groups}
+        return {group for server in self.shared_utils.aaa_settings.radius.servers for group in server.groups}
