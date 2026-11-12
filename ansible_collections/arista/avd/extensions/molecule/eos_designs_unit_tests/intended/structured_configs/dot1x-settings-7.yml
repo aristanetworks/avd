@@ -37,7 +37,124 @@ dot1x:
         auth_only: false
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: AAA extended ACL on adapter, configured directly
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-EXTENDED
+  metadata:
+    peer: aaa-timeout-test
+    peer_key: connected_endpoints
+  switchport:
+    enabled: true
+- name: Ethernet2
+  description: AAA standard ACL on adapter, configured directly
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-STANDARD
+  metadata:
+    peer: aaa-timeout-test
+    peer_key: connected_endpoints
+  switchport:
+    enabled: true
+- name: Ethernet3
+  description: AAA extended ACL on adapter, inherited from profile
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-EXTENDED
+  metadata:
+    peer: aaa-timeout-test
+    peer_key: connected_endpoints
+    port_profile: AAA-EXTENDED-PROFILE
+  switchport:
+    enabled: true
+- name: Ethernet4
+  description: AAA standard ACL on adapter, inherited from profile
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-STANDARD
+  metadata:
+    peer: aaa-timeout-test
+    peer_key: connected_endpoints
+    port_profile: AAA-STANDARD-PROFILE
+  switchport:
+    enabled: true
+- name: Ethernet5
+  description: AAA extended ACL on network port, configured directly
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-EXTENDED
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet6
+  description: AAA standard ACL on network port, configured directly
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-STANDARD
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet7
+  description: AAA extended ACL on network port, inherited from profile
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-EXTENDED
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: AAA-EXTENDED-PROFILE
+  switchport:
+    enabled: true
+- name: Ethernet8
+  description: AAA standard ACL on network port, inherited from profile
+  shutdown: false
+  dot1x:
+    aaa:
+      unresponsive:
+        action:
+          traffic_allow_access_list: AAA-STANDARD
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: AAA-STANDARD-PROFILE
+  switchport:
+    enabled: true
 hostname: dot1x-settings-7
+ip_access_lists:
+- name: AAA-EXTENDED
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: 192.0.2.0/24
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius:
@@ -61,6 +178,12 @@ radius_server:
     - host: agni.arista.com
       key: 1404071B09166738212B2130365E0C131A
 service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: AAA-STANDARD
+  entries:
+  - sequence: 10
+    action: permit
+    source: 192.0.2.0/24
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
