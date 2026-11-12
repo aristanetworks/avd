@@ -67,8 +67,6 @@ class UtilsMixin(Protocol):
         self: StructuredConfigUtilsProtocol,
         ipv4_acl: str | None,
         ipv4_standard_acl: str | None,
-        ipv4_acl_key_name: str,
-        ipv4_standard_acl_key_name: str,
         context: str,
         direction: str | None = None,
     ) -> None:
