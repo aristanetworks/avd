@@ -24,6 +24,8 @@ router_bgp:
           enabled: true
   neighbor_default:
     send_community: large
+    received_attribute_discard:
+      type_codes: 10-23
   graceful_restart:
     enabled: true
   graceful_restart_helper:
