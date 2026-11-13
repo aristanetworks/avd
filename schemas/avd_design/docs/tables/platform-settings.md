@@ -22,6 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_bpdu_bypass</samp>](## "platform_settings.[].feature_support.dot1x_bpdu_bypass") | Boolean |  | `True` |  | Support for 802.1X BPDU bypass.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_mac_based_access_list</samp>](## "platform_settings.[].feature_support.dot1x_mac_based_access_list") | Boolean |  | `True` |  | Support for 802.1X Per-MAC ACL mode on the interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "platform_settings.[].feature_support.address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.address_locking.supported") | Boolean |  | `True` |  | Global support for Address Locking feature.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking.ipv4_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv4 addresses.<br>The feature will be ignored on platforms where this is false. |
@@ -232,6 +233,10 @@
           # Support for 802.1X BPDU bypass.
           # The feature will be ignored on platforms where this is false.
           dot1x_bpdu_bypass: <bool; default=True>
+
+          # Support for 802.1X Per-MAC ACL mode on the interfaces.
+          # The feature will be ignored on platforms where this is false.
+          dot1x_mac_based_access_list: <bool; default=True>
           address_locking:
 
             # Global support for Address Locking feature.
@@ -1647,6 +1652,7 @@
               - vEOS
               - vEOS-lab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
@@ -1729,6 +1735,7 @@
               - ceos
               - cEOSLab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
@@ -1809,6 +1816,7 @@
           - platforms:
               - CloudEOS
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_install: false
               interface_storm_control: false
               per_interface_l2_mru: false
