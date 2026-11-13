@@ -8,6 +8,12 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_mgmt_method</samp>](## "default_mgmt_method") | String |  | `oob` | Valid Values:<br>- <code>oob</code><br>- <code>inband</code><br>- <code>none</code> | `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with AVD Design:<br>  - `aaa_settings`<br>  - `cv_settings`<br>  - `logging_settings`<br>  - `management_eapi`<br>  - `ntp_settings`<br>  - `sflow_settings`<br>  - `snmp_settings`<br>  - `ssh_settings`<br><br>`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.<br>`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.<br>`none` means the VRF and or interface must be manually set for each protocol.<br>This can be overridden under the settings for each protocol.<br> |
+    | [<samp>ipv4_subnets</samp>](## "ipv4_subnets") | List, items: Dictionary |  |  |  | Named IPv4 subnets used for address allocation.<br>Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.<br>Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_subnets.[].name") | String | Required, Unique |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "ipv4_subnets.[].subnet") | String | Required |  |  | Canonical IPv4 network in CIDR notation. Host bits must be zero. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "ipv4_subnets.[].range") | String |  |  |  | Optional inclusive host range within the subnet, for example `192.0.2.10-192.0.2.200`.<br>Defaults to all usable hosts. Network and broadcast addresses are excluded except for /31 and /32 subnets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;allocation_policy</samp>](## "ipv4_subnets.[].allocation_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "ipv4_subnets.[].allocation_policy.algorithm") | String |  | `ascend` | Valid Values:<br>- <code>ascend</code><br>- <code>descend</code> | Address ordering within the allowed range.<br>With `device_id`, ID 1 selects the first or last allowed host respectively.<br>With `auto`, ordering selects new assignments; existing valid assignments are retained. |
     | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br>Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
     | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br>Ignored when 'avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config: true' and<br>'ipv6_mgmt_ip' under node config is set to 'auto-config', since router<br>advertisements are expected to provide the gateway and default route.<br> |
@@ -46,6 +52,25 @@
     # `none` means the VRF and or interface must be manually set for each protocol.
     # This can be overridden under the settings for each protocol.
     default_mgmt_method: <str; "oob" | "inband" | "none"; default="oob">
+
+    # Named IPv4 subnets used for address allocation.
+    # Reference a subnet using `mgmt_ipv4_subnet` to generate OOB management addresses.
+    # Address conflicts are checked across participating OOB management endpoints in the same fabric and VRF.
+    ipv4_subnets:
+      - name: <str; length >=1; required; unique>
+
+        # Canonical IPv4 network in CIDR notation. Host bits must be zero.
+        subnet: <str; required>
+
+        # Optional inclusive host range within the subnet, for example `192.0.2.10-192.0.2.200`.
+        # Defaults to all usable hosts. Network and broadcast addresses are excluded except for /31 and /32 subnets.
+        range: <str>
+        allocation_policy:
+
+          # Address ordering within the allowed range.
+          # With `device_id`, ID 1 selects the first or last allowed host respectively.
+          # With `auto`, ordering selects new assignments; existing valid assignments are retained.
+          algorithm: <str; "ascend" | "descend"; default="ascend">
 
     # List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
     # Replaces the default route.

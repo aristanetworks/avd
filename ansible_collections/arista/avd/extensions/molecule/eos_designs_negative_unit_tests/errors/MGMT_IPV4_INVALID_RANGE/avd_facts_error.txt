@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid ipv4_subnets entry 'OOB': The inclusive range must contain usable hosts inside the subnet.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Device ID 12 exceeds the available host range in IPv4 subnet 'OOB'.

@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts.generator import EosDesignsFactsGenerator
+from pyavd._eos_designs.ipv4_subnets import allocate_management_ips
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
@@ -70,6 +71,8 @@ def get_facts(
     for generator in peer_facts_generators.values():
         generator.update_mlag_groups()
 
+    ipv4_collections = allocate_management_ips(generator.shared_utils for generator in peer_facts_generators.values())
+
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
 
@@ -83,6 +86,9 @@ def get_facts(
             msg = f"{str(e).removesuffix('.')} for host '{host}'."
             raise type(e)(msg, host=host) from e
 
+    # Publish staged IP reservations only after all facts have been generated successfully.
+    for collection, assignments in ipv4_collections.values():
+        collection.assignments = assignments
     return all_facts
 
 
