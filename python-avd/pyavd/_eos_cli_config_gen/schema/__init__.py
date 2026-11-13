@@ -30904,7 +30904,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 name: str
                 """Hostname of the Nucleus."""
-                destination: str
+                destination: str | None
                 """IPv4 or IPv6 address or FQDN of the Nucleus."""
                 port: int | None
                 """TCP port of the Nucleus."""
@@ -30919,7 +30919,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        destination: str | UndefinedType = Undefined,
+                        destination: str | UndefinedType | None = Undefined,
                         port: int | UndefinedType | None = Undefined,
                         local_interface: str | UndefinedType | None = Undefined,
                         ssl_profile: str | UndefinedType | None = Undefined,

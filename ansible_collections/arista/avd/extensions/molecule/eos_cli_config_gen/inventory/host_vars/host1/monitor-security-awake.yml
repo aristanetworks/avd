@@ -9,13 +9,12 @@ monitor_security:
       unknown_udp: true
     nucleus:
       - name: nucleus1.example.com
-        destination: "192.0.2.10"
+        destination: 192.0.2.10
         port: 9094
         local_interface: Loopback0
         ssl_profile: AWAKE_SSL
       - name: nucleus2.example.com
-        destination: "192.0.2.11"
-        port: 9095
+        destination: 192.0.2.11
         local_interface: Loopback0
         ssl_profile: AWAKE_SSL
     topic: packet-analysis-sessions

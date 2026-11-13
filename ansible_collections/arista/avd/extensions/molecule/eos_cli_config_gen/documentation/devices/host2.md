@@ -94,6 +94,9 @@
   - [BFD Interfaces](#bfd-interfaces)
 - [Monitor Loop Protection](#monitor-loop-protection)
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
+- [Monitor Security Awake](#monitor-security-awake)
+  - [Nucleus](#nucleus)
+  - [Monitor Security Awake Device Configuration](#monitor-security-awake-device-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -1928,6 +1931,30 @@ monitor loop-protection
    rate-limit 100
    transmit-interval 10
    disabled-time 100
+```
+
+## Monitor Security Awake
+
+| Disabled | Flow Table Size Entries | Ipfix Listener Port | Monitor Point Identifier | Unknown Udp Ndr Application | Topic |
+| -------- | ----------------------- | ------------------- | ------------------------ | --------------------------- | ----- |
+| True | - | 4739 | - | False | - |
+
+### Nucleus
+
+| Name | Local Interface | Destination IP | Port | SSL Profile |
+| ---- | --------------- | -------------- | ---- | ----------- |
+| NUCLEUS-B.EXAMPLE.COM | - | 192.0.2.22 | - | - |
+| nucleus-a.example.com | - | - | - | - |
+
+### Monitor Security Awake Device Configuration
+
+```eos
+!
+monitor security awake
+   !
+   nucleus NUCLEUS-B.EXAMPLE.COM
+      destination 192.0.2.22
+   disabled
 ```
 
 ## MPLS

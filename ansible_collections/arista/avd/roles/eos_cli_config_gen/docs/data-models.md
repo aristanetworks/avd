@@ -744,12 +744,6 @@ schemas/eos_config/docs/tables/monitor-loop-protection.md
 schemas/eos_config/docs/tables/monitor-security.md
 --8<--
 
-### Monitor security awake
-
---8<--
-schemas/eos_config/docs/tables/monitor-security-awake.md
---8<--
-
 ### Monitor server Radius
 
 --8<--

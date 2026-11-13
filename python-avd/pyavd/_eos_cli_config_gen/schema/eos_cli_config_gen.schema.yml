@@ -10945,8 +10945,6 @@ keys:
     keys:
       awake:
         type: dict
-        documentation_options:
-          table: monitor-security-awake
         description: 'Configuration of the Arista NDR (Awake) sensor.
 
           Renders `monitor security awake`.'
@@ -10985,7 +10983,6 @@ keys:
             primary_key: name
             min_length: 1
             max_length: 2
-            required: true
             description: NDR Nucleus servers (minimum 1, maximum 2).
             items:
               type: dict
@@ -10995,7 +10992,6 @@ keys:
                   description: Hostname of the Nucleus.
                 destination:
                   type: str
-                  required: true
                   description: IPv4 or IPv6 address or FQDN of the Nucleus.
                 port:
                   type: int

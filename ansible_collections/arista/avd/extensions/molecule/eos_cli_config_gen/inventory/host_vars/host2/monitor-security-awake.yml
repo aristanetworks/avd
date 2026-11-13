@@ -1,0 +1,11 @@
+---
+monitor_security:
+  awake:
+    disabled: true
+    ndr_application:
+      unknown_udp: false
+    nucleus:
+      - name: NUCLEUS-B.EXAMPLE.COM
+        destination: 192.0.2.22
+      - name: nucleus-a.example.com
+        port: 9096
