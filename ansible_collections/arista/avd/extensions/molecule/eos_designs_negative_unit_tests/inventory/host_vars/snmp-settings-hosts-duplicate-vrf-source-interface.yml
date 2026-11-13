@@ -25,4 +25,3 @@ snmp_settings:
       vrf: use_inband_mgmt_vrf
       version: 2c
       community: community
-

@@ -72089,7 +72089,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv4_acls: Ipv4Acls
         """Subclass of AvdList with `Ipv4AclsItem` items."""
         ipv4_acl: str | None
-        """IPv4 access list for VRF default."""
+        """IPv4 access list name for VRF default."""
         ipv6_acls: Ipv6Acls
         """Subclass of AvdList with `Ipv6AclsItem` items."""
         ipv6_acl: str | None
@@ -72150,7 +72150,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
-                    ipv4_acl: IPv4 access list for VRF default.
+                    ipv4_acl: IPv4 access list name for VRF default.
                     ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
                     ipv6_acl: IPv6 access list for VRF default.
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).

@@ -31,7 +31,7 @@
     | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>vrfs[].ipv4_acl or ipv4_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv4_acls.[].name") | String |  |  |  | IPv4 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv4_acls.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_server.ipv4_acl") | String |  |  |  | IPv4 access list for VRF default. |
+    | [<samp>&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_server.ipv4_acl") | String |  |  |  | IPv4 access list name for VRF default. |
     | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>vrfs[].ipv6_acl or ipv6_acl</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls.[].name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv6_acls.[].vrf") | String |  |  |  |  |
@@ -142,7 +142,7 @@
         - name: <str>
           vrf: <str>
 
-      # IPv4 access list for VRF default.
+      # IPv4 access list name for VRF default.
       ipv4_acl: <str>
       # This key is deprecated.
       # Use `vrfs[].ipv6_acl` or `ipv6_acl` instead.
