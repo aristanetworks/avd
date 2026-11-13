@@ -4,8 +4,6 @@ ansible_connection: ansible.netcommon.httpapi
 ansible_network_os: arista.eos.eos
 ansible_user: arista
 ansible_password: arista
-ansible_become: true
-ansible_become_method: enable
 ansible_httpapi_use_ssl: true
 # Should be set to true in production networks
 ansible_httpapi_validate_certs: false
