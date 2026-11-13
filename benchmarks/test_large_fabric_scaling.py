@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from typing import TYPE_CHECKING
 
 import pytest
@@ -55,6 +56,11 @@ def test_large_fabric_full_workflow_benchmark(
         vrf_count=5,
         per_vrf_svi_count=10,
     )
+    source_hostvars = hostvars
+
+    def setup() -> None:
+        nonlocal hostvars
+        hostvars = deepcopy(source_hostvars)
 
     def b() -> None:
         # Step 1: Validate inputs for all devices
@@ -88,7 +94,7 @@ def test_large_fabric_full_workflow_benchmark(
     previous_disable_level = logging.root.manager.disable
     logging.disable(logging.CRITICAL)
     try:
-        benchmark(b)
+        benchmark.pedantic(b, setup=setup, iterations=1)
     finally:
         logging.disable(previous_disable_level)
 

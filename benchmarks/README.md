@@ -43,6 +43,13 @@ to use multiprocessing; benchmarks execute the shared stages inline so CodSpeed
 can use deterministic CPU simulation and memory instrumentation instead of
 walltime.
 
+PyAVD updates input data in place. Each benchmark invocation, including warmups,
+uses fresh deep copies of its mutable data. CodSpeed's `setup` hook performs
+these copies outside the measured region, keeping input reset work separate
+from the measured generation stages. Host rendering also gets a fresh copy of
+the cached fabric facts; facts generation uses isolated inputs, hostvars, and
+pool state.
+
 ## GitHub Actions
 
 The standalone `Benchmarks` workflow runs on `ubuntu-latest` with tokenless

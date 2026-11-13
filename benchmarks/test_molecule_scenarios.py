@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import logging
 from contextlib import contextmanager
+from copy import deepcopy
 from typing import TYPE_CHECKING, Protocol
 
 import pytest
@@ -25,7 +26,15 @@ logger = logging.getLogger(__name__)
 class BenchmarkFixture(Protocol):
     """Subset of the CodSpeed benchmark fixture used by these tests."""
 
-    def pedantic(self, target: Callable[[], None], *, iterations: int, rounds: int = 1, warmup_rounds: int = 0) -> None: ...
+    def pedantic(
+        self,
+        target: Callable[[], None],
+        *,
+        iterations: int,
+        setup: Callable[[], None] | None = None,
+        rounds: int = 1,
+        warmup_rounds: int = 0,
+    ) -> None: ...
 
 
 REPRESENTATIVE_BENCHMARK_HOSTS = (
@@ -43,7 +52,6 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
     "trunk-group-tests-l3leaf1a",
     "uplink-p2p-vrfs-tests-leaf1",
     # WAN/CV Pathfinder coverage.
-    # Temporarily excluded until repeated rendering no longer mutates shared inputs. See #7490.
     "cv-pathfinder-transit1a",
 )
 
@@ -66,18 +74,24 @@ def test_molecule_scenario_avd_facts_benchmark(
     _scenario: None,
 ) -> None:
     """Benchmark fabric-wide AVD facts generation using the prepared end-to-end project."""
+    source_data = [(fabric.inputs, fabric.hostvars, fabric.pool_manager) for fabric in benchmark_project.fabrics]
+    fabric_data = source_data
+
+    def setup() -> None:
+        nonlocal fabric_data
+        fabric_data = deepcopy(source_data)
 
     def run() -> None:
         facts_count = 0
         input_count = 0
-        for fabric in benchmark_project.fabrics:
-            facts_count += len(get_avd_facts_for_fabric(fabric.config, fabric.inputs, fabric.hostvars, fabric.pool_manager))
-            input_count += len(fabric.inputs)
+        for fabric, (inputs, hostvars, pool_manager) in zip(benchmark_project.fabrics, fabric_data, strict=True):
+            facts_count += len(get_avd_facts_for_fabric(fabric.config, inputs, hostvars, pool_manager))
+            input_count += len(inputs)
 
         assert facts_count == input_count
 
     with disabled_logging():
-        benchmark.pedantic(run, iterations=1, rounds=1, warmup_rounds=0)
+        benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=0)
 
 
 @pytest.mark.parametrize(
@@ -95,6 +109,11 @@ def test_molecule_host_config_render_benchmark(
     inputs = benchmark_fabric.inputs[hostname]
     hostvars = benchmark_fabric.hostvars[hostname]
     avd_facts = benchmark_fabric.avd_facts
+    source_data = (inputs, hostvars, avd_facts)
+
+    def setup() -> None:
+        nonlocal inputs, hostvars, avd_facts
+        inputs, hostvars, avd_facts = deepcopy(source_data)
 
     def run() -> None:
         structured_config = get_structured_config_for_device(
@@ -107,4 +126,4 @@ def test_molecule_host_config_render_benchmark(
         assert get_device_config(structured_config)
 
     with disabled_logging():
-        benchmark.pedantic(run, iterations=5, warmup_rounds=1)
+        benchmark.pedantic(run, setup=setup, iterations=1, warmup_rounds=1)

@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
@@ -49,7 +50,8 @@ class BenchmarkFabric:
         """Return cached fabric facts for per-device benchmarks."""
         from tools.e2e_test_avd import get_avd_facts_for_fabric
 
-        return get_avd_facts_for_fabric(self.config, self.inputs, self.hostvars, self.pool_manager)
+        inputs, hostvars, pool_manager = deepcopy((self.inputs, self.hostvars, self.pool_manager))
+        return get_avd_facts_for_fabric(self.config, inputs, hostvars, pool_manager)
 
 
 @dataclass(frozen=True)
