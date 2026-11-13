@@ -16,5 +16,3 @@ class InterfaceData:
 
     interface: str
     context: str
-    interface_ip: IPv4Address | None = None
-    interface_ipv6: IPv6Address | None = None
