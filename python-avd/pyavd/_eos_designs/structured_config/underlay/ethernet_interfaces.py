@@ -284,8 +284,9 @@ class EthernetInterfacesMixin(Protocol):
             and (wan_carrier_name not in self.inputs.wan_carriers or not self.inputs.wan_carriers[wan_carrier_name].trusted)
         ):
             msg = (
-                "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
-                f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
+                "'ipv4_acl_in' or 'ipv4_standard_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, "
+                "unless the carrier is configured as 'trusted' "
+                f"under 'wan_carriers'. Neither is set on L3 interface '{l3_interface.name}'."
             )
             raise AristaAvdInvalidInputsError(msg)
 
