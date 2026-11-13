@@ -1,0 +1,31 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: ipv4-acl-duplicate-names-legacy-custom-structured-config
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+      structured_config:
+        # A non-conflicting current ACL must not hide a legacy ACL collision.
+        ip_access_lists:
+          - name: OTHER
+            entries:
+              - action: permit
+                protocol: ip
+                source: any
+                destination: any
+        access_lists:
+          - name: FILTER
+            sequence_numbers:
+              - sequence: 10
+                action: permit ip any any
+        standard_access_lists:
+          - name: FILTER
+            entries:
+              - action: permit
+                source: any
+
+expected_error_message: >-
+  ACL 'FILTER' is configured in both 'access_lists' and 'standard_access_lists'.
+  Only one IPv4 ACL type can be configured with the same name.
