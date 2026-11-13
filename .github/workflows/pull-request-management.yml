@@ -585,13 +585,13 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         working-directory: ansible_collections/arista/avd
         env:
-          PYTHON_VERSION: ${{ matrix.python_version }}
+          UNITS_OUTCOME: ${{ steps.units.outcome }}
           REPORT_SUFFIX: ${{ matrix.ansible_version }}-${{ matrix.python_version }}
         run: |
           set -euo pipefail
           ansible-test coverage report --group-by command --show-missing
           ansible-test coverage xml --group-by command
-          if [[ "$PYTHON_VERSION" == "3.12" ]]; then
+          if [[ "$UNITS_OUTCOME" == "success" || "$UNITS_OUTCOME" == "failure" ]]; then
             test -s tests/output/reports/coverage=units.xml
             mv tests/output/reports/coverage=units.xml "./units-coverage-$REPORT_SUFFIX.xml"
           fi
