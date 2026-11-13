@@ -747,6 +747,14 @@ ASN Notation: asplain
 
 #### Router BGP Peer Groups
 
+##### DOCUMENTATION-EBGP-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65102 |
+| Source | Ethernet1 |
+| Send community | standard |
+
 ##### MPLS-OVERLAY-PEERS
 
 | Settings | Value |
@@ -836,6 +844,10 @@ router bgp 65000
    no bgp default ipv4-unicast
    maximum-paths 4
    distance bgp 20 200 200
+   neighbor DOCUMENTATION-EBGP-PEERS peer group
+   neighbor DOCUMENTATION-EBGP-PEERS remote-as 65102
+   neighbor DOCUMENTATION-EBGP-PEERS update-source Ethernet1
+   neighbor DOCUMENTATION-EBGP-PEERS send-community standard
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
@@ -934,8 +946,10 @@ router bgp 65000
    vrf TENANT_B_WAN
       rd 100.70.0.7:20
       route-target import vpn-ipv4 65000:20
+      route-target import vpn-ipv4 65000:120
       route-target import vpn-ipv6 65000:20
       route-target export vpn-ipv4 65000:20
+      route-target export vpn-ipv4 65000:220
       route-target export vpn-ipv6 65000:20
       router-id 100.70.0.7
       update wait-install

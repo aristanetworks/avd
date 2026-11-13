@@ -4,6 +4,9 @@
 eos_designs_documentation:
   topology_csv: true
   p2p_links_csv: true
+  sections:
+    vrf_summary: true
+    bgp_peer_groups: true
 
 management_eapi:
   enabled: true

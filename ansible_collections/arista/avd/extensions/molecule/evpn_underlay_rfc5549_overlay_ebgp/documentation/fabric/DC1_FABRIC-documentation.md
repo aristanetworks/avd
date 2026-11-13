@@ -10,6 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -141,6 +142,73 @@
 | DC1_FABRIC | DC1-SPINE6 | 192.168.255.6/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.9/32 |
+
+### VRF Redistribute Summary
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| DC1-BL1A | l3leaf | Tenant_A_WAN_Zone | 192.168.255.10 | connected, static |
+| DC1-BL1A | l3leaf | Tenant_B_WAN_Zone | 192.168.255.10 | connected |
+| DC1-BL1A | l3leaf | Tenant_C_WAN_Zone | 192.168.255.10 | connected |
+| DC1-BL1B | l3leaf | Tenant_A_WAN_Zone | 192.168.255.11 | connected, static |
+| DC1-BL1B | l3leaf | Tenant_B_WAN_Zone | 192.168.255.11 | connected |
+| DC1-BL1B | l3leaf | Tenant_C_WAN_Zone | 192.168.255.11 | connected |
+| DC1-LEAF1A | l3leaf | Tenant_A_APP_Zone | 192.168.255.5 | connected |
+| DC1-LEAF1A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.5 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_APP_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_DB_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_OP_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_B_OP_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_C_OP_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_APP_Zone | 192.168.255.7 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_DB_Zone | 192.168.255.7 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_OP_Zone | 192.168.255.7 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.7 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_B_OP_Zone | 192.168.255.7 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_C_OP_Zone | 192.168.255.7 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_A_APP_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_A_DB_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_A_OP_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_B_OP_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3A | l3leaf | Tenant_C_OP_Zone | 192.168.255.12 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_A_APP_Zone | 192.168.255.13 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_A_DB_Zone | 192.168.255.13 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_A_OP_Zone | 192.168.255.13 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.13 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_B_OP_Zone | 192.168.255.13 | connected |
+| DC1-LEAF3B | l3leaf | Tenant_C_OP_Zone | 192.168.255.13 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_A_APP_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_A_DB_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_A_OP_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_B_OP_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4A | l3leaf | Tenant_C_OP_Zone | 192.168.255.14 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_A_APP_Zone | 192.168.255.15 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_A_DB_Zone | 192.168.255.15 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_A_OP_Zone | 192.168.255.15 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.15 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_B_OP_Zone | 192.168.255.15 | connected |
+| DC1-LEAF4B | l3leaf | Tenant_C_OP_Zone | 192.168.255.15 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_APP_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_DB_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_OP_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_WAN_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_B_OP_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_B_WAN_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_C_OP_Zone | 192.168.255.8 | connected |
+| DC1-SVC3A | l3leaf | Tenant_C_WAN_Zone | 192.168.255.8 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_APP_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_DB_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_OP_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_WAN_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_B_OP_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_B_WAN_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_C_OP_Zone | 192.168.255.9 | connected |
+| DC1-SVC3B | l3leaf | Tenant_C_WAN_Zone | 192.168.255.9 | connected |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
