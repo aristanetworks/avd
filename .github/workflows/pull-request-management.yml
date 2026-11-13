@@ -304,7 +304,7 @@ jobs:
             python_version: "3.12"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core>=2.21.0,<2.22.0"
-            python_version: "3.12"
+            python_version: "3.13"
           # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core>=2.22.0,<2.23.0"
