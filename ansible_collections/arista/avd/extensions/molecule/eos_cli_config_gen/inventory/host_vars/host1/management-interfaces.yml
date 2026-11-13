@@ -39,7 +39,7 @@ management_interfaces:
           no_autoconfig_flag: true
 
   - name: Management0
-    ip_address: 10.1.1.1
+    ip_address: 10.1.1.1/24
     mac_address: 00:1c:73:00:00:aa
     redundancy:
       fallback_delay: 100

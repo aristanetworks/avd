@@ -2,6 +2,8 @@
 ### VRFs ###
 
 vrfs:
+  - name: C2
+    ip_routing: true
   - name: MGMT
     ip_routing: false
   - name: TENANT_A_PROJECT01
@@ -31,3 +33,22 @@ vrfs:
     ip_routing: true
     ipv6_routing: true
     ip_routing_ipv6_interfaces: true
+  - name: test
+    ip_routing: false
+  - name: Tenant_A
+    ip_routing: true
+    ipv6_routing: true
+  - name: Tenant_B
+    ip_routing: true
+  - name: Tenant_C
+    ip_routing: false
+  - name: Tunnel-VRF
+    ip_routing: false
+  - name: BLUE-C1
+    ip_routing: true
+  - name: aaa
+    ip_routing: true
+  - name: data
+    ipv6_routing: true
+  - name: guest
+    ipv6_routing: true

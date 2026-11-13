@@ -84,10 +84,10 @@ tunnel_interfaces:
   - name: Tunnel4
     description: test no tcp_mss
     mtu: 1500
-    ip_address: 64.64.64.64/24
+    ip_address: 64.64.65.64/24
     ipv6_enable: true
     ipv6_addresses:
-      - beef::64/64
+      - beef:1::64/64
     # no tcp_mss_ceiling
     nat_profile: NAT-PROFILE-NO-VRF-1
     source: 10.10.10.10
