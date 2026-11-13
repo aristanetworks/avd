@@ -13,7 +13,7 @@ ipv6_static_routes:
 management_interfaces:
 - name: Management0
   description: description from mgmt_interface_settings
-  shutdown: false
+  shutdown: true
   vrf: vrf_from_mgmt_interface_settings
   ip_address: 192.168.0.3/24
   ipv6_enable: true
