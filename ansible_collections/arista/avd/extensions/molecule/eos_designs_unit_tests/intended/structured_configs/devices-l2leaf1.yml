@@ -24,6 +24,16 @@ ethernet_interfaces:
     peer: devices-leaf1b
     peer_interface: Ethernet8
     peer_type: l3leaf
+- name: Ethernet23
+  description: SFP_AUTO_MODE_PRESERVED
+  shutdown: false
+  speed: sfp-1000baset auto 100full
+  metadata:
+    peer: SFP_AUTO_MODE_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: devices-l2leaf1
 ip_igmp_snooping:
   globally_enabled: true

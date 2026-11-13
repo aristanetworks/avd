@@ -64,7 +64,7 @@ device_profiles:
 
   - name: profile3
     bgp_as: 65101
-    platform: cEOS-lab
+    platform: cEOSLab
 
   - name: L3LEAF1A
     # No parent_profile
@@ -118,3 +118,23 @@ cv_topology:
       - name: Ethernet5
         neighbor: devices-leaf2a
         neighbor_interface: Ethernet5
+
+# Test built-in virtual platform speed defaults without overriding platform settings
+# devices-leaf1a uses vEOS-lab.  devices-leaf3a uses cEOSLab
+network_ports:
+  - switches: [devices-leaf1a, devices-leaf3a]
+    switch_ports: [Ethernet20]
+    endpoint: EXPLICIT_AUTO_MODE_SUPPRESSED
+    speed: auto 10000full
+  - switches: [devices-leaf1a, devices-leaf3a]
+    switch_ports: [Ethernet21]
+    endpoint: PLAIN_AUTO_PRESERVED
+    speed: auto
+  - switches: [devices-leaf1a, devices-leaf3a]
+    switch_ports: [Ethernet22]
+    endpoint: FIXED_SPEED_PRESERVED
+    speed: 10g
+  - switches: [devices-l2leaf1]
+    switch_ports: [Ethernet23]
+    endpoint: SFP_AUTO_MODE_PRESERVED
+    speed: sfp-1000baset auto 100full

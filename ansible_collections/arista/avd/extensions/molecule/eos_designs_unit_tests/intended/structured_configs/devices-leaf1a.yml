@@ -34,6 +34,35 @@ ethernet_interfaces:
     peer: devices-l2leaf1
     peer_interface: Ethernet7
     peer_type: l2leaf
+- name: Ethernet20
+  description: EXPLICIT_AUTO_MODE_SUPPRESSED
+  shutdown: false
+  metadata:
+    peer: EXPLICIT_AUTO_MODE_SUPPRESSED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet21
+  description: PLAIN_AUTO_PRESERVED
+  shutdown: false
+  speed: auto
+  metadata:
+    peer: PLAIN_AUTO_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet22
+  description: FIXED_SPEED_PRESERVED
+  shutdown: false
+  speed: 10g
+  metadata:
+    peer: FIXED_SPEED_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: devices-leaf1a
 ip_igmp_snooping:
   globally_enabled: true

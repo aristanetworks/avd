@@ -62,6 +62,7 @@ network_ports:
     profile: pc
     endpoint: PCs
     spanning_tree_link_type: shared
+    speed: auto 10000full
 
   - switches:
       - network-ports-tests-2$
@@ -402,6 +403,7 @@ custom_platform_settings:
     feature_support:
       poe: true
       queue_monitor_length_notify: false
+      explicit_interface_speed_auto_mode: false
     reload_delay:
       mlag: 300
       non_mlag: 330

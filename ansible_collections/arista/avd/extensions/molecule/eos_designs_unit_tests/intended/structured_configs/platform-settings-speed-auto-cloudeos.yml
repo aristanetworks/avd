@@ -1,0 +1,54 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet20
+  description: EXPLICIT_AUTO_MODE_SUPPRESSED
+  shutdown: false
+  metadata:
+    peer: EXPLICIT_AUTO_MODE_SUPPRESSED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet21
+  description: PLAIN_AUTO_PRESERVED
+  shutdown: false
+  speed: auto
+  metadata:
+    peer: PLAIN_AUTO_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet22
+  description: FIXED_SPEED_PRESERVED
+  shutdown: false
+  speed: 10g
+  metadata:
+    peer: FIXED_SPEED_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+hostname: platform-settings-speed-auto-cloudeos
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  platform: CloudEOS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

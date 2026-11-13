@@ -30,7 +30,7 @@ class EthernetInterfacesMixin(Protocol):
                 self._update_common_interface_cfg(p2p_link, p2p_link_data, ethernet_interface)
                 ethernet_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp)
                 ethernet_interface.description = self._p2p_link_ethernet_description(p2p_link_data) or None
-                ethernet_interface.speed = p2p_link.speed
+                ethernet_interface.speed = self.structured_config_utils.get_interface_speed(p2p_link.speed)
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
                     ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
@@ -51,7 +51,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=member["interface"],
                     shutdown=False,
                     description=self._port_channel_member_description(p2p_link_data, member) or None,
-                    speed=p2p_link.speed,
+                    speed=self.structured_config_utils.get_interface_speed(p2p_link.speed),
                 )
                 ethernet_interface.metadata._update(peer_interface=member["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
                 ethernet_interface.channel_group.id = p2p_link_data["port_channel_id"]

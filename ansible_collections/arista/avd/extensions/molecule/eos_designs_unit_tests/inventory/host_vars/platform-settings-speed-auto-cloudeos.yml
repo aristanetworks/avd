@@ -1,0 +1,23 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: platform-settings-speed-auto-cloudeos
+      id: 1
+      platform: CloudEOS
+
+# Test built-in virtual platform speed defaults without overriding platform settings.
+network_ports:
+  - switches: [platform-settings-speed-auto-cloudeos]
+    switch_ports: [Ethernet20]
+    endpoint: EXPLICIT_AUTO_MODE_SUPPRESSED
+    speed: auto 10000full
+  - switches: [platform-settings-speed-auto-cloudeos]
+    switch_ports: [Ethernet21]
+    endpoint: PLAIN_AUTO_PRESERVED
+    speed: auto
+  - switches: [platform-settings-speed-auto-cloudeos]
+    switch_ports: [Ethernet22]
+    endpoint: FIXED_SPEED_PRESERVED
+    speed: 10g

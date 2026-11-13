@@ -9917,6 +9917,7 @@ keys:
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -10000,6 +10001,7 @@ keys:
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -10080,6 +10082,7 @@ keys:
         dot1x_mac_based_access_list: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         per_interface_l2_mru: false
         queue_monitor_length_notify: false
         sflow: false
@@ -17136,6 +17139,14 @@ $defs:
               description: 'Support for storm-control.
 
                 The feature will be ignored on platforms where this is false.'
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: 'Support for `speed sfp-1000baset auto 100full` and `speed
+                auto <mode>` commands on Ethernet interfaces.
+
+                When set to false, these commands are omitted while `speed auto`,
+                `speed <mode>` and `speed forced <mode>` commands are preserved.'
             poe:
               type: bool
               default: false

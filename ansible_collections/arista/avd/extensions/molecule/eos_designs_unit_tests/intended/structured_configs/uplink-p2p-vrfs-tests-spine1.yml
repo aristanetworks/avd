@@ -7,6 +7,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_uplink-p2p-vrfs-tests-leaf1_Ethernet1
   shutdown: false
+  speed: auto 10000full
   mtu: 9214
   ip_address: 10.42.42.8/31
   pim:
