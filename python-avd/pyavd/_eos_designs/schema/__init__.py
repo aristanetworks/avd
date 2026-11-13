@@ -42512,7 +42512,6 @@ class EosDesigns(EosDesignsRootModel):
             This will also cause automatic OSPF redistribution into BGP unless
             `bgp.redistribute_ospf.internal.enabled` is set to false.
 
-
             Subclass of AvdModel.
             """
             ospfv3: Ospfv3
@@ -42857,7 +42856,6 @@ class EosDesigns(EosDesignsRootModel):
                            "redistribute_ospf: false".
                            This will also cause automatic OSPF redistribution into BGP unless
                            `bgp.redistribute_ospf.internal.enabled` is set to false.
-
 
                            Subclass of AvdModel.
                         ospfv3:
@@ -97349,7 +97347,6 @@ class EosDesigns(EosDesignsRootModel):
                     This will also cause automatic OSPF redistribution into BGP unless
                     `bgp.redistribute_ospf.internal.enabled` is set to false.
 
-
                     Subclass of AvdModel.
                     """
                     ospfv3: Ospfv3
@@ -97694,7 +97691,6 @@ class EosDesigns(EosDesignsRootModel):
                                    "redistribute_ospf: false".
                                    This will also cause automatic OSPF redistribution into BGP unless
                                    `bgp.redistribute_ospf.internal.enabled` is set to false.
-
 
                                    Subclass of AvdModel.
                                 ospfv3:

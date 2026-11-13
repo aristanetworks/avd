@@ -1,6 +1,7 @@
 ---
 # Tests for the new vrf.bgp.redistribute_ospf options in eos_designs.
-# Covers: internal (with include_leaked and route_map), external, and nssa_external redistribution.
+# Covers: internal (with include_leaked and route_map), external, and nssa_external redistribution
+# (nssa_type 1 with route_map, without nssa_type with include_leaked, and nssa_type 2).
 type: l3leaf
 
 l3leaf:
@@ -39,6 +40,7 @@ tenants:
               enabled: true
 
       # VRF with external and nssa_external OSPF redistribution (internal disabled).
+      # nssa_external covers: enabled with nssa_type: 1 and route_map.
       - name: VRF-OSPF-EXTERNAL-NSSA
         vrf_id: 51
         ospf:
@@ -62,5 +64,49 @@ tenants:
             enabled: true
             vxlan: false
             ip_address: 10.1.51.1/24
+            ospf:
+              enabled: true
+
+      # VRF covering nssa_external without nssa_type and with include_leaked.
+      - name: VRF-OSPF-NSSA-NO-TYPE
+        vrf_id: 52
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: false
+            nssa_external:
+              enabled: true
+              include_leaked: true
+        svis:
+          - id: 520
+            name: VRF-OSPF-NSSA-NO-TYPE-520
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.52.1/24
+            ospf:
+              enabled: true
+
+      # VRF covering nssa_external with nssa_type: 2.
+      - name: VRF-OSPF-NSSA-TYPE2
+        vrf_id: 53
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: false
+            nssa_external:
+              enabled: true
+              nssa_type: 2
+        svis:
+          - id: 530
+            name: VRF-OSPF-NSSA-TYPE2-530
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.53.1/24
             ospf:
               enabled: true

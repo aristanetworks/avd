@@ -6201,9 +6201,7 @@ keys:
                   explicitly turned off with "redistribute_ospf: false".
 
                   This will also cause automatic OSPF redistribution into BGP unless
-                  `bgp.redistribute_ospf.internal.enabled` is set to false.
-
-                  '
+                  `bgp.redistribute_ospf.internal.enabled` is set to false.'
                 keys:
                   enabled:
                     type: bool

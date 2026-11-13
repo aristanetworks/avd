@@ -643,7 +643,7 @@ keys:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
                 type: dict
-                description: |
+                description: |-
                   Router OSPF configuration.
                   This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
                   created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless

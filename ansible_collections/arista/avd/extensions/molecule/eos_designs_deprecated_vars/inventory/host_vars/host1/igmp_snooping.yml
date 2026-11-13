@@ -39,11 +39,6 @@ tenants:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST"
         vrf_vni: 41
-        # adding a test for deprecated redistribute_ospf key
-        vrf_id: 14
-        ospf:
-          enabled: true
-        redistribute_ospf: true
         svis:
           - id: 22
             name: "VLAN_22"
@@ -52,3 +47,23 @@ tenants:
             ip_address_virtual: 10.0.22.1/24
             igmp_snooping_querier:
               source_address: main_router_id
+      # Test deprecated redistribute_ospf: false alongside new bgp.redistribute_ospf.external.
+      # Expected: only "redistribute ospf match external" (no "redistribute ospf" for internal).
+      - name: REDISTRIBUTE_OSPF_DEPRECATED_TEST
+        vrf_id: 42
+        vrf_vni: 42
+        ospf:
+          enabled: true
+        redistribute_ospf: false
+        bgp:
+          redistribute_ospf:
+            external:
+              enabled: true
+        svis:
+          - id: 23
+            name: "VLAN_23"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.23.1/24
+            ospf:
+              enabled: true

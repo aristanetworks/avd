@@ -241,6 +241,16 @@ router_bgp:
       - 40022:40022
     redistribute_routes:
     - learned
+  - id: 23
+    metadata:
+      tenants:
+      - Tenant_H
+    rd: 192.168.255.101:40023
+    route_targets:
+      both:
+      - 40023:40023
+    redistribute_routes:
+    - learned
   - id: 401
     metadata:
       tenants:
@@ -268,32 +278,50 @@ router_bgp:
       activate: true
   vrfs:
   - name: IGMP_QUERIER_TEST_3
-    rd: 192.168.255.101:14
+    rd: 192.168.255.101:41
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '14:14'
+        - '41:41'
       export:
       - address_family: evpn
         route_targets:
-        - '14:14'
+        - '41:41'
+    router_id: 192.168.255.101
+    redistribute:
+      connected:
+        enabled: true
+  - name: REDISTRIBUTE_OSPF_DEPRECATED_TEST
+    rd: 192.168.255.101:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
     router_id: 192.168.255.101
     redistribute:
       connected:
         enabled: true
       ospf:
-        enabled: true
+        match_external:
+          enabled: true
 router_multicast:
   ipv4:
     routing: true
     software_forwarding: sfe
 router_ospf:
   process_ids:
-  - id: 14
-    vrf: IGMP_QUERIER_TEST_3
+  - id: 42
+    vrf: REDISTRIBUTE_OSPF_DEPRECATED_TEST
     passive_interface_default: true
     router_id: 192.168.255.101
+    no_passive_interfaces:
+    - Vlan23
     redistribute:
       bgp:
         enabled: true
@@ -362,6 +390,18 @@ vlan_interfaces:
     - Tenant_H
     tags:
     - test_l3
+- name: Vlan23
+  description: VLAN_23
+  shutdown: false
+  vrf: REDISTRIBUTE_OSPF_DEPRECATED_TEST
+  ip_address_virtual: 10.0.23.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - Tenant_H
+    tags:
+    - test_l3
 vlan_internal_order:
   allocation: ascending
   range:
@@ -383,6 +423,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_H
+- id: 23
+  name: VLAN_23
+  metadata:
+    tenants:
+    - Tenant_H
 - id: 401
   name: VLAN_401
   metadata:
@@ -393,6 +438,11 @@ vrfs:
   ip_routing: false
 - name: IGMP_QUERIER_TEST_3
   description: IGMP_QUERIER_TEST
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_H
+- name: REDISTRIBUTE_OSPF_DEPRECATED_TEST
   ip_routing: true
   metadata:
     tenants:
@@ -410,8 +460,12 @@ vxlan_interface:
         vni: 30302
       - id: 22
         vni: 40022
+      - id: 23
+        vni: 40023
       - id: 401
         vni: 40401
       vrfs:
       - name: IGMP_QUERIER_TEST_3
         vni: 41
+      - name: REDISTRIBUTE_OSPF_DEPRECATED_TEST
+        vni: 42
