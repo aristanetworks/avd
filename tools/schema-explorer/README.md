@@ -11,8 +11,6 @@ A static, [sql.js](https://github.com/sql-js/sql.js)-based browser of the AVD
 docs site. All queries run in the browser against a local SQLite file —
 no backend, no managed runtime, no live database.
 
-Tracked in `aristanetworks/avd-internal#503`.
-
 ## Two ways to consume it
 
 | Mode | Syntax / URL | When to use |
@@ -189,15 +187,30 @@ The MkDocs hook freshness check tracks the combined YAML sources and the
 metaschema. Fragment-only edits can look stale until the repository schema
 workflow regenerates the combined YAML files.
 
-## Architecture decisions
+## Vendored runtime dependencies
 
-See `aristanetworks/avd-internal#503` for the full thread. Short version:
+Same-origin copies under `static/vendor/`. See [SECURITY.md](SECURITY.md) for
+threat model and update expectations.
+
+| Asset | Version | Source | Loaded from |
+| ----- | ------- | ------ | ----------- |
+| Bootstrap CSS/JS | 5.3.3 | [getbootstrap.com](https://getbootstrap.com/) | Standalone `index.html`; JS lazy-loaded in embeds |
+| Bootstrap Icons | 1.11.3 | [icons.getbootstrap.com](https://icons.getbootstrap.com/) | Lazy-loaded when an explorer mounts |
+| sql.js (WASM) | 1.10.3 (`sql-wasm.js` + `sql-wasm.wasm`) | [sql-js/sql.js v1.10.3](https://github.com/sql-js/sql.js/releases/tag/v1.10.3) | Lazy-loaded when an explorer mounts |
+
+**Update policy:** bump vendored files deliberately (not via live CDN), refresh
+`integrity=` attributes in `static/index.html` and the matching `RUNTIME_DEPS`
+entries in `static/js/app.js`. When updating `sql-wasm.wasm`, also refresh its
+separate `SQL_WASM.integrity` hash in `static/js/app.js`; the runtime verifies
+that hash before initializing sql.js. Document the version in this table and
+run the syntax and build checks documented in [SECURITY.md](SECURITY.md#verification).
+
+## Architecture decisions
 
 - **MkDocs static + sql.js**, not App Engine — picked at the May 8th
   maintainers call.
-- **`schema_tools` resolver**, not raw `yaml.safe_load` — see
-  `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
-  same-schema `$ref` hole. Cross-schema `$ref` with `hide_keys` stays a leaf
+- **`schema_tools` resolver**, not raw `yaml.safe_load` — resolves
+  `dynamic_keys` and same-schema `$ref` values. Cross-schema `$ref` with `hide_keys` stays a leaf
   `cross_ref` link; other cross-schema reuse is resolved like schema docs.
 - **Embedded views via a Markdown fence**, not iframe / template override
   — picked at the May 15th maintainers call. Docs authors use
