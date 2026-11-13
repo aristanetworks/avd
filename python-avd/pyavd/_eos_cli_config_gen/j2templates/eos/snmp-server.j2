@@ -269,7 +269,7 @@ snmp-server enable traps {{ snmp_trap.name }}
 snmp-server vrf {{ vrf.name }}
 {%             elif vrf.enable is arista.avd.defined(false) %}
 no snmp-server vrf {{ vrf.name }}
-{%             elif vrf | list == ["name"] %}
+{%             elif vrf.ipv4_acl is not arista.avd.defined and vrf.ipv6_acl is not arista.avd.defined and vrf.local_interface is not arista.avd.defined %}
 no snmp-server vrf {{ vrf.name }}
 {%             endif %}
 {%         endfor %}
