@@ -43,6 +43,8 @@ uv run --no-project tools/e2e-test-avd.py \
   ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests
 ```
 
+The `eos_designs_unit_tests` inventory runs through PyAVD E2E. Separate [Ansible role integration tests](../development-tooling.md#role-integration-tests) cover role execution and compatibility.
+
 The path may instead point directly to the configuration file:
 
 ```shell
