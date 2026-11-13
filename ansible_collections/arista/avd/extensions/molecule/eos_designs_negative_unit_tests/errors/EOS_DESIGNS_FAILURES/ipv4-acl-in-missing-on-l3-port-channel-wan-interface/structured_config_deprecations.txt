@@ -1,0 +1,1 @@
+pyavd._errors.AvdFutureBehaviorWarning: Host 'ipv4-acl-in-missing-on-l3-port-channel-wan-interface': L3 Port-Channel at path 'wan_router.nodes[name=ipv4-acl-in-missing-on-l3-port-channel-wan-interface].l3_port_channels[name=Port-Channel5]' must have at least one member interface defined. This configuration is deprecated and will no longer be supported in AVD 7.0.0.

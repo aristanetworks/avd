@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import ipaddress
+import warnings
 from itertools import groupby as itertools_groupby
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError, AvdFutureBehaviorWarning
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.strip_empties import strip_empties_from_dict
@@ -135,6 +136,7 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.network_services_l3:
             return
 
+        invalid_mlag_ibgp_peering_vrf_paths: list[str] = []
         # For VRF default the bgp_vrf variable will be set to the global router_bgp for some settings.
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
@@ -230,19 +232,16 @@ class RouterBgpMixin(Protocol):
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                    if (
-                        self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
-                        and self.shared_utils.underlay_ipv6_numbered
-                        and not self.inputs.overlay_mlag_rfc5549
-                        and self._has_ipv4(vrf)
-                    ):
-                        msg = (
-                            f"Invalid combination of inputs. IPv4 is configured in VRF '{vrf.name}' with MLAG iBGP peering, but IPv4 routes cannot be "
-                            "exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
-                            "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
-                            "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
-                        )
-                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                    if self.shared_utils.underlay_ipv6_numbered and not self.inputs.overlay_mlag_rfc5549 and self._has_ipv4(vrf):
+                        if self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families:
+                            msg = (
+                                f"Invalid combination of inputs. IPv4 is configured in VRF '{vrf.name}' with MLAG iBGP peering, but IPv4 routes cannot be "
+                                "exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
+                                "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
+                                "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
+                            )
+                            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                        invalid_mlag_ibgp_peering_vrf_paths.append(f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}]")
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
@@ -315,6 +314,30 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.name = vrf.name
                     maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
                     maybe_existing_vrf._combine(bgp_vrf)
+
+        if invalid_mlag_ibgp_peering_vrf_paths:
+            vrf_paths = list(dict.fromkeys(invalid_mlag_ibgp_peering_vrf_paths))
+            if len(vrf_paths) == 1:
+                msg = (
+                    f"Invalid combination of inputs. IPv4 is configured with MLAG iBGP peering for the VRF at path '{vrf_paths[0]}', but "
+                    "IPv4 routes cannot be exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
+                    "Set 'overlay_mlag_rfc5549: true' and 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to exchange IPv4 routes "
+                    "with an IPv6 next hop, "
+                    "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
+                )
+            else:
+                msg = (
+                    f"Invalid combination of inputs. IPv4 is configured with MLAG iBGP peering for the VRFs at paths "
+                    f"{', '.join(repr(path) for path in vrf_paths)}, "
+                    "but IPv4 routes cannot be exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
+                    "Set 'overlay_mlag_rfc5549: true' and 'avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true' to exchange IPv4 routes "
+                    "with an IPv6 next hop, "
+                    "or disable the MLAG iBGP peering for these VRFs with 'enable_mlag_ibgp_peering_vrfs: false'."
+                )
+            warnings.warn(
+                AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", version="7.0.0"),
+                stacklevel=2,
+            )
 
     def _update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,

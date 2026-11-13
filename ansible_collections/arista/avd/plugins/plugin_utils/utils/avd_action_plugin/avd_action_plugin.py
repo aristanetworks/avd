@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, final
 from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.raise_action_fail import raise_action_fail
+from pyavd._errors import AvdFutureBehaviorWarning
 
 from .log_config import AVDLoggingConfig, LoggerState, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, ErrorTrackingHandler, LogContextFilter, LoggingOutcome, SaveToResultHandler, log_context
@@ -32,7 +33,9 @@ def _handle_captured_warnings(captured_warnings: list[warnings.WarningMessage] |
     result.setdefault("warnings", [])
     for warning in captured_warnings:
         message = str(warning.message)
-        is_deprecation = warning.is_deprecation if isinstance(warning, WarningEvent) else issubclass(warning.category, DeprecationWarning)
+        is_deprecation = (
+            warning.is_deprecation if isinstance(warning, WarningEvent) else issubclass(warning.category, (DeprecationWarning, AvdFutureBehaviorWarning))
+        )
         if not is_deprecation:
             # Catch-all for standard Python warnings from any library
             result["warnings"].append(message)
@@ -131,9 +134,10 @@ class AVDActionPlugin(ActionBase):
                     worker_warnings=worker_warnings,
                 ),
             ):
-                # DeprecationWarning is ignored by default
+                # Capture all deprecations and future-behavior warnings consistently.
                 # NOTE: This will override PYTHONWARNINGS environment variable
                 warnings.simplefilter("always", DeprecationWarning)
+                warnings.simplefilter("always", AvdFutureBehaviorWarning)
 
                 # Run the plugin
                 self.main(task_vars)

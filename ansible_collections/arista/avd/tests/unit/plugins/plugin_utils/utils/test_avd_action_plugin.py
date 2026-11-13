@@ -19,7 +19,7 @@ from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler, LoggingOutcome, log_context
-from pyavd._errors import AvdDeprecationWarning
+from pyavd._errors import AvdDeprecationWarning, AvdFutureBehaviorWarning
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator
@@ -595,6 +595,25 @@ class TestAVDActionPlugin:
                 id="deprecation_warning",
             ),
             pytest.param(
+                AvdFutureBehaviorWarning("This is a future behavior warning."),
+                {"warnings": [], "deprecations": [{"msg": "This is a future behavior warning."}]},
+                id="future_behavior_warning",
+            ),
+            pytest.param(
+                AvdFutureBehaviorWarning("This is a future behavior warning.", version="7.0.0"),
+                {
+                    "warnings": [],
+                    "deprecations": [
+                        {
+                            "msg": "This is a future behavior warning.",
+                            "version": "7.0.0",
+                            "collection_name": "arista.avd",
+                        }
+                    ],
+                },
+                id="future_behavior_warning_with_version",
+            ),
+            pytest.param(
                 AvdDeprecationWarning(["old_key"], remove_in_version="7.0.0"),
                 {
                     "warnings": [],
@@ -685,6 +704,23 @@ class TestAVDActionPlugin:
         assert result.get("logs", {"warnings": [], "errors": []}) == {"warnings": [], "errors": []}
         mock_display.warning.assert_not_called()
         mock_display.error.assert_not_called()
+
+    @pytest.mark.usefixtures("mock_display")
+    def test_future_behavior_warning_capture_overrides_caller_filter(self, action_module: Callable[..., AVDActionPlugin]) -> None:
+        """Future-behavior warnings are always captured even when the caller ignores them."""
+
+        class ActionModule(AVDActionPlugin):
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                warnings.warn("This is a future behavior warning.", AvdFutureBehaviorWarning, stacklevel=1)
+
+        plugin = action_module(ActionModule)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", AvdFutureBehaviorWarning)
+            result = plugin.run()
+
+        assert result["warnings"] == []
+        assert result["deprecations"] == [{"msg": "This is a future behavior warning."}]
 
     def test_handles_dirty_logger_state(self, action_module: Callable[..., AVDActionPlugin]) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
