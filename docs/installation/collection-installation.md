@@ -9,7 +9,6 @@
 ## Installation workflow
 
 - Install supported [Python](https://www.python.org/downloads/) version **3.11-3.14**.
-  - Ansible Core 2.22 requires Python 3.13 or newer.
   - The Python version determines the supported `ansible-core` version. Consult the [ansible-core support matrix](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for more information.
 - Install the [pyavd](https://pypi.org/project/pyavd/) Python package with `ansible` dependencies.
   - Note: This will install the supported ansible-core version and all required [Python dependencies](#python-dependencies).
