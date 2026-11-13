@@ -188,6 +188,7 @@ The topology and cluster ID checks of the route reflector groups run while gener
 | `bgp_cluster_id` is set on a node without downlink switches | It would be silently ignored. |
 | The clients of a route reflector don't all have the same uplink switches, or those don't all have the same downlink switches | A shared cluster ID would drop routes. |
 | `bgp_cluster_id` is missing on a route reflector, or differs between the route reflectors of a group | A shared cluster ID would drop routes. |
+| `bgp_cluster_id` on a route reflector is not a nonzero IPv4 address in dotted-quad notation, like `0.0.0.0`, `33686018` or an empty string | EOS rejects other formats, and `bgp cluster-id 0.0.0.0` removes the cluster ID, so the route reflector falls back to its router ID. |
 | Two RR groups use the same `bgp_cluster_id` | Cluster list loop detection would drop routes between them. |
 | `ipv4_underlay_peers.name` equals `rr_clients_underlay_peers.name` | The attributes of both directions would merge. |
 | On a route reflector, the type 7 `ipv4_underlay_peers.password` can't be decrypted with the `ipv4_underlay_peers` name | AVD must decrypt it to encrypt it again for `rr_clients_underlay_peers`. |

@@ -14249,9 +14249,10 @@ class EosDesigns(EosDesignsRootModel):
         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
         route servers, defaults to the router ID.
         With `underlay_routing_protocol: ibgp`, required on all
-        route reflectors, which are the nodes with downlink iBGP switches.
-        It must be the same on all the
-        route reflectors sharing the same clients, and unique per group of route reflectors.
+        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+        `2.2.2.2`.
+        It must be the same on all the route reflectors sharing the same clients, and unique per
+        group of route reflectors.
         """
         kernel_ecmp_cli: bool
         """
@@ -15202,9 +15203,10 @@ class EosDesigns(EosDesignsRootModel):
                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                        route servers, defaults to the router ID.
                        With `underlay_routing_protocol: ibgp`, required on all
-                       route reflectors, which are the nodes with downlink iBGP switches.
-                       It must be the same on all the
-                       route reflectors sharing the same clients, and unique per group of route reflectors.
+                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                       `2.2.2.2`.
+                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                       group of route reflectors.
                     kernel_ecmp_cli:
                        Use EOS CLI to configure kernel forwarding ECMP programming.
                        For EOS kernel forwarding, ECMP
@@ -19986,9 +19988,10 @@ class EosDesigns(EosDesignsRootModel):
         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
         route servers, defaults to the router ID.
         With `underlay_routing_protocol: ibgp`, required on all
-        route reflectors, which are the nodes with downlink iBGP switches.
-        It must be the same on all the
-        route reflectors sharing the same clients, and unique per group of route reflectors.
+        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+        `2.2.2.2`.
+        It must be the same on all the route reflectors sharing the same clients, and unique per
+        group of route reflectors.
         """
         kernel_ecmp_cli: bool
         """
@@ -20947,9 +20950,10 @@ class EosDesigns(EosDesignsRootModel):
                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                        route servers, defaults to the router ID.
                        With `underlay_routing_protocol: ibgp`, required on all
-                       route reflectors, which are the nodes with downlink iBGP switches.
-                       It must be the same on all the
-                       route reflectors sharing the same clients, and unique per group of route reflectors.
+                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                       `2.2.2.2`.
+                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                       group of route reflectors.
                     kernel_ecmp_cli:
                        Use EOS CLI to configure kernel forwarding ECMP programming.
                        For EOS kernel forwarding, ECMP
@@ -64325,9 +64329,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -65257,9 +65262,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -70042,9 +70048,10 @@ class EosDesigns(EosDesignsRootModel):
                         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                         route servers, defaults to the router ID.
                         With `underlay_routing_protocol: ibgp`, required on all
-                        route reflectors, which are the nodes with downlink iBGP switches.
-                        It must be the same on all the
-                        route reflectors sharing the same clients, and unique per group of route reflectors.
+                        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                        `2.2.2.2`.
+                        It must be the same on all the route reflectors sharing the same clients, and unique per
+                        group of route reflectors.
                         """
                         kernel_ecmp_cli: bool
                         """
@@ -70983,9 +70990,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                        route servers, defaults to the router ID.
                                        With `underlay_routing_protocol: ibgp`, required on all
-                                       route reflectors, which are the nodes with downlink iBGP switches.
-                                       It must be the same on all the
-                                       route reflectors sharing the same clients, and unique per group of route reflectors.
+                                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                       `2.2.2.2`.
+                                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                                       group of route reflectors.
                                     kernel_ecmp_cli:
                                        Use EOS CLI to configure kernel forwarding ECMP programming.
                                        For EOS kernel forwarding, ECMP
@@ -75687,9 +75695,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -76630,9 +76639,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -81406,9 +81416,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -82347,9 +82358,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -103514,9 +103526,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -104446,9 +104459,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -109231,9 +109245,10 @@ class EosDesigns(EosDesignsRootModel):
                         For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                         route servers, defaults to the router ID.
                         With `underlay_routing_protocol: ibgp`, required on all
-                        route reflectors, which are the nodes with downlink iBGP switches.
-                        It must be the same on all the
-                        route reflectors sharing the same clients, and unique per group of route reflectors.
+                        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                        `2.2.2.2`.
+                        It must be the same on all the route reflectors sharing the same clients, and unique per
+                        group of route reflectors.
                         """
                         kernel_ecmp_cli: bool
                         """
@@ -110172,9 +110187,10 @@ class EosDesigns(EosDesignsRootModel):
                                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                        route servers, defaults to the router ID.
                                        With `underlay_routing_protocol: ibgp`, required on all
-                                       route reflectors, which are the nodes with downlink iBGP switches.
-                                       It must be the same on all the
-                                       route reflectors sharing the same clients, and unique per group of route reflectors.
+                                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                       `2.2.2.2`.
+                                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                                       group of route reflectors.
                                     kernel_ecmp_cli:
                                        Use EOS CLI to configure kernel forwarding ECMP programming.
                                        For EOS kernel forwarding, ECMP
@@ -114876,9 +114892,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -115819,9 +115836,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -120595,9 +120613,10 @@ class EosDesigns(EosDesignsRootModel):
                     For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                     route servers, defaults to the router ID.
                     With `underlay_routing_protocol: ibgp`, required on all
-                    route reflectors, which are the nodes with downlink iBGP switches.
-                    It must be the same on all the
-                    route reflectors sharing the same clients, and unique per group of route reflectors.
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
                     """
                     kernel_ecmp_cli: bool
                     """
@@ -121536,9 +121555,10 @@ class EosDesigns(EosDesignsRootModel):
                                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
                                    route servers, defaults to the router ID.
                                    With `underlay_routing_protocol: ibgp`, required on all
-                                   route reflectors, which are the nodes with downlink iBGP switches.
-                                   It must be the same on all the
-                                   route reflectors sharing the same clients, and unique per group of route reflectors.
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP

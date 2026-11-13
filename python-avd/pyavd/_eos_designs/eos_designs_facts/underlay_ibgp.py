@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -51,6 +52,28 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
             return frozenset()
         return frozenset(peer for peer in self.uplink_peers if self.get_peer_facts_generator(peer).shared_utils.underlay_ibgp)
 
+    @cached_property
+    def _underlay_ibgp_cluster_id(self: EosDesignsFactsGeneratorProtocol) -> str | None:
+        """
+        The 'bgp_cluster_id' of this device, when it is used as a route reflector.
+
+        Raise if it is not a nonzero IPv4 address in dotted-quad notation. EOS rejects other formats,
+        and 'bgp cluster-id 0.0.0.0' removes the cluster ID, so the route reflector falls back to its router ID.
+        """
+        if (cluster_id := self.shared_utils.node_config.bgp_cluster_id) is None:
+            return None
+        try:
+            valid = int(ipaddress.IPv4Address(cluster_id)) != 0
+        except ipaddress.AddressValueError:
+            valid = False
+        if not valid:
+            msg = (
+                f"{MSG_PREFIX} 'underlay_routing_protocol: ibgp' requires 'bgp_cluster_id' to be a nonzero IPv4 address in dotted-quad notation "
+                f"on all route reflectors, like '2.2.2.2', but got '{cluster_id}'."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        return cluster_id
+
     def _populate_underlay_ibgp_route_reflectors_by_cluster_id(self: EosDesignsFactsGeneratorProtocol) -> None:
         """
         Register the route reflectors of this device in the shared dict of route reflectors by 'bgp_cluster_id'.
@@ -66,7 +89,7 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
     def _validate_underlay_ibgp_uplink_switches(self: EosDesignsFactsGeneratorProtocol) -> None:
         """Validate that the route reflectors of this node have the same 'bgp_cluster_id'."""
         cluster_ids = {
-            route_reflector: self.get_peer_facts_generator(route_reflector).shared_utils.node_config.bgp_cluster_id
+            route_reflector: self.get_peer_facts_generator(route_reflector)._underlay_ibgp_cluster_id
             for route_reflector in natural_sort(self._underlay_ibgp_route_reflectors)
         }
         if missing := [route_reflector for route_reflector, cluster_id in cluster_ids.items() if cluster_id is None]:
@@ -102,7 +125,7 @@ class UnderlayIbgpMixin(EosDesignsFactsProtocol, Protocol):
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # A missing 'bgp_cluster_id' is reported by the clients.
-        if (cluster_id := self.shared_utils.node_config.bgp_cluster_id) is None:
+        if (cluster_id := self._underlay_ibgp_cluster_id) is None:
             return
 
         if other_route_reflectors := self._underlay_ibgp_route_reflectors_by_cluster_id[cluster_id] - route_reflectors:

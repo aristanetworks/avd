@@ -14936,7 +14936,8 @@ $defs:
               and for WAN route servers, defaults to the router ID.
 
               With `underlay_routing_protocol: ibgp`, required on all route reflectors,
-              which are the nodes with downlink iBGP switches.
+              which are the nodes with downlink iBGP switches, as a nonzero IPv4 address
+              like `2.2.2.2`.
 
               It must be the same on all the route reflectors sharing the same clients,
               and unique per group of route reflectors.'
