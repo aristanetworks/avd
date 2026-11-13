@@ -1874,6 +1874,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "configure_queue_monitor_streaming_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
@@ -1926,6 +1927,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.6.0.
+        When enabled, configure the extended access-list from `ipv4_acls`
+        referenced from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor streaming
+        is set.
+        Raises an error if the access-list is not defined under `ipv4_acls`.
 
         Default value: `False`
         """
@@ -2106,6 +2117,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
@@ -2148,6 +2160,12 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+                       Available from AVD 6.6.0.
+                       When enabled, configure the extended access-list from `ipv4_acls`
+                       referenced from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor streaming
+                       is set.
+                       Raises an error if the access-list is not defined under `ipv4_acls`.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -53333,6 +53351,83 @@ class EosDesigns(EosDesignsRootModel):
                        Enable frame mirroring during congestion.
 
                        Subclass of AvdModel.
+
+                """
+
+    class QueueMonitorStreaming(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "enable": {"type": bool},
+            "ip_access_group": {"type": str},
+            "ip_standard_access_group": {"type": str},
+            "ipv6_access_group": {"type": str},
+            "max_connections": {"type": int},
+            "vrf": {"type": str},
+        }
+        enable: bool | None
+        ip_access_group: str | None
+        """
+        IPv4 extended access-list name.
+        When
+        `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
+        list must be defined under `ipv4_acls`.
+        `ip_access_group` and `ip_standard_access_group` must not be
+        defined together.
+        Field substitution is not supported for queue-monitor streaming references.
+        """
+        ip_standard_access_group: str | None
+        """
+        IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+        The
+        access-list is always configured from the catalog, regardless of
+        `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`.
+        `ip_access_group` and
+        `ip_standard_access_group` must not be defined together.
+        """
+        ipv6_access_group: str | None
+        """Name of IPv6 ACL."""
+        max_connections: int | None
+        vrf: str | None
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enable: bool | UndefinedType | None = Undefined,
+                ip_access_group: str | UndefinedType | None = Undefined,
+                ip_standard_access_group: str | UndefinedType | None = Undefined,
+                ipv6_access_group: str | UndefinedType | None = Undefined,
+                max_connections: int | UndefinedType | None = Undefined,
+                vrf: str | UndefinedType | None = Undefined,
+            ) -> None:
+                """
+                QueueMonitorStreaming.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enable: enable
+                    ip_access_group:
+                       IPv4 extended access-list name.
+                       When
+                       `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
+                       list must be defined under `ipv4_acls`.
+                       `ip_access_group` and `ip_standard_access_group` must not be
+                       defined together.
+                       Field substitution is not supported for queue-monitor streaming references.
+                    ip_standard_access_group:
+                       IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+                       The
+                       access-list is always configured from the catalog, regardless of
+                       `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`.
+                       `ip_access_group` and
+                       `ip_standard_access_group` must not be defined together.
+                    ipv6_access_group: Name of IPv6 ACL.
+                    max_connections: max_connections
+                    vrf: vrf
 
                 """
 
@@ -125209,7 +125304,7 @@ class EosDesigns(EosDesignsRootModel):
         },
         "ptp_settings": {"type": PtpSettings},
         "queue_monitor_length": {"type": QueueMonitorLength},
-        "queue_monitor_streaming": {"type": EosCliConfigGen.QueueMonitorStreaming},
+        "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "redundancy": {"type": Redundancy},
         "router_id_loopback_description": {"type": str, "default": "ROUTER_ID"},
         "serial_number": {"type": str},
@@ -127070,7 +127165,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     queue_monitor_length: QueueMonitorLength
     """Subclass of AvdModel."""
-    queue_monitor_streaming: EosCliConfigGen.QueueMonitorStreaming
+    queue_monitor_streaming: QueueMonitorStreaming
+    """Subclass of AvdModel."""
     redundancy: Redundancy
     """
     Redundancy for chassis platforms with dual supervisors | Optional.
@@ -127751,7 +127847,7 @@ class EosDesigns(EosDesignsRootModel):
             ptp_profiles: PtpProfiles | UndefinedType = Undefined,
             ptp_settings: PtpSettings | UndefinedType = Undefined,
             queue_monitor_length: QueueMonitorLength | UndefinedType = Undefined,
-            queue_monitor_streaming: EosCliConfigGen.QueueMonitorStreaming | UndefinedType = Undefined,
+            queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             router_id_loopback_description: str | UndefinedType = Undefined,
             serial_number: str | UndefinedType | None = Undefined,
@@ -129160,7 +129256,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 queue_monitor_length: Subclass of AvdModel.
-                queue_monitor_streaming: queue_monitor_streaming
+                queue_monitor_streaming: Subclass of AvdModel.
                 redundancy:
                    Redundancy for chassis platforms with dual supervisors | Optional.
 

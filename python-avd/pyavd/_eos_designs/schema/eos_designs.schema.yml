@@ -508,6 +508,16 @@ keys:
 
           Configure `inband_mgmt_vrf` for IPv6 inband management.'
         default: false
+      configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.6.0.
+
+          When enabled, configure the extended access-list from `ipv4_acls` referenced
+          from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor
+          streaming is set.
+
+          Raises an error if the access-list is not defined under `ipv4_acls`.'
       consistent_uplink_vlans:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -10534,6 +10544,27 @@ keys:
       table: latency-analyzer
     type: dict
     $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
+    keys:
+      enable:
+        type: bool
+      ip_access_group:
+        type: str
+        description: 'IPv4 extended access-list name.
+
+          When `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`
+          is enabled, the access-list must be defined under `ipv4_acls`.
+
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.
+
+          Field substitution is not supported for queue-monitor streaming references.'
+      ip_standard_access_group:
+        type: str
+        description: 'IPv4 standard access-list name. The access-list must be defined
+          under `ipv4_standard_acls`.
+
+          The access-list is always configured from the catalog, regardless of `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`.
+
+          `ip_access_group` and `ip_standard_access_group` must not be defined together.'
   redundancy:
     documentation_options:
       table: system-settings

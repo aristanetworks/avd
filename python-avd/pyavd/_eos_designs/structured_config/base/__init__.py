@@ -426,7 +426,28 @@ class AvdStructuredConfigBaseProtocol(
             # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
-        self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
+        ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
+        ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            ip_access_group,
+            ip_standard_access_group,
+            "ip_access_group",
+            "ip_standard_access_group",
+            "queue-monitor streaming",
+        )
+
+        queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
+        if ip_standard_access_group is not None:
+            self.structured_config_utils._set_ipv4_standard_acl(ip_standard_access_group)
+            queue_monitor_streaming.ip_access_group = ip_standard_access_group
+        elif ip_access_group is not None and self.inputs.avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=ip_access_group,
+                context="queue_monitor_streaming.ip_access_group",
+            )
+            self.structured_config_utils._set_ipv4_acl(acl)
+
+        self.structured_config.queue_monitor_streaming = queue_monitor_streaming
 
     @structured_config_contributor
     def management_api_http(self) -> None:
