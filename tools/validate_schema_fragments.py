@@ -9,10 +9,14 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from jsonschema_rs import Draft202012Validator
+from jsonschema_rs import Draft202012Validator, ValidationError
 from yaml import CSafeLoader, YAMLError
 from yaml import load as yaml_load
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 METASCHEMA_FILE = REPO_ROOT / "python-avd/pyavd/_schema/avd_meta_schema.json"
@@ -21,6 +25,22 @@ SCHEMA_PATTERNS = (
     "schemas/*/schema_fragments/*.yml",
     "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/eos_designs_facts.schema.yml",
 )
+
+
+def leaf_errors(error: ValidationError) -> Iterator[ValidationError]:
+    """Yield relevant nested errors instead of a summary containing the entire schema fragment."""
+    branches = getattr(error.kind, "context", None)
+    if not branches:
+        yield error
+        return
+    # Ignore mismatched types at this location, not type errors in descendants.
+    matching = [branch for branch in branches if not any(sub.instance_path == [*error.instance_path, "type"] for sub in branch)] or branches
+    nested = [sub for branch in matching for sub in branch]
+    if not nested:
+        yield error
+        return
+    for sub in nested:
+        yield from leaf_errors(sub)
 
 
 def main() -> int:
@@ -41,9 +61,16 @@ def main() -> int:
             print(f"{schema_file}: {error}", file=sys.stderr)
             failed = True
             continue
+        reported: set[tuple[str, str]] = set()
         for error in validator.iter_errors(schema):
-            print(f"{schema_file}: {error}", file=sys.stderr)
             failed = True
+            for leaf in leaf_errors(error):
+                pointer = "".join(f"/{str(part).replace('~', '~0').replace('/', '~1')}" for part in leaf.instance_path)
+                diagnostic = (pointer, leaf.message)
+                if diagnostic in reported:
+                    continue
+                reported.add(diagnostic)
+                print(f"{schema_file}: {pointer or '<root>'}: {leaf.message}", file=sys.stderr)
     return int(failed)
 
 
