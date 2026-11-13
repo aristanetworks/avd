@@ -102,7 +102,7 @@ keys:
                 - int
       ipv4_acl:
         type: str
-        description: IPv4 access list for VRF default.
+        description: IPv4 access list name for VRF default.
       ipv6_acls:
         type: list
         deprecation:
