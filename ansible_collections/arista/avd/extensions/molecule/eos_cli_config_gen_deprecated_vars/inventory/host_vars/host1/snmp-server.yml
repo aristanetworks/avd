@@ -1,0 +1,20 @@
+---
+snmp_server:
+  local_interfaces:
+    - name: Management1
+      vrf: MGMT
+    - name: Loopback0
+    - name: Loopback12
+      vrf: Tenant_A_APP_Zone
+    - name: Ethernet1
+      vrf: AAA
+    - name: Ethernet2
+      vrf: abc
+  ipv4_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur
+  ipv6_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur_v6

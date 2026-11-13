@@ -22,6 +22,9 @@ ipv4_standard_acls:
 
 type: l2leaf
 
+avd_design_future:
+  sort_snmp_acls_and_local_interfaces_by_vrf: true
+
 l2leaf:
   nodes:
     - name: snmp-settings-1
