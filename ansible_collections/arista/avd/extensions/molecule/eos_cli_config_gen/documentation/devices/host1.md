@@ -8799,10 +8799,14 @@ ip virtual-router mac-address mlag-peer
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True (ipv6 interfaces) |
+| aaa | True |
 | BLAH | False |
+| BLUE-C1 | True |
 | C2 | True |
+| data | False |
 | defauls | False |
 | defaulu | False |
+| guest | False |
 | MGMT | False |
 | Tenant_A | True |
 | TENANT_A_PROJECT01 | True |
@@ -8824,6 +8828,7 @@ ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
 ip hardware fib load-balance distribution dynamic
 ip hardware fib load-balance distribution dynamic flow-set-size 4
+ip routing vrf BLUE-C1
 ip routing vrf C2
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
@@ -8835,6 +8840,7 @@ ip routing vrf Tenant_A
 ip routing vrf Tenant_B
 no ip routing vrf Tenant_C
 no ip routing vrf Tunnel-VRF
+ip routing vrf aaa
 no ip routing vrf test
 ```
 
@@ -8845,11 +8851,15 @@ no ip routing vrf test
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
+| aaa | False |
 | BLAH | False |
+| BLUE-C1 | False |
 | C2 | False |
+| data | True |
 | defauls | False |
 | default | True |
 | defaulu | False |
+| guest | True |
 | MGMT | False |
 | Tenant_A | True |
 | TENANT_A_PROJECT01 | False |
@@ -8871,6 +8881,8 @@ ipv6 unicast-routing
 ipv6 hardware fib optimize prefixes profile internet
 ipv6 unicast-routing vrf TEST1
 ipv6 unicast-routing vrf Tenant_A
+ipv6 unicast-routing vrf data
+ipv6 unicast-routing vrf guest
 ```
 
 ### Static Routes
@@ -13361,10 +13373,14 @@ mac access-list TEST5
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| aaa | enabled |
 | BLAH | disabled |
+| BLUE-C1 | enabled |
 | C2 | enabled |
+| data | disabled |
 | defauls | disabled |
 | defaulu | disabled |
+| guest | disabled |
 | MGMT | disabled |
 | Tenant_A | enabled |
 | TENANT_A_PROJECT01 | enabled |
@@ -13383,6 +13399,8 @@ mac access-list TEST5
 ```eos
 !
 vrf instance BLAH
+!
+vrf instance BLUE-C1
 !
 vrf instance C2
 !
@@ -13410,9 +13428,15 @@ vrf instance Tenant_C
 !
 vrf instance Tunnel-VRF
 !
+vrf instance aaa
+!
+vrf instance data
+!
 vrf instance defauls
 !
 vrf instance defaulu
+!
+vrf instance guest
 !
 vrf instance test
 ```

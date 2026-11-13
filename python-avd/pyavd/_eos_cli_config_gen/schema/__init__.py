@@ -1825,9 +1825,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -1914,9 +1919,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -1990,9 +2000,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -2064,9 +2079,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.

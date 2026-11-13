@@ -44,3 +44,11 @@ vrfs:
     ip_routing: false
   - name: Tunnel-VRF
     ip_routing: false
+  - name: BLUE-C1
+    ip_routing: true
+  - name: aaa
+    ip_routing: true
+  - name: data
+    ipv6_routing: true
+  - name: guest
+    ipv6_routing: true
