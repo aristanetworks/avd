@@ -65,7 +65,7 @@ class RoutingMixin(Protocol):
         return (
             self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
             and (
-                self.underlay_routing_protocol == "ebgp"
+                self.underlay_routing_protocol in ["ebgp", "ibgp"]
                 or (
                     self.overlay_routing_protocol in ["ebgp", "ibgp"]
                     and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])

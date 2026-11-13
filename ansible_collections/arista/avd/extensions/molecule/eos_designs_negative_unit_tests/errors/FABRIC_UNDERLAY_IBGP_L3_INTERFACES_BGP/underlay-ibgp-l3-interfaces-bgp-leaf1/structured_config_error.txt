@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support BGP peers on 'l3_interfaces' or 'l3_port_channels'; remove their 'bgp' settings.

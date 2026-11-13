@@ -2419,6 +2419,51 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class RrClientsUnderlayPeers(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str, "default": "RR-CLIENTS-UNDERLAY-PEERS"},
+                "maximum_routes": {"type": int, "default": 256000},
+                "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
+            }
+            name: str
+            """
+            Name of peer group. Must be different from the name of `ipv4_underlay_peers`.
+
+            Default value: `"RR-CLIENTS-UNDERLAY-PEERS"`
+            """
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
+            structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    RrClientsUnderlayPeers.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Name of peer group. Must be different from the name of `ipv4_underlay_peers`.
+                        maximum_routes: Maximum number of routes (0 means unlimited).
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
+
+                    """
+
         class MlagIpv4VrfsPeer(AvdModel):
             """Subclass of AvdModel."""
 
@@ -3225,6 +3270,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "ipv4_underlay_peers": {"type": Ipv4UnderlayPeers},
+            "rr_clients_underlay_peers": {"type": RrClientsUnderlayPeers},
             "mlag_ipv4_vrfs_peer": {"type": MlagIpv4VrfsPeer},
             "mlag_ipv4_underlay_peer": {"type": MlagIpv4UnderlayPeer},
             "evpn_overlay_peers": {"type": EvpnOverlayPeers},
@@ -3236,7 +3282,29 @@ class EosDesigns(EosDesignsRootModel):
             "wan_rr_overlay_peers": {"type": WanRrOverlayPeers},
         }
         ipv4_underlay_peers: Ipv4UnderlayPeers
-        """Subclass of AvdModel."""
+        """
+        Peer group for the underlay BGP sessions on uplinks, downlinks and `l3_edge` or `core_interfaces`
+        links with `include_in_underlay_protocol: true`.
+        With `underlay_routing_protocol: ibgp`, only used
+        for sessions towards uplink switches (route reflectors), with `next-hop-self`.
+        The password and
+        `bfd` also apply to `rr_clients_underlay_peers`.
+
+        Subclass of AvdModel.
+        """
+        rr_clients_underlay_peers: RrClientsUnderlayPeers
+        """
+        Only used with `underlay_routing_protocol: ibgp`, on the route reflectors.
+        Sessions towards downlink
+        switches (route reflector clients), with `route-reflector-client` and `next-hop-self`.
+        Sessions
+        towards uplink switches use `ipv4_underlay_peers`.
+        The password and `bfd` are taken from
+        `ipv4_underlay_peers`, since every session uses one group on each end.
+        A type 7 `password` is
+        decrypted with the `ipv4_underlay_peers` name and encrypted again with the name of this group.
+        Subclass of AvdModel.
+        """
         mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer
         """
         Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
@@ -3276,6 +3344,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 ipv4_underlay_peers: Ipv4UnderlayPeers | UndefinedType = Undefined,
+                rr_clients_underlay_peers: RrClientsUnderlayPeers | UndefinedType = Undefined,
                 mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer | UndefinedType = Undefined,
                 mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer | UndefinedType = Undefined,
                 evpn_overlay_peers: EvpnOverlayPeers | UndefinedType = Undefined,
@@ -3293,7 +3362,26 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    ipv4_underlay_peers: Subclass of AvdModel.
+                    ipv4_underlay_peers:
+                       Peer group for the underlay BGP sessions on uplinks, downlinks and `l3_edge` or `core_interfaces`
+                       links with `include_in_underlay_protocol: true`.
+                       With `underlay_routing_protocol: ibgp`, only used
+                       for sessions towards uplink switches (route reflectors), with `next-hop-self`.
+                       The password and
+                       `bfd` also apply to `rr_clients_underlay_peers`.
+
+                       Subclass of AvdModel.
+                    rr_clients_underlay_peers:
+                       Only used with `underlay_routing_protocol: ibgp`, on the route reflectors.
+                       Sessions towards downlink
+                       switches (route reflector clients), with `route-reflector-client` and `next-hop-self`.
+                       Sessions
+                       towards uplink switches use `ipv4_underlay_peers`.
+                       The password and `bfd` are taken from
+                       `ipv4_underlay_peers`, since every session uses one group on each end.
+                       A type 7 `password` is
+                       decrypted with the `ipv4_underlay_peers` name and encrypted again with the name of this group.
+                       Subclass of AvdModel.
                     mlag_ipv4_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
                        By default AVD
@@ -14354,7 +14442,16 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdList with `str` items.
         """
         bgp_cluster_id: str | None
-        """Set BGP cluster id."""
+        """
+        BGP cluster ID.
+        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+        route servers, defaults to the router ID.
+        With `underlay_routing_protocol: ibgp`, required on all
+        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+        `2.2.2.2`.
+        It must be the same on all the route reflectors sharing the same clients, and unique per
+        group of route reflectors.
+        """
         kernel_ecmp_cli: bool
         """
         Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -15299,7 +15396,15 @@ class EosDesigns(EosDesignsRootModel):
                        List of inventory hostname acting as MPLS route-reflectors.
 
                        Subclass of AvdList with `str` items.
-                    bgp_cluster_id: Set BGP cluster id.
+                    bgp_cluster_id:
+                       BGP cluster ID.
+                       For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                       route servers, defaults to the router ID.
+                       With `underlay_routing_protocol: ibgp`, required on all
+                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                       `2.2.2.2`.
+                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                       group of route reflectors.
                     kernel_ecmp_cli:
                        Use EOS CLI to configure kernel forwarding ECMP programming.
                        For EOS kernel forwarding, ECMP
@@ -20274,7 +20379,16 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdList with `str` items.
         """
         bgp_cluster_id: str | None
-        """Set BGP cluster id."""
+        """
+        BGP cluster ID.
+        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+        route servers, defaults to the router ID.
+        With `underlay_routing_protocol: ibgp`, required on all
+        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+        `2.2.2.2`.
+        It must be the same on all the route reflectors sharing the same clients, and unique per
+        group of route reflectors.
+        """
         kernel_ecmp_cli: bool
         """
         Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -21227,7 +21341,15 @@ class EosDesigns(EosDesignsRootModel):
                        List of inventory hostname acting as MPLS route-reflectors.
 
                        Subclass of AvdList with `str` items.
-                    bgp_cluster_id: Set BGP cluster id.
+                    bgp_cluster_id:
+                       BGP cluster ID.
+                       For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                       route servers, defaults to the router ID.
+                       With `underlay_routing_protocol: ibgp`, required on all
+                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                       `2.2.2.2`.
+                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                       group of route reflectors.
                     kernel_ecmp_cli:
                        Use EOS CLI to configure kernel forwarding ECMP programming.
                        For EOS kernel forwarding, ECMP
@@ -44794,7 +44916,7 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
 
         DefaultEvpnRole: TypeAlias = Literal["none", "client", "server"]
-        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
         DefaultOverlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "her", "cvx", "none"]
         DefaultMplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -45341,7 +45463,7 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
 
         DefaultEvpnRole: TypeAlias = Literal["none", "client", "server"]
-        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
         DefaultOverlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "her", "cvx", "none"]
         DefaultMplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
@@ -58307,7 +58429,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    UnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+    UnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
 
     class UplinkPtp(AvdModel):
         """Subclass of AvdModel."""
@@ -65106,7 +65228,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -66030,7 +66161,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -71006,7 +71145,16 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList with `str` items.
                         """
                         bgp_cluster_id: str | None
-                        """Set BGP cluster id."""
+                        """
+                        BGP cluster ID.
+                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                        route servers, defaults to the router ID.
+                        With `underlay_routing_protocol: ibgp`, required on all
+                        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                        `2.2.2.2`.
+                        It must be the same on all the route reflectors sharing the same clients, and unique per
+                        group of route reflectors.
+                        """
                         kernel_ecmp_cli: bool
                         """
                         Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -71939,7 +72087,15 @@ class EosDesigns(EosDesignsRootModel):
                                        List of inventory hostname acting as MPLS route-reflectors.
 
                                        Subclass of AvdList with `str` items.
-                                    bgp_cluster_id: Set BGP cluster id.
+                                    bgp_cluster_id:
+                                       BGP cluster ID.
+                                       For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                       route servers, defaults to the router ID.
+                                       With `underlay_routing_protocol: ibgp`, required on all
+                                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                       `2.2.2.2`.
+                                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                                       group of route reflectors.
                                     kernel_ecmp_cli:
                                        Use EOS CLI to configure kernel forwarding ECMP programming.
                                        For EOS kernel forwarding, ECMP
@@ -76834,7 +76990,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -77769,7 +77934,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -82736,7 +82909,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -83669,7 +83851,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -105155,7 +105345,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -106079,7 +106278,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -111055,7 +111262,16 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList with `str` items.
                         """
                         bgp_cluster_id: str | None
-                        """Set BGP cluster id."""
+                        """
+                        BGP cluster ID.
+                        For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                        route servers, defaults to the router ID.
+                        With `underlay_routing_protocol: ibgp`, required on all
+                        route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                        `2.2.2.2`.
+                        It must be the same on all the route reflectors sharing the same clients, and unique per
+                        group of route reflectors.
+                        """
                         kernel_ecmp_cli: bool
                         """
                         Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -111988,7 +112204,15 @@ class EosDesigns(EosDesignsRootModel):
                                        List of inventory hostname acting as MPLS route-reflectors.
 
                                        Subclass of AvdList with `str` items.
-                                    bgp_cluster_id: Set BGP cluster id.
+                                    bgp_cluster_id:
+                                       BGP cluster ID.
+                                       For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                       route servers, defaults to the router ID.
+                                       With `underlay_routing_protocol: ibgp`, required on all
+                                       route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                       `2.2.2.2`.
+                                       It must be the same on all the route reflectors sharing the same clients, and unique per
+                                       group of route reflectors.
                                     kernel_ecmp_cli:
                                        Use EOS CLI to configure kernel forwarding ECMP programming.
                                        For EOS kernel forwarding, ECMP
@@ -116883,7 +117107,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -117818,7 +118051,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -122785,7 +123026,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdList with `str` items.
                     """
                     bgp_cluster_id: str | None
-                    """Set BGP cluster id."""
+                    """
+                    BGP cluster ID.
+                    For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                    route servers, defaults to the router ID.
+                    With `underlay_routing_protocol: ibgp`, required on all
+                    route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                    `2.2.2.2`.
+                    It must be the same on all the route reflectors sharing the same clients, and unique per
+                    group of route reflectors.
+                    """
                     kernel_ecmp_cli: bool
                     """
                     Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -123718,7 +123968,15 @@ class EosDesigns(EosDesignsRootModel):
                                    List of inventory hostname acting as MPLS route-reflectors.
 
                                    Subclass of AvdList with `str` items.
-                                bgp_cluster_id: Set BGP cluster id.
+                                bgp_cluster_id:
+                                   BGP cluster ID.
+                                   For EVPN or MPLS route servers with `overlay_routing_protocol: ibgp` and for WAN
+                                   route servers, defaults to the router ID.
+                                   With `underlay_routing_protocol: ibgp`, required on all
+                                   route reflectors, which are the nodes with downlink iBGP switches, as a nonzero IPv4 address like
+                                   `2.2.2.2`.
+                                   It must be the same on all the route reflectors sharing the same clients, and unique per
+                                   group of route reflectors.
                                 kernel_ecmp_cli:
                                    Use EOS CLI to configure kernel forwarding ECMP programming.
                                    For EOS kernel forwarding, ECMP
@@ -127413,9 +127671,9 @@ class EosDesigns(EosDesignsRootModel):
     """Default value: `100`"""
     underlay_rfc5549: bool
     """
-    Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
-    Requires
-    "underlay_routing_protocol: ebgp".
+    Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.
+    Requires "underlay_routing_protocol:
+    ebgp" or "underlay_routing_protocol: ibgp".
 
     Default value: `False`
     """
@@ -127423,17 +127681,22 @@ class EosDesigns(EosDesignsRootModel):
     """
     - The following underlay routing protocols are supported:
       - EBGP (default for l3ls-evpn)
+      -
+    IBGP*.
       - OSPF.
-    - OSPF-LDP*.
+      - OSPF-LDP**.
       - ISIS.
-      - ISIS-SR*.
-      - ISIS-LDP*.
-      - ISIS-SR-LDP*.
-      - No underlay routing
-    protocol (none)
+      - ISIS-SR**.
+      - ISIS-LDP**.
+      - ISIS-SR-LDP**.
+      - No
+    underlay routing protocol (none)
     - The variables should be applied to all devices in the fabric.
-    *Only supported with
-    core_interfaces data model.
+    *Only supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`. See the [iBGP
+    underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).
+    **Only supported on node
+    types with `mpls_lsr: true`, like the default `p`, `pe` and `rr` node types. Other node types only
+    get OSPF or ISIS, without MPLS.
     """
     unsupported_transceiver: EosCliConfigGen.ServiceUnsupportedTransceiver
     uplink_ptp: UplinkPtp
@@ -129404,23 +129667,28 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_ospf_maximum_paths: Maximum number of next-hops in an ECMP route.
                 underlay_ospf_process_id: underlay_ospf_process_id
                 underlay_rfc5549:
-                   Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
-                   Requires
-                   "underlay_routing_protocol: ebgp".
+                   Point to Point Underlay with RFC 5549, i.e. IPv6 Unnumbered.
+                   Requires "underlay_routing_protocol:
+                   ebgp" or "underlay_routing_protocol: ibgp".
                 underlay_routing_protocol:
                    - The following underlay routing protocols are supported:
                      - EBGP (default for l3ls-evpn)
+                     -
+                   IBGP*.
                      - OSPF.
-                   - OSPF-LDP*.
+                     - OSPF-LDP**.
                      - ISIS.
-                     - ISIS-SR*.
-                     - ISIS-LDP*.
-                     - ISIS-SR-LDP*.
-                     - No underlay routing
-                   protocol (none)
+                     - ISIS-SR**.
+                     - ISIS-LDP**.
+                     - ISIS-SR-LDP**.
+                     - No
+                   underlay routing protocol (none)
                    - The variables should be applied to all devices in the fabric.
-                   *Only supported with
-                   core_interfaces data model.
+                   *Only supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`. See the [iBGP
+                   underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).
+                   **Only supported on node
+                   types with `mpls_lsr: true`, like the default `p`, `pe` and `rr` node types. Other node types only
+                   get OSPF or ISIS, without MPLS.
                 unsupported_transceiver: unsupported_transceiver
                 uplink_ptp:
                    Enable PTP on all infrastructure links.

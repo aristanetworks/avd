@@ -806,16 +806,18 @@ schemas/avd_design/docs/tables/is-deployed.md
 The following underlay routing protocols are supported:
 
 - EBGP (default for l3ls-evpn)
+- IBGP¹.
 - OSPF.
 - ISIS.
-- ISIS-SR¹.
-- ISIS-LDP¹.
-- ISIS-SR-LDP¹.
-- OSPF-LDP¹.
-- none².
+- ISIS-SR².
+- ISIS-LDP².
+- ISIS-SR-LDP².
+- OSPF-LDP².
+- none³.
 
-¹ Only supported with core_interfaces data model.<br />
-² For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
+¹ Only supported with `underlay_rfc5549: true` and `overlay_routing_protocol: none`. See the [iBGP underlay how-to](../../../../../../docs/howto/ibgp_underlay/README.md).<br />
+² Only supported on node types with `mpls_lsr: true`, like the default `p`, `pe` and `rr` node types. Other node types only get OSPF or ISIS, without MPLS.<br />
+³ For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
 
 ??? note "Details on `enable_trunk_groups`"
     <a id="details-on-enable_trunk_groups"></a>

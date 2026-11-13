@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -22,6 +23,10 @@ class RouterBgpMixin(Protocol):
     @structured_config_contributor
     def router_bgp(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for router_bgp."""
+        if self.shared_utils.underlay_ibgp:
+            self.shared_utils.validate_underlay_ibgp()
+            self._validate_underlay_ibgp_links()
+
         if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.redistribute.connected.enabled = True
             if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
@@ -36,6 +41,14 @@ class RouterBgpMixin(Protocol):
         # Set BGP peer group only when underlay link is present.
         if not self._underlay_p2p_links:
             return
+
+        if self.shared_utils.underlay_ibgp:
+            self._set_underlay_ibgp_neighbor_interfaces()
+            if self.facts.downlink_switches:
+                # Set on all route reflectors and validated per route reflector group while generating facts.
+                self.structured_config.router_bgp.bgp_cluster_id = self.shared_utils.node_config.bgp_cluster_id
+            return
+
         # Adding the peer-group as we know we either have neighbors or neighbor_interfaces to configure
         self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
 
@@ -107,3 +120,57 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
+
+    def _validate_underlay_ibgp_links(self: AvdStructuredConfigUnderlayProtocol) -> None:
+        """
+        Validate that all uplink and downlink switches are iBGP underlay routers with p2p links and the same BGP AS.
+
+        Uses the underlay links, which already hold the uplinks of the downlink switches towards this node.
+        """
+        uplink_peers = set(self.facts.uplink_peers)
+        for link in self._underlay_links:
+            direction = "uplink" if link.peer in uplink_peers else "downlink"
+            reason = None
+            if (peer_protocol := self.shared_utils.get_peer_facts(link.peer).underlay_routing_protocol) != "ibgp":
+                reason = f"uses 'underlay_routing_protocol: {peer_protocol}'"
+            elif link.type != "underlay_p2p":
+                reason = f"connects with uplinks of type '{link.type}'"
+            elif link.peer_bgp_as is None:
+                reason = "has no 'bgp_as'"
+
+            if reason is not None:
+                msg = (
+                    "Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires all uplink and downlink switches to use "
+                    f"'underlay_routing_protocol: ibgp' and 'uplink_type: p2p', but {direction} switch '{link.peer}' {reason}."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+            if (peer_bgp_as := self.shared_utils.get_asn(link.peer_bgp_as)) != self.shared_utils.formatted_bgp_as:
+                msg = (
+                    "Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires the same 'bgp_as' on all fabric nodes, "
+                    f"but {direction} switch '{link.peer}' has '{peer_bgp_as}' and this node has '{self.shared_utils.formatted_bgp_as}'."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+    def _set_underlay_ibgp_neighbor_interfaces(self: AvdStructuredConfigUnderlayProtocol) -> None:
+        """
+        Set RFC5549 neighbor interfaces for 'underlay_routing_protocol: ibgp'.
+
+        Uses one peer group towards uplink switches and one towards downlink switches.
+        """
+        uplink_peers = set(self.facts.uplink_peers)
+        for link in self._underlay_p2p_links:
+            if link.peer in uplink_peers:
+                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers_ibgp()
+                peer_group = self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
+            else:
+                self.structured_config_utils.set_once_peer_group_rr_clients_underlay_peers()
+                peer_group = self.inputs.bgp_peer_groups.rr_clients_underlay_peers.name
+
+            self.structured_config.router_bgp.neighbor_interfaces.append_new(
+                name=link.interface,
+                peer_group=peer_group,
+                remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
+                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=link.peer),
+                description=f"{link.peer}_{link.peer_interface}",
+            )

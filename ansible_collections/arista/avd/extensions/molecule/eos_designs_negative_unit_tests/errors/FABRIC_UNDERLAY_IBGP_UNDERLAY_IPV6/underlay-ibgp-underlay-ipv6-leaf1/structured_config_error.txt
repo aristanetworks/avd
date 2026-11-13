@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support 'underlay_ipv6' or 'underlay_ipv6_numbered'; set them to false.
