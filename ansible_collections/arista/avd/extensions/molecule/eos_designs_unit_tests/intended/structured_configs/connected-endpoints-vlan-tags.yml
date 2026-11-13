@@ -1,0 +1,180 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: vlan_tags=[ESX] from profile -> 110,600-601
+  shutdown: false
+  metadata:
+    peer: esx_profile
+    peer_type: server
+    peer_key: servers
+    port_profile: ESX_HOSTS
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110,600-601
+- name: Ethernet2
+  description: vlans=10 from profile + vlan_tags=[ESX] from parent profile -> 10,110,600-601
+  shutdown: false
+  metadata:
+    peer: esx_profile_with_vlans
+    peer_type: server
+    peer_key: servers
+    port_profile: ESX_HOSTS_WITH_MGMT
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,110,600-601
+- name: Ethernet3
+  description: vlan_tags=[ESX2,BACKUP] overriding profile -> 120,602,700
+  shutdown: false
+  metadata:
+    peer: esx_adapter_override
+    peer_type: server
+    peer_key: servers
+    port_profile: ESX_HOSTS
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 120,602,700
+- name: Ethernet4
+  description: SERVER_esx_port_channel
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  metadata:
+    peer: esx_port_channel
+    peer_type: server
+    peer_key: servers
+- name: Ethernet5
+  description: SERVER_esx_port_channel
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  metadata:
+    peer: esx_port_channel
+    peer_type: server
+    peer_key: servers
+- name: Ethernet6
+  description: vlan_tags matching no VLAN -> none
+  shutdown: false
+  metadata:
+    peer: no_matching_vlans
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Ethernet7
+  description: vlan_tags=[NOT_ON_SWITCH] -> 601 (130 and 610 are not configured on this switch)
+  shutdown: false
+  metadata:
+    peer: tag_partially_filtered
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '601'
+- name: Ethernet10
+  description: network_ports vlan_tags=[ESX,ESX2] -> 110,120,600-602
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110,120,600-602
+- name: Ethernet11
+  description: network_ports vlan_tags=[ESX,ESX2] -> 110,120,600-602
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110,120,600-602
+hostname: connected-endpoints-vlan-tags
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel4
+  description: vlans=10-11 + vlan_tags=[ESX2] -> 10-11,120,602
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10-11,120,602
+      native_vlan: 4092
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: SVI_ESX
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 120
+  name: SVI_ESX2
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 600
+  name: L2VLAN_ESX_A
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 601
+  name: L2VLAN_ESX_B
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 602
+  name: L2VLAN_ESX2
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 700
+  name: L2VLAN_BACKUP
+  metadata:
+    tenants:
+    - TENANT_B
+- id: 4092
+  name: L2VLAN_NATIVE
+  metadata:
+    tenants:
+    - TENANT_B
+vrfs:
+- name: MGMT
+  ip_routing: false

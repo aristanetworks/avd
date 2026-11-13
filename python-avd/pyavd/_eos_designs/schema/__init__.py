@@ -4036,6 +4036,11 @@ class EosDesigns(EosDesignsRootModel):
 
             TrunkGroups._item_type = str
 
+            class VlanTags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            VlanTags._item_type = str
+
             SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
             SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
             SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
@@ -5251,6 +5256,7 @@ class EosDesigns(EosDesignsRootModel):
                 "phone_trunk_mode": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "vlans": {"type": str},
+                "vlan_tags": {"type": VlanTags},
                 "mac_acl_in": {"type": str},
                 "mac_acl_out": {"type": str},
                 "spanning_tree_portfast": {"type": str},
@@ -5422,6 +5428,27 @@ class EosDesigns(EosDesignsRootModel):
             the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
             for access ports.
             """
+            vlan_tags: VlanTags
+            """
+            Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+            Every
+            VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+            VLANs.
+            If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+            If
+            no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+            VLANs
+            without `tags` carry the default tag `all`.
+            `vlan_tags` does not influence which VLANs are
+            configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+            With
+            `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+            Requires `mode:
+            trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+            Subclass of
+            AvdList with `str` items.
+            """
             mac_acl_in: str | None
             """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
             mac_acl_out: str | None
@@ -5558,6 +5585,7 @@ class EosDesigns(EosDesignsRootModel):
                     phone_trunk_mode: PhoneTrunkMode | UndefinedType | None = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     vlans: str | UndefinedType | None = Undefined,
+                    vlan_tags: VlanTags | UndefinedType = Undefined,
                     mac_acl_in: str | UndefinedType | None = Undefined,
                     mac_acl_out: str | UndefinedType | None = Undefined,
                     spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
@@ -5701,6 +5729,25 @@ class EosDesigns(EosDesignsRootModel):
                            If not set,
                            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                            for access ports.
+                        vlan_tags:
+                           Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                           Every
+                           VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                           VLANs.
+                           If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                           If
+                           no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                           VLANs
+                           without `tags` carry the default tag `all`.
+                           `vlan_tags` does not influence which VLANs are
+                           configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                           With
+                           `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                           Requires `mode:
+                           trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                           Subclass of
+                           AvdList with `str` items.
                         mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                         mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                         spanning_tree_portfast: spanning_tree_portfast
@@ -31147,6 +31194,11 @@ class EosDesigns(EosDesignsRootModel):
 
         TrunkGroups._item_type = str
 
+        class VlanTags(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        VlanTags._item_type = str
+
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
         SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
@@ -32651,6 +32703,7 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "vlan_tags": {"type": VlanTags},
             "mac_acl_in": {"type": str},
             "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
@@ -32807,6 +32860,27 @@ class EosDesigns(EosDesignsRootModel):
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
         """
+        vlan_tags: VlanTags
+        """
+        Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+        Every
+        VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+        VLANs.
+        If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+        If
+        no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+        VLANs
+        without `tags` carry the default tag `all`.
+        `vlan_tags` does not influence which VLANs are
+        configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+        With
+        `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+        Requires `mode:
+        trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+        Subclass of
+        AvdList with `str` items.
+        """
         mac_acl_in: str | None
         """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
         mac_acl_out: str | None
@@ -32947,6 +33021,7 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | UndefinedType | None = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | UndefinedType | None = Undefined,
+                vlan_tags: VlanTags | UndefinedType = Undefined,
                 mac_acl_in: str | UndefinedType | None = Undefined,
                 mac_acl_out: str | UndefinedType | None = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
@@ -33080,6 +33155,25 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    vlan_tags:
+                       Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                       Every
+                       VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                       VLANs.
+                       If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                       If
+                       no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                       VLANs
+                       without `tags` carry the default tag `all`.
+                       `vlan_tags` does not influence which VLANs are
+                       configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                       With
+                       `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                       Requires `mode:
+                       trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                       Subclass of
+                       AvdList with `str` items.
                     mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                     mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
@@ -50914,6 +51008,11 @@ class EosDesigns(EosDesignsRootModel):
 
         TrunkGroups._item_type = str
 
+        class VlanTags(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        VlanTags._item_type = str
+
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
         SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
@@ -52120,6 +52219,7 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "vlan_tags": {"type": VlanTags},
             "mac_acl_in": {"type": str},
             "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
@@ -52241,6 +52341,27 @@ class EosDesigns(EosDesignsRootModel):
         If not set,
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
+        """
+        vlan_tags: VlanTags
+        """
+        Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+        Every
+        VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+        VLANs.
+        If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+        If
+        no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+        VLANs
+        without `tags` carry the default tag `all`.
+        `vlan_tags` does not influence which VLANs are
+        configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+        With
+        `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+        Requires `mode:
+        trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+        Subclass of
+        AvdList with `str` items.
         """
         mac_acl_in: str | None
         """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
@@ -52374,6 +52495,7 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | UndefinedType | None = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | UndefinedType | None = Undefined,
+                vlan_tags: VlanTags | UndefinedType = Undefined,
                 mac_acl_in: str | UndefinedType | None = Undefined,
                 mac_acl_out: str | UndefinedType | None = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
@@ -52476,6 +52598,25 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    vlan_tags:
+                       Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                       Every
+                       VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                       VLANs.
+                       If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                       If
+                       no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                       VLANs
+                       without `tags` carry the default tag `all`.
+                       `vlan_tags` does not influence which VLANs are
+                       configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                       With
+                       `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                       Requires `mode:
+                       trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                       Subclass of
+                       AvdList with `str` items.
                     mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                     mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
@@ -83913,6 +84054,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     TrunkGroups._item_type = str
 
+                    class VlanTags(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    VlanTags._item_type = str
+
                     SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
                     SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
                     SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
@@ -85135,6 +85281,7 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "vlan_tags": {"type": VlanTags},
                         "mac_acl_in": {"type": str},
                         "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
@@ -85306,6 +85453,27 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    vlan_tags: VlanTags
+                    """
+                    Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                    Every
+                    VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                    VLANs.
+                    If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                    If
+                    no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                    VLANs
+                    without `tags` carry the default tag `all`.
+                    `vlan_tags` does not influence which VLANs are
+                    configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                    With
+                    `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                    Requires `mode:
+                    trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                    Subclass of
+                    AvdList with `str` items.
+                    """
                     mac_acl_in: str | None
                     """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
                     mac_acl_out: str | None
@@ -85442,6 +85610,7 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | UndefinedType | None = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | UndefinedType | None = Undefined,
+                            vlan_tags: VlanTags | UndefinedType = Undefined,
                             mac_acl_in: str | UndefinedType | None = Undefined,
                             mac_acl_out: str | UndefinedType | None = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
@@ -85585,6 +85754,25 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                vlan_tags:
+                                   Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                                   Every
+                                   VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                                   VLANs.
+                                   If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                                   If
+                                   no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                                   VLANs
+                                   without `tags` carry the default tag `all`.
+                                   `vlan_tags` does not influence which VLANs are
+                                   configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                                   With
+                                   `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                                   Requires `mode:
+                                   trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                                   Subclass of
+                                   AvdList with `str` items.
                                 mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                                 mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
@@ -86484,6 +86672,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     TrunkGroups._item_type = str
 
+                    class VlanTags(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    VlanTags._item_type = str
+
                     SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
                     SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
                     SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
@@ -87706,6 +87899,7 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "vlan_tags": {"type": VlanTags},
                         "mac_acl_in": {"type": str},
                         "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
@@ -87877,6 +88071,27 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    vlan_tags: VlanTags
+                    """
+                    Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                    Every
+                    VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                    VLANs.
+                    If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                    If
+                    no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                    VLANs
+                    without `tags` carry the default tag `all`.
+                    `vlan_tags` does not influence which VLANs are
+                    configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                    With
+                    `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                    Requires `mode:
+                    trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                    Subclass of
+                    AvdList with `str` items.
+                    """
                     mac_acl_in: str | None
                     """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
                     mac_acl_out: str | None
@@ -88013,6 +88228,7 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | UndefinedType | None = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | UndefinedType | None = Undefined,
+                            vlan_tags: VlanTags | UndefinedType = Undefined,
                             mac_acl_in: str | UndefinedType | None = Undefined,
                             mac_acl_out: str | UndefinedType | None = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | UndefinedType | None = Undefined,
@@ -88156,6 +88372,25 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                vlan_tags:
+                                   Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
+                                   Every
+                                   VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed
+                                   VLANs.
+                                   If `vlans` is also set to a range of VLANs, the allowed VLANs will be the union of both.
+                                   If
+                                   no VLANs match the tags and `vlans` is not set, no VLANs will be allowed on the trunk port.
+                                   VLANs
+                                   without `tags` carry the default tag `all`.
+                                   `vlan_tags` does not influence which VLANs are
+                                   configured on the switch. That is still decided by `filter.tags` and `filter.tenants`.
+                                   With
+                                   `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are considered in use.
+                                   Requires `mode:
+                                   trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
+
+                                   Subclass of
+                                   AvdList with `str` items.
                                 mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                                 mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
