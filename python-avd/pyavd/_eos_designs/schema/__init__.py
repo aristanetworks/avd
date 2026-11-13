@@ -13231,12 +13231,17 @@ class EosDesigns(EosDesignsRootModel):
             Supports the same AVD
             string formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address_template`.
-            The rendered value should be unique across all
-            devices in the fabric. AVD does not enforce uniqueness automatically.
-            Applies only to `veos` and
-            `cloudeos` node types. Ignored for all other ACT node types.
-            Ignored when `digital_twin.environment`
-            is `containerlab`.
+            The rendered value must be a unicast MAC address
+            in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+            digit). The all-zero address is reserved and not accepted by EOS.
+            Regardless of the input format,
+            the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+            The rendered value should be unique
+            across all devices in the fabric. AVD does not enforce uniqueness automatically.
+            Applies only to
+            `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+            Ignored when
+            `digital_twin.environment` is `containerlab`.
             """
             ztp: bool | None
             """
@@ -13315,12 +13320,17 @@ class EosDesigns(EosDesignsRootModel):
                            Supports the same AVD
                            string formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address_template`.
-                           The rendered value should be unique across all
-                           devices in the fabric. AVD does not enforce uniqueness automatically.
-                           Applies only to `veos` and
-                           `cloudeos` node types. Ignored for all other ACT node types.
-                           Ignored when `digital_twin.environment`
-                           is `containerlab`.
+                           The rendered value must be a unicast MAC address
+                           in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                           digit). The all-zero address is reserved and not accepted by EOS.
+                           Regardless of the input format,
+                           the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                           The rendered value should be unique
+                           across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                           Applies only to
+                           `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                           Ignored when
+                           `digital_twin.environment` is `containerlab`.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                            Supported Digital Twin
@@ -19131,12 +19141,17 @@ class EosDesigns(EosDesignsRootModel):
             Supports the same AVD
             string formatter template syntax, variables, MAC address formats, and normalization as
             `digital_twin.fabric.system_mac_address_template`.
-            The rendered value should be unique across all
-            devices in the fabric. AVD does not enforce uniqueness automatically.
-            Applies only to `veos` and
-            `cloudeos` node types. Ignored for all other ACT node types.
-            Ignored when `digital_twin.environment`
-            is `containerlab`.
+            The rendered value must be a unicast MAC address
+            in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+            digit). The all-zero address is reserved and not accepted by EOS.
+            Regardless of the input format,
+            the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+            The rendered value should be unique
+            across all devices in the fabric. AVD does not enforce uniqueness automatically.
+            Applies only to
+            `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+            Ignored when
+            `digital_twin.environment` is `containerlab`.
             """
             ztp: bool | None
             """
@@ -19215,12 +19230,17 @@ class EosDesigns(EosDesignsRootModel):
                            Supports the same AVD
                            string formatter template syntax, variables, MAC address formats, and normalization as
                            `digital_twin.fabric.system_mac_address_template`.
-                           The rendered value should be unique across all
-                           devices in the fabric. AVD does not enforce uniqueness automatically.
-                           Applies only to `veos` and
-                           `cloudeos` node types. Ignored for all other ACT node types.
-                           Ignored when `digital_twin.environment`
-                           is `containerlab`.
+                           The rendered value must be a unicast MAC address
+                           in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                           digit). The all-zero address is reserved and not accepted by EOS.
+                           Regardless of the input format,
+                           the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                           The rendered value should be unique
+                           across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                           Applies only to
+                           `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                           Ignored when
+                           `digital_twin.environment` is `containerlab`.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                            Supported Digital Twin
@@ -63964,12 +63984,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -64048,12 +64073,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -69842,12 +69872,17 @@ class EosDesigns(EosDesignsRootModel):
                             Supports the same AVD
                             string formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address_template`.
-                            The rendered value should be unique across all
-                            devices in the fabric. AVD does not enforce uniqueness automatically.
-                            Applies only to `veos` and
-                            `cloudeos` node types. Ignored for all other ACT node types.
-                            Ignored when `digital_twin.environment`
-                            is `containerlab`.
+                            The rendered value must be a unicast MAC address
+                            in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                            digit). The all-zero address is reserved and not accepted by EOS.
+                            Regardless of the input format,
+                            the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                            The rendered value should be unique
+                            across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                            Applies only to
+                            `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                            Ignored when
+                            `digital_twin.environment` is `containerlab`.
                             """
                             ztp: bool | None
                             """
@@ -69926,12 +69961,17 @@ class EosDesigns(EosDesignsRootModel):
                                            Supports the same AVD
                                            string formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address_template`.
-                                           The rendered value should be unique across all
-                                           devices in the fabric. AVD does not enforce uniqueness automatically.
-                                           Applies only to `veos` and
-                                           `cloudeos` node types. Ignored for all other ACT node types.
-                                           Ignored when `digital_twin.environment`
-                                           is `containerlab`.
+                                           The rendered value must be a unicast MAC address
+                                           in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                           digit). The all-zero address is reserved and not accepted by EOS.
+                                           Regardless of the input format,
+                                           the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                           The rendered value should be unique
+                                           across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                           Applies only to
+                                           `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                           Ignored when
+                                           `digital_twin.environment` is `containerlab`.
                                         ztp:
                                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                            Supported Digital Twin
@@ -75657,12 +75697,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -75741,12 +75786,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -81552,12 +81602,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -81636,12 +81691,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -103973,12 +104033,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -104057,12 +104122,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -109851,12 +109921,17 @@ class EosDesigns(EosDesignsRootModel):
                             Supports the same AVD
                             string formatter template syntax, variables, MAC address formats, and normalization as
                             `digital_twin.fabric.system_mac_address_template`.
-                            The rendered value should be unique across all
-                            devices in the fabric. AVD does not enforce uniqueness automatically.
-                            Applies only to `veos` and
-                            `cloudeos` node types. Ignored for all other ACT node types.
-                            Ignored when `digital_twin.environment`
-                            is `containerlab`.
+                            The rendered value must be a unicast MAC address
+                            in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                            digit). The all-zero address is reserved and not accepted by EOS.
+                            Regardless of the input format,
+                            the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                            The rendered value should be unique
+                            across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                            Applies only to
+                            `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                            Ignored when
+                            `digital_twin.environment` is `containerlab`.
                             """
                             ztp: bool | None
                             """
@@ -109935,12 +110010,17 @@ class EosDesigns(EosDesignsRootModel):
                                            Supports the same AVD
                                            string formatter template syntax, variables, MAC address formats, and normalization as
                                            `digital_twin.fabric.system_mac_address_template`.
-                                           The rendered value should be unique across all
-                                           devices in the fabric. AVD does not enforce uniqueness automatically.
-                                           Applies only to `veos` and
-                                           `cloudeos` node types. Ignored for all other ACT node types.
-                                           Ignored when `digital_twin.environment`
-                                           is `containerlab`.
+                                           The rendered value must be a unicast MAC address
+                                           in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                           digit). The all-zero address is reserved and not accepted by EOS.
+                                           Regardless of the input format,
+                                           the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                           The rendered value should be unique
+                                           across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                           Applies only to
+                                           `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                           Ignored when
+                                           `digital_twin.environment` is `containerlab`.
                                         ztp:
                                            Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                            Supported Digital Twin
@@ -115666,12 +115746,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -115750,12 +115835,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
@@ -121561,12 +121651,17 @@ class EosDesigns(EosDesignsRootModel):
                         Supports the same AVD
                         string formatter template syntax, variables, MAC address formats, and normalization as
                         `digital_twin.fabric.system_mac_address_template`.
-                        The rendered value should be unique across all
-                        devices in the fabric. AVD does not enforce uniqueness automatically.
-                        Applies only to `veos` and
-                        `cloudeos` node types. Ignored for all other ACT node types.
-                        Ignored when `digital_twin.environment`
-                        is `containerlab`.
+                        The rendered value must be a unicast MAC address
+                        in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                        digit). The all-zero address is reserved and not accepted by EOS.
+                        Regardless of the input format,
+                        the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                        The rendered value should be unique
+                        across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                        Applies only to
+                        `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                        Ignored when
+                        `digital_twin.environment` is `containerlab`.
                         """
                         ztp: bool | None
                         """
@@ -121645,12 +121740,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Supports the same AVD
                                        string formatter template syntax, variables, MAC address formats, and normalization as
                                        `digital_twin.fabric.system_mac_address_template`.
-                                       The rendered value should be unique across all
-                                       devices in the fabric. AVD does not enforce uniqueness automatically.
-                                       Applies only to `veos` and
-                                       `cloudeos` node types. Ignored for all other ACT node types.
-                                       Ignored when `digital_twin.environment`
-                                       is `containerlab`.
+                                       The rendered value must be a unicast MAC address
+                                       in `hhhh.hhhh.hhhh`, `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                                       digit). The all-zero address is reserved and not accepted by EOS.
+                                       Regardless of the input format,
+                                       the MAC address is normalized to `hh:hh:hh:hh:hh:hh` format.
+                                       The rendered value should be unique
+                                       across all devices in the fabric. AVD does not enforce uniqueness automatically.
+                                       Applies only to
+                                       `veos` and `cloudeos` node types. Ignored for all other ACT node types.
+                                       Ignored when
+                                       `digital_twin.environment` is `containerlab`.
                                     ztp:
                                        Enable ZTP (Zero Touch Provisioning) mode for this Digital Twin device.
                                        Supported Digital Twin
