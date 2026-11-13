@@ -1,0 +1,32 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: cEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.9.0/27
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [htl2r-spine1, htl2r-spine2]
+    uplink_ipv4_pool: 10.255.255.128/26
+    mlag_peer_ipv4_pool: 10.255.9.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.9.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  # --8<-- [start:l3leafs]
+  node_groups:
+    - group: HTL2R_L3_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: htl2r-leaf1a
+          id: 1
+          mgmt_ip: 172.16.4.101/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: htl2r-leaf1b
+          id: 2
+          mgmt_ip: 172.16.4.102/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+  # --8<-- [end:l3leafs]
