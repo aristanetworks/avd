@@ -292,8 +292,23 @@ class RouterBgpMixin(Protocol):
                             bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
-                if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
-                    bgp_vrf.redistribute.ospf.enabled = True
+                if vrf.ospf.enabled and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
+                    # TODO: 7.0 Remove fallback to the deprecated vrf.redistribute_ospf.
+                    if vrf.bgp.redistribute_ospf.internal._get("enabled", vrf.redistribute_ospf):
+                        bgp_vrf.redistribute.ospf.enabled = True
+                        bgp_vrf.redistribute.ospf.include_leaked = vrf.bgp.redistribute_ospf.internal.include_leaked
+                        bgp_vrf.redistribute.ospf.route_map = vrf.bgp.redistribute_ospf.internal.route_map
+
+                    if vrf.bgp.redistribute_ospf.external.enabled:
+                        bgp_vrf.redistribute.ospf.match_external.enabled = True
+                        bgp_vrf.redistribute.ospf.match_external.include_leaked = vrf.bgp.redistribute_ospf.external.include_leaked
+                        bgp_vrf.redistribute.ospf.match_external.route_map = vrf.bgp.redistribute_ospf.external.route_map
+
+                    if vrf.bgp.redistribute_ospf.nssa_external.enabled:
+                        bgp_vrf.redistribute.ospf.match_nssa_external.enabled = True
+                        bgp_vrf.redistribute.ospf.match_nssa_external.include_leaked = vrf.bgp.redistribute_ospf.nssa_external.include_leaked
+                        bgp_vrf.redistribute.ospf.match_nssa_external.route_map = vrf.bgp.redistribute_ospf.nssa_external.route_map
+                        bgp_vrf.redistribute.ospf.match_nssa_external.nssa_type = vrf.bgp.redistribute_ospf.nssa_external.nssa_type
 
                 # BGP VRF level redistribution covers both OSPFv3 address families.
                 if vrf.bgp.redistribute_ospfv3.internal.enabled and self.shared_utils.ospfv3_enabled_for_vrf(vrf):

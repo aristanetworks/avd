@@ -87,6 +87,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3") | Dictionary |  |  |  | Redistribution of OSPFv3 routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3.internal") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospfv3.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPF instance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.internal") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPF internal routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.internal.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.internal.route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;external</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.external.enabled") | Boolean |  | `False` |  | Redistribute OSPF external routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.external.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.external.route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_external</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.nssa_external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.nssa_external.enabled") | Boolean |  | `False` |  | Redistribute OSPF NSSA external routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA type for the redistributed routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.nssa_external.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.redistribute_ospf.nssa_external.route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
@@ -190,6 +204,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3") | Dictionary |  |  |  | Redistribution of OSPFv3 routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3.internal") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospfv3.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPFv3 internal routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospf</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf") | Dictionary |  |  |  | Redistribution of OSPF routes into BGP for this VRF.<br>Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPF instance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.internal") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.internal.enabled") | Boolean |  | `True` |  | Redistribute OSPF internal routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.internal.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.internal.route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;external</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.external.enabled") | Boolean |  | `False` |  | Redistribute OSPF external routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.external.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.external.route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_external</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.nssa_external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.nssa_external.enabled") | Boolean |  | `False` |  | Redistribute OSPF NSSA external routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA type for the redistributed routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.nssa_external.include_leaked") | Boolean |  |  |  | Include OSPF leaked routes into BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "network_services.[].vrfs.[].bgp.redistribute_ospf.nssa_external.route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_services.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_services.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "network_services.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
@@ -495,6 +523,43 @@
 
                   # Redistribute OSPFv3 internal routes into BGP.
                   enabled: <bool; default=True>
+
+              # Redistribution of OSPF routes into BGP for this VRF.
+              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPF instance.
+              redistribute_ospf:
+                internal:
+
+                  # Redistribute OSPF internal routes into BGP.
+                  enabled: <bool; default=True>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
+                external:
+
+                  # Redistribute OSPF external routes into BGP.
+                  enabled: <bool; default=False>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
+                nssa_external:
+
+                  # Redistribute OSPF NSSA external routes into BGP.
+                  enabled: <bool; default=False>
+
+                  # NSSA type for the redistributed routes.
+                  nssa_type: <int; 1 | 2>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
 
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>
@@ -828,6 +893,43 @@
 
                   # Redistribute OSPFv3 internal routes into BGP.
                   enabled: <bool; default=True>
+
+              # Redistribution of OSPF routes into BGP for this VRF.
+              # Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPF instance.
+              redistribute_ospf:
+                internal:
+
+                  # Redistribute OSPF internal routes into BGP.
+                  enabled: <bool; default=True>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
+                external:
+
+                  # Redistribute OSPF external routes into BGP.
+                  enabled: <bool; default=False>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
+                nssa_external:
+
+                  # Redistribute OSPF NSSA external routes into BGP.
+                  enabled: <bool; default=False>
+
+                  # NSSA type for the redistributed routes.
+                  nssa_type: <int; 1 | 2>
+
+                  # Include OSPF leaked routes into BGP.
+                  include_leaked: <bool>
+
+                  # Route-map name.
+                  route_map: <str>
 
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>

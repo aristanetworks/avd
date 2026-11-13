@@ -41475,11 +41475,166 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class RedistributeOspf(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Internal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "include_leaked": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """
+                        Redistribute OSPF internal routes into BGP.
+
+                        Default value: `True`
+                        """
+                        include_leaked: bool | None
+                        """Include OSPF leaked routes into BGP."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                Internal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Redistribute OSPF internal routes into BGP.
+                                    include_leaked: Include OSPF leaked routes into BGP.
+                                    route_map: Route-map name.
+
+                                """
+
+                    class External(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "include_leaked": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """
+                        Redistribute OSPF external routes into BGP.
+
+                        Default value: `False`
+                        """
+                        include_leaked: bool | None
+                        """Include OSPF leaked routes into BGP."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                External.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Redistribute OSPF external routes into BGP.
+                                    include_leaked: Include OSPF leaked routes into BGP.
+                                    route_map: Route-map name.
+
+                                """
+
+                    class NssaExternal(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        NssaType: TypeAlias = Literal[1, 2]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": False},
+                            "nssa_type": {"type": int},
+                            "include_leaked": {"type": bool},
+                            "route_map": {"type": str},
+                        }
+                        enabled: bool
+                        """
+                        Redistribute OSPF NSSA external routes into BGP.
+
+                        Default value: `False`
+                        """
+                        nssa_type: NssaType | None
+                        """NSSA type for the redistributed routes."""
+                        include_leaked: bool | None
+                        """Include OSPF leaked routes into BGP."""
+                        route_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                nssa_type: NssaType | UndefinedType | None = Undefined,
+                                include_leaked: bool | UndefinedType | None = Undefined,
+                                route_map: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                NssaExternal.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Redistribute OSPF NSSA external routes into BGP.
+                                    nssa_type: NSSA type for the redistributed routes.
+                                    include_leaked: Include OSPF leaked routes into BGP.
+                                    route_map: Route-map name.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"internal": {"type": Internal}, "external": {"type": External}, "nssa_external": {"type": NssaExternal}}
+                    internal: Internal
+                    """Subclass of AvdModel."""
+                    external: External
+                    """Subclass of AvdModel."""
+                    nssa_external: NssaExternal
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            internal: Internal | UndefinedType = Undefined,
+                            external: External | UndefinedType = Undefined,
+                            nssa_external: NssaExternal | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RedistributeOspf.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                internal: Subclass of AvdModel.
+                                external: Subclass of AvdModel.
+                                nssa_external: Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "router_id": {"type": str, "default": "main_router_id"},
                     "graceful_restart": {"type": GracefulRestart},
                     "redistribute_ospfv3": {"type": RedistributeOspfv3},
+                    "redistribute_ospf": {"type": RedistributeOspf},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                 }
@@ -41526,6 +41681,14 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                redistribute_ospf: RedistributeOspf
+                """
+                Redistribution of OSPF routes into BGP for this VRF.
+                Ignored on devices where BGP is not configured
+                for this VRF or where the VRF has no OSPF instance.
+
+                Subclass of AvdModel.
+                """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -41540,6 +41703,7 @@ class EosDesigns(EosDesignsRootModel):
                         router_id: str | UndefinedType = Undefined,
                         graceful_restart: GracefulRestart | UndefinedType = Undefined,
                         redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
+                        redistribute_ospf: RedistributeOspf | UndefinedType = Undefined,
                         raw_eos_cli: str | UndefinedType | None = Undefined,
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                     ) -> None:
@@ -41581,6 +41745,12 @@ class EosDesigns(EosDesignsRootModel):
                                Redistribution of OSPFv3 routes into BGP for this VRF.
                                Ignored on devices where BGP is not
                                configured for this VRF or where the VRF has no OSPFv3 instance.
+
+                               Subclass of AvdModel.
+                            redistribute_ospf:
+                               Redistribution of OSPF routes into BGP for this VRF.
+                               Ignored on devices where BGP is not configured
+                               for this VRF or where the VRF has no OSPF instance.
 
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
@@ -43015,9 +43185,7 @@ class EosDesigns(EosDesignsRootModel):
             no nodes definition, the OSPF instance will be
             created on all leafs where the VRF is deployed. This
             will also cause automatic OSPF redistribution into BGP unless
-            explicitly turned off with
-            "redistribute_ospf: false".
-
+            `bgp.redistribute_ospf.internal.enabled` is set to `false`.
 
             Subclass of AvdModel.
             """
@@ -43359,9 +43527,7 @@ class EosDesigns(EosDesignsRootModel):
                            no nodes definition, the OSPF instance will be
                            created on all leafs where the VRF is deployed. This
                            will also cause automatic OSPF redistribution into BGP unless
-                           explicitly turned off with
-                           "redistribute_ospf: false".
-
+                           `bgp.redistribute_ospf.internal.enabled` is set to `false`.
 
                            Subclass of AvdModel.
                         ospfv3:
@@ -97065,11 +97231,174 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RedistributeOspf(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Internal(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": True},
+                                    "include_leaked": {"type": bool},
+                                    "route_map": {"type": str},
+                                }
+                                enabled: bool
+                                """
+                                Redistribute OSPF internal routes into BGP.
+
+                                Default value: `True`
+                                """
+                                include_leaked: bool | None
+                                """Include OSPF leaked routes into BGP."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        include_leaked: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        Internal.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Redistribute OSPF internal routes into BGP.
+                                            include_leaked: Include OSPF leaked routes into BGP.
+                                            route_map: Route-map name.
+
+                                        """
+
+                            class External(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "include_leaked": {"type": bool},
+                                    "route_map": {"type": str},
+                                }
+                                enabled: bool
+                                """
+                                Redistribute OSPF external routes into BGP.
+
+                                Default value: `False`
+                                """
+                                include_leaked: bool | None
+                                """Include OSPF leaked routes into BGP."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        include_leaked: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        External.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Redistribute OSPF external routes into BGP.
+                                            include_leaked: Include OSPF leaked routes into BGP.
+                                            route_map: Route-map name.
+
+                                        """
+
+                            class NssaExternal(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                NssaType: TypeAlias = Literal[1, 2]
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "nssa_type": {"type": int},
+                                    "include_leaked": {"type": bool},
+                                    "route_map": {"type": str},
+                                }
+                                enabled: bool
+                                """
+                                Redistribute OSPF NSSA external routes into BGP.
+
+                                Default value: `False`
+                                """
+                                nssa_type: NssaType | None
+                                """NSSA type for the redistributed routes."""
+                                include_leaked: bool | None
+                                """Include OSPF leaked routes into BGP."""
+                                route_map: str | None
+                                """Route-map name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        nssa_type: NssaType | UndefinedType | None = Undefined,
+                                        include_leaked: bool | UndefinedType | None = Undefined,
+                                        route_map: str | UndefinedType | None = Undefined,
+                                    ) -> None:
+                                        """
+                                        NssaExternal.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Redistribute OSPF NSSA external routes into BGP.
+                                            nssa_type: NSSA type for the redistributed routes.
+                                            include_leaked: Include OSPF leaked routes into BGP.
+                                            route_map: Route-map name.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"internal": {"type": Internal}, "external": {"type": External}, "nssa_external": {"type": NssaExternal}}
+                            internal: Internal
+                            """Subclass of AvdModel."""
+                            external: External
+                            """Subclass of AvdModel."""
+                            nssa_external: NssaExternal
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    internal: Internal | UndefinedType = Undefined,
+                                    external: External | UndefinedType = Undefined,
+                                    nssa_external: NssaExternal | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RedistributeOspf.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        internal: Subclass of AvdModel.
+                                        external: Subclass of AvdModel.
+                                        nssa_external: Subclass of AvdModel.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "router_id": {"type": str, "default": "main_router_id"},
                             "graceful_restart": {"type": GracefulRestart},
                             "redistribute_ospfv3": {"type": RedistributeOspfv3},
+                            "redistribute_ospf": {"type": RedistributeOspf},
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.RouterBgp.VrfsItem},
                         }
@@ -97116,6 +97445,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        redistribute_ospf: RedistributeOspf
+                        """
+                        Redistribution of OSPF routes into BGP for this VRF.
+                        Ignored on devices where BGP is not configured
+                        for this VRF or where the VRF has no OSPF instance.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
@@ -97130,6 +97467,7 @@ class EosDesigns(EosDesignsRootModel):
                                 router_id: str | UndefinedType = Undefined,
                                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
                                 redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
+                                redistribute_ospf: RedistributeOspf | UndefinedType = Undefined,
                                 raw_eos_cli: str | UndefinedType | None = Undefined,
                                 structured_config: EosCliConfigGen.RouterBgp.VrfsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -97171,6 +97509,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Redistribution of OSPFv3 routes into BGP for this VRF.
                                        Ignored on devices where BGP is not
                                        configured for this VRF or where the VRF has no OSPFv3 instance.
+
+                                       Subclass of AvdModel.
+                                    redistribute_ospf:
+                                       Redistribution of OSPF routes into BGP for this VRF.
+                                       Ignored on devices where BGP is not configured
+                                       for this VRF or where the VRF has no OSPF instance.
 
                                        Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
@@ -98618,9 +98962,7 @@ class EosDesigns(EosDesignsRootModel):
                     no nodes definition, the OSPF instance will be
                     created on all leafs where the VRF is deployed. This
                     will also cause automatic OSPF redistribution into BGP unless
-                    explicitly turned off with
-                    "redistribute_ospf: false".
-
+                    `bgp.redistribute_ospf.internal.enabled` is set to `false`.
 
                     Subclass of AvdModel.
                     """
@@ -98962,9 +99304,7 @@ class EosDesigns(EosDesignsRootModel):
                                    no nodes definition, the OSPF instance will be
                                    created on all leafs where the VRF is deployed. This
                                    will also cause automatic OSPF redistribution into BGP unless
-                                   explicitly turned off with
-                                   "redistribute_ospf: false".
-
+                                   `bgp.redistribute_ospf.internal.enabled` is set to `false`.
 
                                    Subclass of AvdModel.
                                 ospfv3:
