@@ -226,9 +226,9 @@ jobs:
           - "eos_cli_config_gen"
           - "eos_cli_config_gen_deprecated_vars"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
@@ -289,9 +289,9 @@ jobs:
           - "example-cv-pathfinder"
           - "howto"
         ansible_version:
-          - "ansible-core>=2.16.0,<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         include:
           # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
           # across ansible versions but maybe we don't need it to be these molecule scenario
@@ -310,9 +310,12 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.12"
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.13"
           # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.22.0"
+            ansible_version: "ansible-core>=2.22.0,<2.23.0"
             python_version: "3.14"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
@@ -422,9 +425,9 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
@@ -477,10 +480,13 @@ jobs:
             python_version: |
               3.11
               3.12
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.12"
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core>=2.22.0,<2.23.0"
             python_version: |
-              3.12
               3.13
               3.14
           - ansible_version: devel
@@ -521,10 +527,15 @@ jobs:
       fail-fast: false
       matrix:
         ansible_version: [latest_stable]
-        python_version: ["3.12", "3.13", "3.14"]
+        python_version: ["3.13", "3.14"]
         include:
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core>=2.22.0,<2.23.0"
+            integration_args: ""
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            python_version: "3.12"
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
             integration_args: ""
           # Exercise the minimum supported Python and Ansible controller versions.
           - ansible_version: first_stable
@@ -560,7 +571,7 @@ jobs:
           pip install "${{ matrix.pip_installation }}" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test units
         id: units
-        if: matrix.python_version == '3.12'
+        if: matrix.python_version == '3.12' || (matrix.ansible_version == 'latest_stable' && matrix.python_version == '3.14')
         working-directory: ansible_collections/arista/avd
         run: ansible-test units --python "${{ matrix.python_version }}" --coverage --requirements -vv
       - name: Run ansible-test integration
@@ -574,20 +585,20 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         working-directory: ansible_collections/arista/avd
         env:
-          PYTHON_VERSION: ${{ matrix.python_version }}
+          UNITS_OUTCOME: ${{ steps.units.outcome }}
           REPORT_SUFFIX: ${{ matrix.ansible_version }}-${{ matrix.python_version }}
         run: |
           set -euo pipefail
           ansible-test coverage report --group-by command --show-missing
           ansible-test coverage xml --group-by command
-          if [[ "$PYTHON_VERSION" == "3.12" ]]; then
+          if [[ "$UNITS_OUTCOME" == "success" || "$UNITS_OUTCOME" == "failure" ]]; then
             test -s tests/output/reports/coverage=units.xml
             mv tests/output/reports/coverage=units.xml "./units-coverage-$REPORT_SUFFIX.xml"
           fi
           test -s tests/output/reports/coverage=integration.xml
           mv tests/output/reports/coverage=integration.xml "./integration-coverage-$REPORT_SUFFIX.xml"
       - name: Upload coverage from ansible-test units
-        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.python_version == '3.12' }}
+        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && (matrix.python_version == '3.12' || (matrix.ansible_version == 'latest_stable' && matrix.python_version == '3.14')) }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
@@ -679,13 +690,13 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: |
-            3.12
+            3.14
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          pip install "ansible-core<2.22.0" --upgrade
+          pip install "ansible-core>=2.22.0,<2.23.0" --upgrade
       - name: Set Ansible collection cache key
         id: collection_cache_key
         env:
