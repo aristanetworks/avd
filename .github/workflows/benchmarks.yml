@@ -51,7 +51,7 @@ jobs:
           make -C python-avd dep
 
       - name: Run default benchmarks
-        uses: CodSpeedHQ/action@373d6868929f444bc08d901fd0eb0ad52a8875ea # v5.2.1
+        uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
         with:
           mode: simulation,memory
           run: |
