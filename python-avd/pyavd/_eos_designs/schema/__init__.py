@@ -1933,14 +1933,10 @@ class EosDesigns(EosDesignsRootModel):
         configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
         """
         Available from AVD 6.6.0.
-        Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
-        under `ipv4_acls`.
-        When enabled, configure the referenced extended access-list on devices where
-        queue-monitor streaming is set.
-        When disabled, only configure the access-group reference without
-        requiring or configuring an access-list definition from the catalog.
-        `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
-        regardless of this setting.
+        When enabled, configure the extended access-list from `ipv4_acls`
+        referenced from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor streaming
+        is set.
+        Raises an error if the access-list is not defined under `ipv4_acls`.
 
         Default value: `False`
         """
@@ -2166,14 +2162,10 @@ class EosDesigns(EosDesignsRootModel):
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     configure_queue_monitor_streaming_ipv4_acl_from_catalog:
                        Available from AVD 6.6.0.
-                       Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
-                       under `ipv4_acls`.
-                       When enabled, configure the referenced extended access-list on devices where
-                       queue-monitor streaming is set.
-                       When disabled, only configure the access-group reference without
-                       requiring or configuring an access-list definition from the catalog.
-                       `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`,
-                       regardless of this setting.
+                       When enabled, configure the extended access-list from `ipv4_acls`
+                       referenced from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor streaming
+                       is set.
+                       Raises an error if the access-list is not defined under `ipv4_acls`.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -53052,16 +53044,18 @@ class EosDesigns(EosDesignsRootModel):
         When
         `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
         list must be defined under `ipv4_acls`.
-        Otherwise, no catalog entry is required.
-        `ip_access_group`
-        and `ip_standard_access_group` must not be defined together.
-        Field substitution is not supported for
-        queue-monitor streaming references.
+        `ip_access_group` and `ip_standard_access_group` must not be
+        defined together.
+        Field substitution is not supported for queue-monitor streaming references.
         """
         ip_standard_access_group: str | None
         """
         IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
-        `ip_access_group` and `ip_standard_access_group` must not be defined together.
+        The
+        access-list is always configured from the catalog, regardless of
+        `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`.
+        `ip_access_group` and
+        `ip_standard_access_group` must not be defined together.
         """
         ipv6_access_group: str | None
         """Name of IPv6 ACL."""
@@ -53093,14 +53087,16 @@ class EosDesigns(EosDesignsRootModel):
                        When
                        `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog` is enabled, the access-
                        list must be defined under `ipv4_acls`.
-                       Otherwise, no catalog entry is required.
-                       `ip_access_group`
-                       and `ip_standard_access_group` must not be defined together.
-                       Field substitution is not supported for
-                       queue-monitor streaming references.
+                       `ip_access_group` and `ip_standard_access_group` must not be
+                       defined together.
+                       Field substitution is not supported for queue-monitor streaming references.
                     ip_standard_access_group:
                        IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
-                       `ip_access_group` and `ip_standard_access_group` must not be defined together.
+                       The
+                       access-list is always configured from the catalog, regardless of
+                       `avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog`.
+                       `ip_access_group` and
+                       `ip_standard_access_group` must not be defined together.
                     ipv6_access_group: Name of IPv6 ACL.
                     max_connections: max_connections
                     vrf: vrf

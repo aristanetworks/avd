@@ -227,7 +227,7 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
-    def get_ipv4_acl_without_substitution(self: SharedUtilsProtocol, name: str, context: str) -> EosDesigns.Ipv4AclsItem:
+    def get_ipv4_acl(self: SharedUtilsProtocol, name: str, context: str) -> EosDesigns.Ipv4AclsItem:
         """Get one IPv4 ACL from the catalog without applying field substitution."""
         if (ipv4_acl := self.inputs.ipv4_acls.get(name, None)) is None:
             msg = f"ipv4_acls[name={name}]"

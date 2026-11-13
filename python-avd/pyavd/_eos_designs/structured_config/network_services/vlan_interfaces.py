@@ -101,18 +101,16 @@ class VlanInterfacesMixin(Protocol):
         self.structured_config_utils._validate_ipv4_acl_exclusion(
             svi.ipv4_acl_in,
             svi.ipv4_standard_acl_in,
-            "ipv4_acl",
-            "ipv4_standard_acl",
+            "ipv4_acl_in",
+            "ipv4_standard_acl_in",
             context,
-            "in",
         )
         self.structured_config_utils._validate_ipv4_acl_exclusion(
             svi.ipv4_acl_out,
             svi.ipv4_standard_acl_out,
-            "ipv4_acl",
-            "ipv4_standard_acl",
+            "ipv4_acl_out",
+            "ipv4_standard_acl_out",
             context,
-            "out",
         )
 
         if svi.ipv4_acl_in:

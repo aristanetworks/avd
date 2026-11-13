@@ -142,10 +142,10 @@ class PortChannelInterfacesMixin(Protocol):
             interface_ip = get_ip_from_ip_prefix(interface_ip)
         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={l3_port_channel.name}]"
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, "ipv4_acl", "ipv4_standard_acl", context, "in"
+            l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, "ipv4_acl_in", "ipv4_standard_acl_in", context
         )
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, "ipv4_acl", "ipv4_standard_acl", context, "out"
+            l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context
         )
         if l3_port_channel.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl_with_substitution(

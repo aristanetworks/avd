@@ -441,7 +441,7 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config_utils._set_ipv4_standard_acl(ip_standard_access_group)
             queue_monitor_streaming.ip_access_group = ip_standard_access_group
         elif ip_access_group is not None and self.inputs.avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog:
-            acl = self.shared_utils.get_ipv4_acl_without_substitution(
+            acl = self.shared_utils.get_ipv4_acl(
                 name=ip_access_group,
                 context="queue_monitor_streaming.ip_access_group",
             )

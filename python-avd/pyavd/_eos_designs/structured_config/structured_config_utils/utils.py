@@ -70,19 +70,13 @@ class UtilsMixin(Protocol):
         ipv4_acl_key_name: str,
         ipv4_standard_acl_key_name: str,
         context: str,
-        direction: str | None = None,
     ) -> None:
-        """Raise if both extended and standard IPv4 ACLs are configured together on the same target."""
+        """Raise if both extended and standard IPv4 ACLs are configured together."""
         if not (ipv4_acl and ipv4_standard_acl):
             return
-        suffix = f"_{direction}" if direction is not None else ""
-        target = "interface " if direction is not None else ""
-        direction_label = ""
-        if direction is not None:
-            direction_label = "ingress " if direction == "in" else "egress "
         msg = (
-            f"'{ipv4_acl_key_name}{suffix}' and '{ipv4_standard_acl_key_name}{suffix}' are mutually exclusive on {target}'{context}'. "
-            f"Only one {direction_label}IPv4 ACL can be configured for host '{self.shared_utils.hostname}'."
+            f"'{ipv4_acl_key_name}' and '{ipv4_standard_acl_key_name}' are mutually exclusive on '{context}'. "
+            f"Only one IPv4 ACL can be configured for host '{self.shared_utils.hostname}'."
         )
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 

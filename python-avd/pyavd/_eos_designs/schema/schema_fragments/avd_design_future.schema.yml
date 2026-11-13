@@ -46,10 +46,8 @@ keys:
         default: false
         description: |-
           Available from AVD 6.6.0.
-          Raise an error if `queue_monitor_streaming.ip_access_group` is not defined under `ipv4_acls`.
-          When enabled, configure the referenced extended access-list on devices where queue-monitor streaming is set.
-          When disabled, only configure the access-group reference without requiring or configuring an access-list definition from the catalog.
-          `queue_monitor_streaming.ip_standard_access_group` always requires an entry in `ipv4_standard_acls`, regardless of this setting.
+          When enabled, configure the extended access-list from `ipv4_acls` referenced from `queue_monitor_streaming.ip_access_group` on devices where queue-monitor streaming is set.
+          Raises an error if the access-list is not defined under `ipv4_acls`.
       consistent_uplink_vlans:
         type: bool
         description: |-
