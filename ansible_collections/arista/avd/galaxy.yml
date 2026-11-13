@@ -38,7 +38,7 @@ dependencies:
   "arista.eos": ">=12.2.0"
   # 8.8.0 cannot load the enable become plugin on ansible-core 2.22.
   # https://github.com/ansible-collections/ansible.netcommon/issues/832
-  "ansible.netcommon": "!=8.8.0"
+  "ansible.netcommon": "<8.8.0"
 # Test with arista.eos with main branch
 #  "git+https://github.com/ansible-collections/arista.eos.git": main
 
