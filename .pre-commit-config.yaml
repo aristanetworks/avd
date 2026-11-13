@@ -313,7 +313,7 @@ repos:
         files: ^\.pre-commit-config\.yaml$
         pass_filenames: false
         additional_dependencies:
-          - pyavd-utils-gen==0.0.13
+          - pyavd-utils-gen==0.0.14
 
       - id: check-schema-fragments
         name: Validate AVD schema fragments against the metaschema.

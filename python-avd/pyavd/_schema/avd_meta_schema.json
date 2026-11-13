@@ -1,30 +1,34 @@
 {
   "$id": "http://avd.sh/development/schema-schema.json",
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Arista AVD Schema",
-  "description": "Root discriminator used while loading and serializing schema documents.\n\nKeeping the discriminator outside [`SourceRootDict`] gives callers the same ergonomic data\nmodel as the recursive schema structs while still requiring `type: dict` on the wire.",
+  "description": "AVD schema document. A document must declare type: dict; its child schemas describe the supported input values.",
   "oneOf": [
     {
-      "description": "Root dictionary of one named AVD schema.\n\nA schema root supports reusable definitions and data-driven keys in addition to the\nproperties available on recursive dictionary schemas. These properties describe the named\nschema document and are therefore not accepted on nested [`super::SourceDict`] values.",
+      "description": "Root dictionary of a named AVD schema. It can define static keys, dynamic keys derived from input data, and reusable schema definitions.",
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "const": "dict"
+        },
         "keys": {
-          "description": "Statically named dictionary keys.",
+          "description": "Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.\n`keyname` must use `snake_case`.\n`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema",
           "type": "object",
           "additionalProperties": false,
           "patternProperties": {
-            "^(?:[a-z][a-z0-9_]*|MIB_family_name|Vxlan1)$": {
-              "$ref": "#/definitions/SourceSchema"
+            "^(?:[a-z][a-z0-9_]*|Vxlan1)$": {
+              "$ref": "#/$defs/SourceSchema"
             }
           }
         },
         "dynamic_keys": {
-          "description": "Data paths whose values provide additional root key names.",
+          "description": "Dictionary of dynamic keys in the format `{<variable.path>: <schema>}`.\nThe dot-notation path is relative to the input dictionary being validated and points to\nvalues containing additional key names. When a path traverses a list, every list item\nis unpacked. Each resulting key is validated using the supplied schema.\nThese key names come from the input data or, when the input path has no value,\nfrom schema-defined defaults if available.",
           "type": "object",
           "additionalProperties": false,
           "patternProperties": {
             "^[a-z][a-z0-9_.]*$": {
-              "$ref": "#/definitions/SourceSchema"
+              "$ref": "#/$defs/SourceSchema"
             }
           }
         },
@@ -50,7 +54,7 @@
           "additionalProperties": false,
           "patternProperties": {
             "^[a-z][a-z0-9_]*$": {
-              "$ref": "#/definitions/SourceSchema"
+              "$ref": "#/$defs/SourceSchema"
             }
           }
         },
@@ -58,7 +62,7 @@
           "description": "Default value",
           "anyOf": [
             {
-              "$ref": "#/definitions/MetaObject"
+              "$ref": "#/$defs/MetaObject"
             }
           ]
         },
@@ -79,11 +83,12 @@
         "deprecation": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Deprecation"
+              "$ref": "#/$defs/Deprecation"
             }
           ]
         },
         "$ref": {
+          "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
           "type": "string",
           "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
         },
@@ -91,13 +96,9 @@
           "description": "Documentation-generation settings for this dictionary.",
           "anyOf": [
             {
-              "$ref": "#/definitions/DocumentationOptionsDict"
+              "$ref": "#/$defs/DocumentationOptionsDict"
             }
           ]
-        },
-        "type": {
-          "type": "string",
-          "const": "dict"
         }
       },
       "additionalProperties": false,
@@ -107,14 +108,18 @@
     }
   ],
   "$comment": "Copyright (c) 2026 Arista Networks, Inc. Use of this source code is governed by the Apache License 2.0 that can be found in the LICENSE file.",
-  "definitions": {
+  "$defs": {
     "SourceSchema": {
-      "description": "Enum covering recursive AVD schema types. Named schema roots use [`SourceRootDict`].",
+      "description": "Schema for an AVD value. The type selects the supported properties for booleans, integers, strings, lists, or dictionaries.",
       "oneOf": [
         {
           "description": "AVD Schema for boolean data.",
           "type": "object",
           "properties": {
+            "type": {
+              "type": "string",
+              "const": "bool"
+            },
             "default": {
               "description": "Default value",
               "type": "boolean"
@@ -136,24 +141,21 @@
             "deprecation": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Deprecation"
+                  "$ref": "#/$defs/Deprecation"
                 }
               ]
             },
             "$ref": {
+              "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
               "type": "string",
               "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
             },
             "documentation_options": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/DocumentationOptions"
+                  "$ref": "#/$defs/DocumentationOptions"
                 }
               ]
-            },
-            "type": {
-              "type": "string",
-              "const": "bool"
             }
           },
           "additionalProperties": false,
@@ -165,6 +167,10 @@
           "description": "AVD Schema for integer data.",
           "type": "object",
           "properties": {
+            "type": {
+              "type": "string",
+              "const": "int"
+            },
             "min": {
               "type": "integer",
               "format": "int64"
@@ -195,19 +201,22 @@
             "deprecation": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Deprecation"
+                  "$ref": "#/$defs/Deprecation"
                 }
               ]
             },
             "$ref": {
+              "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
               "type": "string",
               "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
             },
             "convert_types": {
+              "description": "Deprecated. Do not use `convert_types` in new schema definitions.",
               "type": "array",
               "items": {
-                "$ref": "#/definitions/IntConvertType"
-              }
+                "$ref": "#/$defs/IntConvertType"
+              },
+              "deprecated": true
             },
             "valid_values": {
               "description": "List of valid values",
@@ -218,7 +227,7 @@
               }
             },
             "dynamic_valid_values": {
-              "description": "Path to variable under the parent dictionary containing valid values.",
+              "description": "Dot-notation paths to variables under the parent input dictionary containing valid values.\nFor example, `interfaces.name` collects interface names from a list of dictionaries.\nWhen a path traverses a list, every list item is unpacked.\nValid values are derived from the input data, not from the schema document.",
               "type": "array",
               "items": {
                 "type": "string"
@@ -227,13 +236,9 @@
             "documentation_options": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/DocumentationOptions"
+                  "$ref": "#/$defs/DocumentationOptions"
                 }
               ]
-            },
-            "type": {
-              "type": "string",
-              "const": "int"
             }
           },
           "additionalProperties": false,
@@ -245,6 +250,10 @@
           "description": "AVD Schema for string data.",
           "type": "object",
           "properties": {
+            "type": {
+              "type": "string",
+              "const": "str"
+            },
             "convert_to_lower_case": {
               "description": "Convert string value to lower case before performing validation\nDefault is false.",
               "type": "boolean"
@@ -252,7 +261,7 @@
             "format": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Format"
+                  "$ref": "#/$defs/Format"
                 }
               ]
             },
@@ -267,10 +276,10 @@
               "minimum": 0
             },
             "pattern": {
-              "description": "An AVD regular expression which will be matched against the complete variable value.\nPerl shorthand classes, wildcards, and explicit character classes operate on Unicode\nstrings. Unicode property and script tables beyond those needed by the Perl classes are\nnot supported.\nRemember to use double escapes",
+              "description": "An AVD regular expression which will be matched against the complete variable value.\nThe supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and\n`\\w`, including their uppercase complements) and word boundaries, Unicode-safe wildcards\nand explicit character classes, lookarounds, and variable-length lookbehinds.\nBroader Unicode properties and scripts such as `\\p{Greek}` are not supported.\nRemember to double backslashes when using a YAML double-quoted string or a JSON string.",
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Pattern"
+                  "$ref": "#/$defs/Pattern"
                 }
               ]
             },
@@ -295,19 +304,22 @@
             "deprecation": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Deprecation"
+                  "$ref": "#/$defs/Deprecation"
                 }
               ]
             },
             "$ref": {
+              "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
               "type": "string",
               "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
             },
             "convert_types": {
+              "description": "Deprecated. Do not use `convert_types` in new schema definitions.",
               "type": "array",
               "items": {
-                "$ref": "#/definitions/StrConvertType"
-              }
+                "$ref": "#/$defs/StrConvertType"
+              },
+              "deprecated": true
             },
             "valid_values": {
               "description": "List of valid values",
@@ -317,7 +329,7 @@
               }
             },
             "dynamic_valid_values": {
-              "description": "Path to variable under the parent dictionary containing valid values.",
+              "description": "Dot-notation paths to variables under the parent input dictionary containing valid values.\nFor example, `interfaces.name` collects interface names from a list of dictionaries.\nWhen a path traverses a list, every list item is unpacked.\nValid values are derived from the input data, not from the schema document.",
               "type": "array",
               "items": {
                 "type": "string"
@@ -326,13 +338,9 @@
             "documentation_options": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/DocumentationOptions"
+                  "$ref": "#/$defs/DocumentationOptions"
                 }
               ]
-            },
-            "type": {
-              "type": "string",
-              "const": "str"
             }
           },
           "additionalProperties": false,
@@ -344,11 +352,15 @@
           "description": "AVD Schema for list data.",
           "type": "object",
           "properties": {
+            "type": {
+              "type": "string",
+              "const": "list"
+            },
             "items": {
               "description": "Schema for list items",
               "anyOf": [
                 {
-                  "$ref": "#/definitions/SourceSchema"
+                  "$ref": "#/$defs/SourceSchema"
                 }
               ]
             },
@@ -401,24 +413,21 @@
             "deprecation": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Deprecation"
+                  "$ref": "#/$defs/Deprecation"
                 }
               ]
             },
             "$ref": {
+              "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
               "type": "string",
               "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
             },
             "documentation_options": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/DocumentationOptions"
+                  "$ref": "#/$defs/DocumentationOptions"
                 }
               ]
-            },
-            "type": {
-              "type": "string",
-              "const": "list"
             }
           },
           "additionalProperties": false,
@@ -427,16 +436,20 @@
           ]
         },
         {
-          "description": "Source model for a recursive AVD dictionary schema.",
+          "description": "AVD schema for dictionary data.",
           "type": "object",
           "properties": {
+            "type": {
+              "type": "string",
+              "const": "dict"
+            },
             "keys": {
               "description": "Dictionary of recursive dictionary keys in the format `{<keyname>: {<schema>}}`.\n\n`keyname` must use snake case. `schema` is recursive and must conform\nto the AVD schema format.",
               "type": "object",
               "additionalProperties": false,
               "patternProperties": {
-                "^(?:[a-z][a-z0-9_]*|MIB_family_name|Vxlan1)$": {
-                  "$ref": "#/definitions/SourceSchema"
+                "^(?:[a-z][a-z0-9_]*|Vxlan1)$": {
+                  "$ref": "#/$defs/SourceSchema"
                 }
               }
             },
@@ -452,7 +465,7 @@
               "description": "Default value",
               "anyOf": [
                 {
-                  "$ref": "#/definitions/MetaObject"
+                  "$ref": "#/$defs/MetaObject"
                 }
               ]
             },
@@ -473,24 +486,21 @@
             "deprecation": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Deprecation"
+                  "$ref": "#/$defs/Deprecation"
                 }
               ]
             },
             "$ref": {
+              "description": "Reference to another AVD schema or schema fragment, inherited by this schema.\nUse a named schema followed by a JSON Pointer, for example\n`eos_cli_config_gen#/keys/hostname` or `eos_cli_config_gen#/$defs/shared`.\nA reference ending in `#` imports the complete root dictionary. Local properties override\ninherited properties, and the referenced schema must have the same type.",
               "type": "string",
               "pattern": "^[a-z][a-z_]*#(/[a-z$][\\.a-z0-9_]*)*$"
             },
             "documentation_options": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/DocumentationOptionsDict"
+                  "$ref": "#/$defs/DocumentationOptionsDict"
                 }
               ]
-            },
-            "type": {
-              "type": "string",
-              "const": "dict"
             }
           },
           "additionalProperties": false,
@@ -564,7 +574,7 @@
       ]
     },
     "Format": {
-      "description": "Enum for string formats allowed by the [`SourceStr`] schema.",
+      "description": "Format used to validate a string.",
       "type": "string",
       "enum": [
         "cidr",

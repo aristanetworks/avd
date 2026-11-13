@@ -10,7 +10,7 @@ import json
 import sys
 from pathlib import Path
 
-from jsonschema_rs import Draft7Validator
+from jsonschema_rs import Draft202012Validator
 from yaml import CSafeLoader, YAMLError
 from yaml import load as yaml_load
 
@@ -32,7 +32,7 @@ def main() -> int:
     # Configuration changes can regenerate the metaschema earlier in the same pre-commit run.
     if any(path.resolve() in (METASCHEMA_FILE, REPO_ROOT / ".pre-commit-config.yaml") for path in schema_files):
         schema_files = sorted(path for pattern in SCHEMA_PATTERNS for path in REPO_ROOT.glob(pattern))
-    validator = Draft7Validator(json.loads(METASCHEMA_FILE.read_text(encoding="UTF-8")))
+    validator = Draft202012Validator(json.loads(METASCHEMA_FILE.read_text(encoding="UTF-8")), validate_formats=True)
     failed = False
     for schema_file in schema_files:
         try:
