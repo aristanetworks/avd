@@ -311,7 +311,7 @@ class UtilsMixin(Protocol):
         if interface_ip is not None and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
 
-        return self.shared_utils.get_ipv4_acl(
+        return self.shared_utils.get_ipv4_acl_with_substitution(
             name=acl_name,
             interface_name=interface.name,
             interface_ip=interface_ip,

@@ -53,10 +53,8 @@ class ManagementSshMixin(Protocol):
                     self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            if vrf.ipv4_acl not in self.inputs.ipv4_acls:
-                                msg = f"ipv4_acls[name={vrf.ipv4_acl}]"
-                                raise AristaAvdMissingVariableError(msg, self.shared_utils.hostname)
-                            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[vrf.ipv4_acl])
+                            acl = self.shared_utils.get_ipv4_acl_without_substitution(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
+                            self.structured_config_utils._set_ipv4_acl(acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
@@ -71,10 +69,8 @@ class ManagementSshMixin(Protocol):
                 if vrf.enabled:
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            if vrf.ipv4_acl not in self.inputs.ipv4_acls:
-                                msg = f"ipv4_acls[name={vrf.ipv4_acl}]"
-                                raise AristaAvdMissingVariableError(msg, self.shared_utils.hostname)
-                            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[vrf.ipv4_acl])
+                            acl = self.shared_utils.get_ipv4_acl_without_substitution(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
+                            self.structured_config_utils._set_ipv4_acl(acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
                     elif vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)

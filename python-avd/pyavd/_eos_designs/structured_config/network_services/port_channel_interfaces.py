@@ -148,14 +148,14 @@ class PortChannelInterfacesMixin(Protocol):
             l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context, "out"
         )
         if l3_port_channel.ipv4_acl_in:
-            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_in = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
         elif l3_port_channel.ipv4_standard_acl_in:
             self.structured_config_utils._set_ipv4_standard_acl(l3_port_channel.ipv4_standard_acl_in)
             port_channel_interface.access_group_in = l3_port_channel.ipv4_standard_acl_in
         if l3_port_channel.ipv4_acl_out:
-            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip)
             port_channel_interface.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
         elif l3_port_channel.ipv4_standard_acl_out:

@@ -30,7 +30,7 @@ class IpAccesslistsMixin(Protocol):
         """
         if acl_name in self.inputs.ipv4_acls:
             # pass substitution fields as anything to check if acl requires substitution or not
-            acl = self.shared_utils.get_ipv4_acl(acl_name, "random", interface_ip="random", peer_ip="random")
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(acl_name, "random", interface_ip="random", peer_ip="random")
             if acl.name == acl_name:
                 # ACL doesn't need replacement
                 self.structured_config.ip_access_lists.append(acl._cast_as(EosCliConfigGen.IpAccessListsItem))
@@ -69,7 +69,7 @@ class IpAccesslistsMixin(Protocol):
         """
         if acl_name in self.inputs.ipv4_acls:
             # pass substitution fields as anything to check if acl requires substitution or not
-            acl = self.shared_utils.get_ipv4_acl(acl_name, "random", interface_ip="random", peer_ip="random")
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(acl_name, "random", interface_ip="random", peer_ip="random")
             if acl.name == acl_name:
                 # ACL doesn't need replacement
                 self.structured_config.ip_access_lists.append(acl._cast_as(EosCliConfigGen.IpAccessListsItem))

@@ -101,7 +101,7 @@ class VlanInterfacesMixin(Protocol):
         self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_in, svi.ipv4_standard_acl_in, "ipv4_acl", "ipv4_standard_acl", context, "in")
         self.structured_config_utils._validate_ipv4_acl_exclusion(svi.ipv4_acl_out, svi.ipv4_standard_acl_out, "ipv4_acl", "ipv4_standard_acl", context, "out")
         if svi.ipv4_acl_in:
-            acl = self.shared_utils.get_ipv4_acl(
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(
                 name=svi.ipv4_acl_in,
                 interface_name=interface_name,
                 interface_ip=ipv4_interface_ip,
@@ -114,7 +114,7 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.access_group_in = svi.ipv4_standard_acl_in
 
         if svi.ipv4_acl_out:
-            acl = self.shared_utils.get_ipv4_acl(
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(
                 name=svi.ipv4_acl_out,
                 interface_name=interface_name,
                 interface_ip=ipv4_interface_ip,
