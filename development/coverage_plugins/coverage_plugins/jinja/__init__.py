@@ -171,7 +171,7 @@ class JinjaTemplateFileReporter(FileReporter):
             covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, template.reportable_lines),
         )
         translated_arcs.update(
-            covered_adjacent_static_branch_arcs(recorded_arcs, possible_arcs, template.reportable_lines),
+            covered_adjacent_static_branch_arcs(recorded_arcs, possible_arcs, template.reportable_lines, source_filename),
         )
         return translated_arcs
 
