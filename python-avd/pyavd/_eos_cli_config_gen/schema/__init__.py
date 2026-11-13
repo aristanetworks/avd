@@ -9992,6 +9992,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
+                    network_point_to_point: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         class Pim(AvdModel):
             """Subclass of AvdModel."""
 
@@ -15082,6 +15170,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_authentication_key": {"type": str},
             "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
+            "ospfv3": {"type": Ospfv3},
             "pim": {"type": Pim},
             "mac_security": {"type": MacSecurity},
             "ntp_serve": {"type": bool},
@@ -15262,6 +15351,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+        ospfv3: Ospfv3
+        """
+        OSPFv3 configuration.
+
+        Subclass of AvdModel.
+        """
         pim: Pim
         """Subclass of AvdModel."""
         mac_security: MacSecurity
@@ -15440,6 +15535,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_authentication_key: str | UndefinedType | None = Undefined,
                 ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
                 ntp_serve: bool | UndefinedType | None = Undefined,
@@ -15574,6 +15670,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_authentication_key: Encrypted password.
                     ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
+                    ospfv3:
+                       OSPFv3 configuration.
+
+                       Subclass of AvdModel.
                     pim: Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
@@ -23288,6 +23388,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv6Addresses._item_type = str
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
+                    network_point_to_point: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         class Mpls(AvdModel):
             """Subclass of AvdModel."""
 
@@ -23364,6 +23552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_address_auto_config": {"type": bool},
             "ip_proxy_arp": {"type": bool},
             "ospf_area": {"type": str},
+            "ospfv3": {"type": Ospfv3},
             "mpls": {"type": Mpls},
             "isis_enable": {"type": str},
             "isis_bfd": {"type": bool},
@@ -23397,6 +23586,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         ip_proxy_arp: bool | None
         ospf_area: str | None
+        ospfv3: Ospfv3
+        """
+        OSPFv3 configuration.
+
+        Subclass of AvdModel.
+        """
         mpls: Mpls
         """Subclass of AvdModel."""
         isis_enable: str | None
@@ -23430,6 +23625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_address_auto_config: bool | UndefinedType | None = Undefined,
                 ip_proxy_arp: bool | UndefinedType | None = Undefined,
                 ospf_area: str | UndefinedType | None = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 isis_enable: str | UndefinedType | None = Undefined,
                 isis_bfd: bool | UndefinedType | None = Undefined,
@@ -23462,6 +23658,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `ipv6_addresses`.
                     ip_proxy_arp: ip_proxy_arp
                     ospf_area: ospf_area
+                    ospfv3:
+                       OSPFv3 configuration.
+
+                       Subclass of AvdModel.
                     mpls: Subclass of AvdModel.
                     isis_enable: ISIS instance name.
                     isis_bfd: Enable BFD for ISIS.
@@ -38063,6 +38263,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
 
+        class Ospfv3(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"area": {"type": str}}
+                area: str
+                """OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            area: OSPF area ID in IPv4 address or decimal format (range: 0 to 4294967295).
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "passive_interface": {"type": bool},
+                "no_passive_interface": {"type": bool},
+                "network_point_to_point": {"type": bool},
+            }
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            passive_interface: bool | None
+            """Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`."""
+            no_passive_interface: bool | None
+            """Disable passive interface mode."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    passive_interface: bool | UndefinedType | None = Undefined,
+                    no_passive_interface: bool | UndefinedType | None = Undefined,
+                    network_point_to_point: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    Ospfv3.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        passive_interface: Include interface but without actively running OSPF. Takes precedence over `no_passive_interface`.
+                        no_passive_interface: Disable passive interface mode.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         class FlowTracker(AvdModel):
             """Subclass of AvdModel."""
 
@@ -40373,6 +40661,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_authentication_key": {"type": str},
             "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
+            "ospfv3": {"type": Ospfv3},
             "flow_tracker": {"type": FlowTracker},
             "bgp": {"type": Bgp},
             "ip_igmp_host_proxy": {"type": IpIgmpHostProxy},
@@ -40552,6 +40841,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+        ospfv3: Ospfv3
+        """
+        OSPFv3 configuration.
+
+        Subclass of AvdModel.
+        """
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         bgp: Bgp
@@ -40663,6 +40958,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_authentication_key: str | UndefinedType | None = Undefined,
                 ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
+                ospfv3: Ospfv3 | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
@@ -40782,6 +41078,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_authentication_key: Encrypted password.
                     ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
+                    ospfv3:
+                       OSPFv3 configuration.
+
+                       Subclass of AvdModel.
                     flow_tracker: Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
                     ip_igmp_host_proxy: Subclass of AvdModel.
