@@ -21,6 +21,8 @@ async def simulate_deployment(device_deployments: list[CVDeviceDeployment], **kw
     case = kwargs["workspace"].name
     logging.getLogger("pyavd._cv").warning("CV_LOGGING_PROBE_pyavd_%s", case)
     logging.getLogger("urllib3.connectionpool").warning("CV_LOGGING_PROBE_urllib3_%s", case)
+    # Mirror workflow warnings that are both logged and returned (for example, untargeted devices).
+    logging.getLogger("pyavd._cv").warning("CV_WORKFLOW_WARNING_%s", case)
     logging.getLogger("grpclib.client").error("CV_LOGGING_PROBE_ERROR_%s", case)
     logging.getLogger("pyavd._cv").critical("CV_LOGGING_PROBE_CRITICAL_%s", case)
     failed = case.startswith("failure")
