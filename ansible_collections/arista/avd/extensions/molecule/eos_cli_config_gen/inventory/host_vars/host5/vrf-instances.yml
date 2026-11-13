@@ -1,5 +1,7 @@
 ---
 vrfs:
+  - name: MGMT
+    ip_routing: false
   - name: FUTURE_IPV6_INTERFACES
     ip_routing_ipv6_interfaces: true
   - name: IPv6_ROUTING_ENABLED_VRF

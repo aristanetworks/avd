@@ -1825,9 +1825,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -1914,9 +1919,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -1990,9 +2000,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -2064,9 +2079,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -29629,6 +29649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
+                "ztp": {"type": bool},
             }
             environment: Environment | None
             """Targeted Digital Twin environment."""
@@ -29657,6 +29678,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             types.
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
+            ztp: bool | None
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+            Twin environment.
+            Supported Digital Twin environments:
+            - `act`: Applies only to `veos` and
+            `cloudeos` node types.
+            """
 
             if TYPE_CHECKING:
 
@@ -29670,6 +29699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
+                    ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -29695,6 +29725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+                           Twin environment.
+                           Supported Digital Twin environments:
+                           - `act`: Applies only to `veos` and
+                           `cloudeos` node types.
 
                     """
 

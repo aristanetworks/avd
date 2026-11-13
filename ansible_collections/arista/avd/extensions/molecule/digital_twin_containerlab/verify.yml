@@ -32,7 +32,7 @@
           - "containerlab_topology.name == fabric_name"
           - "containerlab_topology.prefix == ''"
           - "containerlab_topology.mgmt['ipv4-subnet'] == '172.16.1.0/24'"
-          - "containerlab_topology.topology.nodes | length == 4"
+          - "containerlab_topology.topology.nodes | length == 5"
           - "containerlab_topology.topology.links | length == 4"
           - "containerlab_topology.topology.links | map(attribute='endpoints') | unique | length == 4"
           - "containerlab_mapping.ManagementIntf.eth0 == 'Management1'"
