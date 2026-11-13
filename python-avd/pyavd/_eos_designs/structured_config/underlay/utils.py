@@ -311,7 +311,7 @@ class UtilsMixin(Protocol):
         if interface_ip is not None and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
 
-        return self.shared_utils.get_ipv4_acl(
+        return self.shared_utils.get_ipv4_acl_with_substitution(
             name=acl_name,
             interface_name=interface.name,
             interface_ip=interface_ip,
@@ -352,8 +352,12 @@ class UtilsMixin(Protocol):
             else "l3_interfaces"
         )
         context = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}[name={l3_interface.name}]"
-        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, context, "in")
-        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, context, "out")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, "ipv4_acl_in", "ipv4_standard_acl_in", context, "in"
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context, "out"
+        )
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name

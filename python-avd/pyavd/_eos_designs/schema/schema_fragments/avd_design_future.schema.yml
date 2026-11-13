@@ -155,3 +155,10 @@ keys:
           - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
           - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met).
         default: false
+      configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
+        type: bool
+        default: false
+        description: |-
+          Available from AVD 6.6.0.
+          When this is set to `true`, the presence of access-list `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+          An error is raised if the referenced ACL is not defined under `ipv4_acls`.

@@ -1,0 +1,29 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-ipv4-standard-acl-ssh-settings-vrfs
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+ipv4_standard_acls:
+  - name: ACL-SSH-STANDARD
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+ssh_settings:
+  enabled: false
+  vrfs:
+    - name: VRF20
+      enabled: true
+      ipv4_standard_acl: missing-acl
+
+expected_error_message: >-
+  'ipv4_standard_acl[name=missing-acl]' is required but was not found for host 'missing-ipv4-standard-acl-ssh-settings-vrfs'.

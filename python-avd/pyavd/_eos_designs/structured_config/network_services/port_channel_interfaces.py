@@ -141,17 +141,25 @@ class PortChannelInterfacesMixin(Protocol):
         if interface_ip and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={l3_port_channel.name}]"
-        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, context, "in")
-        self.structured_config_utils._validate_ipv4_acl_exclusion(l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, context, "out")
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_port_channel.ipv4_acl_in, l3_port_channel.ipv4_standard_acl_in, "ipv4_acl", "ipv4_standard_acl", context, "in"
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_port_channel.ipv4_acl_out, l3_port_channel.ipv4_standard_acl_out, "ipv4_acl", "ipv4_standard_acl", context, "out"
+        )
         if l3_port_channel.ipv4_acl_in:
-            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(
+                name=l3_port_channel.ipv4_acl_in, interface_name=l3_port_channel.name, interface_ip=interface_ip
+            )
             port_channel_interface.access_group_in = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
         elif l3_port_channel.ipv4_standard_acl_in:
             self.structured_config_utils._set_ipv4_standard_acl(l3_port_channel.ipv4_standard_acl_in)
             port_channel_interface.access_group_in = l3_port_channel.ipv4_standard_acl_in
         if l3_port_channel.ipv4_acl_out:
-            acl = self.shared_utils.get_ipv4_acl(name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip)
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(
+                name=l3_port_channel.ipv4_acl_out, interface_name=l3_port_channel.name, interface_ip=interface_ip
+            )
             port_channel_interface.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
         elif l3_port_channel.ipv4_standard_acl_out:
