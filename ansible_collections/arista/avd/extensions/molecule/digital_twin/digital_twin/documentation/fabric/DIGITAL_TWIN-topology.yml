@@ -100,6 +100,44 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+- digital-twin-hardware-identity-custom-system-mac-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.20/32
+    version: 4.33.1.1F
+    serial_number: DT021C73000014
+    system_mac_address: 02:1c:73:01:00:14
+- digital-twin-hardware-identity-disabled-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.10/32
+    version: 4.33.1.1F
+- digital-twin-hardware-identity-serial-only-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.21/32
+    version: 4.33.1.1F
+    serial_number: DT0000000021
+- digital-twin-hardware-identity-system-mac-only-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.22/32
+    version: 4.33.1.1F
+    system_mac_address: 02:1c:73:10:16:22
+- digital-twin-hardware-identity-tests-cloudeos:
+    node_type: cloudeos
+    ip_addr: 192.168.10.12/32
+    version: 4.33.2F
+    serial_number: DTCLOUDEOSSERIAL
+    system_mac_address: 02:1c:73:00:10:12
+    ztp: true
+- digital-twin-hardware-identity-tests-third-party:
+    node_type: third-party
+    ip_addr: 192.168.10.13/32
+    version: byod
+- digital-twin-hardware-identity-tests-veos:
+    node_type: veos
+    ip_addr: 192.168.10.11/32
+    version: 4.33.1.1F
+    serial_number: DT0000000001
+    system_mac_address: 02:1c:73:00:01:11
+    ztp: true
 - digital-twin-veos-no-mgmt:
     node_type: veos
     version: 4.33.1.1F

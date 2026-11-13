@@ -2632,6 +2632,77 @@ keys:
               Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs
               and SSH configuration for non-default VRFs are preserved.'
             default: false
+          serial_number_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the serial
+              number of ACT Digital Twin devices.
+
+              When set, the rendered value is written into the device metadata and
+              provided as the serial number in the ACT topology.
+
+              Can be overridden per device with `digital_twin.serial_number` at node
+              level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (resolved production system MAC address), `hostname`,
+              `device_id`, `fabric_name`.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no serial number is included in the metadata or the ACT topology.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          system_mac_address_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the system
+              MAC address of ACT Digital Twin devices.
+
+              When set, the rendered value is used throughout the device''s EOS configuration
+              (e.g., SNMPv3 engine ID), written into the device metadata, and provided
+              as the system MAC address in the ACT topology.
+
+              Can be overridden per device with `digital_twin.system_mac_address`
+              at node level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (production system MAC address), `hostname`, `device_id`,
+              `fabric_name`.
+
+              The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+              `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+              digit). The all-zero address is reserved and not accepted by EOS.
+
+              Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh`
+              format.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no system MAC address is included in the metadata or the ACT
+              topology, and the production `system_mac_address` is used for EOS configuration.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          ztp:
+            type: bool
+            default: false
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for all Digital
+              Twin devices.
+
+              Can be overridden by `digital_twin.ztp` at node level.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for
+              all other node types.'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
@@ -6648,8 +6719,44 @@ keys:
                     mtu:
                       type: int
                     ipv4_acl_in:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -6930,12 +7037,44 @@ keys:
                       type: int
                       description: MTU can only be set on the parent Port-Channel.
                     ipv4_acl_in:
-                      description: Name of the IPv4 access-list to be assigned in
+                      description: 'Name of the IPv4 access-list to be assigned in
                         the ingress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
-                      description: Name of the IPv4 Access-list to be assigned in
+                      description: 'Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -9774,6 +9913,7 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
@@ -9856,6 +9996,7 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
@@ -9936,6 +10077,7 @@ keys:
     - platforms:
       - CloudEOS
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_install: false
         interface_storm_control: false
         per_interface_l2_mru: false
@@ -15445,6 +15587,69 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+              serial_number:
+                type: str
+                min_length: 1
+                description: 'Serial number or AVD string formatter template for this
+                  ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.serial_number_template`
+                  for this device.
+
+                  When set, the rendered value is written into the device metadata
+                  and provided as the serial number in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax and variables
+                  as `digital_twin.fabric.serial_number_template`.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              system_mac_address:
+                type: str
+                min_length: 1
+                description: 'System MAC address or AVD string formatter template
+                  for this ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.system_mac_address_template`
+                  for this device.
+
+                  When set, the rendered value is used throughout the device''s EOS
+                  configuration (e.g., SNMPv3 engine ID), written into the device
+                  metadata, and provided as the system MAC address in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax, variables,
+                  MAC address formats, and normalization as `digital_twin.fabric.system_mac_address_template`.
+
+                  The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+                  `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                  digit). The all-zero address is reserved and not accepted by EOS.
+
+                  Regardless of the input format, the MAC address is normalized to
+                  `hh:hh:hh:hh:hh:hh` format.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              ztp:
+                type: bool
+                description: 'Enable ZTP (Zero Touch Provisioning) mode for this Digital
+                  Twin device.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.
+
+                  Overrides global `digital_twin.fabric.ztp` when defined.'
           validation_profile:
             documentation_options:
               table: node-type-common-configuration
@@ -16026,14 +16231,44 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress
@@ -16079,7 +16314,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
@@ -16316,14 +16551,44 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress
@@ -16369,7 +16634,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
@@ -16807,6 +17072,12 @@ $defs:
               type: bool
               default: true
               description: 'Support for 802.1X BPDU bypass.
+
+                The feature will be ignored on platforms where this is false.'
+            dot1x_mac_based_access_list:
+              type: bool
+              default: true
+              description: 'Support for 802.1X Per-MAC ACL mode on the interfaces.
 
                 The feature will be ignored on platforms where this is false.'
             address_locking:
