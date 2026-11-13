@@ -202,6 +202,9 @@ Serial Number: DEADBEEFC0FFEW
   - [BFD Interfaces](#bfd-interfaces)
 - [Monitor Loop Protection](#monitor-loop-protection)
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
+- [Monitor Security Awake](#monitor-security-awake)
+  - [Nucleus](#nucleus)
+  - [Monitor Security Awake Device Configuration](#monitor-security-awake-device-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Label Ranges](#mpls-label-ranges)
@@ -11877,6 +11880,44 @@ monitor loop-protection
    rate-limit 100
    transmit-interval 10
    disabled-time 100
+```
+
+## Monitor Security Awake
+
+| Disabled | Flow Table Size Entries | Ipfix Listener Port | Monitor Point Identifier | Unknown Udp Ndr Application | Topic |
+| -------- | ----------------------- | ------------------- | ------------------------ | --------------------------- | ----- |
+| False | 16000 | 4739 | 25 | True | packet-analysis-sessions |
+
+### Nucleus
+
+| Name | Local Interface | Destination IP | Port | SSL Profile |
+| ---- | --------------- | -------------- | ---- | ----------- |
+| nucleus1.example.com | Loopback0 | 192.0.2.10 | 9094 | AWAKE_SSL |
+| nucleus2.example.com | Loopback0 | 192.0.2.11 | - | AWAKE_SSL |
+
+### Monitor Security Awake Device Configuration
+
+```eos
+!
+monitor security awake
+   topic packet-analysis-sessions
+   monitor-point identifier 25
+   flow table size 16000 entries
+   ipfix listener port 4739
+   !
+   ndr application
+      unknown-udp
+   !
+   nucleus nucleus1.example.com
+      local interface Loopback0
+      destination 192.0.2.10 port 9094
+      ssl profile AWAKE_SSL
+   !
+   nucleus nucleus2.example.com
+      local interface Loopback0
+      destination 192.0.2.11
+      ssl profile AWAKE_SSL
+   no disabled
 ```
 
 ## MPLS
