@@ -1,0 +1,49 @@
+---
+fabric_name: SFLOW_NODE_L3_INTERFACES_TESTS
+type: spine
+underlay_routing_protocol: none
+bgp_as: 65000
+
+avd_design_future:
+  fix_sflow_parent_subinterface_conflicts: true
+
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: default
+
+fabric_sflow:
+  l3_interfaces: true
+
+spine:
+  defaults:
+    platform: 7280R
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    # Future disabled. Explicit physical interface and subinterface both retain sFlow.
+    - name: sflow-node-l3-interfaces-future-disabled-explicit-tests-spine
+      id: 4
+      l3_interfaces:
+        - name: Ethernet1.100
+          ip_address: 10.4.100.1/24
+        - name: Ethernet1
+          ip_address: 10.4.1.1/24
+    # Future disabled. An automatically created physical parent retains existing sFlow behavior.
+    - name: sflow-node-l3-interfaces-future-disabled-tests-spine
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1.100
+          ip_address: 10.1.100.1/24
+    # Unsupported platform. Subinterface sFlow and the conflict fix are not applied.
+    - name: sflow-node-l3-interfaces-non-r-series-tests-spine
+      id: 2
+      platform: 7050X3
+      l3_interfaces:
+        - name: Ethernet1.100
+          ip_address: 10.2.100.1/24
+    # Future enabled. Disable sFlow on the automatically created physical parent.
+    - name: sflow-node-l3-interfaces-tests-spine
+      id: 3
+      l3_interfaces:
+        - name: Ethernet1.100
+          ip_address: 10.3.100.1/24
