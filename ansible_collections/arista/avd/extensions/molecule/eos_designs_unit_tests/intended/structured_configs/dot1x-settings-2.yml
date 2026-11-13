@@ -58,6 +58,16 @@ dot1x:
     access_list_ipv4: web-acl
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  shutdown: false
+  dot1x:
+    reauthentication: true
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: dot1x-settings-2
 ip_access_lists:
 - name: web-acl
@@ -86,7 +96,10 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
+  platform: cEOSLab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 radius_server:
   dynamic_authorization:
     port: 100
