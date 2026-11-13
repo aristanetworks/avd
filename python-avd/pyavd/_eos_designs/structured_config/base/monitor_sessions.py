@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._eos_designs.structured_config.interface_data import InterfaceData
+from pyavd._eos_designs.structured_config.models import InterfaceData
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.groupby import groupby_obj
