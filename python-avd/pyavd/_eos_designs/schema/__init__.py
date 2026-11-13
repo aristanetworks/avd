@@ -1932,7 +1932,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         configure_queue_monitor_streaming_ipv4_acl_from_catalog: bool
         """
-        Available from AVD 6.5.0.
+        Available from AVD 6.6.0.
         Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
         under `ipv4_acls`.
         When enabled, configure the referenced extended access-list on devices where
@@ -2165,7 +2165,7 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     configure_queue_monitor_streaming_ipv4_acl_from_catalog:
-                       Available from AVD 6.5.0.
+                       Available from AVD 6.6.0.
                        Raise an error if `queue_monitor_streaming.ip_access_group` is not defined
                        under `ipv4_acls`.
                        When enabled, configure the referenced extended access-list on devices where
