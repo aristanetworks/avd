@@ -22,8 +22,10 @@ AVD Documentation:
 The AVD collection has the following requirements:
 
 - Python 3.11 to 3.14
-- Ansible Core 2.16.0 to 2.22.x (Ansible Core 2.22 requires Python 3.13 or newer)
+- Ansible Core 2.16.0 to 2.22.x
 - the Python package `pyavd[ansible-collection]` matching the collection version
+
+Supported Python versions depend on the Ansible Core release. Consult the [Ansible Core support matrix](https://docs.ansible.com/projects/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for compatible control-node Python versions.
 
 ## Installation
 

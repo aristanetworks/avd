@@ -36,7 +36,7 @@ AVD Documentation:
 
 [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through its **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
-The collection supports Ansible Core 2.16.0 to 2.22.x with Python 3.11 to 3.14. Ansible Core 2.22 requires Python 3.13 or newer. See the [collection requirements](ansible_collections/arista/avd/README.md#requirements) for installation details.
+The collection supports Ansible Core 2.16.0 to 2.22.x with Python 3.11 to 3.14. Supported Python versions depend on the Ansible Core release. Consult the [Ansible Core support matrix](https://docs.ansible.com/projects/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for compatible control-node Python versions. See the [collection requirements](ansible_collections/arista/avd/README.md#requirements) for installation details.
 
 ### Examples
 
