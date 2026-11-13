@@ -10,6 +10,12 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet20
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet18
   shutdown: false
   channel_group:

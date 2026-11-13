@@ -11,6 +11,8 @@ l3leaf:
       l3_interfaces:
         - name: Ethernet17
           speed: auto 10000full
+        - name: Ethernet20
+          speed: sfp-1000baset auto 100full
       l3_port_channels:
         - name: Port-Channel18
           mode: active

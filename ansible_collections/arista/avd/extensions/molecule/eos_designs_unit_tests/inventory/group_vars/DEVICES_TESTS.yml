@@ -134,3 +134,7 @@ network_ports:
     switch_ports: [Ethernet22]
     endpoint: FIXED_SPEED_PRESERVED
     speed: 10g
+  - switches: [devices-l2leaf1]
+    switch_ports: [Ethernet23]
+    endpoint: SFP_AUTO_MODE_PRESERVED
+    speed: sfp-1000baset auto 100full

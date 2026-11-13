@@ -48279,9 +48279,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             explicit_interface_speed_auto_mode: bool
             """
-            Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
-            When set to false, these
-            commands are omitted while `speed auto` and fixed speed commands are preserved.
+            Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet
+            interfaces.
+            When set to false, these commands are omitted while `speed auto`, `speed <mode>` and
+            `speed forced <mode>` commands are preserved.
 
             Default value: `True`
             """
@@ -48524,9 +48525,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for storm-control.
                            The feature will be ignored on platforms where this is false.
                         explicit_interface_speed_auto_mode:
-                           Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
-                           When set to false, these
-                           commands are omitted while `speed auto` and fixed speed commands are preserved.
+                           Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet
+                           interfaces.
+                           When set to false, these commands are omitted while `speed auto`, `speed <mode>` and
+                           `speed forced <mode>` commands are preserved.
                         poe:
                            Support for PoE.
                            The feature will be ignored on platforms where this is false.
@@ -50204,9 +50206,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             explicit_interface_speed_auto_mode: bool
             """
-            Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
-            When set to false, these
-            commands are omitted while `speed auto` and fixed speed commands are preserved.
+            Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet
+            interfaces.
+            When set to false, these commands are omitted while `speed auto`, `speed <mode>` and
+            `speed forced <mode>` commands are preserved.
 
             Default value: `True`
             """
@@ -50449,9 +50452,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for storm-control.
                            The feature will be ignored on platforms where this is false.
                         explicit_interface_speed_auto_mode:
-                           Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
-                           When set to false, these
-                           commands are omitted while `speed auto` and fixed speed commands are preserved.
+                           Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet
+                           interfaces.
+                           When set to false, these commands are omitted while `speed auto`, `speed <mode>` and
+                           `speed forced <mode>` commands are preserved.
                         poe:
                            Support for PoE.
                            The feature will be ignored on platforms where this is false.

@@ -23,7 +23,7 @@ class UtilsMixin(Protocol):
         """Omit explicit auto speed modes on platforms where they are not supported."""
         if configured_speed is None:
             return None
-        if not self.shared_utils.platform_settings.feature_support.explicit_interface_speed_auto_mode and configured_speed.startswith("auto "):
+        if not self.shared_utils.platform_settings.feature_support.explicit_interface_speed_auto_mode and "auto " in configured_speed:
             return None
         return configured_speed
 

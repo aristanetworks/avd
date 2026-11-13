@@ -137,8 +137,8 @@ $defs:
               type: bool
               default: true
               description: |-
-                Support for explicit `speed auto <mode>` commands on Ethernet interfaces.
-                When set to false, these commands are omitted while `speed auto` and fixed speed commands are preserved.
+                Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet interfaces.
+                When set to false, these commands are omitted while `speed auto`, `speed <mode>` and `speed forced <mode>` commands are preserved.
             poe:
               type: bool
               default: false
