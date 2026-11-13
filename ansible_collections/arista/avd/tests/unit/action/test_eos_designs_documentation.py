@@ -306,6 +306,9 @@ def test_main_writes_act_topology_without_containerlab_post_processing(action_mo
                     node_type="veos",
                     ip_addr="192.0.2.1",
                     version="4.33.1.1F",
+                    serial_number=None,
+                    system_mac_address=None,
+                    ztp=None,
                     internet_access=None,
                     ports=None,
                 )
