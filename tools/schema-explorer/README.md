@@ -140,6 +140,54 @@ Two callbacks:
   `<site_dir>/_assets/schema-explorer/` so the generated site serves the SPA,
   static assets, and SQLite database from one shared location.
 
+## Runtime dependencies
+
+The source contains a package manifest and npm lockfile instead of copied
+third-party libraries. The build requires **Node.js 22+ and npm**, in addition
+to the Python documentation dependencies. Read the Docs and the local docs
+container install Node for this purpose.
+
+| Package | Version | Purpose |
+| ------- | ------- | ------- |
+| `bootstrap` | 5.3.3 | Standalone CSS and interactive controls |
+| `bootstrap-icons` | 1.11.3 | Icon CSS and fonts |
+| `sql.js` | 1.10.3 | Browser SQLite engine and matching WASM binary |
+
+Both `generate.py` and the MkDocs hook run `npm ci --engine-strict --omit=dev --ignore-scripts`
+in a temporary directory outside the watched repository. npm verifies the
+lockfile's tarball integrity. Only the explicitly selected runtime files and upstream licenses are
+copied into the generated `vendor/` directory; package metadata, tests,
+`node_modules`, and browser tooling are never published. The build derives HTML
+Subresource Integrity attributes, lazy-loader hashes, and the separately checked
+WASM hash from the installed bytes. Do not edit hashes manually. The source
+HTML and JavaScript contain build placeholders and must be built before use.
+
+The generated docs remain self-contained: JS, CSS, fonts, WASM, and SQLite are
+served from the docs origin, with no runtime CDN dependency. A build needs npm
+registry access (or a populated npm download cache); a failed installation
+fails the build rather than publishing stale vendor files.
+
+Dependabot tracks this directory's runtime and browser-test packages. To bump
+a runtime dependency, update its exact version and lockfile together, then run
+the browser checks below. Keep sql.js JavaScript and WASM from the same package.
+
+### Browser integration checks
+
+```bash
+npm --prefix tools/schema-explorer ci --ignore-scripts
+# Install Chromium once; Linux CI also uses --with-deps for system libraries.
+(cd tools/schema-explorer && npx --no-install playwright install chromium)
+make schema-explorer-browser-check
+```
+
+The suite builds a minimal real MkDocs site using the production hook and
+Markdown formatter, then tests standalone and embedded explorers in Chromium:
+SQLite/WASM loading, search, variable details, escaped schema descriptions,
+YAML view, Bootstrap collapse controls, icon font requests, same-origin asset
+requests, and browser errors. A plain documentation page must not load runtime
+dependencies. The `Schema Explorer runtime` workflow runs these checks on
+relevant changes, including dependency bumps and merge-queue runs.
+
 ## Local development
 
 ```bash

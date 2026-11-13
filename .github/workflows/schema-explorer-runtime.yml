@@ -1,0 +1,65 @@
+---
+name: Schema Explorer runtime
+"on":
+  pull_request:
+    paths:
+      - "tools/schema-explorer/**"
+      - "tools/schema_explorer_markdown.py"
+      - "python-avd/pyavd/**/schema/**"
+      - "python-avd/pyavd/_schema/**"
+      - "python-avd/schema_tools/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "Makefile"
+      - "mkdocs.yml"
+      - ".readthedocs.yaml"
+      - "development/entrypoint.sh"
+      - "development/docker-compose.yml"
+      - ".github/dependabot.yml"
+      - ".github/workflows/schema-explorer-runtime.yml"
+  push:
+    branches: [devel]
+    paths:
+      - "tools/schema-explorer/**"
+      - "tools/schema_explorer_markdown.py"
+      - "python-avd/pyavd/**/schema/**"
+      - "python-avd/pyavd/_schema/**"
+      - "python-avd/schema_tools/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "Makefile"
+      - "mkdocs.yml"
+      - ".readthedocs.yaml"
+      - "development/entrypoint.sh"
+      - "development/docker-compose.yml"
+      - ".github/dependabot.yml"
+      - ".github/workflows/schema-explorer-runtime.yml"
+  merge_group:
+permissions:
+  contents: read
+concurrency:
+  group: schema-explorer-runtime-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          python-version: "3.13"
+      - name: Install locked browser tooling
+        working-directory: tools/schema-explorer
+        run: |
+          npm ci --ignore-scripts
+          npx --no-install playwright install --with-deps chromium
+      - name: Check asset assembly and generator
+        run: uv run --group doc --group pytest pytest tools/schema-explorer/tests -q
+      - name: Check generated runtime in Chromium
+        run: make schema-explorer-browser-check

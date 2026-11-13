@@ -3,3 +3,8 @@ __pycache__/
 
 # Built explorer (assets + per-release SQLite) — copied into site/ by mkdocs_hook.py
 build/
+
+# Local browser test dependencies and reports
+node_modules/
+playwright-report/
+test-results/

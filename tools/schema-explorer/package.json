@@ -1,0 +1,19 @@
+{
+  "name": "avd-schema-explorer",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.3",
+    "bootstrap-icons": "1.11.3",
+    "sql.js": "1.10.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}
