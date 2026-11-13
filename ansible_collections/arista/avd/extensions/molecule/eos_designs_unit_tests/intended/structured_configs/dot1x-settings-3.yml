@@ -31,6 +31,16 @@ dot1x:
         auth_only: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  shutdown: false
+  dot1x:
+    reauthentication: true
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: dot1x-settings-3
 ip_igmp_snooping:
   globally_enabled: true
@@ -47,7 +57,10 @@ management_interfaces:
   type: oob
 metadata:
   is_deployed: true
+  platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 radius_server:
   vrfs:
   - name: MGMT
