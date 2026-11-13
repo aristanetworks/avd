@@ -109,12 +109,10 @@
 | VRF | Status |
 | --- | ------ |
 {%         for vrf in snmp_server.vrfs %}
-{%             if vrf.enable is arista.avd.defined(true) %}
+{%             if vrf.enable | arista.avd.default(false) %}
 {%                 set status = 'Enabled' %}
-{%             elif vrf.enable is arista.avd.defined(false) or (vrf.ipv4_acl is not arista.avd.defined and vrf.ipv6_acl is not arista.avd.defined and vrf.local_interface is not arista.avd.defined) %}
-{%                 set status = 'Disabled' %}
 {%             else %}
-{%                 set status = '-' %}
+{%                 set status = 'Disabled' %}
 {%             endif %}
 | {{ vrf.name }} | {{ status }} |
 {%         endfor %}

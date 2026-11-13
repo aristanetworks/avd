@@ -2893,7 +2893,7 @@ mcs client
 | aaa | Enabled |
 | abc | Enabled |
 | foo | Enabled |
-| not_enabled | - |
+| not_enabled | Disabled |
 
 #### SNMP Hosts Configuration
 
