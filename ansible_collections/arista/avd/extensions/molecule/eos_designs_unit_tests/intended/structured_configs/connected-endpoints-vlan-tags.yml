@@ -63,18 +63,6 @@ ethernet_interfaces:
     peer: esx_port_channel
     peer_type: server
     peer_key: servers
-- name: Ethernet6
-  description: vlan_tags matching no VLAN -> none
-  shutdown: false
-  metadata:
-    peer: no_matching_vlans
-    peer_type: server
-    peer_key: servers
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: none
 - name: Ethernet7
   description: vlan_tags=[NOT_ON_SWITCH] -> 601 (130 and 610 are not configured on this switch)
   shutdown: false

@@ -12335,8 +12335,7 @@ $defs:
           If `vlans` is also set to a range of VLANs, the allowed VLANs will be the
           union of both.
 
-          If no VLANs match the tags and `vlans` is not set, no VLANs will be allowed
-          on the trunk port.
+          An error is raised if no VLANs configured on the switch match the tags.
 
           VLANs without `tags` carry the default tag `all`.
 

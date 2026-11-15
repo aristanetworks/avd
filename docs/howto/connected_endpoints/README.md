@@ -99,7 +99,7 @@ With the profile above, `switchport trunk allowed vlan 10,600-601` is generated 
 
 - `vlan_tags` does not change which VLANs are configured on a switch. That is still controlled by `filter.tags` and `filter.tenants`, and only tag-matched VLANs that are configured on the switch are allowed on the port. VLANs listed in `vlans` are added as given.
 - With `filter.only_vlans_in_use: true`, VLANs matching `vlan_tags` are treated as in use.
-- If no VLAN matches and `vlans` is not set, the trunk is configured with `switchport trunk allowed vlan none` instead of allowing all VLANs.
+- If no VLAN configured on the switch matches `vlan_tags`, an error is raised.
 - `vlan_tags` requires `mode: trunk` and cannot be combined with `vlans` set to `all`, `defined_vlans` or `none`.
 
 ### Define port profiles

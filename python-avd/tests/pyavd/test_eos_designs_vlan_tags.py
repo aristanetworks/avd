@@ -69,3 +69,9 @@ def test_vlan_tags_rejected_on_port_channel_subinterfaces() -> None:
     inputs = _inputs({"vlan_tags": ["ESX"], "port_channel": {"mode": "active", "subinterfaces": [{"number": 100, "vlan_id": 100}]}})
     with pytest.raises(AristaAvdInvalidInputsError, match="'vlan_tags' requires 'mode: trunk'"):
         _structured_config(inputs)
+
+
+def test_vlan_tags_no_matching_vlans_raises() -> None:
+    inputs = _inputs({"mode": "trunk", "vlans": "10", "vlan_tags": ["UNKNOWN_TAG"]})
+    with pytest.raises(AristaAvdInvalidInputsError, match=r"No VLANs configured on this device match 'vlan_tags: \[UNKNOWN_TAG\]'"):
+        _structured_config(inputs)

@@ -344,10 +344,16 @@ class UtilsMixin(Protocol):
 
         The result is the union of the VLANs set in "vlans" (if any) and the VLANs configured on this device
         carrying at least one of the tags in "vlan_tags".
-        Returns "none" if no VLANs are found, to avoid implicitly allowing all VLANs.
         Inputs are validated by "_validate_adapter_vlan_tags" before this is called.
-        """
-        vlans = {int(vlan) for vlan in range_expand(adapter.vlans)} if adapter.vlans else set()
-        vlans.update(self.shared_utils.get_vlans_from_vlan_tags(adapter.vlan_tags).intersection(self.shared_utils.accepted_vlans))
 
-        return list_compress(list(vlans)) if vlans else "none"
+        Raises AristaAvdInvalidInputsError if no VLANs configured on this device match "vlan_tags".
+        """
+        tagged_vlans = self.shared_utils.get_vlans_from_vlan_tags(adapter.vlan_tags).intersection(self.shared_utils.accepted_vlans)
+        if not tagged_vlans:
+            msg = f"No VLANs configured on this device match 'vlan_tags: [{', '.join(adapter.vlan_tags)}]'. Found under '{adapter._internal_data.context}'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        vlans = {int(vlan) for vlan in range_expand(adapter.vlans)} if adapter.vlans else set()
+        vlans.update(tagged_vlans)
+
+        return list_compress(list(vlans))

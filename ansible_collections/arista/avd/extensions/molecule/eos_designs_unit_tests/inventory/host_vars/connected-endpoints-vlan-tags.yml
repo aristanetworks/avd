@@ -49,13 +49,6 @@ servers:
         port_channel:
           mode: active
           description: vlans=10-11 + vlan_tags=[ESX2] -> 10-11,120,602
-  - name: no_matching_vlans
-    adapters:
-      - switches: [connected-endpoints-vlan-tags]
-        switch_ports: [Ethernet6]
-        mode: trunk
-        vlan_tags: [UNKNOWN_TAG]
-        description: vlan_tags matching no VLAN -> none
   - name: tag_partially_filtered
     adapters:
       - switches: [connected-endpoints-vlan-tags]
