@@ -298,6 +298,8 @@ class UtilsMixin(Protocol):
         elif legacy_access_list:
             # Deprecated input kept for backwards compatibility. Preserve the interface ACL reference without catalog validation.
             dot1x.aaa.unresponsive.action.traffic_allow_access_list = legacy_access_list
+        if not self.shared_utils.platform_settings.feature_support.dot1x_mac_based_access_list:
+            dot1x.mac_based_access_list = None
         if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
             acl_found = False
             if acl_name in self.inputs.ipv4_acls:
