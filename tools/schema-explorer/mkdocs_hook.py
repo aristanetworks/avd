@@ -38,7 +38,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-import pyavd_utils_gen._bindings as generation_bindings  # pyright: ignore[reportMissingModuleSource]
+import pyavd_utils_gen._bindings as generation_bindings
 
 HERE = Path(__file__).resolve().parent
 STATIC_DIR = HERE / "static"

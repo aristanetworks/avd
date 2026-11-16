@@ -201,9 +201,10 @@ pre-commit run schemas --all-files
 make schema-explorer-build
 ```
 
-The MkDocs hook freshness check tracks the combined YAML sources and the
-metaschema. Fragment-only edits can look stale until the repository schema
-workflow regenerates the combined YAML files.
+The MkDocs hook freshness check tracks the combined YAML sources, the
+generation script, static assets, and the generator package version and native
+extension timestamp. Fragment-only edits do not invalidate the cache until the
+repository schema workflow regenerates the combined YAML files.
 
 ## Architecture decisions
 
@@ -211,10 +212,11 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
 
 - **MkDocs static + sql.js**, not App Engine — picked at the May 8th
   maintainers call.
-- **`schema_tools` resolver**, not raw `yaml.safe_load` — see
-  `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
-  same-schema `$ref` hole. Cross-schema `$ref` with `hide_keys` stays a leaf
-  `cross_ref` link; other cross-schema reuse is resolved like schema docs.
+- **Schema interpretation through `pyavd-utils-gen`.** The Explorer and
+  generated schema documentation share reference resolution, dynamic-key
+  expansion, and hidden-key boundaries. AVD owns the JSONL-to-SQLite import
+  and browser assets. Hidden cross-schema references remain leaf `cross_ref`
+  links; visible cross-schema reuse is expanded.
 - **Embedded views via a Markdown fence**, not iframe / template override
   — picked at the May 15th maintainers call. Docs authors use
   `schema-explorer` fenced blocks, which the Markdown formatter renders into

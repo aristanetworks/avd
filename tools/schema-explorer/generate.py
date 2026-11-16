@@ -97,7 +97,8 @@ def build(avd_root: Path, out: Path) -> dict[str, int]:
         jsonl = temporary / "schema.jsonl"
         counts = generate_schema_explorer_jsonl_from_paths(sources, list(SCHEMA_IDS), jsonl)
         tmp_out = temporary / "schema.sqlite"
-        with closing(sqlite3.connect(tmp_out)) as conn, conn:
+        conn = sqlite3.connect(tmp_out)
+        with closing(conn), conn:
             _create_schema(conn)
             with jsonl.open(encoding="UTF-8") as stream:
                 conn.executemany(
