@@ -16,7 +16,7 @@ env:
       container_name:
         required: true
         type: string
-      # Container tags, e.g. "latest,python3.11" or "latest,python3.11-avd4.1.0".
+      # Container tags, e.g. "latest,python3.14" or "latest,python3.14-avd-6.5.0".
       # Container tags are optional as they are auto-generated if not provided.
       container_tags:
         required: false
