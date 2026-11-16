@@ -10,16 +10,15 @@ name: Scan published universal images
   workflow_dispatch:
     inputs:
       image_repository:
-        description: "Image repository (owner/repo); empty uses this repository. For example: aristanetworks/avd"
+        description: "Forks only: image repository (owner/repo); empty uses this repository"
         type: string
         required: false
-        # Resolve the current repository at runtime below; input defaults are literal values.
-        default: ""
+        default: aristanetworks/avd
       release_tag:
-        description: "Optional release tag (for example v6.0.0); leave empty to scan current universal development images"
+        description: "Release tag (for example v6.0.0), or devel for latest universal development images"
         type: string
         required: false
-        default: ""
+        default: devel
   workflow_run:
     # Only universal has a release build. A direct release:published trigger could run before its
     # images exist: devcontainers/ci pushes in the build job's post hook. Completion includes that hook.
@@ -44,6 +43,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
+      # Honor overrides only on forks. Resolve once so the image target and SARIF category stay aligned.
+      image_repository: ${{ github.event.repository.fork && inputs.image_repository || github.repository }}
       avd_ref: ${{ steps.ref.outputs.avd_ref }}
       scope: ${{ steps.ref.outputs.scope }}
     steps:
@@ -67,7 +68,7 @@ jobs:
             // development scans. Python versions and architectures are a native matrix below; there
             // is no need to generate image lists, collect build metadata, or check out source code.
             core.setOutput('avd_ref', releaseTag || 'devel');
-            core.setOutput('scope', releaseTag ? `release-${releaseTag}` : 'devel');
+            core.setOutput('scope', releaseTag && releaseTag !== 'devel' ? `release-${releaseTag}` : 'devel');
 
   scan:
     name: Trivy / universal / Python ${{ matrix.python }} / ${{ matrix.arch }}
@@ -76,7 +77,7 @@ jobs:
     # Optional execution bound, including scanner setup and uploads.
     timeout-minutes: 30
     env:
-      IMAGE_TAG: ghcr.io/${{ inputs.image_repository || github.repository }}/universal:python${{ matrix.python }}-avd-${{ needs.prepare.outputs.avd_ref }}
+      IMAGE_TAG: ghcr.io/${{ needs.prepare.outputs.image_repository }}/universal:python${{ matrix.python }}-avd-${{ needs.prepare.outputs.avd_ref }}
     permissions:
       contents: read
       security-events: write
@@ -179,8 +180,9 @@ jobs:
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
         with:
           sarif_file: reports/trivy.sarif
-          # Keep release and development results separate, as well as Python/architecture variants.
-          category: container-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
+          # Separate image repositories as well as release/development and Python/architecture variants,
+          # so manual scans of another repository cannot replace results for the same upstream variant.
+          category: container-${{ needs.prepare.outputs.image_repository }}-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
       - name: Retain available scan reports
         # Try the artifact upload even if scanning or Code Scanning failed; GitHub's default success()
         # would skip it and discard reports that were already generated before that failure.
