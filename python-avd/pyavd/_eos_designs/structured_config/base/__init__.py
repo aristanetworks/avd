@@ -430,7 +430,7 @@ class AvdStructuredConfigBaseProtocol(
         ipv4_acl = self.inputs.queue_monitor_streaming.ipv4_acl
         ipv4_standard_acl = self.inputs.queue_monitor_streaming.ipv4_standard_acl
         context = "queue-monitor streaming"
-        # TODO: 7.0.0: Only validate ipv4_standard_acl and ipv4_acl.
+        # TODO: 7.0.0: Only validate ipv4_standard_acl and ipv4_acl, once ip_access_group is removed from the schema.
         self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_acl, "ip_access_group", "ipv4_acl", context)
         self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_standard_acl, "ip_access_group", "ipv4_standard_acl", context)
         self.structured_config_utils._validate_ipv4_acl_exclusion(ipv4_acl, ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context)
