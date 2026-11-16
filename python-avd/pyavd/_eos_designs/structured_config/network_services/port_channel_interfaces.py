@@ -144,15 +144,15 @@ class PortChannelInterfacesMixin(Protocol):
         self.structured_config_utils._validate_ipv4_acl_exclusion(
             l3_port_channel.ipv4_acl_in,
             l3_port_channel.ipv4_standard_acl_in,
-            "ipv4_acl",
-            "ipv4_standard_acl",
+            "ipv4_acl_in",
+            "ipv4_standard_acl_in",
             context,
         )
         self.structured_config_utils._validate_ipv4_acl_exclusion(
             l3_port_channel.ipv4_acl_out,
             l3_port_channel.ipv4_standard_acl_out,
-            "ipv4_acl",
-            "ipv4_standard_acl",
+            "ipv4_acl_out",
+            "ipv4_standard_acl_out",
             context,
         )
         if l3_port_channel.ipv4_acl_in:
