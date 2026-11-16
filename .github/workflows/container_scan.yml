@@ -149,8 +149,31 @@ jobs:
       - name: Generate SBOM from scan results
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: trivy convert --format cyclonedx --output reports/sbom.cdx.json reports/trivy.json
+      - name: Show vulnerability table in job summary
+        if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
+        run: |
+          # Reuse the JSON scan: this only formats findings, without pulling/scanning the image again.
+          # Report MEDIUM findings too; only HIGH/CRITICAL findings fail the separate final gate.
+          trivy convert --format table --severity MEDIUM,HIGH,CRITICAL --output reports/trivy.txt reports/trivy.json
+          {
+            echo "### Fixable MEDIUM/HIGH/CRITICAL vulnerabilities"
+            echo ""
+            echo '```text'
+            cat reports/trivy.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Generate HTML report from scan results
+        if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
+        run: |
+          # The action installs the Trivy binary without its contributed HTML template. Download the
+          # official template pinned to the same v0.76.2 commit; no source checkout or extra scan is needed.
+          # Download/conversion errors fail this security workflow normally; existing reports still upload.
+          curl -fsSL https://raw.githubusercontent.com/aquasecurity/trivy/3f6334d223b52188324af3b9923b4249cd206652/contrib/html.tpl \
+            -o "$RUNNER_TEMP/trivy-html.tpl"
+          trivy convert --format template --template "@$RUNNER_TEMP/trivy-html.tpl" \
+            --output reports/trivy.html reports/trivy.json
       - name: Upload findings to GitHub Code Scanning
-        # Upload a valid SARIF even if SBOM generation failed. Code Scanning must be enabled/available;
+        # Upload a valid SARIF even if another report failed. Code Scanning must be enabled/available;
         # an upload/API error is allowed to fail this workflow normally, followed by artifact upload below.
         if: ${{ !cancelled() && steps.sarif.outcome == 'success' }}
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
