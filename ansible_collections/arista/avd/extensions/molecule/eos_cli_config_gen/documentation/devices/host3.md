@@ -415,7 +415,12 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -434,7 +439,12 @@ router ospf 702
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 

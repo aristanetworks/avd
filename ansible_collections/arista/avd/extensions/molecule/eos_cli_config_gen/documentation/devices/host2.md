@@ -1337,7 +1337,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -1375,7 +1380,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
-| LSA | limit 5000 warning limit 70 percent exceed-action warn |
+| LSA Limit | 5000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 70 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -1397,7 +1407,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
-| LSA | limit 6000 disabled-time 15 minutes |
+| LSA Limit | 6000 |
+| LSA Disabled Time | 15 minutes |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1419,7 +1434,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA | limit 4000 warning limit 75 percent exceed-action warn |
+| LSA Limit | 4000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 75 percent |
+| LSA Exceed Action Warn | True |
 
 ##### Address Family IPv4
 
@@ -1430,7 +1450,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1451,7 +1476,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1475,7 +1505,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1494,7 +1529,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1513,7 +1553,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
-| LSA | limit 4500 exceed-action warn |
+| LSA Limit | 4500 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | True |
 
 #### VRF: data
 
@@ -1524,7 +1569,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -1535,7 +1585,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
-| LSA | limit 7000 incident-count limit 3 incident-count clear-timeout 6 minutes |
+| LSA Limit | 7000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | 3 |
+| LSA Incident Count Clear Timeout | 6 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1556,7 +1611,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
-| LSA | limit 8000 exceed-action warn |
+| LSA Limit | 8000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 

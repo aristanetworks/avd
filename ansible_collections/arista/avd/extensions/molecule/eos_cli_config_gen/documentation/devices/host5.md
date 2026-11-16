@@ -116,7 +116,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
-| LSA | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -127,7 +132,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| LSA | limit 3333 warning limit 85 percent exceed-action warn |
+| LSA Limit | 3333 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 85 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -146,7 +156,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| LSA | limit 4444 incident-count limit 4 incident-count clear-timeout 8 minutes |
+| LSA Limit | 4444 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | 4 |
+| LSA Incident Count Clear Timeout | 8 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
