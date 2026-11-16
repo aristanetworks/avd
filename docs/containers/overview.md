@@ -80,3 +80,7 @@ If you want to test a specific AVD branch or fork, use the following `devcontain
 
 !!! note
     Do not forget to adjust the parameters like AVD version according to your use case.
+
+!!! tip
+    For file permission issues on Linux, keep `"remoteUser": "avd"` and set `"updateRemoteUserUID": true` in `devcontainer.json`.
+    If permission issues persist, read and understand the [VSCode guide to adding a non-root user](https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user) before making further changes.
