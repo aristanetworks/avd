@@ -1951,7 +1951,6 @@ monitor loop-protection
 ```eos
 !
 monitor security awake
-   !
    nucleus NUCLEUS-B.EXAMPLE.COM
       destination 192.0.2.22
    disabled

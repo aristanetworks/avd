@@ -13,6 +13,14 @@
    monitor_security.awake.disabled is arista.avd.defined %}
 !
 monitor security awake
+{%     set awake_ns = namespace(
+           needs_separator=monitor_security.awake.topic is arista.avd.defined or
+                           monitor_security.awake.monitor_point_identifier is arista.avd.defined or
+                           monitor_security.awake.flow_table_size is arista.avd.defined or
+                           monitor_security.awake.ipfix_listener_port is arista.avd.defined or
+                           monitor_security.awake.ndr_application.unknown_udp is arista.avd.defined(true),
+           has_nucleus=false
+       ) %}
 {%     if monitor_security.awake.topic is arista.avd.defined %}
    topic {{ monitor_security.awake.topic }}
 {%     endif %}
@@ -34,7 +42,9 @@ monitor security awake
 {%         if nucleus.local_interface is arista.avd.defined or
            nucleus.destination is arista.avd.defined or
            nucleus.ssl_profile is arista.avd.defined %}
+{%             if awake_ns.needs_separator or awake_ns.has_nucleus %}
    !
+{%             endif %}
    nucleus {{ nucleus.name }}
 {%             if nucleus.local_interface is arista.avd.defined %}
       local interface {{ nucleus.local_interface }}
@@ -49,6 +59,7 @@ monitor security awake
 {%             if nucleus.ssl_profile is arista.avd.defined %}
       ssl profile {{ nucleus.ssl_profile }}
 {%             endif %}
+{%             set awake_ns.has_nucleus = true %}
 {%         endif %}
 {%     endfor %}
 {%     if monitor_security.awake.disabled is arista.avd.defined(true) %}
