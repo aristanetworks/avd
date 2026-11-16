@@ -10524,6 +10524,14 @@ keys:
 
               ACT does not provide direct Internet access to `cloudeos` or `veos`
               devices by default.'
+          ztp:
+            type: bool
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for the Digital
+              Twin device when supported by the Digital Twin environment.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types.'
       validate_no_errors_period:
         type: int
         description: Threshold (in minutes) defining how far back to check the logging
@@ -23836,6 +23844,11 @@ keys:
               type: str
       ipv4_acls:
         type: list
+        deprecation:
+          warning: false
+          removed: false
+          allow_with_new_key: false
+          new_key: vrfs[].ipv4_acl or ipv4_acl
         items:
           type: dict
           keys:
@@ -23844,8 +23857,18 @@ keys:
               description: IPv4 access list name.
             vrf:
               type: str
+              convert_types:
+              - int
+      ipv4_acl:
+        type: str
+        description: IPv4 access list name for VRF default.
       ipv6_acls:
         type: list
+        deprecation:
+          warning: false
+          removed: false
+          allow_with_new_key: false
+          new_key: vrfs[].ipv6_acl or ipv6_acl
         items:
           type: dict
           keys:
@@ -23854,8 +23877,18 @@ keys:
               description: IPv6 access list name.
             vrf:
               type: str
+              convert_types:
+              - int
+      ipv6_acl:
+        type: str
+        description: IPv6 access list for VRF default.
       local_interfaces:
         type: list
+        deprecation:
+          warning: false
+          removed: false
+          allow_with_new_key: false
+          new_key: vrfs[].local_interface or local_interface
         primary_key: name
         items:
           type: dict
@@ -23865,6 +23898,11 @@ keys:
               description: Interface name.
             vrf:
               type: str
+              convert_types:
+              - int
+      local_interface:
+        type: str
+        description: Local interface for VRF default.
       views:
         type: list
         items:
@@ -24123,6 +24161,15 @@ keys:
               description: VRF name.
             enable:
               type: bool
+            ipv4_acl:
+              type: str
+              description: IPv4 access list name for non-default VRF.
+            ipv6_acl:
+              type: str
+              description: IPv6 access list name for non-default VRF.
+            local_interface:
+              type: str
+              description: Local interface name for non-default VRF.
       ifmib_ifspeed_shape_rate:
         type: bool
         description: SNMP ifspeed reflecting shaping rate.
@@ -26583,7 +26630,13 @@ $defs:
 
           `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
 
-          if set in order to generate valid configuration in EOS.'
+          if set in order to generate valid configuration in EOS.
+
+          When source or destination port field-sets are configured, the application
+
+          must match only TCP and/or UDP. This restriction also applies to protocols
+
+          specified through protocol_ranges.'
         items:
           type: str
           valid_values:

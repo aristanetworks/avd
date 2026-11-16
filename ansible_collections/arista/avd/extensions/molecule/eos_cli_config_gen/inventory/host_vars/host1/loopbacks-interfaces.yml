@@ -27,7 +27,7 @@ loopback_interfaces:
   - name: Loopback100
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
     vrf: TENANT_A_PROJECT02
-    ip_address: 10.1.255.3/32
+    ip_address: 10.1.253.100/32
     ipv6_address_auto_config: true
     hardware_forwarding_id: true
     isis_enable: ISIS_MODE_FALLBACK

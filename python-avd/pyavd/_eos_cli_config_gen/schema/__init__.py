@@ -1825,9 +1825,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -1914,9 +1919,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -1990,9 +2000,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -2064,9 +2079,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -29629,6 +29649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
+                "ztp": {"type": bool},
             }
             environment: Environment | None
             """Targeted Digital Twin environment."""
@@ -29657,6 +29678,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             types.
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
+            ztp: bool | None
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+            Twin environment.
+            Supported Digital Twin environments:
+            - `act`: Applies only to `veos` and
+            `cloudeos` node types.
+            """
 
             if TYPE_CHECKING:
 
@@ -29670,6 +29699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
+                    ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -29695,6 +29725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+                           Twin environment.
+                           Supported Digital Twin environments:
+                           - `act`: Applies only to `veos` and
+                           `cloudeos` node types.
 
                     """
 
@@ -72500,14 +72536,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+                "local_interface": {"type": str},
+            }
             name: str
             """VRF name."""
             enable: bool | None
+            ipv4_acl: str | None
+            """IPv4 access list name for non-default VRF."""
+            ipv6_acl: str | None
+            """IPv6 access list name for non-default VRF."""
+            local_interface: str | None
+            """Local interface name for non-default VRF."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | UndefinedType | None = Undefined,
+                    ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv6_acl: str | UndefinedType | None = Undefined,
+                    local_interface: str | UndefinedType | None = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -72517,6 +72573,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         enable: enable
+                        ipv4_acl: IPv4 access list name for non-default VRF.
+                        ipv6_acl: IPv6 access list name for non-default VRF.
+                        local_interface: Local interface name for non-default VRF.
 
                     """
 
@@ -72534,8 +72593,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "location": {"type": str},
             "communities": {"type": Communities},
             "ipv4_acls": {"type": Ipv4Acls},
+            "ipv4_acl": {"type": str},
             "ipv6_acls": {"type": Ipv6Acls},
+            "ipv6_acl": {"type": str},
             "local_interfaces": {"type": LocalInterfaces},
+            "local_interface": {"type": str},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "users": {"type": Users},
@@ -72556,10 +72618,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         ipv4_acls: Ipv4Acls
         """Subclass of AvdList with `Ipv4AclsItem` items."""
+        ipv4_acl: str | None
+        """IPv4 access list name for VRF default."""
         ipv6_acls: Ipv6Acls
         """Subclass of AvdList with `Ipv6AclsItem` items."""
+        ipv6_acl: str | None
+        """IPv6 access list for VRF default."""
         local_interfaces: LocalInterfaces
         """Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`)."""
+        local_interface: str | None
+        """Local interface for VRF default."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -72586,8 +72654,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 location: str | UndefinedType | None = Undefined,
                 communities: Communities | UndefinedType = Undefined,
                 ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
+                ipv4_acl: str | UndefinedType | None = Undefined,
                 ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
+                ipv6_acl: str | UndefinedType | None = Undefined,
                 local_interfaces: LocalInterfaces | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
@@ -72609,8 +72680,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
+                    ipv4_acl: IPv4 access list name for VRF default.
                     ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
+                    ipv6_acl: IPv6 access list for VRF default.
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).
+                    local_interface: Local interface for VRF default.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     users: Subclass of AvdList with `UsersItem` items.
