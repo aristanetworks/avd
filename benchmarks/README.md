@@ -22,6 +22,9 @@ one full-scenario facts case, and one 15-device synthetic workflow:
 - `test_large_fabric_scaling.py` benchmarks a deterministic synthetic full
   workflow. The 15-device case runs in the default suite; the 150-device case is
   marked `benchmark_scale` and runs only in local scale-inclusive runs.
+  Adjacent L3 leaves form MLAG pairs; each L2 leaf has a port-channel to both
+  members of one pair. Access ports, uplinks, MLAG peer links, and downlinks use
+  separate interfaces.
 
 The synthetic workflow varies device count while holding the role proportions,
 service density, and two uplinks per leaf constant:

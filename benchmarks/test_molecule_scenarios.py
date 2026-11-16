@@ -39,11 +39,9 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
 )
 
 
-@pytest.mark.parametrize("_scenario", [None], ids=["eos_designs_unit_tests__eos_designs_unit_tests"])
 def test_molecule_scenario_avd_facts_benchmark(
     benchmark: BenchmarkFixture,
     benchmark_project: BenchmarkProject,
-    _scenario: None,
 ) -> None:
     """Benchmark fabric-wide AVD facts generation using the prepared end-to-end project."""
     source_data = [(fabric.inputs, fabric.hostvars, fabric.pool_manager) for fabric in benchmark_project.fabrics]

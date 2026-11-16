@@ -40,6 +40,7 @@ def test_large_fabric_full_workflow_benchmark(
     Scale device count in multiples of 15 while preserving the 1:2:2 ratio of
     spines, L3 leaves, and L2 leaves. Each size uses 5 VRFs with 10 SVIs per VRF
     and two uplinks per leaf, so service density and uplink count stay fixed.
+    L3 leaves form MLAG pairs; each L2 leaf uplinks to both members of one pair.
     Compare the results to assess scaling; linear runtime is not assumed.
 
     The 150-device test is marked for local full benchmark runs only.
@@ -65,9 +66,13 @@ def test_large_fabric_full_workflow_benchmark(
         all_hostvars = {}
         for hostname, host_hostvars in hostvars.items():
             validated_result = validate_inputs(host_hostvars)
-            if validated_result.validated_data:
-                all_inputs[hostname] = validated_result.validated_data
-                all_hostvars[hostname] = host_hostvars
+            validated_hostvars = validated_result.validated_data
+            if validated_hostvars is None:
+                violations = "; ".join(f"{violation.path}: {violation.message}" for violation in validated_result.validation_result.violations)
+                pytest.fail(f"Invalid benchmark inputs for {hostname}: {violations}", pytrace=False)
+
+            all_inputs[hostname] = validated_hostvars
+            all_hostvars[hostname] = host_hostvars
 
         # Step 2: Generate AVD facts
         avd_facts = get_avd_facts(all_inputs=all_inputs, all_hostvars=all_hostvars)

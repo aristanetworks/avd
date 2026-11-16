@@ -57,6 +57,10 @@ def generate_hostvars(
     Returns:
         Dictionary of hostvars keyed by hostname
     """
+    if l3leaf_count < 2 or l3leaf_count % 2:
+        msg = "l3leaf_count must be a positive even number to form MLAG pairs"
+        raise ValueError(msg)
+
     hostvars: dict[str, Any] = {}
     network_services = generate_network_services(vrf_count, per_vrf_svi_count)
     spines: list[str] = []
@@ -76,7 +80,7 @@ def generate_hostvars(
         host_hostvars.update(FABRIC_VARS)
         host_hostvars.update(NETWORK_PORTS)
         host_hostvars.update(network_services)
-        host_hostvars.update(generate_l3leaf_var(name, number, spines))
+        host_hostvars.update(generate_l3leaf_var(number, spines))
         hostvars[name] = host_hostvars
 
     for number in range(1, l2leaf_count + 1):
@@ -85,7 +89,7 @@ def generate_hostvars(
         host_hostvars.update(FABRIC_VARS)
         host_hostvars.update(NETWORK_PORTS)
         host_hostvars.update(network_services)
-        host_hostvars.update(generate_l2leaf_var(name, number, l3leafs))
+        host_hostvars.update(generate_l2leaf_var(number, l3leafs))
         hostvars[name] = host_hostvars
 
     return hostvars
@@ -132,48 +136,57 @@ def generate_spine_var(_name: str, number: int) -> dict:
     }
 
 
-def generate_l3leaf_var(name: str, number: int, spines: list[str]) -> dict:
-    """Generate L3 leaf-specific variables."""
-    r = Random(name)  # noqa: S311
+def generate_l3leaf_var(number: int, spines: list[str]) -> dict:
+    """Generate L3 leaf variables with adjacent leaves forming an MLAG pair."""
+    pair_number = (number + 1) // 2
+    first_node_id = 2 * pair_number - 1
+    group_name = f"L3LEAF_PAIR{pair_number}"
+    r = Random(group_name)  # noqa: S311
     spines = spines.copy()
     r.shuffle(spines)
     return {
         "type": "l3leaf",
         "l3leaf": {
             "defaults": {
-                "bgp_as": f"65000.{number}",
-                "id": f"{number}",
+                "bgp_as": f"65000.{pair_number}",
                 "uplink_switches": spines[:2],
-                "uplink_interfaces": [f"Ethernet{number}/1", f"Ethernet{number}/2"],
-                "uplink_switch_interfaces": [
-                    f"Ethernet{number}/3",
-                    f"Ethernet{number}/4",
-                ],
+                "uplink_interfaces": ["Ethernet49", "Ethernet50"],
+                "mlag_interfaces": ["Ethernet51", "Ethernet52"],
+                "mlag_peer_ipv4_pool": "10.255.252.0/24",
+                "mlag_peer_l3_ipv4_pool": "10.255.251.0/24",
                 "loopback_ipv4_pool": "10.1.0.0/16",
                 "vtep_loopback_ipv4_pool": "10.2.0.0/16",
                 "uplink_ipv4_pool": "10.4.0.0/14",
                 "virtual_router_mac_address": "00:11:22:33:44:55",
-            }
+            },
+            "node_groups": [
+                {
+                    "group": group_name,
+                    "nodes": [
+                        {
+                            "name": f"l3leaf{node_id}",
+                            "id": node_id,
+                            "uplink_switch_interfaces": [f"Ethernet{node_id}/3", f"Ethernet{node_id}/4"],
+                        }
+                        for node_id in (first_node_id, first_node_id + 1)
+                    ],
+                }
+            ],
         },
     }
 
 
-def generate_l2leaf_var(name: str, number: int, l3leafs: list[str]) -> dict:
-    """Generate L2 leaf-specific variables."""
-    r = Random(name)  # noqa: S311
-    l3leafs = l3leafs.copy()
-    r.shuffle(l3leafs)
+def generate_l2leaf_var(number: int, l3leafs: list[str]) -> dict:
+    """Generate L2 leaf variables with uplinks to both members of one MLAG pair."""
+    pair_start = 2 * ((number - 1) % (len(l3leafs) // 2))
     return {
         "type": "l2leaf",
         "l2leaf": {
             "defaults": {
                 "id": f"{number}",
-                "uplink_switches": l3leafs[:2],
-                "uplink_interfaces": [f"Ethernet{number}/1", f"Ethernet{number}/2"],
-                "uplink_switch_interfaces": [
-                    f"Ethernet{number}/3",
-                    f"Ethernet{number}/4",
-                ],
+                "uplink_switches": l3leafs[pair_start : pair_start + 2],
+                "uplink_interfaces": ["Ethernet49", "Ethernet50"],
+                "uplink_switch_interfaces": [f"Ethernet{number + 52}", f"Ethernet{number + 52}"],
             }
         },
     }
