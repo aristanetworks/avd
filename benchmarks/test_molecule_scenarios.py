@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
+import pickle
 from typing import TYPE_CHECKING
 
 import pytest
@@ -45,11 +45,12 @@ def test_molecule_scenario_avd_facts_benchmark(
 ) -> None:
     """Benchmark fabric-wide AVD facts generation using the prepared end-to-end project."""
     source_data = [(fabric.inputs, fabric.hostvars, fabric.pool_manager) for fabric in benchmark_project.fabrics]
+    source_snapshot = pickle.dumps(source_data, protocol=pickle.HIGHEST_PROTOCOL)
     fabric_data = source_data
 
     def setup() -> None:
         nonlocal fabric_data
-        fabric_data = deepcopy(source_data)
+        fabric_data = pickle.loads(source_snapshot)  # noqa: S301  # Snapshot created in this process from benchmark inputs.
 
     def run() -> None:
         facts_count = 0
@@ -79,10 +80,11 @@ def test_molecule_host_config_render_benchmark(
     hostvars = benchmark_fabric.hostvars[hostname]
     avd_facts = benchmark_fabric.avd_facts
     source_data = (inputs, hostvars, avd_facts)
+    source_snapshot = pickle.dumps(source_data, protocol=pickle.HIGHEST_PROTOCOL)
 
     def setup() -> None:
         nonlocal inputs, hostvars, avd_facts
-        inputs, hostvars, avd_facts = deepcopy(source_data)
+        inputs, hostvars, avd_facts = pickle.loads(source_snapshot)  # noqa: S301  # Snapshot created in this process from benchmark inputs.
 
     def run() -> None:
         structured_config = get_structured_config_for_device(
