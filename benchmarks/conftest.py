@@ -29,8 +29,6 @@ from tools.e2e_test_avd import (
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-logger = logging.getLogger(__name__)
-
 E2E_PROJECT_DIR = Path(__file__).parents[1] / "ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests"
 
 
@@ -112,13 +110,12 @@ def benchmark_project() -> Iterator[BenchmarkProject]:
         context.close()
 
 
-def pytest_configure(config: pytest.Config) -> None:
-    """Configure pytest for benchmarking."""
-    if config.getoption("--codspeed", default=False):
-        logging.disable(logging.CRITICAL)
-
-
-def pytest_unconfigure(config: pytest.Config) -> None:
-    """Re-enable logging after benchmarks."""
-    if config.getoption("--codspeed", default=False):
-        logging.disable(logging.NOTSET)
+@pytest.fixture(autouse=True)
+def suppress_benchmark_logging() -> Iterator[None]:
+    """Suppress benchmark logging and restore the previous level afterward."""
+    previous_disable_level = logging.root.manager.disable
+    logging.disable(logging.CRITICAL)
+    try:
+        yield
+    finally:
+        logging.disable(previous_disable_level)

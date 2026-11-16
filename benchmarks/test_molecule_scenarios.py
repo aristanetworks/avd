@@ -5,8 +5,6 @@
 
 from __future__ import annotations
 
-import logging
-from contextlib import contextmanager
 from copy import deepcopy
 from typing import TYPE_CHECKING
 
@@ -16,14 +14,9 @@ from pyavd import get_device_config
 from tools.e2e_test_avd import get_avd_facts_for_fabric, get_structured_config_for_device
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
-
     from pytest_codspeed import BenchmarkFixture
 
     from benchmarks.conftest import BenchmarkProject
-
-logger = logging.getLogger(__name__)
-
 
 REPRESENTATIVE_BENCHMARK_HOSTS = (
     # Baseline data center fabric roles.
@@ -44,17 +37,6 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
     "cv-pathfinder-pathfinder1",
     "cv-pathfinder-edge1",
 )
-
-
-@contextmanager
-def disabled_logging() -> Iterator[None]:
-    """Temporarily disable logging without discarding the runner's previous setting."""
-    previous_disable_level = logging.root.manager.disable
-    logging.disable(logging.CRITICAL)
-    try:
-        yield
-    finally:
-        logging.disable(previous_disable_level)
 
 
 @pytest.mark.parametrize("_scenario", [None], ids=["eos_designs_unit_tests__eos_designs_unit_tests"])
@@ -80,8 +62,7 @@ def test_molecule_scenario_avd_facts_benchmark(
 
         assert facts_count == input_count
 
-    with disabled_logging():
-        benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
+    benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
 
 
 @pytest.mark.parametrize(
@@ -115,5 +96,4 @@ def test_molecule_host_config_render_benchmark(
         )
         assert get_device_config(structured_config)
 
-    with disabled_logging():
-        benchmark.pedantic(run, setup=setup, iterations=1, warmup_rounds=1)
+    benchmark.pedantic(run, setup=setup, iterations=1, warmup_rounds=1)

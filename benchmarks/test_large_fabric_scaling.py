@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-import logging
 from copy import deepcopy
 from typing import TYPE_CHECKING
 
@@ -89,9 +88,4 @@ def test_large_fabric_full_workflow_benchmark(
 
         assert len(configs) == device_count
 
-    previous_disable_level = logging.root.manager.disable
-    logging.disable(logging.CRITICAL)
-    try:
-        benchmark.pedantic(b, setup=setup, iterations=1, warmup_rounds=1)
-    finally:
-        logging.disable(previous_disable_level)
+    benchmark.pedantic(b, setup=setup, iterations=1, warmup_rounds=1)
