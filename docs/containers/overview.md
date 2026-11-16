@@ -53,6 +53,7 @@ If you want to use a specific AVD release, use the following `devcontainer.json`
 ```json
 {
     "name": "AVD Universal",
+    "remoteUser": "avd",
     "image": "ghcr.io/aristanetworks/avd/universal:python3.12-avd-v6.5.0"
 }
 ```
@@ -64,6 +65,7 @@ If you want to test a specific AVD branch or fork, use the following `devcontain
 ```json
 {
     "name": "AVD Development",
+    "remoteUser": "avd",
     "image": "ghcr.io/aristanetworks/avd/dev:python3.12",
     "containerEnv": {
         "AVD_GITHUB_REPO": "aristanetworks/avd",
