@@ -8,4 +8,4 @@ l2leaf:
 queue_monitor_streaming:
   enable: true
   ip_access_group: QMS-EXTENDED
-  ip_standard_access_group: QMS-STANDARD
+  ipv4_standard_acl: QMS-STANDARD

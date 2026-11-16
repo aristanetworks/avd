@@ -149,6 +149,9 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: QMS-DEPRECATED
 radius_server:
   servers:
   - host: 11.10.10.11

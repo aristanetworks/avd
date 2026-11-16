@@ -1,0 +1,15 @@
+---
+# Test configuring a queue-monitor streaming standard IPv4 ACL from the catalog.
+queue_monitor_streaming:
+  enable: true
+  ipv4_standard_acl: ACL-QMS
+  ipv6_access_group: ACLv6-QMS
+  max_connections: 8
+  vrf: vrf1
+
+ipv4_standard_acls:
+  - name: ACL-QMS
+    entries:
+      - sequence: 10
+        action: permit
+        source: any

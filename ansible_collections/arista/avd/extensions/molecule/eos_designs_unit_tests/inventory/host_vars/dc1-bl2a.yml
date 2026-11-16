@@ -1,14 +1,11 @@
 ---
-# Test configuring a queue-monitor streaming IPv4 ACL from the catalog with the future knob enabled.
+# Test configuring a queue-monitor streaming IPv4 ACL from the catalog.
 queue_monitor_streaming:
   enable: true
-  ip_access_group: QMS-EXTENDED
+  ipv4_acl: QMS-EXTENDED
   ipv6_access_group: ACLv6-QMS
   max_connections: 8
   vrf: vrf1
-
-avd_design_future:
-  configure_queue_monitor_streaming_ipv4_acl_from_catalog: true
 
 ipv4_acls:
   - name: QMS-EXTENDED

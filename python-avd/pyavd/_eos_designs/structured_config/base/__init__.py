@@ -427,26 +427,25 @@ class AvdStructuredConfigBaseProtocol(
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
         ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
-        ip_standard_access_group = self.inputs.queue_monitor_streaming.ip_standard_access_group
-        self.structured_config_utils._validate_ipv4_acl_exclusion(
-            ip_access_group,
-            ip_standard_access_group,
-            "ip_access_group",
-            "ip_standard_access_group",
-            "queue-monitor streaming",
-        )
+        ipv4_acl = self.inputs.queue_monitor_streaming.ipv4_acl
+        ipv4_standard_acl = self.inputs.queue_monitor_streaming.ipv4_standard_acl
+        context = "queue-monitor streaming"
+        # TODO: 7.0.0: Only validate ipv4_standard_acl and ipv4_acl.
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_acl, "ip_access_group", "ipv4_acl", context)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_standard_acl, "ip_access_group", "ipv4_standard_acl", context)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ipv4_acl, ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context)
 
         queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
-        if ip_standard_access_group is not None:
-            self.structured_config_utils._set_ipv4_standard_acl(ip_standard_access_group)
-            queue_monitor_streaming.ip_access_group = ip_standard_access_group
-        elif ip_access_group is not None and self.inputs.avd_design_future.configure_queue_monitor_streaming_ipv4_acl_from_catalog:
+        if ipv4_standard_acl is not None:
+            self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
+            queue_monitor_streaming.ip_access_group = ipv4_standard_acl
+        elif ipv4_acl is not None:
             acl = self.shared_utils.get_ipv4_acl(
-                name=ip_access_group,
-                context="queue_monitor_streaming.ip_access_group",
+                name=ipv4_acl,
+                context="queue_monitor_streaming.ipv4_acl",
             )
             self.structured_config_utils._set_ipv4_acl(acl)
-
+            queue_monitor_streaming.ip_access_group = acl.name
         self.structured_config.queue_monitor_streaming = queue_monitor_streaming
 
     @structured_config_contributor
