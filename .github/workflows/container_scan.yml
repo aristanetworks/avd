@@ -1,0 +1,188 @@
+---
+name: Scan published universal images
+
+# "Publish Anyway, Fail Visibly": scan GHCR independently of the build workflows. Their success
+# and the standard image tags are unaffected by vulnerabilities, scanner errors, or SARIF failures.
+"on": # zizmor: ignore[dangerous-triggers] Only same-repository successful release builds are accepted; no upstream source or artifacts are executed.
+  schedule:
+    # Once daily at 04:23 UTC, away from the busy start of the hour. GitHub may delay scheduled runs.
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Optional release tag (for example v6.0.0); leave empty to scan current universal development images"
+        type: string
+        required: false
+        default: ""
+  workflow_run:
+    # Only universal has a release build. A direct release:published trigger could run before its
+    # images exist: devcontainers/ci pushes in the build job's post hook. Completion includes that hook.
+    # GitHub cannot filter workflow_run by the upstream event at trigger level, so prepare skips
+    # development/manual build completions below; they do not run scans or access GHCR.
+    workflows: [Build universal container]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  prepare:
+    if: >-
+      github.repository == 'aristanetworks/avd' &&
+      (github.event_name != 'workflow_run' ||
+        (github.event.workflow_run.event == 'release' &&
+         github.event.workflow_run.conclusion == 'success' &&
+         github.event.workflow_run.repository.full_name == github.repository))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      avd_ref: ${{ steps.ref.outputs.avd_ref }}
+      scope: ${{ steps.ref.outputs.scope }}
+    steps:
+      - name: Select development or release ref
+        id: ref
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        with:
+          script: |
+            let releaseTag = process.env.RELEASE_TAG || '';
+            if (context.eventName === 'workflow_run') {
+              // For release-triggered builds, head_branch is the release tag.
+              // Reject a missing ref so a release scan cannot silently fall back to development images.
+              releaseTag = context.payload.workflow_run.head_branch;
+              if (!releaseTag) {
+                throw new Error('Release build metadata does not contain its release tag.');
+              }
+            }
+            // Universal tags use the literal release tag (no v stripping), or devel for daily/manual
+            // development scans. Python versions and architectures are a native matrix below; there
+            // is no need to generate image lists, collect build metadata, or check out source code.
+            core.setOutput('avd_ref', releaseTag || 'devel');
+            core.setOutput('scope', releaseTag ? `release-${releaseTag}` : 'devel');
+
+  scan:
+    name: Trivy / universal / Python ${{ matrix.python }} / ${{ matrix.arch }}
+    needs: prepare
+    runs-on: ubuntu-24.04
+    # Optional execution bound, including scanner setup and uploads.
+    timeout-minutes: 30
+    env:
+      IMAGE_TAG: ghcr.io/${{ github.repository }}/universal:python${{ matrix.python }}-avd-${{ needs.prepare.outputs.avd_ref }}
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      # A finding in one image must not cancel scans/reports for the remaining images. Matrix defaults
+      # would cancel them on the first failure, leaving published variants without a completed scan.
+      fail-fast: false
+      matrix:
+        # List every supported variant explicitly: a missing published image fails its scan instead
+        # of disappearing from a dynamically discovered matrix. Workflow linters check the matrix;
+        # registry/runtime checks verify published images directly, without a Python workflow test suite.
+        python: ["3.11", "3.12", "3.13", "3.14"]
+        arch: [amd64, arm64]
+    steps:
+      - name: Describe published image scan
+        env:
+          ARCH: ${{ matrix.arch }}
+          BUILD_URL: ${{ github.event.workflow_run.html_url }}
+          SCAN_SCOPE: ${{ needs.prepare.outputs.scope }}
+        run: |
+          mkdir -p reports
+          {
+            echo "### Published image security scan"
+            echo "Scope: $SCAN_SCOPE"
+            echo ""
+            echo "Release build: $BUILD_URL"
+            echo ""
+            echo "Tag: \`$IMAGE_TAG\`"
+            echo ""
+            echo "Platform: \`linux/$ARCH\`"
+            echo ""
+            echo "HIGH/CRITICAL findings with available fixes fail this security workflow. Published images remain available."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Scan final published image
+        id: trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        env:
+          # Inspect the published registry image, including inherited packages and devcontainer features.
+          # Trivy resolves the public tag anonymously and selects the requested platform directly.
+          # Missing images/platforms or registry errors fail this security job through Trivy normally.
+          TRIVY_IMAGE_SRC: remote
+          TRIVY_PLATFORM: linux/${{ matrix.arch }}
+        with:
+          version: v0.76.2
+          scan-type: image
+          image-ref: ${{ env.IMAGE_TAG }}
+          scanners: vuln
+          vuln-type: os,library
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          # Exclude vulnerabilities without available fixes from the reports and the later severity gate.
+          ignore-unfixed: "true"
+          # Preserve the package inventory so the later SBOM conversion does not need another image scan.
+          list-all-pkgs: "true"
+          format: json
+          output: reports/trivy.json
+          # Defer vulnerability-based failure until reports are uploaded. This only changes the exit
+          # status for findings: installation, registry, database, and scanner errors still fail the step
+          # normally. No continue-on-error is needed or desirable in this separate security workflow.
+          exit-code: "0"
+          timeout: 15m
+          # Cache the database, but leave Trivy's normal freshness checks/updates enabled.
+          cache: "true"
+      # !cancelled() overrides GitHub's implicit success() so an unrelated reporting error does not
+      # suppress remaining usable reports. Require a successful scan because a failed scan may leave
+      # missing/partial JSON. Native step failure already preserves the original scanner error.
+      - name: Generate SARIF from scan results
+        id: sarif
+        if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
+        run: trivy convert --format sarif --output reports/trivy.sarif reports/trivy.json
+      - name: Generate SBOM from scan results
+        if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
+        run: trivy convert --format cyclonedx --output reports/sbom.cdx.json reports/trivy.json
+      - name: Upload findings to GitHub Code Scanning
+        # Upload a valid SARIF even if SBOM generation failed. Code Scanning must be enabled/available;
+        # an upload/API error is allowed to fail this workflow normally, followed by artifact upload below.
+        if: ${{ !cancelled() && steps.sarif.outcome == 'success' }}
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        with:
+          sarif_file: reports/trivy.sarif
+          # Keep release and development results separate, as well as Python/architecture variants.
+          category: container-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
+      - name: Retain available scan reports
+        # Try the artifact upload even if scanning or Code Scanning failed; GitHub's default success()
+        # would skip it and discard reports that were already generated before that failure.
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: trivy-universal-python${{ matrix.python }}-${{ matrix.arch }}
+          path: reports/
+          # A failed scanner may produce no files. Its failure is already recorded, so avoid adding a
+          # second missing-artifact failure that obscures it. Conversion failures still fail normally.
+          if-no-files-found: warn
+          # Allow retrying the same security job without an artifact-name conflict. This is rerun support,
+          # not a security gate. A rerun resolves the current tag again and may scan a newer image.
+          overwrite: true
+          retention-days: 30
+      - name: Fail security scan on fixable HIGH or CRITICAL vulnerabilities
+        # Mandatory because the scan above deliberately returned zero for findings. An ordinary successful
+        # report upload says nothing about severity. Evaluate the existing JSON after upload attempts so
+        # HIGH/CRITICAL findings with available fixes fail only this security workflow. The initial
+        # scan already filtered unfixed findings out of the JSON, so no second filter is needed here.
+        # Run despite earlier report-upload errors, but never try to judge a failed/incomplete scan.
+        if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
+        run: trivy convert --format table --severity HIGH,CRITICAL --exit-code 1 reports/trivy.json
+      - name: Summarize scan execution
+        # Summaries are useful on failures too; GitHub would otherwise skip this step after the gate.
+        # Unlike always(), !cancelled() lets an explicitly cancelled run stop without further work.
+        if: ${{ !cancelled() }}
+        env:
+          SCAN_OUTCOME: ${{ steps.trivy.outcome }}
+          SECURITY_OUTCOME: ${{ job.status }}
+        run: |
+          {
+            echo ""
+            echo "Trivy execution: $SCAN_OUTCOME"
+            echo ""
+            echo "Security job status: $SECURITY_OUTCOME"
+          } >> "$GITHUB_STEP_SUMMARY"
