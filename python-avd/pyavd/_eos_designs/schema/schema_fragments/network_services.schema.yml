@@ -749,6 +749,7 @@ keys:
                 description: |-
                   Router OSPFv3 settings for the VRF.
                   The OSPFv3 configuration is created automatically on a device when at least one OSPFv3-enabled SVI in this VRF is configured on that device.
+                  If BGP is configured for the VRF, OSPFv3 internal routes are redistributed into BGP unless `bgp.redistribute_ospfv3.internal.enabled` is set to `false`.
                   These settings only override the defaults.
                   VRF `default` is not supported yet.
                 keys:
@@ -792,18 +793,6 @@ keys:
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
-              redistribute_ospfv3:
-                documentation_options:
-                  table: network-services-vrfs-ospfv3-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    default: true
-                    description: |-
-                      Redistribute OSPFv3 internal routes into BGP for this VRF.
-                      Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
-                      OSPFv3 external routes are not redistributed.
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -1014,8 +1003,28 @@ keys:
                     mtu:
                       type: int
                     ipv4_acl_in:
+                      description: |-
+                        Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                       type: str
                     ipv4_acl_out:
+                      description: |-
+                        Name of the IPv4 access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field substitution for "interface_ip" is required.
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field substitution for "interface_ip" is required.
                       type: str
                     ipv6_acl_in:
                       description: |-
@@ -1253,10 +1262,26 @@ keys:
                     ipv4_acl_in:
                       description: |-
                         Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                       type: str
                     ipv4_acl_out:
                       description: |-
                         Name of the IPv4 Access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field substitution for "interface_ip" is required.
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field substitution for "interface_ip" is required.
                       type: str
                     ipv6_acl_in:
                       description: |-
@@ -1666,6 +1691,19 @@ keys:
                         max: 3600
                         default: 300
                         description: Restart time in seconds.
+                  redistribute_ospfv3:
+                    type: dict
+                    description: |-
+                      Redistribution of OSPFv3 routes into BGP for this VRF.
+                      Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPFv3 instance.
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPFv3 internal routes into BGP.
                   raw_eos_cli:
                     type: str
                     description: |

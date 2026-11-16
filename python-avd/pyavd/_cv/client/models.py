@@ -3,9 +3,7 @@
 # that can be found in the LICENSE file.
 import ssl
 from dataclasses import dataclass
-from typing import Literal
-
-from typing_extensions import Self
+from typing import Literal, Self
 
 from pyavd._cv.api.arista.tag.v2 import ElementType, Tag, TagAssignment
 
