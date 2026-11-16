@@ -44,7 +44,7 @@ def test_lazy_export_error_context(
     expected_message: str,
     expected_cause: type[Exception] | None,
 ) -> None:
-    """Lazy import failures retain their message and include the export mapping on Python 3.11 and later."""
+    """Lazy import failures retain their message and include the export mapping."""
     lazy_imports = {"public_name": (module_name, attribute_name)}
     namespace = {"__name__": "test_package"}
 
@@ -57,11 +57,7 @@ def test_lazy_export_error_context(
     else:
         assert isinstance(exc_info.value.__cause__, expected_cause)
 
-    if sys.version_info >= (3, 11):
-        assert exc_info.value.__notes__ == [f"Lazy export 'test_package.public_name' maps to attribute '{attribute_name}' in module '{module_name}'."]
-    else:
-        # TODO: Remove this branch once support for Python 3.10 is removed.
-        assert not hasattr(exc_info.value, "__notes__")
+    assert exc_info.value.__notes__ == [f"Lazy export 'test_package.public_name' maps to attribute '{attribute_name}' in module '{module_name}'."]
 
 
 def test_lazy_export_attribute_error_does_not_fall_back_to_submodule() -> None:
@@ -80,8 +76,4 @@ get_device_config({})
     assert "ImportError: module 'pyavd.get_device_config' has no attribute 'missing_get_device_config'" in result.stderr
     assert "'module' object is not callable" not in result.stderr
     note = "Lazy export 'pyavd.get_device_config' maps to attribute 'missing_get_device_config' in module 'pyavd.get_device_config'."
-    if sys.version_info >= (3, 11):
-        assert note in result.stderr
-    else:
-        # TODO: Remove this branch once support for Python 3.10 is removed.
-        assert note not in result.stderr
+    assert note in result.stderr

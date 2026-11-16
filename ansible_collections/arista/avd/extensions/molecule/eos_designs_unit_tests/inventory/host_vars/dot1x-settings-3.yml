@@ -1,11 +1,13 @@
 ---
 # Test for global 802.1X enabled with specific features turned off
+# Verify that the built-in vEOS-lab platform setting suppresses 802.1X Per-MAC ACL mode
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
     - name: dot1x-settings-3
       mgmt_ip: 192.168.0.2/24
+      platform: vEOS-lab
 
 dot1x_settings:
   enabled: true
@@ -37,3 +39,10 @@ aaa_settings:
     servers:
       - host: agni.arista.com
         cleartext_key: super-secret-key
+
+network_ports:
+  - switches: [dot1x-settings-3]
+    switch_ports: [Ethernet1]
+    dot1x:
+      mac_based_access_list: true
+      reauthentication: true

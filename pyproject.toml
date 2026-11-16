@@ -73,7 +73,7 @@ line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
 ]
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 # D213 is forced here since it will be removed by pydocstyle.convention = 'google' even when we have ALL here.
@@ -192,7 +192,7 @@ exclude = [
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
   ".tox",
 ]
-pythonVersion = "3.10"
+pythonVersion = "3.11"
 # This is to direct pyright where to look for schema_tools
 extraPaths = [
   "python-avd",

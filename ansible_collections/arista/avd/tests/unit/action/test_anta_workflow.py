@@ -7,7 +7,7 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
@@ -41,8 +41,8 @@ if TYPE_CHECKING:
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.anta_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
 DEFAULT_RUN_OVERVIEW_DATA = anta_module.RunOverviewData(
-    test_execution_start_time=datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
-    test_execution_end_time=datetime(2026, 1, 1, 0, 0, 1, tzinfo=timezone.utc),
+    test_execution_start_time=datetime(2026, 1, 1, 0, 0, 0, tzinfo=UTC),
+    test_execution_end_time=datetime(2026, 1, 1, 0, 0, 1, tzinfo=UTC),
 )
 
 
@@ -348,8 +348,8 @@ def test_build_reports_adds_markdown_run_overview_when_enabled() -> None:
     mock_result_manager.results = []
     mock_result_manager.get_total_results.return_value = 0
     mock_result_manager.device_stats = {}
-    test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=timezone.utc)
-    test_execution_end_time = datetime(2026, 1, 1, 12, 34, 56, tzinfo=timezone.utc)
+    test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=UTC)
+    test_execution_end_time = datetime(2026, 1, 1, 12, 34, 56, tzinfo=UTC)
     report_settings = {
         "md_output": "/out/report.md",
         "generate_run_overview": True,

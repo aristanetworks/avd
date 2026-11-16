@@ -26,6 +26,9 @@ topology:
     dc1-spine2:
       mgmt-ipv4: 172.16.1.12
       startup-config: intended/configs/dc1-spine2.cfg
+    digital-twin-hardware-identity-containerlab-tests-l2leaf:
+      mgmt-ipv4: 172.16.1.103
+      startup-config: intended/configs/digital-twin-hardware-identity-containerlab-tests-l2leaf.cfg
   links:
   - endpoints:
     - dc1-leaf1a:eth1

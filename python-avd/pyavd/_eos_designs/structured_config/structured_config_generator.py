@@ -14,9 +14,7 @@ from pyavd._utils.run_once import RunOnceMethodStateHelper
 
 if TYPE_CHECKING:
     from collections.abc import Callable, MutableMapping
-    from typing import TypeVar
-
-    from typing_extensions import Self
+    from typing import Self, TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
