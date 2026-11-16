@@ -65,12 +65,8 @@ class ManagementInterfaceMixin(Protocol):
 
         elif mgmt_settings.shutdown_when_unused:
             # Shutdown the unused management interface.
-            self.structured_config_utils.set_once_oob_mgmt_vrf()
-
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
-                description=self.shared_utils.mgmt_interface_description,
                 shutdown=True,
-                vrf=self.shared_utils.mgmt_interface_vrf,
             )
             self.structured_config.management_interfaces.append(interface_settings)

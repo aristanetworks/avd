@@ -2095,14 +2095,12 @@ class EosDesigns(EosDesignsRootModel):
         management is actually used.
         When enabled:
         - AVD renders the OOB management VRF only if
-        `default_mgmt_method` is `oob`, if `mgmt_ip` / `ipv6_mgmt_ip` is configured,
-          or if
-        `mgmt_interface_settings.shutdown_when_unused` is enabled.
-        - Setting only `mgmt_interface_vrf` or
-        `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
-        - AVD renders OOB
-        IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are
-        met).
+        `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+        - Setting only
+        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+        VRF.
+        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+        route prerequisites are met).
 
         Default value: `False`
         """
@@ -2264,14 +2262,12 @@ class EosDesigns(EosDesignsRootModel):
                        management is actually used.
                        When enabled:
                        - AVD renders the OOB management VRF only if
-                       `default_mgmt_method` is `oob`, if `mgmt_ip` / `ipv6_mgmt_ip` is configured,
-                         or if
-                       `mgmt_interface_settings.shutdown_when_unused` is enabled.
-                       - Setting only `mgmt_interface_vrf` or
-                       `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
-                       - AVD renders OOB
-                       IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are
-                       met).
+                       `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
+                       - Setting only
+                       `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
+                       VRF.
+                       - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
+                       route prerequisites are met).
 
                 """
 
@@ -30882,6 +30878,8 @@ class EosDesigns(EosDesignsRootModel):
         An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
         When
         false and neither address is configured, no management interface configuration is generated.
+        For an
+        unused interface, only its name and shutdown state are configured.
 
         Default value: `False`
         """
@@ -30921,6 +30919,8 @@ class EosDesigns(EosDesignsRootModel):
                        An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
                        When
                        false and neither address is configured, no management interface configuration is generated.
+                       For an
+                       unused interface, only its name and shutdown state are configured.
                     lldp:
                        LLDP settings for the management interface.
 

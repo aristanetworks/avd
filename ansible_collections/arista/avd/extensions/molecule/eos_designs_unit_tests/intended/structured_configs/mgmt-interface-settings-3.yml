@@ -8,9 +8,7 @@ ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
 - name: Management0
-  description: OOB_MANAGEMENT
   shutdown: true
-  vrf: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -21,6 +19,3 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-vrfs:
-- name: MGMT
-  ip_routing: false
