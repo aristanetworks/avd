@@ -516,1545 +516,1542 @@
 
         ```yaml
         platform_settings:
-        - platforms:
-          - default
-          feature_support:
-            queue_monitor_length_notify: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7050X3
-          feature_support:
-            queue_monitor_length_notify: false
-            sflow_subinterfaces: false
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
-            131072
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720XP
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            sflow_subinterfaces: false
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared
-            22000
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - '750'
-          - '755'
-          - '758'
-          management_interface: Management0
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DP
-          - 720DP-24S
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DP-48S
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 722XP
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 710P
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DP-24ZS
-          - 720DP-48ZS
-          feature_support:
-            queue_monitor_length_notify: false
-            poe: true
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DF
-          feature_support:
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DT
-          - 720DT-48S
-          - 7010TX
-          feature_support:
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              tap_port_init:
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 720DT-24S
-          feature_support:
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7060X5
-          feature_support:
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mru: false
-            hardware_counter_features:
-              acl: false
-              decap_group: false
-              directflow: false
-              ecn: false
-              flow_spec: false
-              mpls_interface: false
-              mpls_lfib: false
-              mpls_tunnel: false
-              multicast: false
-              nexthop: false
-              pbr: false
-              pdp: false
-              policing_interface: false
-              qos: false
-              qos_dual_rate_policer: false
-              route: false
-              routed_port: false
-              segment_security: false
-              tapagg: false
-              traffic_class: false
-              traffic_policy: false
-              vlan: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7280R
-          lag_hardware_only: true
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            subinterface_mtu: false
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7280R2
-          lag_hardware_only: true
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            subinterface_mtu: false
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7020R
-          lag_hardware_only: true
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7280R3
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            evpn_gateway_all_active_multihoming: true
-            evpn_gateway_rd_rt_rewrite: true
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-            subinterface_monitor_session: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7388X5
-          feature_support:
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mru: false
-            hardware_counter_features:
-              acl: false
-              decap_group: false
-              directflow: false
-              ecn: false
-              flow_spec: false
-              mpls_interface: false
-              mpls_lfib: false
-              mpls_tunnel: false
-              multicast: false
-              nexthop: false
-              pbr: false
-              pdp: false
-              policing_interface: false
-              qos: false
-              qos_dual_rate_policer: false
-              route: false
-              routed_port: false
-              segment_security: false
-              tapagg: false
-              traffic_class: false
-              traffic_policy: false
-              vlan: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-          management_interface: Management0
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7500R
-          lag_hardware_only: true
-          management_interface: Management0
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            subinterface_mtu: false
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7500R2
-          lag_hardware_only: true
-          management_interface: Management0
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mtu: false
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7500R3
-          management_interface: Management0
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            per_interface_l2_mtu: false
-            evpn_gateway_all_active_multihoming: true
-            evpn_gateway_rd_rt_rewrite: true
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-            subinterface_monitor_session: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7800R3
-          management_interface: Management0
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-          feature_support:
-            per_interface_l2_mtu: false
-            evpn_gateway_all_active_multihoming: true
-            evpn_gateway_rd_rt_rewrite: true
-            private_vlan: false
-            errdisable_causes:
-              acl:
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-            subinterface_monitor_session: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7358X4
-          management_interface: Management1/1
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          feature_support:
-            queue_monitor_length_notify: false
-            interface_storm_control: true
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: true
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7368X4
-          management_interface: Management0
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          feature_support:
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - 7300X3
-          management_interface: Management0
-          reload_delay:
-            mlag: 1200
-            non_mlag: 1320
-          feature_support:
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-              xcvr_misconfigured:
-                detection: false
-                recovery: false
-              xcvr_overheat:
-                detection: false
-                recovery: false
-              xcvr_power_unsupported:
-                detection: false
-                recovery: false
-              xcvr_unsupported:
-                recovery: false
-          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
-            131072
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
-          - VEOS
-          - VEOS-LAB
-          - vEOS
-          - vEOS-lab
-          feature_support:
-            bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_l2_mtu: false
-            per_interface_l2_mru: false
-            evpn_gateway_all_active_multihoming: true
-            evpn_gateway_rd_rt_rewrite: true
-            sflow_subinterfaces: false
-            hardware_validation: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-              xcvr_misconfigured:
-                detection: false
-                recovery: false
-              xcvr_overheat:
-                detection: false
-                recovery: false
-              xcvr_power_unsupported:
-                detection: false
-                recovery: false
-              xcvr_unsupported:
-                recovery: false
-            subinterface_monitor_session: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            act_node_type: veos
-        - platforms:
-          - CEOS
-          - cEOS
-          - ceos
-          - cEOSLab
-          feature_support:
-            bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            per_interface_l2_mtu: false
-            per_interface_l2_mru: false
-            evpn_gateway_all_active_multihoming: true
-            evpn_gateway_rd_rt_rewrite: true
-            sflow_subinterfaces: false
-            hardware_validation: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-              xcvr_misconfigured:
-                detection: false
-                recovery: false
-              xcvr_overheat:
-                detection: false
-                recovery: false
-              xcvr_power_unsupported:
-                detection: false
-                recovery: false
-              xcvr_unsupported:
-                recovery: false
-            subinterface_monitor_session: false
-          management_interface: Management1
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            act_node_type: veos
-        - platforms:
-          - CloudEOS
-          feature_support:
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            per_interface_l2_mru: false
-            queue_monitor_length_notify: false
-            sflow: false
-            hardware_validation: false
-            errdisable_causes:
-              acl:
-                detection: false
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              speed_misconfigured:
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-              xcvr_misconfigured:
-                detection: false
-                recovery: false
-              xcvr_overheat:
-                detection: false
-                recovery: false
-              xcvr_power_unsupported:
-                detection: false
-                recovery: false
-              xcvr_unsupported:
-                recovery: false
-            subinterface_monitor_session: false
-          p2p_uplinks_mtu: 9194
-          digital_twin:
-            act_node_type: cloudeos
-        - platforms:
-          - AWE-5310
-          - AWE-7230R
-          feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mru: false
-            platform_sfe_interface_profile:
-              supported: true
-              max_rx_queues: 6
-            sflow: false
-            errdisable_causes:
-              acl:
-                detection: false
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          management_interface: Management1/1
-          p2p_uplinks_mtu: 9194
-          digital_twin:
-            platform: CloudEOS
-        - platforms:
-          - AWE-5510
-          - AWE-7250R
-          feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-            subinterface_mtu: false
-            subinterface_monitor_session: false
-            per_interface_l2_mru: false
-            platform_sfe_interface_profile:
-              supported: true
-              max_rx_queues: 16
-            sflow: false
-            errdisable_causes:
-              acl:
-                detection: false
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-          management_interface: Management1/1
-          p2p_uplinks_mtu: 9194
-          digital_twin:
-            platform: CloudEOS
-        - platforms:
-          - AWE-7220R
-          feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-            poe: true
-            per_interface_l2_mru: false
-            sflow: false
-            errdisable_causes:
-              acl:
-                detection: false
-                recovery: false
-              dot1x:
-                detection: false
-                recovery: false
-              error_correction_encoding:
-                detection: false
-                recovery: false
-              fabric_capacity_low:
-                detection: false
-                recovery: false
-              hardware_speed_group:
-                detection: false
-                recovery: false
-              interface_speed:
-                detection: false
-                recovery: false
-              internal_error:
-                detection: false
-                recovery: false
-              port_breakout:
-                detection: false
-                recovery: false
-              storm_control:
-                detection: false
-                recovery: false
-              stuck_queue:
-                recovery: false
-              switchcard_unreachable:
-                detection: false
-                recovery: false
-              tap_port_init:
-                recovery: false
-              tapagg:
-                detection: false
-              tpid:
-                detection: false
-                recovery: false
-              transceiver_adapter:
-                detection: false
-                recovery: false
-            subinterface_monitor_session: false
-          management_interface: Management1
-          p2p_uplinks_mtu: 9194
-          digital_twin:
-            platform: CloudEOS
+          - platforms:
+              - default
+            feature_support:
+              queue_monitor_length_notify: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7050X3
+            feature_support:
+              queue_monitor_length_notify: false
+              sflow_subinterfaces: false
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720XP
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              sflow_subinterfaces: false
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared 22000
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - "750"
+              - "755"
+              - "758"
+            management_interface: Management0
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DP
+              - 720DP-24S
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DP-48S
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 722XP
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 710P
+            feature_support:
+              poe: true
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DP-24ZS
+              - 720DP-48ZS
+            feature_support:
+              queue_monitor_length_notify: false
+              poe: true
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DF
+            feature_support:
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DT
+              - 720DT-48S
+              - 7010TX
+            feature_support:
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                tap_port_init:
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 720DT-24S
+            feature_support:
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7060X5
+            feature_support:
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mru: false
+              hardware_counter_features:
+                acl: false
+                decap_group: false
+                directflow: false
+                ecn: false
+                flow_spec: false
+                mpls_interface: false
+                mpls_lfib: false
+                mpls_tunnel: false
+                multicast: false
+                nexthop: false
+                pbr: false
+                pdp: false
+                policing_interface: false
+                qos: false
+                qos_dual_rate_policer: false
+                route: false
+                routed_port: false
+                segment_security: false
+                tapagg: false
+                traffic_class: false
+                traffic_policy: false
+                vlan: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7280R
+            lag_hardware_only: true
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              subinterface_mtu: false
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7280R2
+            lag_hardware_only: true
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              subinterface_mtu: false
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7020R
+            lag_hardware_only: true
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7280R3
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              evpn_gateway_all_active_multihoming: true
+              evpn_gateway_rd_rt_rewrite: true
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+              subinterface_monitor_session: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7388X5
+            feature_support:
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mru: false
+              hardware_counter_features:
+                acl: false
+                decap_group: false
+                directflow: false
+                ecn: false
+                flow_spec: false
+                mpls_interface: false
+                mpls_lfib: false
+                mpls_tunnel: false
+                multicast: false
+                nexthop: false
+                pbr: false
+                pdp: false
+                policing_interface: false
+                qos: false
+                qos_dual_rate_policer: false
+                route: false
+                routed_port: false
+                segment_security: false
+                tapagg: false
+                traffic_class: false
+                traffic_policy: false
+                vlan: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+            management_interface: Management0
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7500R
+            lag_hardware_only: true
+            management_interface: Management0
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              subinterface_mtu: false
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7500R2
+            lag_hardware_only: true
+            management_interface: Management0
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mtu: false
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7500R3
+            management_interface: Management0
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              per_interface_l2_mtu: false
+              evpn_gateway_all_active_multihoming: true
+              evpn_gateway_rd_rt_rewrite: true
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+              subinterface_monitor_session: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7800R3
+            management_interface: Management0
+            reload_delay:
+              mlag: 900
+              non_mlag: 1020
+            tcam_profile: vxlan-routing
+            feature_support:
+              per_interface_l2_mtu: false
+              evpn_gateway_all_active_multihoming: true
+              evpn_gateway_rd_rt_rewrite: true
+              private_vlan: false
+              errdisable_causes:
+                acl:
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+              subinterface_monitor_session: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7358X4
+            management_interface: Management1/1
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            feature_support:
+              queue_monitor_length_notify: false
+              interface_storm_control: true
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              bgp_update_wait_for_convergence: true
+              bgp_update_wait_install: true
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7368X4
+            management_interface: Management0
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            feature_support:
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - 7300X3
+            management_interface: Management0
+            reload_delay:
+              mlag: 1200
+              non_mlag: 1320
+            feature_support:
+              subinterface_mtu: false
+              per_interface_l2_mru: false
+              sflow_subinterfaces: false
+              errdisable_causes:
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+                xcvr_misconfigured:
+                  detection: false
+                  recovery: false
+                xcvr_overheat:
+                  detection: false
+                  recovery: false
+                xcvr_power_unsupported:
+                  detection: false
+                  recovery: false
+                xcvr_unsupported:
+                  recovery: false
+            trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+            digital_twin:
+              platform: vEOS-lab
+          - platforms:
+              - VEOS
+              - VEOS-LAB
+              - vEOS
+              - vEOS-lab
+            feature_support:
+              bgp_update_wait_for_convergence: false
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_l2_mtu: false
+              per_interface_l2_mru: false
+              evpn_gateway_all_active_multihoming: true
+              evpn_gateway_rd_rt_rewrite: true
+              sflow_subinterfaces: false
+              hardware_validation: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+                xcvr_misconfigured:
+                  detection: false
+                  recovery: false
+                xcvr_overheat:
+                  detection: false
+                  recovery: false
+                xcvr_power_unsupported:
+                  detection: false
+                  recovery: false
+                xcvr_unsupported:
+                  recovery: false
+              subinterface_monitor_session: false
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              act_node_type: veos
+          - platforms:
+              - CEOS
+              - cEOS
+              - ceos
+              - cEOSLab
+            feature_support:
+              bgp_update_wait_for_convergence: false
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              per_interface_l2_mtu: false
+              per_interface_l2_mru: false
+              evpn_gateway_all_active_multihoming: true
+              evpn_gateway_rd_rt_rewrite: true
+              sflow_subinterfaces: false
+              hardware_validation: false
+              errdisable_causes:
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_coa:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                dot1x_session_replace:
+                  detection: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+                xcvr_misconfigured:
+                  detection: false
+                  recovery: false
+                xcvr_overheat:
+                  detection: false
+                  recovery: false
+                xcvr_power_unsupported:
+                  detection: false
+                  recovery: false
+                xcvr_unsupported:
+                  recovery: false
+              subinterface_monitor_session: false
+            management_interface: Management1
+            reload_delay:
+              mlag: 300
+              non_mlag: 330
+            digital_twin:
+              act_node_type: veos
+          - platforms:
+              - CloudEOS
+            feature_support:
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              per_interface_l2_mru: false
+              queue_monitor_length_notify: false
+              sflow: false
+              hardware_validation: false
+              errdisable_causes:
+                acl:
+                  detection: false
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                speed_misconfigured:
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+                xcvr_misconfigured:
+                  detection: false
+                  recovery: false
+                xcvr_overheat:
+                  detection: false
+                  recovery: false
+                xcvr_power_unsupported:
+                  detection: false
+                  recovery: false
+                xcvr_unsupported:
+                  recovery: false
+              subinterface_monitor_session: false
+            p2p_uplinks_mtu: 9194
+            digital_twin:
+              act_node_type: cloudeos
+          - platforms:
+              - AWE-5310
+              - AWE-7230R
+            feature_support:
+              bgp_update_wait_for_convergence: true
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mru: false
+              platform_sfe_interface_profile:
+                supported: true
+                max_rx_queues: 6
+              sflow: false
+              errdisable_causes:
+                acl:
+                  detection: false
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            management_interface: Management1/1
+            p2p_uplinks_mtu: 9194
+            digital_twin:
+              platform: CloudEOS
+          - platforms:
+              - AWE-5510
+              - AWE-7250R
+            feature_support:
+              bgp_update_wait_for_convergence: true
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              queue_monitor_length_notify: false
+              subinterface_mtu: false
+              subinterface_monitor_session: false
+              per_interface_l2_mru: false
+              platform_sfe_interface_profile:
+                supported: true
+                max_rx_queues: 16
+              sflow: false
+              errdisable_causes:
+                acl:
+                  detection: false
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                dot1x_phone_classification:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+            management_interface: Management1/1
+            p2p_uplinks_mtu: 9194
+            digital_twin:
+              platform: CloudEOS
+          - platforms:
+              - AWE-7220R
+            feature_support:
+              bgp_update_wait_for_convergence: true
+              bgp_update_wait_install: false
+              interface_storm_control: false
+              queue_monitor_length_notify: false
+              poe: true
+              per_interface_l2_mru: false
+              sflow: false
+              errdisable_causes:
+                acl:
+                  detection: false
+                  recovery: false
+                dot1x:
+                  detection: false
+                  recovery: false
+                error_correction_encoding:
+                  detection: false
+                  recovery: false
+                fabric_capacity_low:
+                  detection: false
+                  recovery: false
+                hardware_speed_group:
+                  detection: false
+                  recovery: false
+                interface_speed:
+                  detection: false
+                  recovery: false
+                internal_error:
+                  detection: false
+                  recovery: false
+                port_breakout:
+                  detection: false
+                  recovery: false
+                storm_control:
+                  detection: false
+                  recovery: false
+                stuck_queue:
+                  recovery: false
+                switchcard_unreachable:
+                  detection: false
+                  recovery: false
+                tap_port_init:
+                  recovery: false
+                tapagg:
+                  detection: false
+                tpid:
+                  detection: false
+                  recovery: false
+                transceiver_adapter:
+                  detection: false
+                  recovery: false
+              subinterface_monitor_session: false
+            management_interface: Management1
+            p2p_uplinks_mtu: 9194
+            digital_twin:
+              platform: CloudEOS
         ```
