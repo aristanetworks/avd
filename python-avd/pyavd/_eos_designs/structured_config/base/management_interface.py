@@ -33,7 +33,7 @@ class ManagementInterfaceMixin(Protocol):
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
-                shutdown=False,
+                shutdown=mgmt_settings.shutdown == "true",
                 vrf=self.shared_utils.mgmt_interface_vrf,
                 ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
@@ -63,7 +63,7 @@ class ManagementInterfaceMixin(Protocol):
                 interface_settings.lldp = mgmt_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)
             self.structured_config.management_interfaces.append(interface_settings)
 
-        elif mgmt_settings.shutdown_when_unused:
+        elif mgmt_settings.shutdown in ("true", "auto"):
             # Shutdown the unused management interface.
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,

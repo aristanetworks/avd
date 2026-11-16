@@ -11,7 +11,7 @@ mgmt_interface_settings:
   description: UNUSED_MANAGEMENT
   vrf: UNUSED_MGMT
   interface: Management0
-  shutdown_when_unused: true
+  shutdown: auto
   lldp:
     transmit: false
     receive: false

@@ -31,15 +31,22 @@ keys:
         description: |-
           Name of the management interface (e.g. Management0, Management1).
         default: Management1
-      shutdown_when_unused:
-        type: bool
-        # TODO AVD7.0: Change default to true
-        default: false
+      shutdown:
+        type: str
+        # TODO AVD7.0: Change default to "auto"
+        default: "false"
         description: |-
-          Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the node.
-          An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
-          When false and neither address is configured, no management interface configuration is generated.
-          For an unused interface, only its name and shutdown state are configured.
+          Control the management interface shutdown state.
+          - "true": Always shut down the interface, even when management addressing is configured.
+          - "false": Configure "no shutdown" when management addressing is configured; otherwise, generate no interface configuration.
+          - "auto": Configure "no shutdown" when management addressing is configured; otherwise, shut down the interface.
+          Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`, including DHCP and SLAAC.
+          When shutting down an interface without node management addressing, only its name and shutdown state are configured.
+        valid_values:
+          - "true"
+          - "false"
+          - "auto"
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.

@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface. |
     | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF. |
     | [<samp>&nbsp;&nbsp;interface</samp>](## "mgmt_interface_settings.interface") | String |  | `Management1` |  | Name of the management interface (e.g. Management0, Management1). |
-    | [<samp>&nbsp;&nbsp;shutdown_when_unused</samp>](## "mgmt_interface_settings.shutdown_when_unused") | Boolean |  | `False` |  | Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the node.<br>An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.<br>When false and neither address is configured, no management interface configuration is generated.<br>For an unused interface, only its name and shutdown state are configured. |
+    | [<samp>&nbsp;&nbsp;shutdown</samp>](## "mgmt_interface_settings.shutdown") | String |  | `false` | Value is converted to lower case.<br>Valid Values:<br>- <code>true</code><br>- <code>false</code><br>- <code>auto</code> | Control the management interface shutdown state.<br>- "true": Always shut down the interface, even when management addressing is configured.<br>- "false": Configure "no shutdown" when management addressing is configured; otherwise, generate no interface configuration.<br>- "auto": Configure "no shutdown" when management addressing is configured; otherwise, shut down the interface.<br>Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`, including DHCP and SLAAC.<br>When shutting down an interface without node management addressing, only its name and shutdown state are configured. |
     | [<samp>&nbsp;&nbsp;lldp</samp>](## "mgmt_interface_settings.lldp") | Dictionary |  |  |  | LLDP settings for the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "mgmt_interface_settings.lldp.transmit") | Boolean |  |  |  | Enable LLDP transmission on the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "mgmt_interface_settings.lldp.receive") | Boolean |  |  |  | Enable LLDP reception on the management interface. |
@@ -106,11 +106,13 @@
       # Name of the management interface (e.g. Management0, Management1).
       interface: <str; default="Management1">
 
-      # Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the node.
-      # An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
-      # When false and neither address is configured, no management interface configuration is generated.
-      # For an unused interface, only its name and shutdown state are configured.
-      shutdown_when_unused: <bool; default=False>
+      # Control the management interface shutdown state.
+      # - "true": Always shut down the interface, even when management addressing is configured.
+      # - "false": Configure "no shutdown" when management addressing is configured; otherwise, generate no interface configuration.
+      # - "auto": Configure "no shutdown" when management addressing is configured; otherwise, shut down the interface.
+      # Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`, including DHCP and SLAAC.
+      # When shutting down an interface without node management addressing, only its name and shutdown state are configured.
+      shutdown: <str; "true" | "false" | "auto"; default="false">
 
       # LLDP settings for the management interface.
       lldp:
