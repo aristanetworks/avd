@@ -30877,8 +30877,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Administratively enable or disable the network interface.
         If set to "auto" and there's no IP or
-        DHCP/SLAAC configuration provided,
-        the interface would shutdown.
+        DHCP/SLAAC configuration provided, the interface would shutdown.
 
         Default value: `"false"`
         """
@@ -30915,8 +30914,7 @@ class EosDesigns(EosDesignsRootModel):
                     shutdown:
                        Administratively enable or disable the network interface.
                        If set to "auto" and there's no IP or
-                       DHCP/SLAAC configuration provided,
-                       the interface would shutdown.
+                       DHCP/SLAAC configuration provided, the interface would shutdown.
                     lldp:
                        LLDP settings for the management interface.
 

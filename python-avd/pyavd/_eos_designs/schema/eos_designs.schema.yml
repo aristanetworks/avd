@@ -5004,7 +5004,6 @@ keys:
         description: 'Administratively enable or disable the network interface.
 
           If set to "auto" and there''s no IP or DHCP/SLAAC configuration provided,
-
           the interface would shutdown.'
         valid_values:
         - 'true'
