@@ -66,7 +66,7 @@ If you want to test a specific AVD branch or fork, use the following `devcontain
 {
     "name": "AVD Development",
     "remoteUser": "avd",
-    "image": "ghcr.io/aristanetworks/avd/dev:python3.12",
+    "image": "ghcr.io/aristanetworks/avd/dev:python3.14",
     "containerEnv": {
         "AVD_GITHUB_REPO": "aristanetworks/avd",
         "AVD_BRANCH_NAME": "devel"
