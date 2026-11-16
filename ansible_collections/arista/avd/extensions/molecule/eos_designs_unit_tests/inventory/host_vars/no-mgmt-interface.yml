@@ -5,3 +5,6 @@ l2leaf:
   nodes:
     - name: no-mgmt-interface
       id: 105
+mgmt_interface_settings:
+  # Explicit false preserves the absence of management interface configuration.
+  shutdown_when_unused: false

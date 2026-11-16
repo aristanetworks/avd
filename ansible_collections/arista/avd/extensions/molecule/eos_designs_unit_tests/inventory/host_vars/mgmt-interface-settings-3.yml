@@ -1,10 +1,9 @@
 ---
-# Test for mgmt_interface_settings with shutdown option provided
-# It should create a config that disables Management0 interface regardless if other configs are present
+# Shutdown the management interface when no node management address is configured.
 type: l2leaf
 l2leaf:
   nodes:
     - name: mgmt-interface-settings-3
 mgmt_interface_settings:
   interface: Management0
-  shutdown: auto
+  shutdown_when_unused: true

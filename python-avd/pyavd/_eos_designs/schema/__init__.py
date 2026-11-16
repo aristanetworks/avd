@@ -2095,12 +2095,14 @@ class EosDesigns(EosDesignsRootModel):
         management is actually used.
         When enabled:
         - AVD renders the OOB management VRF only if
-        `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
-        - Setting only
-        `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
-        VRF.
-        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
-        route prerequisites are met).
+        `default_mgmt_method` is `oob`, if `mgmt_ip` / `ipv6_mgmt_ip` is configured,
+          or if
+        `mgmt_interface_settings.shutdown_when_unused` is enabled.
+        - Setting only `mgmt_interface_vrf` or
+        `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
+        - AVD renders OOB
+        IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are
+        met).
 
         Default value: `False`
         """
@@ -2262,12 +2264,14 @@ class EosDesigns(EosDesignsRootModel):
                        management is actually used.
                        When enabled:
                        - AVD renders the OOB management VRF only if
-                       `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.
-                       - Setting only
-                       `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management
-                       VRF.
-                       - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
-                       route prerequisites are met).
+                       `default_mgmt_method` is `oob`, if `mgmt_ip` / `ipv6_mgmt_ip` is configured,
+                         or if
+                       `mgmt_interface_settings.shutdown_when_unused` is enabled.
+                       - Setting only `mgmt_interface_vrf` or
+                       `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
+                       - AVD renders OOB
+                       IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are
+                       met).
 
                 """
 
@@ -30806,8 +30810,6 @@ class EosDesigns(EosDesignsRootModel):
     class MgmtInterfaceSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        Shutdown: TypeAlias = Literal["true", "false", "auto"]
-
         class Lldp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30846,7 +30848,7 @@ class EosDesigns(EosDesignsRootModel):
             "vrf": {"type": str, "default": "MGMT"},
             "vrf_routing": {"type": bool, "default": False},
             "interface": {"type": str, "default": "Management1"},
-            "shutdown": {"type": str, "default": "false"},
+            "shutdown_when_unused": {"type": bool, "default": False},
             "lldp": {"type": Lldp},
         }
         description: str
@@ -30873,13 +30875,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"Management1"`
         """
-        shutdown: Shutdown
+        shutdown_when_unused: bool
         """
-        Administratively enable or disable the network interface.
-        If set to "auto" and there's no IP or
-        DHCP/SLAAC configuration provided, the interface would shutdown.
+        Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the
+        node.
+        An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
+        When
+        false and neither address is configured, no management interface configuration is generated.
 
-        Default value: `"false"`
+        Default value: `False`
         """
         lldp: Lldp
         """
@@ -30897,7 +30901,7 @@ class EosDesigns(EosDesignsRootModel):
                 vrf: str | UndefinedType = Undefined,
                 vrf_routing: bool | UndefinedType = Undefined,
                 interface: str | UndefinedType = Undefined,
-                shutdown: Shutdown | UndefinedType = Undefined,
+                shutdown_when_unused: bool | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30911,10 +30915,12 @@ class EosDesigns(EosDesignsRootModel):
                     vrf: VRF name used for the management interface.
                     vrf_routing: Enable IP routing in the management VRF.
                     interface: Name of the management interface (e.g. Management0, Management1).
-                    shutdown:
-                       Administratively enable or disable the network interface.
-                       If set to "auto" and there's no IP or
-                       DHCP/SLAAC configuration provided, the interface would shutdown.
+                    shutdown_when_unused:
+                       Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the
+                       node.
+                       An interface configured with an IPv4 or IPv6 address, DHCP, or SLAAC is always enabled.
+                       When
+                       false and neither address is configured, no management interface configuration is generated.
                     lldp:
                        LLDP settings for the management interface.
 
