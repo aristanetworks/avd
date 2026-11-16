@@ -1,0 +1,1 @@
+[['tenants', '0', 'vrfs', '0', 'redistribute_ospf']]: 'The input data model is deprecated and cannot be used in conjunction with the new data model 'bgp.redistribute_ospf.internal.enabled'.'

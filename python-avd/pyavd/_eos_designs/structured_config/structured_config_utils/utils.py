@@ -17,6 +17,16 @@ if TYPE_CHECKING:
 
 
 class UtilsMixin(Protocol):
+    def get_interface_speed(
+        self: StructuredConfigUtilsProtocol, configured_speed: EosCliConfigGen.EthernetInterfacesItem.Speed | None
+    ) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
+        """Omit explicit auto speed modes on platforms where they are not supported."""
+        if configured_speed is None:
+            return None
+        if not self.shared_utils.platform_settings.feature_support.explicit_interface_speed_auto_mode and "auto " in configured_speed:
+            return None
+        return configured_speed
+
     def get_interface_validate_state(self: StructuredConfigUtilsProtocol, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
         """
         Checks if validate_state flag should be set or not.
