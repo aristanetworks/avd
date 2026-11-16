@@ -116,6 +116,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ##### Address Family IPv4
 
@@ -126,6 +127,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA | limit 3333 warning limit 85 percent exceed-action warn |
 
 ###### Redistribution
 
@@ -144,6 +146,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA | limit 4444 incident-count limit 4 incident-count clear-timeout 8 minutes |
 
 ###### Redistribution
 
@@ -164,6 +167,7 @@ router ospfv3
       router-id 2.2.2.2
       auto-cost reference-bandwidth 2000
       passive-interface default
+      lsa limit 3333 warning limit 85 percent exceed-action warn
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
@@ -173,6 +177,7 @@ router ospfv3
       bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
+      lsa limit 4444 incident-count limit 4 incident-count clear-timeout 8 minutes
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external

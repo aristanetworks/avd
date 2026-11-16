@@ -198,6 +198,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA | - |
 
 ##### Address Family IPv4
 
@@ -233,6 +234,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 ##### Address Family IPv6
 
@@ -258,6 +260,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 #### VRF: TEST_VRF
 
@@ -268,6 +271,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 ##### Address Family IPv6
 
@@ -278,6 +282,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ###### Redistribution
 
@@ -294,6 +299,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 #### VRF: data
 
@@ -306,6 +312,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA | - |
 
 #### Router OSPFv3 Device Configuration
 

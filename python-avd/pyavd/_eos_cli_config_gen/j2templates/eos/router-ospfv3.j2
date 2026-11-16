@@ -38,6 +38,31 @@ router ospfv3 vrf {{ vrf.name }}
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.lsa.limit is arista.avd.defined
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.lsa.limit is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.lsa.limit is not arista.avd.defined) %}
+{%         set lsa_limit_cli = "lsa limit " ~ vrf.lsa.limit %}
+{%         set lsa_limit_has_disabled_or_incident = vrf.lsa.disabled_time is arista.avd.defined
+               or vrf.lsa.incident_count.count is arista.avd.defined
+               or vrf.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%         if vrf.lsa.disabled_time is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ vrf.lsa.disabled_time ~ " minutes" %}
+{%         endif %}
+{%         if vrf.lsa.incident_count.count is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ vrf.lsa.incident_count.count %}
+{%         endif %}
+{%         if vrf.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ vrf.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%         endif %}
+{%         if not lsa_limit_has_disabled_or_incident and vrf.lsa.warning_limit is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ vrf.lsa.warning_limit ~ " percent" %}
+{%         endif %}
+{%         if not lsa_limit_has_disabled_or_incident and vrf.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%         endif %}
+   {{ lsa_limit_cli }}
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if vrf.eos_cli is arista.avd.defined %}
    {{ vrf.eos_cli | indent(3, false) }}
 {%         set use_delimiter = true %}
@@ -62,6 +87,28 @@ router ospfv3 vrf {{ vrf.name }}
 {%         endif %}
 {%         if vrf.address_family_ipv4.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if vrf.address_family_ipv4.lsa.limit is arista.avd.defined %}
+{%             set lsa_limit_cli = "lsa limit " ~ vrf.address_family_ipv4.lsa.limit %}
+{%             set lsa_limit_has_disabled_or_incident = vrf.address_family_ipv4.lsa.disabled_time is arista.avd.defined
+                   or vrf.address_family_ipv4.lsa.incident_count.count is arista.avd.defined
+                   or vrf.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             if vrf.address_family_ipv4.lsa.disabled_time is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ vrf.address_family_ipv4.lsa.disabled_time ~ " minutes" %}
+{%             endif %}
+{%             if vrf.address_family_ipv4.lsa.incident_count.count is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ vrf.address_family_ipv4.lsa.incident_count.count %}
+{%             endif %}
+{%             if vrf.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ vrf.address_family_ipv4.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and vrf.address_family_ipv4.lsa.warning_limit is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ vrf.address_family_ipv4.lsa.warning_limit ~ " percent" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and vrf.address_family_ipv4.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%             endif %}
+      {{ lsa_limit_cli }}
 {%         endif %}
 {%         if vrf.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
@@ -151,6 +198,28 @@ router ospfv3 vrf {{ vrf.name }}
 {%         if vrf.address_family_ipv6.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
 {%         endif %}
+{%         if vrf.address_family_ipv6.lsa.limit is arista.avd.defined %}
+{%             set lsa_limit_cli = "lsa limit " ~ vrf.address_family_ipv6.lsa.limit %}
+{%             set lsa_limit_has_disabled_or_incident = vrf.address_family_ipv6.lsa.disabled_time is arista.avd.defined
+                   or vrf.address_family_ipv6.lsa.incident_count.count is arista.avd.defined
+                   or vrf.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             if vrf.address_family_ipv6.lsa.disabled_time is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ vrf.address_family_ipv6.lsa.disabled_time ~ " minutes" %}
+{%             endif %}
+{%             if vrf.address_family_ipv6.lsa.incident_count.count is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ vrf.address_family_ipv6.lsa.incident_count.count %}
+{%             endif %}
+{%             if vrf.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ vrf.address_family_ipv6.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and vrf.address_family_ipv6.lsa.warning_limit is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ vrf.address_family_ipv6.lsa.warning_limit ~ " percent" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and vrf.address_family_ipv6.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%             endif %}
+      {{ lsa_limit_cli }}
+{%         endif %}
 {%         if vrf.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
 {%             if vrf.address_family_ipv6.redistribute.bgp.include_leaked is arista.avd.defined(true) %}
@@ -232,6 +301,7 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
+      or router_ospfv3.lsa.limit is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
       or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
       or router_ospfv3.eos_cli is arista.avd.defined %}
@@ -268,6 +338,31 @@ router ospfv3
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if router_ospfv3.lsa.limit is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.lsa.limit is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.lsa.limit is not arista.avd.defined) %}
+{%         set lsa_limit_cli = "lsa limit " ~ router_ospfv3.lsa.limit %}
+{%         set lsa_limit_has_disabled_or_incident = router_ospfv3.lsa.disabled_time is arista.avd.defined
+               or router_ospfv3.lsa.incident_count.count is arista.avd.defined
+               or router_ospfv3.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%         if router_ospfv3.lsa.disabled_time is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ router_ospfv3.lsa.disabled_time ~ " minutes" %}
+{%         endif %}
+{%         if router_ospfv3.lsa.incident_count.count is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ router_ospfv3.lsa.incident_count.count %}
+{%         endif %}
+{%         if router_ospfv3.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ router_ospfv3.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%         endif %}
+{%         if not lsa_limit_has_disabled_or_incident and router_ospfv3.lsa.warning_limit is arista.avd.defined %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ router_ospfv3.lsa.warning_limit ~ " percent" %}
+{%         endif %}
+{%         if not lsa_limit_has_disabled_or_incident and router_ospfv3.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%             set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%         endif %}
+   {{ lsa_limit_cli }}
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if router_ospfv3.eos_cli is arista.avd.defined %}
    {{ router_ospfv3.eos_cli | indent(3, false) }}
 {%         set use_delimiter = true %}
@@ -292,6 +387,28 @@ router ospfv3
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.lsa.limit is arista.avd.defined %}
+{%             set lsa_limit_cli = "lsa limit " ~ router_ospfv3.address_family_ipv4.lsa.limit %}
+{%             set lsa_limit_has_disabled_or_incident = router_ospfv3.address_family_ipv4.lsa.disabled_time is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.lsa.incident_count.count is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             if router_ospfv3.address_family_ipv4.lsa.disabled_time is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ router_ospfv3.address_family_ipv4.lsa.disabled_time ~ " minutes" %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv4.lsa.incident_count.count is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ router_ospfv3.address_family_ipv4.lsa.incident_count.count %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and router_ospfv3.address_family_ipv4.lsa.warning_limit is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ router_ospfv3.address_family_ipv4.lsa.warning_limit ~ " percent" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and router_ospfv3.address_family_ipv4.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%             endif %}
+      {{ lsa_limit_cli }}
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
@@ -380,6 +497,28 @@ router ospfv3
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.lsa.limit is arista.avd.defined %}
+{%             set lsa_limit_cli = "lsa limit " ~ router_ospfv3.address_family_ipv6.lsa.limit %}
+{%             set lsa_limit_has_disabled_or_incident = router_ospfv3.address_family_ipv6.lsa.disabled_time is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.lsa.incident_count.count is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%             if router_ospfv3.address_family_ipv6.lsa.disabled_time is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " disabled-time " ~ router_ospfv3.address_family_ipv6.lsa.disabled_time ~ " minutes" %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv6.lsa.incident_count.count is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count limit " ~ router_ospfv3.address_family_ipv6.lsa.incident_count.count %}
+{%             endif %}
+{%             if router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " incident-count clear-timeout " ~ router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout ~ " minutes" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and router_ospfv3.address_family_ipv6.lsa.warning_limit is arista.avd.defined %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " warning limit " ~ router_ospfv3.address_family_ipv6.lsa.warning_limit ~ " percent" %}
+{%             endif %}
+{%             if not lsa_limit_has_disabled_or_incident and router_ospfv3.address_family_ipv6.lsa.exceed_action_warn is arista.avd.defined(true) %}
+{%                 set lsa_limit_cli = lsa_limit_cli ~ " exceed-action warn" %}
+{%             endif %}
+      {{ lsa_limit_cli }}
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}

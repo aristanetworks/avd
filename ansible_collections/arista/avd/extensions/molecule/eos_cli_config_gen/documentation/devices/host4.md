@@ -158,6 +158,7 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 ##### Address Family IPv4
 
@@ -193,6 +194,7 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | - |
 
 #### Router OSPFv3 Device Configuration
 

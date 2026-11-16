@@ -3,6 +3,14 @@ router_ospfv3:
   bfd_default: true
   bfd_adjacency_state_any: true
   passive_interface_default: true
+  lsa:
+    limit: 20000
+    disabled_time: 30
+    incident_count:
+      count: 10
+      clear_timeout: 20
+    warning_limit: 80
+    exceed_action_warn: true
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -44,6 +52,10 @@ router_ospfv3:
         bfd_adjacency_state_any: true
         auto_cost_reference_bandwidth: 500
         passive_interface_default: true
+        lsa:
+          limit: 5000
+          warning_limit: 70
+          exceed_action_warn: true
         redistribute:
           bgp:
             enabled: true
@@ -73,6 +85,11 @@ router_ospfv3:
         bfd_adjacency_state_any: true
         auto_cost_reference_bandwidth: 500
         passive_interface_default: true
+        lsa:
+          limit: 6000
+          disabled_time: 15
+          warning_limit: 75
+          exceed_action_warn: true
         redistribute:
           bgp:
             enabled: true
@@ -103,6 +120,13 @@ router_ospfv3:
       address_family_ipv4:
         enabled: true
         auto_cost_reference_bandwidth: 1000
+        lsa:
+          limit: 7000
+          incident_count:
+            count: 3
+            clear_timeout: 6
+          warning_limit: 90
+          exceed_action_warn: true
         redistribute:
           bgp:
             enabled: true
@@ -124,6 +148,9 @@ router_ospfv3:
       address_family_ipv6:
         enabled: true
         auto_cost_reference_bandwidth: 1000
+        lsa:
+          limit: 8000
+          exceed_action_warn: true
         redistribute:
           bgp:
             enabled: true
@@ -148,6 +175,10 @@ router_ospfv3:
       router_id: 2.2.2.2
       auto_cost_reference_bandwidth: 100
       passive_interface_default: true
+      lsa:
+        limit: 4000
+        warning_limit: 75
+        exceed_action_warn: true
       address_family_ipv4:
         enabled: true
         passive_interface_default: false
@@ -207,3 +238,6 @@ router_ospfv3:
       router_id: 1.1.1.1
       passive_interface_default: true
       auto_cost_reference_bandwidth: 1000
+      lsa:
+        limit: 4500
+        exceed_action_warn: true

@@ -1337,6 +1337,7 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
 
 ##### Address Family IPv4
 
@@ -1374,6 +1375,7 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| LSA | limit 5000 warning limit 70 percent exceed-action warn |
 
 ###### Redistribution
 
@@ -1395,6 +1397,7 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| LSA | limit 6000 disabled-time 15 minutes |
 
 ###### Redistribution
 
@@ -1416,6 +1419,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA | limit 4000 warning limit 75 percent exceed-action warn |
 
 ##### Address Family IPv4
 
@@ -1426,6 +1430,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ###### Redistribution
 
@@ -1446,6 +1451,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ###### Redistribution
 
@@ -1469,6 +1475,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ###### Redistribution
 
@@ -1487,6 +1494,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ###### Redistribution
 
@@ -1505,6 +1513,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA | limit 4500 exceed-action warn |
 
 #### VRF: data
 
@@ -1515,6 +1524,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA | - |
 
 ##### Address Family IPv4
 
@@ -1525,6 +1535,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA | limit 7000 incident-count limit 3 incident-count clear-timeout 6 minutes |
 
 ###### Redistribution
 
@@ -1545,6 +1556,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA | limit 8000 exceed-action warn |
 
 ###### Redistribution
 
@@ -1568,6 +1580,7 @@ router ospfv3 vrf FULL
       bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
+      lsa limit 5000 warning limit 70 percent exceed-action warn
       redistribute bgp include leaked
       redistribute connected include leaked
       redistribute isis include leaked level-2
@@ -1581,6 +1594,7 @@ router ospfv3 vrf FULL
       bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
+      lsa limit 6000 disabled-time 15 minutes
       redistribute bgp include leaked
       redistribute connected include leaked
       redistribute isis include leaked level-2
@@ -1591,6 +1605,7 @@ router ospfv3 vrf FULL
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
+   lsa limit 4000 warning limit 75 percent exceed-action warn
    !
    address-family ipv4
       redistribute bgp
@@ -1625,6 +1640,7 @@ router ospfv3 vrf Test_VRF
    router-id 1.1.1.1
    auto-cost reference-bandwidth 1000
    passive-interface default
+   lsa limit 4500 exceed-action warn
 !
 router ospfv3 vrf data
    router-id 2.2.2.2
@@ -1632,6 +1648,7 @@ router ospfv3 vrf data
    !
    address-family ipv4
       auto-cost reference-bandwidth 1000
+      lsa limit 7000 incident-count limit 3 incident-count clear-timeout 6 minutes
       redistribute bgp route-map map1
       redistribute connected route-map map1
       redistribute isis route-map map1
@@ -1640,6 +1657,7 @@ router ospfv3 vrf data
    !
    address-family ipv6
       auto-cost reference-bandwidth 1000
+      lsa limit 8000 exceed-action warn
       redistribute bgp route-map map1
       redistribute dhcp route-map map1
       redistribute connected route-map map1
@@ -1651,6 +1669,7 @@ router ospfv3
    bfd default
    bfd adjacency state any
    passive-interface default
+   lsa limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
    !
    address-family ipv4
       redistribute bgp

@@ -415,6 +415,7 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
 
 ###### Redistribution
 
@@ -433,6 +434,7 @@ router ospf 702
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA | limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes |
 
 ###### Redistribution
 
@@ -453,6 +455,7 @@ router ospfv3
       bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
+      lsa limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
@@ -462,6 +465,7 @@ router ospfv3
       bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
+      lsa limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1

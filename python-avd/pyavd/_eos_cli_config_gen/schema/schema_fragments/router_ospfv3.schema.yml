@@ -34,6 +34,41 @@ keys:
         min: 1
         max: 4294967
         description: Reference bandwidth in Mbps.
+      lsa:
+        type: dict
+        keys:
+          limit:
+            type: int
+            required: true
+            min: 0
+            max: 100000
+            description: Configure maximum number of LSAs permitted (0 for unlimited).
+          disabled_time:
+            type: int
+            min: 1
+            max: 60
+            description: Minutes to shut down the instances.
+          incident_count:
+            type: dict
+            keys:
+              clear_timeout:
+                type: int
+                min: 1
+                max: 60
+                description: Minutes of not increasing the incident count before resetting the incident count.
+              count:
+                type: int
+                min: 1
+                max: 20
+                description: Limit maximum number of times the maximum number of LSAs can be reached.
+          exceed_action_warn:
+            type: bool
+            description: Only give warning message when limit is exceeded.
+          warning_limit:
+            type: int
+            min: 25
+            max: 99
+            description: Percentage of maximum number of LSAs to reach before warning.
       address_family_ipv4:
         type: dict
         description: |-
@@ -61,6 +96,9 @@ keys:
             min: 1
             max: 4294967
             description: Reference bandwidth in Mbps.
+          lsa:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/lsa"
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -199,6 +237,9 @@ keys:
               min: 1
               max: 4294967
               description: Reference bandwidth in Mbps.
+            lsa:
+              type: dict
+              $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/lsa"
             address_family_ipv4:
               type: dict
               $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
