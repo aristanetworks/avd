@@ -85,10 +85,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
-        if not self.shared_utils.node_config.loopback_ipv4_pool:
-            msg = "loopback_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
-        return self.shared_utils.node_config.loopback_ipv4_pool
+        return self.shared_utils.loopback_ipv4_pool
 
     @cached_property
     def _loopback_ipv4_offset(self: AvdIpAddressingProtocol) -> int:
