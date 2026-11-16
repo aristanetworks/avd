@@ -54,7 +54,7 @@ If you want to use a specific AVD release, use the following `devcontainer.json`
 {
     "name": "AVD Universal",
     "remoteUser": "avd",
-    "image": "ghcr.io/aristanetworks/avd/universal:python3.12-avd-v6.5.0"
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.14-avd-v6.5.0"
 }
 ```
 
