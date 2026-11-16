@@ -7,8 +7,8 @@
 # AVD Dev Containers Overview
 
 !!! warning
-    AVD Dev Containers are currently in the early preview phase and not officially supported for any production cases.
-    They can still be very useful for development and testing. Please report any issues and optimization suggestions.
+    AVD Dev Containers are a preview convenience feature for development and testing, with no plans for production support.
+    If used in production, the Arista maintainer team does not provide official support, perform required security scans, or accept responsibility for potential issues.
 
 ## Why Dev Containers
 
