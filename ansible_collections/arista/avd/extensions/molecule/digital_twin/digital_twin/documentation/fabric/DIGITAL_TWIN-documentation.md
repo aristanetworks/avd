@@ -36,6 +36,13 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-5 | 192.168.0.10/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-1 | 192.169.3.1/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-3 | 192.169.3.3/32 | custom-platform | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-custom-system-mac-tests-veos | 192.168.10.20/32 | vEOS-lab | Provisioned | PROD-CUSTOM-SYSTEM-MAC-VEOS-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-disabled-tests-veos | 192.168.10.10/32 | vEOS-lab | Provisioned | PROD-DISABLED-VEOS-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-serial-only-tests-veos | 192.168.10.21/32 | vEOS-lab | Provisioned | PROD-SERIAL-ONLY-VEOS-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-system-mac-only-tests-veos | 192.168.10.22/32 | vEOS-lab | Provisioned | PROD-SYSTEM-MAC-ONLY-VEOS-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-tests-cloudeos | 192.168.10.12/32 | CloudEOS | Provisioned | PROD-CLOUDEOS-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-tests-third-party | 192.168.10.13/32 | hardware-identity-third-party | Provisioned | PROD-THIRD-PARTY-SERIAL |
+| DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-tests-veos | 192.168.10.11/32 | vEOS-lab | Provisioned | PROD-VEOS-SERIAL |
 | DIGITAL_TWIN | l2leaf | digital-twin-veos-no-mgmt | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital.twin.ethernet.ports.2 | 192.169.3.2/32 | vEOS-lab | Provisioned | - |
 

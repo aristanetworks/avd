@@ -1,0 +1,93 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    aaa_settings_profile: aaa_leaf_profile
+  nodes:
+    - name: aaa-settings-profile-vrf-merge-server-replace
+
+aaa_settings:
+  tacacs:
+    servers:
+      - host: 198.51.100.10
+        vrf: GLOBAL_TACACS
+        key: 071B245F5A
+        groups: [GLOBAL_TACACS]
+    vrfs:
+      - name: GLOBAL_TACACS
+        source_interface: Loopback0
+      - name: SHARED_TACACS
+        source_interface: Loopback4
+  radius:
+    servers:
+      - host: 198.51.100.20
+        vrf: GLOBAL_RADIUS
+        key: 071B245F5A
+        groups: [GLOBAL_RADIUS]
+    vrfs:
+      - name: GLOBAL_RADIUS
+        source_interface: Loopback1
+      - name: SHARED_RADIUS
+        source_interface: Loopback7
+
+aaa_settings_profiles:
+  - profile: aaa_common_profile
+    tacacs:
+      servers:
+        - host: 198.51.100.11
+          vrf: PARENT_TACACS
+          key: 071B245F5A
+          groups: [PARENT_TACACS]
+      vrfs:
+        - name: PARENT_TACACS
+          source_interface: Loopback2
+        - name: SHARED_TACACS
+          source_interface: Loopback5
+    radius:
+      servers:
+        - host: 198.51.100.21
+          vrf: PARENT_RADIUS
+          key: 071B245F5A
+          groups: [PARENT_RADIUS]
+      vrfs:
+        - name: PARENT_RADIUS
+          source_interface: Loopback3
+        - name: SHARED_RADIUS
+          source_interface: Loopback8
+
+  - profile: aaa_leaf_profile
+    parent_profile: aaa_common_profile
+    tacacs:
+      servers:
+        - host: 198.51.100.12
+          vrf: GLOBAL_TACACS
+          key: 071B245F5A
+          groups: [CHILD_TACACS_GLOBAL_VRF]
+        - host: 198.51.100.13
+          vrf: PARENT_TACACS
+          key: 071B245F5A
+          groups: [CHILD_TACACS_PARENT_VRF]
+        - host: 198.51.100.14
+          vrf: SHARED_TACACS
+          key: 071B245F5A
+          groups: [CHILD_TACACS_SHARED_VRF]
+      vrfs:
+        - name: SHARED_TACACS
+          source_interface: Loopback6
+    radius:
+      servers:
+        - host: 198.51.100.22
+          vrf: GLOBAL_RADIUS
+          key: 071B245F5A
+          groups: [CHILD_RADIUS_GLOBAL_VRF]
+        - host: 198.51.100.23
+          vrf: PARENT_RADIUS
+          key: 071B245F5A
+          groups: [CHILD_RADIUS_PARENT_VRF]
+        - host: 198.51.100.24
+          vrf: SHARED_RADIUS
+          key: 071B245F5A
+          groups: [CHILD_RADIUS_SHARED_VRF]
+      vrfs:
+        - name: SHARED_RADIUS
+          source_interface: Loopback9

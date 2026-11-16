@@ -1,0 +1,34 @@
+---
+# Negative test: setting both the deprecated vrf.redistribute_ospf and the new
+# bgp.redistribute_ospf.internal.enabled must be rejected.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65250
+  nodes:
+    - name: set-both-redistribute-ospf-and-internal-enabled
+      id: 1
+
+tenants:
+  - name: TENANT_OSPF_CONFLICT
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_OSPF_CONFLICT
+        vrf_id: 1
+        ospf:
+          enabled: true
+        redistribute_ospf: true
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: true
+        svis:
+          - id: 11
+            name: VRF_OSPF_CONFLICT_SVI11
+            enabled: true
+            ip_address_virtual: 10.0.11.1/24
+            ospf:
+              enabled: true

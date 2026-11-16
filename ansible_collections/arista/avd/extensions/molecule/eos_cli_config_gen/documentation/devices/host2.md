@@ -22,6 +22,7 @@
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+  - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
@@ -82,6 +83,8 @@
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+  - [Static Routes](#static-routes)
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
   - [Router OSPF](#router-ospf)
@@ -110,6 +113,9 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Device Configuration](#platform-device-configuration)
@@ -451,6 +457,22 @@ ip radius vrf abc source-interface Loopback10
 ip radius vrf BLAH source-interface Loopback10
 !
 ip radius vrf MGMT source-interface Management1
+```
+
+### AAA Server Groups
+
+#### AAA Server Groups Summary
+
+| Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
+| ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| TACACS | tacacs+ | MGMT | 10.10.11.157 | - | - |
+
+#### AAA Server Groups Device Configuration
+
+```eos
+!
+aaa group server tacacs+ TACACS
+   server 10.10.11.157 vrf MGMT
 ```
 
 ### AAA Authentication
@@ -1031,6 +1053,10 @@ interface Dps1
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
 | Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
+| Vlan1003 | OSPFv3 BFD disabled at interface level | default | - | - |
+| Vlan1004 | OSPFv3 address-family BFD without area configuration | default | - | - |
+| Vlan1005 | OSPFv3 IPv6 BFD disabled at address-family level | default | - | - |
+| Vlan1006 | OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence | default | - | - |
 
 ##### IPv4
 
@@ -1040,15 +1066,23 @@ interface Dps1
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
 | Vlan1002 | default | - | - | - | - | - |
+| Vlan1003 | default | - | - | - | - | - |
+| Vlan1004 | default | - | - | - | - | - |
+| Vlan1005 | default | - | - | - | - | - |
+| Vlan1006 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | False | - | 1000 | 0.0.0.0 |
-| Vlan1001 | True | True | 1000 | 0.0.0.0 |
-| Vlan1002 | - | - | 0.0.0.0 | 0.0.0.0 |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | - | - | True | 0.0.0.0 | 10 | True | 1000 | 20 |
+| Vlan1000 | False | - | True | - | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1001 | True | True | - | 30 | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1002 | - | - | - | - | - | 0.0.0.0 | - | - | 0.0.0.0 | - |
+| Vlan1003 | - | - | False | - | - | - | - | - | - | 50 |
+| Vlan1004 | - | - | - | - | False | - | - | True | - | - |
+| Vlan1005 | - | - | - | - | - | - | - | False | - | - |
+| Vlan1006 | - | - | - | - | True | - | - | - | - | - |
 
 ##### ISIS
 
@@ -1069,7 +1103,11 @@ interface Vlan85
    no mpls ip
    ospfv3 passive-interface
    ospfv3 network point-to-point
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 10
    ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 20
    ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
@@ -1078,6 +1116,7 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   ospfv3 bfd
    no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
@@ -1085,6 +1124,7 @@ interface Vlan1000
 interface Vlan1001
    description Test VLAN with both ospfv3 and ipv6_ospf configurations
    ospfv3 passive-interface
+   ospfv3 cost 30
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
@@ -1093,6 +1133,24 @@ interface Vlan1002
    description Test OSPFv3 without passive-interface settings
    ospfv3 ipv4 area 0.0.0.0
    ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1003
+   description OSPFv3 BFD disabled at interface level
+   no ospfv3 bfd
+   ospfv3 ipv6 cost 50
+!
+interface Vlan1004
+   description OSPFv3 address-family BFD without area configuration
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv6 bfd
+!
+interface Vlan1005
+   description OSPFv3 IPv6 BFD disabled at address-family level
+   no ospfv3 ipv6 bfd
+!
+interface Vlan1006
+   description OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence
+   ospfv3 ipv4 bfd
 ```
 
 ### VXLAN Interface
@@ -1174,6 +1232,7 @@ service routing protocols model ribd
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| MGMT | True |
 
 #### IP Routing Device Configuration
 
@@ -1181,6 +1240,31 @@ service routing protocols model ribd
 !
 no ip routing
 no ip icmp redirect
+ip routing vrf MGMT
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
+### Static Routes
+
+#### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| MGMT | 0.0.0.0/0 | 10.73.255.2 | - | 1 | - | - | - |
+
+#### Static Routes Device Configuration
+
+```eos
+!
+ip route vrf MGMT 0.0.0.0/0 10.73.255.2
 ```
 
 ### ARP
@@ -1249,6 +1333,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1284,6 +1370,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1303,6 +1391,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 4.4.4.4 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1322,6 +1412,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -1330,6 +1422,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1348,6 +1442,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1369,6 +1465,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1385,6 +1483,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1401,6 +1501,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1409,6 +1511,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1417,6 +1521,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1435,6 +1541,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1456,6 +1564,8 @@ router ospf 701
 router ospfv3 vrf FULL
    address-family ipv4
       router-id 3.3.3.3
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1467,6 +1577,8 @@ router ospfv3 vrf FULL
    !
    address-family ipv6
       router-id 4.4.4.4
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1536,6 +1648,8 @@ router ospfv3 vrf data
       redistribute static route-map map1
 !
 router ospfv3
+   bfd default
+   bfd adjacency state any
    passive-interface default
    !
    address-family ipv4
@@ -1721,6 +1835,7 @@ router bgp 65101
    bgp route-reflector preserve-attributes
    no bgp additional-paths receive
    no bgp additional-paths send
+   neighbor default received attribute discard 10-23
    neighbor default send-community large
    bgp redistribute-internal
    redistribute connected include leaked route-map RM-CONN-2-BGP
@@ -2098,6 +2213,21 @@ dot1x protocol bpdu bypass
 dot1x dynamic-authorization
 ```
 
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | enabled |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
+```
+
 ## Platform
 
 ### Platform Summary
@@ -2140,7 +2270,7 @@ platform trident mmu headroom-pool limit 557
 
 | Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | - | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
 
 #### Layer 4 Applications
 
@@ -2159,7 +2289,6 @@ application traffic recognition
       destination prefix field-set dest_prefix_set1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
-      protocol 25
       dscp 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62
    !
    application l4 l4-app-1

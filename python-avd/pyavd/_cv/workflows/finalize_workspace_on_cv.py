@@ -171,7 +171,7 @@ def _prepare_build_warnings_suppress_patterns(
     for proposed_regex_pattern in workspace_build_warnings_suppress_set:
         try:
             compiled_workspace_build_warnings_suppress_list.append(re_compile(proposed_regex_pattern))
-        except error as e:  # noqa: PERF203
+        except error as e:
             warning = (
                 f"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '{proposed_regex_pattern}'. "
                 f"This incorrect pattern will not be used for warnings suppression. Error: '{e}'"
