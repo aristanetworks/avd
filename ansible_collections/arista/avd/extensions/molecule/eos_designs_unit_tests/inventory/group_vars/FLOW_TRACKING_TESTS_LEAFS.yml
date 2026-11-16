@@ -56,7 +56,6 @@ flow_tracking_settings:
 l3leaf:
   defaults:
     platform: vEOS-lab
-    loopback_ipv4_pool: 10.254.1.0/27
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['flow-tracking-tests-spine1', 'flow-tracking-tests-spine2']
     uplink_ipv4_pool: 10.254.2.0/24
@@ -74,6 +73,7 @@ l3leaf:
       id: 1
       bgp_as: 65101
       mgmt_ip: 192.168.0.101/24
+      loopback_ipv4_address: 10.254.1.1
       uplink_switch_interfaces:
         - Ethernet1
         - Ethernet2
@@ -82,6 +82,7 @@ l3leaf:
       id: 2
       bgp_as: 65102
       mgmt_ip: 192.168.0.102/24
+      loopback_ipv4_address: 10.254.1.2
       uplink_switch_interfaces:
         - Ethernet3
         - Ethernet4
@@ -94,12 +95,14 @@ l3leaf:
         - name: flow-tracking-tests-leaf3
           id: 5
           mgmt_ip: 192.168.0.103/24
+          loopback_ipv4_address: 10.254.1.5
           uplink_switch_interfaces:
             - Ethernet5
             - Ethernet6
         - name: flow-tracking-tests-leaf4
           id: 6
           mgmt_ip: 192.168.0.104/24
+          loopback_ipv4_address: 10.254.1.6
           uplink_switch_interfaces:
             - Ethernet7
             - Ethernet8
