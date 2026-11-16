@@ -46,13 +46,13 @@ class ManagementSshMixin(Protocol):
             if vrf_name == "default":
                 self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
                 self.structured_config_utils._validate_ipv4_acl_exclusion(
-                    vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
+                    vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context=f"ssh_settings.vrfs[name={vrf.name}]"
                 )
                 if vrf.enabled:
                     self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            acl = self.shared_utils.get_ipv4_acl_without_substitution(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
+                            acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
                             self.structured_config_utils._set_ipv4_acl(acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
                     elif vrf.ipv4_standard_acl:
@@ -63,12 +63,12 @@ class ManagementSshMixin(Protocol):
                     name=vrf_name, enable=vrf.enabled, ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None
                 )
                 self.structured_config_utils._validate_ipv4_acl_exclusion(
-                    vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context=f"ssh_settings.vrfs[name={vrf.name}]", direction=None
+                    vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context=f"ssh_settings.vrfs[name={vrf.name}]"
                 )
                 if vrf.enabled:
                     if vrf.ipv4_acl:
                         if self.inputs.avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
-                            acl = self.shared_utils.get_ipv4_acl_without_substitution(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
+                            acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=f"ssh_settings.vrfs[name={vrf.name}]")
                             self.structured_config_utils._set_ipv4_acl(acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
                     elif vrf.ipv4_standard_acl:
