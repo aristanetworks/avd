@@ -1825,9 +1825,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -1914,9 +1919,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -1990,9 +2000,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                 and `udp_dest_port_set_name`
                 if set in order to generate valid configuration in EOS.
+                When source or
+                destination port field-sets are configured, the application
+                must match only TCP and/or UDP. This
+                restriction also applies to protocols
+                specified through protocol_ranges.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with
+                `str` items.
                 """
                 protocol_ranges: ProtocolRanges
                 """
@@ -2064,9 +2079,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                `udp_src_port_set_name` and for `tcp_dest_port_set_name`
                                and `udp_dest_port_set_name`
                                if set in order to generate valid configuration in EOS.
+                               When source or
+                               destination port field-sets are configured, the application
+                               must match only TCP and/or UDP. This
+                               restriction also applies to protocols
+                               specified through protocol_ranges.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with
+                               `str` items.
                             protocol_ranges:
                                Accept protocol value(s) or range(s).
                                Protocol values can be between 1 and 255.
@@ -29629,6 +29649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
+                "ztp": {"type": bool},
             }
             environment: Environment | None
             """Targeted Digital Twin environment."""
@@ -29657,6 +29678,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             types.
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
+            ztp: bool | None
+            """
+            Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+            Twin environment.
+            Supported Digital Twin environments:
+            - `act`: Applies only to `veos` and
+            `cloudeos` node types.
+            """
 
             if TYPE_CHECKING:
 
@@ -29670,6 +29699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
+                    ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -29695,6 +29725,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+                        ztp:
+                           Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
+                           Twin environment.
+                           Supported Digital Twin environments:
+                           - `act`: Applies only to `veos` and
+                           `cloudeos` node types.
 
                     """
 
@@ -30862,6 +30898,184 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Example: 15,16,17,18
                     rate_limit: Rate limits the loop detection frames. EOS default is 1000/second.
                     transmit_interval: Loop protection packet transmit interval. EOS default is 5 seconds.
+
+                """
+
+    class MonitorSecurity(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Awake(AvdModel):
+            """Subclass of AvdModel."""
+
+            class NdrApplication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"unknown_udp": {"type": bool}}
+                unknown_udp: bool | None
+                """Enable handling of unknown UDP applications."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, unknown_udp: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NdrApplication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            unknown_udp: Enable handling of unknown UDP applications.
+
+                        """
+
+            class NucleusItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "destination": {"type": str},
+                    "port": {"type": int},
+                    "local_interface": {"type": str},
+                    "ssl_profile": {"type": str},
+                }
+                name: str
+                """Hostname of the Nucleus."""
+                destination: str | None
+                """IPv4 or IPv6 address or FQDN of the Nucleus."""
+                port: int | None
+                """TCP port of the Nucleus."""
+                local_interface: str | None
+                """Source interface for the connection to the Nucleus, e.g. `Loopback0`."""
+                ssl_profile: str | None
+                """Name of the SSL profile used for the connection to the Nucleus."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        destination: str | UndefinedType | None = Undefined,
+                        port: int | UndefinedType | None = Undefined,
+                        local_interface: str | UndefinedType | None = Undefined,
+                        ssl_profile: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        NucleusItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Hostname of the Nucleus.
+                            destination: IPv4 or IPv6 address or FQDN of the Nucleus.
+                            port: TCP port of the Nucleus.
+                            local_interface: Source interface for the connection to the Nucleus, e.g. `Loopback0`.
+                            ssl_profile: Name of the SSL profile used for the connection to the Nucleus.
+
+                        """
+
+            class Nucleus(AvdIndexedList[str, NucleusItem]):
+                """Subclass of AvdIndexedList with `NucleusItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Nucleus._item_type = NucleusItem
+
+            _fields: ClassVar[dict] = {
+                "disabled": {"type": bool},
+                "topic": {"type": str},
+                "monitor_point_identifier": {"type": int},
+                "flow_table_size": {"type": int},
+                "ipfix_listener_port": {"type": int},
+                "ndr_application": {"type": NdrApplication},
+                "nucleus": {"type": Nucleus},
+            }
+            disabled: bool | None
+            """
+            Disable the NDR sensor.
+            `true` renders `disabled`, `false` renders `no disabled`.
+            """
+            topic: str | None
+            """Topic identifier."""
+            monitor_point_identifier: int | None
+            """Identifier of this monitor point."""
+            flow_table_size: int | None
+            """Maximum number of entries in the flow table."""
+            ipfix_listener_port: int | None
+            """UDP port on which the sensor listens for IPFIX records."""
+            ndr_application: NdrApplication
+            """Subclass of AvdModel."""
+            nucleus: Nucleus
+            """
+            NDR Nucleus servers (minimum 1, maximum 2).
+
+            Subclass of AvdIndexedList with `NucleusItem` items.
+            Primary key is `name` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    disabled: bool | UndefinedType | None = Undefined,
+                    topic: str | UndefinedType | None = Undefined,
+                    monitor_point_identifier: int | UndefinedType | None = Undefined,
+                    flow_table_size: int | UndefinedType | None = Undefined,
+                    ipfix_listener_port: int | UndefinedType | None = Undefined,
+                    ndr_application: NdrApplication | UndefinedType = Undefined,
+                    nucleus: Nucleus | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Awake.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        disabled:
+                           Disable the NDR sensor.
+                           `true` renders `disabled`, `false` renders `no disabled`.
+                        topic: Topic identifier.
+                        monitor_point_identifier: Identifier of this monitor point.
+                        flow_table_size: Maximum number of entries in the flow table.
+                        ipfix_listener_port: UDP port on which the sensor listens for IPFIX records.
+                        ndr_application: Subclass of AvdModel.
+                        nucleus:
+                           NDR Nucleus servers (minimum 1, maximum 2).
+
+                           Subclass of AvdIndexedList with `NucleusItem` items.
+                           Primary key is `name` (`str`).
+
+                    """
+
+        _fields: ClassVar[dict] = {"awake": {"type": Awake}}
+        awake: Awake
+        """
+        Configuration of the Arista NDR (Awake) sensor.
+        Renders `monitor security awake`.
+
+        Subclass of
+        AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, awake: Awake | UndefinedType = Undefined) -> None:
+                """
+                MonitorSecurity.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    awake:
+                       Configuration of the Arista NDR (Awake) sensor.
+                       Renders `monitor security awake`.
+
+                       Subclass of
+                       AvdModel.
 
                 """
 
@@ -72322,14 +72536,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+                "local_interface": {"type": str},
+            }
             name: str
             """VRF name."""
             enable: bool | None
+            ipv4_acl: str | None
+            """IPv4 access list name for non-default VRF."""
+            ipv6_acl: str | None
+            """IPv6 access list name for non-default VRF."""
+            local_interface: str | None
+            """Local interface name for non-default VRF."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | UndefinedType | None = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | UndefinedType | None = Undefined,
+                    ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv6_acl: str | UndefinedType | None = Undefined,
+                    local_interface: str | UndefinedType | None = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -72339,6 +72573,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         enable: enable
+                        ipv4_acl: IPv4 access list name for non-default VRF.
+                        ipv6_acl: IPv6 access list name for non-default VRF.
+                        local_interface: Local interface name for non-default VRF.
 
                     """
 
@@ -72356,8 +72593,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "location": {"type": str},
             "communities": {"type": Communities},
             "ipv4_acls": {"type": Ipv4Acls},
+            "ipv4_acl": {"type": str},
             "ipv6_acls": {"type": Ipv6Acls},
+            "ipv6_acl": {"type": str},
             "local_interfaces": {"type": LocalInterfaces},
+            "local_interface": {"type": str},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "users": {"type": Users},
@@ -72378,10 +72618,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         ipv4_acls: Ipv4Acls
         """Subclass of AvdList with `Ipv4AclsItem` items."""
+        ipv4_acl: str | None
+        """IPv4 access list name for VRF default."""
         ipv6_acls: Ipv6Acls
         """Subclass of AvdList with `Ipv6AclsItem` items."""
+        ipv6_acl: str | None
+        """IPv6 access list for VRF default."""
         local_interfaces: LocalInterfaces
         """Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`)."""
+        local_interface: str | None
+        """Local interface for VRF default."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -72408,8 +72654,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 location: str | UndefinedType | None = Undefined,
                 communities: Communities | UndefinedType = Undefined,
                 ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
+                ipv4_acl: str | UndefinedType | None = Undefined,
                 ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
+                ipv6_acl: str | UndefinedType | None = Undefined,
                 local_interfaces: LocalInterfaces | UndefinedType = Undefined,
+                local_interface: str | UndefinedType | None = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
@@ -72431,8 +72680,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
+                    ipv4_acl: IPv4 access list name for VRF default.
                     ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
+                    ipv6_acl: IPv6 access list for VRF default.
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).
+                    local_interface: Local interface for VRF default.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     users: Subclass of AvdList with `UsersItem` items.
@@ -80209,6 +80461,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "monitor_layer1": {"type": MonitorLayer1},
         "monitor_link_flap_policy": {"type": MonitorLinkFlapPolicy},
         "monitor_loop_protection": {"type": MonitorLoopProtection},
+        "monitor_security": {"type": MonitorSecurity},
         "monitor_server_radius": {"type": MonitorServerRadius},
         "monitor_session_default_encapsulation_gre": {"type": MonitorSessionDefaultEncapsulationGre},
         "monitor_sessions": {"type": MonitorSessions},
@@ -80727,6 +80980,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     monitor_loop_protection: MonitorLoopProtection
     """Subclass of AvdModel."""
+    monitor_security: MonitorSecurity
+    """Subclass of AvdModel."""
     monitor_server_radius: MonitorServerRadius
     """
     Settings to monitor radius servers.
@@ -81094,6 +81349,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
             monitor_link_flap_policy: MonitorLinkFlapPolicy | UndefinedType = Undefined,
             monitor_loop_protection: MonitorLoopProtection | UndefinedType = Undefined,
+            monitor_security: MonitorSecurity | UndefinedType = Undefined,
             monitor_server_radius: MonitorServerRadius | UndefinedType = Undefined,
             monitor_session_default_encapsulation_gre: MonitorSessionDefaultEncapsulationGre | UndefinedType = Undefined,
             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -81457,6 +81713,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 monitor_link_flap_policy: Subclass of AvdModel.
                 monitor_loop_protection: Subclass of AvdModel.
+                monitor_security: Subclass of AvdModel.
                 monitor_server_radius:
                    Settings to monitor radius servers.
 
