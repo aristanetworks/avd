@@ -92,6 +92,6 @@ def test_large_fabric_full_workflow_benchmark(
     previous_disable_level = logging.root.manager.disable
     logging.disable(logging.CRITICAL)
     try:
-        benchmark.pedantic(b, setup=setup, iterations=1)
+        benchmark.pedantic(b, setup=setup, iterations=1, warmup_rounds=1)
     finally:
         logging.disable(previous_disable_level)

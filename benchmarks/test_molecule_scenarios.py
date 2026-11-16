@@ -81,7 +81,7 @@ def test_molecule_scenario_avd_facts_benchmark(
         assert facts_count == input_count
 
     with disabled_logging():
-        benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=0)
+        benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
 
 
 @pytest.mark.parametrize(
