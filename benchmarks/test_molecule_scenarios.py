@@ -8,7 +8,7 @@ from __future__ import annotations
 import logging
 from contextlib import contextmanager
 from copy import deepcopy
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -16,25 +16,13 @@ from pyavd import get_device_config
 from tools.e2e_test_avd import get_avd_facts_for_fabric, get_structured_config_for_device
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterator
+    from collections.abc import Iterator
+
+    from pytest_codspeed import BenchmarkFixture
 
     from benchmarks.conftest import BenchmarkProject
 
 logger = logging.getLogger(__name__)
-
-
-class BenchmarkFixture(Protocol):
-    """Subset of the CodSpeed benchmark fixture used by these tests."""
-
-    def pedantic(
-        self,
-        target: Callable[[], None],
-        *,
-        iterations: int,
-        setup: Callable[[], None] | None = None,
-        rounds: int = 1,
-        warmup_rounds: int = 0,
-    ) -> None: ...
 
 
 REPRESENTATIVE_BENCHMARK_HOSTS = (
@@ -53,6 +41,8 @@ REPRESENTATIVE_BENCHMARK_HOSTS = (
     "uplink-p2p-vrfs-tests-leaf1",
     # WAN/CV Pathfinder coverage.
     "cv-pathfinder-transit1a",
+    "cv-pathfinder-pathfinder1",
+    "cv-pathfinder-edge1",
 )
 
 

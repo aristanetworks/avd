@@ -29,8 +29,6 @@ from tools.e2e_test_avd import (
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from _pytest.terminal import TerminalReporter
-
 logger = logging.getLogger(__name__)
 
 E2E_PROJECT_DIR = Path(__file__).parents[1] / "ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests"
@@ -114,18 +112,13 @@ def benchmark_project() -> Iterator[BenchmarkProject]:
         context.close()
 
 
-def pytest_terminal_summary(terminalreporter: TerminalReporter) -> None:
-    """Display benchmark summary information."""
-    terminalreporter.write_sep("=", "AVD Benchmark Summary")
-
-
 def pytest_configure(config: pytest.Config) -> None:
     """Configure pytest for benchmarking."""
-    if config.getoption("--codspeed"):
+    if config.getoption("--codspeed", default=False):
         logging.disable(logging.CRITICAL)
 
 
 def pytest_unconfigure(config: pytest.Config) -> None:
     """Re-enable logging after benchmarks."""
-    if config.getoption("--codspeed"):
+    if config.getoption("--codspeed", default=False):
         logging.disable(logging.NOTSET)

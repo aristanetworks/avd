@@ -17,8 +17,6 @@ from pyavd import get_avd_facts, get_device_config, get_device_structured_config
 if TYPE_CHECKING:
     from pytest_codspeed import BenchmarkFixture
 
-logger = logging.getLogger(__name__)
-
 
 @pytest.mark.parametrize(
     "device_count",
@@ -97,5 +95,3 @@ def test_large_fabric_full_workflow_benchmark(
         benchmark.pedantic(b, setup=setup, iterations=1)
     finally:
         logging.disable(previous_disable_level)
-
-    logger.info("Benchmarked full workflow for %d devices", device_count)

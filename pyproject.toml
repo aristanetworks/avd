@@ -6,8 +6,8 @@ dev = [
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "molecule"},
     {include-group = "pytest"},
+    {include-group = "molecule"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",
@@ -164,7 +164,6 @@ convention = "google"
 ]
 "benchmarks/**/*" = [
   "S101",   # Accept 'assert' in benchmarks (they are tests).
-  "INP001", # implicit namespace package. Add an `__init__.py` - Benchmarks are not in packages
   "PLC0415", # `import` should be at the top-level of a file
 ]
 "python-avd/pyavd/_anta/index.py" = [

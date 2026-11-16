@@ -25,6 +25,9 @@ jobs:
     name: CodSpeed benchmarks
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
     if: >-

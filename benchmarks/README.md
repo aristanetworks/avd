@@ -11,7 +11,7 @@ This directory contains performance benchmarks for Arista AVD using
 
 ## Benchmark Suite
 
-The default CodSpeed suite contains 13 cases: 11 representative host renders,
+The default CodSpeed suite contains 15 cases: 13 representative host renders,
 one full-scenario facts case, and one 15-device synthetic workflow:
 
 - `test_molecule_scenarios.py` loads the `eos_designs_unit_tests` project through
