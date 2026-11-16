@@ -24,9 +24,9 @@ jobs:
     strategy:
       matrix:
         container_name: [base]
-        python_version: ["3.11", "3.12", "3.13", "3.14"]
+        python_version: ["3.12", "3.13", "3.14"]
         include:
-          - python_version: "3.11"
+          - python_version: "3.12"
             container_tags: latest
     with:
       container_name: ${{ matrix.container_name }}
