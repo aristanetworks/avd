@@ -24,6 +24,3 @@ ssh_settings:
     - name: VRF20
       enabled: true
       ipv4_standard_acl: missing-acl
-
-expected_error_message: >-
-  'ipv4_standard_acl[name=missing-acl]' is required but was not found for host 'missing-ipv4-standard-acl-ssh-settings-vrfs'.

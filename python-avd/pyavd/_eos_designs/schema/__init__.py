@@ -54296,7 +54296,7 @@ class EosDesigns(EosDesignsRootModel):
             IPv4 extended access-list name.
             Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
             error.
-            if `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
+            If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
             this ACL must be defined in `ipv4_acls` catalog.
             An error is raised if ACL is not defined under
             `ipv4_acls`. Field substitution is not supported.
@@ -54307,7 +54307,6 @@ class EosDesigns(EosDesignsRootModel):
             This ACL must be defined in `ipv4_standard_acls` catalog.
             Mutually
             exclusive with `ipv4_acl`. Setting both raises an error.
-            Field substitution is not supported.
             """
             ipv6_acl: str | None
             """IPv6 access-list name."""
@@ -54350,7 +54349,7 @@ class EosDesigns(EosDesignsRootModel):
                            IPv4 extended access-list name.
                            Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
                            error.
-                           if `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
+                           If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
                            this ACL must be defined in `ipv4_acls` catalog.
                            An error is raised if ACL is not defined under
                            `ipv4_acls`. Field substitution is not supported.
@@ -54359,7 +54358,6 @@ class EosDesigns(EosDesignsRootModel):
                            This ACL must be defined in `ipv4_standard_acls` catalog.
                            Mutually
                            exclusive with `ipv4_acl`. Setting both raises an error.
-                           Field substitution is not supported.
                         ipv6_acl: IPv6 access-list name.
 
                     """
