@@ -33,6 +33,7 @@ keys:
         default: Management1
       shutdown_when_unused:
         type: bool
+        # TODO AVD7.0: Change default to true
         default: false
         description: |-
           Shut down the management interface when neither `mgmt_ip` nor `ipv6_mgmt_ip` is configured on the node.
