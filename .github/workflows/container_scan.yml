@@ -9,6 +9,12 @@ name: Scan published universal images
     - cron: "23 4 * * *"
   workflow_dispatch:
     inputs:
+      image_repository:
+        description: "Image repository (owner/repo); empty uses this repository. For example: aristanetworks/avd"
+        type: string
+        required: false
+        # Resolve the current repository at runtime below; input defaults are literal values.
+        default: ""
       release_tag:
         description: "Optional release tag (for example v6.0.0); leave empty to scan current universal development images"
         type: string
@@ -26,12 +32,15 @@ permissions: {}
 
 jobs:
   prepare:
+    # Allow manual testing on forks; automatic scans keep the existing upstream/release restrictions.
     if: >-
-      github.repository == 'aristanetworks/avd' &&
-      (github.event_name != 'workflow_run' ||
-        (github.event.workflow_run.event == 'release' &&
-         github.event.workflow_run.conclusion == 'success' &&
-         github.event.workflow_run.repository.full_name == github.repository))
+      github.event_name == 'workflow_dispatch' ||
+      (github.repository == 'aristanetworks/avd' &&
+        (github.event_name == 'schedule' ||
+          (github.event_name == 'workflow_run' &&
+           github.event.workflow_run.event == 'release' &&
+           github.event.workflow_run.conclusion == 'success' &&
+           github.event.workflow_run.repository.full_name == github.repository)))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
@@ -67,7 +76,7 @@ jobs:
     # Optional execution bound, including scanner setup and uploads.
     timeout-minutes: 30
     env:
-      IMAGE_TAG: ghcr.io/${{ github.repository }}/universal:python${{ matrix.python }}-avd-${{ needs.prepare.outputs.avd_ref }}
+      IMAGE_TAG: ghcr.io/${{ inputs.image_repository || github.repository }}/universal:python${{ matrix.python }}-avd-${{ needs.prepare.outputs.avd_ref }}
     permissions:
       contents: read
       security-events: write
