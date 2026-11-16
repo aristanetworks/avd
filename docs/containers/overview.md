@@ -29,7 +29,7 @@ Dev containers can be run locally or remotely, in a private or public cloud, in 
 
 ## AVD Dev Container Variants
 
-The AVD repository provides a number of pre-build dev container images for various use cases:
+The AVD repository provides prebuilt dev container images for various use cases:
 
 - **base** - image that is used to build other variants. It is not intended for direct use.
 - **dev** - an image created for AVD contributors and to support quick testing of AVD branches. The AVD collection must be mounted in this container or installed from a git branch.
@@ -43,28 +43,28 @@ Currently the only supported option is using [VSCode](https://code.visualstudio.
 
 To start using the containers for running AVD:
 
-- Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
+- Install the [VSCode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial).
 - Add `.devcontainer/devcontainer.json` to your repository containing the AVD inventory (check examples below for possible dev container definitions).
 - Open VSCode command palette and pick `Dev Containers: Rebuild and Reopen in Container`.
-- Wait until the build finish and enjoy running AVD in a container.
+- Wait until the build finishes and enjoy running AVD in a container.
 
 If you want to use a specific AVD release, use the following `devcontainer.json`:
 
 ```json
 {
     "name": "AVD Universal",
-    "image": "ghcr.io/aristanetworks/avd/universal:python3.11-avd-v4.4.0"
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.12-avd-v6.5.0"
 }
 ```
 
 For AVD contributors the dev container is part of the AVD repository.
 
-If you want to test specific AVD branch or fork without making any changes, use the following `devcontainer.json`:
+If you want to test a specific AVD branch or fork, use the following `devcontainer.json`:
 
 ```json
 {
     "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/avd/dev:python3.11",
+    "image": "ghcr.io/aristanetworks/avd/dev:python3.12",
     "containerEnv": {
         "AVD_GITHUB_REPO": "aristanetworks/avd",
         "AVD_BRANCH_NAME": "devel"
