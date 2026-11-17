@@ -604,8 +604,8 @@ keys:
         type: bool
         description: 'Available from AVD 6.6.0.
 
-          For iBGP Route Reflectors using `mpls_overlay_role: server` with `mpls_lsr:
-          false`,
+          In EVPN MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+          server` with `mpls_lsr: false`,
 
           configure `bgp route-reflector preserve-attributes` and
 

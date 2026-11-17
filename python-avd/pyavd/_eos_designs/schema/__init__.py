@@ -1255,11 +1255,11 @@ class EosDesigns(EosDesignsRootModel):
         remove_mpls_lsr_dependency_for_mpls_overlay_role_server: bool
         """
         Available from AVD 6.6.0.
-        For iBGP Route Reflectors using `mpls_overlay_role: server` with
-        `mpls_lsr: false`,
+        In EVPN MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+        server` with `mpls_lsr: false`,
         configure `bgp route-reflector preserve-attributes` and
-        `next-hop resolution
-        disabled` under enabled EVPN and/or VPN address families.
+        `next-hop
+        resolution disabled` under enabled EVPN and/or VPN address families.
 
         Default value: `False`
         """
@@ -1433,11 +1433,11 @@ class EosDesigns(EosDesignsRootModel):
                        since this combination is not supported.
                     remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
                        Available from AVD 6.6.0.
-                       For iBGP Route Reflectors using `mpls_overlay_role: server` with
-                       `mpls_lsr: false`,
+                       In EVPN MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+                       server` with `mpls_lsr: false`,
                        configure `bgp route-reflector preserve-attributes` and
-                       `next-hop resolution
-                       disabled` under enabled EVPN and/or VPN address families.
+                       `next-hop
+                       resolution disabled` under enabled EVPN and/or VPN address families.
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
