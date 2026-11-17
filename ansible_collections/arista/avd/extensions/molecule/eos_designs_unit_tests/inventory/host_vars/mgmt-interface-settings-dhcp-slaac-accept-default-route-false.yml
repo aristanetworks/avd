@@ -1,4 +1,7 @@
-# Test DHCP and SLAAC without accepting default routes from DHCP or router advertisements.
+# Replaces avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp and
+# avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config with
+# mgmt_interface_settings.ipv4/ipv6.accept_default_route set to false.
+# Configured static routes should be installed for both protocols.
 type: l2leaf
 mgmt_interface_settings:
   vrf: MGMT
@@ -9,6 +12,16 @@ mgmt_interface_settings:
   ipv6:
     slaac: true
     accept_default_route: false
+
+mgmt_gateway: 10.1.1.1
+mgmt_destination_networks:
+  - 10.0.10.0/24
+  - 172.16.254.0/23
+ipv6_mgmt_gateway: 0200::1
+ipv6_mgmt_destination_networks:
+  - 0210:1::/64
+  - 0210:2::/64
+
 l2leaf:
   nodes:
     - name: mgmt-interface-settings-dhcp-slaac-accept-default-route-false

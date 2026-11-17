@@ -13,7 +13,6 @@ management_interfaces:
   vrf: MGMT
   ip_address: dhcp
   type: oob
-  gateway: 10.1.1.1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
