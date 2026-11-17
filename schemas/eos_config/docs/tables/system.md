@@ -23,6 +23,9 @@
     | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;modules</samp>](## "system.l1.modules") | List, items: Dictionary |  |  |  | Unified module profile assignments.<br>Use `name` as one of:<br>- `switch`<br>- `linecard <id-list>`<br>- `fabric <id-list>`<br>The `switch` selector is intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.<br>where `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "system.l1.modules.[].name") | String | Required, Unique |  | Value is converted to lower case. | Module selector. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "system.l1.modules.[].profile") | String | Required |  |  | Builtin module L1 profile name. |
     | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Value is converted to lower case.<br>Pattern: `[0-9a-f][02468ace](:[0-9a-f]{2}){5}` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit). |
 
 === "YAML"
@@ -52,6 +55,21 @@
       l1:
         unsupported_speed_action: <str; "error" | "warn">
         unsupported_error_correction_action: <str; "error" | "warn">
+
+        # Unified module profile assignments.
+        # Use `name` as one of:
+        # - `switch`
+        # - `linecard <id-list>`
+        # - `fabric <id-list>`
+        # The `switch` selector is intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.
+        # where `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`.
+        modules:
+
+            # Module selector.
+          - name: <str; required; unique>
+
+            # Builtin module L1 profile name.
+            profile: <str; required>
 
       # Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
       mac_address: <str>

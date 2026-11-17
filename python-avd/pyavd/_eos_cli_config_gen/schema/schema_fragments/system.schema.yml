@@ -65,6 +65,28 @@ keys:
             valid_values:
               - "error"
               - "warn"
+          modules:
+            type: list
+            primary_key: name
+            description: |-
+              Unified module profile assignments.
+              Use `name` as one of:
+              - `switch`
+              - `linecard <id-list>`
+              - `fabric <id-list>`
+              The `switch` selector is intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.
+              where `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  convert_to_lower_case: true
+                  description: Module selector.
+                profile:
+                  type: str
+                  required: true
+                  description: Builtin module L1 profile name.
       mac_address:
         type: str
         description: Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).

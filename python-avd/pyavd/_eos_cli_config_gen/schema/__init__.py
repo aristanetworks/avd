@@ -73755,9 +73755,60 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             UnsupportedSpeedAction: TypeAlias = Literal["error", "warn"]
             UnsupportedErrorCorrectionAction: TypeAlias = Literal["error", "warn"]
-            _fields: ClassVar[dict] = {"unsupported_speed_action": {"type": str}, "unsupported_error_correction_action": {"type": str}}
+
+            class ModulesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "profile": {"type": str}}
+                name: str
+                """Module selector."""
+                profile: str
+                """Builtin module L1 profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, profile: str | UndefinedType = Undefined) -> None:
+                        """
+                        ModulesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Module selector.
+                            profile: Builtin module L1 profile name.
+
+                        """
+
+            class Modules(AvdIndexedList[str, ModulesItem]):
+                """Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Modules._item_type = ModulesItem
+
+            _fields: ClassVar[dict] = {
+                "unsupported_speed_action": {"type": str},
+                "unsupported_error_correction_action": {"type": str},
+                "modules": {"type": Modules},
+            }
             unsupported_speed_action: UnsupportedSpeedAction | None
             unsupported_error_correction_action: UnsupportedErrorCorrectionAction | None
+            modules: Modules
+            """
+            Unified module profile assignments.
+            Use `name` as one of:
+            - `switch`
+            - `linecard <id-list>`
+            -
+            `fabric <id-list>`
+            The `switch` selector is intended for fixed systems and should not be mixed with
+            `linecard` or `fabric` selectors.
+            where `<id-list>` supports values and ranges like `0`, `0-3`,
+            `0,2-4`.
+
+            Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `name` (`str`).
+            """
 
             if TYPE_CHECKING:
 
@@ -73766,6 +73817,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     unsupported_speed_action: UnsupportedSpeedAction | UndefinedType | None = Undefined,
                     unsupported_error_correction_action: UnsupportedErrorCorrectionAction | UndefinedType | None = Undefined,
+                    modules: Modules | UndefinedType = Undefined,
                 ) -> None:
                     """
                     L1.
@@ -73776,6 +73828,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         unsupported_speed_action: unsupported_speed_action
                         unsupported_error_correction_action: unsupported_error_correction_action
+                        modules:
+                           Unified module profile assignments.
+                           Use `name` as one of:
+                           - `switch`
+                           - `linecard <id-list>`
+                           -
+                           `fabric <id-list>`
+                           The `switch` selector is intended for fixed systems and should not be mixed with
+                           `linecard` or `fabric` selectors.
+                           where `<id-list>` supports values and ranges like `0`, `0-3`,
+                           `0,2-4`.
+
+                           Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `name` (`str`).
 
                     """
 
