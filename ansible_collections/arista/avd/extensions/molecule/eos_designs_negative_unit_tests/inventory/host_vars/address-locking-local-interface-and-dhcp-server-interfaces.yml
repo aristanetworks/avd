@@ -17,6 +17,3 @@ address_locking_settings:
   dhcp_server_interfaces:
     - Ethernet1
   local_interface: Management1
-
-expected_error_message: >-
-  'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive.

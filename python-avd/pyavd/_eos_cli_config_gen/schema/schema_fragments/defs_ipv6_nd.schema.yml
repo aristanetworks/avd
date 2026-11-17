@@ -17,15 +17,11 @@ $defs:
           dynamic_capacity:
             type: int
             description: Capacity of dynamic cache entries.
-            convert_types:
-              - str
             min: 0
             max: 4294967295
           expire:
             type: int
             description: Cache entries expiry in seconds.
-            convert_types:
-              - str
             min: 1
             max: 65535
           refresh_always:
@@ -83,13 +79,9 @@ $defs:
               type: str
             valid_lifetime:
               type: str
-              convert_types:
-                - int
               description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
             preferred_lifetime:
               type: str
-              convert_types:
-                - int
               description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
             no_autoconfig_flag:
               type: bool

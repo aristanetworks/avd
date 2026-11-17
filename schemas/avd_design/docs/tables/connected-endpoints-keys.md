@@ -51,40 +51,40 @@
 
         ```yaml
         connected_endpoints_keys:
-        - key: servers
-          type: server
-          description: Server
-        - key: firewalls
-          type: firewall
-          description: Firewall
-        - key: routers
-          type: router
-          description: Router
-        - key: load_balancers
-          type: load_balancer
-          description: Load Balancer
-        - key: storage_arrays
-          type: storage_array
-          description: Storage Array
-        - key: cpes
-          type: cpe
-          description: CPE
-        - key: workstations
-          type: workstation
-          description: Workstation
-        - key: access_points
-          type: access_point
-          description: Access Point
-        - key: phones
-          type: phone
-          description: Phone
-        - key: printers
-          type: printer
-          description: Printer
-        - key: cameras
-          type: camera
-          description: Camera
-        - key: generic_devices
-          type: generic_device
-          description: Generic Device
+          - key: servers
+            type: server
+            description: Server
+          - key: firewalls
+            type: firewall
+            description: Firewall
+          - key: routers
+            type: router
+            description: Router
+          - key: load_balancers
+            type: load_balancer
+            description: Load Balancer
+          - key: storage_arrays
+            type: storage_array
+            description: Storage Array
+          - key: cpes
+            type: cpe
+            description: CPE
+          - key: workstations
+            type: workstation
+            description: Workstation
+          - key: access_points
+            type: access_point
+            description: Access Point
+          - key: phones
+            type: phone
+            description: Phone
+          - key: printers
+            type: printer
+            description: Printer
+          - key: cameras
+            type: camera
+            description: Camera
+          - key: generic_devices
+            type: generic_device
+            description: Generic Device
         ```

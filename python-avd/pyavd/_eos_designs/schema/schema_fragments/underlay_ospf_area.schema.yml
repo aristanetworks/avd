@@ -10,7 +10,5 @@ keys:
     documentation_options:
       table: ospf-settings
     type: str
-    convert_types:
-      - int
     format: ipv4
     default: "0.0.0.0"

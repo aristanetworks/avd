@@ -22,7 +22,7 @@ Results are reported in various formats, including JSON, CSV, and Markdown.
 
 ## Requirements
 
-Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-requirements-installation) documentation.
+Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-dependencies) documentation.
 
 ## Basic Example
 
@@ -355,6 +355,14 @@ These settings control the format and content of the generated reports.
 
 `anta_runner_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
 
+`anta_runner_report_run_overview`: Controls whether the Markdown report Run Overview section is generated. It currently includes test execution start time, end time, and total duration.
+
+!!! tip
+    Keep this disabled when deterministic report content is required in CI change-detection workflows.
+
+!!! note
+    Additional run metrics may be added to the Run Overview section in future releases.
+
 !!! info
     ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
 
@@ -373,6 +381,8 @@ These settings control the format and content of the generated reports.
         anta_runner_report_expand_results: true
         # Generate the custom_field column in the Markdown report
         anta_runner_report_custom_field: true
+        # Generate Run Overview section in Markdown report
+        anta_runner_report_run_overview: true
 ```
 
 ### Extra Fabric Validation
@@ -639,11 +649,28 @@ The `anta_runner` role uses Ansible standard verbosity flags (`-v`, `-vv`, etc.)
 ansible-playbook playbooks/anta-runner.yml -vvv
 ```
 
+The verbosity levels control the loggers used by the role as follows:
+
+| Ansible verbosity | AVD action plugin | PyAVD | ANTA and `asynceapi` | Other external libraries |
+| :--- | :--- | :--- | :--- | :--- |
+| None | WARNING | WARNING | WARNING | WARNING |
+| `-v` | INFO | INFO | WARNING | WARNING |
+| `-vv` | INFO | DEBUG | WARNING | WARNING |
+| `-vvv` | DEBUG | DEBUG | INFO | WARNING |
+| `-vvvv` | DEBUG | DEBUG | DEBUG | WARNING |
+| `-vvvvv` | DEBUG | DEBUG | DEBUG | INFO |
+| `-vvvvvv` or higher | DEBUG | DEBUG | DEBUG | DEBUG |
+
+The "Other external libraries" column includes dependencies such as `pyavd-utils`, `httpx`, `httpcore`, and `asyncio`. `pyavd-utils` has no dedicated verbosity setting and does not use the PyAVD column.
+
 !!! tip
-    Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
+    Running `ansible-playbook` with `-vv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
 
 !!! tip
     When debugging eAPI connectivity or session-based authentication (`anta_use_session_auth`), run with `-vvvv`. Logs from the `asynceapi` library (HTTP login, session cookies, and request flow) are emitted at DEBUG alongside ANTA logs.
+
+!!! tip
+    To debug lower-level third-party libraries such as `httpx`, `httpcore`, or `asyncio`, run with `-vvvvvv`.
 
 ### Understanding Log Output
 

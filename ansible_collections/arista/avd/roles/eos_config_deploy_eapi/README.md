@@ -61,7 +61,7 @@ cross-role reuse; generic defaults are not guaranteed to be exported after a rol
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-requirements-installation)
+Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-dependencies)
 
 ## License
 

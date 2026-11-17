@@ -29,8 +29,22 @@ anta_runner_dry_run: false
 anta_runner_structured_config_file_format: "{{ avd_structured_config_file_format | default('yml') }}"
 
 # ANTA runner reports sorting settings.
+# `anta_report_status_priority` defines the primary grouping order of the results by test status.
+# Unlisted statuses appear at the bottom, grouped alphabetically.
+# Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
 anta_runner_report_status_priority: "{{ anta_report_status_priority | default(['error', 'failure', 'skipped', 'success', 'unset']) }}"
 anta_runner_report_sort_fields: "{{ anta_report_sort_fields | default(['device', 'categories', 'test', 'description', 'custom_field']) }}"
+
+# Controls the granularity of the Markdown report. When enabled, test entries
+# are expanded to show the individual status of every check performed.
 anta_runner_report_expand_results: "{{ anta_report_expand_results | default(false) }}"
+
+# Controls whether the `custom_field` column is generated in the Markdown report.
 anta_runner_report_custom_field: "{{ anta_report_custom_field | default(false) }}"
+
+# If set to true, generate the Markdown report Run Overview section.
+# It currently includes test execution start time, end time, and total duration, and may include additional run metrics in future releases.
+# Keep this false when deterministic report content is required in CI checks.
+anta_runner_report_run_overview: "{{ anta_report_run_overview | default(false) }}"
+
 anta_runner_report_exclude_statuses: "{{ anta_report_exclude_statuses | default([]) }}"

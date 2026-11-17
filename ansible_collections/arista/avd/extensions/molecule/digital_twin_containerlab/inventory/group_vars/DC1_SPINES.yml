@@ -1,0 +1,15 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65100
+  nodes:
+    - name: dc1-spine1
+      id: 1
+      mgmt_ip: 172.16.1.11/24
+    - name: dc1-spine2
+      id: 2
+      mgmt_ip: 172.16.1.12/24

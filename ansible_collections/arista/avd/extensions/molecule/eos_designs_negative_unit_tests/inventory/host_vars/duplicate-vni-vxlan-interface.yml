@@ -28,7 +28,3 @@ tenants:
           - id: 111
             vni_override: 10110 # 10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for VXLAN VNI 10110.
-  The following items are conflicting: SVI 110 in tenant Tenant_A, SVI 111 in tenant Tenant_A.

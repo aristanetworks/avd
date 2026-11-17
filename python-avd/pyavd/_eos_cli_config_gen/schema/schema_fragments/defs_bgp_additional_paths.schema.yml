@@ -25,7 +25,5 @@ $defs:
       send_limit:
         type: int
         description: Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
-        convert_types:
-          - str
         min: 2
         max: 64

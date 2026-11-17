@@ -26,8 +26,3 @@ tenants:
           - id: 21
             name: "VLAN_21"
             tags: ['test_l3']
-
-expected_error_message: >-
-  Invalid configuration on VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'.
-  'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or
-  'vtep_diagnostic.loopback_ip_range' must be defined when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF.

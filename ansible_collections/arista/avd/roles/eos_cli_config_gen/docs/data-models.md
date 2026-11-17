@@ -738,6 +738,12 @@ schemas/eos_config/docs/tables/monitor-link-flap-policy.md
 schemas/eos_config/docs/tables/monitor-loop-protection.md
 --8<--
 
+### Monitor security
+
+--8<--
+schemas/eos_config/docs/tables/monitor-security.md
+--8<--
+
 ### Monitor server Radius
 
 --8<--
@@ -916,6 +922,12 @@ schemas/eos_config/docs/tables/ip-routing-ipv6-interfaces.md
 
 --8<--
 schemas/eos_config/docs/tables/ip-routing.md
+--8<--
+
+### VRRP
+
+--8<--
+schemas/eos_config/docs/tables/vrrp.md
 --8<--
 
 ### IP virtual router MAC address
@@ -1146,6 +1158,12 @@ schemas/eos_config/docs/tables/hardware-counters.md
 
 --8<--
 schemas/eos_config/docs/tables/hardware.md
+--8<--
+
+### IP software forwarding
+
+--8<--
+schemas/eos_config/docs/tables/ip-software-forwarding.md
 --8<--
 
 ### IP hardware

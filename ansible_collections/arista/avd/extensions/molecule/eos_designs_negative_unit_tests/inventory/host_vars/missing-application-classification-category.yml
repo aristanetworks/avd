@@ -95,7 +95,3 @@ application_classification:
     - name: TEST
       categories:
         - name: MISSING-CATEGORY
-
-expected_error_message: >-
-  Category 'MISSING-CATEGORY' referenced in the Application Profile 'TEST' is not defined
-  in 'application_classification.categories'.

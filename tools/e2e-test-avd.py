@@ -23,6 +23,7 @@ import pathlib
 import pickle
 import shutil
 import sys
+import tomllib
 import traceback
 import typing
 import weakref
@@ -33,7 +34,6 @@ from multiprocessing import get_context, shared_memory
 
 import git
 import pyavd_utils
-import tomllib
 import yaml
 from ansible.cli import CLI
 from ansible.inventory.manager import InventoryManager
@@ -48,10 +48,9 @@ from yaml import CLoader as YamlLoader
 
 if typing.TYPE_CHECKING:
     from collections.abc import Generator
-    from typing import TypeVar
+    from typing import Self, TypeVar
 
     from ansible.inventory.host import Host
-    from typing_extensions import Self
 
     from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.schemas import AVDDesign
@@ -474,7 +473,7 @@ class AvdBuildContext:
 
         # Unload modules loaded from the custom path
         modules_to_unload = []
-        for name, mod in list(sys.modules.items()):
+        for name, mod in sys.modules.copy().items():
             if mod is None:
                 continue
 
@@ -764,6 +763,8 @@ class AvdV6Build:
             fabric_doc_dir.joinpath(f"{fabric_name}-p2p-links.csv").write_text(output.p2p_links_csv)
 
         if output.digital_twin:
+            from pyavd.api.fabric_documentation import ContainerlabDigitalTwin
+
             content = strip_empties_from_dict(
                 {
                     str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value
@@ -771,8 +772,29 @@ class AvdV6Build:
                 }
             )
             fabric_doc_dir.mkdir(parents=True, exist_ok=True)
-            with fabric_doc_dir.joinpath(f"{fabric_name}-topology.yml").open("w", encoding="utf-8") as stream:
-                yaml.dump(content, stream=stream, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130)
+            if isinstance(output.digital_twin, ContainerlabDigitalTwin):
+                from pyavd._utils.normalize_yaml_data import normalize_yaml_data
+
+                content = strip_empties_from_dict(normalize_yaml_data(output.digital_twin))
+                topology_dir = self.config.full_output_dir.parent
+                if interface_mapping := content.pop("interface_mapping", None):
+                    topology_dir.joinpath("interface_mapping.json").write_text(json.dumps(interface_mapping, indent=4) + "\n", encoding="utf-8")
+                for node_name, node_settings in content["topology"]["nodes"].items():
+                    node_settings["startup-config"] = f"intended/configs/{node_name}.cfg"
+                content = {"name": content.pop("name"), "prefix": output.digital_twin.prefix, **content}
+                topology_file = topology_dir.joinpath(f"{fabric_name}-topology.clab.yml")
+            else:
+                topology_file = fabric_doc_dir.joinpath(f"{fabric_name}-topology.yml")
+            with topology_file.open("w", encoding="utf-8") as stream:
+                yaml.dump(
+                    content,
+                    stream=stream,
+                    Dumper=AnsibleDumper,
+                    sort_keys=False,
+                    indent=2,
+                    width=130,
+                    explicit_start=True,
+                )
 
         return True
 

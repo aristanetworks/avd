@@ -6,9 +6,11 @@ from __future__ import annotations
 from hashlib import sha1
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd_utils.passwords import simple_7_encrypt
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.strip_empties import strip_null_from_data
@@ -47,8 +49,8 @@ class SnmpServerMixin(Protocol):
         self.set_snmp_local_engine_id()
         self.set_snmp_location()
         self.set_snmp_users()
-        self.set_snmp_hosts()
         self.set_snmp_vrfs_and_acls()
+        self.set_snmp_hosts()
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
@@ -136,16 +138,16 @@ class SnmpServerMixin(Protocol):
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)
                 # 5th octet = 05 , meaning engine id is based on custom octet
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
+                local_engine_id = f"8000757103{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
-                if self.shared_utils.system_mac_address is None:
+                if self.structured_config_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+                local_engine_id = f"f5717f{str(self.structured_config_utils.system_mac_address).replace(':', '').lower()}00"
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
@@ -196,19 +198,28 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
-                    hash_filter = {}
                     if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
-                        user_dict.auth_passphrase = snmp_hash(hash_filter)
+                        local_engine_id: str = engine_ids.local  # type: ignore[assignment]  # non-None guaranteed by compute_v3_user_localized_key check above
+                        key_type = user.key_type
+                        auth_hash = snmp_hash({"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id})
+                        if key_type == "7":
+                            user_dict.auth_key_type = "7"
+                            user_dict.auth_key = simple_7_encrypt(auth_hash, 7)
+                        else:
+                            user_dict.auth_passphrase = auth_hash
+
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
+                            priv_hash = snmp_hash({"passphrase": user.priv_passphrase, "auth": user.auth, "priv": user.priv, "engine_id": local_engine_id})
+                            if key_type == "7":
+                                user_dict.priv_key_type = "7"
+                                user_dict.priv_key = simple_7_encrypt(priv_hash, 7)
+                            else:
+                                user_dict.priv_passphrase = priv_hash
                     else:
                         user_dict.auth_passphrase = user.auth_passphrase
-
-                    if user.priv is not None and user.priv_passphrase is not None:
-                        user_dict.priv = user.priv
-                        if compute_v3_user_localized_key:
-                            hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
-                            user_dict.priv_passphrase = snmp_hash(hash_filter)
-                        else:
+                        if user.priv is not None and user.priv_passphrase is not None:
+                            user_dict.priv = user.priv
                             user_dict.priv_passphrase = user.priv_passphrase
 
             self.structured_config.snmp_server.users.append(user_dict)
@@ -236,7 +247,29 @@ class SnmpServerMixin(Protocol):
                 vrfs.add(host_vrf)
 
                 if source_interface:
-                    self.structured_config.snmp_server.local_interfaces.append_new(name=source_interface, vrf=host_vrf if host_vrf != "default" else None)
+                    if self.inputs.avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf:
+                        if host_vrf == "default":
+                            configured_source_interface = self.structured_config.snmp_server.local_interface
+                        else:
+                            configured_source_interface = self.structured_config.snmp_server.vrfs.obtain(host_vrf).local_interface
+
+                        if configured_source_interface and configured_source_interface != source_interface:
+                            raise AristaAvdDuplicateDataError(
+                                context="snmp_settings.hosts",
+                                context_item_a=str({"vrf": host_vrf, "source_interface": source_interface}),
+                                context_item_b=str({"vrf": host_vrf, "source_interface": configured_source_interface}),
+                                host=self.shared_utils.hostname,
+                            )
+
+                        if host_vrf == "default":
+                            self.structured_config.snmp_server.local_interface = source_interface
+                        else:
+                            self.structured_config.snmp_server.vrfs.obtain(host_vrf).local_interface = source_interface
+                    else:
+                        self.structured_config.snmp_server.local_interfaces.append_new(
+                            name=source_interface,
+                            vrf=host_vrf if host_vrf != "default" else None,
+                        )
 
             if not vrfs:
                 # If no VRFs are defined
@@ -267,18 +300,36 @@ class SnmpServerMixin(Protocol):
         Requires snmp_settings.vrfs to be set
         """
         vrfs = EosCliConfigGen.SnmpServer.Vrfs()
+        sort_snmp_acls_and_local_interfaces_by_vrf = self.inputs.avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf
 
         for vrf in self.inputs.snmp_settings.vrfs:
             if vrf.enable is None:
                 continue
 
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
-            vrfs.append_new(name=vrf_name, enable=vrf.enable)
+            if sort_snmp_acls_and_local_interfaces_by_vrf:
+                vrf_item = EosCliConfigGen.SnmpServer.VrfsItem(name=vrf_name, enable=vrf.enable)
 
-            if vrf.ipv4_acl is not None:
-                self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
+                if vrf.ipv4_acl is not None:
+                    if vrf_name == "default":
+                        self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
+                    else:
+                        vrf_item.ipv4_acl = vrf.ipv4_acl
 
-            if vrf.ipv6_acl is not None:
-                self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
+                if vrf.ipv6_acl is not None:
+                    if vrf_name == "default":
+                        self.structured_config.snmp_server.ipv6_acl = vrf.ipv6_acl
+                    else:
+                        vrf_item.ipv6_acl = vrf.ipv6_acl
+
+                vrfs.append(vrf_item)
+            else:
+                vrfs.append_new(name=vrf_name, enable=vrf.enable)
+
+                if vrf.ipv4_acl is not None:
+                    self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
+
+                if vrf.ipv6_acl is not None:
+                    self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()

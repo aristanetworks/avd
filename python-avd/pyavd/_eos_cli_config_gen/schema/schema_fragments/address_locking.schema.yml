@@ -52,3 +52,17 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses.
+      logging:
+        type: dict
+        keys:
+          event:
+            type: dict
+            keys:
+              denied_address_drop:
+                type: bool
+                description: Log events for denied address drops.
+              dhcp_server_drop:
+                type: bool
+                description: |-
+                  Log events for DHCP server to client packet drops.
+                  Requires EOS version 4.36.2F or later.

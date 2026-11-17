@@ -482,7 +482,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
         )
 
     # Assert that exception value contains all expected exception patterns
-    for expected_pattern in ["Failed to submit CloudVision Workspace due to the presence of inactive devices: \\['avd-ci-leaf1.*"]:
+    for expected_pattern in ["Failed to submit CloudVision Workspace due to the presence of non-streaming devices: \\['avd-ci-leaf1.*"]:
         assert re.search(re.compile(expected_pattern), str(exception_info.value))
 
     # Assess result
@@ -491,7 +491,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
     # Assert number of returned warnings
     assert len(result.warnings) == 1
     # Assert that updated warnings match expected warning patterns
-    for expected_pattern in ["Inactive devices present: \\['avd-ci-leaf1.*"]:
+    for expected_pattern in ["Non-streaming devices present: \\['avd-ci-leaf1.*"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object
@@ -565,7 +565,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
                     serial_number="50:00:00:72:8b:31",
                     system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     exists_on_cv=True,
-                    streaming=False,
+                    streaming=None,
                 )
             ],
             warnings=result.warnings,
@@ -576,7 +576,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
     # Assert number of returned warnings
     assert len(result.warnings) == 1
     # Assert that updated warnings match expected warning patterns
-    for expected_pattern in ["Inactive devices present: \\['avd-ci-leaf1.*"]:
+    for expected_pattern in ["Non-streaming devices present: \\['avd-ci-leaf1.*"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object

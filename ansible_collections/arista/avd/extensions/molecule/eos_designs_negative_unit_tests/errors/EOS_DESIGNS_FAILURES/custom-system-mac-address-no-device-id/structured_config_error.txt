@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'custom_system_mac_address' uses formatter field 'device_id', but no AVD node ID could be resolved for host 'custom-system-mac-address-no-device-id'. Configure a node ID for this host or remove the field from the template.

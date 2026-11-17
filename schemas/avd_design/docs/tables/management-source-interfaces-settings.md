@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;http_client</samp>](## "source_interfaces.http_client") | Dictionary |  |  |  | IP HTTP Client source-interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.http_client.mgmt_interface") | Boolean |  | `False` |  | Configure an IP HTTP Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.http_client.inband_mgmt_interface") | Boolean |  | `False` |  | Configure an IP HTTP Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
-    | [<samp>&nbsp;&nbsp;ssh_client</samp>](## "source_interfaces.ssh_client") | Dictionary |  |  |  | IP SSH Client source-interfaces. |
+    | [<samp>&nbsp;&nbsp;ssh_client</samp>](## "source_interfaces.ssh_client") <span style="color:red">deprecated</span> | Dictionary |  |  |  | IP SSH Client source-interfaces.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ssh_settings.client_vrfs</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.ssh_client.mgmt_interface") | Boolean |  | `False` |  | Configure an IP SSH Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.ssh_client.inband_mgmt_interface") | Boolean |  | `False` |  | Configure an IP SSH Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
     | [<samp>&nbsp;&nbsp;tacacs</samp>](## "source_interfaces.tacacs") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>aaa_settings.tacacs.vrfs[].source_interface or aaa_settings.tacacs.servers[].vrf: use_mgmt_interface_vrf or aaa_settings.tacacs.servers[].vrf: use_inband_mgmt_vrf</samp> instead.</span> |
@@ -40,6 +40,9 @@
         inband_mgmt_interface: <bool; default=False>
 
       # IP SSH Client source-interfaces.
+      # This key is deprecated.
+      # Support will be removed in AVD version 7.0.0.
+      # Use `ssh_settings.client_vrfs` instead.
       ssh_client:
 
         # Configure an IP SSH Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.

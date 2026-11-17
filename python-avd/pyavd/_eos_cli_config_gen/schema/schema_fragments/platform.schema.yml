@@ -16,8 +16,6 @@ keys:
         keys:
           forwarding_table_partition:
             type: str
-            convert_types:
-              - int
           l3:
             type: dict
             keys:
@@ -44,8 +42,6 @@ keys:
                       If not specified, default is bytes.
                   limit:
                     type: int
-                    convert_types:
-                      - str
                     description: Max limit on headroom pool size.
               queue_profiles:
                 type: list
@@ -66,15 +62,11 @@ keys:
                             keys:
                               id:
                                 type: int
-                                convert_types:
-                                  - str
                                 description: Priority-group group number.
                                 min: 0
                                 max: 7
                               threshold:
                                 type: str
-                                convert_types:
-                                  - int
                                 valid_values:
                                   - "1"      # alpha1
                                   - "1/128"  # alphaDiv128
@@ -98,13 +90,9 @@ keys:
                                       If not specified, default is bytes.
                                   memory:
                                     type: int
-                                    convert_types:
-                                      - str
                                     description: Specify the amount of memory that should be reserved.
                         threshold:
                           type: str
-                          convert_types:
-                            - int
                           description: Specify the dynamic shared memory threshold.
                           valid_values:
                             - "1"      # alpha1
@@ -129,8 +117,6 @@ keys:
                                 If not specified, default is bytes.
                             memory:
                               type: int
-                              convert_types:
-                                - str
                               description: Specify the amount of memory that should be reserved.
                         headroom:
                           type: dict
@@ -143,13 +129,9 @@ keys:
                                 If not specified, default is bytes.
                             memory:
                               type: int
-                              convert_types:
-                                - str
                               description: Specify the amount of memory that should be reserved.
                         resume:
                           type: int
-                          convert_types:
-                            - str
                           description: Amount of memory that should be reserved (in bytes)
                     multicast_queues:
                       type: list
@@ -160,8 +142,6 @@ keys:
                         keys:
                           id:
                             type: int
-                            convert_types:
-                              - str
                             required: true
                             min: 0
                             max: 7
@@ -172,14 +152,11 @@ keys:
                               Unit to be used for the reservation value. If not specified, default is bytes.
                           reserved:
                             type: int
-                            convert_types: ["str"]
                             description: |
                               Amount of memory that should be reserved for this
                               queue.
                           threshold:
                             type: str
-                            convert_types:
-                              - "int"
                             description: |
                               Dynamic Shared Memory threshold.
                             valid_values:
@@ -204,8 +181,6 @@ keys:
                               threshold:
                                 type: str
                                 required: true
-                                convert_types:
-                                  - "int"
                                 description: |
                                   Drop Threshold. This value may also be fractions.
                                   Example: 7/8 or 3/4 or 1/2
@@ -218,8 +193,6 @@ keys:
                         keys:
                           id:
                             type: int
-                            convert_types:
-                              - str
                             required: true
                             min: 0
                             max: 7
@@ -230,14 +203,11 @@ keys:
                               Unit to be used for the reservation value. If not specified, default is bytes.
                           reserved:
                             type: int
-                            convert_types: ["str"]
                             description: |
                               Amount of memory that should be reserved for this
                               queue.
                           threshold:
                             type: str
-                            convert_types:
-                              - "int"
                             description: |
                               Dynamic Shared Memory threshold.
                             valid_values:
@@ -262,8 +232,6 @@ keys:
                               threshold:
                                 type: str
                                 required: true
-                                convert_types:
-                                  - "int"
                                 description: |
                                   Drop Threshold. This value may also be fractions.
                                   Example: 7/8 or 3/4 or 1/2
@@ -280,14 +248,10 @@ keys:
                   type: int
                   min: 0
                   max: 7
-                  convert_types:
-                    - "str"
                 to_network_qos:
                   type: int
                   min: 0
                   max: 63
-                  convert_types:
-                    - "str"
           lag:
             type: dict
             keys:
@@ -314,8 +278,6 @@ keys:
           data_plane_cpu_allocation_max:
             type: int
             description: Maximum number of CPUs used for data plane traffic forwarding.
-            convert_types:
-              - str
             min: 1
             max: 128
           interface:
@@ -352,8 +314,6 @@ keys:
                               count:
                                 type: int
                                 min: 1
-                                convert_types:
-                                  - str
                                 description: |-
                                   Number of receive queues.
                                   The maximum value is platform dependent.

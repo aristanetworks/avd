@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: At least 1 server must be provided for on-prem CVP cluster onprem

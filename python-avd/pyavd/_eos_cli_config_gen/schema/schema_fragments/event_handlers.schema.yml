@@ -35,8 +35,6 @@ keys:
               description: Name of device-health metric.
         delay:
           type: int
-          convert_types:
-            - str
           description: |
             Event-handler delay in seconds.
         trigger:
@@ -66,8 +64,6 @@ keys:
                   [* wildcard is used here]
             poll_interval:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 1000000
               description: Set the polling interval in seconds.
@@ -76,8 +72,6 @@ keys:
           keys:
             poll_interval:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 1000000
               description: Set the polling interval in seconds.

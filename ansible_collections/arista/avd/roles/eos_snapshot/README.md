@@ -78,7 +78,7 @@ Use `avd_snapshots_backup_dir` when sharing the snapshot path with another role.
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-requirements-installation)
+Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-dependencies)
 
 ## Example Playbook
 

@@ -10,7 +10,10 @@ keys:
     documentation_options:
       table: overlay-settings
     description: |
-      IPv6 Unnumbered for MLAG iBGP connections.
-      Requires "underlay_rfc5549: true".
+      Exchange IPv4 routes with an IPv6 next hop (RFC5549) over the MLAG iBGP peerings in VRFs.
+      Requires one of:
+      - `underlay_rfc5549: true`: The MLAG iBGP peerings in VRFs use IPv6 link-local addresses (unnumbered).
+      - `underlay_ipv6_numbered: true` and `avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families: true`:
+        The MLAG iBGP peerings in VRFs use numbered IPv6 addresses, allowing dual-stack VRFs over a numbered IPv6 underlay.
     type: bool
     default: false

@@ -66,6 +66,9 @@
             suppress_portfast: "{{ cv_deploy_workspace_build_warnings_suppress_portfast }}"
           max_sync_retries: "{{ cv_deploy_workspace_max_sync_retries }}"
         change_control:
+          id: "{{ cv_deploy_change_control_id | default(cv_change_control_id | default(omit)) }}"
+          approval_note: "{{ cv_deploy_change_control_approval_note | default(cv_change_control_approval_note | default(omit)) }}"
+          start_note: "{{ cv_deploy_change_control_start_note | default(cv_change_control_start_note | default(omit)) }}"
           name: "{{ cv_deploy_change_control_name | default(cv_change_control_name | default(omit)) }}"
           description: "{{ cv_deploy_change_control_description | default(cv_change_control_description | default(omit)) }}"
           requested_state: >-

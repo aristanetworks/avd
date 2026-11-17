@@ -118,6 +118,7 @@ plugins:
         - docs/pyavd/simple_example_6_x.md
         - schemas/avd_design/docs/tables/*
         - schemas/eos_config/docs/tables/*
+        - schemas/cv_deploy/docs/tables/*
         # Exclude the table used only as a snippet to avoid mkdocs info log
         - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 

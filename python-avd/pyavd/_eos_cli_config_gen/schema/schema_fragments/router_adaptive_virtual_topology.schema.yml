@@ -32,8 +32,6 @@ keys:
             pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
-            convert_types:
-              - "str"
             required: true
             min: 1
             max: 255
@@ -47,8 +45,6 @@ keys:
             pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
-            convert_types:
-              - "str"
             required: true
             min: 1
             max: 10000
@@ -62,8 +58,6 @@ keys:
             pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
-            convert_types:
-              - "str"
             required: true
             min: 1
             max: 10000
@@ -108,29 +102,19 @@ keys:
                     jitter:
                       description: Jitter threshold in millisecond.
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 10000
                     latency:
                       description: Latency threshold in millisecond.
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 10000
                     load:
                       description: Load threshold percentage. Valid range <0.00-100.00>.
                       type: str
-                      convert_types:
-                        - float
-                        - int
                     loss_rate:
                       description: Loss-rate threshold percentage. Valid range <0.00-100.00>.
                       type: str
-                      convert_types:
-                        - float
-                        - int
       policies:
         type: list
         primary_key: name
@@ -155,15 +139,11 @@ keys:
                     description: AVT Profile name.
                   dscp:
                     type: int
-                    convert_types:
-                      - str
                     min: 0
                     max: 63
                     description: Set DSCP for matched traffic.
                   traffic_class:
                     type: int
-                    convert_types:
-                      - str
                     min: 0
                     max: 7
                     description: Set traffic-class for matched traffic.
@@ -193,7 +173,5 @@ keys:
                     type: int
                     description: ID for this AVT (per VRF).
                     required: true
-                    convert_types:
-                      - str
                     min: 1
                     max: 254

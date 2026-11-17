@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import re
 import sys
-import warnings
 from importlib import import_module
 from importlib.metadata import Distribution, PackageNotFoundError, version
 from logging import getLogger
@@ -16,7 +15,6 @@ from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible import constants as C  # noqa: N812
-from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
@@ -40,8 +38,7 @@ except ImportError:
 LOGGER = getLogger("ansible_collections.arista.avd")
 DISPLAY = Display()
 
-MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
-DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+MIN_PYTHON_SUPPORTED_VERSION = (3, 11)
 COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
@@ -72,19 +69,6 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
     if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
         LOGGER.error("Python Version running %s - Minimum Version required is %s", running_version, min_version)
         return False
-    # Keeping this for next deprecation adjust the message as required
-    if DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION and sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
-        msg = (
-            f"You are currently running Python version {running_version}. "
-            f"AVD version 5.0.0 will drop support for Python version {min_version}. "
-            "The decision has been taken to remove Python version 3.9 support in AVD "
-            "collection to anticipate its removal in `ansible-core`. `ansible-core` "
-            "version 2.15 End-Of-Life is scheduled for November 2024 and it will be the "
-            "last `ansible-core` version supporting Python version 3.9 as documented here: "
-            "https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix."
-        )
-        warnings.warn(msg, DeprecationWarning, stacklevel=2)
-
     return True
 
 
@@ -150,6 +134,7 @@ def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> b
             "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
         }
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
+        return False
     else:
         LOGGER.error("Python library '%s' version running %s - requirement is %s", req.name, installed_version, str(req))
         requirements_dict["mismatched"][req.name] = {
@@ -195,7 +180,8 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
             }
             continue
 
-        valid = valid and _check_requirement(req, requirements_dict)
+        if not _check_requirement(req, requirements_dict):
+            valid = False
 
     info["python_requirements"] = requirements_dict
     return valid
@@ -213,7 +199,12 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     Returns:
         bool: False if Ansible version is not valid.
     """
-    collection_meta = _get_collection_metadata(collection_name)
+    collection_path = _get_collection_path(collection_name)
+    try:
+        with Path(collection_path, "meta", "runtime.yml").open("rb") as fd:
+            collection_meta = yaml.safe_load(fd) or {}
+    except FileNotFoundError:
+        collection_meta = {}
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
     info["ansible_version"] = running_version
 

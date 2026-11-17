@@ -94,6 +94,3 @@ vlans:
     tenants:
     - INBAND_MGMT_TESTS
     - system
-vrfs:
-- name: MGMT
-  ip_routing: false

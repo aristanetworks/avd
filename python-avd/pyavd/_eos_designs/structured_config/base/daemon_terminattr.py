@@ -30,7 +30,7 @@ class DaemonTerminattrMixin(Protocol):
         flow_tracking_settings = self.inputs.flow_tracking_settings
         first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), None)
 
-        if not (cv_settings := self.inputs.cv_settings):
+        if not (cv_settings := self.shared_utils.cv_settings):
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
 
@@ -127,7 +127,7 @@ class DaemonTerminattrMixin(Protocol):
         """
         Verifies that when cv_settings is **not** configured no Sflow or flow tracking configuration expects export to CloudVision.
 
-        Expected to be called when self.inputs.cv_settings is not set.
+        Expected to be called when the resolved cv_settings are not set.
         """
         if first_tracker_exporting_to_cloudvision is not None:
             msg = (
@@ -160,7 +160,7 @@ class DaemonTerminattrMixin(Protocol):
             AristaAvdInvalidInputsError: If required NTP or DNS settings are missing.
         """
         # NTP is always required
-        if not self.inputs.ntp_settings.servers:
+        if not self.shared_utils.ntp_settings.servers:
             msg = (
                 "'ntp_settings.servers' must be configured when CloudVision "
                 "clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined."
@@ -168,7 +168,7 @@ class DaemonTerminattrMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         # If DNS is already configured, no further DNS validation is needed
-        if self.inputs.dns_settings.servers:
+        if self.shared_utils.dns_settings_servers:
             return
         for cluster in clusters:
             match cluster:

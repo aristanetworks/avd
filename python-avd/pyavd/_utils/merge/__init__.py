@@ -13,8 +13,6 @@ from .mergeonschema import MergeOnSchema
 if TYPE_CHECKING:
     from deepmerge.strategy.core import StrategyListInitable
 
-    from pyavd._schema.avdschema import AvdSchema
-
 
 def _strategy_keep(_config: object, _path: list, base: Any, nxt: Any) -> Any:
     """Prefer base, otherwise nxt."""
@@ -53,7 +51,7 @@ def merge(
     list_merge: str = "append",
     same_key_strategy: str = "override",
     destructive_merge: bool = True,
-    schema: AvdSchema | None = None,
+    schema_name: str | None = None,
 ) -> Any:
     """
     Merge two or more data sets using deepmerge.
@@ -79,8 +77,8 @@ def merge(
         Base will be in-place updated with objects from nxt and some objects in nxt will be modified during the merge.
         By setting "destructive_merge=False" both base and nxt data sets will be deep copied and no in-place merge
         will be happen. Instead the merge result will be returned.
-    schema : AvdSchema, optional
-        An instance of AvdSchema can be passed to merge, to allow merging lists of dictionaries using the "primary_key" defined in the schema.
+    schema_name : str, optional
+        Name of a schema loaded in pyavd-utils. Used to merge lists of dictionaries using the "primary_key" defined in the schema.
     """
     if not destructive_merge:
         base = deepcopy(base)
@@ -91,11 +89,11 @@ def merge(
 
     list_strategies: StrategyListInitable = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 
-    if list_merge != "replace" and schema is not None:
+    if list_merge != "replace" and schema_name is not None:
         # If list_merge is not "replace" and we have a schema, we prepend the list_strategies
         # with our schema based list merger "MergeOnSchema"
         # If "primary_key" is not set and equal, we will fallback to the supplied "list_merge" strategy
-        merge_on_schema = MergeOnSchema(schema)
+        merge_on_schema = MergeOnSchema(schema_name)
         list_strategies.insert(0, merge_on_schema.strategy)
 
     dict_strategies: StrategyListInitable = ["merge" if recursive else "override"]

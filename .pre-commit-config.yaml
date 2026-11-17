@@ -11,7 +11,7 @@ ci:
     - check-added-large-files
     - check-merge-conflict
     - insert-license
-    - ruff
+    - ruff-check
     - ruff-format
     - pyright
     - pylint
@@ -49,6 +49,7 @@ repos:
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
           |pickle$
+          |^python-avd/pyavd/_schema/schemas\.rkyv$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
@@ -138,10 +139,10 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: a56c0b927e6465d37cae3e97d35d4d18ab2b96cd  # frozen: v0.16.9
+    rev: ef6cf06c079dd6b299dfc720b0f14400c9d168e1  # frozen: v0.17.5
     hooks:
       # Run the linter.
-      - id: ruff
+      - id: ruff-check
         args:
           - --fix
       # Run the formatter.
@@ -164,16 +165,16 @@ repos:
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.9'
-          - 'pydantic>=2.3.0'
+          - 'pyavd-utils==0.0.14'
+          - 'pyavd-utils-gen==0.0.14'
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.16.8'
+          - 'ruff==0.17.5'
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "2754353f422a9984015937c5effe831cc7a168ca"  # frozen: v4.0.9
+    rev: "ba1eab0aab630d2ea89835c2d7c662fa6f3a4adb"  # frozen: v4.1.4
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -213,7 +214,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
+    rev: 06a39750ec31860bb44f2acf67182c40016cd1e7  # frozen: v1.32.0
     hooks:
       - id: zizmor
         name: Check GitHub Actions with zizmor
@@ -222,7 +223,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "5c0dbc466ebc62637ced3863ece094349699ef2f"  # frozen: 2.29.2
+    rev: "37d7d0752ef067f311d2a19cb82d5ae6e06040ec"  # frozen: 2.29.7
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -306,7 +307,13 @@ repos:
         language: python
         files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.16.8']
+        additional_dependencies:
+          - deepmerge>=1.1.0
+          - PyYAML>=6.0.0
+          - pyavd-utils-gen==0.0.14
+          - jsonschema-rs>=0.24
+          - referencing>=0.35.0
+          - ruff==0.17.5
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
@@ -329,7 +336,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -337,10 +344,10 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.9', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3
+    rev: c01a1853c19b175aee6a09f24e2ad9b748c485ad  # frozen: v0.24.1
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.

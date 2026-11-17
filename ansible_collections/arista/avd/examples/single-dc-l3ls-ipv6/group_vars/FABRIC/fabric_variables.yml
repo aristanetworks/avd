@@ -5,6 +5,7 @@ fabric_name: FABRIC
 # Fix known bugs where the fix was introduced after 6.0.
 avd_design_future:
   fix_match_ipv6_prefix_list_on_mlag_route_map: true
+  fix_mlag_ibgp_peering_ipv6_pool: true
 
 # Generate CSVs with fabric link info.
 eos_designs_documentation:

@@ -37,6 +37,3 @@ port_profiles:
     spanning_tree_bpdufilter: true
     spanning_tree_link_type: point-to-point
     parent_profile: profile3
-
-expected_error_message: >-
-  Parent profile 'profile3' applied under profile 'profile2' does not exist in 'port_profiles' for host 'fabric-invalid-parent-port-profile'.

@@ -11,8 +11,6 @@ keys:
     keys:
       kernel_buffer_size:
         type: int
-        convert_types:
-          - str
         min: 1
         max: 64
         description: Buffer size in MB.
@@ -27,8 +25,6 @@ keys:
               type: str
             vrf:
               type: str
-              convert_types:
-                - int
               description: Specify VRF for NAT profile.
       pools:
         type: list
@@ -44,8 +40,6 @@ keys:
               default: "ip-port"
             prefix_length:
               type: int
-              convert_types:
-                - str
               min: 16
               max: 32
               description: It is only used and required when `type` is `ip-port`.
@@ -67,14 +61,10 @@ keys:
                       `first_ip` and `last_ip` ip addresses should lie in same subnet.
                   first_port:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 65535
                   last_port:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 65535
                     description: |-
@@ -82,8 +72,6 @@ keys:
                       `last_port` must be greater than or equal to `first_port`.
             utilization_log_threshold:
               type: int
-              convert_types:
-                - str
               min: 1
               max: 100
       synchronization:
@@ -93,8 +81,6 @@ keys:
             type: str
           expiry_interval:
             type: int
-            convert_types:
-              - str
             min: 60
             max: 3600
             description: In seconds.
@@ -109,14 +95,10 @@ keys:
             keys:
               first_port:
                 type: int
-                convert_types:
-                  - str
                 min: 1024
                 max: 65535
               last_port:
                 type: int
-                convert_types:
-                  - str
                 min: 1024
                 max: 65535
                 description: '>= first_port.'
@@ -141,15 +123,11 @@ keys:
             keys:
               percentage:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 99
                 description: "Used to render 'ip nat translation low-mark <percentage>'."
               host_percentage:
                 type: int
-                convert_types:
-                  - str
                 min: 1
                 max: 99
                 description: "Used to render 'ip nat translation low-mark <host_percentage> host'."
@@ -158,14 +136,10 @@ keys:
             keys:
               limit:
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 4294967295
               host_limit:
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 4294967295
               ip_limits:
@@ -180,8 +154,6 @@ keys:
                     limit:
                       type: int
                       required: true
-                      convert_types:
-                        - str
                       min: 0
                       max: 4294967295
           timeouts:
@@ -196,8 +168,6 @@ keys:
                 timeout:
                   type: int
                   required: true
-                  convert_types:
-                    - str
                   min: 0
                   max: 4294967295
                   description: In seconds.

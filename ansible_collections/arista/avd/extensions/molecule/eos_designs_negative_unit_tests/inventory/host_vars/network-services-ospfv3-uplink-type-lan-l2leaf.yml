@@ -1,0 +1,21 @@
+---
+# Uplink switch for 'network-services-ospfv3-uplink-type-lan'. Only used for facts.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: network-services-ospfv3-uplink-type-lan-l2leaf
+      id: 1
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_A
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: SUBINTERFACE
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
