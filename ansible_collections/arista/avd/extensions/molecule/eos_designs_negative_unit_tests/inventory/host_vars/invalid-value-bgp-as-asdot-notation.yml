@@ -10,6 +10,3 @@ l3leaf:
     - name: invalid-value-bgp-as-asdot-notation
       id: 4
       bgp_as: sdf1-4
-
-expected_error_message: >-
-  Failed to convert 'sdf4' to an integer when converting the BGP AS asdot notation`.

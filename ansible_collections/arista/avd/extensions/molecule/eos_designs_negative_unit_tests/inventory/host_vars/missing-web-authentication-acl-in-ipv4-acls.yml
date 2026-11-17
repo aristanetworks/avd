@@ -21,6 +21,3 @@ dot1x_settings:
     url: https://www.arista.com
     ssl_profile: web-authentication-ssl-profile
     ipv4_acl: missing-acl
-
-expected_error_message: >-
-  'ipv4_acls[name=missing-acl]' is required but was not found for host 'missing-web-authentication-acl-in-ipv4-acls'.

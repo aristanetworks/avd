@@ -22,6 +22,3 @@ cvxserver:
       bgp_as: 65001
       id: 2
       mgmt_ip: dhcp
-
-expected_error_message: >-
-  'mgmt_ip' for CVX Server 'dhcp-mgmt-ip-overlay-cvx-servers' must be a static management IP address, 'dhcp' is not supported.

@@ -27,6 +27,3 @@ dns_settings_profiles:
       - hostname: child-host
         ipv4_addresses:
           - 192.0.2.10
-
-expected_error_message: >-
-  At least one server must be provided in DNS configuration

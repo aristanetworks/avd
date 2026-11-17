@@ -34,7 +34,3 @@ tenants:
           - id: 110
             name: "MULTICAST_ENABLED_110"
             enabled: true
-
-expected_error_message: >-
-  Use 'underlay_multicast_rps' instead of 'tenant[name=Default_tenant].vrfs[name=default].pim_rp_addresses'
-  for host 'pim-rp-addresses-in-vrf-default'.

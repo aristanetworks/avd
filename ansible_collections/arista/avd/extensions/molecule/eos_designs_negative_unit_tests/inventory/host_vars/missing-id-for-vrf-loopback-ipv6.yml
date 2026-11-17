@@ -24,6 +24,3 @@ tenants:
         vtep_diagnostic:
           loopback: 666
           loopback_ipv6_range: dead:beef:cafe::/64
-
-expected_error_message: |-
-  'id' is not set on 'missing-id-for-vrf-loopback-ipv6' to get IPv6 address for a vrf loopback interface

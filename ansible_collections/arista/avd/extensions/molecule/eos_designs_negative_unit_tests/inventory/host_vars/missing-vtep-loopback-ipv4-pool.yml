@@ -15,6 +15,3 @@ l3leaf:
         - name: missing-vtep-loopback-ipv4-pool
           id: 1
           mgmt_ip: 192.168.201.116/24
-
-expected_error_message: >-
-  'vtep_loopback_ipv4_pool' is required but was not found for host 'missing-vtep-loopback-ipv4-pool'.

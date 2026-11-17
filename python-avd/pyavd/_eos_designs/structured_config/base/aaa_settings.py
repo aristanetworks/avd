@@ -26,11 +26,11 @@ class AaaSettingsMixin(Protocol):
     @structured_config_contributor
     def enable_password(self: AvdStructuredConfigBaseProtocol) -> None:
         """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
-        if self.inputs.aaa_settings.enable_password.password:
-            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
-        elif self.inputs.aaa_settings.enable_password.cleartext_password:
+        if self.shared_utils.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.shared_utils.aaa_settings.enable_password.password)
+        elif self.shared_utils.aaa_settings.enable_password.cleartext_password:
             salt = self.get_salt(self.shared_utils.hostname)
-            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, salt)
+            secure_hash_password = secure_hash(self.shared_utils.aaa_settings.enable_password.cleartext_password, salt)
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
         else:
             self.structured_config.enable_password.disabled = True
@@ -39,7 +39,7 @@ class AaaSettingsMixin(Protocol):
     def local_users(self: AvdStructuredConfigBaseProtocol) -> None:
         """local_users set based on global aaa_settings.local_users data model."""
         # Exit early if no local users are defined in inputs
-        if not (local_users := self.inputs.aaa_settings.local_users):
+        if not (local_users := self.shared_utils.aaa_settings.local_users):
             return
 
         for local_user in local_users._natural_sorted():
@@ -102,13 +102,13 @@ class AaaSettingsMixin(Protocol):
     @structured_config_contributor
     def radius_servers(self: AvdStructuredConfigBaseProtocol) -> None:
         """Parse AAA radius server configurations and update structured config with server and source interface details."""
-        if not self.inputs.aaa_settings.radius:
+        if not self.shared_utils.aaa_settings.radius:
             return
 
-        for server in self.inputs.aaa_settings.radius.servers:
+        for server in self.shared_utils.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
-                vrfs=self.inputs.aaa_settings.radius.vrfs,
+                vrfs=self.shared_utils.aaa_settings.radius.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
@@ -131,14 +131,14 @@ class AaaSettingsMixin(Protocol):
     @structured_config_contributor
     def tacacs_servers(self: AvdStructuredConfigBaseProtocol) -> None:
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
-        if not self.inputs.aaa_settings.tacacs:
+        if not self.shared_utils.aaa_settings.tacacs:
             return
 
         all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
-        for server in self.inputs.aaa_settings.tacacs.servers:
+        for server in self.shared_utils.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
-                vrfs=self.inputs.aaa_settings.tacacs.vrfs,
+                vrfs=self.shared_utils.aaa_settings.tacacs.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
@@ -161,36 +161,36 @@ class AaaSettingsMixin(Protocol):
                     tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
-            self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
+            self.shared_utils.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
         )
 
     @structured_config_contributor
     def aaa_authentication(self: AvdStructuredConfigBaseProtocol) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not self.inputs.aaa_settings.authentication:
+        if not self.shared_utils.aaa_settings.authentication:
             return
 
-        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
+        self.structured_config.aaa_authentication = self.shared_utils.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self: AvdStructuredConfigBaseProtocol) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not self.inputs.aaa_settings.authorization:
+        if not self.shared_utils.aaa_settings.authorization:
             return
 
-        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
+        self.structured_config.aaa_authorization = self.shared_utils.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self: AvdStructuredConfigBaseProtocol) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not self.inputs.aaa_settings.accounting:
+        if not self.shared_utils.aaa_settings.accounting:
             return
 
-        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
+        self.structured_config.aaa_accounting = self.shared_utils.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self: AvdStructuredConfigBaseProtocol) -> None:
         """Assign AAA root login configuration from inputs to structured config."""
-        aaa_root_login = self.inputs.aaa_settings.root_login
+        aaa_root_login = self.shared_utils.aaa_settings.root_login
         self.structured_config.aaa_root.disabled = not aaa_root_login.enabled
         self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password

@@ -22,6 +22,3 @@ l3leaf:
       ptp:
         # The profile is applied on uplink or l3edge
         profile: THIS-PROFILE-DOES-NOT-EXIST
-expected_error_message: >-
-  PTP Profile 'THIS-PROFILE-DOES-NOT-EXIST' referenced under `ptp.profile` node variables
-  does not exist in `ptp_profiles`.

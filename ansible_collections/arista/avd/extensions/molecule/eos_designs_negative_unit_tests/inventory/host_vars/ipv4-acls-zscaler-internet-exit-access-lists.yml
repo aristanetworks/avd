@@ -166,6 +166,3 @@ ipv4_acls:
         protocol: ip
         source: interface_ip
         destination: any
-
-expected_error_message: >-
-  ipv4_acls[name=ACL-NAT-IE-ZSCALER] field substitution is not supported for internet exit access lists

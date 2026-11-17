@@ -1,0 +1,42 @@
+fabric_name: EOS_DESIGNS_UNIT_TESTS
+type: l2leaf
+default_mgmt_method: oob
+l2leaf:
+  defaults:
+    cv_settings_profile: europe_cv_profile
+  nodes:
+    - name: cv-settings-profile
+      mgmt_ip: 192.0.2.10/24
+
+dns_settings:
+  domain: example.com
+  servers:
+    - ip_address: 192.0.2.53
+
+ntp_settings:
+  servers:
+    - name: 192.0.2.123
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        region: auto
+  onprem_clusters:
+    - name: onprem
+
+cv_settings_profiles:
+  - profile: common_cv_profile
+    terminattr:
+      disable_aaa: true
+  - profile: europe_cv_profile
+    parent_profile: common_cv_profile
+    cvaas:
+      clusters:
+        - name: cvaas
+          region: eu-3
+    onprem_clusters:
+      - name: onprem
+        servers:
+          - name: 192.0.2.11

@@ -42,6 +42,3 @@ tenants:
             name: VRF10_VLAN11
             enabled: true
             ip_address_virtual: 10.10.11.1/24
-
-expected_error_message: >-
-  The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node.

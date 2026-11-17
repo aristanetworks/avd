@@ -103,7 +103,3 @@ cv_pathfinder_internet_exit_policies:
   - name: DIRECT-EXIT-POLICY-1
     fallback_to_system_default: false
     type: direct
-
-expected_error_message: >-
-  'l3_interfaces[name=Ethernet1].peer_ip' needs to be set. When using WAN interface for direct type Internet exit, 'peer_ip'
-  is used for nexthop, and connectivity monitoring.

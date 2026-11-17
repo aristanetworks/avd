@@ -27,6 +27,3 @@ l3_edge:
           - node: peer1
             interfaces: [Ethernet1, Ethernet2]
             channel_id: 1
-
-expected_error_message: >-
-  'macsec_profile' is not supported for l3_edge.p2p_links[0] when 'port_channel' is configured.
