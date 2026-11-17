@@ -47,6 +47,14 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: network-services-l3-interfaces
+ip_access_lists:
+- name: MONITOR-SESSION-IPV4-STATIC-ACL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -56,6 +64,13 @@ ipv6_access_lists:
   entries:
   - protocol: ipv6
     source: 2001:db8:12::1
+    destination: any
+    sequence: 10
+    action: permit
+- name: MONITOR-SESSION-IPV6-STATIC-ACL
+  entries:
+  - protocol: ipv6
+    source: any
     destination: any
     sequence: 10
     action: permit
@@ -83,10 +98,24 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.201.1/32
+mac_access_lists:
+- name: MONITOR-SESSION-MAC-STATIC-ACL
+  entries:
+  - sequence: 10
+    action: permit any any
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 monitor_sessions:
+- name: MONITOR-SESSION-IPV4-STATIC
+  sources:
+  - name: Ethernet10
+    direction: rx
+  - name: Ethernet11
+    direction: rx
+  access_group:
+    type: ip
+    name: MONITOR-SESSION-IPV4-STATIC-ACL
 - name: MONITOR-SESSION-IPV6-ACL-SUBSTITUTION
   sources:
   - name: Ethernet12
@@ -94,6 +123,24 @@ monitor_sessions:
     access_group:
       type: ipv6
       name: MONITOR-SESSION-IPV6-ACL-FIELD-SUBSTITUTION_Ethernet12
+- name: MONITOR-SESSION-IPV6-STATIC
+  sources:
+  - name: Ethernet10
+    direction: rx
+  - name: Ethernet11
+    direction: rx
+  access_group:
+    type: ipv6
+    name: MONITOR-SESSION-IPV6-STATIC-ACL
+- name: MONITOR-SESSION-MAC-STATIC
+  sources:
+  - name: Ethernet10
+    direction: rx
+  - name: Ethernet11
+    direction: rx
+  access_group:
+    type: mac
+    name: MONITOR-SESSION-MAC-STATIC-ACL
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

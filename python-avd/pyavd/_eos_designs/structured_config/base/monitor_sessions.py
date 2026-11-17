@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -145,19 +145,19 @@ class MonitorSessionsMixin(Protocol):
         access_group: EosCliConfigGen.MonitorSessionsItem.AccessGroup | EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup,
     ) -> bool:
         """Return whether a catalog ACL uses an interface or peer IP substitution."""
-        if not access_group.name:
-            return False
+        # The EOS Designs schema requires the name, but the cast EOS CLI model marks it as optional.
+        name = cast(str, access_group.name)
 
         acl: EosDesigns.Ipv4AclsItem | EosDesigns.Ipv6AclsItem
         if access_group.type == "ip":
-            if access_group.name not in self.inputs.ipv4_acls:
+            if name not in self.inputs.ipv4_acls:
                 return False
-            acl = self.inputs.ipv4_acls[access_group.name]
+            acl = self.inputs.ipv4_acls[name]
             substitutions = {"interface_ip", "peer_ip"}
         elif access_group.type == "ipv6":
-            if access_group.name not in self.inputs.ipv6_acls:
+            if name not in self.inputs.ipv6_acls:
                 return False
-            acl = self.inputs.ipv6_acls[access_group.name]
+            acl = self.inputs.ipv6_acls[name]
             substitutions = {"interface_ipv6", "peer_ipv6", "interface_ip"}
         else:
             return False
