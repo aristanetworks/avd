@@ -52,6 +52,9 @@ def main() -> int:
     # Configuration changes can regenerate the metaschema earlier in the same pre-commit run.
     if any(path.resolve() in (METASCHEMA_FILE, REPO_ROOT / ".pre-commit-config.yaml") for path in schema_files):
         schema_files = sorted(path for pattern in SCHEMA_PATTERNS for path in REPO_ROOT.glob(pattern))
+    # TODO: Override formats["regex"] with pyavd-utils-gen's is_valid_avd_regex_pattern once available
+    # to check compatibility with AVD's runtime regex compiler instead of JSON Schema regex syntax alone.
+    # https://github.com/aristanetworks/pyavd-utils/pull/364
     validator = Draft202012Validator(json.loads(METASCHEMA_FILE.read_text(encoding="UTF-8")), validate_formats=True)
     failed = False
     for schema_file in schema_files:
@@ -70,7 +73,8 @@ def main() -> int:
                 if diagnostic in reported:
                     continue
                 reported.add(diagnostic)
-                print(f"{schema_file}: {pointer or '<root>'}: {leaf.message}", file=sys.stderr)
+                message = leaf.message.replace("\r", r"\r").replace("\n", r"\n")
+                print(f"{schema_file}: {pointer or '<root>'}: {message}", file=sys.stderr)
     return int(failed)
 
 
