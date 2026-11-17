@@ -30,13 +30,32 @@ class AddressLockingMixin(Protocol):
         if not self.inputs.avd_design_future.fix_address_locking_dhcp_server_interfaces:
             local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
             dhcp_server_interfaces = Undefined
-        elif address_locking_settings.local_interface and address_locking_settings.dhcp_server_interfaces:
-            msg = "'address_locking_settings.local_interface' and 'address_locking_settings.dhcp_server_interfaces' are mutually exclusive."
+        elif address_locking_settings.local_interface and (
+            address_locking_settings.dhcp_server_interfaces or address_locking_settings.auto_dhcp_server_interfaces
+        ):
+            msg = (
+                "'address_locking_settings.local_interface' and "
+                "'address_locking_settings.dhcp_server_interfaces'/'auto_dhcp_server_interfaces' are mutually exclusive."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         else:
-            dhcp_server_interfaces = address_locking_settings.dhcp_server_interfaces
+            dhcp_server_interfaces = EosCliConfigGen.AddressLocking.DhcpServerInterfaces()
+
+            if address_locking_settings.auto_dhcp_server_interfaces:
+                for uplink in self.facts.uplinks:
+                    if uplink.channel_group_id:
+                        dhcp_server_interfaces.append_unique(f"Port-Channel{uplink.channel_group_id}")
+                    elif uplink.type == "underlay_l2":
+                        dhcp_server_interfaces.append_unique(uplink.interface)
+                if self.shared_utils.mlag:
+                    dhcp_server_interfaces.append_unique(f"Port-Channel{self.shared_utils.mlag_port_channel_id}")
+
+            for interface in address_locking_settings.dhcp_server_interfaces:
+                dhcp_server_interfaces.append_unique(interface)
+
             local_interface = None if dhcp_server_interfaces else self.shared_utils.get_local_interface(address_locking_settings.local_interface)
-            dhcp_server_interfaces = dhcp_server_interfaces._cast_as(EosCliConfigGen.AddressLocking.DhcpServerInterfaces)
+            if not dhcp_server_interfaces:
+                dhcp_server_interfaces = Undefined
 
         locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)
         if not feature_support.address_locking.ipv4_enforcement_disabled:

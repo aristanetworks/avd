@@ -1770,6 +1770,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
+            "auto_dhcp_server_interfaces": {"type": bool, "default": False},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
@@ -1798,10 +1799,26 @@ class EosDesigns(EosDesignsRootModel):
         `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
         ignored.
         When enabled, this setting is mutually exclusive with `local_interface`.
-        Requires EOS
-        version 4.36 or later.
+        When
+        `auto_dhcp_server_interfaces` is also enabled, the interfaces from this list are merged with the
+        auto-detected interfaces.
+        Requires EOS version 4.36 or later.
 
         Subclass of AvdList with `str` items.
+        """
+        auto_dhcp_server_interfaces: bool
+        """
+        When enabled, automatically populates the DHCP server interfaces with all L2 uplinks (Ethernet or
+        Port-Channel) and the MLAG Port-Channel (if applicable).
+        Requires
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+        ignored.
+        When enabled, this setting is mutually exclusive with `local_interface`.
+        Any interfaces
+        manually specified in `dhcp_server_interfaces` are merged with the auto-detected interfaces.
+        Requires EOS version 4.36 or later.
+
+        Default value: `False`
         """
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
@@ -1821,6 +1838,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 local_interface: str | UndefinedType | None = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
+                auto_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
@@ -1853,10 +1871,22 @@ class EosDesigns(EosDesignsRootModel):
                        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
                        ignored.
                        When enabled, this setting is mutually exclusive with `local_interface`.
-                       Requires EOS
-                       version 4.36 or later.
+                       When
+                       `auto_dhcp_server_interfaces` is also enabled, the interfaces from this list are merged with the
+                       auto-detected interfaces.
+                       Requires EOS version 4.36 or later.
 
                        Subclass of AvdList with `str` items.
+                    auto_dhcp_server_interfaces:
+                       When enabled, automatically populates the DHCP server interfaces with all L2 uplinks (Ethernet or
+                       Port-Channel) and the MLAG Port-Channel (if applicable).
+                       Requires
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+                       ignored.
+                       When enabled, this setting is mutually exclusive with `local_interface`.
+                       Any interfaces
+                       manually specified in `dhcp_server_interfaces` are merged with the auto-detected interfaces.
+                       Requires EOS version 4.36 or later.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
