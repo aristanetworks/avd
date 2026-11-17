@@ -1,0 +1,1 @@
+[['tenants', '0', 'vrfs', '0', 'redistribute_ospf']]: 'The input data model 'tenants[0].vrfs[0].redistribute_ospf' is deprecated and will be removed in AVD version 7.0.0. Use 'bgp.redistribute_ospf.internal.enabled' instead.'
