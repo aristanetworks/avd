@@ -14,7 +14,7 @@ anta_runner_user_catalogs_enabled: "{{ user_catalogs_enabled | default(false) }}
 
 # Generate extra fabric-wide validation tests.
 anta_runner_avd_catalogs_extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation | default(false) }}"
-anta_runner_avd_catalogs_filters: "{{ avd_catalogs_filters | default([]) }}"
+anta_runner_avd_catalogs_filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
 
 # Global timeout for the ANTA runner.
 anta_runner_timeout: 30

@@ -1,0 +1,30 @@
+---
+- name: Verify legacy null handling using actual role defaults
+  hosts: role_settings
+  gather_facts: false
+  tasks:
+    - name: Load public defaults without executing role operations
+      ansible.builtin.include_role:
+        name: "arista.avd.{{ item }}"
+        public: true
+        apply:
+          tags: never
+      loop:
+        - eos_designs
+        - eos_cli_config_gen
+        - anta_runner
+        - cv_deploy
+
+    - name: Verify canonical settings resolve with the expected types and values
+      ansible.builtin.assert:
+        that:
+          - eos_designs_structured_config is sameas expected_structured_config
+          - eos_designs_digital_twin_mode is sameas expected_digital_twin_mode
+          - eos_cli_config_gen_read_structured_config_from_file is sameas expected_read_from_file
+          - cv_deploy_read_structured_config_from_file is sameas expected_read_from_file
+          - anta_runner_avd_catalogs_filters == expected_catalog_filters
+          - anta_runner_report_exclude_statuses == expected_exclude_statuses
+          - cv_deploy_workspace_requested_state == expected_workspace_state
+          - cv_deploy_change_control_requested_state == expected_change_control_state
+          - cv_deploy_static_config_manifest == expected_manifest
+        fail_msg: "Legacy null normalization or canonical precedence failed for {{ inventory_hostname }}"

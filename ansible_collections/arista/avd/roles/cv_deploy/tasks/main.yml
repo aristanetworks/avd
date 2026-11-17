@@ -56,9 +56,7 @@
           name: "{{ cv_deploy_workspace_name | default(cv_workspace_name | default(omit)) }}"
           description: "{{ cv_deploy_workspace_description | default(cv_workspace_description | default(omit)) }}"
           id: "{{ cv_deploy_workspace_id | default(cv_workspace_id | default(omit)) }}"
-          requested_state: >-
-            {{ cv_deploy_workspace_requested_state | default(cv_workspace_requested_state |
-            default('submitted' if cv_deploy_submit_workspace else 'built')) }}
+          requested_state: "{{ cv_deploy_workspace_requested_state }}"
           force: "{{ cv_deploy_submit_workspace_force }}"
           build_warnings:
             enabled: "{{ cv_deploy_workspace_build_warnings_enabled }}"
@@ -71,12 +69,10 @@
           start_note: "{{ cv_deploy_change_control_start_note | default(cv_change_control_start_note | default(omit)) }}"
           name: "{{ cv_deploy_change_control_name | default(cv_change_control_name | default(omit)) }}"
           description: "{{ cv_deploy_change_control_description | default(cv_change_control_description | default(omit)) }}"
-          requested_state: >-
-            {{ cv_deploy_change_control_requested_state | default(cv_change_control_requested_state |
-            default('completed' if cv_deploy_run_change_control else 'pending approval')) }}
+          requested_state: "{{ cv_deploy_change_control_requested_state }}"
         timeouts:
           workspace_build_timeout: "{{ cv_deploy_workspace_build_timeout }}"
-        static_config_manifest: "{{ cv_deploy_static_config_manifest | default(cv_static_config_manifest | default({})) }}"
+        static_config_manifest: "{{ cv_deploy_static_config_manifest }}"
         return_details: "{{ cv_deploy_register_detailed_results }}"
         preview_features:
           read_from_validated_inputs: true

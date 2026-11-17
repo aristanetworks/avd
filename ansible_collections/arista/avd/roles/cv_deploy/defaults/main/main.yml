@@ -35,7 +35,11 @@ cv_deploy_configlet_name_template: "{{ cv_configlet_name_template | default('AVD
 cv_deploy_register_detailed_results: "{{ cv_register_detailed_results | default(false) }}"
 cv_deploy_workspace_build_timeout: "{{ cv_workspace_build_timeout | default(300) }}"
 cv_deploy_workspace_max_sync_retries: "{{ cv_workspace_max_sync_retries | default(5) }}"
-cv_deploy_read_structured_config_from_file: "{{ read_structured_config_from_file | default(true) }}"
+cv_deploy_read_structured_config_from_file: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+cv_deploy_workspace_requested_state: "{{ cv_workspace_requested_state | arista.avd.default('submitted' if cv_deploy_submit_workspace else 'built') }}"
+cv_deploy_change_control_requested_state: >-
+  {{ cv_change_control_requested_state | arista.avd.default('completed' if cv_deploy_run_change_control else 'pending approval') }}
+cv_deploy_static_config_manifest: "{{ cv_static_config_manifest | arista.avd.default({}) }}"
 
 # Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
 # cv_deploy_future:

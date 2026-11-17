@@ -6,4 +6,4 @@ avd_vault_id: null
 # Avoid deleting temporary files. Allows the user to inspect tmp files created by the role.
 eos_cli_config_gen_keep_tmp_files: false
 
-eos_cli_config_gen_read_structured_config_from_file: "{{ read_structured_config_from_file | default(true) }}"
+eos_cli_config_gen_read_structured_config_from_file: "{{ read_structured_config_from_file | arista.avd.default(true) }}"

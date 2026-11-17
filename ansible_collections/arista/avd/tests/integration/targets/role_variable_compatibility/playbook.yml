@@ -42,6 +42,9 @@
           - eos_designs_vault_id is not defined
           - cv_deploy_vault_id is not defined
 
+- name: Verify role setting null handling and canonical precedence
+  ansible.builtin.import_playbook: role_settings.yml
+
 - name: Verify canonical collection variables take precedence
   hosts: canonical
   gather_facts: false
