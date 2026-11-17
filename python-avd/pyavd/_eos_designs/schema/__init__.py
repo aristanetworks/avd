@@ -1254,7 +1254,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         remove_mpls_lsr_dependency_for_mpls_overlay_role_server: bool
         """
-        Available from AVD 6.5.0.
+        Available from AVD 6.6.0.
         For iBGP Route Reflectors using `mpls_overlay_role: server` with
         `mpls_lsr: false`,
         configure `bgp route-reflector preserve-attributes` and
@@ -1432,7 +1432,7 @@ class EosDesigns(EosDesignsRootModel):
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
                     remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
-                       Available from AVD 6.5.0.
+                       Available from AVD 6.6.0.
                        For iBGP Route Reflectors using `mpls_overlay_role: server` with
                        `mpls_lsr: false`,
                        configure `bgp route-reflector preserve-attributes` and

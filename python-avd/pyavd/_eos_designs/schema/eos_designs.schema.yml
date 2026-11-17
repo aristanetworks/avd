@@ -602,7 +602,7 @@ keys:
         default: false
       remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
         type: bool
-        description: 'Available from AVD 6.5.0.
+        description: 'Available from AVD 6.6.0.
 
           For iBGP Route Reflectors using `mpls_overlay_role: server` with `mpls_lsr:
           false`,
