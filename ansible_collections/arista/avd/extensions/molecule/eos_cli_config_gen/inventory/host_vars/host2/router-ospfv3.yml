@@ -88,6 +88,8 @@ router_ospfv3:
         lsa:
           limit: 6000
           disabled_time: 15
+          incident_count:
+            clear_timeout: 12
           warning_limit: 75
           exceed_action_warn: true
         redistribute:
@@ -150,6 +152,7 @@ router_ospfv3:
         auto_cost_reference_bandwidth: 1000
         lsa:
           limit: 8000
+          warning_limit: 65
           exceed_action_warn: true
         redistribute:
           bgp:
@@ -182,6 +185,9 @@ router_ospfv3:
       address_family_ipv4:
         enabled: true
         passive_interface_default: false
+        lsa:
+          limit: 4100
+          disabled_time: 9
         redistribute:
           bgp:
             enabled: true
@@ -240,4 +246,8 @@ router_ospfv3:
       auto_cost_reference_bandwidth: 1000
       lsa:
         limit: 4500
+        disabled_time: 7
+        incident_count:
+          count: 2
+          clear_timeout: 5
         exceed_action_warn: true

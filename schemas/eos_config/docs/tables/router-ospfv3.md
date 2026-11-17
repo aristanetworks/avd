@@ -19,8 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -34,8 +34,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -110,8 +110,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -125,8 +125,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -140,8 +140,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -216,8 +216,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.count") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on this VRF OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance. |
 
@@ -258,10 +258,10 @@
           # Limit maximum number of times the maximum number of LSAs can be reached.
           count: <int; 1-20>
 
-        # Only give warning message when limit is exceeded.
+        # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
         exceed_action_warn: <bool>
 
-        # Percentage of maximum number of LSAs to reach before warning.
+        # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
         warning_limit: <int; 25-99>
 
       # Address family IPv4 configuration.
@@ -299,10 +299,10 @@
             # Limit maximum number of times the maximum number of LSAs can be reached.
             count: <int; 1-20>
 
-          # Only give warning message when limit is exceeded.
+          # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
           exceed_action_warn: <bool>
 
-          # Percentage of maximum number of LSAs to reach before warning.
+          # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
           warning_limit: <int; 25-99>
 
         # Redistribute routes into OSPFv3.
@@ -421,10 +421,10 @@
             # Limit maximum number of times the maximum number of LSAs can be reached.
             count: <int; 1-20>
 
-          # Only give warning message when limit is exceeded.
+          # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
           exceed_action_warn: <bool>
 
-          # Percentage of maximum number of LSAs to reach before warning.
+          # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
           warning_limit: <int; 25-99>
       vrfs:
 
@@ -462,10 +462,10 @@
               # Limit maximum number of times the maximum number of LSAs can be reached.
               count: <int; 1-20>
 
-            # Only give warning message when limit is exceeded.
+            # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
             exceed_action_warn: <bool>
 
-            # Percentage of maximum number of LSAs to reach before warning.
+            # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
             warning_limit: <int; 25-99>
 
           # Address family IPv4 configuration.
@@ -503,10 +503,10 @@
                 # Limit maximum number of times the maximum number of LSAs can be reached.
                 count: <int; 1-20>
 
-              # Only give warning message when limit is exceeded.
+              # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
               exceed_action_warn: <bool>
 
-              # Percentage of maximum number of LSAs to reach before warning.
+              # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
               warning_limit: <int; 25-99>
 
             # Redistribute routes into OSPFv3.
@@ -625,10 +625,10 @@
                 # Limit maximum number of times the maximum number of LSAs can be reached.
                 count: <int; 1-20>
 
-              # Only give warning message when limit is exceeded.
+              # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
               exceed_action_warn: <bool>
 
-              # Percentage of maximum number of LSAs to reach before warning.
+              # Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
               warning_limit: <int; 25-99>
 
           # Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.

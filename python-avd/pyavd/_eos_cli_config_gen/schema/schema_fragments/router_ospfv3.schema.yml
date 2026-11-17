@@ -63,12 +63,12 @@ keys:
                 description: Limit maximum number of times the maximum number of LSAs can be reached.
           exceed_action_warn:
             type: bool
-            description: Only give warning message when limit is exceeded.
+            description: Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
           warning_limit:
             type: int
             min: 25
             max: 99
-            description: Percentage of maximum number of LSAs to reach before warning.
+            description: Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
       address_family_ipv4:
         type: dict
         description: |-

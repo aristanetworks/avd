@@ -219,6 +219,20 @@ ipv6 unicast-routing vrf TENANT_C
 
 ##### Address Family IPv6
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| LSA Limit | 9100 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 70 percent |
+| LSA Exceed Action Warn | True |
+
 ###### Redistribution
 
 | Source Protocol | Include Leaked | Route Map |
@@ -405,6 +419,7 @@ router ospfv3
       redistribute static include leaked route-map map1
    !
    address-family ipv6
+      lsa limit 9100 warning limit 70 percent exceed-action warn
       redistribute bgp include leaked route-map map1
       redistribute dhcp route-map map1
       redistribute connected include leaked route-map map1

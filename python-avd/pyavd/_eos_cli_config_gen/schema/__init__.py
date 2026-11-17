@@ -67066,9 +67066,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             incident_count: IncidentCount
             """Subclass of AvdModel."""
             exceed_action_warn: bool | None
-            """Only give warning message when limit is exceeded."""
+            """
+            Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+            `incident_count` is set.
+            """
             warning_limit: int | None
-            """Percentage of maximum number of LSAs to reach before warning."""
+            """
+            Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+            `incident_count` is set.
+            """
 
             if TYPE_CHECKING:
 
@@ -67091,8 +67097,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         limit: Configure maximum number of LSAs permitted (0 for unlimited).
                         disabled_time: Minutes to shut down the instances.
                         incident_count: Subclass of AvdModel.
-                        exceed_action_warn: Only give warning message when limit is exceeded.
-                        warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                        exceed_action_warn:
+                           Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                           `incident_count` is set.
+                        warning_limit:
+                           Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                           `incident_count` is set.
 
                     """
 
@@ -67140,9 +67150,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
-                """Only give warning message when limit is exceeded."""
+                """
+                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
                 warning_limit: int | None
-                """Percentage of maximum number of LSAs to reach before warning."""
+                """
+                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
 
                 if TYPE_CHECKING:
 
@@ -67165,8 +67181,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
                             disabled_time: Minutes to shut down the instances.
                             incident_count: Subclass of AvdModel.
-                            exceed_action_warn: Only give warning message when limit is exceeded.
-                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                            exceed_action_warn:
+                               Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                               `incident_count` is set.
+                            warning_limit:
+                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                               `incident_count` is set.
 
                         """
 
@@ -67902,9 +67922,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
-                """Only give warning message when limit is exceeded."""
+                """
+                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
                 warning_limit: int | None
-                """Percentage of maximum number of LSAs to reach before warning."""
+                """
+                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
 
                 if TYPE_CHECKING:
 
@@ -67927,8 +67953,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
                             disabled_time: Minutes to shut down the instances.
                             incident_count: Subclass of AvdModel.
-                            exceed_action_warn: Only give warning message when limit is exceeded.
-                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                            exceed_action_warn:
+                               Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                               `incident_count` is set.
+                            warning_limit:
+                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                               `incident_count` is set.
 
                         """
 
@@ -68041,9 +68071,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
-                """Only give warning message when limit is exceeded."""
+                """
+                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
                 warning_limit: int | None
-                """Percentage of maximum number of LSAs to reach before warning."""
+                """
+                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                `incident_count` is set.
+                """
 
                 if TYPE_CHECKING:
 
@@ -68066,8 +68102,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
                             disabled_time: Minutes to shut down the instances.
                             incident_count: Subclass of AvdModel.
-                            exceed_action_warn: Only give warning message when limit is exceeded.
-                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                            exceed_action_warn:
+                               Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                               `incident_count` is set.
+                            warning_limit:
+                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                               `incident_count` is set.
 
                         """
 
@@ -68115,9 +68155,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     incident_count: IncidentCount
                     """Subclass of AvdModel."""
                     exceed_action_warn: bool | None
-                    """Only give warning message when limit is exceeded."""
+                    """
+                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                    `incident_count` is set.
+                    """
                     warning_limit: int | None
-                    """Percentage of maximum number of LSAs to reach before warning."""
+                    """
+                    Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                    `incident_count` is set.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -68140,8 +68186,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 limit: Configure maximum number of LSAs permitted (0 for unlimited).
                                 disabled_time: Minutes to shut down the instances.
                                 incident_count: Subclass of AvdModel.
-                                exceed_action_warn: Only give warning message when limit is exceeded.
-                                warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                                exceed_action_warn:
+                                   Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                                   `incident_count` is set.
+                                warning_limit:
+                                   Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                                   `incident_count` is set.
 
                             """
 
@@ -68887,9 +68937,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     incident_count: IncidentCount
                     """Subclass of AvdModel."""
                     exceed_action_warn: bool | None
-                    """Only give warning message when limit is exceeded."""
+                    """
+                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                    `incident_count` is set.
+                    """
                     warning_limit: int | None
-                    """Percentage of maximum number of LSAs to reach before warning."""
+                    """
+                    Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                    `incident_count` is set.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -68912,8 +68968,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 limit: Configure maximum number of LSAs permitted (0 for unlimited).
                                 disabled_time: Minutes to shut down the instances.
                                 incident_count: Subclass of AvdModel.
-                                exceed_action_warn: Only give warning message when limit is exceeded.
-                                warning_limit: Percentage of maximum number of LSAs to reach before warning.
+                                exceed_action_warn:
+                                   Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
+                                   `incident_count` is set.
+                                warning_limit:
+                                   Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
+                                   `incident_count` is set.
 
                             """
 
