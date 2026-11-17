@@ -6,15 +6,21 @@ from __future__ import annotations
 import json
 from contextlib import contextmanager
 from copy import deepcopy
+from dataclasses import replace
+from ipaddress import IPv4Network
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING, Any
+from unittest.mock import patch
+
+from yaml import safe_dump, safe_load
 
 from pyavd import get_avd_facts, get_device_structured_config, validate_inputs
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._errors import AristaAvdError
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.pool_manager.ipv4_allocations import Ipv4AllocationCollection
+from pyavd.api.pool_manager.ipv4_pools import Ipv4PoolCollection, Ipv4PoolDefinition, link_owner, node_owner
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -405,11 +411,175 @@ def schema_contract() -> None:
     assert validate_inputs(invalid).validated_data is None
 
 
+def pool_foundation(directory: Path) -> None:
+    """Exercise host and shared-link resources through the existing manager and pool hierarchy."""
+    manager = PoolManager(directory)
+    path = directory / "data/FABRIC-ipv4-allocations.yml"
+    collection = manager.get_pool_collection("ipv4_pools", path)
+    assert manager.get_pool_collection("ipv4_pools", path) is collection
+    definition = Ipv4PoolDefinition("HOSTS", "MGMT", IPv4Network("192.0.2.0/24"))
+    for settings, fragment in (
+        ({"first": int(definition.network.network_address)}, "Invalid allocation bounds"),
+        ({"last": int(definition.network.broadcast_address)}, "Invalid allocation bounds"),
+        ({"resource_type": "subnet", "prefix_length": 23}, "Requested prefix length"),
+        ({"resource_type": "subnet", "prefix_length": True}, "Requested prefix length"),
+        ({"prefix_length": 31}, "host pool"),
+    ):
+        try:
+            replace(definition, **settings)
+        except ValueError as error:
+            if fragment not in str(error):
+                raise AssertionError(str(error)) from error
+        else:
+            msg = f"Expected invalid IPv4 pool definition: {settings}"
+            raise AssertionError(msg)
+    hosts = collection.get_ipv4_pool(definition)
+    oob = node_owner("leaf1", "oob_mgmt")
+    inband = node_owner("leaf1", "inband_mgmt")
+    assert hosts.get_assignment(oob).value == "192.0.2.1/24"
+
+    links = collection.get_ipv4_pool(replace(definition, subnet="LINKS", resource_type="subnet", prefix_length=31))
+    link = link_owner(("leaf1", "Ethernet1"), ("spine1", "Ethernet2"), "uplink")
+    reverse = link_owner(("spine1", "Ethernet2"), ("leaf1", "Ethernet1"), "uplink")
+    assert link == reverse
+    assert links.get_assignment(link).value == "192.0.2.2/31"
+    assert links.get_assignment(reverse).value == "192.0.2.2/31"
+    with fails("conflicts between"):
+        links.get_assignment("conflicting-link", "192.0.2.0/31")
+
+    wider = collection.get_ipv4_pool(replace(definition, subnet="OTHER_LINKS", resource_type="subnet", prefix_length=30))
+    assert wider.get_assignment("other-link").value == "192.0.2.4/30"
+    assert hosts.get_assignment(inband).value == "192.0.2.8/24"
+    with fails("conflicts between"):
+        hosts.get_assignment("intruder", "192.0.2.3/24")
+    with fails("outside pool"):
+        hosts.get_assignment("out-of-range", "198.51.100.10/24")
+    with fails("outside pool"):
+        hosts.get_assignment("network-address", "192.0.2.0/24")
+    with fails("nonempty strings"):
+        hosts.get_assignment("")
+    with fails("Invalid requested IPv4 allocation"):
+        links.get_assignment("unaligned", "192.0.2.3/31")
+    with fails("Persisted IPv4 assignment"):
+        hosts.get_assignment(oob, "192.0.2.9/24")
+    assert hosts.get_assignment("next-host").value == "192.0.2.9/24"
+    other_vrf = collection.get_ipv4_pool(replace(definition, vrf="OTHER"))
+    assert other_vrf.get_assignment(node_owner("leaf1", "other_vrf")).value == "192.0.2.1/24"
+    assert manager.save_updated_pools()
+    before = path.read_bytes()
+    reloaded = PoolManager(directory)
+    retained = reloaded.get_pool_collection("ipv4_pools", path)
+    assert retained.get_ipv4_pool(definition).get_assignment(oob).value == "192.0.2.1/24"
+    assert retained.get_ipv4_pool(replace(definition, subnet="LINKS", resource_type="subnet", prefix_length=31)).get_assignment(reverse).value == "192.0.2.2/31"
+    assert not reloaded.save_updated_pools()
+    assert path.read_bytes() == before
+
+    # Staging also isolates accessed flags, dirty flags and transient reservations.
+    staged = retained.stage()
+    staged.get_ipv4_pool(definition).get_assignment("staged-only")
+    assert not reloaded.save_updated_pools()
+    assert path.read_bytes() == before
+    retained.publish(staged)
+    assert reloaded.save_updated_pools()
+
+    # A very large occupied subnet must be skipped as an interval, not address by address.
+    large = Ipv4PoolCollection(directory / "large.yml")
+    parent = Ipv4PoolDefinition("LARGE", "default", IPv4Network("0.0.0.0/0"), "subnet", 1)
+    assert large.get_ipv4_pool(parent).get_assignment("half").value == "0.0.0.0/1"
+    assert large.get_ipv4_pool(replace(parent, resource_type="host", prefix_length=None)).get_assignment("host").value == "128.0.0.0/0"
+
+    descending = Ipv4PoolCollection(directory / "descending.yml")
+    parent = Ipv4PoolDefinition("LINKS", "default", IPv4Network("192.0.2.0/29"), "subnet", 31, descending=True)
+    pool = descending.get_ipv4_pool(parent)
+    assert [pool.get_assignment(str(index)).value for index in range(4)] == ["192.0.2.6/31", "192.0.2.4/31", "192.0.2.2/31", "192.0.2.0/31"]
+    with fails("No available IPv4 subnets"):
+        pool.get_assignment("exhausted")
+    tiny = descending.get_ipv4_pool(Ipv4PoolDefinition("TINY", "OTHER", IPv4Network("192.0.2.1/32"), "subnet", 32))
+    assert tiny.get_assignment("tiny").value == "192.0.2.1/32"
+    with fails("No available IPv4 subnets"):
+        tiny.get_assignment("exhausted")
+
+    # Bounds can cut through aligned prefixes; only fully contained child subnets are usable.
+    bounded = descending.get_ipv4_pool(
+        replace(
+            parent,
+            subnet="BOUNDED",
+            vrf="BOUNDED",
+            first=int(parent.network.network_address) + 1,
+            last=int(parent.network.broadcast_address) - 1,
+            descending=False,
+        )
+    )
+    assert bounded.get_assignment("link1").value == "192.0.2.2/31"
+    assert bounded.get_assignment("link2").value == "192.0.2.4/31"
+    with fails("No available IPv4 subnets"):
+        bounded.get_assignment("exhausted")
+
+    # Adding hosts must not repeatedly rescan all earlier reservations.
+    sequential = Ipv4PoolCollection(directory / "sequential.yml")
+    hosts = sequential.get_ipv4_pool(Ipv4PoolDefinition("HOSTS", "default", IPv4Network("10.0.0.0/16")))
+    with patch.object(sequential.reservations, "conflict", wraps=sequential.reservations.conflict) as conflicts:
+        for index in range(512):
+            hosts.get_assignment(str(index))
+        assert conflicts.call_count <= 3 * 512
+
+
+def pool_state_validation(directory: Path) -> None:
+    """A clean textual merge must not hide conflicting or malformed reservations."""
+    definition = Ipv4PoolDefinition("HOSTS", "MGMT", IPv4Network("192.0.2.0/24"))
+    branches = []
+    for name in ("leaf1", "leaf2"):
+        collection = Ipv4PoolCollection(directory / f"{name}.yml")
+        collection.get_ipv4_pool(definition).get_assignment(node_owner(name, "oob_mgmt"))
+        assert collection.save_updates()
+        branches.append(safe_load(collection.pools_file.read_text()))
+    merged = branches[0]
+    merged["ipv4_pools"][definition.key].update(branches[1]["ipv4_pools"][definition.key])
+    path = directory / "merged.yml"
+    path.write_text(safe_dump(merged))
+    with fails("leaf1"):
+        Ipv4PoolCollection(path)
+    with fails("leaf2"):
+        Ipv4PoolCollection(path)
+    with fails(str(path)):
+        Ipv4PoolCollection(path)
+    with fails("VRF 'MGMT'"):
+        Ipv4PoolCollection(path)
+
+    owner = node_owner("leaf1", "oob_mgmt")
+    valid = {"version": 2, "ipv4_pools": {definition.key: {owner: "192.0.2.1/24"}}}
+    for contents, message in (
+        ("version: 2\nversion: 2\nipv4_pools: {}\n", "Duplicate YAML key"),
+        ("version: 2\nipv4_pools: [\n", "Invalid IPv4 allocation state"),
+        ("", "Expected a versioned"),
+        ("version: true\nipv4_pools: {}\n", "Expected a versioned"),
+        (safe_dump({"version": 2, "ipv4_pools": {"broken": {}}}), "Invalid IPv4 allocation state"),
+        (safe_dump({"version": 2, "ipv4_pools": {definition.key: {owner: "192.0.2.1"}}}), "address/prefix"),
+        (
+            safe_dump(
+                {"version": 2, "ipv4_pools": {definition.key: {owner: "192.0.2.1/24"}, replace(definition, subnet="ALIAS").key: {owner: "192.0.2.2/24"}}}
+            ),
+            "Duplicate allocation owner",
+        ),
+    ):
+        path.write_text(contents)
+        with fails(message):
+            Ipv4PoolCollection(path)
+    # Duplicate assignment keys would otherwise silently discard one reservation in a YAML mapping.
+    content = safe_dump(valid)
+    assignment_line = next(line for line in content.splitlines() if "192.0.2.1/24" in line)
+    path.write_text(content.replace(assignment_line, f"{assignment_line}\n{assignment_line.replace('192.0.2.1', '192.0.2.2')}"))
+    with fails("Duplicate YAML key"):
+        Ipv4PoolCollection(path)
+
+
 def main() -> None:
     schema_contract()
     with TemporaryDirectory(prefix="avd-ipv4-allocation-tests-") as temporary:
         root = Path(temporary)
         for test in (
+            pool_foundation,
+            pool_state_validation,
             persistent_builds,
             overrides_and_collisions,
             node_subnet_inheritance,
