@@ -17,18 +17,12 @@ from yaml import CSafeLoader, YAMLError, dump, load
 
 from pyavd._errors import AristaAvdInvalidInputsError
 
-from .base_classes import Pool, PoolAssignment, PoolCollection
+from .base_classes import FILE_HEADER, Pool, PoolAssignment, PoolCollection
 
 if TYPE_CHECKING:
     from yaml.nodes import MappingNode
 
 ResourceType = Literal["host", "subnet"]
-
-FILE_HEADER = """\
-# This file contains persistent IPv4 reservations managed by AVD eos_designs.
-# After merging, run AVD to validate reservations, including those for absent devices.
-# Resolve conflicting reservations deliberately before deployment; AVD will not silently renumber owners.
-"""
 
 
 def node_owner(hostname: str, purpose: str) -> str:

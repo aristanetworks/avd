@@ -1252,10 +1252,10 @@ Previously automatic endpoints, including devices switched to explicit addressin
 Static and `device_id` claims are discovered from the current inputs, so include those devices when allocating new automatic addresses.
 To reclaim a reservation, stop concurrent builds, remove its allocation entry from the state file, and rebuild.
 Invalid retained assignments fail rather than silently changing addresses. Switching allocation mode or subnet is a migration that may require deliberate reclamation.
+When there is a merge conflict for this file, rebase the branch, accept all current changes for this file, and re-run AVD, following the same workflow as node-ID state files.
 After merging state files in Git, run AVD before deployment. A clean Git merge does not guarantee unique addresses.
 AVD validates all reservations in the loaded fabric file, including absent devices and builds that need no new assignments.
 Conflicting reservations fail with the owners, address, VRF, and state-file path. Correct or explicitly release the intended reservation and run AVD again.
-Do not discard reservations for deployed devices just to resolve a merge conflict.
 Version-1 state files are read automatically and saved in the version-2 pool format after successful facts generation, preserving existing addresses.
 Concurrent changes to state are rejected; re-run against the updated state.
 If a terminated writer leaves a `.yml.lock` file, confirm no build is writing that state before removing the lock and retrying.
