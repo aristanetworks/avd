@@ -158,7 +158,7 @@ class MonitorSessionsMixin(Protocol):
     ) -> bool:
         """Return whether a catalog ACL uses an interface or peer IP substitution."""
         # The access group is validated before this call, but the cast EOS CLI model marks the name as optional.
-        name = cast(str, access_group.name)
+        name = cast("str", access_group.name)
 
         acl: EosDesigns.Ipv4AclsItem | EosDesigns.Ipv6AclsItem
         if access_group.type == "ip":
