@@ -160,11 +160,22 @@ jobs:
           # Reuse the JSON scan: this only formats findings, without pulling/scanning the image again.
           # Report MEDIUM findings too; only HIGH/CRITICAL findings fail the separate final gate.
           trivy convert --format table --severity MEDIUM,HIGH,CRITICAL --output reports/trivy.txt reports/trivy.json
+          # GitHub rejects summaries over 1 MiB after the step finishes. Cap only the displayed table
+          # at 900 KiB, leaving room for headings and the truncation notice. Keep the full artifact and
+          # severity gate unchanged. Count bytes and stop at a whole line to preserve UTF-8 characters.
+          summary_limit_bytes=$((900 * 1024))
           {
             echo "### Fixable MEDIUM/HIGH/CRITICAL vulnerabilities"
             echo ""
+            if (( $(wc -c < reports/trivy.txt) > summary_limit_bytes )); then
+              echo "Table preview truncated to fit GitHub's summary limit. Download the complete text or HTML report from this run's artifacts."
+              echo ""
+            fi
             echo '```text'
-            cat reports/trivy.txt
+            LC_ALL=C awk -v limit="$summary_limit_bytes" '
+              bytes + length($0) + 1 > limit { exit }
+              { print; bytes += length($0) + 1 }
+            ' reports/trivy.txt
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
