@@ -89,6 +89,7 @@ router_ospfv3:
           limit: 6000
           disabled_time: 15
           incident_count:
+            count: 4
             clear_timeout: 12
           warning_limit: 75
           exceed_action_warn: true
@@ -250,4 +251,9 @@ router_ospfv3:
         incident_count:
           count: 2
           clear_timeout: 5
+        exceed_action_warn: true
+    - name: WARN_ONLY
+      lsa:
+        limit: 8000
+        warning_limit: 65
         exceed_action_warn: true
