@@ -641,6 +641,12 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
+      sort_snmp_acls_and_local_interfaces_by_vrf:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Sort SNMP ACLs and local interfaces by VRF name in the generated configuration.'
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
         type: bool
         description: 'Available from AVD 6.5.0.
@@ -4992,6 +4998,30 @@ keys:
         type: str
         description: Name of the management interface (e.g. Management0, Management1).
         default: Management1
+      shutdown:
+        type: str
+        default: 'false'
+        description: 'Control the management interface shutdown state.
+
+          - "true": Always shut down the interface, even when management addressing
+          is configured.
+
+          - "false": Configure "no shutdown" when management addressing is configured;
+          otherwise, generate no interface configuration.
+
+          - "auto": Configure "no shutdown" when management addressing is configured;
+          otherwise, shut down the interface.
+
+          Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`,
+          including DHCP and SLAAC.
+
+          When shutting down an interface without node management addressing, only
+          its name and shutdown state are configured.'
+        valid_values:
+        - 'true'
+        - 'false'
+        - auto
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.
@@ -9917,6 +9947,7 @@ keys:
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -10000,6 +10031,7 @@ keys:
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -10080,6 +10112,7 @@ keys:
         dot1x_mac_based_access_list: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         per_interface_l2_mru: false
         queue_monitor_length_notify: false
         sflow: false
@@ -17136,6 +17169,14 @@ $defs:
               description: 'Support for storm-control.
 
                 The feature will be ignored on platforms where this is false.'
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: 'Support for `speed sfp-1000baset auto 100full` and `speed
+                auto <mode>` commands on Ethernet interfaces.
+
+                When set to false, these commands are omitted while `speed auto`,
+                `speed <mode>` and `speed forced <mode>` commands are preserved.'
             poe:
               type: bool
               default: false
