@@ -170,7 +170,7 @@ repos:
           - 'pytest>=9.1.0'
           - 'pyyaml>=6.0.0'
           - 'referencing>=0.35.0'
-          - 'ruff==0.17.2'
+          - 'ruff==0.17.5'
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
@@ -313,7 +313,7 @@ repos:
           - pyavd-utils-gen==0.0.14
           - jsonschema-rs>=0.24
           - referencing>=0.35.0
-          - ruff==0.17.2
+          - ruff==0.17.5
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
