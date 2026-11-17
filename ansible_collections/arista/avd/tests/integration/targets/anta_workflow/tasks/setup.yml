@@ -1,4 +1,9 @@
 ---
+- name: Remove previous ANTA workflow test output
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}"
+    state: absent
+
 - name: Create ANTA test devices
   ansible.builtin.add_host:
     name: "{{ item }}"
@@ -19,6 +24,10 @@
   ansible.builtin.add_host:
     name: anta-no-credentials
 
+- name: Create device without eAPI
+  ansible.builtin.add_host:
+    name: anta-no-eapi
+
 - name: Create test directories
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/{{ item }}"
@@ -26,13 +35,16 @@
     mode: '0755'
   loop:
     - structured_configs
+    - empty_structured_configs
     - catalogs
     - empty_catalogs
     - catalogs/yml
     - catalogs/yaml
     - catalogs/json
     - catalogs/yml/ignored_directory
-    - generated_catalogs
+    - generated_catalogs/yml
+    - generated_catalogs/yaml
+    - generated_catalogs/json
 
 - name: Create structured configuration fixtures
   ansible.builtin.copy:
@@ -47,6 +59,12 @@
       management_api_http:
         enable_https: true
   loop: "{{ anta_test_devices | product(['yml', 'yaml', 'json']) | list }}"
+
+- name: Create structured configuration without eAPI
+  ansible.builtin.copy:
+    content: "{{ {'hostname': 'anta-no-eapi'} | to_nice_yaml }}"
+    dest: "{{ actual_output_dir }}/structured_configs/anta-no-eapi.yml"
+    mode: '0644'
 
 - name: Create user catalog fixtures
   ansible.builtin.copy:

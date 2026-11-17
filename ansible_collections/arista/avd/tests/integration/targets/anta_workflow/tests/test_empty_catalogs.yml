@@ -14,7 +14,7 @@
   check_mode: false
   run_once: true
 
-- name: Validate result
+- name: Validate existing empty-catalog early return
   ansible.builtin.assert:
     that:
       - result is success

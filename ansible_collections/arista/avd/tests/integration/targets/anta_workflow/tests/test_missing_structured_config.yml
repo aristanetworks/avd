@@ -3,7 +3,7 @@
   arista.avd.anta_workflow:
     device_list: "{{ anta_test_devices }}"
     avd_catalogs:
-      structured_config_dir: "{{ actual_output_dir }}/empty_catalogs"
+      structured_config_dir: "{{ actual_output_dir }}/empty_structured_configs"
   ignore_errors: true
   register: result
   delegate_to: localhost
@@ -18,4 +18,4 @@
   vars:
     expected_error: >-
       Error during plugin 'arista.avd.anta_workflow' execution: Structured configuration file for device
-      'anta-leaf1' not found: {{ actual_output_dir }}/empty_catalogs/anta-leaf1.yml
+      'anta-leaf1' not found: {{ actual_output_dir }}/empty_structured_configs/anta-leaf1.yml

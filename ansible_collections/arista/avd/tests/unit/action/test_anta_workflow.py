@@ -866,6 +866,7 @@ def test_build_reports_filters_report_without_hiding_test_failures(tmp_path: Pat
             "filters": {"exclude_statuses": ["failure"]},
             "sorting": {"sort_fields": ["device"], "status_priority": ["failure", "success"]},
         },
+        run_overview_data=DEFAULT_RUN_OVERVIEW_DATA,
     )
 
     results = json.loads(report_path.read_text(encoding="UTF-8"))

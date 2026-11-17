@@ -5,7 +5,7 @@
     avd_catalogs:
       structured_config_dir: "{{ actual_output_dir }}/structured_configs"
       structured_config_suffix: "{{ item }}"
-      output_dir: "{{ actual_output_dir }}/generated_catalogs"
+      output_dir: "{{ actual_output_dir }}/generated_catalogs/{{ item }}"
       filters:
         - run_tests: [VerifyNTP, VerifyCoredump]
           skip_tests: [VerifyCoredump]
@@ -35,10 +35,14 @@
       - report_data[0].test == 'VerifyNTP'
       - report_data[1].name == 'anta-leaf2'
       - report_data[1].test == 'VerifyCoredump'
-      - lookup('file', actual_output_dir ~ '/generated_catalogs/anta-leaf1.json') | from_json | length > 0
-      - lookup('file', actual_output_dir ~ '/generated_catalogs/anta-leaf2.json') | from_json | length > 0
+      - leaf1_catalog.keys() | list == ['anta.tests.system']
+      - leaf1_catalog['anta.tests.system'] | map('dict2items') | flatten | map(attribute='key') | list == ['VerifyNTP']
+      - leaf2_catalog.keys() | list == ['anta.tests.system']
+      - leaf2_catalog['anta.tests.system'] | map('dict2items') | flatten | map(attribute='key') | list == ['VerifyCoredump']
   vars:
     report_data: "{{ lookup('file', actual_output_dir ~ '/avd_catalogs_' ~ item.item ~ '.json') | from_json }}"
+    leaf1_catalog: "{{ lookup('file', actual_output_dir ~ '/generated_catalogs/' ~ item.item ~ '/anta-leaf1.json') | from_json }}"
+    leaf2_catalog: "{{ lookup('file', actual_output_dir ~ '/generated_catalogs/' ~ item.item ~ '/anta-leaf2.json') | from_json }}"
   loop: "{{ catalog_results.results }}"
   loop_control:
     label: "{{ item.item }}"

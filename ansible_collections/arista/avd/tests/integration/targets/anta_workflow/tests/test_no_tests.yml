@@ -22,16 +22,6 @@
       - result.msg == 'No ANTA tests were run.'
       - result.anta_tests_summary.total_tests == 0
 
-- name: Create structured configuration without eAPI
-  ansible.builtin.copy:
-    content: "{{ {'hostname': 'anta-no-eapi'} | to_nice_yaml }}"
-    dest: "{{ actual_output_dir }}/structured_configs/anta-no-eapi.yml"
-    mode: '0644'
-
-- name: Create device without eAPI
-  ansible.builtin.add_host:
-    name: anta-no-eapi
-
 - name: Test device without eAPI
   arista.avd.anta_workflow:
     device_list: [anta-no-eapi]
