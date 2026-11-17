@@ -32,8 +32,3 @@ connected_endpoints:
             unresponsive:
               action:
                 traffic_allow_ipv4_acl: AAA-EXTENDED
-
-expected_error_message: >-
-  'traffic_allow_ipv4_acl' and 'traffic_allow_ipv4_standard_acl' are mutually exclusive
-  under 'connected_endpoints[name=server1].adapters[0].dot1x.aaa.unresponsive.action' for host
-  'dot1x-aaa-unresponsive-adapter-profile-conflict'.

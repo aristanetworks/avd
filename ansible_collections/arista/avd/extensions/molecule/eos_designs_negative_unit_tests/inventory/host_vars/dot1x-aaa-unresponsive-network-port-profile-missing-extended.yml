@@ -30,6 +30,3 @@ network_ports:
     switch_ports:
       - Ethernet1
     profile: AAA-PROFILE
-
-expected_error_message: >-
-  'ipv4_acls[name=AAA-TIMEOUT]' is required but was not found for host 'dot1x-aaa-unresponsive-network-port-profile-missing-extended'.

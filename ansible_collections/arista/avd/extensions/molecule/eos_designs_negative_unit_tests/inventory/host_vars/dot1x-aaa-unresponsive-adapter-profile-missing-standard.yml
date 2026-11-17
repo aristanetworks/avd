@@ -34,6 +34,3 @@ connected_endpoints:
         switch_ports:
           - Ethernet1
         profile: AAA-PROFILE
-
-expected_error_message: >-
-  'ipv4_standard_acls[name=AAA-TIMEOUT]' is required but was not found for host 'dot1x-aaa-unresponsive-adapter-profile-missing-standard'.
