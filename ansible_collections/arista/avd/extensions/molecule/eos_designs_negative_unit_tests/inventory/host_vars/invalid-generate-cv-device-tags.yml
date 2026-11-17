@@ -19,7 +19,3 @@ generate_cv_tags:
   device_tags:
     - name: bgp
       value: myvalue
-
-expected_error_message: >-
-  The CloudVision tag name 'generate_cv_tags.device_tags[name=bgp] is invalid.
-  System Tags cannot be overridden. Try using a different name for this tag.

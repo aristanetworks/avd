@@ -14,7 +14,3 @@ ssh_settings:
   client_vrfs:
     - name: use_mgmt_interface_vrf
     - name: use_inband_mgmt_vrf
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Vrfs.
-  {'name': 'VRF1', 'source_interface': 'Vlan4092'} conflicts with {'name': 'VRF1', 'source_interface': 'Management1'}.

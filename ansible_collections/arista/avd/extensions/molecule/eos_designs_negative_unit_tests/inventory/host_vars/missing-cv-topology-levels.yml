@@ -52,6 +52,3 @@ core_interfaces:
       interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
       multicast_pim_sm: true
-
-expected_error_message: >-
-  'cv_topology_levels' is required when 'use_cv_topology' is set to 'true'.

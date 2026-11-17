@@ -16,6 +16,16 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
+STREAMING_STATUS_TO_BOOL_MAP = {
+    StreamingStatus.ACTIVE: True,
+    StreamingStatus.INACTIVE: False,
+}
+
+
+def get_device_streaming_state(streaming_status: StreamingStatus) -> bool | None:
+    """Map a CloudVision streaming status of the device to the corresponding AVD device streaming state."""
+    return STREAMING_STATUS_TO_BOOL_MAP.get(streaming_status)
+
 
 async def verify_devices_on_cv(
     *, devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient
@@ -79,7 +89,7 @@ async def verify_devices_in_cloudvision_inventory(
             device.exists_on_cv = True
             device.system_mac_address = found_device_dict_by_serial[device.serial_number].system_mac_address
             # Update streaming status
-            device.streaming = found_device_dict_by_serial[device.serial_number].streaming_status == StreamingStatus.ACTIVE
+            device.streaming = get_device_streaming_state(found_device_dict_by_serial[device.serial_number].streaming_status)
             existing_devices.append(device)
             continue
 
@@ -91,7 +101,7 @@ async def verify_devices_in_cloudvision_inventory(
             device.exists_on_cv = True
             device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
             # Update streaming status
-            device.streaming = found_device_dict_by_system_mac[device.system_mac_address].streaming_status == StreamingStatus.ACTIVE
+            device.streaming = get_device_streaming_state(found_device_dict_by_system_mac[device.system_mac_address].streaming_status)
             existing_devices.append(device)
             continue
 
@@ -103,7 +113,7 @@ async def verify_devices_in_cloudvision_inventory(
         device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
         device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
         # Update streaming status
-        device.streaming = found_device_dict_by_hostname[device.hostname].streaming_status == StreamingStatus.ACTIVE
+        device.streaming = get_device_streaming_state(found_device_dict_by_hostname[device.hostname].streaming_status)
         existing_devices.append(device)
 
     # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio

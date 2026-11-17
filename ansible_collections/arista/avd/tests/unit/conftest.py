@@ -20,7 +20,8 @@ def action_module() -> Callable[..., ActionBase]:
     Factory that builds an ActionModule instance with mocked Ansible plumbing.
 
     Each test passes the specific ``ActionModule`` class under test.
-    Tests can pass ``ansible_name`` to model plugin metadata normally injected by Ansible's plugin loader.
+    The plugin name is inferred for AVD action plugins and defaults to ``pytest_action_plugin`` for synthetic test classes.
+    Tests can override it with ``ansible_name``.
     """
 
     def _factory(action_module_cls: type[ActionBase], task_args: dict[str, Any] | None = None, *, ansible_name: str | None = None) -> ActionBase:
@@ -36,8 +37,15 @@ def action_module() -> Callable[..., ActionBase]:
             templar=MagicMock(),
             shared_loader_obj=MagicMock(),
         )
-        if ansible_name is not None:
-            module.ansible_name = ansible_name
+        # Ansible 2.18 and earlier have no default ansible_name; the plugin loader normally sets it.
+        # Ansible 2.19+ defaults it to None, masking missing loader metadata when tests construct plugins directly.
+        # Supply a valid name on every version to model a loaded plugin.
+        if ansible_name is None:
+            if action_module_cls.__module__.startswith("ansible_collections.arista.avd.plugins.action."):
+                ansible_name = f"arista.avd.{action_module_cls.__module__.rsplit('.', 1)[-1]}"
+            else:
+                ansible_name = "pytest_action_plugin"
+        module.ansible_name = ansible_name
         return module
 
     return _factory

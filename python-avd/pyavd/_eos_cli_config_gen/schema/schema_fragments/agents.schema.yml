@@ -27,9 +27,6 @@ keys:
                 description: Environment variable name.
               value:
                 type: str
-                convert_types:
-                  - int
-                  - bool
                 required: true
                 description: Environment variable value.
         shutdown:

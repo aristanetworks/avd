@@ -230,6 +230,19 @@ class RouterBgpMixin(Protocol):
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
+                    if (
+                        self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
+                        and self.shared_utils.underlay_ipv6_numbered
+                        and not self.inputs.overlay_mlag_rfc5549
+                        and self._has_ipv4(vrf)
+                    ):
+                        msg = (
+                            f"Invalid combination of inputs. IPv4 is configured in VRF '{vrf.name}' with MLAG iBGP peering, but IPv4 routes cannot be "
+                            "exchanged over the numbered IPv6 MLAG iBGP peering with 'underlay_ipv6_numbered: true'. "
+                            "Set 'overlay_mlag_rfc5549: true' to exchange IPv4 routes with an IPv6 next hop, "
+                            "or disable the MLAG iBGP peering for this VRF with 'enable_mlag_ibgp_peering_vrfs: false'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
@@ -279,8 +292,27 @@ class RouterBgpMixin(Protocol):
                             bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
-                if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
-                    bgp_vrf.redistribute.ospf.enabled = True
+                if vrf.ospf.enabled and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
+                    # TODO: 7.0 Remove fallback to the deprecated vrf.redistribute_ospf.
+                    if vrf.bgp.redistribute_ospf.internal._get("enabled", vrf.redistribute_ospf):
+                        bgp_vrf.redistribute.ospf.enabled = True
+                        bgp_vrf.redistribute.ospf.include_leaked = vrf.bgp.redistribute_ospf.internal.include_leaked
+                        bgp_vrf.redistribute.ospf.route_map = vrf.bgp.redistribute_ospf.internal.route_map
+
+                    if vrf.bgp.redistribute_ospf.external.enabled:
+                        bgp_vrf.redistribute.ospf.match_external.enabled = True
+                        bgp_vrf.redistribute.ospf.match_external.include_leaked = vrf.bgp.redistribute_ospf.external.include_leaked
+                        bgp_vrf.redistribute.ospf.match_external.route_map = vrf.bgp.redistribute_ospf.external.route_map
+
+                    if vrf.bgp.redistribute_ospf.nssa_external.enabled:
+                        bgp_vrf.redistribute.ospf.match_nssa_external.enabled = True
+                        bgp_vrf.redistribute.ospf.match_nssa_external.include_leaked = vrf.bgp.redistribute_ospf.nssa_external.include_leaked
+                        bgp_vrf.redistribute.ospf.match_nssa_external.route_map = vrf.bgp.redistribute_ospf.nssa_external.route_map
+                        bgp_vrf.redistribute.ospf.match_nssa_external.nssa_type = vrf.bgp.redistribute_ospf.nssa_external.nssa_type
+
+                # BGP VRF level redistribution covers both OSPFv3 address families.
+                if vrf.bgp.redistribute_ospfv3.internal.enabled and self.shared_utils.ospfv3_enabled_for_vrf(vrf):
+                    bgp_vrf.redistribute.ospfv3.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
                     bgp_vrf.updates.wait_install = True

@@ -1,0 +1,127 @@
+---
+# Test which VRF loopback sets the virtual source-NAT addresses of a VRF.
+# The VTEP diagnostic loopback is processed first, then the tenant loopbacks in input order.
+# The loopback that first sets the virtual source-NAT for a VRF owns the IPv4 address.
+# Tenant loopbacks can only set a missing IPv6 address.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: network-services-vrf-loopbacks-virtual-source-nat
+      id: 3
+      bgp_as: 65101
+
+tenants:
+  - name: TENANT_1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # IPv4 diagnostic loopback and IPv6 tenant loopback.
+      # The diagnostic loopback sets the IPv4 source-NAT and the IPv6 tenant loopback sets the IPv6 source-NAT.
+      - name: VRF_DIAG_V4_TENANT_LO_V6
+        vrf_id: 4241
+        vtep_diagnostic:
+          loopback: 140
+          loopback_ip_range: 10.141.255.0/24
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 141
+            ipv6_addresses:
+              - 2001:db8:141::1/128
+      # IPv6 diagnostic loopback and IPv4 tenant loopback.
+      # The diagnostic loopback sets the IPv6 source-NAT.
+      # The IPv4 tenant loopback is not used for the IPv4 source-NAT.
+      - name: VRF_DIAG_V6_TENANT_LO_V4
+        vrf_id: 4242
+        vtep_diagnostic:
+          loopback: 142
+          loopback_ipv6_range: 2001:db8:142::/64
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 143
+            ip_address: 10.142.0.1/32
+      # Dual-stack diagnostic loopback and IPv6 tenant loopback.
+      # The diagnostic loopback addresses are used for both source-NAT commands.
+      - name: VRF_DIAG_V4V6_TENANT_LO_V6
+        vrf_id: 4244
+        vtep_diagnostic:
+          loopback: 144
+          loopback_ip_range: 10.144.255.0/24
+          loopback_ipv6_range: 2001:db8:144::/64
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 145
+            ipv6_addresses:
+              - 2001:db8:145::1/128
+      # No diagnostic loopback, IPv6 tenant loopback first.
+      # The first IPv6 tenant loopback sets the IPv6 source-NAT.
+      # The IPv4 tenant loopback is not used for the IPv4 source-NAT.
+      - name: VRF_NO_DIAG_TENANT_LO_V6_V4_V6
+        vrf_id: 4246
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 146
+            ipv6_addresses:
+              - 2001:db8:146::1/128
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 147
+            ip_address: 10.147.0.1/32
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 148
+            ipv6_addresses:
+              - 2001:db8:148::1/128
+      # No diagnostic loopback, IPv4 tenant loopback first.
+      # The IPv4 tenant loopback sets the IPv4 source-NAT and the IPv6 tenant loopback sets the IPv6 source-NAT.
+      - name: VRF_NO_DIAG_TENANT_LO_V4_V6
+        vrf_id: 4249
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 149
+            ip_address: 10.149.0.1/32
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 150
+            ipv6_addresses:
+              - 2001:db8:150::1/128
+      # Same VRF in two tenants, IPv4 diagnostic loopback in the first tenant, IPv6 diagnostic loopback in the second tenant.
+      # The IPv6 diagnostic loopback from the second tenant is not used for the IPv6 source-NAT.
+      - name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+        vrf_id: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.100.0.0/24
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 200
+            ip_address: 10.200.0.1/32
+      # Same VRF in two tenants, IPv4 tenant loopback in the first tenant, IPv6 diagnostic loopback in the second tenant.
+      # The IPv6 diagnostic loopback from the second tenant is not used for the IPv6 source-NAT.
+      - name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+        vrf_id: 11
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 202
+            ip_address: 10.202.0.1/32
+  - name: TENANT_2
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_DUPLICATE_DIAG_V4_DIAG_V6
+        vrf_id: 10
+        vtep_diagnostic:
+          loopback: 101
+          loopback_ipv6_range: 2001:db8:101::/64
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 201
+            ip_address: 10.201.0.1/32
+      - name: VRF_DUPLICATE_TENANT_LO_V4_DIAG_V6
+        vrf_id: 11
+        vtep_diagnostic:
+          loopback: 103
+          loopback_ipv6_range: 2001:db8:103::/64
+        loopbacks:
+          - node: network-services-vrf-loopbacks-virtual-source-nat
+            loopback: 203
+            ip_address: 10.203.0.1/32

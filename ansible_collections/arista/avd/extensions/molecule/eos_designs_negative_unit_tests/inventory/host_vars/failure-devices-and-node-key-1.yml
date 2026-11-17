@@ -11,7 +11,3 @@ l2leaf:
     - group: test
       nodes:
         - name: failure-devices-and-node-key-1
-
-expected_error_message: >-
-  Found the device 'failure-devices-and-node-key-1' under both 'l2leaf' and 'devices'.
-  Remove the device from one of the models.

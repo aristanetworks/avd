@@ -36,8 +36,6 @@ keys:
             default: false
           maximum_routes:
             type: int
-            convert_types:
-              - str
             description: Maximum number of routes (0 means unlimited).
             default: 256000
             min: 0
@@ -77,8 +75,6 @@ keys:
             default: false
           maximum_routes:
             type: int
-            convert_types:
-              - str
             description: Maximum number of routes (0 means unlimited).
             default: 256000
             min: 0
@@ -112,8 +108,6 @@ keys:
             default: false
           maximum_routes:
             type: int
-            convert_types:
-              - str
             description: Maximum number of routes (0 means unlimited).
             default: 256000
             min: 0
@@ -317,8 +311,6 @@ keys:
               description: The prefixes to use in listen_range.
           ttl_maximum_hops:
             type: int
-            convert_types:
-              - str
             default: 1
           structured_config:
             type: dict
@@ -377,8 +369,6 @@ keys:
                 default: 10
           ttl_maximum_hops:
             type: int
-            convert_types:
-              - str
             default: 1
           structured_config:
             type: dict

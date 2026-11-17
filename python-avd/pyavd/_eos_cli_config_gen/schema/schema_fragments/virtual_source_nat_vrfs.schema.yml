@@ -15,8 +15,6 @@ keys:
         name:
           type: str
           description: VRF Name.
-          convert_types:
-            - int
         ip_address:
           type: str
           description: IPv4 Address.

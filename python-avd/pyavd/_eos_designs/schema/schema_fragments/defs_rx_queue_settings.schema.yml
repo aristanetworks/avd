@@ -15,8 +15,6 @@ $defs:
       count:
         type: int
         min: 1
-        convert_types:
-          - str
         description: |-
           Number of receive queues.
           The maximum value is determined by `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the `platform` set on this device.
@@ -24,8 +22,6 @@ $defs:
         type: list
         items:
           type: str
-          convert_types:
-            - int
           description: |-
             Worker ids specified as values or range of values such as 0-4 or 7.
             Valid values are between 0 and one less than maximum value determined by `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the `platform` set on this device.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.enabled: true' requires IPv6 on the SVI. Remove 'ipv6_enable: false' or set 'ipv6_address'.

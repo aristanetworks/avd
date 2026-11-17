@@ -22,8 +22,6 @@ keys:
             keys:
               sequence:
                 type: int
-                convert_types:
-                  - str
                 display_name: sequence_id
               action:
                 type: str

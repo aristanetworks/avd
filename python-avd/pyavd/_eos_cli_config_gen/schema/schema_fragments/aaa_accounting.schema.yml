@@ -123,8 +123,6 @@ keys:
               keys:
                 commands:
                   type: str
-                  convert_types:
-                    - int
                   description: Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
                 type:
                   type: str
@@ -155,8 +153,6 @@ keys:
               keys:
                 commands:
                   type: str
-                  convert_types:
-                    - int
                   description: Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
                 type:
                   type: str

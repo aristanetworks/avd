@@ -17,7 +17,3 @@ custom_platform_settings:
     tcam_profile: system-profile
     additional_tcam_profiles:
       - undefined-additional-profile
-
-expected_error_message: >-
-  TCAM profile 'undefined-additional-profile' referenced under
-  'additional_tcam_profiles' is not defined under 'tcam_profiles'.

@@ -171,7 +171,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
     }
 
     pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
-    if any(pathfinder_location):
+    if any(pathfinder_location.values()):
         if is_pathfinder_location_supported(studio_schema):
             pathfinder_metadata["inputs"]["value"].update(pathfinder_location)
         else:
@@ -436,7 +436,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
         # We currently only support "zscaler" and ignore "direct".
         if internet_exit_policy.get("type") not in ["zscaler", "direct"]:
             warning = (
-                f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policies.get('name')}' "
+                f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policy.get('name')}' "
                 f"with type '{internet_exit_policy.get('type')}' for device: {device.hostname}."
             )
             LOGGER.info(warning)
