@@ -111,6 +111,7 @@ jobs:
             echo ""
             echo "HIGH/CRITICAL findings with available fixes fail this security workflow. Published images remain available."
           } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Scan final published image
         id: trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
@@ -140,6 +141,7 @@ jobs:
           timeout: 15m
           # Cache the database, but leave Trivy's normal freshness checks/updates enabled.
           cache: "true"
+
       # !cancelled() overrides GitHub's implicit success() so an unrelated reporting error does not
       # suppress remaining usable reports. Require a successful scan because a failed scan may leave
       # missing/partial JSON. Native step failure already preserves the original scanner error.
@@ -147,9 +149,11 @@ jobs:
         id: sarif
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: trivy convert --format sarif --output reports/trivy.sarif reports/trivy.json
+
       - name: Generate SBOM from scan results
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: trivy convert --format cyclonedx --output reports/sbom.cdx.json reports/trivy.json
+
       - name: Show vulnerability table in job summary
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: |
@@ -163,6 +167,7 @@ jobs:
             cat reports/trivy.txt
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Generate HTML report from scan results
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: |
@@ -173,16 +178,19 @@ jobs:
             -o "$RUNNER_TEMP/trivy-html.tpl"
           trivy convert --format template --template "@$RUNNER_TEMP/trivy-html.tpl" \
             --output reports/trivy.html reports/trivy.json
-      - name: Upload findings to GitHub Code Scanning
-        # Upload a valid SARIF even if another report failed. Code Scanning must be enabled/available;
-        # an upload/API error is allowed to fail this workflow normally, followed by artifact upload below.
-        if: ${{ !cancelled() && steps.sarif.outcome == 'success' }}
-        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
-        with:
-          sarif_file: reports/trivy.sarif
-          # Separate image repositories as well as release/development and Python/architecture variants,
-          # so manual scans of another repository cannot replace results for the same upstream variant.
-          category: container-${{ needs.prepare.outputs.image_repository }}-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
+
+      # SARIF upload is disabled to keep alerts from non-production container images separate from
+      # AVD's overall code security and quality findings. SARIF reports remain available as artifacts.
+      # - name: Upload findings to GitHub Code Scanning
+      #   # Upload a valid SARIF even if another report failed. Code Scanning must be enabled/available;
+      #   # an upload/API error is allowed to fail this workflow normally, followed by artifact upload below.
+      #   if: ${{ !cancelled() && steps.sarif.outcome == 'success' }}
+      #   uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+      #   with:
+      #     sarif_file: reports/trivy.sarif
+      #     # Keep release and development results separate, as well as Python/architecture variants.
+      #     category: container-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
+
       - name: Retain available scan reports
         # Try the artifact upload even if scanning or Code Scanning failed; GitHub's default success()
         # would skip it and discard reports that were already generated before that failure.
@@ -198,6 +206,7 @@ jobs:
           # not a security gate. A rerun resolves the current tag again and may scan a newer image.
           overwrite: true
           retention-days: 30
+
       - name: Fail security scan on fixable HIGH or CRITICAL vulnerabilities
         # Mandatory because the scan above deliberately returned zero for findings. An ordinary successful
         # report upload says nothing about severity. Evaluate the existing JSON after upload attempts so
@@ -206,6 +215,7 @@ jobs:
         # Run despite earlier report-upload errors, but never try to judge a failed/incomplete scan.
         if: ${{ !cancelled() && steps.trivy.outcome == 'success' }}
         run: trivy convert --format table --severity HIGH,CRITICAL --exit-code 1 reports/trivy.json
+
       - name: Summarize scan execution
         # Summaries are useful on failures too; GitHub would otherwise skip this step after the gate.
         # Unlike always(), !cancelled() lets an explicitly cancelled run stop without further work.
