@@ -38,8 +38,6 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-import pyavd_utils_gen._bindings as generation_bindings
-
 HERE = Path(__file__).resolve().parent
 STATIC_DIR = HERE / "static"
 GENERATE_SCRIPT = HERE / "generate.py"
@@ -127,9 +125,7 @@ def _copy_static_assets() -> None:
 
 def _schema_input_paths() -> tuple[Path, ...]:
     """Paths that invalidate the SQLite when newer than the artifact."""
-    # The extension timestamp also invalidates editable Rust builds whose
-    # package version has not changed.
-    return (GENERATE_SCRIPT, *SCHEMA_INPUTS, Path(generation_bindings.__file__))
+    return (GENERATE_SCRIPT, *SCHEMA_INPUTS)
 
 
 def _database_is_current(sqlite_marker: Path) -> bool:

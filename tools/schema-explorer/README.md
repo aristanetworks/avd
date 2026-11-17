@@ -145,8 +145,8 @@ Browser presentation remains in the static assets:
 Two callbacks:
 
 - **`on_config`** — auto-builds a temp/cache Schema Explorer when the SQLite
-  artifact is missing or stale, including after generator-version changes or
-  editable Rust extension rebuilds, then appends the SPA's `style.css` and `app.js`
+  artifact is missing or stale, including after generator-version changes,
+  then appends the SPA's `style.css` and `app.js`
   to `extra_css` / `extra_javascript`. Every page gets the lightweight loader;
   `app.js` no-ops on pages without a `<schema-explorer>` element or a standalone
   `#app` mount. Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only
@@ -202,9 +202,9 @@ make schema-explorer-build
 ```
 
 The MkDocs hook freshness check tracks the combined YAML sources, the
-generation script, static assets, and the generator package version and native
-extension timestamp. Fragment-only edits do not invalidate the cache until the
-repository schema workflow regenerates the combined YAML files.
+generation script, static assets, and the installed generator package version.
+Fragment-only edits do not invalidate the cache until the repository schema
+workflow regenerates the combined YAML files.
 
 ## Architecture decisions
 
