@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from functools import cached_property
+from ipaddress import IPv4Address, IPv6Address
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -13,6 +14,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.models import InterfaceData
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd._utils.groupby import groupby_obj
 from pyavd.j2filters import range_expand
 
@@ -76,17 +78,31 @@ class MonitorSessionsMixin(Protocol):
                     name=session.interface_data.interface,
                     direction=session.monitor_session.source_settings.direction,
                 )
-                if session.monitor_session.source_settings.access_group.name:
-                    source.access_group = session.monitor_session.source_settings.access_group._cast_as(
-                        EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup
-                    )
+                if access_group := session.monitor_session.source_settings.access_group:
+                    source.access_group = access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup)
+                    self._configure_monitor_session_acl_from_catalog(source.access_group, session.interface_data, session.interface_data.interface)
                 monitor_session.sources.append(source)
 
             if session_settings := merged_settings.session_settings:
+                if access_group := session_settings.access_group:
+                    monitor_session.access_group = access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup)
+                    if (
+                        len(source_sessions) > 1
+                        and self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog
+                        and self._monitor_session_acl_has_interface_substitution(monitor_session.access_group)
+                    ):
+                        msg = (
+                            f"Cannot configure session_settings.access_group '{monitor_session.access_group.name}' for monitor session '{session_name}' "
+                            "because its ACL contains an interface-specific IP substitution and the session has multiple source interfaces."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+                    interface_data = source_sessions[0].interface_data if len(source_sessions) == 1 else None
+                    interface_name = interface_data.interface if interface_data else session_name
+                    self._configure_monitor_session_acl_from_catalog(monitor_session.access_group, interface_data, interface_name)
                 monitor_session._update(
                     encapsulation_gre_metadata_tx=session_settings.encapsulation_gre_metadata_tx,
                     header_remove_size=session_settings.header_remove_size,
-                    access_group=session_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup),
                     rate_limit_per_ingress_chip=session_settings.rate_limit_per_ingress_chip,
                     rate_limit_per_egress_chip=session_settings.rate_limit_per_egress_chip,
                     sample=session_settings.sample,
@@ -94,6 +110,59 @@ class MonitorSessionsMixin(Protocol):
                 )
 
             self.structured_config.monitor_sessions.append(monitor_session)
+
+    def _configure_monitor_session_acl_from_catalog(
+        self: AvdStructuredConfigBaseProtocol,
+        access_group: EosCliConfigGen.MonitorSessionsItem.AccessGroup | EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup,
+        interface_data: InterfaceData | None,
+        interface_name: str,
+    ) -> None:
+        """Configure the ACL catalog entry referenced by a monitor-session access group when enabled."""
+        if not self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog or not access_group.name:
+            return
+
+        if access_group.type == "ip":
+            acl = self.shared_utils.get_ipv4_acl(
+                name=access_group.name,
+                interface_name=interface_name,
+                interface_ip=str(interface_data.interface_ip) if interface_data and interface_data.interface_ip else None,
+            )
+            self.structured_config_utils._set_ipv4_acl(acl)
+            access_group.name = acl.name
+        elif access_group.type == "ipv6":
+            acl = self.shared_utils.get_ipv6_acl(
+                name=access_group.name,
+                interface_name=interface_name,
+                interface_ipv6=str(interface_data.interface_ipv6) if interface_data and interface_data.interface_ipv6 else None,
+            )
+            self.structured_config_utils._set_ipv6_acl(acl)
+            access_group.name = acl.name
+        elif access_group.type == "mac":
+            self.structured_config_utils._set_mac_acl(access_group.name)
+
+    def _monitor_session_acl_has_interface_substitution(
+        self: AvdStructuredConfigBaseProtocol,
+        access_group: EosCliConfigGen.MonitorSessionsItem.AccessGroup | EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup,
+    ) -> bool:
+        """Return whether a catalog ACL uses an interface or peer IP substitution."""
+        if not access_group.name:
+            return False
+
+        acl: EosDesigns.Ipv4AclsItem | EosDesigns.Ipv6AclsItem
+        if access_group.type == "ip":
+            if access_group.name not in self.inputs.ipv4_acls:
+                return False
+            acl = self.inputs.ipv4_acls[access_group.name]
+            substitutions = {"interface_ip", "peer_ip"}
+        elif access_group.type == "ipv6":
+            if access_group.name not in self.inputs.ipv6_acls:
+                return False
+            acl = self.inputs.ipv6_acls[access_group.name]
+            substitutions = {"interface_ipv6", "peer_ipv6", "interface_ip"}
+        else:
+            return False
+
+        return any(not entry._get("remark") and (entry.source in substitutions or entry.destination in substitutions) for entry in acl.entries)
 
     @staticmethod
     def _validate_monitor_session_on_subinterface(
@@ -203,6 +272,10 @@ class MonitorSessionsMixin(Protocol):
                             continue
 
                         interface_name = l3_interface.interfaces[node_index]
+                        ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
+                        interface_ip = IPv4Address(get_ip_from_ip_prefix(ip_address)) if ip_address else None
+                        ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
+                        interface_ipv6 = IPv6Address(get_ip_from_ip_prefix(ipv6_address)) if ipv6_address else None
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
                         # TODO: DO not raise the error for digital twin
                         if "." in interface_name and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
@@ -214,6 +287,8 @@ class MonitorSessionsMixin(Protocol):
                         interface_data = InterfaceData(
                             interface=interface_name,
                             context=context,
+                            interface_ip=interface_ip,
+                            interface_ipv6=interface_ipv6,
                         )
                         for monitor_session in l3_interface.monitor_sessions:
                             self._validate_monitor_session_on_subinterface(interface_name, monitor_session, context)

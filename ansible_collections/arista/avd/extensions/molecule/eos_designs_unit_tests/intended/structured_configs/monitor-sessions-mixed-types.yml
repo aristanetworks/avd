@@ -21,8 +21,29 @@ ethernet_interfaces:
   switchport:
     enabled: true
 hostname: monitor-sessions-mixed-types
+ip_access_lists:
+- name: MONITOR-SESSION-IP-ACL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
+ipv6_access_lists:
+- name: MONITOR-SESSION-IPV6-ACL
+  entries:
+  - protocol: ipv6
+    source: any
+    destination: any
+    sequence: 10
+    action: permit
+mac_access_lists:
+- name: MONITOR-SESSION-MAC-ACL
+  entries:
+  - sequence: 10
+    action: permit any any
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -38,8 +59,27 @@ monitor_sessions:
   sources:
   - name: Ethernet1
     direction: rx
+    access_group:
+      type: ip
+      name: MONITOR-SESSION-IP-ACL
+      priority: 10
   destinations:
   - Ethernet2
+- name: MONITOR-IPV6
+  sources:
+  - name: Ethernet1
+    direction: rx
+    access_group:
+      type: ipv6
+      name: MONITOR-SESSION-IPV6-ACL
+- name: MONITOR-MAC
+  sources:
+  - name: Ethernet1
+    direction: rx
+    access_group:
+      type: mac
+      name: MONITOR-SESSION-MAC-ACL
+      priority: 20
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

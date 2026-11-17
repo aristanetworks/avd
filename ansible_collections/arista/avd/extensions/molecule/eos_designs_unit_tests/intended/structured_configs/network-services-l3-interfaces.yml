@@ -52,6 +52,13 @@ ip_igmp_snooping:
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0b
 ipv6_access_lists:
+- name: MONITOR-SESSION-IPV6-ACL-FIELD-SUBSTITUTION_Ethernet12
+  entries:
+  - protocol: ipv6
+    source: 2001:db8:12::1
+    destination: any
+    sequence: 10
+    action: permit
 - name: TEST-IPV6-ACL-STATIC-IN
   entries:
   - protocol: ipv6
@@ -79,6 +86,14 @@ loopback_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: MONITOR-SESSION-IPV6-ACL-SUBSTITUTION
+  sources:
+  - name: Ethernet12
+    direction: rx
+    access_group:
+      type: ipv6
+      name: MONITOR-SESSION-IPV6-ACL-FIELD-SUBSTITUTION_Ethernet12
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

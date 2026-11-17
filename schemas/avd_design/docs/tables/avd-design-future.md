@@ -28,6 +28,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
+    | [<samp>&nbsp;&nbsp;configure_monitor_session_acls_from_catalog</samp>](## "avd_design_future.configure_monitor_session_acls_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.6.0.<br>When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,<br>and configure the referenced ACL definition from that catalog.<br>When disabled (default), skip catalog validation and automatic ACL configuration for these types. |
 
 === "YAML"
 
@@ -138,4 +139,10 @@
       # - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
       # - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met).
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: <bool; default=False>
+
+      # Available from AVD 6.6.0.
+      # When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+      # and configure the referenced ACL definition from that catalog.
+      # When disabled (default), skip catalog validation and automatic ACL configuration for these types.
+      configure_monitor_session_acls_from_catalog: <bool; default=False>
     ```

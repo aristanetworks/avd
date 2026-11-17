@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Cannot configure session_settings.access_group 'MONITOR-SESSION-ACL-SUBSTITUTION' for monitor session 'SESSION-WITH-MULTIPLE-SOURCES' because its ACL contains an interface-specific IP substitution and the session has multiple source interfaces.
