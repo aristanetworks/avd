@@ -9,8 +9,9 @@ from bisect import bisect_left
 from copy import deepcopy
 from dataclasses import dataclass, field
 from ipaddress import IPv4Address, IPv4Interface, IPv4Network
+from pathlib import Path
 from tempfile import NamedTemporaryFile
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 from yaml import CSafeLoader, YAMLError, dump, load
 
@@ -19,8 +20,6 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from .base_classes import Pool, PoolAssignment, PoolCollection
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from yaml.nodes import MappingNode
 
 ResourceType = Literal["host", "subnet"]
@@ -40,6 +39,25 @@ def node_owner(hostname: str, purpose: str) -> str:
 def link_owner(endpoint_a: tuple[str, str], endpoint_b: tuple[str, str], purpose: str) -> str:
     """Identify a link independently of which endpoint requests its shared subnet first."""
     return json.dumps(["link", *sorted((endpoint_a, endpoint_b)), purpose], separators=(",", ":"))
+
+
+def _describe_owner(owner: str) -> str:
+    """Keep persistent identity encoding out of allocation diagnostics."""
+    try:
+        identity = json.loads(owner)
+    except ValueError:
+        return owner
+    if isinstance(identity, list):
+        if len(identity) == 3 and identity[0] == "node" and all(isinstance(item, str) for item in identity):
+            return f"{identity[1]} ({identity[2]})"
+        if (
+            len(identity) == 4
+            and identity[0] == "link"
+            and isinstance(identity[3], str)
+            and all(isinstance(endpoint, list) and len(endpoint) == 2 and all(isinstance(item, str) for item in endpoint) for endpoint in identity[1:3])
+        ):
+            return f"{identity[1][0]}:{identity[1][1]} <-> {identity[2][0]}:{identity[2][1]} ({identity[3]})"
+    return owner
 
 
 class _UniqueKeyLoader(CSafeLoader):
@@ -132,9 +150,10 @@ class Ipv4Reservations:
         if previous is not None:
             if (previous.owner, previous.first, previous.last) == (owner, first, last):
                 return
+            address = str(IPv4Address(first)) if first == last else f"{IPv4Address(first)}-{IPv4Address(last)}"
             msg = (
-                f"IPv4 allocation '{IPv4Address(first)}-{IPv4Address(last)}' conflicts between '{previous.owner}' "
-                f"({previous.source}) and '{owner}' ({source}) in {self.context}, VRF '{vrf}'. "
+                f"IPv4 allocation '{address}' conflicts between '{_describe_owner(previous.owner)}' "
+                f"({previous.source}) and '{_describe_owner(owner)}' ({source}) in {self.context}, VRF '{vrf}'. "
                 "Correct or explicitly release the intended reservation and re-run AVD before deployment."
             )
             raise AristaAvdInvalidInputsError(msg)
@@ -183,6 +202,11 @@ class Ipv4Pool(Pool[str]):
                 return int(network.network_address), int(network.broadcast_address)
         msg = f"Invalid canonical {resource_type} allocation '{value}' for pool '{self.pool_key}'."
         raise ValueError(msg)
+
+    @property
+    def description(self) -> str:
+        vrf, subnet, resource_type, _ = self.identity
+        return f"{resource_type} pool '{subnet}' in VRF '{vrf}'"
 
     def _in_bounds(self, value: str) -> bool:
         if self.definition is None:
@@ -239,12 +263,17 @@ class Ipv4Pool(Pool[str]):
             raise AristaAvdInvalidInputsError(msg)
         for pool in collection._pools.values():
             if key in pool.assignments and pool is not self:
-                msg = f"Persisted IPv4 assignment for '{key}' belongs to pool '{pool.pool_key}', not '{self.pool_key}', {collection.context}."
+                previous_pool = cast("Ipv4Pool", pool)
+                msg = (
+                    f"Persisted IPv4 assignment for '{_describe_owner(key)}' belongs to "
+                    f"{previous_pool.description}, not {self.description}, {collection.context}. "
+                    "Restore the selection or explicitly release the reservation before reallocating."
+                )
                 raise AristaAvdInvalidInputsError(msg)
         previous = self.assignments.get(key)
         if previous is not None and (not self._in_bounds(previous.value) or requested_value not in (None, previous.value)):
             msg = (
-                f"Persisted IPv4 assignment '{previous.value}' for '{key}' is invalid for pool '{self.pool_key}', {collection.context}. "
+                f"Persisted IPv4 assignment '{previous.value}' for '{_describe_owner(key)}' is invalid for {self.description}, {collection.context}. "
                 "Restore the definition or explicitly release the reservation before reallocating."
             )
             raise AristaAvdInvalidInputsError(msg)
@@ -252,16 +281,19 @@ class Ipv4Pool(Pool[str]):
             try:
                 in_bounds = self._in_bounds(requested_value)
             except ValueError as error:
-                msg = f"Invalid requested IPv4 allocation '{requested_value}' for '{key}', {collection.context}: {error}"
+                msg = f"Invalid requested IPv4 allocation '{requested_value}' for '{_describe_owner(key)}', {collection.context}: {error}"
                 raise AristaAvdInvalidInputsError(msg) from error
             if not in_bounds:
-                msg = f"Requested IPv4 allocation '{requested_value}' for '{key}' is outside pool '{self.pool_key}', {collection.context}."
+                msg = (
+                    f"Requested IPv4 allocation '{requested_value}' for '{_describe_owner(key)}' is outside pool '{self.identity[1]}' "
+                    f"in VRF '{self.identity[0]}', {collection.context}."
+                )
                 raise AristaAvdInvalidInputsError(msg)
             first, last = self.extent(requested_value)
-            collection.reservations.reserve(self.identity[0], first, last, key, self.pool_key)
+            collection.reservations.reserve(self.identity[0], first, last, key, f"{self.description}, {requested_value}")
         assignment = super().get_assignment(key, requested_value)
         first, last = self.extent(assignment.value)
-        collection.reservations.reserve(self.identity[0], first, last, key, self.pool_key)
+        collection.reservations.reserve(self.identity[0], first, last, key, f"{self.description}, {assignment.value}")
         return assignment
 
 
@@ -281,10 +313,14 @@ class Ipv4PoolCollection(PoolCollection[str]):
 
     @property
     def context(self) -> str:
-        return f"IPv4 allocation state '{self.pools_file}'"
+        try:
+            display_path = self.pools_file.relative_to(Path.cwd())
+        except ValueError:
+            display_path = self.pools_file
+        return f"IPv4 allocation state '{display_path}'"
 
     def _invalid_state_error(self, error: Exception) -> Exception:
-        return AristaAvdInvalidInputsError(f"Invalid IPv4 allocation state '{self.pools_file}': {error}")
+        return AristaAvdInvalidInputsError(f"Invalid {self.context}: {error}")
 
     def _read_file_data(self) -> Any:
         self._snapshot = self._read()
@@ -345,11 +381,11 @@ class Ipv4PoolCollection(PoolCollection[str]):
                     msg = "Allocation owners must be nonempty strings."
                     raise ValueError(msg)
                 if assignment.key in owners:
-                    msg = f"Duplicate allocation owner '{assignment.key}' in {self.context}."
+                    msg = f"Duplicate allocation owner '{_describe_owner(assignment.key)}' in {self.context}."
                     raise ValueError(msg)
                 owners.add(assignment.key)
                 first, last = pool.extent(assignment.value)
-                self.reservations.reserve(vrf, first, last, assignment.key, pool.pool_key)
+                self.reservations.reserve(vrf, first, last, assignment.key, f"{pool.description}, {assignment.value}")
 
     def get_ipv4_pool(self, definition: Ipv4PoolDefinition) -> Ipv4Pool:
         pool = self.get_pool(definition.key)
@@ -410,7 +446,7 @@ class Ipv4PoolCollection(PoolCollection[str]):
             temporary_path: Path | None = None
             try:
                 with NamedTemporaryFile(dir=self.pools_file.parent, prefix=f".{self.pools_file.name}.", delete=False) as temporary:
-                    temporary_path = self.pools_file.parent / temporary.name
+                    temporary_path = Path(temporary.name)
                     temporary.write(content.encode())
                     temporary.flush()
                     os.fsync(temporary.fileno())
@@ -420,5 +456,8 @@ class Ipv4PoolCollection(PoolCollection[str]):
                     temporary_path.unlink(missing_ok=True)
             self._snapshot = content.encode()
             self._needs_migration = False
+        except OSError as error:
+            msg = f"Could not write {self.context}: {error}"
+            raise type(error)(msg) from error
         finally:
             lock_path.unlink()

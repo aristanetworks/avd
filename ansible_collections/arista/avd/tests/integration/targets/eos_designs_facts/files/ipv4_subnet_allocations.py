@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import replace
@@ -19,7 +20,6 @@ from pyavd import get_avd_facts, get_device_structured_config, validate_inputs
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._errors import AristaAvdError
 from pyavd.api.pool_manager import PoolManager
-from pyavd.api.pool_manager.ipv4_allocations import Ipv4AllocationCollection
 from pyavd.api.pool_manager.ipv4_pools import Ipv4PoolCollection, Ipv4PoolDefinition, link_owner, node_owner
 
 if TYPE_CHECKING:
@@ -86,7 +86,9 @@ def persistent_builds(directory: Path) -> None:
     partial = get_avd_facts(inputs({"leaf4": {}, "leaf2": {"mgmt_ip": "dhcp"}}), pool_manager=manager)
     assert addresses(partial) == {"leaf4": "192.0.2.10/24", "leaf2": "dhcp"}
     manager.save_updated_pools()
-    assert set(manager.get_ipv4_allocation_collection("MGMT_TEST").assignments) == {"leaf1", "leaf2", "leaf3", "leaf4"}
+    assert {owner for pool in manager.get_ipv4_allocation_collection("MGMT_TEST").as_dict().values() for owner in pool} == {
+        node_owner(name, "oob_mgmt") for name in ("leaf1", "leaf2", "leaf3", "leaf4")
+    }
 
     # A static claim may match its own reservation, but may not displace another owner.
     own_override = inputs({"leaf2": {"mgmt_ip": "192.0.2.11/24"}, "leaf3": {}})
@@ -95,8 +97,14 @@ def persistent_builds(directory: Path) -> None:
         get_avd_facts(inputs({"intruder": {"mgmt_ip": "192.0.2.11/24"}, "leaf3": {}}), pool_manager=PoolManager(directory))
 
     invalid_range = inputs({"leaf2": {}}, ipv4_subnets=[{"name": "OOB", "subnet": "192.0.2.0/24", "range": "192.0.2.15-192.0.2.20"}])
-    with fails("Persisted management IPv4 assignment"):
+    with fails("Persisted IPv4 assignment"):
         get_avd_facts(invalid_range, pool_manager=PoolManager(directory))
+    changed_subnet = inputs({"leaf2": {"mgmt_ipv4_subnet": "ALIAS"}}, ipv4_subnets=[{"name": "ALIAS", "subnet": "192.0.2.0/24"}])
+    with fails("explicitly release the reservation"):
+        get_avd_facts(changed_subnet, pool_manager=PoolManager(directory))
+    changed_vrf = inputs({"leaf2": {}}, mgmt_interface_settings={"vrf": "OTHER"})
+    with fails("explicitly release the reservation"):
+        get_avd_facts(changed_vrf, pool_manager=PoolManager(directory))
 
 
 def overrides_and_collisions(directory: Path) -> None:
@@ -391,10 +399,10 @@ def state_safety(directory: Path) -> None:
 
     path.write_text("version: 99\nallocations: []\n")
     with fails("Invalid IPv4 allocation state"):
-        Ipv4AllocationCollection(path)
+        Ipv4PoolCollection(path)
     path.write_text("version: 1\nallocations: [broken]\n")
     with fails("Invalid IPv4 allocation state"):
-        Ipv4AllocationCollection(path)
+        Ipv4PoolCollection(path)
 
 
 def schema_contract() -> None:
@@ -451,6 +459,8 @@ def pool_foundation(directory: Path) -> None:
     assert wider.get_assignment("other-link").value == "192.0.2.4/30"
     assert hosts.get_assignment(inband).value == "192.0.2.8/24"
     with fails("conflicts between"):
+        hosts.get_assignment("intruder", "192.0.2.3/24")
+    with fails("leaf1:Ethernet1 <-> spine1:Ethernet2 (uplink)"):
         hosts.get_assignment("intruder", "192.0.2.3/24")
     with fails("outside pool"):
         hosts.get_assignment("out-of-range", "198.51.100.10/24")
@@ -573,6 +583,102 @@ def pool_state_validation(directory: Path) -> None:
         Ipv4PoolCollection(path)
 
 
+def migrated_and_merged_builds(directory: Path) -> None:
+    """Validate migration and merged reservations through facts, not just direct pool operations."""
+    path = directory / "data/MGMT_TEST-ipv4-allocations.yml"
+    path.parent.mkdir(parents=True)
+    legacy = {
+        "version": 1,
+        "allocations": [
+            {"owner": "leaf", "subnet": "OOB", "vrf": "MGMT", "address": "192.0.2.12/24"},
+            {"owner": "absent", "subnet": "OOB", "vrf": "MGMT", "address": "192.0.2.11/24"},
+        ],
+    }
+    path.write_text(safe_dump(legacy))
+    before = path.read_bytes()
+
+    # Neither loading legacy state nor a later failed facts build can publish a migration.
+    failed = PoolManager(directory)
+    with fails("inband_mgmt"):
+        get_avd_facts(inputs({"new": {"inband_mgmt_subnet": "10.1.0.0/24"}}), pool_manager=failed)
+    assert not failed.save_updated_pools()
+    assert path.read_bytes() == before
+
+    # A successful build with no new allocation still migrates without renumbering or dropping absent owners.
+    manager = PoolManager(directory)
+    assert get_avd_facts(inputs({"leaf": {}}), pool_manager=manager)["leaf"].mgmt_ip == "192.0.2.12/24"
+    assert path.read_bytes() == before
+    assert manager.save_updated_pools()
+    migrated = safe_load(path.read_text())
+    assert migrated["version"] == 2
+    records = {key: value for pool in migrated["ipv4_pools"].values() for key, value in pool.items()}
+    assert records == {node_owner(record["owner"], "oob_mgmt"): record["address"] for record in legacy["allocations"]}
+    assert get_avd_facts(inputs({"leaf": {}, "new": {}}), pool_manager=PoolManager(directory))["new"].mgmt_ip == "192.0.2.10/24"
+
+    # Merging two different owners at the same IP must fail even when the current run uses only an override.
+    pool_key = next(iter(migrated["ipv4_pools"]))
+    migrated["ipv4_pools"][pool_key][node_owner("merged", "oob_mgmt")] = "192.0.2.11/24"
+    path.write_text(safe_dump(migrated))
+    merged_bytes = path.read_bytes()
+    for fragment in ("absent (oob_mgmt)", "merged (oob_mgmt)", "192.0.2.11", "VRF 'MGMT'", str(path)):
+        with fails(fragment):
+            get_avd_facts(inputs({"leaf": {"mgmt_ip": "dhcp"}}), pool_manager=PoolManager(directory))
+    assert path.read_bytes() == merged_bytes
+
+    # The same semantic conflict is also rejected before migrating legacy records.
+    legacy["allocations"].append({"owner": "merged", "subnet": "ALIAS", "vrf": "MGMT", "address": "192.0.2.11/24"})
+    path.write_text(safe_dump(legacy))
+    with fails("conflicts between"):
+        get_avd_facts(inputs({"leaf": {"mgmt_ip": "dhcp"}}), pool_manager=PoolManager(directory))
+
+    # Duplicate legacy owners cannot silently replace one another during conversion.
+    legacy["allocations"][-1]["owner"] = "leaf"
+    path.write_text(safe_dump(legacy))
+    with fails("Duplicate allocation owner"):
+        get_avd_facts(inputs({"leaf": {}}), pool_manager=PoolManager(directory))
+
+
+def mixed_allocation_modes(directory: Path) -> None:
+    """Fixed claims precede automatic selection, independently of hostname or input order."""
+    data = inputs({"automatic": {}, "fixed": {"id": 1}})
+    data["fixed"]["fabric_ip_addressing"]["oob_mgmt"]["ipv4_subnet"]["algorithm"] = "device_id"
+    expected = {"automatic": "192.0.2.11/24", "fixed": "192.0.2.10/24"}
+    for index, ordered in enumerate((data, dict(reversed(list(data.items()))))):
+        manager = PoolManager(directory / str(index))
+        assert addresses(get_avd_facts(ordered, pool_manager=manager)) == expected
+        assert manager.save_updated_pools()
+        saved = manager.get_ipv4_allocation_collection("MGMT_TEST").as_dict()
+        assert {owner for pool in saved.values() for owner in pool} == {node_owner("automatic", "oob_mgmt")}
+
+
+def atomic_save_failures(directory: Path) -> None:
+    """Relative paths and a failed disk sync must preserve saved state and permit a clean retry."""
+    relative = Path(os.path.relpath(directory, Path.cwd()))
+    manager = PoolManager(relative)
+    get_avd_facts(inputs({"leaf1": {}}), pool_manager=manager)
+    assert manager.save_updated_pools()
+    path = directory / "data/MGMT_TEST-ipv4-allocations.yml"
+    before = path.read_bytes()
+    manager = PoolManager(relative)
+    get_avd_facts(inputs({"leaf2": {}}), pool_manager=manager)
+    with patch("pyavd.api.pool_manager.ipv4_pools.os.fsync", side_effect=OSError("No space left on device")):
+        try:
+            manager.save_updated_pools()
+        except OSError as error:
+            if str(relative / "data/MGMT_TEST-ipv4-allocations.yml") not in str(error) or "No space left on device" not in str(error):
+                raise AssertionError(str(error)) from error
+        else:
+            msg = "Expected disk-sync failure."
+            raise AssertionError(msg)
+    assert path.read_bytes() == before
+    assert not path.with_suffix(".yml.lock").exists()
+    assert not list(path.parent.glob(f".{path.name}.*"))
+    assert manager.save_updated_pools()
+    assert get_avd_facts(inputs({"leaf1": {}, "leaf2": {}}), pool_manager=PoolManager(relative))["leaf2"].mgmt_ip == "192.0.2.11/24"
+    with patch.object(Path, "cwd", return_value=directory):
+        assert Ipv4PoolCollection(path).context == "IPv4 allocation state 'data/MGMT_TEST-ipv4-allocations.yml'"
+
+
 def main() -> None:
     schema_contract()
     with TemporaryDirectory(prefix="avd-ipv4-allocation-tests-") as temporary:
@@ -580,6 +686,9 @@ def main() -> None:
         for test in (
             pool_foundation,
             pool_state_validation,
+            migrated_and_merged_builds,
+            mixed_allocation_modes,
+            atomic_save_failures,
             persistent_builds,
             overrides_and_collisions,
             node_subnet_inheritance,

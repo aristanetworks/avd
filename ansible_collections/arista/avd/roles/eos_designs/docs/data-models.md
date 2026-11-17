@@ -1242,6 +1242,8 @@ Changing an ID, subnet, range boundary, or ordering can change a calculated addr
 
 The `auto` mode is independent of node ID. It retains valid assignments and allocates new endpoints in natural hostname order.
 Assignments are stored in `data/<fabric_name>-ipv4-allocations.yml` under the output directory.
+The Pool Manager manages these reservations through the same pool collection, pool, and assignment structure as node IDs.
+IPv4 pools retain unused reservations, while node-ID pools keep their existing cleanup behavior.
 PyAVD callers must pass a `PoolManager` to `get_avd_facts` and call `save_updated_pools()` after success.
 Configuration workers consume the completed facts and do not allocate again.
 The existing `mgmt_ip` fact contains the effective address for the build, including any applicable ACT Digital Twin override.
@@ -1250,6 +1252,11 @@ Previously automatic endpoints, including devices switched to explicit addressin
 Static and `device_id` claims are discovered from the current inputs, so include those devices when allocating new automatic addresses.
 To reclaim a reservation, stop concurrent builds, remove its allocation entry from the state file, and rebuild.
 Invalid retained assignments fail rather than silently changing addresses. Switching allocation mode or subnet is a migration that may require deliberate reclamation.
+After merging state files in Git, run AVD before deployment. A clean Git merge does not guarantee unique addresses.
+AVD validates all reservations in the loaded fabric file, including absent devices and builds that need no new assignments.
+Conflicting reservations fail with the owners, address, VRF, and state-file path. Correct or explicitly release the intended reservation and run AVD again.
+Do not discard reservations for deployed devices just to resolve a merge conflict.
+Version-1 state files are read automatically and saved in the version-2 pool format after successful facts generation, preserving existing addresses.
 Concurrent changes to state are rejected; re-run against the updated state.
 If a terminated writer leaves a `.yml.lock` file, confirm no build is writing that state before removing the lock and retrying.
 

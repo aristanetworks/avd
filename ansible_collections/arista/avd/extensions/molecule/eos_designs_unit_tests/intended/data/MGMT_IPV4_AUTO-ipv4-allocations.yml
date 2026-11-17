@@ -1,6 +1,7 @@
-version: 1
-allocations:
-- owner: mgmt-ipv4-auto-a
-  subnet: OOB
-  vrf: MGMT
-  address: 192.0.2.11/24
+# This file contains persistent IPv4 reservations managed by AVD eos_designs.
+# After merging, run AVD to validate reservations, including those for absent devices.
+# Resolve conflicting reservations deliberately before deployment; AVD will not silently renumber owners.
+version: 2
+ipv4_pools:
+  '["MGMT","OOB","host",null]':
+    '["node","mgmt-ipv4-auto-a","oob_mgmt"]': 192.0.2.11/24

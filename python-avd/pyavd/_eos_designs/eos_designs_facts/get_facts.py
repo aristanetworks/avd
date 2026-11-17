@@ -87,8 +87,8 @@ def get_facts(
             raise type(e)(msg, host=host) from e
 
     # Publish staged IP reservations only after all facts have been generated successfully.
-    for collection, assignments in ipv4_collections.values():
-        collection.assignments = assignments
+    for collection, staged in ipv4_collections.values():
+        collection.publish(staged)
     return all_facts
 
 

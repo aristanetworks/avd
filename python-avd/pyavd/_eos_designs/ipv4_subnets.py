@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
-from pyavd.api.pool_manager.ipv4_allocations import Ipv4Allocation
+from pyavd.api.pool_manager.ipv4_pools import Ipv4PoolDefinition, Ipv4Reservations, node_owner
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
-    from pyavd.api.pool_manager.ipv4_allocations import Ipv4AllocationCollection
+    from pyavd.api.pool_manager.ipv4_pools import Ipv4PoolCollection
 
 
 @dataclass(frozen=True)
@@ -63,27 +63,14 @@ class Ipv4Subnet:
 
 
 class Ipv4SubnetRegistry:
-    """Build-scoped, VRF-aware endpoint claims shared by deterministic and automatic allocation."""
+    """Resolve eos_designs subnet definitions and submit fixed claims to the shared IP pools."""
 
-    def __init__(self) -> None:
+    def __init__(self, reservations: dict[str, Ipv4Reservations]) -> None:
         self.definitions: dict[tuple[str, str], Ipv4Subnet] = {}
-        self.claims: dict[tuple[str, str, IPv4Address], tuple[str, str]] = {}
-        self.gateways: set[tuple[str, str, IPv4Address]] = set()
-        self.next_candidates: dict[tuple[str, str, str], int] = {}
+        self.reservations = reservations
 
     def claim(self, fabric: str, vrf: str, address: IPv4Address, owner: str, subnet: str) -> None:
-        key = (fabric, vrf, address)
-        if key in self.gateways:
-            msg = f"IPv4 address '{address}' for '{owner}' in subnet '{subnet}' conflicts with a management gateway in fabric '{fabric}', VRF '{vrf}'."
-            raise AristaAvdInvalidInputsError(msg)
-        previous = self.claims.get(key)
-        if previous is not None and previous[0] != owner:
-            msg = (
-                f"IPv4 address '{address}' conflicts between '{previous[0]}' (subnet '{previous[1]}') and '{owner}' "
-                f"(subnet '{subnet}') in fabric '{fabric}', VRF '{vrf}'."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-        self.claims[key] = (owner, subnet)
+        self.reservations[fabric].reserve(vrf, int(address), int(address), node_owner(owner, "oob_mgmt"), subnet)
 
     def subnet(self, shared_utils: SharedUtilsProtocol) -> Ipv4Subnet:
         name = shared_utils.node_config.mgmt_ipv4_subnet
@@ -101,31 +88,27 @@ class Ipv4SubnetRegistry:
             raise AristaAvdInvalidInputsError(msg)
         return subnet
 
-    def next_address(self, fabric: str, vrf: str, subnet: Ipv4Subnet) -> IPv4Address:
-        cursor_key = (fabric, vrf, subnet.name)
-        first = self.next_candidates.get(cursor_key, subnet.last if subnet.descending else subnet.first)
-        step = -1 if subnet.descending else 1
-        candidates = range(first, subnet.first - 1, -1) if subnet.descending else range(first, subnet.last + 1)
-        for candidate in candidates:
-            address = IPv4Address(candidate)
-            key = (fabric, vrf, address)
-            if key not in self.claims and key not in self.gateways:
-                self.next_candidates[cursor_key] = candidate + step
-                return address
-        msg = f"No available IPv4 addresses in subnet '{subnet.name}' for fabric '{fabric}', VRF '{vrf}'."
-        raise AristaAvdInvalidInputsError(msg)
 
-
-def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str, tuple[Ipv4AllocationCollection, dict[str, Ipv4Allocation]]]:
+def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str, tuple[Ipv4PoolCollection, Ipv4PoolCollection]]:
     """Resolve management addresses before facts rendering; stage persistence only after a successful facts build."""
     devices = list(devices)
     enabled_fabrics = {device.fabric_name for device in devices if device.node_config.mgmt_ipv4_subnet is not None}
     if not enabled_fabrics:
         return {}
     devices = [device for device in devices if device.fabric_name in enabled_fabrics]
-    registry = Ipv4SubnetRegistry()
     requests: list[tuple[SharedUtilsProtocol, Ipv4Subnet]] = []
-    collections: dict[str, tuple[Ipv4AllocationCollection, dict[str, Ipv4Allocation]]] = {}
+    collections: dict[str, tuple[Ipv4PoolCollection, Ipv4PoolCollection]] = {}
+    reservations = {fabric: Ipv4Reservations(f"fabric '{fabric}'") for fabric in enabled_fabrics}
+
+    # Load and validate every retained reservation before processing this run's claims.
+    for device in devices:
+        if device.pool_manager is not None and device.fabric_name not in collections:
+            collection = device.pool_manager.get_ipv4_allocation_collection(device.fabric_name)
+            staged = collection.stage()
+            collections[device.fabric_name] = (collection, staged)
+            reservations[device.fabric_name] = staged.reservations
+            staged.reservations.context = f"fabric '{device.fabric_name}', {staged.context}"
+    registry = Ipv4SubnetRegistry(reservations)
 
     # Gateways and explicit IPs are collected before any generated requests, independent of input order.
     for device in devices:
@@ -133,15 +116,12 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
         gateway = device.oob_mgmt_gateway
         if gateway is not None:
             try:
-                registry.gateways.add((fabric, vrf, IPv4Address(gateway)))
+                address = int(IPv4Address(gateway))
             except ValueError as error:
                 msg = f"Invalid management IPv4 gateway '{gateway}' for host '{device.hostname}': {error}"
                 raise AristaAvdInvalidInputsError(msg) from error
+            reservations[fabric].reserve(vrf, address, address, f"management gateway {gateway}", "management gateway")
     for device in devices:
-        # Also validate explicit overrides against retained state when a manager is available.
-        if device.pool_manager is not None and device.fabric_name not in collections:
-            collection = device.pool_manager.get_ipv4_allocation_collection(device.fabric_name)
-            collections[device.fabric_name] = (collection, collection.assignments.copy())
         mgmt_ip = device.node_config.mgmt_ip
         if device.is_act_digital_twin and (mgmt_ip is not None or device.node_config.mgmt_ipv4_subnet is not None):
             mgmt_ip = default(device.node_config.digital_twin.mgmt_ip, mgmt_ip)
@@ -167,11 +147,6 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
         registry.claim(device.fabric_name, device.mgmt_interface_vrf, address, device.hostname, subnet.name)
         device._allocated_mgmt_ip = f"{address}/{subnet.network.prefixlen}"
 
-    # All persisted addresses, including absent owners, remain reservations. A matching owner is not a conflict.
-    for fabric, (_, assignments) in collections.items():
-        for allocation in assignments.values():
-            registry.claim(fabric, allocation.vrf, IPv4Interface(allocation.address).ip, allocation.owner, allocation.subnet)
-
     requested_devices = {device.hostname: (device, subnet) for device, subnet in requests}
     for hostname in natural_sort(sorted(requested_devices), ignore_case=False):
         device, subnet = requested_devices[hostname]
@@ -180,25 +155,15 @@ def allocate_management_ips(devices: Iterable[SharedUtilsProtocol]) -> dict[str,
         if device.pool_manager is None:
             msg = f"Management IPv4 allocation mode 'auto' requires a PoolManager for host '{device.hostname}'."
             raise AristaAvdInvalidInputsError(msg)
-        _, assignments = collections[device.fabric_name]
-        allocation = assignments.get(device.hostname)
-        if allocation is not None:
-            interface = IPv4Interface(allocation.address)
-            if (
-                allocation.subnet != subnet.name
-                or allocation.vrf != device.mgmt_interface_vrf
-                or interface.network != subnet.network
-                or not subnet.first <= int(interface.ip) <= subnet.last
-            ):
-                msg = (
-                    f"Persisted management IPv4 assignment '{allocation.address}' for '{device.hostname}' is invalid for subnet '{subnet.name}' "
-                    f"and VRF '{device.mgmt_interface_vrf}'. Restore the definition or explicitly release the reservation before reallocating."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-        else:
-            address = registry.next_address(device.fabric_name, device.mgmt_interface_vrf, subnet)
-            allocation = Ipv4Allocation(device.hostname, subnet.name, device.mgmt_interface_vrf, f"{address}/{subnet.network.prefixlen}")
-            assignments[device.hostname] = allocation
-            registry.claim(device.fabric_name, allocation.vrf, address, allocation.owner, allocation.subnet)
-        device._allocated_mgmt_ip = allocation.address
+        _, staged = collections[device.fabric_name]
+        definition = Ipv4PoolDefinition(
+            subnet=subnet.name,
+            vrf=device.mgmt_interface_vrf,
+            network=subnet.network,
+            first=subnet.first,
+            last=subnet.last,
+            descending=subnet.descending,
+        )
+        pool = staged.get_ipv4_pool(definition)
+        device._allocated_mgmt_ip = pool.get_assignment(node_owner(device.hostname, "oob_mgmt")).value
     return collections

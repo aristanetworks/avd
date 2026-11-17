@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, ClassVar, Literal, overload
 
 from yaml import CSafeDumper
 
-from .ipv4_allocations import Ipv4AllocationCollection
 from .ipv4_pools import Ipv4PoolCollection
 from .node_id_pools import NodeIdPoolCollection
 
@@ -39,14 +38,11 @@ class PoolManager:
         self._output_dir = output_dir
         self._pool_collections = {}
         self._changed_pool_files = {}
-        self._ipv4_allocation_collections: dict[str, Ipv4AllocationCollection] = {}
 
-    def get_ipv4_allocation_collection(self, fabric_name: str) -> Ipv4AllocationCollection:
-        """Return fabric-scoped persistent IPv4 reservations without node-ID pruning semantics."""
-        if fabric_name not in self._ipv4_allocation_collections:
-            path = self._output_dir / "data" / f"{fabric_name}-ipv4-allocations.yml"
-            self._ipv4_allocation_collections[fabric_name] = Ipv4AllocationCollection(path)
-        return self._ipv4_allocation_collections[fabric_name]
+    def get_ipv4_allocation_collection(self, fabric_name: str) -> Ipv4PoolCollection:
+        """Return the fabric's registered IPv4 pools using the common collection lifecycle."""
+        path = self._output_dir / "data" / f"{fabric_name}-ipv4-allocations.yml"
+        return self.get_pool_collection("ipv4_pools", path)
 
     def save_updated_pools(self, dumper_cls: type = CSafeDumper) -> bool:
         """
@@ -58,9 +54,6 @@ class PoolManager:
         for pools_files_map in self._pool_collections.values():
             changes_for_this_pool_type = [pool_collection.save_updates(dumper_cls) for pool_collection in pools_files_map.values()]
             any_changes = any_changes or any(changes_for_this_pool_type)
-        for collection in self._ipv4_allocation_collections.values():
-            changed = collection.save_updates(dumper_cls)
-            any_changes = any_changes or changed
         return any_changes
 
     def get_pool(self, pool_type: PoolType, shared_utils: SharedUtilsProtocol) -> Pool:
