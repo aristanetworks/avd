@@ -73,11 +73,9 @@ $defs:
                     - "ip"
                     - "ipv6"
                     - "mac"
-                  required: true
                 name:
                   description: ACL name.
                   type: str
-                  required: true
             rate_limit_per_ingress_chip:
               type: str
               description: |

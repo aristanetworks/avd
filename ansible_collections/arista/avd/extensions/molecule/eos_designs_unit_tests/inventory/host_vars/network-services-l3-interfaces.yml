@@ -99,7 +99,6 @@ tenants:
                 session_settings:
                   access_group:
                     type: ip
-                    name: MONITOR-SESSION-IPV4-STATIC-ACL
               - name: MONITOR-SESSION-IPV6-STATIC
                 role: source
                 source_settings:
@@ -129,6 +128,9 @@ tenants:
                 role: source
                 source_settings:
                   direction: rx
+                session_settings:
+                  access_group:
+                    name: MONITOR-SESSION-IPV4-STATIC-ACL
               - name: MONITOR-SESSION-IPV6-STATIC
                 role: source
                 source_settings:

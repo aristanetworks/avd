@@ -57,6 +57,18 @@ class MonitorSessionsMixin(Protocol):
             for session_config in session_configs_list[1:]:
                 merged_settings._deepmerge(session_config.monitor_session)
 
+            if session_settings := merged_settings.session_settings:
+                access_group = session_settings._get("access_group")
+                if access_group is not None:
+                    missing_fields = [field for field in ("type", "name") if access_group._get(field) is None]
+                    if missing_fields:
+                        msg = (
+                            f"Missing required field(s) '{', '.join(missing_fields)}' under `session_settings.access_group` "
+                            f"for monitor session '{session_name}' after merging `session_settings` "
+                            f"for host '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
             if merged_settings.session_settings._get("access_group"):
                 for session in session_configs_list:
                     if session.monitor_session.source_settings.access_group:
@@ -145,7 +157,7 @@ class MonitorSessionsMixin(Protocol):
         access_group: EosCliConfigGen.MonitorSessionsItem.AccessGroup | EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup,
     ) -> bool:
         """Return whether a catalog ACL uses an interface or peer IP substitution."""
-        # The EOS Designs schema requires the name, but the cast EOS CLI model marks it as optional.
+        # The access group is validated before this call, but the cast EOS CLI model marks the name as optional.
         name = cast(str, access_group.name)
 
         acl: EosDesigns.Ipv4AclsItem | EosDesigns.Ipv6AclsItem

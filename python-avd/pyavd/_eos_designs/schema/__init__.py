@@ -4978,19 +4978,19 @@ class EosDesigns(EosDesignsRootModel):
 
                         Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                        type: Type
+                        type: Type | None
                         """
                         ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                         `mac_acls`.
                         For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                         `avd_design_future.configure_monitor_session_acls_from_catalog`.
                         """
-                        name: str
+                        name: str | None
                         """ACL name."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 AccessGroup.
 
@@ -32404,19 +32404,19 @@ class EosDesigns(EosDesignsRootModel):
 
                     Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type
+                    type: Type | None
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
                     For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                     `avd_design_future.configure_monitor_session_acls_from_catalog`.
                     """
-                    name: str
+                    name: str | None
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -39570,19 +39570,19 @@ class EosDesigns(EosDesignsRootModel):
 
                             Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                            type: Type
+                            type: Type | None
                             """
                             ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                             `mac_acls`.
                             For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                             `avd_design_future.configure_monitor_session_acls_from_catalog`.
                             """
-                            name: str
+                            name: str | None
                             """ACL name."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                                     """
                                     AccessGroup.
 
@@ -52377,19 +52377,19 @@ class EosDesigns(EosDesignsRootModel):
 
                     Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Type
+                    type: Type | None
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
                     For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                     `avd_design_future.configure_monitor_session_acls_from_catalog`.
                     """
-                    name: str
+                    name: str | None
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -85798,19 +85798,19 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type
+                                type: Type | None
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
                                 For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                                 `avd_design_future.configure_monitor_session_acls_from_catalog`.
                                 """
-                                name: str
+                                name: str | None
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -88389,19 +88389,19 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type
+                                type: Type | None
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
                                 For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                                 `avd_design_future.configure_monitor_session_acls_from_catalog`.
                                 """
-                                name: str
+                                name: str | None
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                                    def __init__(self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -95402,19 +95402,21 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                    type: Type
+                                    type: Type | None
                                     """
                                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                     `mac_acls`.
                                     For `ip`, `ipv6`, and `mac`, catalog validation and configuration require
                                     `avd_design_future.configure_monitor_session_acls_from_catalog`.
                                     """
-                                    name: str
+                                    name: str | None
                                     """ACL name."""
 
                                     if TYPE_CHECKING:
 
-                                        def __init__(self, *, type: Type | UndefinedType = Undefined, name: str | UndefinedType = Undefined) -> None:
+                                        def __init__(
+                                            self, *, type: Type | UndefinedType | None = Undefined, name: str | UndefinedType | None = Undefined
+                                        ) -> None:
                                             """
                                             AccessGroup.
 
