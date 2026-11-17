@@ -9,8 +9,8 @@ occurrences as JSON Lines. This script owns the browser's SQLite format: tables,
 indexes, row IDs, JSON-text columns, and generation timestamps. Static assets
 remain independent of schema interpretation.
 
-The standalone CLI writes under --site-dir. The MkDocs hook uses a cache outside
-the repository and copies the bundle into the built site's _assets directory.
+The standalone CLI writes under --site-dir. The MkDocs hook rebuilds directly
+into the built site's _assets directory after each documentation build.
 """
 
 from __future__ import annotations
