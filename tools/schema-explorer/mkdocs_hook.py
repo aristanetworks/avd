@@ -156,6 +156,7 @@ def _ensure_build() -> None:
         return
     reason = "missing" if not sqlite_marker.is_file() else "stale"
     print(f"[schema-explorer] cache {reason} — running generate.py")
+    sqlite_marker.with_suffix(".generator-version").unlink(missing_ok=True)
     subprocess.check_call(  # noqa: S603
         [
             sys.executable,
