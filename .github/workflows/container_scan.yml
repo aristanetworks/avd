@@ -43,8 +43,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
-      # Honor overrides only on forks. Resolve once so the image target and SARIF category stay aligned.
-      image_repository: ${{ github.event.repository.fork && inputs.image_repository || github.repository }}
+      image_repository: ${{ steps.ref.outputs.image_repository }}
       avd_ref: ${{ steps.ref.outputs.avd_ref }}
       scope: ${{ steps.ref.outputs.scope }}
     steps:
@@ -52,9 +51,14 @@ jobs:
         id: ref
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
+          # Honor overrides only on forks; otherwise use the current repository.
+          IMAGE_REPOSITORY: ${{ github.event.repository.fork && inputs.image_repository || github.repository }}
           RELEASE_TAG: ${{ inputs.release_tag }}
         with:
           script: |
+            // GHCR repository paths must be lowercase, including the fallback repository on forks.
+            // Normalize only the repository; release tags below retain their original case.
+            core.setOutput('image_repository', process.env.IMAGE_REPOSITORY.toLowerCase());
             let releaseTag = process.env.RELEASE_TAG || '';
             if (context.eventName === 'workflow_run') {
               // For release-triggered builds, head_branch is the release tag.
@@ -199,8 +203,8 @@ jobs:
       #   uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
       #   with:
       #     sarif_file: reports/trivy.sarif
-      #     # Keep release and development results separate, as well as Python/architecture variants.
-      #     category: container-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
+      #     # Keep repositories, release/development refs, and Python/architecture variants separate.
+      #     category: container-${{ needs.prepare.outputs.image_repository }}-${{ needs.prepare.outputs.scope }}-universal-python${{ matrix.python }}-${{ matrix.arch }}
 
       - name: Retain available scan reports
         # Try the artifact upload even if scanning or Code Scanning failed; GitHub's default success()
