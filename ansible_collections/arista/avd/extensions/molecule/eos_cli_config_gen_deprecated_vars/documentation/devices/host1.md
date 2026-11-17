@@ -8,6 +8,8 @@
 - [Authentication](#authentication)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+- [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -114,6 +116,50 @@ ip radius vrf default source-interface Loopback1
 ip radius source-interface Loopback10
 !
 ip radius vrf MGMT source-interface Management1
+```
+
+## Monitoring
+
+### SNMP
+
+#### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | - | All | Disabled |
+
+#### SNMP ACLs
+
+| IP | ACL | VRF |
+| -- | --- | --- |
+| IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | onur | default |
+| IPv6 | SNMP-MGMT | MGMT |
+| IPv6 | onur_v6 | default |
+
+#### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+| Management1 | MGMT |
+| Loopback0 | default |
+| Loopback12 | Tenant_A_APP_Zone |
+| Ethernet1 | AAA |
+| Ethernet2 | abc |
+
+#### SNMP Device Configuration
+
+```eos
+!
+snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv4 access-list onur
+snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list onur_v6
+snmp-server local-interface Loopback0
+snmp-server vrf AAA local-interface Ethernet1
+snmp-server vrf MGMT local-interface Management1
+snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf abc local-interface Ethernet2
 ```
 
 ## Interfaces

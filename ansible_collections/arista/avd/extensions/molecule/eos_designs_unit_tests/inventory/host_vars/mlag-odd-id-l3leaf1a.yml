@@ -3,6 +3,7 @@ platform_settings:
   - platforms: ['default']
     feature_support:
       queue_monitor_length_notify: true
+      explicit_interface_speed_auto_mode: false
     reload_delay:
       mlag: 300
       non_mlag: 330
