@@ -5040,8 +5040,10 @@ keys:
         keys:
           dhcp:
             type: bool
-            description: Enable DHCP (Dynamic Host Configuration Protocol) for IPv4
+            description: 'Enable DHCP (Dynamic Host Configuration Protocol) for IPv4
               address assignment.
+
+              Ignored if `mgmt_ip` is set under the node config.'
           accept_default_route:
             type: bool
             default: true
@@ -5051,8 +5053,10 @@ keys:
         keys:
           slaac:
             type: bool
-            description: Enable SLAAC (Stateless Address Auto-Configuration) for IPv6
-              address assignment.
+            description: 'Enable SLAAC (Stateless Address Auto-Configuration) for
+              IPv6 address assignment.
+
+              Ignored if `mgmt_ipv6` is set under the node config.'
           accept_default_route:
             type: bool
             default: true
