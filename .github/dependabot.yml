@@ -1,30 +1,27 @@
 ---
 version: 2
 updates:
-  # Maintain Python dependencies and uv lock files
-  - package-ecosystem: "uv"
+  # Maintain dependencies for Python
+  - package-ecosystem: "pip"
+    versioning-strategy: increase-if-necessary
     directories:
       - "/"
       - "/python-avd/"
     schedule:
       interval: "weekly"
       day: "monday"
-
-    # Separate Dev and Production into two distinct PR groups
     groups:
-      prod-dependencies:
+      prod:
         dependency-type: "production"
-      dev-dependencies:
+      dev:
         dependency-type: "development"
-
     pull-request-branch-name:
       separator: "/"
     commit-message:
       prefix: "Bump(requirements): "
-      prefix-development: "CI(requirements): "
+      prefix-development: "CI(requirements):"
     cooldown:
       default-days: 7
-
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
