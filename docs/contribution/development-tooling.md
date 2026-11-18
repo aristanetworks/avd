@@ -256,13 +256,14 @@ Each environment installs the required dependency groups and editable copies of 
 Before running tests, it runs `make -C python-avd dep` to rebuild schemas and templates when their sources have changed, including when uv reuses a cached editable build.
 The targets leave your development virtual environment unchanged and resolve updated dependencies on every invocation.
 The generated `uv.lock` remains ignored by Git.
+Requests for multiple PyAVD test targets in the same Make invocation run sequentially, including with `make -j`, since they share generated files.
 
 | Target | Behavior |
 | ------ | -------- |
-| `pyavd-test` | Run pytest sequentially on Python 3.11, 3.12, 3.13 and 3.14, then run coverage and reporting. |
+| `pyavd-test` | Run pytest sequentially on Python 3.11, 3.13 and 3.14, then test Python 3.12 under coverage and generate reports. |
 | `pyavd-test-3.11`, `pyavd-test-3.12`, `pyavd-test-3.13`, `pyavd-test-3.14` | Run pytest on the specified Python version. |
 | `pyavd-test-coverage` | Erase previous coverage data, run pytest under coverage on Python 3.12, then combine parallel coverage data. |
-| `pyavd-test-report` | Run `pyavd-test-coverage`, print the coverage report and generate `coverage.xml`. |
+| `pyavd-test-report` | Run `pyavd-test-coverage`, write `coverage.xml`, then print the report and check the coverage threshold. |
 
 Run the commands from the repository root. Use `PYTEST_ARGS` to select tests or pass pytest options:
 
@@ -283,3 +284,4 @@ make pyavd-test-coverage PYTEST_ARGS='python-avd/tests/pyavd'
 CI uses the same Make targets: Python 3.12 runs with coverage, and the other supported versions run pytest directly.
 CI combines pytest and end-to-end coverage before checking the repository coverage threshold.
 The local `pyavd-test-report` target checks the configured threshold using only pytest coverage.
+It writes the current XML report before checking the threshold, so a below-threshold result still produces an updated report.
