@@ -13,6 +13,16 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2'",
 ]
 
+[options]
+exclude-newer = "2026-11-11T16:34:01.972647Z"
+exclude-newer-span = "P7D"
+
+[manifest]
+members = [
+    "avd-dev",
+    "pyavd",
+]
+
 [[package]]
 name = "annotated-types"
 version = "0.7.0"
@@ -1988,6 +1998,56 @@ sdist = { url = "https://files.pythonhosted.org/packages/ec/29/f27a4e1eddf72ed3d
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/4d/fc923f5c85318ee8cc903566dc4e0ebe41b2dfc1d2ecf5546db232397ed6/properdocs-1.6.7-py3-none-any.whl", hash = "sha256:6fa0cfa2e01bf338f684892c8a506cf70ea88ae7f3479c933b6fa20168101cbd", size = 225406, upload-time = "2026-03-20T20:07:46.875Z" },
 ]
+
+[[package]]
+name = "pyavd"
+source = { editable = "python-avd" }
+dependencies = [
+    { name = "anta" },
+    { name = "aristaproto" },
+    { name = "deepmerge" },
+    { name = "grpclib" },
+    { name = "jinja2" },
+    { name = "pyavd-utils" },
+    { name = "python-socks" },
+    { name = "pyyaml" },
+    { name = "requests" },
+]
+
+[package.optional-dependencies]
+ansible = [
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "netaddr" },
+]
+ansible-collection = [
+    { name = "netaddr" },
+]
+
+[package.dev-dependencies]
+self = [
+    { name = "pyavd" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ansible-core", marker = "extra == 'ansible'", specifier = ">=2.16.0,<2.23.0" },
+    { name = "anta", specifier = ">=1.10.0" },
+    { name = "aristaproto", specifier = ">=0.1.1" },
+    { name = "deepmerge", specifier = ">=1.1.0" },
+    { name = "grpclib", specifier = ">=0.4.8" },
+    { name = "jinja2", specifier = ">=3.0" },
+    { name = "netaddr", marker = "extra == 'ansible-collection'", specifier = ">=0.7.19" },
+    { name = "pyavd", extras = ["ansible-collection"], marker = "extra == 'ansible'" },
+    { name = "pyavd-utils", specifier = "==0.0.14" },
+    { name = "python-socks", extras = ["asyncio"], specifier = ">=2.7.2" },
+    { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "requests", specifier = ">=2.27.0" },
+]
+provides-extras = ["ansible", "ansible-collection"]
+
+[package.metadata.requires-dev]
+self = [{ name = "pyavd", specifier = "==6.6.0.dev0" }]
 
 [[package]]
 name = "pyavd-utils"
