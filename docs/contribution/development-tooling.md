@@ -48,7 +48,7 @@ This will be executed automatically by VSCode by following these steps:
 
 Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies installed on your workstation:
 
-- [Python 3.10](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
+- [Python 3.11](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
 - Additional AVD Python package dependencies.
 - [Make](https://www.gnu.org/software/make/manual/make.html): Leveraged for automating software building and test procedures.
 - [Docker](https://docs.docker.com/engine/install/) (Optional): Some of the tests require docker to be executed locally and useful when troubleshooting failures of the CI pipeline.
@@ -259,7 +259,7 @@ ansible-test integration eos_designs_role --requirements -vv
 
 Role dependencies must be installed in `~/.ansible/collections`; CI restores them from the shared collection cache. CI runs the target across supported Ansible versions and the `milestone` branch.
 
-The minimum-requirements CI job runs the same target with Python 3.10, Ansible 2.16.0, and PyAVD's lowest resolvable direct dependency versions. It installs the built PyAVD wheel and runs without `--requirements` so `ansible-test` does not upgrade the prepared environment. Minimum versions come from `python-avd/pyproject.toml`; the integration target does not need a separate minimum-requirements file.
+The minimum-requirements CI job runs the same target with Python 3.11, Ansible 2.16.0, and PyAVD's lowest resolvable direct dependency versions. It installs the built PyAVD wheel and runs without `--requirements` so `ansible-test` does not upgrade the prepared environment. Minimum versions come from `python-avd/pyproject.toml`; the integration target does not need a separate minimum-requirements file.
 
 ## Tox
 
