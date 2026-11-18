@@ -8,19 +8,25 @@
       enabled: true
       input_dir: "{{ actual_output_dir }}/catalogs/json"
     runner:
-      dry_run: true
+      dry_run: "{{ item }}"
   ignore_errors: true
-  register: result
+  register: undeployed_results
   delegate_to: localhost
   check_mode: false
   run_once: true
+  loop: [true, false]
+  loop_control:
+    label: "dry_run={{ item }}"
 
-- name: Validate result
+- name: Validate no deployed devices results
   ansible.builtin.assert:
     that:
-      - result is failed
-      - result.msg == 'No ANTA tests were run.'
-      - result.anta_tests_summary.total_tests == 0
+      - item is failed
+      - item.msg == 'No ANTA tests were run.'
+      - item.anta_tests_summary.total_tests == 0
+  loop: "{{ undeployed_results.results }}"
+  loop_control:
+    label: "dry_run={{ item.item }}"
 
 - name: Test device without eAPI
   arista.avd.anta_workflow:
@@ -28,16 +34,56 @@
     avd_catalogs:
       structured_config_dir: "{{ actual_output_dir }}/structured_configs"
     runner:
-      dry_run: true
+      dry_run: "{{ item }}"
+  ignore_errors: true
+  register: no_eapi_results
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  loop: [true, false]
+  loop_control:
+    label: "dry_run={{ item }}"
+
+- name: Validate device without eAPI results
+  ansible.builtin.assert:
+    that:
+      - item is failed
+      - item.msg == 'No ANTA tests were run.'
+      - item.anta_tests_summary.total_tests == 0
+  loop: "{{ no_eapi_results.results }}"
+  loop_control:
+    label: "dry_run={{ item.item }}"
+
+- name: Test unreachable device without dry-run
+  arista.avd.anta_workflow:
+    device_list: [anta-leaf1]
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/json"
+    runner:
+      dry_run: false
+      timeout: 2
   ignore_errors: true
   register: result
   delegate_to: localhost
   check_mode: false
   run_once: true
 
-- name: Validate result
+- name: Validate unreachable device result
   ansible.builtin.assert:
     that:
       - result is failed
       - result.msg == 'No ANTA tests were run.'
-      - result.anta_tests_summary.total_tests == 0
+      - result.anta_tests_summary == expected_summary
+  vars:
+    expected_summary:
+      total_tests: 0
+      tests_passed: 0
+      tests_failed: 0
+      tests_error: 0
+      tests_skipped: 0
+      tests_unset: 0
+      devices_with_test_failures: []
+      devices_with_test_errors: []
