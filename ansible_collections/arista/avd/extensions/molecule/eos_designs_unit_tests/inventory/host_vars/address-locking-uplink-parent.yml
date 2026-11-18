@@ -1,0 +1,4 @@
+---
+# Minimal upstream l3leaf. Exists only to provide valid uplink peers for the l2leaf
+# address-locking-13, address-locking-14, and address-locking-15 test nodes.
+# Has no address_locking_settings of its own.

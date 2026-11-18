@@ -1,0 +1,11 @@
+---
+# Tests auto_dhcp_server_interfaces on a standalone l2leaf with l2-ethernet uplinks (uplink.type == "underlay_l2").
+# Uplink: Ethernet1 → type underlay_l2 (no channel_group_id)
+# No MLAG on this node.
+# Expected address locking dhcp server interfaces: Ethernet1
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  auto_dhcp_server_interfaces: true
+  disabled: true
