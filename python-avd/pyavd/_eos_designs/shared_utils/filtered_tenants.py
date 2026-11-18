@@ -171,7 +171,7 @@ class FilteredTenantsMixin(Protocol):
             parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
             if parent_profile_item.parent_profile:
                 self.emit_warning_for_grandparent_profile(
-                    parent_profile=parent_profile_item.parent_profile, context=f"l2vlan_profiles[profile={parent_profile_item.profile}]"
+                    parent_profile=parent_profile_item.parent_profile, context=f"l2vlan_profiles", profile = resolved_profile.profile, location=context
                 )
             # Notice reuse of the same variable with the merged content.
             resolved_profile._deepinherit(parent_profile_item)
@@ -314,7 +314,7 @@ class FilteredTenantsMixin(Protocol):
         return filtered_vrfs
 
     def get_merged_svi_config(
-        self: SharedUtilsProtocol, svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
+        self: SharedUtilsProtocol, svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, context: str
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem:
         """
         Return structured config for one svi after inheritance.
@@ -352,7 +352,7 @@ class FilteredTenantsMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
                 parent_profile_item = self.inputs.svi_profiles[resolved_profile.parent_profile]
                 if parent_profile_item.parent_profile:
-                    self.emit_warning_for_grandparent_profile(parent_profile_item.profile, context=f"svi_profiles[profile={parent_profile_item.profile}]")
+                    self.emit_warning_for_grandparent_profile(profile=resolved_profile.profile, parent_profile=parent_profile_item.profile, context=f"svi_profiles", location=context)
                 resolved_profile._deepinherit(parent_profile_item)
                 # Inherit from the profile
                 merged_svi = svi._deepinherited(
@@ -401,7 +401,7 @@ class FilteredTenantsMixin(Protocol):
                 continue
             # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
-            merged_svi = self.get_merged_svi_config(svi)
+            merged_svi = self.get_merged_svi_config(svi, context=f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]")
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
