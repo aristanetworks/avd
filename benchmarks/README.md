@@ -55,7 +55,7 @@ pool state.
 
 ## GitHub Actions
 
-The standalone `Benchmarks` workflow runs on `ubuntu-latest` with Python 3.14.9,
+The standalone `Benchmarks` workflow runs on `ubuntu-24.04` with Python 3.14.9,
 tokenless CodSpeed upload, and no write-capable checkout token. It runs on:
 
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
@@ -77,6 +77,11 @@ python -m pytest --codspeed \
 
 CodSpeed runs this suite in both simulation and memory modes. The memory run
 also records peak physical memory on supported runners.
+
+The workflow currently splits collection across three jobs to investigate missing
+memory allocation profiles: simulation runs all 15 default cases, one memory job
+runs the full-scenario facts case alone, and another memory job runs the other
+14 cases. Each job uploads its results separately.
 
 Local full-suite runs include the 150-device scale benchmark. They do not add an
 all-host render benchmark for the full molecule scenario; that kind of load test

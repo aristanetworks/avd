@@ -25,11 +25,24 @@ env:
 
 jobs:
   benchmarks:
-    name: CodSpeed benchmarks
+    name: CodSpeed benchmarks (${{ matrix.suite }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: simulation
+            mode: simulation
+            filter: ""
+          - suite: memory-other
+            mode: memory
+            filter: "not test_molecule_scenario_avd_facts_benchmark"
+          - suite: memory-facts
+            mode: memory
+            filter: "test_molecule_scenario_avd_facts_benchmark"
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}
       cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
@@ -57,11 +70,14 @@ jobs:
 
       - name: Run default benchmarks
         uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
+        env:
+          BENCHMARK_FILTER: ${{ matrix.filter }}
         with:
-          mode: simulation,memory
+          mode: ${{ matrix.mode }}
           run: |
             python -m pytest --codspeed \
               benchmarks/test_molecule_scenarios.py \
               benchmarks/test_large_fabric_scaling.py \
               -m "not benchmark_scale" \
+              -k "$BENCHMARK_FILTER" \
               -q
