@@ -17,7 +17,8 @@ ansible-playbook -i localhost, -c local playbook.yml "$@" 2>&1 | tee "$output_fi
 # when the unreachable-device task is included in the selected test cases.
 if grep -Eq '^TASK \[.*Test unreachable device without dry-run\]' "$output_file"; then
     warning="An error occurred while attempting to connect to device anta-leaf1:"
-    if ! grep -Fq "$warning" "$output_file"; then
+    # Older Ansible versions wrap warnings across multiple lines.
+    if ! tr -s '[:space:]' ' ' < "$output_file" | grep -F "$warning" > /dev/null; then
         printf 'Expected an ANTA connection-failure warning: %s\n' "$warning" >&2
         exit 1
     fi
