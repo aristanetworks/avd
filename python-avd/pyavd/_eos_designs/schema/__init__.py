@@ -30806,6 +30806,8 @@ class EosDesigns(EosDesignsRootModel):
     class MgmtInterfaceSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        Shutdown: TypeAlias = Literal["true", "false", "auto"]
+
         class Lldp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30844,6 +30846,7 @@ class EosDesigns(EosDesignsRootModel):
             "vrf": {"type": str, "default": "MGMT"},
             "vrf_routing": {"type": bool, "default": False},
             "interface": {"type": str, "default": "Management1"},
+            "shutdown": {"type": str, "default": "false"},
             "lldp": {"type": Lldp},
         }
         description: str
@@ -30870,6 +30873,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"Management1"`
         """
+        shutdown: Shutdown
+        """
+        Control the management interface shutdown state.
+        - "true": Always shut down the interface, even when
+        management addressing is configured.
+        - "false": Configure "no shutdown" when management addressing
+        is configured; otherwise, generate no interface configuration.
+        - "auto": Configure "no shutdown"
+        when management addressing is configured; otherwise, shut down the interface.
+        Management addressing
+        is determined by node `mgmt_ip` or `ipv6_mgmt_ip`, including DHCP and SLAAC.
+        When shutting down an
+        interface without node management addressing, only its name and shutdown state are configured.
+
+        Default value: `"false"`
+        """
         lldp: Lldp
         """
         LLDP settings for the management interface.
@@ -30886,6 +30905,7 @@ class EosDesigns(EosDesignsRootModel):
                 vrf: str | UndefinedType = Undefined,
                 vrf_routing: bool | UndefinedType = Undefined,
                 interface: str | UndefinedType = Undefined,
+                shutdown: Shutdown | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30899,6 +30919,18 @@ class EosDesigns(EosDesignsRootModel):
                     vrf: VRF name used for the management interface.
                     vrf_routing: Enable IP routing in the management VRF.
                     interface: Name of the management interface (e.g. Management0, Management1).
+                    shutdown:
+                       Control the management interface shutdown state.
+                       - "true": Always shut down the interface, even when
+                       management addressing is configured.
+                       - "false": Configure "no shutdown" when management addressing
+                       is configured; otherwise, generate no interface configuration.
+                       - "auto": Configure "no shutdown"
+                       when management addressing is configured; otherwise, shut down the interface.
+                       Management addressing
+                       is determined by node `mgmt_ip` or `ipv6_mgmt_ip`, including DHCP and SLAAC.
+                       When shutting down an
+                       interface without node management addressing, only its name and shutdown state are configured.
                     lldp:
                        LLDP settings for the management interface.
 

@@ -14,3 +14,4 @@ mgmt_interface_settings:
   vrf: vrf_from_mgmt_interface_settings
   vrf_routing: true
   interface: Management0
+  shutdown: true

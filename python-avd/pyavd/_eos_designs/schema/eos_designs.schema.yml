@@ -4998,6 +4998,30 @@ keys:
         type: str
         description: Name of the management interface (e.g. Management0, Management1).
         default: Management1
+      shutdown:
+        type: str
+        default: 'false'
+        description: 'Control the management interface shutdown state.
+
+          - "true": Always shut down the interface, even when management addressing
+          is configured.
+
+          - "false": Configure "no shutdown" when management addressing is configured;
+          otherwise, generate no interface configuration.
+
+          - "auto": Configure "no shutdown" when management addressing is configured;
+          otherwise, shut down the interface.
+
+          Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`,
+          including DHCP and SLAAC.
+
+          When shutting down an interface without node management addressing, only
+          its name and shutdown state are configured.'
+        valid_values:
+        - 'true'
+        - 'false'
+        - auto
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.
