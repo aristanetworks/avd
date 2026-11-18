@@ -68,6 +68,12 @@ jobs:
         run: |
           make -C python-avd dep
 
+      - name: Install libc debug symbols
+        if: matrix.mode == 'memory'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libc6-dbg
+
       - name: Run default benchmarks
         uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
         env:
