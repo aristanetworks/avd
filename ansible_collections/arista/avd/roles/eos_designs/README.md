@@ -81,12 +81,15 @@ Feasible Layer 3 Leaf & Spine topologies leveraging VXLAN data-plane with an EVP
 | ISIS | iBGP | Multi-Stage + L2 Leafs |
 | OSPF | eBGP | Multi-Stage + L2 Leafs |
 | OSPF | iBGP | Multi-Stage + L2 Leafs |
-| RFC5549(eBGP) | eBGP | Multi-Stage + L2 Leafs |
+| eBGP (IPv6 unnumbered - RFC5549) | eBGP | Multi-Stage + L2 Leafs |
+| eBGP (IPv6 numbered) | eBGP | Multi-Stage + L2 Leafs |
 
 Across all designs, the following functionality is provided:
 
 - Flexible placement of EVPN Route Server (RS) or Route Reflector (RR), including dedicated overlay controller
-- EVPN service definition: Layer 2 and Layer 3 (Network Services)
+- EVPN service definition:
+  - Layer 2 and Layer 3 network services
+  - For L3 Network services dual-stack IPv4 and IPv6 is supported with eBGP IPv6 numbered underlay
 - L3 Edge ports definition
 - L2 Edge ports definition (connected endpoints)
 - Multi-Domain EVPN Gateway functionality
