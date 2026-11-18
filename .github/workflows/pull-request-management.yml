@@ -141,7 +141,7 @@ jobs:
               - 'python-avd/**/*'
               - 'schemas/cv_deploy/**/*.yml'
             pytest:
-              - 'tox.ini'
+              - 'Makefile'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -997,12 +997,14 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
-      - name: Install tox
-        run: |
-          pip install "tox>=4.52.1,<=4.67.13" tox-gh-actions --upgrade
-      - name: Run pytest via tox for ${{ matrix.python }}
-        run: |
-          tox run
+      - name: Install uv
+        run: python -m pip install uv
+      - name: Run pytest for Python ${{ matrix.python }}
+        if: matrix.python != '3.12'
+        run: make pyavd-test-${{ matrix.python }}
+      - name: Run pytest with coverage for Python 3.12
+        if: matrix.python == '3.12'
+        run: make pyavd-test-coverage
       - name: Rename the coverage file
         if: matrix.python == '3.12'
         run: |

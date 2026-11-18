@@ -246,17 +246,40 @@ make unit-tests
 make integration-tests ANSIBLE_TEST_MODE=docker
 ```
 
-## Tox
+## PyAVD tests
 
-The AVD project leverages [Tox](https://tox.wiki/) to run unit and integration of the `pyavd` Python package.
+The root Makefile runs PyAVD tests using [uv](https://docs.astral.sh/uv/) to create isolated environments.
+Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/) before running these targets.
+uv uses an available interpreter matching the requested Python version, or downloads one if necessary.
 
-Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `tox`:
+Each environment installs the required dependency groups and editable copies of PyAVD and the coverage plugin.
+Before running tests, it runs `make -C python-avd dep` to rebuild schemas and templates when their sources have changed, including when uv reuses a cached editable build.
+The targets leave your development virtual environment unchanged and resolve updated dependencies on every invocation.
+The generated `uv.lock` remains ignored by Git.
 
-- `pyavd-test`: Test PyAVD Python code with tox.
+| Target | Behavior |
+| ------ | -------- |
+| `pyavd-test` | Run pytest sequentially on Python 3.11, 3.12, 3.13 and 3.14, then run coverage and reporting. |
+| `pyavd-test-3.11`, `pyavd-test-3.12`, `pyavd-test-3.13`, `pyavd-test-3.14` | Run pytest on the specified Python version. |
+| `pyavd-test-coverage` | Erase previous coverage data, run pytest under coverage on Python 3.12, then combine parallel coverage data. |
+| `pyavd-test-report` | Run `pyavd-test-coverage`, print the coverage report and generate `coverage.xml`. |
 
-Example:
+Run the commands from the repository root. Use `PYTEST_ARGS` to select tests or pass pytest options:
 
 ```shell
-# Run tox on pyavd
+# Run all supported Python versions, coverage and reporting.
 make pyavd-test
+
+# Run one Python version.
+make pyavd-test-3.13
+
+# Run selected tests with pytest options.
+make pyavd-test-3.12 PYTEST_ARGS='python-avd/tests/pyavd -x -q'
+
+# Generate coverage for selected tests.
+make pyavd-test-coverage PYTEST_ARGS='python-avd/tests/pyavd'
 ```
+
+CI uses the same Make targets: Python 3.12 runs with coverage, and the other supported versions run pytest directly.
+CI combines pytest and end-to-end coverage before checking the repository coverage threshold.
+The local `pyavd-test-report` target checks the configured threshold using only pytest coverage.

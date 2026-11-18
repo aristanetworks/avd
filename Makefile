@@ -25,9 +25,30 @@ pyavd-build: ## Build PyAVD Python package locally.
 uv-pyavd-build: ## Build PyAVD Python package locally.
 	cd python-avd && $(MAKE) uv-build
 
-.PHONY: pyavd-test
-pyavd-test: ## Test PyAVD Python code with tox.
-	tox run -r
+PYAVD_TEST_PYTHONS = 3.11 3.12 3.13 3.14
+PYAVD_TEST_TARGETS = $(addprefix pyavd-test-,$(PYAVD_TEST_PYTHONS))
+PYAVD_TEST_UV = uv run --isolated --upgrade \
+	--with-editable ./python-avd --with-editable ./development/coverage_plugins
+PYTEST_ARGS ?=
+
+.PHONY: pyavd-test $(PYAVD_TEST_TARGETS) pyavd-test-coverage pyavd-test-report
+pyavd-test: ## Test PyAVD on all supported Python versions, then run coverage and report.
+	# Run sequentially since editable builds share generated source files.
+	+@for target in $(PYAVD_TEST_TARGETS) pyavd-test-report; do \
+		$(MAKE) $$target || exit $$?; \
+	done
+
+$(PYAVD_TEST_TARGETS): pyavd-test-%:
+	$(PYAVD_TEST_UV) --python $* --only-group pytest \
+		sh -ec 'make -C python-avd dep; exec python -m pytest "$$@"' -- $(PYTEST_ARGS)
+
+pyavd-test-coverage: ## Run PyAVD tests with coverage on Python 3.12 and combine parallel data.
+	$(PYAVD_TEST_UV) --python 3.12 --only-group pytest --only-group coverage \
+		sh -ec 'make -C python-avd dep; python -m coverage erase; python -m coverage run -m pytest "$$@"; python -m coverage combine' -- $(PYTEST_ARGS)
+
+pyavd-test-report: pyavd-test-coverage ## Run PyAVD coverage, print the report and generate coverage.xml.
+	$(PYAVD_TEST_UV) --python 3.12 --only-group coverage \
+		sh -ec 'python -m coverage report; python -m coverage xml'
 
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
