@@ -55,11 +55,20 @@
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
 {%         for loopback_interface in ospfv3_loopback_interfaces %}
 {%             set passive_intf = True if loopback_interface.ospfv3.passive_interface is arista.avd.defined(true) else (False if loopback_interface.ospfv3.no_passive_interface is arista.avd.defined(true) else "-") %}
-| {{ loopback_interface.name }} | {{ passive_intf }} | {{ loopback_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv6.area | arista.avd.default('-') }} |
+{%             set ospfv3_bfd = loopback_interface.ospfv3.bfd
+                  if loopback_interface.ospfv3.ipv4.bfd is not arista.avd.defined
+                  and loopback_interface.ospfv3.ipv6.bfd is not arista.avd.defined else '-' %}
+{%             set ospfv3_cost = "-" %}
+{%             if loopback_interface.ospfv3.cost is arista.avd.defined
+                  and loopback_interface.ospfv3.ipv4.cost is not arista.avd.defined
+                  and loopback_interface.ospfv3.ipv6.cost is not arista.avd.defined %}
+{%                 set ospfv3_cost = loopback_interface.ospfv3.cost %}
+{%             endif %}
+| {{ loopback_interface.name }} | {{ passive_intf }} | {{ loopback_interface.ospfv3.network_point_to_point | arista.avd.default('-') }} | {{ ospfv3_bfd | arista.avd.default('-') }} | {{ ospfv3_cost | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv4.bfd | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv4.area | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv4.cost | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv6.bfd | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv6.area | arista.avd.default('-') }} | {{ loopback_interface.ospfv3.ipv6.cost | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     set loopback_interface_isis = namespace() %}
