@@ -984,7 +984,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install tox
         run: |
-          pip install tox tox-gh-actions --upgrade
+          pip install "tox>=4.52.1,<=4.67.13" tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
           tox run
