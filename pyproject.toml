@@ -75,6 +75,7 @@ exclude-newer = "7 days"
 
 [tool.uv.workspace]
 members = ["python-avd"]
+
 [tool.ruff]
 line-length = 160
 extend-exclude = [
