@@ -12,6 +12,8 @@ mock_modules:
   - arista.eos.eos_config
   # - roles/eos_snapshot/tasks/main.yml
   - arista.eos.eos_command
+  # Mock the direct netcommon dependency so Galaxy does not resolve dependencies of the EOS mock.
+  - ansible.netcommon.cli_command
 kinds:
   - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
   - yaml: "**/extensions/molecule/howto/artifacts.yml"
