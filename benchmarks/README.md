@@ -55,8 +55,8 @@ pool state.
 
 ## GitHub Actions
 
-The standalone `Benchmarks` workflow runs on `ubuntu-latest` with tokenless
-CodSpeed upload and no write-capable checkout token. It runs on:
+The standalone `Benchmarks` workflow runs on `ubuntu-latest` with Python 3.14.9,
+tokenless CodSpeed upload, and no write-capable checkout token. It runs on:
 
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
@@ -88,6 +88,7 @@ python -m pytest --codspeed benchmarks -q
 
 ## Local Usage
 
+The commands below require pip 25.1 or newer for `--group` support.
 Install the benchmark dependencies from the repository root:
 
 ```bash
