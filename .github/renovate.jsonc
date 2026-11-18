@@ -15,6 +15,11 @@
   "pre-commit": {
     "enabled": true
   },
+  // Renovate's uv installer does not inherit required-version from the workspace root
+  // for member updates. Keep this aligned with [tool.uv].required-version.
+  "constraints": {
+    "uv": ">=0.9.17"
+  },
   "minimumReleaseAge": "7 days",
   "prConcurrentLimit": 5,
   "prHourlyLimit": 2,
