@@ -7,8 +7,8 @@
 # AVD Dev Containers Overview
 
 !!! warning
-    AVD Dev Containers are currently in the early preview phase and not officially supported for any production cases.
-    They can still be very useful for development and testing. Please report any issues and optimization suggestions.
+    AVD Dev Containers are a preview convenience feature for development and testing, with no plans for production support.
+    If used in production, the Arista maintainer team does not provide official support, perform required security scans, or accept responsibility for potential issues.
 
 ## Why Dev Containers
 
@@ -29,7 +29,7 @@ Dev containers can be run locally or remotely, in a private or public cloud, in 
 
 ## AVD Dev Container Variants
 
-The AVD repository provides a number of pre-build dev container images for various use cases:
+The AVD repository provides prebuilt dev container images for various use cases:
 
 - **base** - image that is used to build other variants. It is not intended for direct use.
 - **dev** - an image created for AVD contributors and to support quick testing of AVD branches. The AVD collection must be mounted in this container or installed from a git branch.
@@ -43,28 +43,30 @@ Currently the only supported option is using [VSCode](https://code.visualstudio.
 
 To start using the containers for running AVD:
 
-- Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
+- Install the [VSCode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial).
 - Add `.devcontainer/devcontainer.json` to your repository containing the AVD inventory (check examples below for possible dev container definitions).
 - Open VSCode command palette and pick `Dev Containers: Rebuild and Reopen in Container`.
-- Wait until the build finish and enjoy running AVD in a container.
+- Wait until the build finishes and enjoy running AVD in a container.
 
 If you want to use a specific AVD release, use the following `devcontainer.json`:
 
 ```json
 {
     "name": "AVD Universal",
-    "image": "ghcr.io/aristanetworks/avd/universal:python3.11-avd-v4.4.0"
+    "remoteUser": "avd",
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.14-avd-v6.5.0"
 }
 ```
 
 For AVD contributors the dev container is part of the AVD repository.
 
-If you want to test specific AVD branch or fork without making any changes, use the following `devcontainer.json`:
+If you want to test a specific AVD branch or fork, use the following `devcontainer.json`:
 
 ```json
 {
     "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/avd/dev:python3.11",
+    "remoteUser": "avd",
+    "image": "ghcr.io/aristanetworks/avd/dev:python3.14",
     "containerEnv": {
         "AVD_GITHUB_REPO": "aristanetworks/avd",
         "AVD_BRANCH_NAME": "devel"
@@ -78,3 +80,7 @@ If you want to test specific AVD branch or fork without making any changes, use 
 
 !!! note
     Do not forget to adjust the parameters like AVD version according to your use case.
+
+!!! tip
+    For file permission issues on Linux, keep `"remoteUser": "avd"` and set `"updateRemoteUserUID": true` in `devcontainer.json`.
+    If permission issues persist, read and understand the [VSCode guide to adding a non-root user](https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user) before making further changes.

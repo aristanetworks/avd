@@ -238,6 +238,7 @@ ethernet_interfaces:
 - name: Ethernet20
   description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
+  speed: auto 10000full
   channel_group:
     id: 20
     mode: active
@@ -248,6 +249,7 @@ ethernet_interfaces:
 - name: Ethernet21
   description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
+  speed: auto 10000full
   channel_group:
     id: 20
     mode: active
