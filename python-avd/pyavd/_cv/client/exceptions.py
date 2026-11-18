@@ -95,6 +95,10 @@ class CVClientInvalidServerName(CVClientException):
     """CloudVision server FQDN is invalid."""
 
 
+class CVInvalidInputsError(CVClientException):
+    """Invalid or incompatible inputs provided to a CloudVision workflow."""
+
+
 class CVWorkspaceSynchronizationFailed(CVClientException):
     """Synchronization/rebase of CloudVision Workspace failed."""
 
