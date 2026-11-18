@@ -640,7 +640,7 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.ospfv3.ipv6.cost is arista.avd.defined %}
    ospfv3 ipv6 cost {{ ethernet_interface.ospfv3.ipv6.cost }}
 {%             endif %}
-{%             if ethernet_interface.ospfv3.ipv6.area is arista.avd.defined%}
+{%             if ethernet_interface.ospfv3.ipv6.area is arista.avd.defined %}
    ospfv3 ipv6 area {{ ethernet_interface.ospfv3.ipv6.area }}
 {%             endif %}
 {%         endif %}
