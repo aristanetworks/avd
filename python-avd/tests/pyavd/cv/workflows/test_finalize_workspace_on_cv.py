@@ -8,7 +8,7 @@ from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from logging import DEBUG, INFO
 from typing import TYPE_CHECKING, Any, Literal
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, call, patch
 
 import pytest
 
@@ -726,22 +726,20 @@ async def test_build_workspace_on_cv_retry_conditions(
     expected_attempts: int,
 ) -> None:
     """Test that only successful builds requiring another build trigger build retry logic."""
-    mock_workspace_config = WorkspaceConfig(request_params=RequestParams(request_id="req-build-id"))
+    mock_workspace_configs = [WorkspaceConfig(request_params=RequestParams(request_id=f"req-build-{attempt}")) for attempt in range(1, expected_attempts + 1)]
     mock_build_response = Response(status=build_status)
-    mock_cv_workspace = Workspace(last_build_id="req-build-id", needs_build=needs_build, needs_rebase=needs_rebase)
+    mock_cv_workspace = Workspace(last_build_id=mock_workspace_configs[-1].request_params.request_id, needs_build=needs_build, needs_rebase=needs_rebase)
     mock_client = AsyncMock()
-    mock_client.build_workspace.side_effect = [mock_workspace_config] * expected_attempts
+    mock_client.build_workspace.side_effect = mock_workspace_configs
     mock_client.wait_for_workspace_response.return_value = (mock_build_response, mock_cv_workspace)
 
     with caplog.at_level(DEBUG):
         build_result, cv_workspace = await build_workspace_on_cv(workspace_id=MOCKED_WORKSPACE_ID, cv_client=mock_client)
 
-    assert mock_client.build_workspace.await_count == expected_attempts
-    assert mock_client.wait_for_workspace_response.await_count == expected_attempts
-    # check most recent call
-    mock_client.build_workspace.assert_called_with(workspace_id=MOCKED_WORKSPACE_ID)
-    # check most recent call
-    mock_client.wait_for_workspace_response.assert_called_with(workspace_id=MOCKED_WORKSPACE_ID, request_id="req-build-id")
+    assert mock_client.build_workspace.await_args_list == [call(workspace_id=MOCKED_WORKSPACE_ID)] * expected_attempts
+    assert mock_client.wait_for_workspace_response.await_args_list == [
+        call(workspace_id=MOCKED_WORKSPACE_ID, request_id=workspace_config.request_params.request_id) for workspace_config in mock_workspace_configs
+    ]
     assert build_result is mock_build_response
     assert cv_workspace is mock_cv_workspace
     assert build_result.status == build_status
@@ -772,12 +770,12 @@ async def test_finalize_workspace_on_cv_rebuild_retries_exhausted(
     workspace_expected_state: str,
 ) -> None:
     """Test that a Workspace still requiring a build after all retries are exhausted raises CVWorkspaceBuildFailed."""
-    mock_workspace_config = WorkspaceConfig(request_params=RequestParams(request_id="req-build-id"))
+    mock_workspace_configs = [WorkspaceConfig(request_params=RequestParams(request_id=f"req-build-{attempt}")) for attempt in range(1, 7)]
     mock_build_response = Response(status=ResponseStatus.SUCCESS)
-    mock_cv_workspace = Workspace(last_build_id="req-build-id", needs_build=True, needs_rebase=False)
+    mock_cv_workspace = Workspace(last_build_id="req-build-6", needs_build=True, needs_rebase=False)
     mock_client = AsyncMock()
     mock_client._servers = ["www.cv-staging.corp.arista.io"]
-    mock_client.build_workspace.side_effect = [mock_workspace_config] * 6
+    mock_client.build_workspace.side_effect = mock_workspace_configs
     mock_client.wait_for_workspace_response.return_value = (mock_build_response, mock_cv_workspace)
     mock_client.get_workspace_build_details.return_value = []
     workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=MOCKED_WORKSPACE_ID, requested_state=workspace_requested_state))
@@ -790,13 +788,15 @@ async def test_finalize_workspace_on_cv_rebuild_retries_exhausted(
         await finalize_workspace_on_cv(workspace=workspace, cv_client=mock_client, devices=[], warnings=warnings)
 
     assert workspace.state == workspace_expected_state
-    assert workspace.build_id == "req-build-id"
+    assert workspace.build_id == "req-build-6"
     assert not workspace.device_build_results
     assert workspace.synchronization_required is False
     assert not warnings
-    assert mock_client.build_workspace.await_count == 6
-    assert mock_client.wait_for_workspace_response.await_count == 6
-    mock_client.get_workspace_build_details.assert_awaited_once_with(workspace_id=MOCKED_WORKSPACE_ID, build_id="req-build-id")
+    assert mock_client.build_workspace.await_args_list == [call(workspace_id=MOCKED_WORKSPACE_ID)] * 6
+    assert mock_client.wait_for_workspace_response.await_args_list == [
+        call(workspace_id=MOCKED_WORKSPACE_ID, request_id=workspace_config.request_params.request_id) for workspace_config in mock_workspace_configs
+    ]
+    mock_client.get_workspace_build_details.assert_awaited_once_with(workspace_id=MOCKED_WORKSPACE_ID, build_id="req-build-6")
     mock_client.submit_workspace.assert_not_awaited()
     mock_client.delete_workspace.assert_not_awaited()
     if workspace_requested_state == "abandoned":

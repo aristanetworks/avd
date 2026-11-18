@@ -33,6 +33,8 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 RECORDING_DIR = Path(__file__).parent / "api_recordings"
+# RECORDING_FILE_CALLS_PER_REQUEST_TRACKER persists across tests in the same process.
+# Mock it with monkeypatch.setattr to reset tracker with a fresh defaultdict(int) for each test
 RECORDING_FILE_CALLS_PER_REQUEST_TRACKER: defaultdict[Path, int] = defaultdict(int)
 
 

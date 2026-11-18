@@ -151,7 +151,7 @@ async def test_wait_for_workspace_response_ignores_non_terminal_statuses(cv_clie
     [
         pytest.param(0, 1, id="NO_RETRIES"),
         pytest.param(1, 2, id="ONE_RETRY"),
-        pytest.param(5, 2, id="FIVE_RETRIES"),
+        pytest.param(5, 2, id="STOPS_EARLY_WHEN_NO_BUILD_NEEDED"),
     ],
 )
 async def test_rebuild_workspace(
