@@ -55,21 +55,20 @@ def validate_schema_fragments() -> None:
     for schema_file in schema_files:
         try:
             schema = yaml_load(schema_file.read_text(encoding="UTF-8"), Loader=CSafeLoader)
-        except YAMLError as error:
+            reported: set[tuple[str, str]] = set()
+            for error in validator.iter_errors(schema):
+                failed = True
+                for leaf in leaf_errors(error):
+                    pointer = "".join(f"/{str(part).replace('~', '~0').replace('/', '~1')}" for part in leaf.instance_path)
+                    diagnostic = (pointer, leaf.message)
+                    if diagnostic in reported:
+                        continue
+                    reported.add(diagnostic)
+                    message = leaf.message.replace("\r", r"\r").replace("\n", r"\n")
+                    LOGGER.error("%s: %s: %s", schema_file, pointer or "<root>", message)
+        except (YAMLError, ValueError) as error:
             LOGGER.error("%s: %s", schema_file, error)  # noqa: TRY400 - Keep the diagnostic free of a traceback.
             failed = True
-            continue
-        reported: set[tuple[str, str]] = set()
-        for error in validator.iter_errors(schema):
-            failed = True
-            for leaf in leaf_errors(error):
-                pointer = "".join(f"/{str(part).replace('~', '~0').replace('/', '~1')}" for part in leaf.instance_path)
-                diagnostic = (pointer, leaf.message)
-                if diagnostic in reported:
-                    continue
-                reported.add(diagnostic)
-                message = leaf.message.replace("\r", r"\r").replace("\n", r"\n")
-                LOGGER.error("%s: %s: %s", schema_file, pointer or "<root>", message)
     if failed:
         msg = "Schema fragment validation failed. See the source filenames and diagnostics above."
         raise ValueError(msg)
