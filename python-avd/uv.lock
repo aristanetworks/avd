@@ -725,7 +725,7 @@ self = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ansible-core", marker = "extra == 'ansible'", specifier = ">=2.16.0,<2.22.0" },
+    { name = "ansible-core", marker = "extra == 'ansible'", specifier = ">=2.16.0,<2.23.0" },
     { name = "anta", specifier = ">=1.10.0" },
     { name = "aristaproto", specifier = ">=0.1.1" },
     { name = "deepmerge", specifier = ">=1.1.0" },
