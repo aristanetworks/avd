@@ -49,11 +49,6 @@ router_ospfv3:
         enabled: true
         route_map: map1
   vrfs:
-    - name: Global
-      graceful_restart:
-        enabled: true
-        grace_period: 22
-      graceful_restart_helper: false
     - name: Test
       router_id: 2.2.2.2
       passive_interface_default: true

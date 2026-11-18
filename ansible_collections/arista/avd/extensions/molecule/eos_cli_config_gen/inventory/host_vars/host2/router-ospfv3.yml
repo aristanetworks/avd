@@ -207,3 +207,7 @@ router_ospfv3:
       router_id: 1.1.1.1
       passive_interface_default: true
       auto_cost_reference_bandwidth: 1000
+      graceful_restart:
+        enabled: true
+        grace_period: 22
+      graceful_restart_helper: false
