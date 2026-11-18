@@ -194,6 +194,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -227,6 +229,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -250,6 +254,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -258,6 +264,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -266,6 +274,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -280,6 +290,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -290,6 +302,8 @@ ipv6 unicast-routing vrf TENANT_C
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -323,6 +337,8 @@ router ospfv3 vrf TEST_VRF
 !
 router ospfv3 vrf TEST_VRF2
    router-id 2.2.2.2
+   bfd default
+   bfd adjacency state any
    auto-cost reference-bandwidth 100
    passive-interface default
 !

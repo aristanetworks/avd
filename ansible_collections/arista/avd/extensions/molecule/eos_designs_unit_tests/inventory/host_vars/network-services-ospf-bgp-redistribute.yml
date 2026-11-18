@@ -1,0 +1,112 @@
+---
+# Tests for the new vrf.bgp.redistribute_ospf options in eos_designs.
+# Covers: internal (with include_leaked and route_map), external, and nssa_external redistribution
+# (nssa_type 1 with route_map, without nssa_type with include_leaked, and nssa_type 2).
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.90.0/24
+    vtep_loopback_ipv4_pool: 192.168.91.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65190
+  nodes:
+    - name: network-services-ospf-bgp-redistribute
+      id: 50
+
+tenants:
+  - name: TENANT-OSPF-BGP
+    mac_vrf_vni_base: 91000
+    vrfs:
+      # VRF with internal OSPF redistribution using include_leaked and route_map.
+      - name: VRF-OSPF-INTERNAL
+        vrf_id: 50
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: true
+              include_leaked: true
+              route_map: RM-OSPF-TO-BGP-INTERNAL
+        svis:
+          - id: 500
+            name: VRF-OSPF-INTERNAL-500
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.50.1/24
+            ospf:
+              enabled: true
+
+      # VRF with external and nssa_external OSPF redistribution (internal disabled).
+      # nssa_external covers: enabled with nssa_type: 1 and route_map.
+      - name: VRF-OSPF-EXTERNAL-NSSA
+        vrf_id: 51
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: false
+            external:
+              enabled: true
+              include_leaked: true
+              route_map: RM-OSPF-TO-BGP-EXTERNAL
+            nssa_external:
+              enabled: true
+              nssa_type: 1
+              route_map: RM-OSPF-TO-BGP-NSSA
+        svis:
+          - id: 510
+            name: VRF-OSPF-EXTERNAL-NSSA-510
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.51.1/24
+            ospf:
+              enabled: true
+
+      # VRF covering nssa_external without nssa_type and with include_leaked.
+      - name: VRF-OSPF-NSSA-NO-TYPE
+        vrf_id: 52
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: false
+            nssa_external:
+              enabled: true
+              include_leaked: true
+        svis:
+          - id: 520
+            name: VRF-OSPF-NSSA-NO-TYPE-520
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.52.1/24
+            ospf:
+              enabled: true
+
+      # VRF covering nssa_external with nssa_type: 2.
+      - name: VRF-OSPF-NSSA-TYPE2
+        vrf_id: 53
+        ospf:
+          enabled: true
+          nodes: [network-services-ospf-bgp-redistribute]
+        bgp:
+          redistribute_ospf:
+            internal:
+              enabled: false
+            nssa_external:
+              enabled: true
+              nssa_type: 2
+        svis:
+          - id: 530
+            name: VRF-OSPF-NSSA-TYPE2-530
+            enabled: true
+            vxlan: false
+            ip_address: 10.1.53.1/24
+            ospf:
+              enabled: true
