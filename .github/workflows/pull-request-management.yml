@@ -532,6 +532,9 @@ jobs:
           - ansible_version: latest_stable
             pip_installation: "ansible-core>=2.22.0,<2.23.0"
             integration_args: ""
+          - ansible_version: latest_stable
+            python_version: "3.14"
+            run_units: true
           # Ansible 2.21 is the newest supported version for Python 3.12.
           - ansible_version: ansible_core_2_21
             python_version: "3.12"
@@ -550,6 +553,7 @@ jobs:
           - ansible_version: ansible_core_2_18
             python_version: "3.12"
             pip_installation: "ansible-core>=2.18.0,<2.19.0"
+            run_units: true
             # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
           # Exercise only the design action plugins against the Ansible milestone branch.
@@ -571,7 +575,7 @@ jobs:
           pip install "${{ matrix.pip_installation }}" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test units
         id: units
-        if: matrix.python_version == '3.12' || (matrix.ansible_version == 'latest_stable' && matrix.python_version == '3.14')
+        if: matrix.run_units == true
         working-directory: ansible_collections/arista/avd
         run: ansible-test units --python "${{ matrix.python_version }}" --coverage --requirements -vv
       - name: Run ansible-test integration
@@ -585,20 +589,20 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         working-directory: ansible_collections/arista/avd
         env:
-          UNITS_OUTCOME: ${{ steps.units.outcome }}
+          RUN_UNITS: ${{ matrix.run_units }}
           REPORT_SUFFIX: ${{ matrix.ansible_version }}-${{ matrix.python_version }}
         run: |
           set -euo pipefail
           ansible-test coverage report --group-by command --show-missing
           ansible-test coverage xml --group-by command
-          if [[ "$UNITS_OUTCOME" == "success" || "$UNITS_OUTCOME" == "failure" ]]; then
+          if [[ "$RUN_UNITS" == "true" ]]; then
             test -s tests/output/reports/coverage=units.xml
             mv tests/output/reports/coverage=units.xml "./units-coverage-$REPORT_SUFFIX.xml"
           fi
           test -s tests/output/reports/coverage=integration.xml
           mv tests/output/reports/coverage=integration.xml "./integration-coverage-$REPORT_SUFFIX.xml"
       - name: Upload coverage from ansible-test units
-        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && (matrix.python_version == '3.12' || (matrix.ansible_version == 'latest_stable' && matrix.python_version == '3.14')) }}
+        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.run_units == true }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
