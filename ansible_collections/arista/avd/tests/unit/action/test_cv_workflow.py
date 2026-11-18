@@ -5,13 +5,15 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from os import environ
 from typing import TYPE_CHECKING, Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
+from ansible.plugins.filter.urlsplit import split_url
 
-from ansible_collections.arista.avd.plugins.action.cv_workflow import ActionModule
+from ansible_collections.arista.avd.plugins.action.cv_workflow import ARGUMENT_SPEC, ActionModule
 from pyavd._cv.workflows.models import CloudVision, DeployToCvResult
 
 if TYPE_CHECKING:
@@ -48,6 +50,7 @@ def _make_deploy_result_mock(**overrides: object) -> MagicMock:
     mock.errors = []
     mock.warnings = []
     mock.failed = False
+    mock.change_control = None
     mock.deployed_configs = []
     mock.deployed_static_config_containers = []
     mock.deployed_static_config_configlets = []
@@ -138,6 +141,8 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
     pathfinder_metadata = MagicMock(name="pathfinder_metadata")
     static_manifest = MagicMock(name="static_manifest")
     cloudvision = MagicMock(proxy_password="proxy-secret")  # noqa: S106 - deliberate redaction test value
+    change_control = MagicMock()
+    change_control.id = None
     result_object = _make_deploy_result_mock(
         errors=[ValueError("cv-error")],
         warnings=[RuntimeError("cv-warning")],
@@ -153,7 +158,7 @@ def test_deploy_converts_successful_deployment_to_ansible_result(
         patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.AvdManifest.from_dict", return_value=static_manifest),
         patch(f"{MODULE_PATH}.AvdWorkspaceBuildWarningsConfig.from_dict", return_value=MagicMock()),
-        patch(f"{MODULE_PATH}.CVChangeControl", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVChangeControl", return_value=change_control),
         patch(f"{MODULE_PATH}.AvdChangeControl", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVTimeOuts", return_value=MagicMock()),
         patch(f"{MODULE_PATH}.CVWorkspace", return_value=MagicMock()),
@@ -208,6 +213,64 @@ def test_deploy_redacts_credentials_in_detailed_result(
     for credential in (fake_token, cv_password, fake_proxy_password):
         if credential is not None:
             assert credential not in str(result)
+
+
+@pytest.mark.parametrize(
+    ("https_proxy", "expected_proxy_settings"),
+    [
+        pytest.param(
+            "http://http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": None, "proxy_password": None},
+            id="EXPLICIT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://http-connect-proxy.local",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 8080, "proxy_username": None, "proxy_password": None},
+            id="DEFAULT_PORT_WITHOUT_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd_user:avd_password@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd_user", "proxy_password": "avd_password"},
+            id="EXPLICIT_PORT_WITH_CREDENTIALS",
+        ),
+        pytest.param(
+            "http://avd%40user:avd%3Apassword@http-connect-proxy.local:3128",
+            {"proxy_host": "http-connect-proxy.local", "proxy_port": 3128, "proxy_username": "avd%40user", "proxy_password": "avd%3Apassword"},
+            id="URL_ENCODED_CREDENTIALS",
+        ),
+    ],
+)
+def test_deploy_uses_proxy_settings_parsed_from_https_proxy(
+    action_module: Callable[..., ActionModule],
+    https_proxy: str,
+    expected_proxy_settings: dict[str, str | int | None],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test that the suggested/documented https_proxy recipe passes normalized settings to the workflow."""
+    monkeypatch.setenv("https_proxy", https_proxy)
+    cv_proxy_url = environ["https_proxy"]
+    validated_args = _make_validated_args(
+        proxy_host=split_url(cv_proxy_url, "hostname"),
+        proxy_port=split_url(cv_proxy_url, "port") or 8080,
+        proxy_username=split_url(cv_proxy_url, "username"),
+        proxy_password=split_url(cv_proxy_url, "password"),
+    )
+    module = action_module(ActionModule)
+    result_object = _make_deploy_result_mock()
+
+    with (
+        patch(f"{MODULE_PATH}.CloudVision", wraps=CloudVision) as cloudvision_class,
+        patch(f"{MODULE_PATH}.CVDeployFuture", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCChannelConfiguration", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.CVGRPCKeepalives", return_value=MagicMock()),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        patch(f"{MODULE_PATH}.DeployToCvResult", return_value=result_object),
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=result_object),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    assert {key: cloudvision_class.call_args.kwargs[key] for key in expected_proxy_settings} == expected_proxy_settings
 
 
 def test_run_snapshots_detailed_inputs_before_deployment(
@@ -315,6 +378,128 @@ def test_deploy_wraps_exceptions_as_action_fail(
         asyncio.run(module.deploy(validated_args, {}))
 
     assert exc_info.value.__cause__ is original_error
+
+
+def test_deploy_routes_existing_change_control_to_cc_only_mode(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID selects Change-Control-only mode."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "running", "approval_note": "Approved", "start_note": "Started"},
+        workspace={
+            "requested_state": "submitted",
+            "force": False,
+            "build_warnings": {"enabled": True, "suppress_patterns": [], "suppress_portfast": False},
+        },
+    )
+    deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=True))
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result) as deploy_to_cv,
+    ):
+        result = asyncio.run(module.deploy(validated_args, {"warnings": ["Logger warning"]}))
+
+    deploy_to_cv.assert_called_once()
+    change_control = deploy_to_cv.call_args.kwargs["change_control"]
+    assert change_control.id == "cc-id"
+    assert change_control.requested_state == "running"
+    assert change_control.avd_change_control.approval_note == "Approved"
+    assert change_control.avd_change_control.start_note == "Started"
+    assert deploy_to_cv.call_args.kwargs["workspace"] is None
+    assert result["warnings"] == ["Logger warning"]
+    assert result["changed"] is True
+
+
+def test_validate_argument_spec_materializes_change_control_note_defaults(action_module: Callable[..., ActionModule]) -> None:
+    """Change Control note defaults are materialized when the Change Control dictionary is provided."""
+    module = action_module(
+        ActionModule,
+        task_args={
+            "configuration_dir": "/configs",
+            "cv_servers": ["cv.example.com"],
+            "change_control": {"id": "cc-id"},
+        },
+    )
+
+    _validation_result, validated_args = module.validate_argument_spec(ARGUMENT_SPEC)
+    change_control = validated_args["change_control"]
+
+    assert change_control["approval_note"] == "Automatic approval by AVD"
+    assert change_control["start_note"] == "Automatically started by AVD"
+
+
+def test_deploy_existing_change_control_with_empty_manifest_reports_unchanged_for_noop(action_module: Callable[..., ActionModule]) -> None:
+    """CC-only mode ignores the empty static config manifest supplied by the role."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        static_config_manifest={"preserve_existing_containers": False},
+    )
+    deploy_result = _make_deploy_result_mock(change_control=MagicMock(changed=False))
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock, return_value=deploy_result),
+    ):
+        result = asyncio.run(module.deploy(validated_args, {}))
+
+    assert result["changed"] is False
+
+
+def test_deploy_rejects_device_deployments_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with device deployments."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(device_list=["leaf1"], change_control={"id": "cc-id", "requested_state": "approved"})
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[MagicMock()]),
+        patch(f"{MODULE_PATH}.extract_from_device_deployments", return_value=([], [], [], [])),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
+
+
+def test_deploy_rejects_workspace_id_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with an existing Workspace ID."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        workspace={"id": "workspace-id", "requested_state": "submitted"},
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
+
+
+def test_deploy_rejects_static_config_manifest_with_existing_change_control(action_module: Callable[..., ActionModule]) -> None:
+    """An existing Change Control ID cannot be combined with a non-empty static config manifest."""
+    module = action_module(ActionModule)
+    validated_args = _make_validated_args(
+        device_list=[],
+        change_control={"id": "cc-id", "requested_state": "approved"},
+        static_config_manifest={"configlets": [{"name": "configlet", "file": "/configs/configlet.cfg"}]},
+    )
+
+    with (
+        patch.object(module, "build_device_deployments", new_callable=AsyncMock, return_value=[]),
+        patch(f"{MODULE_PATH}.deploy_to_cv", new_callable=AsyncMock) as deploy_to_cv,
+        pytest.raises(AnsibleActionFail, match="Change-Control-only mode cannot be combined with a Workspace or deployment inputs"),
+    ):
+        asyncio.run(module.deploy(validated_args, {}))
+
+    deploy_to_cv.assert_not_called()
 
 
 # ---------------------------------------------------------------------------

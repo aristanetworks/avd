@@ -347,10 +347,47 @@ The optional settings below provide direct control over Workspace and Change Con
 # Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
 # cv_workspace_requested_state: <str>
 
-# Set the requested state of the created Change Control.
+# Set the requested state of the created or existing Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
 # cv_change_control_requested_state: <str>
+
+# Set the ID of an existing Change Control to manage without performing a deployment.
+# Setting the ID cannot be combined with any devices, tags, manifests or similar work items. It will only be used when operating on an existing Change Control.
+# cv_change_control_id: <str>
+
+# Set the note used when approving or unapproving the Change Control. By default this will be "Automatic approval by AVD".
+# cv_change_control_approval_note: <str>
+
+# Set the note used when starting the Change Control. By default this will be "Automatically started by AVD".
+# cv_change_control_start_note: <str>
 ```
+
+**`cv_change_control_id`**
+
+Setting `cv_change_control_id` enables Change-Control-only mode. This mode only manages the existing Change Control. It cannot be combined with `cv_workspace_id` and cannot deploy configurations, tags, metadata, or Static Configuration Studio content in the same run. Set `cv_devices: []` and leave `cv_static_config_manifest` empty. If any deployment content is found, the role fails before making changes to CloudVision.
+
+The existing Change Control is managed according to `cv_change_control_requested_state`. If `cv_change_control_requested_state` is not set, the role derives the requested Change Control state from `cv_run_change_control`. When `cv_run_change_control` is `true`, the requested state is `completed`. When `cv_run_change_control` is `false` (default), the requested state is `pending approval`.
+
+AVD validates that the requested state is compatible with the current Change Control state before making any changes. The table below shows how each requested state interacts with the current Change Control state:
+
+| Requested Change Control state | Current Change Control state | Outcome |
+| ------------------------------ | ---------------------------- | ------- |
+| `pending approval` | Not started | Unapproves the Change Control if currently approved. Otherwise no-op. |
+| `pending approval` | Scheduled / running / completed | **Error** — Change Control has already entered execution. No changes are made. |
+| `approved` | Not started | Approves the Change Control if not already approved. Otherwise no-op. |
+| `approved` | Scheduled / running / completed | **Error** — Change Control has already entered execution. No changes are made. |
+| `running` | Not started | Approves (if needed) and starts the Change Control. Does not wait for completion. |
+| `running` | Scheduled | Starts the Change Control immediately. Does not wait for completion. |
+| `running` | Running | No-op — Change Control is already running. |
+| `running` | Completed successfully | No-op — Change Control has already run successfully. |
+| `running` | Completed with errors | **Error** — reports the prior execution failure. |
+| `completed` | Not started | Approves (if needed), starts, and waits for the Change Control to finish. |
+| `completed` | Scheduled | Starts the Change Control immediately and waits for completion. |
+| `completed` | Running | Waits for the Change Control to finish. |
+| `completed` | Completed successfully | No-op — Change Control has already completed. |
+| `completed` | Completed with errors | **Error** — reports the prior execution failure. |
+
+In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control, except when the Change Control is already in a completed state. `cv_change_control_approval_note` controls the note used when approving or unapproving the Change Control. `cv_change_control_start_note` controls the note used when starting it.
 
 **`cv_workspace_id`**
 
@@ -382,7 +419,7 @@ flowchart LR
 
 **`cv_change_control_requested_state`**
 
-By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Only applicable when the requested state of the Workspace is `submitted`.
+By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Without `cv_change_control_id`, this is only applicable when the requested state of the Workspace is `submitted`.
 
 ```mermaid
 flowchart LR
@@ -638,6 +675,26 @@ Click "Save" to exit the dialogue box.
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
 To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+
+!!! note
+
+    The role ignores proxy-related environment variables, including lowercase and uppercase variants of `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`. Use the `proxy_host`, `proxy_port`, `proxy_username`, and `proxy_password` role inputs to configure a proxy server for CloudVision connections.
+
+!!! note
+
+    To explicitly use an existing `<schema/scope>_proxy` environment variable, map its URL to the `cv_deploy`'s `proxy_*` role inputs in your playbook.
+
+    Example:
+    ```yaml
+    cv_proxy_url: "{{ lookup('ansible.builtin.env', 'https_proxy') }}"
+
+    proxy_host: "{{ cv_proxy_url | ansible.builtin.urlsplit('hostname') }}"
+    proxy_port: "{{ cv_proxy_url | ansible.builtin.urlsplit('port') | default(8080, true) }}"
+    proxy_username: "{{ cv_proxy_url | ansible.builtin.urlsplit('username') }}"
+    proxy_password: "{{ cv_proxy_url | ansible.builtin.urlsplit('password') }}"
+    ```
+
+    The URL must identify an HTTP CONNECT proxy, for example `http://http-connect-proxy.local:3128`. When the URL does not include a port, the role default of `8080` is used. URL-encode credentials containing URI-reserved characters.
 
 !!! Warning
 

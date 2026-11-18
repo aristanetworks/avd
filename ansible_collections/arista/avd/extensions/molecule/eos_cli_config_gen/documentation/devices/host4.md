@@ -111,12 +111,14 @@ daemon TerminAttr
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV4 | True |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing vrf FUTURE_IPV4
+no ip routing vrf MGMT
 ```
 
 ### IPv6 Routing
@@ -127,6 +129,7 @@ ip routing vrf FUTURE_IPV4
 | --- | --------------- |
 | default | False |
 | FUTURE_IPV4 | False |
+| MGMT | False |
 
 ### Router OSPF
 
@@ -151,6 +154,8 @@ router ospf 703
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -184,6 +189,8 @@ router ospf 703
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -547,12 +554,15 @@ router multicast
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | FUTURE_IPV4 | enabled |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance FUTURE_IPV4
+!
+vrf instance MGMT
 ```
 
 ## Schedule

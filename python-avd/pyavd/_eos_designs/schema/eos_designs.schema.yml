@@ -373,6 +373,40 @@ keys:
               valid_values:
               - sha512
               default: sha512
+  aaa_settings_profiles:
+    documentation_options:
+      table: aaa-settings-profiles
+    type: list
+    primary_key: profile
+    description: 'List of AAA settings profiles that can be applied to devices using
+      `aaa_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common AAA settings
+      to be shared and selectively overridden per profile.
+
+      Note: For TACACS and RADIUS, `vrfs` entries merge by `name` across global settings
+      and the profile chain, with the most specific settings taking precedence.
+
+      A defined `servers` list replaces the inherited list for that protocol; if omitted,
+      the inherited list is retained.'
+    items:
+      type: dict
+      documentation_options:
+        table: aaa-settings-profiles
+      $ref: eos_designs#/keys/aaa_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: AAA settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `aaa_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
   address_locking_settings:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
@@ -540,6 +574,19 @@ keys:
 
           Fix to configure TLS on RADIUS server group members to match their global
           RADIUS server configurations.'
+      fix_virtual_source_nat_address_families:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Fix the selection of the addresses used for the IPv4 and IPv6 virtual source-nat
+          of a VRF.
+
+          When enabled, each address family uses the first loopback in the VRF with
+          an address of that family.
+
+          The VTEP diagnostic loopback is used first, followed by the VRF loopbacks
+          in input order.'
       only_configure_ipv6_inband_mgmt_prefix_list_when_used:
         type: bool
         description: 'Available from AVD 6.2.0.
@@ -594,6 +641,12 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
+      sort_snmp_acls_and_local_interfaces_by_vrf:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Sort SNMP ACLs and local interfaces by VRF name in the generated configuration.'
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
         type: bool
         description: 'Available from AVD 6.5.0.
@@ -1931,11 +1984,16 @@ keys:
               pattern: '[a-zA-Z0-9-_]+'
             servers:
               type: list
-              required: true
               min_length: 1
               max_length: 3
               primary_key: name
-              description: CloudVision servers that makes up one cluster.
+              description: 'CloudVision servers that make up one cluster.
+
+                May be omitted when inherited from a parent CloudVision settings profile
+                or global `cv_settings`.
+
+                After resolving profile and global settings, each on-prem cluster
+                must have at least one server.'
               items:
                 type: dict
                 keys:
@@ -2011,6 +2069,63 @@ keys:
           Can be set to `false` to avoid changes when migrating from the old `cv_instances`
           model.'
         default: true
+  cv_settings_profiles:
+    documentation_options:
+      table: cloudvision-settings-profiles
+    type: list
+    primary_key: profile
+    description: 'List of CloudVision settings profiles that can be applied to devices
+      using `cv_settings_profile` under node definitions.
+
+      Profiles support inheritance using `parent_profile`, allowing common CloudVision
+      settings to be shared and selectively overridden per profile.'
+    items:
+      type: dict
+      documentation_options:
+        table: cloudvision-settings-profiles
+      $ref: eos_designs#/keys/cv_settings
+      keys:
+        profile:
+          type: str
+          min_length: 1
+          required: true
+          description: CloudVision settings profile name.
+        parent_profile:
+          type: str
+          min_length: 1
+          description: 'Inherit settings from a parent profile defined under `cv_settings_profiles`.
+
+            The settings from this profile override settings inherited from the parent
+            profile.'
+        cvaas:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: false
+        onprem_clusters:
+          type: list
+          items:
+            type: dict
+            keys:
+              servers:
+                type: list
+                description: 'CloudVision servers that make up one cluster.
+
+                  May be omitted when inherited from a parent CloudVision settings
+                  profile or global `cv_settings`.
+
+                  After resolving profile and global settings, each on-prem cluster
+                  must have at least one server.
+
+
+                  Note: Servers from this profile are merged with servers for the
+                  same cluster from the parent profile and global
+
+                  `cv_settings`, so the combined list must not exceed three servers.
+
+                  If a server has the same `name` as an inherited server, values from
+                  this profile override the inherited values.'
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -2523,6 +2638,77 @@ keys:
               Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs
               and SSH configuration for non-default VRFs are preserved.'
             default: false
+          serial_number_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the serial
+              number of ACT Digital Twin devices.
+
+              When set, the rendered value is written into the device metadata and
+              provided as the serial number in the ACT topology.
+
+              Can be overridden per device with `digital_twin.serial_number` at node
+              level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (resolved production system MAC address), `hostname`,
+              `device_id`, `fabric_name`.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no serial number is included in the metadata or the ACT topology.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          system_mac_address_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the system
+              MAC address of ACT Digital Twin devices.
+
+              When set, the rendered value is used throughout the device''s EOS configuration
+              (e.g., SNMPv3 engine ID), written into the device metadata, and provided
+              as the system MAC address in the ACT topology.
+
+              Can be overridden per device with `digital_twin.system_mac_address`
+              at node level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (production system MAC address), `hostname`, `device_id`,
+              `fabric_name`.
+
+              The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+              `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+              digit). The all-zero address is reserved and not accepted by EOS.
+
+              Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh`
+              format.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no system MAC address is included in the metadata or the ACT
+              topology, and the production `system_mac_address` is used for EOS configuration.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          ztp:
+            type: bool
+            default: false
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for all Digital
+              Twin devices.
+
+              Can be overridden by `digital_twin.ztp` at node level.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for
+              all other node types.'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
@@ -4812,6 +4998,30 @@ keys:
         type: str
         description: Name of the management interface (e.g. Management0, Management1).
         default: Management1
+      shutdown:
+        type: str
+        default: 'false'
+        description: 'Control the management interface shutdown state.
+
+          - "true": Always shut down the interface, even when management addressing
+          is configured.
+
+          - "false": Configure "no shutdown" when management addressing is configured;
+          otherwise, generate no interface configuration.
+
+          - "auto": Configure "no shutdown" when management addressing is configured;
+          otherwise, shut down the interface.
+
+          Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`,
+          including DHCP and SLAAC.
+
+          When shutting down an interface without node management addressing, only
+          its name and shutdown state are configured.'
+        valid_values:
+        - 'true'
+        - 'false'
+        - auto
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.
@@ -6089,9 +6299,7 @@ keys:
                   created on all leafs where the VRF is deployed. This will also cause
                   automatic OSPF redistribution into BGP unless
 
-                  explicitly turned off with "redistribute_ospf: false".
-
-                  '
+                  `bgp.redistribute_ospf.internal.enabled` is set to `false`.'
                 keys:
                   enabled:
                     type: bool
@@ -6212,6 +6420,10 @@ keys:
                   at least one OSPFv3-enabled SVI in this VRF is configured on that
                   device.
 
+                  If BGP is configured for the VRF, OSPFv3 internal routes are redistributed
+                  into BGP unless `bgp.redistribute_ospfv3.internal.enabled` is set
+                  to `false`.
+
                   These settings only override the defaults.
 
                   VRF `default` is not supported yet.'
@@ -6261,21 +6473,11 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
-              redistribute_ospfv3:
-                documentation_options:
-                  table: network-services-vrfs-ospfv3-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    default: true
-                    description: 'Redistribute OSPFv3 internal routes into BGP for
-                      this VRF.
-
-                      Ignored on devices where BGP is not configured for this VRF
-                      or where the VRF has no OSPFv3 instance.
-
-                      OSPFv3 external routes are not redistributed.'
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: bgp.redistribute_ospf.internal.enabled
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -6547,8 +6749,44 @@ keys:
                     mtu:
                       type: int
                     ipv4_acl_in:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the ingress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
+                      description: 'Name of the IPv4 access-list to be assigned in
+                        the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -6829,12 +7067,44 @@ keys:
                       type: int
                       description: MTU can only be set on the parent Port-Channel.
                     ipv4_acl_in:
-                      description: Name of the IPv4 access-list to be assigned in
+                      description: 'Name of the IPv4 access-list to be assigned in
                         the ingress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both
+                        `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.'
                       type: str
                     ipv4_acl_out:
-                      description: Name of the IPv4 Access-list to be assigned in
+                      description: 'Name of the IPv4 Access-list to be assigned in
                         the egress direction.
+
+                        The access-list must be defined under `ipv4_acls` and supports
+                        field substitution for "interface_ip".
+
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both
+                        `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.'
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the ingress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in`
+                        and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in`
+                        instead when field substitution for "interface_ip" is required.'
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: 'Name of the IPv4 standard access-list to be assigned
+                        in the egress direction.
+
+                        The access-list must be defined under `ipv4_standard_acls`.
+
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out`
+                        and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out`
+                        instead when field substitution for "interface_ip" is required.'
                       type: str
                     ipv6_acl_in:
                       description: 'Name of the IPv6 access-list to be assigned in
@@ -7351,6 +7621,76 @@ keys:
                         max: 3600
                         default: 300
                         description: Restart time in seconds.
+                  redistribute_ospfv3:
+                    type: dict
+                    description: 'Redistribution of OSPFv3 routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPFv3 instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPFv3 internal routes into
+                              BGP.
+                  redistribute_ospf:
+                    type: dict
+                    description: 'Redistribution of OSPF routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPF instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPF internal routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF external routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      nssa_external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF NSSA external routes into
+                              BGP.
+                          nssa_type:
+                            type: int
+                            valid_values:
+                            - 1
+                            - 2
+                            description: NSSA type for the redistributed routes.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -9603,9 +9943,11 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -9685,9 +10027,11 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -9765,8 +10109,10 @@ keys:
     - platforms:
       - CloudEOS
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         per_interface_l2_mru: false
         queue_monitor_length_notify: false
         sflow: false
@@ -15274,6 +15620,120 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+              serial_number:
+                type: str
+                min_length: 1
+                description: 'Serial number or AVD string formatter template for this
+                  ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.serial_number_template`
+                  for this device.
+
+                  When set, the rendered value is written into the device metadata
+                  and provided as the serial number in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax and variables
+                  as `digital_twin.fabric.serial_number_template`.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              system_mac_address:
+                type: str
+                min_length: 1
+                description: 'System MAC address or AVD string formatter template
+                  for this ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.system_mac_address_template`
+                  for this device.
+
+                  When set, the rendered value is used throughout the device''s EOS
+                  configuration (e.g., SNMPv3 engine ID), written into the device
+                  metadata, and provided as the system MAC address in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax, variables,
+                  MAC address formats, and normalization as `digital_twin.fabric.system_mac_address_template`.
+
+                  The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+                  `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                  digit). The all-zero address is reserved and not accepted by EOS.
+
+                  Regardless of the input format, the MAC address is normalized to
+                  `hh:hh:hh:hh:hh:hh` format.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              ztp:
+                type: bool
+                description: 'Enable ZTP (Zero Touch Provisioning) mode for this Digital
+                  Twin device.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.
+
+                  Overrides global `digital_twin.fabric.ztp` when defined.'
+          validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the validation profile to apply to this device.
+
+              The profile must be defined under `validation_profiles`.
+
+              Validation profiles define requirements (e.g., hardware and logging)
+              used by the `anta_runner` role during post-deployment validation.'
+          aaa_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the AAA settings profile to apply to this device.
+
+              The profile must be defined under `aaa_settings_profiles`.
+
+              The selected profile settings will be merged over the general `aaa_settings`.'
+          cv_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the CloudVision settings profile to apply to this
+              device.
+
+              The profile must be defined under `cv_settings_profiles`.
+
+              The selected profile settings will be merged over the general `cv_settings`.'
+          dns_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the DNS settings profile to apply to this device.
+
+              The profile must be defined under `dns_settings_profiles`.
+
+              The selected profile settings will be merged over the general `dns_settings`.'
+          ntp_settings_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            min_length: 1
+            description: 'Name of the NTP settings profile to apply to this device.
+
+              The profile must be defined under `ntp_settings_profiles`.
+
+              The selected profile settings will be merged over the general `ntp_settings`.'
           uplink_structured_config:
             documentation_options:
               table: node-type-uplink-configuration
@@ -15285,32 +15745,6 @@ $defs:
               remove_in_version: 6.0.0
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
                 or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
-          validation_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
-            description: 'Name of the validation profile to apply to this device.
-
-              The profile must be defined under `validation_profiles`.
-
-              Validation profiles define requirements (e.g., hardware and logging)
-              used by the `anta_runner` role during post-deployment validation.'
-          dns_settings_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
-            description: 'Name of the DNS settings profile to apply to this device.
-
-              The profile must be defined under `dns_settings_profiles`.
-
-              The selected profile settings will be merged over the general `dns_settings`.'
-          ntp_settings_profile:
-            documentation_options:
-              table: node-type-common-configuration
-            type: str
-            description: 'Name of the NTP settings profile to apply to this device.
-
-              The profile must be defined under `ntp_settings_profiles`.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -15830,14 +16264,44 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress
@@ -15883,7 +16347,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
@@ -16120,14 +16584,44 @@ $defs:
             for "interface_ip" and "peer_ip".
 
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
-            is marked as ''trusted'' under `wan_carriers`.'
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_standard_acl_in`
+            is set.
+
+            Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in`
+            and `ipv4_standard_acl_in` raises an error.'
           type: str
         ipv4_acl_out:
           description: 'Name of the IPv4 Access-list to be assigned in the egress
             direction.
 
             The access-list must be defined under `ipv4_acls` and supports field substitution
-            for "interface_ip" and "peer_ip".'
+            for "interface_ip" and "peer_ip".
+
+            Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out`
+            and `ipv4_standard_acl_out` raises an error.'
+          type: str
+        ipv4_standard_acl_in:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            ingress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Required for all WAN interfaces (`wan_carrier` is set) unless the carrier
+            is marked as ''trusted'' under `wan_carriers`, or `ipv4_acl_in` is set.
+
+            Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and
+            `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
+          type: str
+        ipv4_standard_acl_out:
+          description: 'Name of the IPv4 standard access-list to be assigned in the
+            egress direction.
+
+            The access-list must be defined under `ipv4_standard_acls`.
+
+            Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and
+            `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when
+            field substitution for "interface_ip" or "peer_ip" is required.'
           type: str
         ipv6_acl_in:
           description: 'Name of the IPv6 access-list to be assigned in the ingress
@@ -16173,7 +16667,7 @@ $defs:
             configured.
 
             Unless the carrier is marked as ''trusted'' under `wan_carriers`, `ipv4_acl_in`
-            is also required on all WAN interfaces.'
+            or `ipv4_standard_acl_in` is also required on all WAN interfaces.'
         wan_circuit_id:
           type: str
           description: 'The WAN circuit ID for this interface.
@@ -16613,6 +17107,12 @@ $defs:
               description: 'Support for 802.1X BPDU bypass.
 
                 The feature will be ignored on platforms where this is false.'
+            dot1x_mac_based_access_list:
+              type: bool
+              default: true
+              description: 'Support for 802.1X Per-MAC ACL mode on the interfaces.
+
+                The feature will be ignored on platforms where this is false.'
             address_locking:
               type: dict
               keys:
@@ -16669,6 +17169,14 @@ $defs:
               description: 'Support for storm-control.
 
                 The feature will be ignored on platforms where this is false.'
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: 'Support for `speed sfp-1000baset auto 100full` and `speed
+                auto <mode>` commands on Ethernet interfaces.
+
+                When set to false, these commands are omitted while `speed auto`,
+                `speed <mode>` and `speed forced <mode>` commands are preserved.'
             poe:
               type: bool
               default: false

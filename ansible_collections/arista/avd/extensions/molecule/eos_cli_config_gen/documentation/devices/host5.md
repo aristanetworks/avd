@@ -75,12 +75,14 @@ daemon TerminAttr
 | default | False |
 | FUTURE_IPV6_INTERFACES | True (ipv6 interfaces) |
 | IPv6_ROUTING_ENABLED_VRF | False |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
+no ip routing vrf MGMT
 ```
 
 ### IPv6 Routing
@@ -92,6 +94,7 @@ ip routing ipv6 interfaces vrf FUTURE_IPV6_INTERFACES
 | default | True |
 | FUTURE_IPV6_INTERFACES | False |
 | IPv6_ROUTING_ENABLED_VRF | True |
+| MGMT | False |
 
 #### IPv6 Routing Device Configuration
 
@@ -106,11 +109,21 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -127,6 +140,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | - |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -143,6 +158,8 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```eos
 !
 router ospfv3
+   bfd default
+   !
    address-family ipv4
       router-id 2.2.2.2
       auto-cost reference-bandwidth 2000
@@ -153,6 +170,7 @@ router ospfv3
    !
    address-family ipv6
       router-id 3.3.3.3
+      bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal
@@ -258,6 +276,7 @@ router multicast
 | -------- | ---------- |
 | FUTURE_IPV6_INTERFACES | enabled (ipv6 interface) |
 | IPv6_ROUTING_ENABLED_VRF | disabled |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
@@ -266,4 +285,6 @@ router multicast
 vrf instance FUTURE_IPV6_INTERFACES
 !
 vrf instance IPv6_ROUTING_ENABLED_VRF
+!
+vrf instance MGMT
 ```
