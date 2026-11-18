@@ -319,7 +319,7 @@ schema-tools = [
 [package.metadata.requires-dev]
 coverage = [{ name = "coverage", extras = ["toml"], specifier = "==7.17.2" }]
 dev = [
-    { name = "ansible-core", specifier = ">=2.16.0,<2.22.0" },
+    { name = "ansible-core", specifier = ">=2.16.0,<2.23.0" },
     { name = "ansible-doc-extractor", specifier = ">=0.1.11" },
     { name = "ansible-lint", specifier = ">=26.6.0" },
     { name = "anta", specifier = "==1.10.0" },
@@ -345,7 +345,7 @@ dev = [
     { name = "referencing", specifier = ">=0.37.0" },
     { name = "ruff", specifier = "==0.17.4" },
     { name = "setuptools", specifier = ">=82.0.1" },
-    { name = "tox", specifier = ">=4.52.1" },
+    { name = "tox", specifier = ">=4.52.1,<=4.67.13" },
     { name = "uv", specifier = "==0.10.9" },
     { name = "yamllint", specifier = ">=1.38.0" },
 ]
@@ -374,7 +374,7 @@ molecule = [
     { name = "molecule-plugins", extras = ["docker"], specifier = ">=25.8.12" },
 ]
 pytest = [
-    { name = "ansible-core", specifier = ">=2.16.0,<2.22.0" },
+    { name = "ansible-core", specifier = ">=2.16.0,<2.23.0" },
     { name = "anta", specifier = "==1.10.0" },
     { name = "deepmerge", specifier = ">=1.1.0" },
     { name = "jsonschema-rs", specifier = ">=0.46.0" },
