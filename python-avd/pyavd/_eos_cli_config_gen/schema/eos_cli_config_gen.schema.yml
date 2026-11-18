@@ -22608,7 +22608,6 @@ keys:
             min: 25
             max: 99
             description: Percentage of maximum number of LSAs to reach before warning.
-              Not rendered when `disabled_time` or `incident_count` is set.
       address_family_ipv4:
         type: dict
         description: 'Address family IPv4 configuration.

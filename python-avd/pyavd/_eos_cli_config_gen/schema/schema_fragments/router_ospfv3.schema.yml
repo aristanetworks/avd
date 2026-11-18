@@ -68,7 +68,7 @@ keys:
             type: int
             min: 25
             max: 99
-            description: Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or `incident_count` is set.
+            description: Percentage of maximum number of LSAs to reach before warning.
       address_family_ipv4:
         type: dict
         description: |-

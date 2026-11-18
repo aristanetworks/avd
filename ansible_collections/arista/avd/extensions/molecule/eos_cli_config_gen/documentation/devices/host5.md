@@ -160,7 +160,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | LSA Disabled Time | - |
 | LSA Incident Count Limit | 4 |
 | LSA Incident Count Clear Timeout | 8 minutes |
-| LSA Warning Limit | - |
+| LSA Warning Limit | 88 percent |
 | LSA Exceed Action Warn | - |
 
 ###### Redistribution
@@ -192,7 +192,7 @@ router ospfv3
       bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
-      lsa limit 4444 incident-count limit 4 incident-count clear-timeout 8 minutes
+      lsa limit 4444 warning limit 88 percent incident-count limit 4 incident-count clear-timeout 8 minutes
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external

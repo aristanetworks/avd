@@ -67249,10 +67249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `incident_count` is set.
             """
             warning_limit: int | None
-            """
-            Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-            `incident_count` is set.
-            """
+            """Percentage of maximum number of LSAs to reach before warning."""
 
             if TYPE_CHECKING:
 
@@ -67278,9 +67275,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         exceed_action_warn:
                            Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                            `incident_count` is set.
-                        warning_limit:
-                           Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                           `incident_count` is set.
+                        warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                     """
 
@@ -67333,10 +67328,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `incident_count` is set.
                 """
                 warning_limit: int | None
-                """
-                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                `incident_count` is set.
-                """
+                """Percentage of maximum number of LSAs to reach before warning."""
 
                 if TYPE_CHECKING:
 
@@ -67362,9 +67354,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                                `incident_count` is set.
-                            warning_limit:
-                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                               `incident_count` is set.
+                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                         """
 
@@ -68105,10 +68095,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `incident_count` is set.
                 """
                 warning_limit: int | None
-                """
-                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                `incident_count` is set.
-                """
+                """Percentage of maximum number of LSAs to reach before warning."""
 
                 if TYPE_CHECKING:
 
@@ -68134,9 +68121,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                                `incident_count` is set.
-                            warning_limit:
-                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                               `incident_count` is set.
+                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                         """
 
@@ -68254,10 +68239,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `incident_count` is set.
                 """
                 warning_limit: int | None
-                """
-                Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                `incident_count` is set.
-                """
+                """Percentage of maximum number of LSAs to reach before warning."""
 
                 if TYPE_CHECKING:
 
@@ -68283,9 +68265,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                                `incident_count` is set.
-                            warning_limit:
-                               Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                               `incident_count` is set.
+                            warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                         """
 
@@ -68338,10 +68318,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     `incident_count` is set.
                     """
                     warning_limit: int | None
-                    """
-                    Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                    `incident_count` is set.
-                    """
+                    """Percentage of maximum number of LSAs to reach before warning."""
 
                     if TYPE_CHECKING:
 
@@ -68367,9 +68344,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 exceed_action_warn:
                                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                                    `incident_count` is set.
-                                warning_limit:
-                                   Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                                   `incident_count` is set.
+                                warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                             """
 
@@ -69120,10 +69095,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     `incident_count` is set.
                     """
                     warning_limit: int | None
-                    """
-                    Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                    `incident_count` is set.
-                    """
+                    """Percentage of maximum number of LSAs to reach before warning."""
 
                     if TYPE_CHECKING:
 
@@ -69149,9 +69121,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 exceed_action_warn:
                                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
                                    `incident_count` is set.
-                                warning_limit:
-                                   Percentage of maximum number of LSAs to reach before warning. Not rendered when `disabled_time` or
-                                   `incident_count` is set.
+                                warning_limit: Percentage of maximum number of LSAs to reach before warning.
 
                             """
 

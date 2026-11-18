@@ -1344,7 +1344,7 @@ router ospf 701
 | LSA Disabled Time | 30 minutes |
 | LSA Incident Count Limit | 10 |
 | LSA Incident Count Clear Timeout | 20 minutes |
-| LSA Warning Limit | - |
+| LSA Warning Limit | 80 percent |
 | LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
@@ -1414,7 +1414,7 @@ router ospf 701
 | LSA Disabled Time | 15 minutes |
 | LSA Incident Count Limit | 4 |
 | LSA Incident Count Clear Timeout | 12 minutes |
-| LSA Warning Limit | - |
+| LSA Warning Limit | 75 percent |
 | LSA Exceed Action Warn | - |
 
 ###### Redistribution
@@ -1608,7 +1608,7 @@ router ospf 701
 | LSA Disabled Time | - |
 | LSA Incident Count Limit | 3 |
 | LSA Incident Count Clear Timeout | 6 minutes |
-| LSA Warning Limit | - |
+| LSA Warning Limit | 90 percent |
 | LSA Exceed Action Warn | - |
 
 ###### Redistribution
@@ -1673,7 +1673,7 @@ router ospfv3 vrf FULL
       bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
-      lsa limit 6000 disabled-time 15 minutes incident-count limit 4 incident-count clear-timeout 12 minutes
+      lsa limit 6000 warning limit 75 percent disabled-time 15 minutes incident-count limit 4 incident-count clear-timeout 12 minutes
       redistribute bgp include leaked
       redistribute connected include leaked
       redistribute isis include leaked level-2
@@ -1730,7 +1730,7 @@ router ospfv3 vrf data
    !
    address-family ipv4
       auto-cost reference-bandwidth 1000
-      lsa limit 7000 incident-count limit 3 incident-count clear-timeout 6 minutes
+      lsa limit 7000 warning limit 90 percent incident-count limit 3 incident-count clear-timeout 6 minutes
       redistribute bgp route-map map1
       redistribute connected route-map map1
       redistribute isis route-map map1
@@ -1751,7 +1751,7 @@ router ospfv3
    bfd default
    bfd adjacency state any
    passive-interface default
-   lsa limit 20000 disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
+   lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
    !
    address-family ipv4
       redistribute bgp
