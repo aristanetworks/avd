@@ -67209,13 +67209,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
             enabled: bool
             grace_period: int | None
-            """
-            Specify maximum time in seconds to wait for graceful-restart to complete.
-            This setting is mutually
-            exclusive with the address-family level graceful-restart settings.
-            If both are provided, the
-            address-family level settings take precedence.
-            """
+            """Specify maximum time in seconds to wait for graceful-restart to complete."""
 
             if TYPE_CHECKING:
 
@@ -67228,12 +67222,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         enabled: enabled
-                        grace_period:
-                           Specify maximum time in seconds to wait for graceful-restart to complete.
-                           This setting is mutually
-                           exclusive with the address-family level graceful-restart settings.
-                           If both are provided, the
-                           address-family level settings take precedence.
+                        grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
 
                     """
 
@@ -68051,13 +68040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
                 enabled: bool
                 grace_period: int | None
-                """
-                Specify maximum time in seconds to wait for graceful-restart to complete.
-                This setting is mutually
-                exclusive with the address-family level graceful-restart settings.
-                If both are provided, the
-                address-family level settings take precedence.
-                """
+                """Specify maximum time in seconds to wait for graceful-restart to complete."""
 
                 if TYPE_CHECKING:
 
@@ -68070,12 +68053,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             enabled: enabled
-                            grace_period:
-                               Specify maximum time in seconds to wait for graceful-restart to complete.
-                               This setting is mutually
-                               exclusive with the address-family level graceful-restart settings.
-                               If both are provided, the
-                               address-family level settings take precedence.
+                            grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
 
                         """
 
@@ -68933,7 +68911,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
             graceful_restart: GracefulRestart
-            """Subclass of AvdModel."""
+            """
+            Graceful restart configuration.
+            This setting is mutually exclusive with the address-family level
+            graceful-restart settings.
+            If both are provided, the address-family level settings take precedence.
+            Subclass of AvdModel.
+            """
             address_family_ipv4: AddressFamilyIpv4
             """
             Address family IPv4 configuration.
@@ -68998,7 +68982,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            adjacency command is rendered only when that family setting is true.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
-                        graceful_restart: Subclass of AvdModel.
+                        graceful_restart:
+                           Graceful restart configuration.
+                           This setting is mutually exclusive with the address-family level
+                           graceful-restart settings.
+                           If both are provided, the address-family level settings take precedence.
+                           Subclass of AvdModel.
                         address_family_ipv4:
                            Address family IPv4 configuration.
                            Common configurations defined at the router-level and address-
@@ -69060,7 +69049,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
         graceful_restart: GracefulRestart
-        """Subclass of AvdModel."""
+        """
+        Graceful restart configuration.
+        This setting is mutually exclusive with the address-family level
+        graceful-restart settings.
+        If both are provided, the address-family level settings take precedence.
+        Subclass of AvdModel.
+        """
         address_family_ipv4: AddressFamilyIpv4
         """
         Address family IPv4 configuration.
@@ -69124,7 +69119,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        command is rendered only when that family setting is true.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
-                    graceful_restart: Subclass of AvdModel.
+                    graceful_restart:
+                       Graceful restart configuration.
+                       This setting is mutually exclusive with the address-family level
+                       graceful-restart settings.
+                       If both are provided, the address-family level settings take precedence.
+                       Subclass of AvdModel.
                     address_family_ipv4:
                        Address family IPv4 configuration.
                        Common configurations defined at the router-level and address-
