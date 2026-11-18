@@ -17,6 +17,7 @@ from yaml import load as yaml_load
 
 from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_ARCHIVE_FILE, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .store import create_store
+from .validate_schema_fragments import validate_schema_fragments
 
 FRAGMENTS_PATTERN = "*.yml"
 METASCHEMA_FILE = METASCHEMA_DIR.joinpath("avd_meta_schema.json")
@@ -108,7 +109,8 @@ def build_schema_classes() -> None:
 
 
 def build_schemas() -> None:
-    """Combines the schema fragments, and rebuild the pickled schemas."""
+    """Validate and combine schema fragments, then rebuild schema artifacts."""
+    validate_schema_fragments()
     combine_schemas()
     from pyavd_utils_gen.schema_store import compile_schema_archive  # noqa: PLC0415
 

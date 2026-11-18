@@ -5,26 +5,20 @@
 
 from __future__ import annotations
 
-import argparse
 import json
-import sys
-from pathlib import Path
+import logging
 from typing import TYPE_CHECKING
 
 from jsonschema_rs import Draft202012Validator, ValidationError
 from yaml import CSafeLoader, YAMLError
 from yaml import load as yaml_load
 
+from .constants import SCHEMAS
+
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-METASCHEMA_FILE = REPO_ROOT / "python-avd/pyavd/_schema/avd_meta_schema.json"
-SCHEMA_PATTERNS = (
-    "python-avd/pyavd/*/schema/schema_fragments/*.yml",
-    "schemas/*/schema_fragments/*.yml",
-    "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/eos_designs_facts.schema.yml",
-)
+LOGGER = logging.getLogger(__name__)
 
 
 def leaf_errors(error: ValidationError) -> Iterator[ValidationError]:
@@ -43,25 +37,26 @@ def leaf_errors(error: ValidationError) -> Iterator[ValidationError]:
         yield from leaf_errors(sub)
 
 
-def main() -> int:
-    """Validate the schema files passed by pre-commit, reporting every error."""
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("files", nargs="+", type=Path)
-    args = parser.parse_args()
-    schema_files = args.files
-    # Configuration changes can regenerate the metaschema earlier in the same pre-commit run.
-    if any(path.resolve() in (METASCHEMA_FILE, REPO_ROOT / ".pre-commit-config.yaml") for path in schema_files):
-        schema_files = sorted(path for pattern in SCHEMA_PATTERNS for path in REPO_ROOT.glob(pattern))
+def validate_schema_fragments() -> None:
+    """Validate all authored schemas, reporting every error before aborting the build."""
+    LOGGER.info("Validating schema fragments against the metaschema")
+    schema_files = sorted(
+        path
+        for schema_name, schema_paths in SCHEMAS.items()
+        if schema_name != "avd_meta_schema"
+        for path in (schema_paths.fragments_dir.glob("*.yml") if schema_paths.fragments_dir else [schema_paths.yaml_file])
+    )
     # TODO: Override formats["regex"] with pyavd-utils-gen's is_valid_avd_regex_pattern once available
     # to check compatibility with AVD's runtime regex compiler instead of JSON Schema regex syntax alone.
     # https://github.com/aristanetworks/pyavd-utils/pull/364
-    validator = Draft202012Validator(json.loads(METASCHEMA_FILE.read_text(encoding="UTF-8")), validate_formats=True)
+    metaschema_file = SCHEMAS["avd_meta_schema"].yaml_file
+    validator = Draft202012Validator(json.loads(metaschema_file.read_text(encoding="UTF-8")), validate_formats=True)
     failed = False
     for schema_file in schema_files:
         try:
             schema = yaml_load(schema_file.read_text(encoding="UTF-8"), Loader=CSafeLoader)
         except YAMLError as error:
-            print(f"{schema_file}: {error}", file=sys.stderr)
+            LOGGER.error("%s: %s", schema_file, error)  # noqa: TRY400 - Keep the diagnostic free of a traceback.
             failed = True
             continue
         reported: set[tuple[str, str]] = set()
@@ -74,9 +69,7 @@ def main() -> int:
                     continue
                 reported.add(diagnostic)
                 message = leaf.message.replace("\r", r"\r").replace("\n", r"\n")
-                print(f"{schema_file}: {pointer or '<root>'}: {message}", file=sys.stderr)
-    return int(failed)
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+                LOGGER.error("%s: %s: %s", schema_file, pointer or "<root>", message)
+    if failed:
+        msg = "Schema fragment validation failed. See the source filenames and diagnostics above."
+        raise ValueError(msg)

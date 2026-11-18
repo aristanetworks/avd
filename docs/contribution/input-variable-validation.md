@@ -101,14 +101,14 @@ When using the VS Code YAML extension, Draft 2020-12 support requires version 1.
 
 - The `metaschema` pre-commit hook regenerates the JSON when `.pre-commit-config.yaml` changes.
   To regenerate it explicitly, run `pre-commit run metaschema --all-files` and stage any generated changes.
-- The `check-schema-fragments` pre-commit hook validates changed YAML schema fragments and the standalone EOS Designs facts schema
-  against the meta-schema before the `schemas` hook builds them. It checks schema structure and authoring conventions such as
-  nonempty descriptions, using `jsonschema-rs` with format validation enabled. Regex syntax checks do not detect all features
-  unsupported by AVD's runtime regex engine, such as `\p{Greek}`. Generated combined schemas are skipped to avoid validating the
-  same content twice. Changes to the meta-schema or `.pre-commit-config.yaml` trigger validation of all source schemas,
-  including when the preceding `metaschema` hook regenerates the JSON. To validate all source schemas explicitly, run
-  `pre-commit run check-schema-fragments --all-files`.
-- Schema builds rely on source-model loading and compilation in `pyavd-utils-gen`, without a separate JSON Schema validation pass.
+- Every schema build validates all authored YAML schema fragments and the standalone EOS Designs facts schema against the
+  meta-schema before combining fragments or writing generated artifacts. This includes the `schemas` pre-commit hook,
+  `make -C python-avd compile-schemas`, and package builds from source.
+  Validation checks schema structure and authoring conventions such as nonempty descriptions, using `jsonschema-rs` with
+  format validation enabled. Errors identify the source filename, JSON Pointer, and cause, and abort the build.
+  Regex syntax checks do not detect all features unsupported by AVD's runtime regex engine, such as `\p{Greek}`.
+  Generated combined schemas are skipped to avoid validating the same content twice. Source-model loading and compilation
+  in `pyavd-utils-gen` still run after fragment validation.
 
 ### Schema Options for type `int` (Integer)
 

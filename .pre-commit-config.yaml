@@ -27,7 +27,6 @@ ci:
     - docs-plugin-vars
     - collection-files
     - metaschema
-    - check-schema-fragments
     - schemas
     - check-schema-tables-in-docs
     - sort-hosts-yml
@@ -315,32 +314,23 @@ repos:
         additional_dependencies:
           - pyavd-utils-gen==0.0.14
 
-      - id: check-schema-fragments
-        name: Validate AVD schema fragments against the metaschema.
-        entry: python tools/validate_schema_fragments.py
-        language: python
-        files: >-
-          (?x)^(
-          python-avd/pyavd/.*/schema/schema_fragments/.*\.yml
-          |schemas/[^/]+/schema_fragments/.*\.yml
-          |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/eos_designs_facts\.schema\.yml
-          |python-avd/pyavd/_schema/avd_meta_schema\.json
-          |\.pre-commit-config\.yaml
-          )$
-        # One process avoids repeated Python startup and metaschema compilation.
-        require_serial: true
-        additional_dependencies:
-          - jsonschema-rs>=0.46.0
-          - PyYAML>=6.0.0
-
       - id: schemas
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
         language: python
-        files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
+        files: >-
+          (?x)^(
+          python-avd/pyavd/[a-z_]+/schema
+          |python-avd/pyavd/_eos_designs/eos_designs_facts/schema
+          |python-avd/pyavd/_schema/avd_meta_schema\.json$
+          |python-avd/schema_tools/
+          |schemas/[a-z_]+
+          |\.pre-commit-config\.yaml$
+          )
         pass_filenames: false
         additional_dependencies:
           - deepmerge>=1.1.0
+          - jsonschema-rs>=0.46.0
           - PyYAML>=6.0.0
           - pyavd-utils-gen==0.0.14
           - referencing>=0.35.0
