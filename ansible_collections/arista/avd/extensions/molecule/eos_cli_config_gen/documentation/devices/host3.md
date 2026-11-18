@@ -415,9 +415,9 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| SPF Timers (initial/min hold/max wait, msec) | - |
-| LSA RX Min Interval (msec) | - |
-| LSA TX Delay (initial/min/max, msec) | - |
+| SPF Timers (initial/min hold/max wait, msec) | 900 / 3000 / 9000 |
+| LSA RX Min Interval (msec) | 600 |
+| LSA TX Delay (initial/min/max, msec) | 700 / 1200 / 3000 |
 
 ###### Redistribution
 
@@ -462,6 +462,9 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      timers spf delay initial 900 3000 9000
+      timers lsa rx min interval 600
+      timers lsa tx delay initial 700 1200 3000
    !
    address-family ipv6
       router-id 3.3.3.3
