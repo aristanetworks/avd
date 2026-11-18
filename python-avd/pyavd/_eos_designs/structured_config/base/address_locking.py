@@ -53,9 +53,15 @@ class AddressLockingMixin(Protocol):
             for interface in address_locking_settings.dhcp_server_interfaces:
                 dhcp_server_interfaces.append_unique(interface)
 
-            local_interface = None if dhcp_server_interfaces else self.shared_utils.get_local_interface(address_locking_settings.local_interface)
             if not dhcp_server_interfaces:
                 dhcp_server_interfaces = Undefined
+                local_interface = (
+                    None
+                    if address_locking_settings.auto_dhcp_server_interfaces
+                    else self.shared_utils.get_local_interface(address_locking_settings.local_interface)
+                )
+            else:
+                local_interface = None
 
         locked_address = address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress)
         if not feature_support.address_locking.ipv4_enforcement_disabled:

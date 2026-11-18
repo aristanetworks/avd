@@ -1,7 +1,6 @@
 aaa_root:
   disabled: true
 address_locking:
-  local_interface: Management1
   locked_address:
     ipv4_enforcement_disabled: true
 config_end: true
