@@ -273,7 +273,7 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
-      or router_ospfv3.graceful_restart is arista.avd.defined
+      or router_ospfv3.graceful_restart.enabled is arista.avd.defined(true)
       or router_ospfv3.graceful_restart_helper is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
       or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
