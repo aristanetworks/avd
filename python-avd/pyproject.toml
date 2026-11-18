@@ -60,6 +60,12 @@ requires = [
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
 
+[tool.uv]
+required-version = ">=0.9.17"
+# This project resolves independently of the repository root.
+# Match Renovate's minimumReleaseAge, including transitive lock-file updates.
+exclude-newer = "7 days"
+
 [tool.setuptools]
 include-package-data = true
 

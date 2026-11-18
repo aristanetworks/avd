@@ -1,7 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:best-practices"],
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true
+  },
   "semanticCommits": "disabled",
   "enabledManagers": [
     "pep621",
@@ -19,7 +21,21 @@
   "gitIgnoredAuthors": [
     "114827586+autofix-ci[bot]@users.noreply.github.com"
   ],
+  // The pep621 manager maintains both uv.lock files once PR #7201 adds them.
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on monday"],
+    "rebaseWhen": "behind-base-branch",
+    "labels": ["type: dependencies"],
+    "commitMessagePrefix": "CI(requirements): "
+  },
   "packageRules": [
+    {
+      "description": "Let uv enforce release age during lockfile maintenance",
+      "matchManagers": ["pep621"],
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": "0 days"
+    },
     {
       "description": "Maintain Python runtime, optional, and build dependencies",
       "matchManagers": ["pep621"],
