@@ -8,21 +8,18 @@ from typing import TYPE_CHECKING, overload
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    # TODO: Once we drop 3.10 support this can be imported from typing.
-    from typing_extensions import Unpack
-
     T = TypeVar("T")
 
 
 @overload
-def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], None]]) -> T | None: ...
+def default(*values: *tuple[*tuple[T | None, ...], None]) -> T | None: ...
 
 
 @overload
-def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], T]]) -> T: ...
+def default(*values: *tuple[*tuple[T | None, ...], T]) -> T: ...
 
 
-def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], T | None]]) -> T | None:
+def default(*values: *tuple[*tuple[T | None, ...], T | None]) -> T | None:
     """
     Accepts any number of arguments. Return the first value which is not None.
 

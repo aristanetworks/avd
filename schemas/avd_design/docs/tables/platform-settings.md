@@ -22,6 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_bpdu_bypass</samp>](## "platform_settings.[].feature_support.dot1x_bpdu_bypass") | Boolean |  | `True` |  | Support for 802.1X BPDU bypass.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_mac_based_access_list</samp>](## "platform_settings.[].feature_support.dot1x_mac_based_access_list") | Boolean |  | `True` |  | Support for 802.1X Per-MAC ACL mode on the interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "platform_settings.[].feature_support.address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.address_locking.supported") | Boolean |  | `True` |  | Global support for Address Locking feature.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "platform_settings.[].feature_support.address_locking.ipv4_enforcement_disabled") | Boolean |  | `True` |  | Support for disabling enforcement for locked IPv4 addresses.<br>The feature will be ignored on platforms where this is false. |
@@ -31,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;explicit_interface_speed_auto_mode</samp>](## "platform_settings.[].feature_support.explicit_interface_speed_auto_mode") | Boolean |  | `True` |  | Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet interfaces.<br>When set to false, these commands are omitted while `speed auto`, `speed <mode>` and `speed forced <mode>` commands are preserved. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration on sub-interfaces.<br>When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface. |
@@ -232,6 +234,10 @@
           # Support for 802.1X BPDU bypass.
           # The feature will be ignored on platforms where this is false.
           dot1x_bpdu_bypass: <bool; default=True>
+
+          # Support for 802.1X Per-MAC ACL mode on the interfaces.
+          # The feature will be ignored on platforms where this is false.
+          dot1x_mac_based_access_list: <bool; default=True>
           address_locking:
 
             # Global support for Address Locking feature.
@@ -265,6 +271,10 @@
           # Support for storm-control.
           # The feature will be ignored on platforms where this is false.
           interface_storm_control: <bool; default=True>
+
+          # Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet interfaces.
+          # When set to false, these commands are omitted while `speed auto`, `speed <mode>` and `speed forced <mode>` commands are preserved.
+          explicit_interface_speed_auto_mode: <bool; default=True>
 
           # Support for PoE.
           # The feature will be ignored on platforms where this is false.
@@ -1647,9 +1657,11 @@
               - vEOS
               - vEOS-lab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               queue_monitor_length_notify: false
               subinterface_mtu: false
               per_interface_l2_mtu: false
@@ -1729,9 +1741,11 @@
               - ceos
               - cEOSLab
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_for_convergence: false
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               queue_monitor_length_notify: false
               subinterface_mtu: false
               per_interface_l2_mtu: false
@@ -1809,8 +1823,10 @@
           - platforms:
               - CloudEOS
             feature_support:
+              dot1x_mac_based_access_list: false
               bgp_update_wait_install: false
               interface_storm_control: false
+              explicit_interface_speed_auto_mode: false
               per_interface_l2_mru: false
               queue_monitor_length_notify: false
               sflow: false

@@ -6,8 +6,8 @@ dev = [
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "pytest"},
     {include-group = "molecule"},
+    {include-group = "pytest"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",
@@ -17,15 +17,15 @@ dev = [
     "pre-commit-hooks>=6.0.0",
     "pre-commit>=4.5.1",
     "pylint>=4.0.5",
-    "ruff==0.17.3",
+    "ruff==0.17.4",
     "setuptools>=82.0.1", # for pyright check in CI
-    "tox>=4.52.1",
+    "tox>=4.52.1,<=4.67.13",
     "yamllint>=1.38.0",
     # TODO: avoid the next line down the line if possible
     "gitpython>=3.1.57",  # for pyright check in CI for e2e script
 ]
 coverage = [
-    "coverage[toml]==7.17.0",
+    "coverage[toml]==7.17.2",
 ]
 release = [
     "build",
@@ -73,7 +73,7 @@ line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
 ]
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 # D213 is forced here since it will be removed by pydocstyle.convention = 'google' even when we have ALL here.
@@ -192,7 +192,7 @@ exclude = [
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
   ".tox",
 ]
-pythonVersion = "3.10"
+pythonVersion = "3.11"
 # This is to direct pyright where to look for schema_tools
 extraPaths = [
   "python-avd",
