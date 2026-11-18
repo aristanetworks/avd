@@ -39,7 +39,6 @@ keys:
         keys:
           spf:
             type: dict
-            required: true
             keys:
               delay:
                 type: dict
@@ -65,7 +64,6 @@ keys:
                     description: Max wait time between two SPFs in msecs.
           lsa:
             type: dict
-            required: true
             keys:
               rx:
                 type: dict
@@ -83,7 +81,6 @@ keys:
                 keys:
                   delay:
                     type: dict
-                    description: Configure SPF timers.
                     keys:
                       initial:
                         type: int
@@ -226,9 +223,6 @@ keys:
           If both are provided, the address-family level configuration takes precedence.
         $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
         keys:
-          timers:
-            type: dict
-            $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/timers"
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
