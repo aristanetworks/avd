@@ -1932,7 +1932,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         fix_sflow_parent_subinterface_conflicts: bool
         """
-        Available from AVD 6.5.0.
+        Available from AVD 6.6.0.
         Resolve sFlow conflicts between physical interfaces and their
         subinterfaces on platforms that support sFlow subinterfaces.
         For AVD-managed fabric links, sFlow is
@@ -2167,7 +2167,7 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     fix_sflow_parent_subinterface_conflicts:
-                       Available from AVD 6.5.0.
+                       Available from AVD 6.6.0.
                        Resolve sFlow conflicts between physical interfaces and their
                        subinterfaces on platforms that support sFlow subinterfaces.
                        For AVD-managed fabric links, sFlow is

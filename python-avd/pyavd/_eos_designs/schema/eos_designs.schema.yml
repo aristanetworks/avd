@@ -511,7 +511,7 @@ keys:
       fix_sflow_parent_subinterface_conflicts:
         type: bool
         default: false
-        description: 'Available from AVD 6.5.0.
+        description: 'Available from AVD 6.6.0.
 
           Resolve sFlow conflicts between physical interfaces and their subinterfaces
           on platforms that support sFlow subinterfaces.
