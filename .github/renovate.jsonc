@@ -21,7 +21,7 @@
   "gitIgnoredAuthors": [
     "114827586+autofix-ci[bot]@users.noreply.github.com"
   ],
-  // The pep621 manager maintains both uv.lock files once PR #7201 adds them.
+  // The pep621 manager maintains the shared root uv.lock once PR #7201 adds it.
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 5am on monday"],
