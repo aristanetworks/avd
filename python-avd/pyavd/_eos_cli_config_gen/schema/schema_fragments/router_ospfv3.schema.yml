@@ -34,6 +34,20 @@ keys:
         min: 1
         max: 4294967
         description: Reference bandwidth in Mbps.
+      graceful_restart:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+          grace_period:
+            type: int
+            min: 1
+            max: 1800
+            description: |-
+              Specify maximum time in seconds to wait for graceful-restart to complete.
+              This setting is mutually exclusive with the address-family level graceful-restart settings.
+              If both are provided, the address-family level settings take precedence.
       address_family_ipv4:
         type: dict
         description: |-
@@ -61,6 +75,17 @@ keys:
             min: 1
             max: 4294967
             description: Reference bandwidth in Mbps.
+          graceful_restart:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                required: true
+              grace_period:
+                type: int
+                min: 1
+                max: 1800
+                description: Specify maximum time in seconds to wait for graceful-restart to complete.
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -199,6 +224,20 @@ keys:
               min: 1
               max: 4294967
               description: Reference bandwidth in Mbps.
+            graceful_restart:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                grace_period:
+                  type: int
+                  min: 1
+                  max: 1800
+                  description: |-
+                    Specify maximum time in seconds to wait for graceful-restart to complete.
+                    This setting is mutually exclusive with the address-family level graceful-restart settings.
+                    If both are provided, the address-family level settings take precedence.
             address_family_ipv4:
               type: dict
               $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"

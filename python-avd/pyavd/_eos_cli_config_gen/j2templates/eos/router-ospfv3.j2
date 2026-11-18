@@ -32,6 +32,16 @@ router ospfv3 vrf {{ vrf.name }}
    auto-cost reference-bandwidth {{ vrf.auto_cost_reference_bandwidth }}
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.graceful_restart.enabled is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.graceful_restart is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%         set graceful_restart_cli = "graceful-restart" %}
+{%         if vrf.graceful_restart.grace_period is arista.avd.defined %}
+{%             set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.graceful_restart.grace_period %}
+{%         endif %}
+   {{ graceful_restart_cli }}
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if vrf.passive_interface_default is arista.avd.defined(true)
            and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.passive_interface_default is not arista.avd.defined)
            and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
@@ -62,6 +72,13 @@ router ospfv3 vrf {{ vrf.name }}
 {%         endif %}
 {%         if vrf.address_family_ipv4.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if vrf.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if vrf.address_family_ipv4.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.address_family_ipv4.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
 {%         endif %}
 {%         if vrf.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
@@ -151,6 +168,13 @@ router ospfv3 vrf {{ vrf.name }}
 {%         if vrf.address_family_ipv6.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
 {%         endif %}
+{%         if vrf.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if vrf.address_family_ipv6.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.address_family_ipv6.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
+{%         endif %}
 {%         if vrf.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
 {%             if vrf.address_family_ipv6.redistribute.bgp.include_leaked is arista.avd.defined(true) %}
@@ -232,6 +256,7 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
+      or router_ospfv3.graceful_restart is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
       or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
       or router_ospfv3.eos_cli is arista.avd.defined %}
@@ -260,6 +285,16 @@ router ospfv3
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
    auto-cost reference-bandwidth {{ router_ospfv3.auto_cost_reference_bandwidth }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.graceful_restart.enabled is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.graceful_restart is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%         set graceful_restart_cli = "graceful-restart" %}
+{%         if router_ospfv3.graceful_restart.grace_period is arista.avd.defined %}
+{%             set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.graceful_restart.grace_period %}
+{%         endif %}
+   {{ graceful_restart_cli }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.passive_interface_default is arista.avd.defined(true)
@@ -292,6 +327,13 @@ router ospfv3
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if router_ospfv3.address_family_ipv4.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.address_family_ipv4.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv4.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}
@@ -380,6 +422,13 @@ router ospfv3
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined(true) %}
       passive-interface default
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if router_ospfv3.address_family_ipv6.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.address_family_ipv6.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
 {%         endif %}
 {%         if router_ospfv3.address_family_ipv6.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%             set redistribute_bgp_cli = "redistribute bgp" %}

@@ -415,6 +415,8 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | True |
+| Grace Period | 4 |
 
 ###### Redistribution
 
@@ -433,6 +435,8 @@ router ospf 702
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | True |
+| Grace Period | - |
 
 ###### Redistribution
 
@@ -453,6 +457,7 @@ router ospfv3
       bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
+      graceful-restart grace-period 4
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
@@ -462,6 +467,7 @@ router ospfv3
       bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
+      graceful-restart
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1

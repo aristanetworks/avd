@@ -158,6 +158,8 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| Graceful Restart | True |
+| Grace Period | 10 |
 
 ##### Address Family IPv4
 
@@ -184,6 +186,18 @@ router ospf 703
 | ospfv3 leaked | True | map1 |
 | static | - | map1 |
 
+#### VRF: Global
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | True |
+| Grace Period | 22 |
+
 #### VRF: Test
 
 | Parameter | Value |
@@ -193,18 +207,39 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| Graceful Restart | - |
+| Grace Period | - |
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | True |
+| Grace Period | 21 |
 
 #### Router OSPFv3 Device Configuration
 
 ```eos
 !
+router ospfv3 vrf Global
+   graceful-restart grace-period 22
+!
 router ospfv3 vrf Test
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
    passive-interface default
+   !
+   address-family ipv4
+      graceful-restart grace-period 21
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   graceful-restart grace-period 10
    bfd default
    !
    address-family ipv4
