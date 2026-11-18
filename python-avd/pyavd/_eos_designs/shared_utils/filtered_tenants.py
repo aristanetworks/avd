@@ -106,12 +106,12 @@ class FilteredTenantsMixin(Protocol):
         for l2vlan in tenant.l2vlans:
             if not self.is_accepted_vlan(l2vlan):
                 continue
-
+            context = f"{tenant._internal_data.context}[name={tenant.name}].l2vlans[name={l2vlan.name}]"
             # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
             if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
                 continue
 
-            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
+            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan, context)
             merged_l2vlan.evpn_vlan_bundle = default(merged_l2vlan.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
             filtered_l2vlans.append(merged_l2vlan)
@@ -121,10 +121,11 @@ class FilteredTenantsMixin(Protocol):
     def get_merged_l2vlan_config(
         self: SharedUtilsProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+        context: str,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
         """Return structured config for one l2vlan after inheritance."""
         if vlan.profile:
-            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
+            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, context)
 
             # Inherit from the profile
             merged_vlan = vlan._deepinherited(
@@ -171,10 +172,7 @@ class FilteredTenantsMixin(Protocol):
             parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
             if parent_profile_item.parent_profile:
                 self.emit_warning_for_grandparent_profile(
-                    parent_profile=parent_profile_item.profile,
-                    context=f"l2vlan_profiles[profile={parent_profile_item.profile}]",
-                    profile=resolved_profile.profile,
-                    location=f"l2vlan_profiles[name={context}]",
+                    parent_profile=parent_profile_item.profile, context=f"l2vlan_profiles[profile={parent_profile_item.profile}]", profile = resolved_profile.profile, location=context
                 )
             # Notice reuse of the same variable with the merged content.
             resolved_profile._deepinherit(parent_profile_item)
@@ -409,7 +407,7 @@ class FilteredTenantsMixin(Protocol):
                 continue
             # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
-            merged_svi = self.get_merged_svi_config(svi, context=f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]")
+            merged_svi = self.get_merged_svi_config(svi, context=f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]")
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
