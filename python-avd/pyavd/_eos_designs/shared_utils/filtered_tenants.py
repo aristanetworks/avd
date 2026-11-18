@@ -172,7 +172,10 @@ class FilteredTenantsMixin(Protocol):
             parent_profile_item = self.inputs.l2vlan_profiles[resolved_profile.parent_profile]
             if parent_profile_item.parent_profile:
                 self.emit_warning_for_grandparent_profile(
-                    parent_profile=parent_profile_item.profile, context=f"l2vlan_profiles[profile={parent_profile_item.profile}]", profile = resolved_profile.profile, location=context
+                    parent_profile=parent_profile_item.profile,
+                    context=f"l2vlan_profiles[profile={parent_profile_item.profile}]",
+                    profile=resolved_profile.profile,
+                    location=context,
                 )
             # Notice reuse of the same variable with the merged content.
             resolved_profile._deepinherit(parent_profile_item)
