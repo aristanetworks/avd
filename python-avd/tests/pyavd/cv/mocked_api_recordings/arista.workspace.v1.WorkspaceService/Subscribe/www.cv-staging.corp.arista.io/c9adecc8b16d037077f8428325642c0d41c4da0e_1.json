@@ -1,0 +1,63 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+                },
+                "createdAt": "2026-11-18T07:26:39.909606653",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-11-18T07:27:24.167840634",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-792f8bc7-3994-4844-ad57-07f2ed27248e",
+                "responses": {},
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "AVD_CI_PYTEST_WS_REBUILD",
+                "description": "",
+                "excludeNetworkProvisioning": false,
+                "decommissionRequestIds": {}
+            },
+            "time": "2026-11-18T07:27:24.167847684",
+            "type": "INITIAL"
+        },
+        {
+            "type": "INITIAL_SYNC_COMPLETE"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+                },
+                "createdAt": "2026-11-18T07:26:39.909606653",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-11-18T07:27:35.352326368",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-792f8bc7-3994-4844-ad57-07f2ed27248e",
+                "responses": {
+                    "values": {
+                        "req-792f8bc7-3994-4844-ad57-07f2ed27248e": {
+                            "status": "SUCCESS",
+                            "message": "Build req-792f8bc7-3994-4844-ad57-07f2ed27248e finished successfully",
+                            "startTime": "2026-11-18T07:27:24.115068304",
+                            "endTime": "2026-11-18T07:27:24.620018869",
+                            "requestType": "START_BUILD"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": true,
+                "needsRebase": false,
+                "displayName": "AVD_CI_PYTEST_WS_REBUILD",
+                "description": "",
+                "excludeNetworkProvisioning": false,
+                "decommissionRequestIds": {}
+            },
+            "time": "2026-11-18T07:27:35.352330438",
+            "type": "UPDATED"
+        }
+    ]
+}

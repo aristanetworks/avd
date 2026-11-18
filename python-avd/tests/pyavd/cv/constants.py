@@ -134,3 +134,42 @@ MOCKED_WORKSPACE_B_REQUEST_ID_REBASE_1_SUCCESS = {
     "message": "Workspace is already up to date",
     "code": ResponseCode.UNSPECIFIED,
 }
+
+"""Workspace 'C' used to test rebuilding of the Workspace where initial build succeeds but Workspace returns needs_build set to True."""
+MOCKED_WORKSPACE_C_ID = "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+
+"""
+Initial Workspace build request. Succeeds but returned Workspace has Workspace.needs_build set to True.
+
+recorded mocked api arista.workspace.v1.WorkspaceConfigService/Set:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-staging.corp.arista.io/\\
+  4953167a7364d3f5b3c2b426a5a420ac7accfdd6_1.json
+
+recorded mocked api arista.workspace.v1.WorkspaceService/Subscribe responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceService/Subscribe/www.cv-staging.corp.arista.io/\\
+  c9adecc8b16d037077f8428325642c0d41c4da0e_1.json
+"""
+MOCKED_WORKSPACE_C_BUILD_REQUEST_ID_1 = {
+    "id": "req-792f8bc7-3994-4844-ad57-07f2ed27248e",
+    "status": ResponseStatus.SUCCESS,
+    "message": "Build req-792f8bc7-3994-4844-ad57-07f2ed27248e finished successfully",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""
+Additional Workspace build request. Succeeds and returned Workspace has Workspace.needs_build set to False.
+
+recorded mocked api arista.workspace.v1.WorkspaceConfigService/Set:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-staging.corp.arista.io/\\
+  53576309820ba5067e0fdbb63c1e3d1a76f0e236_1.json
+
+recorded mocked api arista.workspace.v1.WorkspaceService/Subscribe responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceService/Subscribe/www.cv-staging.corp.arista.io/\\
+  c9adecc8b16d037077f8428325642c0d41c4da0e_2.json
+"""
+MOCKED_WORKSPACE_C_BUILD_REQUEST_ID_2 = {
+    "id": "req-01c8f794-31f6-43ae-b759-5b61074b0e9c",
+    "status": ResponseStatus.SUCCESS,
+    "message": "Build req-01c8f794-31f6-43ae-b759-5b61074b0e9c finished successfully",
+    "code": ResponseCode.UNSPECIFIED,
+}
