@@ -54,7 +54,7 @@
       md_output: "{{ anta_runner_report_md_path }}"
       json_output: "{{ anta_runner_report_json_path }}"
       filters:
-        exclude_statuses: "{{ anta_runner_report_exclude_statuses }}"
+        exclude_statuses: "{{ anta_runner_report_exclude_statuses | arista.avd.default([]) }}"
       sorting:
         sort_fields: "{{ anta_runner_report_sort_fields }}"
         status_priority: "{{ anta_runner_report_status_priority }}"

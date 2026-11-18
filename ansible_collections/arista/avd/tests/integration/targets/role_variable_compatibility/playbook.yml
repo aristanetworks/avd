@@ -46,54 +46,95 @@
   hosts: canonical
   gather_facts: false
   vars:
-    root_dir: /tmp/legacy-root
-    output_dir: /tmp/legacy-output
+    root_dir: "{{ role_variable_compatibility_test_directory.path }}/legacy-root"
+    output_dir: "{{ role_variable_compatibility_test_directory.path }}/legacy-output"
     output_dir_name: legacy-output
-    avd_root_dir: /tmp/canonical-root
-    avd_output_dir: /tmp/canonical-output
+    avd_root_dir: "{{ role_variable_compatibility_test_directory.path }}/canonical-root"
+    avd_output_dir: "{{ role_variable_compatibility_test_directory.path }}/canonical-output"
     avd_output_dir_name: canonical-output
     avd_structured_config_file_format: json
     avd_vault_id: canonical-vault
-    role_default_files:
-      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/eos_designs/defaults/main/output_directories.yml"
-      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/eos_cli_config_gen/defaults/main/output_directories.yml"
-      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/anta_runner/defaults/main/directories.yml"
-      - "{{ playbook_dir }}/../../../../roles/build_output_folders/defaults/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/cv_deploy/defaults/main/directories.yml"
-      - "{{ playbook_dir }}/../../../../roles/eos_config_deploy_eapi/defaults/main.yml"
-      - "{{ playbook_dir }}/../../../../roles/eos_snapshot/defaults/main.yml"
   tasks:
-    - name: Load role defaults
-      ansible.builtin.include_vars:
-        file: "{{ item }}"
-        name: loaded_role_defaults
-        hash_behaviour: merge
-      loop: "{{ role_default_files }}"
-      loop_control:
-        label: "{{ item | basename }}"
+    - name: Create isolated directory for the role precedence test
+      ansible.builtin.tempfile:
+        state: directory
+        prefix: avd-role-variable-compatibility-
+      register: role_variable_compatibility_test_directory
 
-    - name: Assert explicit canonical values remain authoritative
-      ansible.builtin.assert:
-        that:
-          - avd_root_dir == '/tmp/canonical-root'
-          - avd_output_dir == '/tmp/canonical-output'
-          - avd_output_dir_name == 'canonical-output'
-          - avd_structured_config_file_format == 'json'
-          - avd_vault_id == 'canonical-vault'
-          - loaded_role_defaults.avd_root_dir == '/tmp/legacy-root'
-          - loaded_role_defaults.avd_output_dir == '/tmp/legacy-output'
-          - loaded_role_defaults.avd_output_dir_name == 'legacy-output'
-          - loaded_role_defaults.avd_structured_config_file_format == 'yml'
-          - loaded_role_defaults.avd_vault_id is none
-          - eos_cli_config_gen_structured_config_file_format is not defined
-          - eos_cli_config_gen_vault_id is not defined
-          - eos_designs_structured_config_file_format is not defined
-          - eos_designs_vault_id is not defined
-          - cv_deploy_vault_id is not defined
+    - name: Test role defaults and canonical output paths
+      block:
+        - name: Load public defaults through the actual roles without running their workflows
+          ansible.builtin.include_role:
+            name: "arista.avd.{{ role_variable_compatibility_role }}"
+            public: true
+            apply:
+              when: false
+          loop:
+            - eos_designs
+            - eos_cli_config_gen
+            - anta_runner
+            - cv_deploy
+          loop_control:
+            loop_var: role_variable_compatibility_role
+
+        - name: Create a legacy output directory that must remain untouched
+          ansible.builtin.file:
+            path: "{{ output_dir }}"
+            state: directory
+            mode: "0755"
+
+        - name: Seed the legacy output directory
+          ansible.builtin.copy:
+            dest: "{{ output_dir }}/keep.txt"
+            content: "legacy output must survive\n"
+            mode: "0644"
+
+        - name: Run the folder role with conflicting canonical and legacy paths
+          ansible.builtin.include_role:
+            name: arista.avd.build_output_folders
+            public: true
+
+        - name: Assert explicit canonical values remain authoritative
+          ansible.builtin.assert:
+            that:
+              - avd_root_dir == role_variable_compatibility_test_directory.path ~ '/canonical-root'
+              - avd_output_dir == role_variable_compatibility_test_directory.path ~ '/canonical-output'
+              - avd_output_dir_name == 'canonical-output'
+              - avd_structured_config_file_format == 'json'
+              - avd_vault_id == 'canonical-vault'
+              - avd_structured_dir == avd_output_dir ~ '/structured_configs'
+
+        - name: Inspect the expected canonical output directories
+          ansible.builtin.stat:
+            path: "{{ role_variable_compatibility_test_directory.path }}/{{ item }}"
+          loop:
+            - canonical-output/configs
+            - canonical-output/structured_configs/cvp
+            - canonical-root/documentation/fabric
+            - canonical-root/anta/reports
+          register: role_variable_compatibility_canonical_directories
+
+        - name: Verify the folder role consumed the canonical paths
+          ansible.builtin.assert:
+            that: item.stat.isdir
+          loop: "{{ role_variable_compatibility_canonical_directories.results }}"
+          loop_control:
+            label: "{{ item.item }}"
+
+        - name: Read the preserved legacy output
+          ansible.builtin.slurp:
+            src: "{{ output_dir }}/keep.txt"
+          register: role_variable_compatibility_legacy_output
+
+        - name: Verify the legacy output directory was not cleaned
+          ansible.builtin.assert:
+            that: role_variable_compatibility_legacy_output.content | b64decode == 'legacy output must survive\n'
+
+      always:
+        - name: Remove the isolated precedence test directory
+          ansible.builtin.file:
+            path: "{{ role_variable_compatibility_test_directory.path }}"
+            state: absent
 
 - name: Verify defaults do not export generic path variables
   hosts: isolated

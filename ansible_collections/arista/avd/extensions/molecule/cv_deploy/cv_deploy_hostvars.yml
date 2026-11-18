@@ -162,7 +162,7 @@
           run_once: true
           ansible.builtin.assert:
             that:
-              - output_devices == cv_devices
+              - output_devices == cv_deploy_devices
 
       always:
 
