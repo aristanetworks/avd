@@ -84,31 +84,38 @@ class MonitorSessionsMixin(Protocol):
                     monitor_session.destinations.append(session.interface_data.interface)
 
             source_sessions = [session for session in session_configs_list if session.monitor_session.role == "source"]
+            session_settings = merged_settings.session_settings
+            session_access_group: EosCliConfigGen.MonitorSessionsItem.AccessGroup | None = None
+            if session_settings and session_settings.access_group:
+                session_access_group = session_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup)
+
+            use_interface_specific_source_acls = (
+                session_access_group is not None
+                and len(source_sessions) > 1
+                and self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog
+                and self._monitor_session_acl_has_interface_substitution(session_access_group)
+            )
 
             for session in source_sessions:
                 source = EosCliConfigGen.MonitorSessionsItem.SourcesItem(
                     name=session.interface_data.interface,
                     direction=session.monitor_session.source_settings.direction,
                 )
-                if access_group := session.monitor_session.source_settings.access_group:
+                if use_interface_specific_source_acls and session_access_group:
+                    source.access_group = session_access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup)
+                    self._configure_monitor_session_acl_from_catalog(
+                        source.access_group,
+                        session.interface_data,
+                        session.interface_data.interface,
+                    )
+                elif access_group := session.monitor_session.source_settings.access_group:
                     source.access_group = access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.SourcesItem.AccessGroup)
                     self._configure_monitor_session_acl_from_catalog(source.access_group, session.interface_data, session.interface_data.interface)
                 monitor_session.sources.append(source)
 
-            if session_settings := merged_settings.session_settings:
-                if access_group := session_settings.access_group:
-                    monitor_session.access_group = access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup)
-                    if (
-                        len(source_sessions) > 1
-                        and self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog
-                        and self._monitor_session_acl_has_interface_substitution(monitor_session.access_group)
-                    ):
-                        msg = (
-                            f"Cannot configure session_settings.access_group '{monitor_session.access_group.name}' for monitor session '{session_name}' "
-                            "because its ACL contains an interface-specific IP substitution and the session has multiple source interfaces."
-                        )
-                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-
+            if session_settings:
+                if session_access_group and not use_interface_specific_source_acls:
+                    monitor_session.access_group = session_access_group
                     interface_data = source_sessions[0].interface_data if len(source_sessions) == 1 else None
                     interface_name = interface_data.interface if interface_data else session_name
                     self._configure_monitor_session_acl_from_catalog(monitor_session.access_group, interface_data, interface_name)
