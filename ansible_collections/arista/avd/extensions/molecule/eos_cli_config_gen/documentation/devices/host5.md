@@ -116,6 +116,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -126,6 +129,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -144,6 +150,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 

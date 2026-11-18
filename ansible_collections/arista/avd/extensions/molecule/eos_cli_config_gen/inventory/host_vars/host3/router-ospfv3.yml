@@ -5,6 +5,7 @@ router_ospfv3:
   graceful_restart:
     enabled: true
     grace_period: 30
+  graceful_restart_helper: true
   bfd_default: true
   bfd_adjacency_state_any: true
   passive_interface_default: true
@@ -19,6 +20,7 @@ router_ospfv3:
     graceful_restart:
       enabled: true
       grace_period: 4
+    graceful_restart_helper: true
     redistribute:
       ospfv3:
         leaked:
@@ -39,6 +41,7 @@ router_ospfv3:
     passive_interface_default: true
     graceful_restart:
       enabled: true
+    graceful_restart_helper: false
     redistribute:
       ospfv3:
         leaked:

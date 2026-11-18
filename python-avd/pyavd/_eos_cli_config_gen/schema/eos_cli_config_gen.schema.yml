@@ -22588,6 +22588,9 @@ keys:
             max: 1800
             description: Specify maximum time in seconds to wait for graceful-restart
               to complete.
+      graceful_restart_helper:
+        type: bool
+        description: Enable graceful-restart helper.
       address_family_ipv4:
         type: dict
         description: 'Address family IPv4 configuration.
@@ -22630,6 +22633,9 @@ keys:
                 max: 1800
                 description: Specify maximum time in seconds to wait for graceful-restart
                   to complete.
+          graceful_restart_helper:
+            type: bool
+            description: Enable graceful-restart helper.
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -22793,6 +22799,9 @@ keys:
                   max: 1800
                   description: Specify maximum time in seconds to wait for graceful-restart
                     to complete.
+            graceful_restart_helper:
+              type: bool
+              description: Enable graceful-restart helper.
             address_family_ipv4:
               type: dict
               $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4

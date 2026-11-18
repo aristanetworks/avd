@@ -160,6 +160,7 @@ router ospf 703
 | Auto Cost Reference Bandwidth | 100 |
 | Graceful Restart | - |
 | Grace Period | - |
+| Graceful Restart Helper | True |
 
 ##### Address Family IPv4
 
@@ -197,6 +198,7 @@ router ospf 703
 | Auto Cost Reference Bandwidth | - |
 | Graceful Restart | True |
 | Grace Period | 22 |
+| Graceful Restart Helper | False |
 
 #### VRF: Test
 
@@ -209,6 +211,7 @@ router ospf 703
 | Auto Cost Reference Bandwidth | 100 |
 | Graceful Restart | - |
 | Grace Period | - |
+| Graceful Restart Helper | True |
 
 ##### Address Family IPv4
 
@@ -221,6 +224,7 @@ router ospf 703
 | Auto Cost Reference Bandwidth | - |
 | Graceful Restart | True |
 | Grace Period | 21 |
+| Graceful Restart Helper | False |
 
 #### Router OSPFv3 Device Configuration
 
@@ -228,17 +232,21 @@ router ospf 703
 !
 router ospfv3 vrf Global
    graceful-restart grace-period 22
+   no graceful-restart-helper
 !
 router ospfv3 vrf Test
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
    passive-interface default
+   graceful-restart-helper
    !
    address-family ipv4
       graceful-restart grace-period 21
+      no graceful-restart-helper
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   graceful-restart-helper
    bfd default
    !
    address-family ipv4

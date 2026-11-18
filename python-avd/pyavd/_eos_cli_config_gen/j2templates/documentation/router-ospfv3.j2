@@ -26,6 +26,7 @@
 {%     set default_graceful_restart = router_ospfv3.graceful_restart is arista.avd.defined
            and router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)
            and router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) %}
+{%     set default_graceful_restart_helper = router_ospfv3.graceful_restart_helper is arista.avd.defined %}
 {%     set default_address_family_ipv4 = router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%     set default_address_family_ipv6 = router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%     if default_router_id
@@ -34,6 +35,7 @@
            or default_passive_interface_default
            or default_auto_cost_reference_bandwidth
            or default_graceful_restart
+           or default_graceful_restart_helper
            or default_address_family_ipv4
            or default_address_family_ipv6 %}
 
@@ -43,7 +45,8 @@
                or default_bfd_adjacency_state_any
                or default_passive_interface_default
                or default_auto_cost_reference_bandwidth
-               or default_graceful_restart %}
+               or default_graceful_restart
+               or default_graceful_restart_helper %}
 {%             set default_vrf_router_id = router_ospfv3.router_id | arista.avd.default('-') %}
 {%             set default_vrf_bfd_default = router_ospfv3.bfd_default | arista.avd.default('-') %}
 {%             set default_vrf_bfd_adjacency_state_any = router_ospfv3.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -51,6 +54,7 @@
 {%             set default_vrf_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%             set default_vrf_graceful_restart = router_ospfv3.graceful_restart.enabled | arista.avd.default('-') %}
 {%             set default_vrf_grace_period = router_ospfv3.graceful_restart.grace_period | arista.avd.default('-') %}
+{%             set default_vrf_graceful_restart_helper = router_ospfv3.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -61,6 +65,7 @@
 | Auto Cost Reference Bandwidth | {{ default_vrf_auto_cost_reference_bandwidth if default_auto_cost_reference_bandwidth else '-' }} |
 | Graceful Restart | {{ default_vrf_graceful_restart if default_graceful_restart else '-' }} |
 | Grace Period | {{ default_vrf_grace_period if default_graceful_restart else '-' }} |
+| Graceful Restart Helper | {{ default_vrf_graceful_restart_helper if default_graceful_restart_helper else '-' }} |
 {%         endif %}
 {%         if default_address_family_ipv4 %}
 
@@ -70,7 +75,8 @@
                    or router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
-                   or router_ospfv3.address_family_ipv4.graceful_restart is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv4.graceful_restart is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.graceful_restart_helper is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -78,6 +84,7 @@
 {%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                 set af_graceful_restart = router_ospfv3.address_family_ipv4.graceful_restart.enabled | arista.avd.default('-') %}
 {%                 set af_grace_period = router_ospfv3.address_family_ipv4.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                 set af_graceful_restart_helper = router_ospfv3.address_family_ipv4.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -88,6 +95,7 @@
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 | Graceful Restart | {{ af_graceful_restart }} |
 | Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -143,7 +151,8 @@
                    or router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
-                   or router_ospfv3.address_family_ipv6.graceful_restart is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv6.graceful_restart is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.graceful_restart_helper is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -151,6 +160,7 @@
 {%                 set af_auto_cost_reference_bandwidth = router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                 set af_graceful_restart = router_ospfv3.address_family_ipv6.graceful_restart.enabled | arista.avd.default('-') %}
 {%                 set af_grace_period = router_ospfv3.address_family_ipv6.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                 set af_graceful_restart_helper = router_ospfv3.address_family_ipv6.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -161,6 +171,7 @@
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 | Graceful Restart | {{ af_graceful_restart }} |
 | Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -233,6 +244,7 @@
 {%         set vrf_graceful_restart = vrf.graceful_restart is arista.avd.defined
                and vrf.address_family_ipv4.enabled is not arista.avd.defined(true)
                and vrf.address_family_ipv6.enabled is not arista.avd.defined(true) %}
+{%         set vrf_graceful_restart_helper = vrf.graceful_restart_helper is arista.avd.defined %}
 {%         set vrf_address_family_ipv4 = vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set vrf_address_family_ipv6 = vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         if vrf_router_id
@@ -241,6 +253,7 @@
                or vrf_passive_interface_default
                or vrf_auto_cost_reference_bandwidth
                or vrf_graceful_restart
+               or vrf_graceful_restart_helper
                or vrf_address_family_ipv4
                or vrf_address_family_ipv6 %}
 
@@ -250,7 +263,8 @@
                    or vrf_bfd_adjacency_state_any
                    or vrf_passive_interface_default
                    or vrf_auto_cost_reference_bandwidth
-                   or vrf_graceful_restart %}
+                   or vrf_graceful_restart
+                   or vrf_graceful_restart_helper %}
 {%                 set vrf_summary_router_id = vrf.router_id | arista.avd.default('-') %}
 {%                 set vrf_summary_bfd_default = vrf.bfd_default | arista.avd.default('-') %}
 {%                 set vrf_summary_bfd_adjacency_state_any = vrf.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -258,6 +272,7 @@
 {%                 set vrf_summary_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                 set vrf_summary_graceful_restart = vrf.graceful_restart.enabled | arista.avd.default('-') %}
 {%                 set vrf_summary_grace_period = vrf.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                 set vrf_summary_graceful_restart_helper = vrf.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -268,6 +283,7 @@
 | Auto Cost Reference Bandwidth | {{ vrf_summary_auto_cost_reference_bandwidth if vrf_auto_cost_reference_bandwidth else '-' }} |
 | Graceful Restart | {{ vrf_summary_graceful_restart if vrf_graceful_restart else '-' }} |
 | Grace Period | {{ vrf_summary_grace_period if vrf_graceful_restart else '-' }} |
+| Graceful Restart Helper | {{ vrf_summary_graceful_restart_helper if vrf_graceful_restart_helper else '-' }} |
 {%             endif %}
 {%             if vrf_address_family_ipv4 %}
 
@@ -277,7 +293,8 @@
                        or vrf.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv4.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
-                       or vrf.address_family_ipv4.graceful_restart is arista.avd.defined %}
+                       or vrf.address_family_ipv4.graceful_restart is arista.avd.defined
+                       or vrf.address_family_ipv4.graceful_restart_helper is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -285,6 +302,7 @@
 {%                     set af_auto_cost_reference_bandwidth = vrf.address_family_ipv4.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                     set af_graceful_restart = vrf.address_family_ipv4.graceful_restart.enabled | arista.avd.default('-') %}
 {%                     set af_grace_period = vrf.address_family_ipv4.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                     set af_graceful_restart_helper = vrf.address_family_ipv4.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -295,6 +313,7 @@
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 | Graceful Restart | {{ af_graceful_restart }} |
 | Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%                 endif %}
 {%                 if vrf.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}
@@ -350,7 +369,8 @@
                        or vrf.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv6.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
-                       or vrf.address_family_ipv6.graceful_restart is arista.avd.defined %}
+                       or vrf.address_family_ipv6.graceful_restart is arista.avd.defined
+                       or vrf.address_family_ipv6.graceful_restart_helper is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -358,6 +378,7 @@
 {%                     set af_auto_cost_reference_bandwidth = vrf.address_family_ipv6.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                     set af_graceful_restart = vrf.address_family_ipv6.graceful_restart.enabled | arista.avd.default('-') %}
 {%                     set af_grace_period = vrf.address_family_ipv6.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                     set af_graceful_restart_helper = vrf.address_family_ipv6.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -368,6 +389,7 @@
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
 | Graceful Restart | {{ af_graceful_restart }} |
 | Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%                 endif %}
 {%                 if vrf.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}

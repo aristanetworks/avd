@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.graceful_restart") | Dictionary |  |  |  | Graceful restart configuration.<br>This setting is mutually exclusive with the address-family level graceful-restart settings.<br>If both are provided, the address-family level settings take precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -26,6 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -97,6 +99,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -107,6 +110,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].graceful_restart") | Dictionary |  |  |  | Graceful restart configuration.<br>This setting is mutually exclusive with the address-family level graceful-restart settings.<br>If both are provided, the address-family level settings take precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -117,6 +121,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -188,6 +193,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart_helper") | Boolean |  |  |  | Enable graceful-restart helper. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on this VRF OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance. |
 
@@ -223,6 +229,9 @@
         # Specify maximum time in seconds to wait for graceful-restart to complete.
         grace_period: <int; 1-1800>
 
+      # Enable graceful-restart helper.
+      graceful_restart_helper: <bool>
+
       # Address family IPv4 configuration.
       # Common configurations defined at the router-level and address-family level are mutually exclusive.
       # If both are provided, the address-family level configuration takes precedence.
@@ -248,6 +257,9 @@
 
           # Specify maximum time in seconds to wait for graceful-restart to complete.
           grace_period: <int; 1-1800>
+
+        # Enable graceful-restart helper.
+        graceful_restart_helper: <bool>
 
         # Redistribute routes into OSPFv3.
         redistribute:
@@ -355,6 +367,9 @@
 
           # Specify maximum time in seconds to wait for graceful-restart to complete.
           grace_period: <int; 1-1800>
+
+        # Enable graceful-restart helper.
+        graceful_restart_helper: <bool>
       vrfs:
 
           # VRF name.
@@ -386,6 +401,9 @@
             # Specify maximum time in seconds to wait for graceful-restart to complete.
             grace_period: <int; 1-1800>
 
+          # Enable graceful-restart helper.
+          graceful_restart_helper: <bool>
+
           # Address family IPv4 configuration.
           # Common configurations defined at the router-level and address-family level are mutually exclusive.
           # If both are provided, the address-family level configuration takes precedence.
@@ -411,6 +429,9 @@
 
               # Specify maximum time in seconds to wait for graceful-restart to complete.
               grace_period: <int; 1-1800>
+
+            # Enable graceful-restart helper.
+            graceful_restart_helper: <bool>
 
             # Redistribute routes into OSPFv3.
             redistribute:
@@ -518,6 +539,9 @@
 
               # Specify maximum time in seconds to wait for graceful-restart to complete.
               grace_period: <int; 1-1800>
+
+            # Enable graceful-restart helper.
+            graceful_restart_helper: <bool>
 
           # Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
           eos_cli: <str>

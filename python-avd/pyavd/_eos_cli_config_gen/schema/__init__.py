@@ -67558,6 +67558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
                 "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
                 "redistribute": {"type": Redistribute},
             }
             enabled: bool
@@ -67573,6 +67574,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Reference bandwidth in Mbps."""
             graceful_restart: GracefulRestart
             """Subclass of AvdModel."""
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
             redistribute: Redistribute
             """
             Redistribute routes into OSPFv3.
@@ -67592,6 +67595,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -67608,6 +67612,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         graceful_restart: Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
                         redistribute:
                            Redistribute routes into OSPFv3.
 
@@ -67975,6 +67980,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
                 "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
             }
             redistribute: Redistribute
             """
@@ -67995,6 +68001,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Reference bandwidth in Mbps."""
             graceful_restart: GracefulRestart
             """Subclass of AvdModel."""
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
 
             if TYPE_CHECKING:
 
@@ -68009,6 +68017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -68028,6 +68037,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                         graceful_restart: Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
 
                     """
 
@@ -68394,6 +68404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
                     "graceful_restart": {"type": GracefulRestart},
+                    "graceful_restart_helper": {"type": bool},
                     "redistribute": {"type": Redistribute},
                 }
                 enabled: bool
@@ -68409,6 +68420,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Reference bandwidth in Mbps."""
                 graceful_restart: GracefulRestart
                 """Subclass of AvdModel."""
+                graceful_restart_helper: bool | None
+                """Enable graceful-restart helper."""
                 redistribute: Redistribute
                 """
                 Redistribute routes into OSPFv3.
@@ -68428,6 +68441,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                         graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                        graceful_restart_helper: bool | UndefinedType | None = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -68444,6 +68458,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             graceful_restart: Subclass of AvdModel.
+                            graceful_restart_helper: Enable graceful-restart helper.
                             redistribute:
                                Redistribute routes into OSPFv3.
 
@@ -68816,6 +68831,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
                     "graceful_restart": {"type": GracefulRestart},
+                    "graceful_restart_helper": {"type": bool},
                 }
                 redistribute: Redistribute
                 """
@@ -68836,6 +68852,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Reference bandwidth in Mbps."""
                 graceful_restart: GracefulRestart
                 """Subclass of AvdModel."""
+                graceful_restart_helper: bool | None
+                """Enable graceful-restart helper."""
 
                 if TYPE_CHECKING:
 
@@ -68850,6 +68868,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                         graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                        graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -68869,6 +68888,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
                             graceful_restart: Subclass of AvdModel.
+                            graceful_restart_helper: Enable graceful-restart helper.
 
                         """
 
@@ -68880,6 +68900,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
                 "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
                 "eos_cli": {"type": str},
@@ -68918,6 +68939,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             If both are provided, the address-family level settings take precedence.
             Subclass of AvdModel.
             """
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
             address_family_ipv4: AddressFamilyIpv4
             """
             Address family IPv4 configuration.
@@ -68953,6 +68976,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                     eos_cli: str | UndefinedType | None = Undefined,
@@ -68988,6 +69012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            graceful-restart settings.
                            If both are provided, the address-family level settings take precedence.
                            Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
                         address_family_ipv4:
                            Address family IPv4 configuration.
                            Common configurations defined at the router-level and address-
@@ -69022,6 +69047,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "passive_interface_default": {"type": bool},
             "auto_cost_reference_bandwidth": {"type": int},
             "graceful_restart": {"type": GracefulRestart},
+            "graceful_restart_helper": {"type": bool},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
             "address_family_ipv6": {"type": AddressFamilyIpv6},
             "vrfs": {"type": Vrfs},
@@ -69056,6 +69082,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         If both are provided, the address-family level settings take precedence.
         Subclass of AvdModel.
         """
+        graceful_restart_helper: bool | None
+        """Enable graceful-restart helper."""
         address_family_ipv4: AddressFamilyIpv4
         """
         Address family IPv4 configuration.
@@ -69092,6 +69120,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 passive_interface_default: bool | UndefinedType | None = Undefined,
                 auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                graceful_restart_helper: bool | UndefinedType | None = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
@@ -69125,6 +69154,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        graceful-restart settings.
                        If both are provided, the address-family level settings take precedence.
                        Subclass of AvdModel.
+                    graceful_restart_helper: Enable graceful-restart helper.
                     address_family_ipv4:
                        Address family IPv4 configuration.
                        Common configurations defined at the router-level and address-

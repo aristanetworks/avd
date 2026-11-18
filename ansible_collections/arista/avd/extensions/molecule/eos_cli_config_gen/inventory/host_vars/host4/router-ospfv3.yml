@@ -4,6 +4,7 @@ router_ospfv3:
   graceful_restart:
     enabled: true
     grace_period: 10
+  graceful_restart_helper: true
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -52,6 +53,7 @@ router_ospfv3:
       graceful_restart:
         enabled: true
         grace_period: 22
+      graceful_restart_helper: false
     - name: Test
       router_id: 2.2.2.2
       passive_interface_default: true
@@ -59,10 +61,12 @@ router_ospfv3:
       graceful_restart:
         enabled: true
         grace_period: 20
+      graceful_restart_helper: true
       address_family_ipv4:
         enabled: true
         graceful_restart:
           enabled: true
           grace_period: 21
+        graceful_restart_helper: false
   eos_cli: |-
     bfd default

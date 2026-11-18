@@ -1340,6 +1340,9 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1377,6 +1380,9 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1398,6 +1404,9 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1419,6 +1428,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1429,6 +1441,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1449,6 +1464,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1472,6 +1490,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1490,6 +1511,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1508,6 +1532,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 #### VRF: data
 
@@ -1518,6 +1545,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1528,6 +1558,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1548,6 +1581,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
