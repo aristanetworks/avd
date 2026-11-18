@@ -140,7 +140,7 @@ class UtilsMixin(Protocol):
             parent_profile_item = self.inputs.port_profiles[port_profile.parent_profile]._deepcopy()
             if parent_profile_item.parent_profile:
                 self.emit_warning_for_grandparent_profile(
-                    parent_profile=port_profile.parent_profile, context="port_profiles", profile=port_profile.profile, location=context
+                    parent_profile=port_profile.parent_profile, context=f"port_profiles[profile={parent_profile_item.profile}]", profile=port_profile.profile, location=context
                 )
             # Warn if parent profile has a parent profile set.
             # Notice reuse of the same variable with the merged content.
