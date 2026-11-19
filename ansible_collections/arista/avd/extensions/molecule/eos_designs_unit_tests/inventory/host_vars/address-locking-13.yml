@@ -8,4 +8,3 @@ avd_design_future:
 
 address_locking_settings:
   auto_dhcp_server_interfaces: true
-  disabled: true

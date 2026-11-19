@@ -3,7 +3,6 @@ aaa_root:
 address_locking:
   dhcp_server_interfaces:
   - Ethernet1
-  disabled: true
 config_end: true
 enable_password:
   disabled: true
@@ -16,18 +15,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.109/32
+  ip_address: 192.168.255.101/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.109/32
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: 1.1.10.11
-  type: oob
+  ip_address: 192.168.254.101/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -52,7 +44,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '101'
-  router_id: 192.168.255.109
+  router_id: 192.168.255.101
   maximum_paths:
     paths: 4
   updates:

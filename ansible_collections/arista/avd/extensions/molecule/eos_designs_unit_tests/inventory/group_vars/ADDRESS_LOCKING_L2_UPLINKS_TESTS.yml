@@ -8,7 +8,6 @@
 # Minimal upstream l3leaf (no EVPN, no tenants - exists only to give l2leafs valid uplink peers)
 l3leaf:
   defaults:
-    platform: vEOS-LAB
     bgp_as: 65042
     loopback_ipv4_pool: 192.168.60.0/24
     vtep_loopback_ipv4_pool: 192.168.61.0/24
@@ -18,12 +17,10 @@ l3leaf:
   nodes:
     - name: address-locking-uplink-parent
       id: 1
-      mgmt_ip: 10.100.1.1/24
 
 # l2leaf test nodes
 l2leaf:
   defaults:
-    platform: vEOS-LAB
     uplink_switches:
       - address-locking-uplink-parent
     uplink_interfaces:
@@ -34,7 +31,6 @@ l2leaf:
     mlag_peer_vlan: 4094
     mlag_peer_ipv4_pool: 10.100.0.0/24
     spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
   node_groups:
     # MLAG pair with port-channel uplinks: tests channel_group_id branch + MLAG branch.
     # Ethernet1 → Port-Channel1 (channel_group_id=1), MLAG → Port-Channel3 (from Ethernet3)
@@ -44,12 +40,10 @@ l2leaf:
       nodes:
         - name: address-locking-13
           id: 1
-          mgmt_ip: 10.100.0.10/24
           uplink_switch_interfaces:
             - Ethernet1
         - name: address-locking-14
           id: 2
-          mgmt_ip: 10.100.0.11/24
           uplink_switch_interfaces:
             - Ethernet2
     # Standalone l2leaf with l2-ethernet uplinks: tests underlay_l2 branch.
@@ -62,6 +56,5 @@ l2leaf:
       nodes:
         - name: address-locking-15
           id: 3
-          mgmt_ip: 10.100.0.12/24
           uplink_switch_interfaces:
             - Ethernet5
