@@ -4,7 +4,7 @@
 # that can be found in the LICENSE file.
 set -euxo pipefail
 cd "$(dirname "$0")"
-# Exercise installed PyAVD, including when running with lowest direct dependencies.
+# Exercise installed PyAVD instead of source-checkout auto-detection.
 export AVD_NEVER_RUN_FROM_SOURCE=1
 # ansible-test isolates its collection path; retain access to the cached role dependencies.
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-}:$HOME/.ansible/collections"

@@ -45,7 +45,7 @@ The following projects retain their location under this directory during the tra
 - [evpn_underlay_rfc5549_overlay_ebgp](./evpn_underlay_rfc5549_overlay_ebgp/): EVPN with RFC 5549 underlay and eBGP overlay.
 - [eos_cli_config_gen_negative_unit_tests](./eos_cli_config_gen_negative_unit_tests/): EOS structured configuration validation and CLI rendering failures.
 - [eos_designs_negative_unit_tests](./eos_designs_negative_unit_tests/): AVD design validation and generation failures.
-- [eos_designs_unit_tests](./eos_designs_unit_tests/): AVD design facts, structured configuration, EOS configuration, and documentation artifacts.
+- [eos_designs_unit_tests](./eos_designs_unit_tests/): AVD design facts, structured configuration, and EOS configuration artifacts.
 
 The example projects below run through their existing E2E configurations under `examples/`; their former `example-*` Molecule wrappers have been removed:
 
