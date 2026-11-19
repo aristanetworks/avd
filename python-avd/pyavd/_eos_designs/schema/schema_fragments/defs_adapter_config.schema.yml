@@ -100,6 +100,7 @@ $defs:
         min_length: 1
         items:
           type: str
+          required: true
         description: |-
           Allow VLANs on a trunk port based on the `tags` set on network services `l2vlans` and `svis`.
           Every VLAN configured on the switch with at least one tag matching `vlan_tags` is added to the allowed VLANs.
