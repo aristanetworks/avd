@@ -456,6 +456,7 @@ roles/eos_designs/docs/how-to/ptp.md
 roles/eos_designs/docs/how-to/wan.md
 roles/eos_designs/docs/node-type-variables.md
 roles/eos_designs/docs/role-configuration.md
+roles/eos_designs/docs/tables/platform-settings.md
 roles/eos_designs/meta/main.yml
 roles/eos_designs/tasks/main.yml
 roles/eos_designs/vars/main.yml
