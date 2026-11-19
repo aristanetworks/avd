@@ -36,7 +36,7 @@ jobs:
       - python_requirements
       - molecule_eos_cli_config_gen
       - molecule_eos_designs
-      - ansible_test_minimum_requirements
+      - e2e_minimum_requirements
       - molecule_anta_runner
       - ansible_test_sanity
       - ansible_test
@@ -69,7 +69,7 @@ jobs:
                 ($event != "merge_group" and (.key | IN(
                   "molecule_eos_cli_config_gen",
                   "molecule_eos_designs",
-                  "ansible_test_minimum_requirements",
+                  "e2e_minimum_requirements",
                   "molecule_anta_runner",
                   "e2e",
                   "e2e_coverage",
@@ -351,12 +351,17 @@ jobs:
         run: |
           sh .github/check-git-status.sh
 
-  ansible_test_minimum_requirements:
-    name: Validate eos_designs with minimum requirements
+  e2e_minimum_requirements:
+    name: Validate eos_designs E2E with minimum dependencies
     runs-on: ubuntu-latest
-    needs: [build_pyavd, build_collection, file-changes]
-    if:
-      needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.plugins == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+    needs: [build_pyavd, file-changes]
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
       github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -372,28 +377,31 @@ jobs:
         with:
           python-version: |
             3.11
-      - name: Install pyavd and Ansible minimum requirements
-        # Run the role target directly without Molecule.
-        # Omit ansible-test --requirements to preserve the resolved minimum dependencies.
+      - name: Install PyAVD minimum dependencies and E2E requirements
+        # Install E2E tooling alongside the exact minimum runtime pins.
+        # Run with Python directly afterward so uv cannot replace the installed wheel or pins.
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
-          cat /tmp/pyavd/min_requirements.txt
-          python -m pip install "ansible-core==2.16.0" "$WHEEL_FILE[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
-      - name: Restore Ansible collection dependencies
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.ansible/collections
-          key: ${{ needs.build_collection.outputs.collection_cache_key }}
-          fail-on-cache-miss: true
-      - name: Run role integration test with minimum requirements
-        working-directory: ansible_collections/arista/avd
-        run: ansible-test integration eos_designs_role --python 3.11 -vv
-      - name: Check GIT status
+          python -m pip install uv
+          uv pip compile python-avd/pyproject.toml \
+            --resolution lowest-direct --python 3.11 \
+            --output-file /tmp/pyavd/min_requirements.txt
+          python -m pip install "ansible-core==2.16.0" "gitpython>=3.1.57" \
+            "$WHEEL_FILE" -r /tmp/pyavd/min_requirements.txt
+          python -m pip check
+      - name: Run eos_designs E2E with minimum dependencies
+        run: python tools/e2e-test-avd.py ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests
+      - name: Print new end-to-end errors
+        if: always()
+        shell: bash
         run: |
-          sh .github/check-git-status.sh
+          while IFS= read -r error_file; do
+            printf '\n===== %s =====\n' "$error_file"
+            cat "$error_file"
+          done < <(git ls-files --others --exclude-standard -- ':(glob)**/errors/**')
+      - name: Check generated outputs
+        run: sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # ANTA Runner MOLECULE

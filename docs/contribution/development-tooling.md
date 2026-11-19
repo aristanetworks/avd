@@ -259,7 +259,7 @@ ansible-test integration eos_designs_role --requirements -vv
 
 Role dependencies must be installed in `~/.ansible/collections`; CI restores them from the shared collection cache. CI runs the target across supported Ansible versions and the `milestone` branch.
 
-The minimum-requirements CI job runs the same target with Python 3.11, Ansible 2.16.0, and PyAVD's lowest resolvable direct dependency versions. It installs the built PyAVD wheel and runs without `--requirements` so `ansible-test` does not upgrade the prepared environment. Minimum versions come from `python-avd/pyproject.toml`; the integration target does not need a separate minimum-requirements file.
+A separate minimum-dependency CI job runs the full `eos_designs_unit_tests` inventory through PyAVD E2E with Python 3.11, the built PyAVD wheel, and the lowest resolvable direct runtime dependencies. Ansible 2.16.0 and GitPython provide inventory loading and test-tool support. CI installs the tooling alongside the exact compiled runtime pins and invokes the tool directly with Python to preserve them. The small role matrix independently covers Ansible compatibility.
 
 ## Tox
 

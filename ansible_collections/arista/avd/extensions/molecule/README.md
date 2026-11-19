@@ -44,7 +44,7 @@ The following projects retain their location under this directory during the tra
 
 - [eos_cli_config_gen_negative_unit_tests](./eos_cli_config_gen_negative_unit_tests/): EOS structured configuration validation and CLI rendering failures.
 - [eos_designs_negative_unit_tests](./eos_designs_negative_unit_tests/): AVD design validation and generation failures.
-- [eos_designs_unit_tests](./eos_designs_unit_tests/): AVD design facts, structured configuration, EOS configuration, and documentation artifacts.
+- [eos_designs_unit_tests](./eos_designs_unit_tests/): AVD design facts, structured configuration, and EOS configuration artifacts.
 
 When migrating another project to E2E-only execution, move its entry from the Molecule scenario list above to this list.
 
