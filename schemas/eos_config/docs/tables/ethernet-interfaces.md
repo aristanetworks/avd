@@ -582,13 +582,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst_interval</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst_interval") | Integer |  |  | Min: 0<br>Max: 65535 | MAC move burst interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preemption_delay</samp>](## "ethernet_interfaces.[].switchport.backup.preemption_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Preemption delay in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_security</samp>](## "ethernet_interfaces.[].switchport.port_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.port_security.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.port_security.enabled") | Boolean |  |  |  | Enable port security in shutdown mode.<br>When true, takes precedence over `violation.mode`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in violation 'shutdown' mode). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ethernet_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), EOS default is 'shutdown'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "ethernet_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure the violation mode. EOS defaults to 'shutdown'.<br>To configure 'protect' mode, omit `enabled`.<br>When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.mode") | String |  |  | Valid Values:<br>- <code>shutdown</code><br>- <code>protect</code> | Configure port security mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect_log</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect_log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect_log</samp>](## "ethernet_interfaces.[].switchport.port_security.violation.protect_log") | Boolean |  |  |  | Log new addresses seen after the MAC address limit is reached in protect mode.<br>Only applies when `violation.mode` is 'protect' and `enabled` is not true.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_default_mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.vlan_default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Default maximum MAC addresses for all VLANs on this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "ethernet_interfaces.[].switchport.port_security.vlans") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;range</samp>](## "ethernet_interfaces.[].switchport.port_security.vlans.[].range") | String | Required, Unique |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
@@ -1895,6 +1895,9 @@
             # Preemption delay in milliseconds.
             preemption_delay: <int; 0-65535>
           port_security:
+
+            # Enable port security in shutdown mode.
+            # When true, takes precedence over `violation.mode`.
             enabled: <bool>
 
             # Maximum number of MAC addresses allowed on the interface.
@@ -1906,13 +1909,16 @@
               # MAC address limit.
               limit: <int; 1-1000>
 
-            # Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
+            # Configure the violation mode. EOS defaults to 'shutdown'.
+            # To configure 'protect' mode, omit `enabled`.
+            # When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
             violation:
 
               # Configure port security mode.
               mode: <str; "shutdown" | "protect">
 
-              # Log new addresses seen after limit is reached in protect mode.
+              # Log new addresses seen after the MAC address limit is reached in protect mode.
+              # Only applies when `violation.mode` is 'protect' and `enabled` is not true.
               protect_log: <bool>
 
             # Default maximum MAC addresses for all VLANs on this interface.
