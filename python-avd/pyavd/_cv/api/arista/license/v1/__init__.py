@@ -344,6 +344,11 @@ class PreferredBundleReason(aristaproto.Enum):
     with the oldest sales order.
     """
 
+    SHIPSET_NUMBER = 4
+    """
+    PREFERRED_BUNDLE_REASON_SHIPSET_NUMBER indicates a device and license is within the same sales order and shipset.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseKey(aristaproto.Message):
@@ -421,6 +426,14 @@ class PurchasedLicense(aristaproto.Message):
 
     platform_class: Optional[str] = aristaproto.message_field(16, wraps=aristaproto.TYPE_STRING)
     """platform_class is the platform class of the license sku."""
+
+    end_customer_purchase_order_number: Optional[str] = aristaproto.message_field(17, wraps=aristaproto.TYPE_STRING)
+    """
+    end_customer_purchase_order_number is the purchase order number associated with this license.
+    """
+
+    shipset_number: Optional[int] = aristaproto.message_field(18, wraps=aristaproto.TYPE_INT64)
+    """shipset_number is the shipset number associated with this license."""
 
 
 @dataclass(eq=False, repr=False)
@@ -657,6 +670,11 @@ class DeviceData(aristaproto.Message):
     of the requested feature.
     """
 
+    end_customer_purchase_order_number: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
+    """
+    end_customer_purchase_order_number is the purchase order number associated with this device.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesKey(aristaproto.Message):
@@ -764,6 +782,16 @@ class LicenseBundle(aristaproto.Message):
     populated when is_preferred is true.
     """
 
+    end_customer_purchase_order_number: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
+    """
+    end_customer_purchase_order_number is the purchase order number associated with this bundle.
+    """
+
+    shipset_number: Optional[int] = aristaproto.message_field(12, wraps=aristaproto.TYPE_INT64)
+    """
+    shipset_number is the shipset number for the purchased license bundle.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class RepeatedLicenseBundle(aristaproto.Message):
@@ -778,7 +806,13 @@ class ApplicableLicenseBundles(aristaproto.Message):
     """
     ApplicableLicenseBundles represents a list of license bundles that are compatible
     with a given device for a specific feature.
-    The list may contain a preferred bundle based on a defined priority order.
+    The list may contain multiple applicable bundles, but at most one bundle is
+    marked preferred. A bundle is marked preferred only when it matches the
+    preferred bundle criteria and is selected by the first applicable priority
+    rule high to low:
+     1. sales order number + shipset number match, (device and license are within same sales order and shipset)
+     2. sales order match (device and license are within same sales order)
+     3. perpetual plan (license is perpetual).
     Note: This resource is only available in CVaaS.
     """
 

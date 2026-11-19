@@ -248,5 +248,5 @@ The following model is set as `eos_designs_facts`. Most keys are optional depend
 use case and configuration.
 
 --8<--
-./eos_designs_facts_internal/tables/eos_designs_facts.md
+docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
 --8<--

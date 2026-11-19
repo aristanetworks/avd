@@ -21,14 +21,10 @@ $defs:
           description: Track next-hop using BFD.
         distance:
           type: int
-          convert_types:
-            - str
           min: 1
           max: 255
         tag:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 4294967295
         name:
@@ -36,8 +32,6 @@ $defs:
           description: description.
         metric:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 4294967295
         interface:

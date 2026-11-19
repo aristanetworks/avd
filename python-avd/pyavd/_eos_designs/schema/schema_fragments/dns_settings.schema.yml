@@ -19,8 +19,11 @@ keys:
         $ref: "eos_cli_config_gen#/keys/domain_list"
       servers:
         type: list
-        required: true
         min_length: 1
+        description: |-
+          List of DNS servers to configure.
+          May be omitted when inherited from a parent DNS settings profile or global `dns_settings`.
+          When the resolved DNS settings are non-empty, at least one server must be configured.
         items:
           type: dict
           keys:
@@ -35,8 +38,6 @@ keys:
                   An error will be raised if inband management is not configured for the device.
                 - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
-              convert_types:
-                - int
             ip_address:
               type: str
               required: true
@@ -44,20 +45,17 @@ keys:
             priority:
               description: Priority value (lower is first).
               type: int
-              convert_types:
-                - str
               min: 0
               max: 4
       vrfs:
         type: list
         primary_key: name
+        description: Per-VRF DNS lookup source-interface settings.
         items:
           type: dict
           keys:
             name:
               type: str
-              convert_types:
-                - int
               description: VRF name.
             source_interface:
               type: str
@@ -73,3 +71,4 @@ keys:
       ip_hosts:
         type: list
         $ref: "eos_cli_config_gen#/keys/ip_hosts"
+        description: Static hostname-to-IP address mappings to configure in the local host table.

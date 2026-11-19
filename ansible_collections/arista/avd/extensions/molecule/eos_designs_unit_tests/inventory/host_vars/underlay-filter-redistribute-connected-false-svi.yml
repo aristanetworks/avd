@@ -33,4 +33,5 @@ tenants:
           - id: 1008
             name: SVI_1
             enabled: true
+            autostate: false
             tags: ['sit']

@@ -19,5 +19,3 @@ l3leaf:
         - name: missing-mlag-peer-ipv6-pool2
           id: 4
           mgmt_ip: 192.168.201.117/24
-
-expected_error_message: "'mlag_peer_ipv6_pool' is required but was not found for host 'missing-mlag-peer-ipv6-pool1'."

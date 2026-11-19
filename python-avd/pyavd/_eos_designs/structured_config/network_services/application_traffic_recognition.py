@@ -27,7 +27,6 @@ class ApplicationTrafficRecognitionMixin(Protocol):
     def _set_virtual_topology_application_classification(
         self: AvdStructuredConfigNetworkServicesProtocol,
         virtual_topology: EosDesigns.WanVirtualTopologies.PoliciesItem.ApplicationVirtualTopologiesItem
-        | EosDesigns.WanVirtualTopologies.PoliciesItem.DefaultVirtualTopology
         | EosDesigns.WanVirtualTopologies.ControlPlaneVirtualTopology,
         policy_name: str,
     ) -> None:

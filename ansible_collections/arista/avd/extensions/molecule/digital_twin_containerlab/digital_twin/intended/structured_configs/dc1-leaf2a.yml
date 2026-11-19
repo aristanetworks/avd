@@ -1,0 +1,105 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1/1
+  description: P2P_dc1-spine1_Ethernet1/3
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.255.255.5/31
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet1/3
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_dc1-spine2_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.255.255.7/31
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
+hostname: dc1-leaf2a
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.1.2/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.102/24
+  type: oob
+  gateway: 172.16.1.1
+metadata:
+  is_deployed: true
+  platform: cEOSLab
+  fabric_name: DIGITAL_TWIN_CONTAINERLAB
+  validate_hardware:
+    enabled: false
+  digital_twin:
+    environment: containerlab
+router_bgp:
+  as: '65102'
+  router_id: 10.255.1.2
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 10.255.255.4
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet1/3
+  - ip_address: 10.255.255.6
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet2
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

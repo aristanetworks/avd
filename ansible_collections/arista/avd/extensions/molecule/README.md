@@ -5,6 +5,7 @@ This section provides a list of AVD scenarios executed during Continuous Integra
 - [AVD Unit test](#avd-unit-test)
   - [Ansible molecule](#ansible-molecule)
   - [Scenario](#scenario)
+  - [E2E-only projects](#e2e-only-projects)
   - [How to use scenario](#how-to-use-scenario)
     - [Which file to update](#which-file-to-update)
       - [If you are updating `eos_cli_config_gen`](#if-you-are-updating-eos_cli_config_gen)
@@ -22,11 +23,9 @@ Current molecule implementation provides the following scenarios:
 
 - eos_cli_config_gen
 - eos_cli_config_gen_deprecated_vars
-- eos_cli_config_gen_negative_unit_tests
 - eos_designs_deprecated_vars
 - eos_designs-l2ls
 - eos_designs-mpls-isis-sr-ldp
-- eos_designs_negative_unit_tests
 - eos_designs-twodc-5stage-clos
 - eos_designs_unit_tests
 - evpn_underlay_ebgp_overlay_ebgp
@@ -39,6 +38,15 @@ Current molecule implementation provides the following scenarios:
 - example-l2ls-fabric
 - example-single-dc-l3ls
 - example-single-dc-l3ls-ipv6
+
+## E2E-only projects
+
+The following projects retain their location under this directory during the transition to PyAVD E2E testing. Run them with the [PyAVD E2E tool](../../../../../docs/contribution/e2e-test/using-the-tool.md#run-selected-projects):
+
+- [eos_cli_config_gen_negative_unit_tests](./eos_cli_config_gen_negative_unit_tests/): EOS structured configuration validation and CLI rendering failures.
+- [eos_designs_negative_unit_tests](./eos_designs_negative_unit_tests/): AVD design validation and generation failures.
+
+When migrating another project to E2E-only execution, move its entry from the Molecule scenario list above to this list.
 
 ## How to use scenario
 

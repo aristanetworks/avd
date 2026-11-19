@@ -16,7 +16,7 @@ from .avd_list import AvdList
 from .avd_model import AvdModel
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    from typing import Self
 
     from pyavd._eos_designs.schema import EosDesigns
 

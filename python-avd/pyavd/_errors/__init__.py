@@ -9,9 +9,9 @@ from pyavd._utils.json_path_to_string import json_path_to_string
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
+    from typing import Self
 
     from pyavd_utils.validation import Violation
-    from typing_extensions import Self
 
 
 class AristaAvdError(Exception):
@@ -41,14 +41,6 @@ class AristaAvdMissingVariableError(AristaAvdError):
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
         super().__init__(message, host=host)
-
-
-class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
-        if path is not None:
-            self.path = json_path_to_string(path)
-            message = f"'Validation Error: {self.path}': {message}"
-        super().__init__(message)
 
 
 class AvdValidationError(AristaAvdError):

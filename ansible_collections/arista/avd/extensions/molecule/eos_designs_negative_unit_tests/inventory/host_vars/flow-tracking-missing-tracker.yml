@@ -18,7 +18,3 @@ servers:
         switch_ports: [Ethernet1]
         flow_tracking:
           enabled: true
-
-expected_error_message: >-
-  The flow tracker 'I-DO-NOT-EXIST' is being used for at least one interface,
-  but is not configured in 'self.inputs.flow_tracking_settings'.

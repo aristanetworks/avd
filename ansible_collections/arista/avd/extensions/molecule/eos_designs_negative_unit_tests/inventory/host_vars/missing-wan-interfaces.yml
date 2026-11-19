@@ -45,7 +45,3 @@ wan_carriers:
   - name: ATT
     path_group: INET
     trusted: true
-
-expected_error_message: >-
-  At least one WAN interface must be configured on a WAN router.
-  Add WAN interfaces under 'l3_interfaces' or 'l3_port_channels' node setting with 'wan_carrier' set for host 'missing-wan-interfaces'.

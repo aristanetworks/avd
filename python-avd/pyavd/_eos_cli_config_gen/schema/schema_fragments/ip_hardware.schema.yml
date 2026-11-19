@@ -44,5 +44,3 @@ keys:
                     type: int
                     min: 1
                     max: 7
-                    convert_types:
-                      - str

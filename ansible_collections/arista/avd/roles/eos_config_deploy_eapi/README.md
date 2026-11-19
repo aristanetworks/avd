@@ -53,7 +53,7 @@ ansible_collections/arista/avd/roles/eos_config_deploy_eapi/defaults/main.yml
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-requirements-installation)
+Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-dependencies)
 
 ## License
 

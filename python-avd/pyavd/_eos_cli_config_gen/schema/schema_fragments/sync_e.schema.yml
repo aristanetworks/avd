@@ -14,5 +14,3 @@ keys:
         type: int
         min: 1
         max: 2
-        convert_types:
-          - str

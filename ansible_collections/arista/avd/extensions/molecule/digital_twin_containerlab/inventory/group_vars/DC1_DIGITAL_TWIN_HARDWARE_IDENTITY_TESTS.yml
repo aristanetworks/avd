@@ -1,0 +1,14 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    # Verify Containerlab ignores ACT identity overrides and retains the production values in metadata.
+    - name: digital-twin-hardware-identity-containerlab-tests-l2leaf
+      platform: cEOSLab
+      mgmt_ip: 172.16.1.103/24
+      serial_number: PRODCONTAINERLAB03
+      system_mac_address: 02:1c:73:00:00:03
+      digital_twin:
+        serial_number: DTCONTAINERLAB03
+        system_mac_address: 021c.7301.0003

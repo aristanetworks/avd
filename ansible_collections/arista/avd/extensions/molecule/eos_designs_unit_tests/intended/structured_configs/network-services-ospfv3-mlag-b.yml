@@ -1,0 +1,367 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: MLAG_network-services-ospfv3-mlag-a_Ethernet5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: network-services-ospfv3-mlag-a
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
+- name: Ethernet6
+  description: MLAG_network-services-ospfv3-mlag-a_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: network-services-ospfv3-mlag-a
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
+hostname: network-services-ospfv3-mlag-b
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.2/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: NETWORK_SERVICES_OSPFV3_MLAG
+  local_interface: Vlan4094
+  peer_address: 10.255.252.0
+  peer_link: Port-Channel5
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel5
+  description: MLAG_network-services-ospfv3-mlag-a_Port-Channel5
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.0/31
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.2
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65101'
+    description: network-services-ospfv3-mlag-a
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
+  neighbors:
+  - ip_address: 10.255.251.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      peer: network-services-ospfv3-mlag-a
+    description: network-services-ospfv3-mlag-a_Vlan4093
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+  vrfs:
+  - name: VRF_A
+    rd: 192.168.255.2:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 192.168.255.2
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: network-services-ospfv3-mlag-a_Vlan3009
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+      ospfv3:
+        enabled: true
+  - name: VRF_NODE_SPECIFIC
+    rd: 192.168.255.2:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 192.168.255.2
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: network-services-ospfv3-mlag-a_Vlan3010
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+      ospfv3:
+        enabled: true
+router_ospfv3:
+  vrfs:
+  - name: VRF_A
+    router_id: 192.168.255.2
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+  - name: VRF_NODE_SPECIFIC
+    router_id: 192.168.255.2
+    passive_interface_default: true
+    address_family_ipv6:
+      redistribute:
+        bgp:
+          enabled: true
+      enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ip_address: 10.255.251.1/31
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.255.252.1/31
+  mtu: 9214
+  no_autostate: true
+- name: Vlan320
+  description: SHARED_TRANSIT
+  shutdown: false
+  vrf: VRF_A
+  ip_address: 10.1.32.3/24
+  ipv6_addresses:
+  - 2001:db8:320::3/64
+  ipv6_virtual_router_addresses:
+  - 2001:db8:320::1
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan321
+  description: P2P_LINK_LOCAL
+  shutdown: false
+  vrf: VRF_A
+  ipv6_enable: true
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan3009
+  description: MLAG_L3_VRF_VRF_A
+  shutdown: false
+  vrf: VRF_A
+  ip_address: 10.255.251.1/31
+  mtu: 9214
+  metadata:
+    tenants:
+    - TENANT_A
+    type: underlay_peering
+- name: Vlan330
+  description: MLAG_PEERS_TRANSIT
+  shutdown: false
+  vrf: VRF_NODE_SPECIFIC
+  ipv6_addresses:
+  - 2001:db8:330::3/64
+  ospfv3:
+    ipv6:
+      area: 0.0.0.0
+    no_passive_interface: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan331
+  description: NODE_SPECIFIC_TRANSIT
+  shutdown: false
+  vrf: VRF_NODE_SPECIFIC
+  ipv6_addresses:
+  - 2001:db8:331::3/64
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan3010
+  description: MLAG_L3_VRF_VRF_NODE_SPECIFIC
+  shutdown: false
+  vrf: VRF_NODE_SPECIFIC
+  ip_address: 10.255.251.1/31
+  mtu: 9214
+  metadata:
+    tenants:
+    - TENANT_A
+    type: underlay_peering
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 320
+  name: SHARED_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 321
+  name: P2P_LINK_LOCAL
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 3009
+  name: MLAG_L3_VRF_VRF_A
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 330
+  name: MLAG_PEERS_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 331
+  name: NODE_SPECIFIC_TRANSIT
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 3010
+  name: MLAG_L3_VRF_VRF_NODE_SPECIFIC
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF_A
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+- name: VRF_NODE_SPECIFIC
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospfv3-mlag-b_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      vrfs:
+      - name: VRF_A
+        vni: 10
+      - name: VRF_NODE_SPECIFIC
+        vni: 11

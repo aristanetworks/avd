@@ -127,8 +127,6 @@ keys:
               description: |
                 Supported only for the 'route' feature.
                 This validation IS NOT made by the schemas.
-              convert_types:
-                - int
             prefix:
               type: str
               description: |

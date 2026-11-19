@@ -8,14 +8,29 @@ from unittest.mock import AsyncMock
 
 import pytest
 
+from pyavd._cv.api.arista.inventory.v1 import StreamingStatus
 from pyavd._cv.client.exceptions import CVResourceNotFound
 from pyavd._cv.workflows.models import AvdDevice, CVDevice
-from pyavd._cv.workflows.verify_devices_on_cv import missing_devices_handler, verify_devices_in_cloudvision_inventory
+from pyavd._cv.workflows.verify_devices_on_cv import get_device_streaming_state, missing_devices_handler, verify_devices_in_cloudvision_inventory
 
 if TYPE_CHECKING:
     from unittest.mock import MagicMock
 
     from pyavd._cv.client import CVClient
+
+
+@pytest.mark.parametrize(
+    ("streaming_status", "expected_state"),
+    [
+        pytest.param(StreamingStatus.ACTIVE, True, id="active"),
+        pytest.param(StreamingStatus.INACTIVE, False, id="inactive"),
+        pytest.param(StreamingStatus.UNSPECIFIED, None, id="unspecified"),
+        pytest.param(StreamingStatus.try_value(99), None, id="unknown"),
+    ],
+)
+def test_get_device_streaming_state(streaming_status: StreamingStatus, expected_state: bool | None) -> None:
+    """Test conversion of CloudVision streaming statuses to AVD device states."""
+    assert get_device_streaming_state(streaming_status) is expected_state
 
 
 @pytest.mark.asyncio

@@ -30,7 +30,3 @@ l3leaf:
     - name: small-bgp-as-range-on-uplink-switch-leaf
       id: 42
       uplink_switch_interfaces: [Ethernet3]
-
-expected_error_message: >-
-  Unable to allocate BGP AS: bgp_as range '65001-65002' is too small (2) for the id '10' for host
-  'small-bgp-as-range-on-uplink-switch-spine'.

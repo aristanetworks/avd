@@ -1,0 +1,18 @@
+---
+# Test case 1: system-profile in tcam_profile - checks no raise
+# Expected output:
+# hardware tcam
+#    system profile system-profile
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: tcam-profile-1
+      mgmt_ip: 192.168.0.2/24
+      platform: test-platform
+
+tcam_profiles: []
+
+platform_settings:
+  - platforms: ["test-platform"]
+    tcam_profile: system-profile

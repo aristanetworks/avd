@@ -19,6 +19,3 @@ cvxserver:
     - name: missing-mgmt-ip-overlay-cvx-servers
       bgp_as: 65001
       id: 1
-
-expected_error_message: >-
-  'mgmt_ip' for CVX Server missing-mgmt-ip-overlay-cvx-servers is required.

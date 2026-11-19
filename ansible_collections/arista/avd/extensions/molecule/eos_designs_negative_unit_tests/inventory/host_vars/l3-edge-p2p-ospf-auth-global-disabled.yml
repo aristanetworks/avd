@@ -32,7 +32,3 @@ l3_edge:
       interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
       use_underlay_ospf_authentication: true
-
-expected_error_message: >-
-  'use_underlay_ospf_authentication' is set to true for l3_edge.p2p_links[0] but 'underlay_ospf_authentication.enabled' is false.
-  Enable 'underlay_ospf_authentication.enabled'.

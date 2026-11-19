@@ -1,0 +1,17 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: custom-system-mac-address-raw
+      id: 65536
+      mgmt_ip: 192.168.0.11/24
+
+# Raw hex format allows device_id to span more than 2 octets — impossible with dotted or colon notation
+# since the separator positions would split the field. Device ID 65536 (0x00010000) overflows
+# the 4-digit {device_id:04x} used in dotted templates, but fits cleanly with {device_id:08x}.
+custom_system_mac_address: 021c{device_id:08x}
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac

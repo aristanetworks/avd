@@ -1,0 +1,23 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-enforce-ssh-5
+      id: 1
+      mgmt_ip: 192.168.0.10/32
+
+digital_twin:
+  environment: act
+  fabric: {}
+
+# Test that ACT Digital Twin mode does not override SSH when act_ensure_ssh_access is omitted.
+ssh_settings:
+  enabled: false
+  vrfs:
+    - name: default
+      enabled: false
+    - name: MGMT
+      enabled: true
+      ipv4_acl: ssh_mgmt_ipv4_acl_in
+      ipv6_acl: ssh_mgmt_ipv6_acl_in

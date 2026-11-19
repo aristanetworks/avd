@@ -3,15 +3,25 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import ip_network
 from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
+from pyavd._eos_designs.digital_twin import act_node_type_supports_feature
 from pyavd._utils.get import get
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
+    ContainerlabDefaults,
+    ContainerlabDigitalTwin,
+    ContainerlabKind,
+    ContainerlabLinkSettings,
+    ContainerlabMgmt,
+    ContainerlabNode,
+    ContainerlabTopology,
     FabricDocumentation,
 )
 
@@ -147,7 +157,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | None:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | ContainerlabDigitalTwin | None:
     digital_twin_env = next(
         (
             environment
@@ -159,8 +169,98 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
     match digital_twin_env:
         case "act":
             return _get_digital_twin_act(fabric_documentation_facts)
+        case "containerlab":
+            return _get_digital_twin_containerlab(fabric_documentation_facts)
         case _:
             return None
+
+
+def _is_p2p_link(topology_link: dict) -> bool:
+    # Skip connections where at least one of the contributing sources is not a non-empty string
+    return bool(
+        isinstance(topology_link["node"], str)
+        and topology_link["node"]
+        and isinstance(topology_link["node_interface"], str)
+        and topology_link["node_interface"]
+        and "." not in topology_link["node_interface"]
+        and isinstance(topology_link["peer"], str)
+        and topology_link["peer"]
+        and isinstance(topology_link["peer_interface"], str)
+        and topology_link["peer_interface"]
+        and "." not in topology_link["peer_interface"]
+    )
+
+
+def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentationFacts) -> ContainerlabDigitalTwin:
+    """
+    Build and return the Containerlab topology data.
+
+    The returned object contains the minimal information required to render
+    Containerlab nodes with management addresses under `topology.nodes` and
+    inter-switch links under `topology.links`.
+    """
+    from pyavd._errors import AristaAvdError  # noqa: PLC0415
+
+    sorted_avd_facts = sorted(fabric_documentation_facts.avd_facts.items())
+
+    unsupported_devices = [device for device, facts in sorted_avd_facts if not facts.mgmt_ip or facts.mgmt_ip == "dhcp"]
+    if unsupported_devices:
+        msg = (
+            "Containerlab Digital Twin is unsupported for nodes without a static management IPv4 address. "
+            f"Found unsupported management IPv4 address settings: {', '.join(unsupported_devices)}."
+        )
+        raise AristaAvdError(msg)
+
+    mgmt_ips = [(device, cast("str", facts.mgmt_ip)) for device, facts in sorted_avd_facts]
+    nodes = {device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip)) for device, mgmt_ip in mgmt_ips}
+
+    links = [
+        ContainerlabLinkSettings(
+            endpoints=(
+                f"{topology_link['node']}:{topology_link['node_interface'].replace('Ethernet', 'eth').replace('/', '_')}",
+                f"{topology_link['peer']}:{topology_link['peer_interface'].replace('Ethernet', 'eth').replace('/', '_')}",
+            )
+        )
+        for topology_link in fabric_documentation_facts.topology_links
+        if _is_p2p_link(topology_link)
+    ]
+    ethernet_interface_mapping = {
+        endpoint_interface: endpoint_interface.replace("eth", "Ethernet", 1).replace("_", "/")
+        for link in links
+        for endpoint in link.endpoints
+        for endpoint_interface in [endpoint.rsplit(":", maxsplit=1)[1]]
+    }
+    default_kind = "arista_ceos"
+
+    # Find the Containerlab management network and raise an error if nodes are not in the same subnet.
+    unique_mgmt_networks = {ip_network(mgmt_ip, strict=False) for _, mgmt_ip in mgmt_ips}
+
+    if len(unique_mgmt_networks) > 1:
+        mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
+        msg = f"Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet. Found multiple subnets: {mgmt_networks}."
+        raise AristaAvdError(msg)
+
+    return ContainerlabDigitalTwin(
+        name=f"{fabric_documentation_facts.fabric_name}",
+        prefix="",
+        mgmt=ContainerlabMgmt(network="custom_mgmt", ipv4_subnet=str(next(iter(unique_mgmt_networks)))),
+        topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind=default_kind),
+            kinds={
+                default_kind: ContainerlabKind(
+                    enforce_startup_config=True,
+                    image="arista/ceos:latest",
+                    binds=("interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro",),
+                )
+            },
+            nodes=nodes,
+            links=tuple(links),
+        ),
+        interface_mapping={
+            "ManagementIntf": {"eth0": "Management1"},
+            "EthernetIntf": dict(sorted(ethernet_interface_mapping.items())),
+        },
+    )
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
@@ -206,23 +306,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
-    verified_topology_links: list[dict] = [
-        topology_link
-        for topology_link in fabric_documentation_facts.topology_links
-        # Skip connections where at least one of the contributing sources is not a non-empty string
-        if (
-            isinstance(topology_link["node"], str)
-            and topology_link["node"]
-            and isinstance(topology_link["node_interface"], str)
-            and "." not in topology_link["node_interface"]
-            and topology_link["node_interface"]
-            and isinstance(topology_link["peer"], str)
-            and topology_link["peer"]
-            and isinstance(topology_link["peer_interface"], str)
-            and "." not in topology_link["peer_interface"]
-            and topology_link["peer_interface"]
-        )
-    ]
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -238,18 +321,20 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
                     instance_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..instance_type", separator=".."),
-                    # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
-                    internet_access=internet_access
-                    if (
-                        (
-                            internet_access := get(
-                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
-                            )
-                        )
-                        and digital_twin_node_type in ["cloudeos", "veos"]
-                    )
+                    serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..serial_number", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "serial_number")
+                    else None,
+                    system_mac_address=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..system_mac_address", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "system_mac_address")
+                    else None,
+                    ztp=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ztp", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "ztp")
+                    else None,
+                    internet_access=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator="..")
+                    if act_node_type_supports_feature(digital_twin_node_type, "internet_access")
                     else None,
                     # Render Ethernet ports for veos node type devices (excluding subinterfaces).
+                    # ports are not derived from gated metadata therefore node type check is enforced here
                     ports=tuple(
                         sorted(
                             (
@@ -266,7 +351,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                         )
                     )
                     or None
-                    if digital_twin_node_type == "veos"
+                    if act_node_type_supports_feature(digital_twin_node_type, "ports")
                     else None,
                 )
             }
@@ -278,7 +363,8 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             ActLinkSettings(
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
             )
-            for topology_link in verified_topology_links
+            for topology_link in fabric_documentation_facts.topology_links
+            if _is_p2p_link(topology_link)
         ),
         cloudeos=digital_twin_node_types["cloudeos"],
         cvp=digital_twin_node_types["cvp"],

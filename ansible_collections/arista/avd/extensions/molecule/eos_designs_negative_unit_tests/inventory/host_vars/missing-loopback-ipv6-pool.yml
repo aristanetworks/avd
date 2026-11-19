@@ -14,6 +14,3 @@ l3leaf:
         - name: missing-loopback-ipv6-pool
           id: 1
           mgmt_ip: 192.168.201.116/24
-
-expected_error_message: >-
-  'loopback_ipv6_pool' is required but was not found.

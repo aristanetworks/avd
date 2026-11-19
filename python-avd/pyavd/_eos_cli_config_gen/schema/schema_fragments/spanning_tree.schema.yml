@@ -28,13 +28,9 @@ keys:
             type: bool
           count:
             type: int
-            convert_types:
-              - str
             description: Maximum number of BPDUs per timer interval.
       rstp_priority:
         type: int
-        convert_types:
-          - str
       mst:
         type: dict
         keys:
@@ -47,8 +43,6 @@ keys:
                 type: str
               revision:
                 type: int
-                convert_types:
-                  - str
                 description: 0-65535.
               instances:
                 type: list
@@ -58,13 +52,9 @@ keys:
                   keys:
                     id:
                       type: int
-                      convert_types:
-                        - str
                       description: Instance ID.
                     vlans:
                       type: str
-                      convert_types:
-                        - int
                       description: |
                         "< vlan_id >, < vlan_id >-< vlan_id >"
                         Example: 15,16,17,18
@@ -76,17 +66,11 @@ keys:
           keys:
             id:
               type: str
-              convert_types:
-                - int
               description: Instance ID.
             priority:
               type: int
-              convert_types:
-                - str
       no_spanning_tree_vlan:
         type: str
-        convert_types:
-          - int
         description: |
           "< vlan_id >, < vlan_id >-< vlan_id >"
           Example: 105,202,505-506
@@ -98,15 +82,11 @@ keys:
           keys:
             id:
               type: str
-              convert_types:
-                - int
               description: |
                 "< vlan_id >, < vlan_id >-< vlan_id >"
                 Example: 105,202,505-506
             priority:
               type: int
-              convert_types:
-                - str
       port_id_allocation_port_channel_range:
         description: Specify range of port-ids to reserve for port-channels.
         type: dict
@@ -117,16 +97,12 @@ keys:
             min: 1
             max: 2048
             required: true
-            convert_types:
-              - str
           maximum:
             description: Specify maximum value for reserved range.
             type: int
             min: 1
             max: 2048
             required: true
-            convert_types:
-              - str
       loop_guard_default:
         description: Enable loopguard by default on all ports.
         type: bool

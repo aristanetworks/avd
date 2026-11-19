@@ -15,8 +15,6 @@ keys:
         description: |-
           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
           For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-        convert_types:
-          - int
       as_notation:
         display_name: ASN Notation
         type: str
@@ -36,8 +34,6 @@ keys:
               Time between BGP keepalive messages in seconds.
               `keepalive_time` should be lesser than `hold_time`.
             type: int
-            convert_types:
-              - str
             min: 0
             max: 3600
           hold_time:
@@ -45,8 +41,6 @@ keys:
               Hold time in seconds. Must be defined along with `keepalive_time`.
               The valid values are 3-7200 or 0 if both values are 0.
             type: int
-            convert_types:
-              - str
             min: 0
             max: 7200
           min_hold_time:
@@ -54,15 +48,11 @@ keys:
               Neighbor's minimum hold time constraint in seconds.
               `min_hold_time` should be less than `hold_time`.
             type: int
-            convert_types:
-              - str
             min: 3
             max: 7200
           send_failure_hold_time:
             description: Send failure hold time in seconds.
             type: int
-            convert_types:
-              - str
             min: 60
             max: 65535
       distance:
@@ -71,22 +61,16 @@ keys:
           external_routes:
             type: int
             required: true
-            convert_types:
-              - str
             min: 1
             max: 255
           internal_routes:
             type: int
             required: true
-            convert_types:
-              - str
             min: 1
             max: 255
           local_routes:
             type: int
             required: true
-            convert_types:
-              - str
             min: 1
             max: 255
       graceful_restart:
@@ -96,15 +80,11 @@ keys:
             type: bool
           restart_time:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 3600
             description: Number of seconds.
           stalepath_time:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 3600
             description: Number of seconds.
@@ -115,8 +95,6 @@ keys:
             type: bool
           restart_time:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 100000000
             description: |
@@ -134,14 +112,10 @@ keys:
           paths:
             type: int
             required: true
-            convert_types:
-              - str
             min: 1
             max: 600
           ecmp:
             type: int
-            convert_types:
-              - str
             min: 1
             max: 600
       route_distinguisher:
@@ -159,16 +133,12 @@ keys:
                 keys:
                   start:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 65535
                     required: true
                     description: Start of range. EOS default is 4096.
                   end:
                     type: int
-                    convert_types:
-                      - str
                     min: 1
                     max: 65535
                     required: true
@@ -210,6 +180,19 @@ keys:
       bgp:
         type: dict
         keys:
+          convergence:
+            type: dict
+            keys:
+              slow_peer_time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring initial BGP convergence for peers that do not establish session within a reasonable time.
+              time:
+                type: int
+                min: 1
+                max: 3600
+                description: Maximum amount of time to wait in seconds before declaring initial BGP convergence.
           default:
             type: dict
             keys:
@@ -288,8 +271,6 @@ keys:
                 If both are defined, `peer_filter` takes precedence
             remote_as:
               type: str
-              convert_types:
-                - int
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -307,6 +288,9 @@ keys:
               - standard large
               - standard extended
               - standard extended large
+          received_attribute_discard:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
       peer_groups:
         type: list
         primary_key: name
@@ -327,15 +311,11 @@ keys:
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-              convert_types:
-                - int
             local_as:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-              convert_types:
-                - int
             description:
               type: str
             shutdown:
@@ -350,6 +330,9 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path.
+            received_attribute_discard:
+              type: dict
+              $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
             remove_private_as:
               type: dict
               description: Remove private AS numbers in outbound AS path.
@@ -384,16 +367,12 @@ keys:
               keys:
                 interval:
                   type: int
-                  convert_types:
-                    - str
                   min: 50
                   max: 60000
                   required: true
                   description: Interval in milliseconds.
                 min_rx:
                   type: int
-                  convert_types:
-                    - str
                   min: 50
                   max: 60000
                   required: true
@@ -403,15 +382,11 @@ keys:
                   min: 3
                   max: 50
                   required: true
-                  convert_types:
-                    - str
             ebgp_multihop:
               type: int
               min: 1
               max: 255
               description: Time-to-live in range of hops.
-              convert_types:
-                - str
             next_hop_peer:
               type: bool
             next_hop_self:
@@ -423,8 +398,6 @@ keys:
               valid_values:
                 - "7"
                 - "8a"
-              convert_types:
-                - int
               default: "7"
             passive:
               type: bool
@@ -449,15 +422,11 @@ keys:
               description: Maximum number of routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-                - str
             maximum_routes_warning_limit:
               type: str
               description: |
                 Maximum number of routes after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
-              convert_types:
-                - int
             maximum_routes_warning_only:
               type: bool
             maximum_accepted_routes:
@@ -525,16 +494,12 @@ keys:
                 times:
                   type: int
                   description: Number of local ASNs allowed in a BGP update.
-                  convert_types:
-                    - str
                   min: 1
                   max: 10
             weight:
               type: int
               min: 0
               max: 65535
-              convert_types:
-                - str
             timers:
               type: str
               description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
@@ -577,8 +542,6 @@ keys:
                     - "hmac-sha1-96"
             ttl_maximum_hops:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 254
               description: Maximum number of hops.
@@ -590,8 +553,6 @@ keys:
               max: 4294967294
             maximum_advertised_routes_warning_limit:
               type: str
-              convert_types:
-                - int
               description: |
                 Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -610,15 +571,11 @@ keys:
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-              convert_types:
-                - int
             local_as:
               type: str
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-              convert_types:
-                - int
             as_path:
               type: dict
               description: BGP AS-PATH options.
@@ -650,8 +607,6 @@ keys:
               valid_values:
                 - "7"
                 - "8a"
-              convert_types:
-                - int
               default: "7"
             passive:
               type: bool
@@ -670,16 +625,12 @@ keys:
               keys:
                 interval:
                   type: int
-                  convert_types:
-                    - str
                   min: 50
                   max: 60000
                   required: true
                   description: Interval in milliseconds.
                 min_rx:
                   type: int
-                  convert_types:
-                    - str
                   min: 50
                   max: 60000
                   required: true
@@ -689,14 +640,10 @@ keys:
                   min: 3
                   max: 50
                   required: true
-                  convert_types:
-                    - str
             weight:
               type: int
               min: 0
               max: 65535
-              convert_types:
-                - str
             timers:
               type: str
               description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
@@ -706,6 +653,21 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            received_attribute_discard:
+              type: dict
+              description: Received path attribute configuration.
+              keys:
+                disabled:
+                  type: bool
+                  description: |-
+                    Explicitly disable this configuration.
+                    Mutually exclusive with `type_codes` and takes precedence over it.
+                type_codes:
+                  type: str
+                  description: |-
+                    BGP attribute type code(s) and/or range(s) of BGP attribute type codes.
+                    Supported range 4-255. Mutually exclusive with `disabled`.
+                    e.g. "4,5,6,7-10,11-20", "100-200", "10-20,24,25,30-40".
             peer_tag_in:
               type: str
               description: Inbound peer tag name.
@@ -732,15 +694,11 @@ keys:
               description: Maximum number of routes (0 means unlimited).
               min: 0
               max: 4294967294
-              convert_types:
-                - str
             maximum_routes_warning_limit:
               type: str
               description: |
                 Maximum number of routes after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
-              convert_types:
-                - int
             maximum_routes_warning_only:
               type: bool
             maximum_accepted_routes:
@@ -799,8 +757,6 @@ keys:
                   type: bool
                 times:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 10
                   description: Number of local ASNs allowed in a BGP update.
@@ -809,8 +765,6 @@ keys:
               min: 1
               max: 255
               description: Time-to-live in range of hops.
-              convert_types:
-                - str
             next_hop_peer:
               type: bool
             next_hop_self:
@@ -867,8 +821,6 @@ keys:
                     - "hmac-sha1-96"
             ttl_maximum_hops:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 254
               description: Maximum number of hops.
@@ -880,8 +832,6 @@ keys:
               max: 4294967294
             maximum_advertised_routes_warning_limit:
               type: str
-              convert_types:
-                - int
               description: |
                 Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                 Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -896,8 +846,6 @@ keys:
               description: Interface name.
             remote_as:
               type: str
-              convert_types:
-                - int
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -1061,8 +1009,6 @@ keys:
                   nssa_type:
                     description: NSSA External Type Number.
                     type: int
-                    convert_types:
-                      - str
                     valid_values:
                       - 1
                       - 2
@@ -1116,8 +1062,6 @@ keys:
                   nssa_type:
                     description: NSSA External Type Number.
                     type: int
-                    convert_types:
-                      - str
                     valid_values:
                       - 1
                       - 2
@@ -1264,8 +1208,6 @@ keys:
             vlan:
               type: str
               description: VLAN range as string. Example "100-200,300".
-              convert_types:
-                - int
             eos_cli:
               type: str
               description: Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration.
@@ -1277,8 +1219,6 @@ keys:
           keys:
             id:
               type: int
-              convert_types:
-                - str
             metadata:
               type: dict
               keys:
@@ -1387,8 +1327,6 @@ keys:
               type: bool
             mtu:
               type: int
-              convert_types:
-                - str
             pseudowires:
               type: list
               primary_key: name
@@ -1400,13 +1338,9 @@ keys:
                     description: Pseudowire name.
                   id_local:
                     type: int
-                    convert_types:
-                      - str
                     description: Must match id_remote on other pe.
                   id_remote:
                     type: int
-                    convert_types:
-                      - str
                     description: Must match id_local on other pe.
       address_family_evpn:
         type: dict
@@ -1581,21 +1515,15 @@ keys:
                 description: Time (in seconds) to detect a MAC duplication issue.
                 min: 0
                 max: 4294967295
-                convert_types:
-                  - str
               threshold:
                 type: int
                 min: 0
                 max: 4294967295
-                convert_types:
-                  - str
                 description: Minimum number of MAC moves that indicate a MAC Duplication issue.
               expiry_timeout:
                 type: int
                 min: 0
                 max: 4294967295
-                convert_types:
-                  - str
                 description: Time (in seconds) to purge a MAC duplication issue.
           next_hop:
             type: dict
@@ -1633,8 +1561,6 @@ keys:
               timeout:
                 type: int
                 description: In-place FEC update tracking timeout in seconds.
-                convert_types:
-                  - str
                 min: 0
                 max: 300
           evpn_ethernet_segment:
@@ -1792,8 +1718,6 @@ keys:
                   max: 4294967294
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -1872,8 +1796,6 @@ keys:
                   max: 4294967294
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -1995,8 +1917,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -2050,8 +1970,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -2102,6 +2020,11 @@ keys:
                       RCF function name with parenthesis.
                       Example: MyFunction(myarg).
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -2219,12 +2142,8 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -2336,12 +2255,8 @@ keys:
                   description: Maximum number of advertised routes (0 means unlimited).
                   min: 0
                   max: 4294967294
-                  convert_types:
-                    - str
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -2443,6 +2358,11 @@ keys:
                     RCF name with parenthesis. Example "NETWORK-RCF()".
                     `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           next_hops:
             type: list
             primary_key: ip_address
@@ -2638,8 +2558,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -2681,8 +2599,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -2854,8 +2770,6 @@ keys:
                   max: 4294967294
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -2926,8 +2840,6 @@ keys:
                   max: 4294967294
                 maximum_advertised_routes_warning_limit:
                   type: str
-                  convert_types:
-                    - int
                   description: |
                     Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means never warn) or
                     Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -3057,8 +2969,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -3101,6 +3011,11 @@ keys:
                       RCF function name with parenthesis.
                       Example: MyFunction(myarg).
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           redistribute_routes:
             type: list
             deprecation:
@@ -3258,8 +3173,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -3301,8 +3214,6 @@ keys:
                       nssa_type:
                         description: NSSA External Type Number.
                         type: int
-                        convert_types:
-                          - str
                         valid_values:
                           - 1
                           - 2
@@ -3794,6 +3705,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       vrfs:
         type: list
         primary_key: name
@@ -3803,8 +3719,6 @@ keys:
             name:
               type: str
               description: VRF name.
-              convert_types:
-                - int
             bgp:
               type: dict
               keys:
@@ -3869,8 +3783,6 @@ keys:
                   description: Required when `algorithm` is `preference`.
                   min: 0
                   max: 65535
-                  convert_types:
-                    - str
             default_route_exports:
               type: list
               primary_key: address_family
@@ -3994,15 +3906,11 @@ keys:
                   required: true
                 restart_time:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 3600
                   description: Number of seconds.
                 stalepath_time:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 3600
                   description: Number of seconds.
@@ -4027,14 +3935,10 @@ keys:
                 paths:
                   type: int
                   required: true
-                  convert_types:
-                    - str
                   min: 1
                   max: 600
                 ecmp:
                   type: int
-                  convert_types:
-                    - str
                   min: 1
                   max: 600
             updates:
@@ -4076,8 +3980,6 @@ keys:
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                       For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-                    convert_types:
-                      - int
             neighbors:
               type: list
               primary_key: ip_address
@@ -4094,8 +3996,6 @@ keys:
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                       For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-                    convert_types:
-                      - int
                   password:
                     type: str
                   password_type:
@@ -4103,8 +4003,6 @@ keys:
                     valid_values:
                       - "7"
                       - "8a"
-                    convert_types:
-                      - int
                     default: "7"
                   passive:
                     type: bool
@@ -4125,19 +4023,18 @@ keys:
                         type: bool
                       replace_as:
                         type: bool
+                  received_attribute_discard:
+                    type: dict
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/neighbors/items/keys/received_attribute_discard"
                   weight:
                     type: int
                     min: 0
                     max: 65535
-                    convert_types:
-                      - str
                   local_as:
                     type: str
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                       For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-                    convert_types:
-                      - int
                   as_path:
                     type: dict
                     description: BGP AS-PATH options.
@@ -4157,6 +4054,11 @@ keys:
                     min: 1
                     max: 255
                     description: Time-to-live in range of hops.
+                  ttl_maximum_hops:
+                    type: int
+                    min: 0
+                    max: 254
+                    description: Maximum number of hops.
                   next_hop_peer:
                     type: bool
                   next_hop_self:
@@ -4173,16 +4075,12 @@ keys:
                     keys:
                       interval:
                         type: int
-                        convert_types:
-                          - str
                         min: 50
                         max: 60000
                         required: true
                         description: Interval in milliseconds.
                       min_rx:
                         type: int
-                        convert_types:
-                          - str
                         min: 50
                         max: 60000
                         required: true
@@ -4191,8 +4089,6 @@ keys:
                         type: int
                         min: 3
                         max: 50
-                        convert_types:
-                          - str
                         required: true
                   timers:
                     type: str
@@ -4209,12 +4105,8 @@ keys:
                     description: "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."
                   maximum_routes:
                     type: int
-                    convert_types:
-                      - str
                   maximum_routes_warning_limit:
                     type: str
-                    convert_types:
-                      - int
                     description: |
                       Maximum number of routes after which a warning is issued (0 means never warn) or
                       Percentage of maximum number of routes at which to warn ("<1-100> percent").
@@ -4230,8 +4122,6 @@ keys:
                         type: bool
                       times:
                         type: int
-                        convert_types:
-                          - str
                         min: 1
                         max: 10
                         description: Number of local ASNs allowed in a BGP update.
@@ -4285,8 +4175,6 @@ keys:
                     description: |-
                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                       For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-                    convert_types:
-                      - int
                   peer_group:
                     type: str
                     description: Peer-group name.
@@ -4417,8 +4305,6 @@ keys:
                         nssa_type:
                           description: NSSA External Type Number.
                           type: int
-                          convert_types:
-                            - str
                           valid_values:
                             - 1
                             - 2
@@ -4472,8 +4358,6 @@ keys:
                         nssa_type:
                           description: NSSA External Type Number.
                           type: int
-                          convert_types:
-                            - str
                           valid_values:
                             - 1
                             - 2
@@ -4766,8 +4650,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -4821,8 +4703,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5094,8 +4974,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5287,8 +5165,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5336,8 +5212,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5500,8 +5374,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5543,8 +5415,6 @@ keys:
                             nssa_type:
                               description: NSSA External Type Number.
                               type: int
-                              convert_types:
-                                - str
                               valid_values:
                                 - 1
                                 - 2
@@ -5652,8 +5522,6 @@ keys:
             recovery_delay:
               type: int
               description: Recovery delay in seconds.
-              convert_types:
-                - str
               min: 1
               max: 3600
       redistribute_routes:

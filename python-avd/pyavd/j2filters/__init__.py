@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from .default import default as default
     from .encrypt import encrypt as encrypt
     from .hide_passwords import hide_passwords as hide_passwords
+    from .ip_address_sort import ip_address_sort as ip_address_sort
     from .is_in_filter import is_in_filter as is_in_filter
     from .list_compress import list_compress as list_compress
     from .natural_sort import natural_sort as natural_sort
@@ -25,6 +26,7 @@ _LAZY_IMPORTS: LazyImports = {
     "default": ("pyavd.j2filters.default", "default"),
     "encrypt": ("pyavd.j2filters.encrypt", "encrypt"),
     "hide_passwords": ("pyavd.j2filters.hide_passwords", "hide_passwords"),
+    "ip_address_sort": ("pyavd.j2filters.ip_address_sort", "ip_address_sort"),
     "is_in_filter": ("pyavd.j2filters.is_in_filter", "is_in_filter"),
     "list_compress": ("pyavd.j2filters.list_compress", "list_compress"),
     "natural_sort": ("pyavd.j2filters.natural_sort", "natural_sort"),

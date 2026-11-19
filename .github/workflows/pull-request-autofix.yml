@@ -3,6 +3,8 @@ name: autofix.ci
 
 "on":
   pull_request:
+  merge_group:
+    types: [checks_requested]
   push:
     branches:
       - devel
@@ -16,7 +18,8 @@ permissions:
 
 jobs:
   autofix:
-    name: Run pre-commit and commit back any changes
+    # Added in GitHub settings as a required check. Keep this name stable.
+    name: Autofix - run pre-commit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
@@ -25,14 +28,14 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
       - name: Run pre-commit autofix pass
         id: pre_commit
         uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
-        continue-on-error: true
+        continue-on-error: ${{ github.event_name != 'merge_group' }}
         with:
           extra_args: --all-files
 
@@ -45,4 +48,5 @@ jobs:
           fi
 
       - name: Commit back any git diff
+        if: github.event_name != 'merge_group'
         uses: autofix-ci/action@c5b2d67aa2274e7b5a18224e8171550871fc7e4a # v1.3.4

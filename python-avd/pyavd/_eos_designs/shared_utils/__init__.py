@@ -25,6 +25,7 @@ from .node_type import NodeTypeMixin
 from .node_type_keys import NodeTypeKeysMixin
 from .overlay import OverlayMixin
 from .platform_mixin import PlatformMixin
+from .profiled_data import ProfiledDataMixin
 from .ptp import PtpMixin
 from .routing import RoutingMixin
 from .underlay import UnderlayMixin
@@ -58,6 +59,7 @@ class SharedUtilsProtocol(
     NodeTypeKeysMixin,
     OverlayMixin,
     PlatformMixin,
+    ProfiledDataMixin,
     PtpMixin,
     WanMixin,
     RoutingMixin,

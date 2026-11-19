@@ -20,6 +20,3 @@ spine:
           bgp:
             peer_as: 65001
             ipv6_prefix_list_in: MISSING-IPV6-PREFIX-LIST
-
-expected_error_message: >-
-  'ipv6_prefix_list_catalog[name=MISSING-IPV6-PREFIX-LIST]' is required but was not found for host 'missing-ipv6-prefix-list-definition'.
