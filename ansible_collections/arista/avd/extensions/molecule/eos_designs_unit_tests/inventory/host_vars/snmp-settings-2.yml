@@ -15,14 +15,17 @@ default_mgmt_method: inband
 
 snmp_settings:
   vrfs:
-    - name: SNMPVRF
-      enable: true
+    # Test legacy SNMP ACL ordering when avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf is not enabled.
     # Testing automatically picking up the inband VRF with the 'use_inband_mgmt_vrf' keyword.
     # This errors if inband management is not configured.
     - name: use_inband_mgmt_vrf
       enable: true
       ipv4_acl: acl-for-vrf-default
       ipv6_acl: acl-for-vrf-default
+    - name: SNMPVRF
+      enable: true
+      ipv4_acl: acl-for-vrf-SNMPVRF
+      ipv6_acl: acl-for-vrf-SNMPVRF
     - name: ACLS-IN-NON-ENABLED-VRF
       # These ACLs should not be rendered
       ipv4_acl: acl-for-vrf-blah

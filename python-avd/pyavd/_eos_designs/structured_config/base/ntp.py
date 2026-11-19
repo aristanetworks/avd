@@ -26,7 +26,9 @@ class NtpMixin(Protocol):
     @structured_config_contributor
     def ntp(self: AvdStructuredConfigBaseProtocol) -> None:
         """Ntp set based on "ntp_settings" data-model."""
-        if not (ntp_settings := self.inputs.ntp_settings):
+        ntp_settings = self.shared_utils.ntp_settings
+
+        if not ntp_settings:
             return
 
         # Since the EOS Config data model almost matches, we can copy most data directly.
@@ -68,7 +70,7 @@ class NtpMixin(Protocol):
             self.structured_config.ntp.local_interface.vrf = server_vrf
 
         # First server is set as preferred if ntp_settings.set_first_ntp_server_as_preferred set to true
-        first = self.inputs.ntp_settings.set_first_ntp_server_as_preferred
+        first = ntp_settings.set_first_ntp_server_as_preferred
         for server in ntp_settings.servers:
             ntp_server = server._cast_as(EosCliConfigGen.Ntp.ServersItem)
             if server.source_address is not None:

@@ -12,6 +12,9 @@ from pyavd._utils.get import get
 if TYPE_CHECKING:
     from . import AvdStructuredConfigMetadataProtocol
 
+# Node types for which ip_addr ACT attribute is optional. For all other node types it is mandatory
+_ACT_NODE_TYPES_OPTIONAL_MGMT_IP: frozenset[str] = frozenset({"cloudeos", "veos"})
+
 
 class DigitalTwinMixin(Protocol):
     """
@@ -41,14 +44,15 @@ class DigitalTwinMixin(Protocol):
         match environment:
             case "act":
                 digital_twin_node_type = self.shared_utils.platform_settings.digital_twin.act_node_type
+                node_config_digital_twin = self.shared_utils.node_config.digital_twin
                 if not (isinstance(digital_twin_node_type, str) and digital_twin_node_type):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}' using platform '{self.shared_utils.platform}'."
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
                     )
                     raise AristaAvdError(msg)
-                ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
-                if not ip_addr and digital_twin_node_type not in ["cloudeos", "veos"]:
+                ip_addr = default(node_config_digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
+                if not ip_addr and digital_twin_node_type not in _ACT_NODE_TYPES_OPTIONAL_MGMT_IP:
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
@@ -61,7 +65,7 @@ class DigitalTwinMixin(Protocol):
                     )
                     raise AristaAvdError(msg)
                 version = default(
-                    self.shared_utils.node_config.digital_twin.act_os_version,
+                    node_config_digital_twin.act_os_version,
                     self.inputs.digital_twin.fabric.act_os_version,
                     get(self.DEFAULT_OS_VERSION_MAP, f"act..{digital_twin_node_type}", separator=".."),
                 )
@@ -75,16 +79,19 @@ class DigitalTwinMixin(Protocol):
                     username=username,
                     password=password,
                 )
-                # Set internet_access flag if node_type is cloudeos or veos
-                if (
+                if self.structured_config_utils.current_act_node_supports_feature("internet_access") and (
                     act_internet_access := default(
                         self.shared_utils.node_config.digital_twin.act_internet_access,
                         self.inputs.digital_twin.fabric.act_internet_access,
                     )
-                ) and digital_twin_node_type in ["cloudeos", "veos"]:
-                    self.structured_config.metadata.digital_twin._update(
-                        internet_access=act_internet_access,
-                    )
+                ):
+                    self.structured_config.metadata.digital_twin._update(internet_access=act_internet_access)
+
+                # ACT treats an omitted ztp key as disabled, so only write the key when ZTP is enabled
+                if self.structured_config_utils.current_act_node_supports_feature("ztp") and (
+                    ztp := default(node_config_digital_twin.ztp, self.inputs.digital_twin.fabric.ztp)
+                ):
+                    self.structured_config.metadata.digital_twin._update(ztp=ztp)
                 return
             case "containerlab":
                 self.structured_config.metadata.digital_twin._update(environment=environment)

@@ -344,6 +344,19 @@ port_channel_interfaces:
   ip_address: 1.1.1.40/29
   metadata:
     peer_type: l3_port_channel
+- name: Port-Channel1111.201
+  description: inet-cloud_Po1111.201
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 400
+  vrf: TESTING
+  ip_address: 1.1.2.30/29
+  access_group_in: STD-NS-PC-ACL-IN
+  access_group_out: STD-NS-PC-ACL-OUT
+  metadata:
+    peer: inet-cloud
+    peer_interface: Po1111.201
+    peer_type: l3_port_channel
 - name: Port-Channel1111.200
   description: inet-cloud_Po1111.200
   shutdown: false
@@ -523,6 +536,17 @@ router_ospf:
         enabled: true
     auto_cost_reference_bandwidth: 10
 service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: STD-NS-PC-ACL-IN
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.0/8
+- name: STD-NS-PC-ACL-OUT
+  entries:
+  - sequence: 10
+    action: permit
+    source: 172.16.0.0/12
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

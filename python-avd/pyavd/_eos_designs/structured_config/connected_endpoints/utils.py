@@ -274,6 +274,8 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         dot1x = adapter.dot1x._cast_as(EosCliConfigGen.EthernetInterfacesItem.Dot1x, ignore_extra_keys=True)
+        if not self.shared_utils.platform_settings.feature_support.dot1x_mac_based_access_list:
+            dot1x.mac_based_access_list = None
         if acl_name := adapter.dot1x.authentication_failure.allow_access_list:
             acl_found = False
             if acl_name in self.inputs.ipv4_acls:

@@ -76,7 +76,7 @@ def get_facts(
     for hostname, generator in peer_facts_generators.items():
         try:
             all_facts[hostname] = generator.render()
-        except AristaAvdError as e:  # noqa: PERF203
+        except AristaAvdError as e:
             e._add_host_context(hostname)
             raise
 
