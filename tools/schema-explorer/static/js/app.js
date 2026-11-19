@@ -344,25 +344,25 @@ const RUNTIME_DEPS = {
   css: [
     {
       href: `${SCHEMA_VENDOR_BASE}/bootstrap-icons/font/bootstrap-icons.min.css`,
-      integrity: "sha384-L8JisW7yet65STBdXyiV6LpfJHTE34WQ6uNxndBGg1lcc3tseozYGsBw6W6KzXVv",
+      integrity: "__ICONS_CSS_INTEGRITY__",
     },
   ],
   js: [
     {
       src: `${SCHEMA_VENDOR_BASE}/bootstrap/bootstrap.bundle.min.js`,
       global: "bootstrap",
-      integrity: "sha384-WfVzX9hAUBOBjMptWY54rUnWRI1Tn/ZCUAT52D/05VTiszOwsM+TM5o0sB4Kv44M",
+      integrity: "__BOOTSTRAP_JS_INTEGRITY__",
     },
     {
       src: `${SCHEMA_VENDOR_BASE}/sql.js/dist/sql-wasm.js`,
       global: "initSqlJs",
-      integrity: "sha384-8D3Rsfo535FqoC1pHCCQMrNf75UgzyoG/HQm9zOzITRrz3QKzecc2E7JXKGCXoWu",
+      integrity: "__SQL_JS_INTEGRITY__",
     },
   ],
 };
 const SQL_WASM = {
   src: `${SCHEMA_VENDOR_BASE}/sql.js/dist/sql-wasm.wasm`,
-  integrity: "sha384-kSm0AH9ho89napVfNFf/kCRTH6xBoCS3qf/ATGJeYFQFKiegBMLhQ3aUIZBlYLpa",
+  integrity: "__SQL_WASM_INTEGRITY__",
 };
 
 function _hasTagWithUrl(selector, attr, url) {

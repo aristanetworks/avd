@@ -144,6 +144,11 @@ schema-explorer-build: ## Build the Schema Explorer (static assets + SQLite) int
 	uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py \
 		--avd-root . --site-dir $(SCHEMA_EXPLORER_BUILD)
 
+.PHONY: schema-explorer-browser-check
+schema-explorer-browser-check: ## Build a real MkDocs fixture and exercise standalone + embedded explorers in Chromium (install browser first).
+	npm --prefix $(SCHEMA_EXPLORER_SRC) ci --ignore-scripts
+	npm --prefix $(SCHEMA_EXPLORER_SRC) run test:browser
+
 .PHONY: docs-serve
 docs-serve: ## Run `mkdocs serve` on http://127.0.0.1:8000. The Schema Explorer hook builds its own cache outside the watched repo tree.
 	uv run --group doc mkdocs serve --dev-addr=127.0.0.1:8000 -f mkdocs.yml

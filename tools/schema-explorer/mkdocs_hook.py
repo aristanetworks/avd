@@ -109,18 +109,9 @@ def _ensure_markdown_fence(config: dict[str, Any]) -> None:
 
 def _copy_static_assets() -> None:
     """Copy the latest static SPA assets into the build directory."""
-    if not STATIC_DIR.is_dir():
-        msg = f"Static asset dir not found: {STATIC_DIR}"
-        raise FileNotFoundError(msg)
-    BUILD_DIR.mkdir(parents=True, exist_ok=True)
-    for entry in STATIC_DIR.iterdir():
-        target = BUILD_DIR / entry.name
-        if entry.is_dir():
-            if target.exists():
-                shutil.rmtree(target)
-            shutil.copytree(entry, target)
-        else:
-            shutil.copy2(entry, target)
+    subprocess.check_call(  # noqa: S603
+        [sys.executable, str(GENERATE_SCRIPT), "--avd-root", str(AVD_ROOT), "--site-dir", str(BUILD_DIR), "--assets-only"],
+    )
 
 
 def _schema_input_paths() -> tuple[Path, ...]:

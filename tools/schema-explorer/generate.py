@@ -36,10 +36,14 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import base64
+import hashlib
 import json
 import shutil
 import sqlite3
+import subprocess
 import sys
+import tempfile
 import time
 from copy import deepcopy
 from pathlib import Path
@@ -356,6 +360,66 @@ def build(avd_root: Path, out: Path) -> dict[str, int]:
             tmp_out.unlink()
 
 
+# Explicit package-file allowlist: never publish node_modules or package metadata.
+RUNTIME_ASSETS = {
+    "BOOTSTRAP_CSS": ("bootstrap/dist/css/bootstrap.min.css", "bootstrap/bootstrap.min.css"),
+    "BOOTSTRAP_JS": ("bootstrap/dist/js/bootstrap.bundle.min.js", "bootstrap/bootstrap.bundle.min.js"),
+    "ICONS_CSS": ("bootstrap-icons/font/bootstrap-icons.min.css", "bootstrap-icons/font/bootstrap-icons.min.css"),
+    "SQL_JS": ("sql.js/dist/sql-wasm.js", "sql.js/dist/sql-wasm.js"),
+    "SQL_WASM": ("sql.js/dist/sql-wasm.wasm", "sql.js/dist/sql-wasm.wasm"),
+}
+ICON_FONTS = ("bootstrap-icons.woff", "bootstrap-icons.woff2")
+RUNTIME_LICENSES = ("bootstrap/LICENSE", "bootstrap-icons/LICENSE", "sql.js/LICENSE")
+
+
+def _install_runtime_assets(site_dir: Path) -> None:
+    """Install locked packages outside the watched repo and publish only runtime files."""
+    npm = shutil.which("npm")
+    if npm is None:
+        msg = "Schema Explorer requires Node.js 22+ and npm to install locked build dependencies."
+        raise RuntimeError(msg)
+    vendor = site_dir / "vendor"
+    if vendor.exists():
+        shutil.rmtree(vendor)
+    integrities = {}
+    # A fresh installation avoids stale packages after dependency bumps. npm's
+    # download cache still avoids downloading unchanged tarballs on rebuilds.
+    with tempfile.TemporaryDirectory(prefix="avd-schema-explorer-npm-") as directory:
+        install_dir = Path(directory)
+        for filename in ("package.json", "package-lock.json"):
+            shutil.copy2(HERE / filename, install_dir / filename)
+        subprocess.run(  # noqa: S603
+            [npm, "ci", "--engine-strict", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund"],
+            cwd=install_dir,
+            check=True,
+        )
+        modules = install_dir / "node_modules"
+        for key, (source, destination) in RUNTIME_ASSETS.items():
+            content = (modules / source).read_bytes()
+            target = vendor / destination
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(content)
+            integrities[key] = "sha384-" + base64.b64encode(hashlib.sha384(content).digest()).decode()
+        for filename in ICON_FONTS:
+            target = vendor / "bootstrap-icons/font/fonts" / filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(modules / "bootstrap-icons/font/fonts" / filename, target)
+        for filename in RUNTIME_LICENSES:
+            target = vendor / filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(modules / filename, target)
+    # Derive both HTML SRI and lazy-loader/WASM hashes from the installed bytes.
+    for filename in ("index.html", "js/app.js"):
+        target = site_dir / filename
+        content = target.read_text()
+        for key, integrity in integrities.items():
+            content = content.replace(f"__{key}_INTEGRITY__", integrity)
+        if "_INTEGRITY__" in content:
+            msg = f"Unresolved runtime integrity placeholder in {target}"
+            raise RuntimeError(msg)
+        target.write_text(content)
+
+
 def _copy_static_assets(site_dir: Path) -> None:
     """Copy index.html / css/ / js/ from ``static/`` into ``site_dir``."""
     if not STATIC_DIR.is_dir():
@@ -370,6 +434,7 @@ def _copy_static_assets(site_dir: Path) -> None:
             shutil.copytree(entry, target)
         else:
             shutil.copy2(entry, target)
+    _install_runtime_assets(site_dir)
     print(f"  copied static assets → {site_dir}")
 
 
@@ -384,11 +449,15 @@ def main() -> int:
         "Static assets are copied here and the SQLite is written under "
         "data/schema.sqlite.",
     )
+    parser.add_argument("--assets-only", action="store_true", help="Refresh runtime assets without regenerating SQLite")
     args = parser.parse_args()
 
     site_dir = args.site_dir.resolve()
     print("Building Schema Explorer")
     _copy_static_assets(site_dir)
+
+    if args.assets_only:
+        return 0
 
     sqlite_out = site_dir / "data" / "schema.sqlite"
     counts = build(args.avd_root.resolve(), sqlite_out)

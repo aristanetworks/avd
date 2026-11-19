@@ -2,7 +2,7 @@
 
 # Installing git
 echo "Installing dependencies"
-apk add --no-cache git git-fast-import
+apk add --no-cache git git-fast-import nodejs npm
 
 # Making /data and /site safe for git
 git config --global --add safe.directory /data
