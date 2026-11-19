@@ -248,40 +248,74 @@ make integration-tests ANSIBLE_TEST_MODE=docker
 
 ## PyAVD tests
 
-The root Makefile runs PyAVD tests using [uv](https://docs.astral.sh/uv/) to create isolated environments.
-Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/) before running these targets.
-uv uses an available interpreter matching the requested Python version, or downloads one if necessary.
+Run PyAVD tests directly with [uv](https://docs.astral.sh/uv/) from the repository root.
+Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
-Each environment installs the required dependency groups and editable copies of PyAVD and the coverage plugin.
-Before running tests, it runs `make -C python-avd dep` to rebuild schemas and templates when their sources have changed, including when uv reuses a cached editable build.
-The targets leave your development virtual environment unchanged and resolve updated dependencies on every invocation.
-The generated `uv.lock` remains ignored by Git.
-Requests for multiple PyAVD test targets in the same Make invocation run sequentially, including with `make -j`, since they share generated files.
+### Prepare your environment
 
-| Target | Behavior |
-| ------ | -------- |
-| `pyavd-test` | Run pytest sequentially on Python 3.11, 3.13 and 3.14, then test Python 3.12 under coverage and generate reports. |
-| `pyavd-test-3.11`, `pyavd-test-3.12`, `pyavd-test-3.13`, `pyavd-test-3.14` | Run pytest on the specified Python version. |
-| `pyavd-test-coverage` | Erase previous coverage data, run pytest under coverage on Python 3.12, then combine parallel coverage data. |
-| `pyavd-test-report` | Run `pyavd-test-coverage`, write `coverage.xml`, then print the report and check the coverage threshold. |
-
-Run the commands from the repository root. Use `PYTEST_ARGS` to select tests or pass pytest options:
+Activate an existing virtual environment, or create one with the Python version you want to test:
 
 ```shell
-# Run all supported Python versions, coverage and reporting.
-make pyavd-test
-
-# Run one Python version.
-make pyavd-test-3.13
-
-# Run selected tests with pytest options.
-make pyavd-test-3.12 PYTEST_ARGS='python-avd/tests/pyavd -x -q'
-
-# Generate coverage for selected tests.
-make pyavd-test-coverage PYTEST_ARGS='python-avd/tests/pyavd'
+uv venv --python 3.12
+source .venv/bin/activate
 ```
 
-CI uses the same Make targets: Python 3.12 runs with coverage, and the other supported versions run pytest directly.
-CI combines pytest and end-to-end coverage before checking the repository coverage threshold.
-The local `pyavd-test-report` target checks the configured threshold using only pytest coverage.
-It writes the current XML report before checking the threshold, so a below-threshold result still produces an updated report.
+Install the test and coverage requirements, PyAVD, and the coverage plugin into that environment:
+
+```shell
+uv pip install --group pytest --group coverage \
+  -e python-avd -e development/coverage_plugins
+```
+
+Repeat the installation when dependency requirements change.
+The commands below use `uv run --no-project` to reuse the activated environment, or the repository's `.venv`, without synchronizing project dependencies or updating a lock file.
+
+Build the generated schemas and templates before the first test run in a checkout.
+Repeat this step after changing schema or template sources, or their generators:
+
+```shell
+uv run --no-project make -C python-avd dep
+```
+
+Generation rewrites shared files, so complete it before running tests in that checkout.
+Ordinary Python logic changes can be tested directly.
+
+### Run tests
+
+```shell
+# Run both configured test roots: PyAVD and the coverage plugin.
+uv run --no-project python -m pytest
+
+# Select tests and pass pytest options directly.
+uv run --no-project python -m pytest python-avd/tests/pyavd -x -q
+```
+
+To test another supported Python version, create and activate a separate environment, then repeat the requirements installation:
+
+```shell
+uv venv --python 3.13 .venv-3.13
+source .venv-3.13/bin/activate
+```
+
+CI tests Python 3.11, 3.12, 3.13 and 3.14, using coverage on Python 3.12.
+
+### Coverage
+
+Use the prepared environment to run pytest under coverage. You can append test paths and pytest options to the `coverage run -m pytest` command.
+
+```shell
+uv run --no-project python -m coverage erase
+uv run --no-project python -m coverage run -m pytest
+```
+
+After a successful test run, combine the parallel coverage data, write the XML report, and check the configured threshold:
+
+```shell
+uv run --no-project python -m coverage combine
+uv run --no-project python -m coverage xml --fail-under=0
+uv run --no-project python -m coverage report
+```
+
+`coverage erase` removes results from earlier runs, and `coverage combine` is required because the repository enables parallel coverage data files.
+The XML report is written before checking the threshold, so a below-threshold result still produces an updated `coverage.xml`.
+This local report measures pytest coverage; CI combines pytest and end-to-end coverage before checking the repository threshold.
