@@ -78,10 +78,11 @@ python -m pytest --codspeed \
 CodSpeed runs this suite in both simulation and memory modes. The memory run
 also records peak physical memory on supported runners.
 
-The workflow currently splits collection across six jobs to investigate missing
+The workflow currently splits collection across five jobs to investigate missing
 memory allocation profiles: simulation runs all 15 default cases, one memory job
-runs the full-scenario facts case alone, and four memory jobs split the other
-14 cases into groups of 4, 4, 3, and 3. Each job uploads its results separately.
+runs 12 cases including the full-scenario facts case, and three memory jobs run
+`cv-pathfinder-pathfinder1`, `cv-pathfinder-edge1`, and the 15-device synthetic
+workflow individually. Each job uploads its results separately.
 
 Local full-suite runs include the 150-device scale benchmark. They do not add an
 all-host render benchmark for the full molecule scenario; that kind of load test
