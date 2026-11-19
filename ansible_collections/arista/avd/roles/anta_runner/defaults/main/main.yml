@@ -47,4 +47,4 @@ anta_runner_report_custom_field: "{{ anta_report_custom_field | default(false) }
 # Keep this false when deterministic report content is required in CI checks.
 anta_runner_report_run_overview: "{{ anta_report_run_overview | default(false) }}"
 
-anta_runner_report_exclude_statuses: "{{ anta_report_exclude_statuses | default([]) }}"
+anta_runner_report_exclude_statuses: "{{ anta_report_exclude_statuses | arista.avd.default([]) }}"
