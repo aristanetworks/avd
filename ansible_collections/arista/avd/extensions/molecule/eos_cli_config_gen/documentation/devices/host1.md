@@ -13724,24 +13724,24 @@ platform trident mmu headroom-pool limit cells 556
 
 | Module | Profile |
 | ------ | ------- |
-| linecard1 | CAPITAL |
-| fabric0 | Uniform-1x400G-8 |
-| fabric2 | Uniform-4x10G-1 |
-| linecard3 | Uniform-4x100G-2-R |
+| Linecard1 | CAPITAL |
+| Fabric0 | Uniform-1x400G-8 |
+| Fabric2 | Uniform-4x10G-1 |
+| Linecard3 | Uniform-4x100G-2-R |
 | switch | Uniform-4x100G-2-R |
-| linecard0 | small |
+| Linecard0 | small |
 
 ### System L1 Device Configuration
 
 ```eos
 !
 system l1
-   module linecard1 profile CAPITAL
-   module fabric0 profile Uniform-1x400G-8
-   module fabric2 profile Uniform-4x10G-1
-   module linecard3 profile Uniform-4x100G-2-R
+   module Linecard1 profile CAPITAL
+   module Fabric0 profile Uniform-1x400G-8
+   module Fabric2 profile Uniform-4x10G-1
+   module Linecard3 profile Uniform-4x100G-2-R
    module switch profile Uniform-4x100G-2-R
-   module linecard0 profile small
+   module Linecard0 profile small
    unsupported speed action warn
    unsupported error-correction action error
 ```

@@ -24,15 +24,15 @@ system:
         vrf: default
   l1:
     modules:
-      - name: linecard0
+      - name: Linecard0
         profile: small
-      - name: linecard1
+      - name: Linecard1
         profile: CAPITAL
-      - name: linecard3
+      - name: Linecard3
         profile: Uniform-4x100G-2-R
-      - name: fabric2
+      - name: Fabric2
         profile: Uniform-4x10G-1
-      - name: fabric0
+      - name: Fabric0
         profile: Uniform-1x400G-8
       - name: switch
         profile: Uniform-4x100G-2-R

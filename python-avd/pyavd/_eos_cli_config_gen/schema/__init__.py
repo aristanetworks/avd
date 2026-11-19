@@ -73761,7 +73761,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "profile": {"type": str}}
                 name: str
-                """Module selector."""
+                """
+                Module selector.
+                - `switch`
+                - `linecard <id-list>`
+                - `fabric <id-list>`
+                The `switch` selector is
+                intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.
+                where
+                `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`.
+                """
                 profile: str
                 """Builtin module L1 profile name."""
 
@@ -73775,7 +73784,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: Module selector.
+                            name:
+                               Module selector.
+                               - `switch`
+                               - `linecard <id-list>`
+                               - `fabric <id-list>`
+                               The `switch` selector is
+                               intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.
+                               where
+                               `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`.
                             profile: Builtin module L1 profile name.
 
                         """
@@ -73797,17 +73814,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             modules: Modules
             """
             Unified module profile assignments.
-            Use `name` as one of:
-            - `switch`
-            - `linecard <id-list>`
-            -
-            `fabric <id-list>`
-            The `switch` selector is intended for fixed systems and should not be mixed with
-            `linecard` or `fabric` selectors.
-            where `<id-list>` supports values and ranges like `0`, `0-3`,
-            `0,2-4`.
 
-            Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `name` (`str`).
+            Subclass of AvdIndexedList with `ModulesItem` items. Primary
+            key is `name` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -73830,17 +73839,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         unsupported_error_correction_action: unsupported_error_correction_action
                         modules:
                            Unified module profile assignments.
-                           Use `name` as one of:
-                           - `switch`
-                           - `linecard <id-list>`
-                           -
-                           `fabric <id-list>`
-                           The `switch` selector is intended for fixed systems and should not be mixed with
-                           `linecard` or `fabric` selectors.
-                           where `<id-list>` supports values and ranges like `0`, `0-3`,
-                           `0,2-4`.
 
-                           Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `name` (`str`).
+                           Subclass of AvdIndexedList with `ModulesItem` items. Primary
+                           key is `name` (`str`).
 
                     """
 
