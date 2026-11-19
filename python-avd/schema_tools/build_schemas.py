@@ -17,14 +17,7 @@ from yaml import load as yaml_load
 
 from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_ARCHIVE_FILE, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .store import create_store
-
-try:
-    import jsonschema_rs
-
-    JSON_SCHEMA_VALIDATOR = jsonschema_rs.Draft7Validator
-    HAS_JSONSCHEMA_RS = True
-except ImportError:
-    HAS_JSONSCHEMA_RS = False
+from .validate_schema_fragments import validate_schema_fragments
 
 FRAGMENTS_PATTERN = "*.yml"
 METASCHEMA_FILE = METASCHEMA_DIR.joinpath("avd_meta_schema.json")
@@ -78,23 +71,6 @@ def combine_schemas() -> None:
         json.dump(store, gz_file)
 
 
-def validate_schemas(schema_store: dict) -> None:
-    """Validate schemas according to metaschema."""
-    if not HAS_JSONSCHEMA_RS:
-        LOGGER.warning(
-            "'jsonschema_rs' was not found. If you are a developer using AVD make sure to install the dev requirements for the collection. "
-            "The schemas could not be validated."
-        )
-        return
-    schema_validator = JSON_SCHEMA_VALIDATOR(schema_store["avd_meta_schema"])
-    for schema_name, schema in schema_store.items():
-        if schema_name == "avd_meta_schema":
-            continue
-
-        LOGGER.info("Validating schema '%s'", schema_name)
-        schema_validator.validate(schema)
-
-
 def build_schema_tables() -> None:
     """Build schema tables."""
     from pyavd_utils_gen.schema_generation import generate_schema_documentation_from_paths  # noqa: PLC0415
@@ -133,14 +109,14 @@ def build_schema_classes() -> None:
 
 
 def build_schemas() -> None:
-    """Combines the schema fragments, and rebuild the pickled schemas."""
+    """Validate and combine schema fragments, then rebuild schema artifacts."""
+    validate_schema_fragments()
     combine_schemas()
     from pyavd_utils_gen.schema_store import compile_schema_archive  # noqa: PLC0415
 
     LOGGER.info("Compiling archived schema store")
     compile_schema_archive(SCHEMA_STORE_GZ_FILE, SCHEMA_STORE_ARCHIVE_FILE)
     LOGGER.info("Rebuilding pickled schemas")
-    schema_store = create_store(force_rebuild=True)
-    validate_schemas(schema_store)
+    create_store(force_rebuild=True)
     build_schema_tables()
     build_schema_classes()
