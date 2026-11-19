@@ -56,7 +56,7 @@ keys:
                 min: 1
                 max: 60
                 description: Minutes of not increasing the incident count before resetting the incident count.
-              count:
+              limit:
                 type: int
                 min: 1
                 max: 20

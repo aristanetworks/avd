@@ -32,10 +32,10 @@ router_ospfv3:
     lsa:
       limit: 4444
       incident_count:
-        count: 4
+        limit: 4
         clear_timeout: 8
       warning_limit: 88
-      exceed_action_warn: true
+      exceed_action_warn: true # won't render as incident_count is set
     redistribute:
       ospfv3:
         leaked:

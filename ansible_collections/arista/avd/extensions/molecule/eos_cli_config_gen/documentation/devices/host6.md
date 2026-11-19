@@ -419,13 +419,13 @@ router ospfv3
       redistribute static include leaked route-map map1
    !
    address-family ipv6
-      lsa limit 9100 warning limit 70 percent exceed-action warn
       redistribute bgp include leaked route-map map1
       redistribute dhcp route-map map1
       redistribute connected include leaked route-map map1
       redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked
       redistribute static include leaked route-map map1
+      lsa limit 9100 warning limit 70 percent exceed-action warn
 ```
 
 ### Router BGP

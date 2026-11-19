@@ -465,20 +465,20 @@ router ospfv3
       bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
-      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
    !
    address-family ipv6
       router-id 3.3.3.3
       bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
-      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
 ```
 
 ### Router ISIS

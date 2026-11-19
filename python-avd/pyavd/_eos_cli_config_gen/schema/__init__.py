@@ -67209,15 +67209,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class IncidentCount(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                 clear_timeout: int | None
                 """Minutes of not increasing the incident count before resetting the incident count."""
-                count: int | None
+                limit: int | None
                 """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                    def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                         """
                         IncidentCount.
 
@@ -67226,7 +67226,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                            count: Limit maximum number of times the maximum number of LSAs can be reached.
+                            limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                         """
 
@@ -67288,15 +67288,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class IncidentCount(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                     clear_timeout: int | None
                     """Minutes of not increasing the incident count before resetting the incident count."""
-                    count: int | None
+                    limit: int | None
                     """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                             """
                             IncidentCount.
 
@@ -67305,7 +67305,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                                count: Limit maximum number of times the maximum number of LSAs can be reached.
+                                limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                             """
 
@@ -68055,15 +68055,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class IncidentCount(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                     clear_timeout: int | None
                     """Minutes of not increasing the incident count before resetting the incident count."""
-                    count: int | None
+                    limit: int | None
                     """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                             """
                             IncidentCount.
 
@@ -68072,7 +68072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                                count: Limit maximum number of times the maximum number of LSAs can be reached.
+                                limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                             """
 
@@ -68199,15 +68199,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class IncidentCount(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                    _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                     clear_timeout: int | None
                     """Minutes of not increasing the incident count before resetting the incident count."""
-                    count: int | None
+                    limit: int | None
                     """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                        def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                             """
                             IncidentCount.
 
@@ -68216,7 +68216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                                count: Limit maximum number of times the maximum number of LSAs can be reached.
+                                limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                             """
 
@@ -68278,15 +68278,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class IncidentCount(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                        _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                         clear_timeout: int | None
                         """Minutes of not increasing the incident count before resetting the incident count."""
-                        count: int | None
+                        limit: int | None
                         """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                                 """
                                 IncidentCount.
 
@@ -68295,7 +68295,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                                    count: Limit maximum number of times the maximum number of LSAs can be reached.
+                                    limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                                 """
 
@@ -69055,15 +69055,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class IncidentCount(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "count": {"type": int}}
+                        _fields: ClassVar[dict] = {"clear_timeout": {"type": int}, "limit": {"type": int}}
                         clear_timeout: int | None
                         """Minutes of not increasing the incident count before resetting the incident count."""
-                        count: int | None
+                        limit: int | None
                         """Limit maximum number of times the maximum number of LSAs can be reached."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, count: int | UndefinedType | None = Undefined) -> None:
+                            def __init__(self, *, clear_timeout: int | UndefinedType | None = Undefined, limit: int | UndefinedType | None = Undefined) -> None:
                                 """
                                 IncidentCount.
 
@@ -69072,7 +69072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     clear_timeout: Minutes of not increasing the incident count before resetting the incident count.
-                                    count: Limit maximum number of times the maximum number of LSAs can be reached.
+                                    limit: Limit maximum number of times the maximum number of LSAs can be reached.
 
                                 """
 

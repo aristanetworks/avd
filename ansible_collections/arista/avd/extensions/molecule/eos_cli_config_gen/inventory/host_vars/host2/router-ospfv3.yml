@@ -7,10 +7,10 @@ router_ospfv3:
     limit: 20000
     disabled_time: 30
     incident_count:
-      count: 10
+      limit: 10
       clear_timeout: 20
     warning_limit: 80
-    exceed_action_warn: true
+    exceed_action_warn: true # won't render as incident_count is set
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -89,10 +89,10 @@ router_ospfv3:
           limit: 6000
           disabled_time: 15
           incident_count:
-            count: 4
+            limit: 4
             clear_timeout: 12
           warning_limit: 75
-          exceed_action_warn: true
+          exceed_action_warn: true # won't render as incident_count is set
         redistribute:
           bgp:
             enabled: true
@@ -126,10 +126,10 @@ router_ospfv3:
         lsa:
           limit: 7000
           incident_count:
-            count: 3
+            limit: 3
             clear_timeout: 6
           warning_limit: 90
-          exceed_action_warn: true
+          exceed_action_warn: true # won't render as incident_count is set
         redistribute:
           bgp:
             enabled: true
@@ -249,9 +249,9 @@ router_ospfv3:
         limit: 4500
         disabled_time: 7
         incident_count:
-          count: 2
+          limit: 2
           clear_timeout: 5
-        exceed_action_warn: true
+        exceed_action_warn: true # won't render as incident_count is set
     - name: WARN_ONLY
       lsa:
         limit: 8000

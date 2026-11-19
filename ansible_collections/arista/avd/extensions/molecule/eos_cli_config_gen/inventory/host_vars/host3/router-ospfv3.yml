@@ -17,10 +17,10 @@ router_ospfv3:
       limit: 20000
       disabled_time: 30
       incident_count:
-        count: 10
+        limit: 10
         clear_timeout: 20
       warning_limit: 80
-      exceed_action_warn: true
+      exceed_action_warn: true # won't render as incident_count is set
     redistribute:
       ospfv3:
         leaked:
@@ -43,10 +43,10 @@ router_ospfv3:
       limit: 20000
       disabled_time: 30
       incident_count:
-        count: 10
+        limit: 10
         clear_timeout: 20
       warning_limit: 80
-      exceed_action_warn: true
+      exceed_action_warn: true # won't render as incident_count is set
     redistribute:
       ospfv3:
         leaked:
