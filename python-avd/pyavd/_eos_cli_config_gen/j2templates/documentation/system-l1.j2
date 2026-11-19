@@ -26,7 +26,7 @@
 
 | Module | Profile |
 | ------ | ------- |
-{%         for module in system.l1.modules | sort(attribute='profile', case_sensitive=true) %}
+{%         for module in system.l1.modules | arista.avd.default([]) | sort(attribute='profile', case_sensitive=true) %}
 | Linecard{{ module.linecards }} | {{ module.profile }} |
 {%         endfor %}
 {%     endif %}

@@ -39,6 +39,6 @@ system:
       - linecards: 9
         profile: 1
       - linecards: 10
-        profile: 12  
+        profile: 12
     unsupported_speed_action: warn
     unsupported_error_correction_action: error
