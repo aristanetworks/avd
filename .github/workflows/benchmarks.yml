@@ -37,14 +37,7 @@ jobs:
             filter: ""
           - suite: memory-main
             mode: memory
-            filter: >-
-              not (cv-pathfinder-pathfinder1 or cv-pathfinder-edge1 or test_large_fabric_full_workflow_benchmark)
-          - suite: memory-pathfinder
-            mode: memory
-            filter: "cv-pathfinder-pathfinder1"
-          - suite: memory-edge
-            mode: memory
-            filter: "cv-pathfinder-edge1"
+            filter: "not test_large_fabric_full_workflow_benchmark"
           - suite: memory-scaling
             mode: memory
             filter: "test_large_fabric_full_workflow_benchmark"
