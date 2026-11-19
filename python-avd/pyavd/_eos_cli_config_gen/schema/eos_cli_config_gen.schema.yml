@@ -24615,13 +24615,13 @@ keys:
             - warn
           modules:
             type: list
-            primary_key: linecard
             description: Unified module profile assignments.
             items:
               type: dict
               keys:
-                linecard:
+                linecards:
                   type: str
+                  required: true
                   description: 'Linecard selector for this profile.
 
                     Accepts a single slot, comma-separated slots, or slot ranges.

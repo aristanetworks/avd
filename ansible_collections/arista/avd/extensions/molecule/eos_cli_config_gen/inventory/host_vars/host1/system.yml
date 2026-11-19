@@ -24,21 +24,21 @@ system:
         vrf: default
   l1:
     modules:
-      - linecard: 0
+      - linecards: 0
         profile: small
-      - linecard: 1
+      - linecards: 1
         profile: CAPITAL
-      - linecard: 3,4
+      - linecards: 3,4
         profile: Uniform-4x100G-2-R
-      - linecard: 5-6
+      - linecards: 5-6
         profile: Uniform-4x10G-1
-      - linecard: 7
+      - linecards: 7
         profile: 11
-      - linecard: 8
+      - linecards: 8
         profile: 2
-      - linecard: 9
+      - linecards: 9
         profile: 1
-      - linecard: 10
+      - linecards: 10
         profile: 12  
     unsupported_speed_action: warn
     unsupported_error_correction_action: error

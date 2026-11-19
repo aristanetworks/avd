@@ -27,7 +27,7 @@
 | Module | Profile |
 | ------ | ------- |
 {%         for module in system.l1.modules | sort(attribute='profile', case_sensitive=true) %}
-| Linecard{{ module.linecard }} | {{ module.profile }} |
+| Linecard{{ module.linecards }} | {{ module.profile }} |
 {%         endfor %}
 {%     endif %}
 

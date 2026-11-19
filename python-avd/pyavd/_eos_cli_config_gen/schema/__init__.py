@@ -73759,8 +73759,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ModulesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"linecard": {"type": str}, "profile": {"type": str}}
-                linecard: str
+                _fields: ClassVar[dict] = {"linecards": {"type": str}, "profile": {"type": str}}
+                linecards: str
                 """
                 Linecard selector for this profile.
                 Accepts a single slot, comma-separated slots, or slot ranges.
@@ -73775,7 +73775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, linecard: str | UndefinedType = Undefined, profile: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, linecards: str | UndefinedType = Undefined, profile: str | UndefinedType = Undefined) -> None:
                         """
                         ModulesItem.
 
@@ -73783,7 +73783,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            linecard:
+                            linecards:
                                Linecard selector for this profile.
                                Accepts a single slot, comma-separated slots, or slot ranges.
                                -
@@ -73795,10 +73795,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class Modules(AvdIndexedList[str, ModulesItem]):
-                """Subclass of AvdIndexedList with `ModulesItem` items. Primary key is `linecard` (`str`)."""
-
-                _primary_key: ClassVar[str] = "linecard"
+            class Modules(AvdList[ModulesItem]):
+                """Subclass of AvdList with `ModulesItem` items."""
 
             Modules._item_type = ModulesItem
 
@@ -73813,8 +73811,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Unified module profile assignments.
 
-            Subclass of AvdIndexedList with `ModulesItem` items. Primary
-            key is `linecard` (`str`).
+            Subclass of AvdList with `ModulesItem` items.
             """
 
             if TYPE_CHECKING:
@@ -73838,8 +73835,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         modules:
                            Unified module profile assignments.
 
-                           Subclass of AvdIndexedList with `ModulesItem` items. Primary
-                           key is `linecard` (`str`).
+                           Subclass of AvdList with `ModulesItem` items.
 
                     """
 

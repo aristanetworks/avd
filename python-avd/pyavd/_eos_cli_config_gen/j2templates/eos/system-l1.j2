@@ -8,7 +8,7 @@
 !
 system l1
 {%     for module in system.l1.modules | sort(attribute='profile', case_sensitive=true) %}
-   module Linecard{{ module.linecard }} profile {{ module.profile }}
+   module Linecard{{ module.linecards }} profile {{ module.profile }}
 {%     endfor %}
 {%     if system.l1.unsupported_speed_action is arista.avd.defined %}
    unsupported speed action {{ system.l1.unsupported_speed_action }}
