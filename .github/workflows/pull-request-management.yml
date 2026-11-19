@@ -374,8 +374,8 @@ jobs:
           python-version: |
             3.11
       - name: Install pyavd and Ansible minimum requirements
-        # Keep the resolved minimum versions throughout the role test. In particular, do not
-        # install Molecule or use ansible-test --requirements, which can upgrade dependencies.
+        # Run the role target directly without Molecule.
+        # Omit ansible-test --requirements to preserve the resolved minimum dependencies.
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
