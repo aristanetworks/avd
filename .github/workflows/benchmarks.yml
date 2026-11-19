@@ -35,9 +35,22 @@ jobs:
           - suite: simulation
             mode: simulation
             filter: ""
-          - suite: memory-other
+          - suite: memory-group-1
             mode: memory
-            filter: "not test_molecule_scenario_avd_facts_benchmark"
+            filter: >-
+              dc1-spine1 or dc1-leaf1a or dc1-l2leaf1a or bgp-from-network-services-1
+          - suite: memory-group-2
+            mode: memory
+            filter: >-
+              connected-endpoints or custom-python-modules-l3leaf1a or overlay-routing-protocol-her-l3leaf3a or ptp-tests-leaf1
+          - suite: memory-group-3
+            mode: memory
+            filter: >-
+              trunk-group-tests-l3leaf1a or uplink-p2p-vrfs-tests-leaf1 or cv-pathfinder-transit1a
+          - suite: memory-group-4
+            mode: memory
+            filter: >-
+              cv-pathfinder-pathfinder1 or cv-pathfinder-edge1 or test_large_fabric_full_workflow_benchmark
           - suite: memory-facts
             mode: memory
             filter: "test_molecule_scenario_avd_facts_benchmark"
