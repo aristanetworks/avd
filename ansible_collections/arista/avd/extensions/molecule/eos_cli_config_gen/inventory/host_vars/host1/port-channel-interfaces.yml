@@ -635,6 +635,9 @@ port_channel_interfaces:
     description: Loop protection enable
     loop_protection: true
     ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
       ipv4:
         bfd: true
         cost: 421

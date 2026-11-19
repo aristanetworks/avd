@@ -38,6 +38,9 @@ loopback_interfaces:
     ospf_area: 0.0.0.2
     shutdown: true
     ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
       ipv4:
         bfd: false
         cost: 321

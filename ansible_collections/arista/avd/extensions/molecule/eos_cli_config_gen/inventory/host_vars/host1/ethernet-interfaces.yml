@@ -2325,6 +2325,9 @@ ethernet_interfaces:
     description: Loop protection disable
     loop_protection: false
     ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
       ipv4:
         bfd: true
         cost: 211
