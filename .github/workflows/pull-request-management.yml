@@ -511,6 +511,7 @@ jobs:
   ansible_test:
     name: Run ansible-test unit and integration tests (${{ matrix.ansible_version }}, Python ${{ matrix.python_version }})
     runs-on: ubuntu-latest
+    # build_collection prepares the external collection dependency cache.
     needs: [build_collection, file-changes]
     strategy:
       fail-fast: false
@@ -694,7 +695,7 @@ jobs:
   # Build Collection
   # ----------------------------------- #
   build_collection:
-    name: Build Ansible collection
+    name: Prepare collection dependencies and build collection
     runs-on: ubuntu-latest
     outputs:
       collection_cache_key: ${{ steps.collection_cache_key.outputs.value }}
