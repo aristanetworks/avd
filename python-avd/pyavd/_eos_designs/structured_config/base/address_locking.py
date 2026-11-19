@@ -54,12 +54,15 @@ class AddressLockingMixin(Protocol):
                 dhcp_server_interfaces.append_unique(interface)
 
             if not dhcp_server_interfaces:
+                if address_locking_settings.auto_dhcp_server_interfaces:
+                    msg = (
+                        "'address_locking_settings.auto_dhcp_server_interfaces' is enabled "
+                        "but no DHCP server interfaces were found (no L2 uplinks or MLAG). "
+                        "Set 'address_locking_settings.dhcp_server_interfaces' manually."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 dhcp_server_interfaces = Undefined
-                local_interface = (
-                    None
-                    if address_locking_settings.auto_dhcp_server_interfaces
-                    else self.shared_utils.get_local_interface(address_locking_settings.local_interface)
-                )
+                local_interface = self.shared_utils.get_local_interface(address_locking_settings.local_interface)
             else:
                 local_interface = None
 
