@@ -225,7 +225,7 @@ repos:
         args: [".github"]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: 37d7d0752ef067f311d2a19cb82d5ae6e06040ec  # frozen: 2.29.7
+    rev: 2c33691a1b87dbe05190df69971c8053da32ac3f  # frozen: 2.29.7
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
