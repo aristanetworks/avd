@@ -24615,26 +24615,24 @@ keys:
             - warn
           modules:
             type: list
-            primary_key: name
+            primary_key: linecard
             description: Unified module profile assignments.
             items:
               type: dict
               keys:
-                name:
+                linecard:
                   type: str
-                  description: 'Module selector.
+                  description: 'Linecard selector for this profile.
 
-                    - `switch`
+                    Accepts a single slot, comma-separated slots, or slot ranges.
 
-                    - `linecard <id-list>`
+                    - `0` applies to Linecard 0.
 
-                    - `fabric <id-list>`
+                    - `1,3` applies to Linecards 1 and 3.
 
-                    The `switch` selector is intended for fixed systems and should
-                    not be mixed with `linecard` or `fabric` selectors.
+                    - `4-10` applies to Linecards 4 through 10 (inclusive).
 
-                    where `<id-list>` supports values and ranges like `0`, `0-3`,
-                    `0,2-4`.'
+                    '
                 profile:
                   type: str
                   required: true

@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;modules</samp>](## "system.l1.modules") | List, items: Dictionary |  |  |  | Unified module profile assignments. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "system.l1.modules.[].name") | String | Required, Unique |  |  | Module selector.<br>- `switch`<br>- `linecard <id-list>`<br>- `fabric <id-list>`<br>The `switch` selector is intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.<br>where `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;linecard</samp>](## "system.l1.modules.[].linecard") | String | Required, Unique |  |  | Linecard selector for this profile.<br>Accepts a single slot, comma-separated slots, or slot ranges.<br>- `0` applies to Linecard 0.<br>- `1,3` applies to Linecards 1 and 3.<br>- `4-10` applies to Linecards 4 through 10 (inclusive).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "system.l1.modules.[].profile") | String | Required |  |  | Builtin module L1 profile name. |
     | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Value is converted to lower case.<br>Pattern: `[0-9a-f][02468ace](:[0-9a-f]{2}){5}` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit). |
 
@@ -59,13 +59,12 @@
         # Unified module profile assignments.
         modules:
 
-            # Module selector.
-            # - `switch`
-            # - `linecard <id-list>`
-            # - `fabric <id-list>`
-            # The `switch` selector is intended for fixed systems and should not be mixed with `linecard` or `fabric` selectors.
-            # where `<id-list>` supports values and ranges like `0`, `0-3`, `0,2-4`.
-          - name: <str; required; unique>
+            # Linecard selector for this profile.
+            # Accepts a single slot, comma-separated slots, or slot ranges.
+            # - `0` applies to Linecard 0.
+            # - `1,3` applies to Linecards 1 and 3.
+            # - `4-10` applies to Linecards 4 through 10 (inclusive).
+          - linecard: <str; required; unique>
 
             # Builtin module L1 profile name.
             profile: <str; required>
