@@ -4,6 +4,7 @@ address_locking:
   dhcp_server_interfaces:
   - Port-Channel1
   - Port-Channel3
+  - Ethernet5
 config_end: true
 enable_password:
   disabled: true
