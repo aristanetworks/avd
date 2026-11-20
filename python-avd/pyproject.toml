@@ -48,14 +48,14 @@ ansible-collection = [
 
 [build-system]
 requires = [
-    "deepmerge>=1.1.0",
-    "jinja2>=3.0",
-    "jsonschema-rs>=0.46.0",
+    "deepmerge>=1.1.1",
+    "jinja2>=3.1.6",
+    "jsonschema-rs>=0.61.2",
     "pyavd-utils-gen==0.0.14",
-    "pyyaml>=6.0.0",
-    "referencing>=0.35.0",
+    "pyyaml>=6.0.3",
+    "referencing>=0.37.0",
     "ruff==0.17.5",
-    "setuptools>=77.0",
+    "setuptools>=77.0.3",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
