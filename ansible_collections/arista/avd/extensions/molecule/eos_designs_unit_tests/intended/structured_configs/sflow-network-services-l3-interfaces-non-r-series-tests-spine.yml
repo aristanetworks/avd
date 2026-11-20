@@ -1,0 +1,42 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1.100
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  ip_address: 10.2.100.1/24
+  metadata:
+    peer_type: l3_interface
+- name: Ethernet1
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+hostname: sflow-network-services-l3-interfaces-non-r-series-tests-spine
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.2/32
+metadata:
+  is_deployed: true
+  platform: 7050X3
+  fabric_name: SFLOW_NETWORK_SERVICES_L3_INTERFACES_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

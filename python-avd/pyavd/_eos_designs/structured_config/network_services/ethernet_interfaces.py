@@ -36,11 +36,18 @@ class EthernetInterfacesMixin(Protocol):
             return
 
         if self.shared_utils.network_services_l3:
+            network_services_l3_interfaces_sflow: dict[str, bool | None] = {}
+            if (
+                self.inputs.avd_design_future.fix_sflow_parent_subinterface_conflicts
+                and self.shared_utils.platform_settings.feature_support.sflow
+                and self.shared_utils.platform_settings.feature_support.sflow_subinterfaces
+            ):
+                network_services_l3_interfaces_sflow = self._get_network_services_l3_interfaces_sflow()
             for tenant in self.shared_utils.filtered_tenants:
                 for vrf in tenant.vrfs:
                     # The l3_interfaces has already been filtered in filtered_tenants
                     # to only contain entries with our hostname
-                    self._set_l3_interfaces(vrf, tenant)
+                    self._set_l3_interfaces(vrf, tenant, network_services_l3_interfaces_sflow)
 
                     # Member ethernet ports for Port-Channel interface
                     self._set_l3_port_channel_members(vrf)
@@ -102,6 +109,7 @@ class EthernetInterfacesMixin(Protocol):
         self: AvdStructuredConfigNetworkServicesProtocol,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        network_services_l3_interfaces_sflow: dict[str, bool | None],
     ) -> None:
         """Set the structured_config for ethernet_interfaces with the l3interfaces."""
         for l3_interface in vrf.l3_interfaces:
@@ -142,7 +150,21 @@ class EthernetInterfacesMixin(Protocol):
 
                 if "." in interface_name:
                     # This is a subinterface
-                    subif_id = interface_name.split(".", maxsplit=1)[1]
+                    parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
+
+                    if self.inputs.avd_design_future.fix_sflow_parent_subinterface_conflicts and interface.sflow.enable is True:
+                        if parent_interface_name in network_services_l3_interfaces_sflow:
+                            parent_sflow = self.structured_config_utils.get_interface_sflow(
+                                parent_interface_name, network_services_l3_interfaces_sflow[parent_interface_name]
+                            )
+                            if parent_sflow is True:
+                                msg = (
+                                    f"sFlow cannot be enabled on both physical interface '{parent_interface_name}' and "
+                                    f"subinterface '{interface_name}' when 'avd_design_future.fix_sflow_parent_subinterface_conflicts' is enabled."
+                                )
+                                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                        else:
+                            self.structured_config_utils.parent_interfaces_tracker.mark_required_ethernet_parent_to_disable_sflow(parent_interface_name)
 
                     self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(interface_name)
 
@@ -162,6 +184,19 @@ class EthernetInterfacesMixin(Protocol):
                 if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
                     interface._internal_data.campus_link_type = list(l3_interface.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(interface)
+
+    def _get_network_services_l3_interfaces_sflow(self: AvdStructuredConfigNetworkServicesProtocol) -> dict[str, bool | None]:
+        """Return configured sFlow states keyed by Network Services L3 interface for this node."""
+        network_services_l3_interfaces_sflow = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant.vrfs:
+                for l3_interface in vrf.l3_interfaces:
+                    for node_index, node_name in enumerate(l3_interface.nodes):
+                        if node_name != self.shared_utils.hostname or len(l3_interface.interfaces) <= node_index:
+                            continue
+                        interface_name = l3_interface.interfaces[node_index]
+                        network_services_l3_interfaces_sflow.setdefault(interface_name, default(l3_interface.sflow, self.inputs.fabric_sflow.l3_interfaces))
+        return network_services_l3_interfaces_sflow
 
     def _update_ethernet_interface_ipv4(
         self: AvdStructuredConfigNetworkServicesProtocol,

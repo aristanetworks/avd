@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: sFlow cannot be enabled on both physical interface 'Ethernet1' and subinterface 'Ethernet1.100' when 'avd_design_future.fix_sflow_parent_subinterface_conflicts' is enabled.
