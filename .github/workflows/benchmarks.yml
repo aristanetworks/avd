@@ -41,13 +41,17 @@ jobs:
           - suite: memory-scaling
             mode: memory
             filter: "test_large_fabric_full_workflow_benchmark"
-          - suite: memory-validation
+          - suite: memory-facts
             mode: memory
-            filter: "test_synthetic_validation_memory_benchmark"
+            filter: "test_synthetic_facts_memory_benchmark"
             markers: "benchmark_diagnostic"
-          - suite: memory-generation
+          - suite: memory-structured-config
             mode: memory
-            filter: "test_synthetic_generation_memory_benchmark"
+            filter: "test_synthetic_structured_config_memory_benchmark"
+            markers: "benchmark_diagnostic"
+          - suite: memory-cli
+            mode: memory
+            filter: "test_synthetic_cli_memory_benchmark"
             markers: "benchmark_diagnostic"
     concurrency:
       group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}

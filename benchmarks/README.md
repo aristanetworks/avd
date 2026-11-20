@@ -84,13 +84,15 @@ cases, one memory job runs the 14 molecule cases, and another memory job runs th
 its missing memory allocation profile is investigated. Each job uploads its
 results separately.
 
-Two additional memory jobs run temporary `benchmark_diagnostic` cases from
+Three additional memory jobs run temporary `benchmark_diagnostic` cases from
 `test_synthetic_memory_phases.py` using the same 15-device topology and service
-density. One measures input validation alone. The other validates inputs before
-measurement and measures facts, structured configuration, and EOS CLI generation.
+density. They measure facts generation, structured configuration, and EOS CLI
+rendering separately. Each prepares input validation and any preceding generation
+stages outside measurement. The validation-only diagnostic was removed after its
+profile rendered successfully while generation still lacked a profile.
 Fresh copies reset mutable inputs before every warmup and measured invocation.
 The standard jobs exclude these diagnostics, preserving their benchmark IDs and
-workloads. Compare the actual allocation profiles of all three synthetic cases;
+workloads. Compare the actual allocation profiles of the full workflow and each isolated stage;
 successful measurements or uploads alone do not establish that profiles rendered.
 
 Local full-suite runs include the 150-device scale benchmark. They do not add an

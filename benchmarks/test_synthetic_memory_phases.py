@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""Isolate validation from generation when diagnosing synthetic memory profiles."""
+"""Isolate generation stages when diagnosing synthetic memory profiles."""
 
 from __future__ import annotations
 
@@ -37,23 +37,29 @@ def _validate_hostvars(hostvars: dict[str, dict[str, Any]]) -> dict[str, dict[st
 
 
 @pytest.mark.benchmark_diagnostic
-def test_synthetic_validation_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
-    """Measure input validation alone, including its Python and Rust work."""
-    hostvars = synthetic_hostvars
+def test_synthetic_structured_config_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
+    """Measure structured configuration with validation and facts prepared beforehand."""
+    source_hostvars = deepcopy(synthetic_hostvars)
+    source_inputs = _validate_hostvars(source_hostvars)
+    source_facts = get_avd_facts(all_inputs=source_inputs, all_hostvars=source_hostvars)
+    all_inputs, avd_facts = source_inputs, source_facts
 
     def setup() -> None:
-        nonlocal hostvars
-        hostvars = deepcopy(synthetic_hostvars)
+        nonlocal all_inputs, avd_facts
+        all_inputs, avd_facts = deepcopy((source_inputs, source_facts))
 
     def run() -> None:
-        assert len(_validate_hostvars(hostvars)) == 15
+        structured_configs = {
+            hostname: get_device_structured_config(hostname=hostname, inputs=inputs, avd_facts=avd_facts) for hostname, inputs in all_inputs.items()
+        }
+        assert len(structured_configs) == 15
 
     benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
 
 
 @pytest.mark.benchmark_diagnostic
-def test_synthetic_generation_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
-    """Measure facts, structured configuration, and rendering after input validation."""
+def test_synthetic_facts_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
+    """Measure facts generation with input validation prepared beforehand."""
     source_hostvars = deepcopy(synthetic_hostvars)
     source_inputs = _validate_hostvars(source_hostvars)
     all_inputs, hostvars = source_inputs, source_hostvars
@@ -64,9 +70,27 @@ def test_synthetic_generation_memory_benchmark(benchmark: BenchmarkFixture, synt
 
     def run() -> None:
         avd_facts = get_avd_facts(all_inputs=all_inputs, all_hostvars=hostvars)
-        structured_configs = {
-            hostname: get_device_structured_config(hostname=hostname, inputs=inputs, avd_facts=avd_facts) for hostname, inputs in all_inputs.items()
-        }
+        assert len(avd_facts) == 15
+
+    benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
+
+
+@pytest.mark.benchmark_diagnostic
+def test_synthetic_cli_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
+    """Measure CLI rendering with validation, facts, and structured configs prepared beforehand."""
+    source_hostvars = deepcopy(synthetic_hostvars)
+    source_inputs = _validate_hostvars(source_hostvars)
+    avd_facts = get_avd_facts(all_inputs=source_inputs, all_hostvars=source_hostvars)
+    source_configs = {
+        hostname: get_device_structured_config(hostname=hostname, inputs=inputs, avd_facts=avd_facts) for hostname, inputs in source_inputs.items()
+    }
+    structured_configs = source_configs
+
+    def setup() -> None:
+        nonlocal structured_configs
+        structured_configs = deepcopy(source_configs)
+
+    def run() -> None:
         configs = {hostname: get_device_config(structured_config) for hostname, structured_config in structured_configs.items()}
         assert len(configs) == 15
         assert all(configs.values())
