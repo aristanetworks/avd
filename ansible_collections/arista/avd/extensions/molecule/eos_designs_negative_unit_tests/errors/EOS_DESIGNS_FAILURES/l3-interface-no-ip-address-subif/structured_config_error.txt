@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'l3leaf.nodes[name=l3-interface-no-ip-address-subif].l3_interfaces[name=Ethernet1.100].ip_address or [name=Ethernet1.100].ipv6_addresses' is required but was not found.

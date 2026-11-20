@@ -16,6 +16,3 @@ validation_profiles:
     parent_profile: profile2
     hardware:
       min_power_supplies: 2
-
-expected_error_message: >-
-  Parent validation profile 'profile2' referenced by validation profile 'profile1' is not defined under 'validation_profiles'.

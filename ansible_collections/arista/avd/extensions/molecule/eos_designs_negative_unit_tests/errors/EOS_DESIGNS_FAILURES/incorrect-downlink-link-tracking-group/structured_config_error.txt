@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Link tracking group 'DOWNLINK_GROUP1' referenced under node setting 'link_tracking.downlinks.group' is not defined in 'link_tracking.groups' for device 'incorrect-downlink-link-tracking-group'.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ntp_settings.server_vrf' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

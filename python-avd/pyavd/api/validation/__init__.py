@@ -7,10 +7,11 @@ import json
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from pyavd_utils.validation import ValidationResult
+from pyavd._lazy_import import LazyImports, install_lazy_imports
 
 if TYPE_CHECKING:
     from pyavd_utils.validation import ValidatedDataResult as _ValidatedDataResult
+    from pyavd_utils.validation import ValidationResult
 
 
 @dataclass(frozen=True)
@@ -30,4 +31,6 @@ class ValidatedDataResult:
         )
 
 
-__all__ = ["ValidatedDataResult", "ValidationResult"]
+_LAZY_IMPORTS: LazyImports = {"ValidationResult": ("pyavd_utils.validation", "ValidationResult")}
+
+install_lazy_imports(_LAZY_IMPORTS, globals(), additional_exports=("ValidatedDataResult",))

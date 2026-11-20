@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'mac_acls[name=ACL1]' is required but was not found for host 'missing-mac-acl-name-from-mac-acls-entries'.

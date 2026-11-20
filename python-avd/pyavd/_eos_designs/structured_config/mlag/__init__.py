@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
-from pyavd._utils import AvdStringFormatter, default
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
@@ -225,7 +226,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     ),
                 ),
                 shutdown=False,
-                speed=default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed),
+                speed=self.structured_config_utils.get_interface_speed(
+                    default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed)
+                ),
             )
             ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")

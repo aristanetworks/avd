@@ -75,6 +75,8 @@ vlan_interfaces:
         key_type: 0
         key: password
         mode: md5
+    isis_hello_padding: true
+    isis_circuit_type: level-2
 
   - name: Vlan84
     description: SVI Description
@@ -99,7 +101,7 @@ vlan_interfaces:
 
   - name: Vlan85
     description: SVI Description
-    ip_address: 10.10.84.1/24
+    ip_address: 10.10.85.1/24
     arp_cache_dynamic_capacity: 50000
     bfd:
       echo: true
@@ -115,10 +117,15 @@ vlan_interfaces:
         mode: sha
         sha:
           key_id: 2
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: false
 
   - name: Vlan86
     description: SVI Description
-    ip_address: 10.10.83.1/24
+    ip_address: 10.10.86.1/24
     ip_attached_host_route_export:
       enabled: true
       distance: 10
@@ -150,7 +157,7 @@ vlan_interfaces:
   - name: Vlan88
     description: SVI Description
     shutdown: true
-    ip_address_virtual: 10.10.87.1/23
+    ip_address_virtual: 10.10.88.1/23
     # Test isis auth both l1l2 md5 text rx
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
@@ -185,7 +192,7 @@ vlan_interfaces:
 
   - name: Vlan90
     description: SVI Description
-    ip_address: 10.10.83.1/24
+    ip_address: 10.10.90.1/24
     ip_attached_host_route_export:
       enabled: true
     # Test isis auth l1l2 shared secret
@@ -223,6 +230,13 @@ vlan_interfaces:
           algorithm: sha-256
         rx_disabled: true
 
+  - name: Vlan93
+    description: QoS Description
+    shutdown: true
+    service_policy:
+      qos:
+        input: MyQosPolicy
+
   - name: Vlan4092
     description: MLAG_PEER
     ip_address: 10.255.252.0/31
@@ -232,6 +246,11 @@ vlan_interfaces:
   - name: Vlan4093
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.0/31
+    mpls:
+      ip: true
+      ldp:
+        igp_sync: true
+        interface: true
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
@@ -327,13 +346,13 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ipv6_addresses:
-      - a0::1/64
+      - a0:43::1/64
     ipv6_address_auto_config: true
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         vrf: TEST
         local_interface: Loopback44
-        link_address: a0::4
+        link_address: a0:43::4
     isis_authentication:
       both:
         key_ids:
@@ -388,13 +407,15 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ipv6_addresses:
-      - a0::4/64
+      - a0:44::4/64
     ipv6_dhcp_relay_destinations:
       - address: a0::5
         vrf: TEST
-        source_address: a0::6
-        link_address: a0::7
+        source_address: a0:44::6
+        link_address: a0:44::7
       - address: a0::8
+    ip_nat:
+      service_profile: PROFILE1
 
   - name: Vlan50
     description: IP NAT Testing
@@ -496,7 +517,7 @@ vlan_interfaces:
     ospf_message_digest_keys:
       - id: 55
         hash_algorithm: md5
-        key: "dRx9sULvl+hzkCMYJLEQCw=="
+        key: "gajUPbVXkkQGHldGdajxZg=="
       - id: 56
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
@@ -633,7 +654,10 @@ vlan_interfaces:
     description: Multiple VRIDs
     shutdown: false
     arp_aging_timeout: 180
-    ip_address: 192.0.2.2/25
+    ip_address: 10.66.20.2/24
+    ip_address_secondaries:
+      - 10.66.21.2/24
+      - 10.66.22.2/24
     ipv6_enable: true
     ipv6_addresses:
       - 2001:db8:667::2/64
@@ -649,10 +673,10 @@ vlan_interfaces:
             minimum: 30
             reload: 800
         ipv4:
-          address: 192.0.2.1
+          address: 10.66.20.1
           secondary_addresses:
-            - 192.0.3.3
-            - 192.0.4.4
+            - 10.66.21.3
+            - 10.66.22.4
         peer_authentication:
           mode: ietf-md5
           key: auth_key
@@ -672,10 +696,14 @@ vlan_interfaces:
     description: Multiple VRIDs and tracking
     shutdown: false
     arp_aging_timeout: 180
-    ip_address: 192.0.2.2/25
+    ip_address: 10.33.10.2/24
+    ip_address_secondaries:
+      - 10.33.11.2/24
+      - 10.33.12.2/24
     ipv6_enable: true
     ipv6_addresses:
       - 2001:db8:333::2/64
+      - 2001:db8:333:1::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -688,10 +716,10 @@ vlan_interfaces:
             minimum: 30
             reload: 800
         ipv4:
-          address: 192.0.2.1
+          address: 10.33.10.1
           secondary_addresses:
-            - 192.0.3.3
-            - 192.0.4.4
+            - 10.33.11.3
+            - 10.33.12.4
         tracked_object:
           - name: ID1TrackedObjectDecrement
             decrement: 5
@@ -708,7 +736,7 @@ vlan_interfaces:
         ipv6:
           addresses:
             - 2001:db8:333::1
-            - 2002:db8:333::2
+            - 2001:db8:333:1::1
         peer_authentication:
           mode: text
           key: auth_key
@@ -724,7 +752,7 @@ vlan_interfaces:
         preempt:
           enabled: false
         ipv4:
-          address: 100.64.0.1
+          address: 10.33.10.5
           version: 3
 
   - name: Vlan334
@@ -867,3 +895,10 @@ vlan_interfaces:
       ipv4: 1330
       ipv6: 1340
       direction: egress
+
+  - name: Vlan1000
+    description: Vlan with minimal ipv6 ospf configurations
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29

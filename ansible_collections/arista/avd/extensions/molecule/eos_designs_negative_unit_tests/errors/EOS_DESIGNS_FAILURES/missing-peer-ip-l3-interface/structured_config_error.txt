@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Cannot set a static_route route for interface Ethernet1 because 'peer_ip' is missing.

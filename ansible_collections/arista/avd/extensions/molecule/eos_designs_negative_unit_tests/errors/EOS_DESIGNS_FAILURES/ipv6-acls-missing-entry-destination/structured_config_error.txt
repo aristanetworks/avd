@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv6_acls[name=TEST-IPV6-ACL-MISSING-DESTINATION].entries[0].destination' is required but was not found.

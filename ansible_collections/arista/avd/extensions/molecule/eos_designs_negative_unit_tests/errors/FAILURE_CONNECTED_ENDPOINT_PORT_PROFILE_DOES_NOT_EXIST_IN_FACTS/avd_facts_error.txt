@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under 'servers[name=TEST-ENDPOINT].adapters[0]' does not exist in `port_profiles` for host 'failure-connected-endpoint-port-profile-does-not-exist-in-facts'.

@@ -9,6 +9,7 @@ from ansible.vars.hostvars import HostVarsVars
 
 from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.inventory.manager import InventoryManager
     from ansible.parsing.dataloader import DataLoader

@@ -70,13 +70,15 @@
 {%         endif %}
 {%         set ns = namespace(ecn_table=false) %}
 {%         for tx_queue in profile.tx_queues | arista.avd.default([]) %}
-{%             if tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
+{%             if tx_queue.random_detect.ecn.threshold is arista.avd.defined() %}
 {%                 set ns.ecn_table = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
-{%         for tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
-{%             if tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
+{%         for uc_tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
+{%             if uc_tx_queue.random_detect.ecn.threshold is arista.avd.defined() %}
 {%                 set ns.ecn_table = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%         if ns.ecn_table %}

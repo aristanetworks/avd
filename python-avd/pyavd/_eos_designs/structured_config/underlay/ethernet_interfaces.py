@@ -42,7 +42,7 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=link.interface,
                 description=description or None,
-                speed=link.speed,
+                speed=self.structured_config_utils.get_interface_speed(link.speed),
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
             ethernet_interface.metadata._update(peer_interface=link.peer_interface, peer=link.peer, peer_type=link.peer_type)
@@ -257,22 +257,14 @@ class EthernetInterfacesMixin(Protocol):
 
         interface._update(
             description=interface_description or None,
-            speed=l3_interface.speed,
+            speed=self.structured_config_utils.get_interface_speed(l3_interface.speed),
         )
         interface.metadata._update(peer_interface=l3_interface.peer_interface, peer_type="l3_interface")
         if l3_interface.ipv6_addresses:
             self.structured_config.ipv6_unicast_routing = True
             interface.ipv6_addresses.extend(l3_interface.ipv6_addresses)
 
-        if l3_interface.ipv4_acl_in:
-            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
-            interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
-
-        if l3_interface.ipv4_acl_out:
-            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
-            interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+        self.set_acls(l3_interface, interface)
 
         if l3_interface.structured_config:
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
@@ -287,8 +279,9 @@ class EthernetInterfacesMixin(Protocol):
             and (wan_carrier_name not in self.inputs.wan_carriers or not self.inputs.wan_carriers[wan_carrier_name].trusted)
         ):
             msg = (
-                "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
-                f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
+                "'ipv4_acl_in' or 'ipv4_standard_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, "
+                "unless the carrier is configured as 'trusted' "
+                f"under 'wan_carriers'. Neither is set on L3 interface '{l3_interface.name}'."
             )
             raise AristaAvdInvalidInputsError(msg)
 
@@ -337,7 +330,7 @@ class EthernetInterfacesMixin(Protocol):
                 name=member_intf.name,
                 description=interface_description or None,
                 shutdown=not l3_port_channel.enabled,
-                speed=member_intf.speed or None,
+                speed=self.structured_config_utils.get_interface_speed(member_intf.speed),
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
                 metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                     peer_interface=member_intf.peer_interface,

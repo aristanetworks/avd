@@ -4,3 +4,4 @@ eos_config_future:
   render_monitor_layer1_without_enabled: true
   only_render_mpls_rsvp_with_settings: true
   render_spanning_tree_portfast_edge: true
+  render_combined_separator_for_ipv6_hardware_and_unicast_routing: true

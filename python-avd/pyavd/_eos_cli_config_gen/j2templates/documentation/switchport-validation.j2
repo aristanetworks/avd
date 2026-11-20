@@ -1,0 +1,26 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - switchport validation #}
+{% if switchport_ethernet_llc_validation is arista.avd.defined or switchport_vlan_tag_validation is arista.avd.defined %}
+
+### Switchport Validation
+
+#### Switchport Validation Summary
+
+{%     if switchport_ethernet_llc_validation is arista.avd.defined %}
+- Switchport Ethernet LLC header validation: {{ switchport_ethernet_llc_validation }}
+{%     endif %}
+{%     if switchport_vlan_tag_validation is arista.avd.defined %}
+- Switchport VLAN tag validation: {{ switchport_vlan_tag_validation }}
+{%     endif %}
+
+#### Switchport Validation Device Configuration
+
+```eos
+{%     include 'eos/switchport-ethernet-llc-validation.j2' %}
+{%     include 'eos/switchport-vlan-tag-validation.j2' %}
+```
+{% endif %}

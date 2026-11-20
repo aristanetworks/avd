@@ -19,7 +19,8 @@ else:
     # Fallback for ansible-core < 2.19
     from ansible.module_utils.basic import to_native
 
-if TYPE_CHECKING:
+# Remove once we drop ansible-core <2.20; ansible-test then pins coverage >=7.10.1.
+if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Callable
     from typing import NoReturn
 

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'rx_queue.count' for interface 'Ethernet1/19' exceeds maximum supported '6' for this platform.

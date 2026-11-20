@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for OLD_SW-1/7, adapter switch_ports ['Ethernet9', 'Ethernet10'].

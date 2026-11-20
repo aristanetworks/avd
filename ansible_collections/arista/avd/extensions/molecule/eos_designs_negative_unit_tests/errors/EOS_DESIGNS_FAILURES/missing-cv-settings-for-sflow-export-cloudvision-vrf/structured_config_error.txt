@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: CloudVision export is enabled for sFlow, but 'cv_settings' is not defined. Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'.

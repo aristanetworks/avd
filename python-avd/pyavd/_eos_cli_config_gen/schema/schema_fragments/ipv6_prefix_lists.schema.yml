@@ -26,8 +26,6 @@ keys:
               sequence:
                 type: int
                 description: Sequence ID.
-                convert_types:
-                  - str
               action:
                 type: str
                 required: true

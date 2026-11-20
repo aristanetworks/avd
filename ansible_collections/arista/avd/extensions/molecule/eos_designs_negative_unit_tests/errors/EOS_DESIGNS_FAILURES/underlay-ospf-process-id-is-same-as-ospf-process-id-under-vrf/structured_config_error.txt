@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=Tenant-A].vrfs[name=ospf-vrf].ospf.process_id[process_id=101]' should not match the underlay OSPF process id '101'.

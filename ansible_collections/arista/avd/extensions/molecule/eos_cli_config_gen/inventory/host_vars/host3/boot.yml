@@ -1,0 +1,6 @@
+---
+### System Boot Configuration
+boot:
+  secret:
+    hash_algorithm: md5
+    key: $1$arastra$ohofdGg3tqUnvqvB7DsPz1

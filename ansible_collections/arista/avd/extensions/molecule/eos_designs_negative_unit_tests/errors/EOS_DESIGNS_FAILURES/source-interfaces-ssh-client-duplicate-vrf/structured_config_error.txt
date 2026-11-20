@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Unable to configure multiple IP SSH Client source-interfaces for the same VRF 'VRF1'.

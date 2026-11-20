@@ -5,6 +5,7 @@
 #}
 {# doc - ipv6 unicast routing #}
 {% if ipv6_unicast_routing is arista.avd.defined or vrfs is arista.avd.defined %}
+{%     set ipv6_routing = namespace(enabled_in_vrf=false) %}
 
 ### IPv6 Routing
 
@@ -13,24 +14,27 @@
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | {{ ipv6_unicast_routing | arista.avd.default(false) }} |
-{%     set ipv6_configured_in_vrf = false %}
 {%     for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%         if vrf.ipv6_routing is arista.avd.defined(true) %}
-{%             set ipv6_configured_in_vrf = true %}
-| {{ vrf.name }} | true |
+{%             set ipv6_routing.enabled_in_vrf = true %}
+| {{ vrf.name }} | True |
 {%         else %}
-| {{ vrf.name }} | false |
+| {{ vrf.name }} | False |
 {%         endif %}
 {%     endfor %}
-{%     if ipv6_unicast_routing is arista.avd.defined(true) or ipv6_configured_in_vrf == true %}
+{%     if ipv6_unicast_routing is arista.avd.defined(true) or ipv6_routing.enabled_in_vrf %}
 
 #### IPv6 Routing Device Configuration
 
 ```eos
-{%         include 'eos/ipv6-unicast-routing.j2' %}
-{%         include 'eos/ipv6-unicast-routing-vrfs.j2' %}
 {%         include 'eos/ipv6-icmp-redirect.j2' %}
-{%         include 'eos/ipv6-hardware.j2' %}
+{%         if eos_config_future.render_combined_separator_for_ipv6_hardware_and_unicast_routing is arista.avd.defined(true) %}
+{%             include 'eos/ipv6-hardware-and-unicast-routing.j2' %}
+{%         else %}
+{%             include 'eos/ipv6-unicast-routing.j2' %}
+{%             include 'eos/ipv6-hardware.j2' %}
+{%             include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{%         endif %}
 ```
 {%     endif %}
 {% endif %}

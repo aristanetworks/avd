@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._utils import load_python_class
+from pyavd._utils.load_python_class import load_python_class
 from pyavd.api.interface_descriptions import AvdInterfaceDescriptions
 
 if TYPE_CHECKING:

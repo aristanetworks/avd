@@ -6,15 +6,27 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import Undefined, UndefinedType
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.run_once import run_once_method
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import StructuredConfigUtilsProtocol
 
 
 class UtilsMixin(Protocol):
+    def get_interface_speed(
+        self: StructuredConfigUtilsProtocol, configured_speed: EosCliConfigGen.EthernetInterfacesItem.Speed | None
+    ) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
+        """Omit explicit auto speed modes on platforms where they are not supported."""
+        if configured_speed is None:
+            return None
+        if not self.shared_utils.platform_settings.feature_support.explicit_interface_speed_auto_mode and "auto " in configured_speed:
+            return None
+        return configured_speed
+
     def get_interface_validate_state(self: StructuredConfigUtilsProtocol, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
         """
         Checks if validate_state flag should be set or not.
@@ -37,6 +49,14 @@ class UtilsMixin(Protocol):
         # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
         return Undefined if user_input is None else user_input
 
+    def _set_ipv4_acl(self: StructuredConfigUtilsProtocol, ipv4_acl: EosDesigns.Ipv4AclsItem) -> None:
+        """Append an IPv4 ACL to structured config ip_access_lists."""
+        self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
+
+    def _set_ipv6_acl(self: StructuredConfigUtilsProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
+        """Append an IPv6 ACL to structured config ipv6_access_lists."""
+        self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))
+
     @run_once_method
     def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtilsProtocol) -> None:
         """Set ip extcommunity-list ECL-EVPN-SOO."""
@@ -44,9 +64,44 @@ class UtilsMixin(Protocol):
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
+    @run_once_method
+    def set_once_oob_mgmt_vrf(self: StructuredConfigUtilsProtocol) -> None:
+        """Set OOB management VRF once when required."""
+        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
+
+        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
+            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
+        self.structured_config.vrfs.append(vrf_settings)
+
+    def _validate_ipv4_acl_exclusion(
+        self: StructuredConfigUtilsProtocol,
+        ipv4_acl: str | None,
+        ipv4_standard_acl: str | None,
+        ipv4_acl_key_name: str,
+        ipv4_standard_acl_key_name: str,
+        context: str,
+    ) -> None:
+        """Raise if both extended and standard IPv4 ACLs are configured together."""
+        if not (ipv4_acl and ipv4_standard_acl):
+            return
+        if ipv4_acl_key_name.endswith("_in"):
+            acl_direction = "ingress"
+            interface_context = " on the interface"
+        elif ipv4_acl_key_name.endswith("_out"):
+            acl_direction = "egress"
+            interface_context = " on the interface"
+        else:
+            acl_direction = ""
+            interface_context = ""
+        direction_context = f"{acl_direction} " if acl_direction else ""
+        msg = (
+            f"'{ipv4_acl_key_name}' and '{ipv4_standard_acl_key_name}' are mutually exclusive on '{context}'. "
+            f"Only one {direction_context}IPv4 ACL can be configured{interface_context} for host '{self.shared_utils.hostname}'."
+        )
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
-        if acl_name in self.inputs.ipv4_standard_acls:
-            self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))
+        self.structured_config.standard_access_lists.append(self.inputs.ipv4_standard_acls[acl_name]._cast_as(EosCliConfigGen.StandardAccessListsItem))

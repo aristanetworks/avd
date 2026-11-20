@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'mac_acls[name=acl1].entries[0].action or mac_acls[name=acl1].entries[0].remark' is required but was not found.

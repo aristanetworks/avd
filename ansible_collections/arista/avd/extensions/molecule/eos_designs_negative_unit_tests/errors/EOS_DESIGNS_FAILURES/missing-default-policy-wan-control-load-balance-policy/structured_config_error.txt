@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The `default_virtual_topology` path-groups configuration for `wan_virtual_topologies.policies[DEFAULT-POLICY]` produces an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the `default_virtual_topology` path-groups.

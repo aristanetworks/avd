@@ -19,13 +19,13 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: ./.github/workflows/container_build_template.yml
+    uses: $/.github/workflows/container_build_template.yml
     strategy:
       matrix:
         container_name: [dev]
-        python_version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python_version: ["3.11", "3.12", "3.13", "3.14"]
         include:
-          - python_version: "3.11"
+          - python_version: "3.14"
             container_tags: latest
     with:
       container_name: ${{ matrix.container_name }}

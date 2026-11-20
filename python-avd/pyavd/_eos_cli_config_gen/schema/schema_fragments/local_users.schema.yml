@@ -22,8 +22,6 @@ keys:
             Useful for removing the default "admin" user.
         privilege:
           type: int
-          convert_types:
-            - str
           min: 0
           max: 15
           description: |

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node.

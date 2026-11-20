@@ -1,0 +1,8 @@
+inventory_file = "inventory/hosts.yml"
+output_dir = "digital_twin/intended"
+docs_dir = "digital_twin/documentation"
+digital_twin = true
+
+[documentation]
+topology_csv = true
+p2p_links_csv = true

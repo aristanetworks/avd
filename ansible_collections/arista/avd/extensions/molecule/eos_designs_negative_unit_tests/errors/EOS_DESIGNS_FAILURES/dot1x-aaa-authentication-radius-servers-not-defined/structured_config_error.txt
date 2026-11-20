@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication.

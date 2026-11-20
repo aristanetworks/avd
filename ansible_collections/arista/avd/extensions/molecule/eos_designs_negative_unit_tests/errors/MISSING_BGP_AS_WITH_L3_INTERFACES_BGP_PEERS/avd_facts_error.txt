@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'bgp_as' is required but was not found for host 'missing-bgp-as-with-l3-interfaces-bgp-peers'.

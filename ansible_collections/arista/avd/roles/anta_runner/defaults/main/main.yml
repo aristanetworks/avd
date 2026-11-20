@@ -41,3 +41,8 @@ anta_report_expand_results: false
 
 # Controls whether the `custom_field` column is generated in the Markdown report.
 anta_report_custom_field: false
+
+# If set to true, generate the Markdown report Run Overview section.
+# It currently includes test execution start time, end time, and total duration, and may include additional run metrics in future releases.
+# Keep this false when deterministic report content is required in CI checks.
+anta_report_run_overview: false

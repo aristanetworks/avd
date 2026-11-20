@@ -10,7 +10,11 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils.default import default
+from pyavd._utils.format_string import AvdStringFormatter
+from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
+from pyavd._utils.strip_empties import strip_null_from_data
+from pyavd._utils.undefined import Undefined
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -224,7 +228,7 @@ class EthernetInterfacesMixin(Protocol):
                 ),
             )
             or None,
-            speed=adapter.speed,
+            speed=self.structured_config_utils.get_interface_speed(adapter.speed),
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,

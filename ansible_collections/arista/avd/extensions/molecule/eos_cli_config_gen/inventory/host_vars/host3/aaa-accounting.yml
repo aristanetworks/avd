@@ -11,8 +11,6 @@ aaa_accounting:
       type: start-stop
       methods:
         - method: logging
-  # TODO: Open an issue. documentation/aaa-accounting.j2 has a dot1x default
-  # type "none" branch, but schema validation only allows "start-stop" and "stop-only".
   commands:
     console:
       - commands: all

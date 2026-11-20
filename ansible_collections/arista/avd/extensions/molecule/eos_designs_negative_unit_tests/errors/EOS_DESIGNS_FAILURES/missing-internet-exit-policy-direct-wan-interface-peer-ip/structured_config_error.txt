@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'l3_interfaces[name=Ethernet1].peer_ip' needs to be set. When using WAN interface for direct type Internet exit, 'peer_ip' is used for nexthop, and connectivity monitoring.

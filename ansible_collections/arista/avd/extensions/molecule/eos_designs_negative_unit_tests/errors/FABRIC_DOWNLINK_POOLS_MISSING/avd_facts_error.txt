@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set for host 'downlink-pools-missing-l3leaf'.

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: Tenant_A is required.

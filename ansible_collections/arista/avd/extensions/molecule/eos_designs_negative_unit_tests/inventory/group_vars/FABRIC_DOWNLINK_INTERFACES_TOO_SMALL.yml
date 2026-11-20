@@ -35,8 +35,3 @@ l3leaf:
     - name: downlink-interfaces-too-small-l3leaf
       # id is bigger than 8, the length of the range defined under default_interfaces for spine.
       id: 10
-
-expected_error_message: >-
-  'uplink_switch_interfaces' is not set on 'downlink-interfaces-too-small-l3leaf' and 'uplink_switch' 'downlink-interfaces-too-small-spine' does not have
-  enough 'downlink_interfaces' defined under 'default_interfaces'. The uplink switch requires at least 10 downlink_interfaces, but only 8 are configured
-  for host 'downlink-interfaces-too-small-spine'.

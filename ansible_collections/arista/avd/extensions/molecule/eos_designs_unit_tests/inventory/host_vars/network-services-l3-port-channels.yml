@@ -1,5 +1,17 @@
 ---
 # This yml file is being used to test the various supported schema attributes for L3 Port-Channel
+ipv4_standard_acls:
+  - name: STD-NS-PC-ACL-IN
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.0/8
+  - name: STD-NS-PC-ACL-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        source: 172.16.0.0/12
+
 ipv4_acls:
   - name: inACL
     entries:
@@ -14,6 +26,24 @@ ipv4_acls:
         action: deny
         protocol: ip
         source: any
+        destination: any
+
+ipv6_acls:
+  # Static ACL - no field substitution, name is used as-is.
+  - name: in6ACL
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: any
+  # ACL with interface_ip substitution - name will be suffixed with the port-channel name.
+  - name: out6ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: interface_ip
         destination: any
 
 flow_tracking_settings:
@@ -117,6 +147,34 @@ tenants:
               - name: Ethernet24
                 peer_interface: Ethernet24
                 peer: inet-cloud
+          # IPv6-only in default VRF: tests that ipv6_unicast_routing is set globally
+          - name: Port-Channel33
+            mode: active
+            peer: ipv6-cloud
+            peer_port_channel: Po33
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_addresses:
+              - 2001:db8:1::1/64
+            member_interfaces:
+              - name: Ethernet33
+                peer_interface: Ethernet33
+                peer: ipv6-cloud
+          # Dual-stack (IPv4 + IPv6) in default VRF, with a static IPv6 ACL applied ingress.
+          - name: Port-Channel44
+            mode: active
+            peer: dual-stack-cloud
+            peer_port_channel: Po44
+            enabled: true
+            node: network-services-l3-port-channels
+            ip_address: 10.10.30.2/29
+            ipv6_addresses:
+              - 2001:db8:2::1/64
+            ipv6_acl_in: in6ACL
+            member_interfaces:
+              - name: Ethernet45
+                peer_interface: Ethernet45
+                peer: dual-stack-cloud
       - name: TESTING
         vrf_id: 2
         ospf:
@@ -173,6 +231,15 @@ tenants:
             enabled: true
             ip_address: 1.1.1.40/29
             node: network-services-l3-port-channels
+          - name: Port-Channel1111.201
+            peer: inet-cloud
+            peer_port_channel: Po1111.201
+            encapsulation_dot1q_vlan: 400
+            enabled: true
+            ip_address: 1.1.2.30/29
+            ipv4_standard_acl_in: STD-NS-PC-ACL-IN
+            ipv4_standard_acl_out: STD-NS-PC-ACL-OUT
+            node: network-services-l3-port-channels
           - name: Port-Channel1111.200
             peer: inet-cloud
             peer_port_channel: Po1111.200
@@ -223,6 +290,23 @@ tenants:
             ospf:
               enabled: true
               authentication: "message-digest"
+          # IPv6-only in non-default VRF: exercises VRF-level ipv6_routing.
+          # This entry alone does NOT trigger global ipv6_unicast_routing (only default-VRF IPv6 interfaces do);
+          # the global flag is already enabled in this test by Port-Channel33/44 above.
+          # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the port-channel name).
+          - name: Port-Channel2000
+            mode: active
+            peer: ipv6-cloud-testing
+            peer_port_channel: Po2000
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_addresses:
+              - 2001:db8:3::1/64
+            ipv6_acl_out: out6ACL
+            member_interfaces:
+              - name: Ethernet46
+                peer_interface: Ethernet46
+                peer: ipv6-cloud-testing
 
   - name: Subinterface
     mac_vrf_vni_base: 20000

@@ -32,7 +32,10 @@ class AVDTemplar:
     searchpath: list[str]
     """List of paths to search for templates"""
 
-    def __init__(self, templar: Templar, loader: DataLoader, searchpath: list[str]) -> None:
+    ansible_above_2_19: bool
+    """Bool to signal if we are running on Ansible 2.19 or above."""
+
+    def __init__(self, templar: Templar, loader: DataLoader, searchpath: list[str], ansible_above_2_19: bool) -> None:
         """
         Initialize AVDTemplar with an Ansible Templar, DataLoader, and searchpath.
 
@@ -40,7 +43,9 @@ class AVDTemplar:
             templar: Ansible Templar instance
             loader: Ansible DataLoader instance
             searchpath: List of paths to search for templates
+            ansible_above_2_19: Bool to signal if we are running on Ansible 2.19 or above.
         """
         self.templar = templar
         self.loader = loader
         self.searchpath = searchpath
+        self.ansible_above_2_19 = ansible_above_2_19

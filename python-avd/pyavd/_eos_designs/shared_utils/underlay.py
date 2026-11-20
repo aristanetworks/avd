@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default
+from pyavd._utils.default import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:

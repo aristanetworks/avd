@@ -18,17 +18,11 @@ keys:
       threshold:
         description: Minimum number of MAC moves that indicate a MAC duplication issue.
         type: int
-        convert_types:
-          - str
         default: 5
       window:
         description: Time (in seconds) to detect a MAC duplication issue.
         type: int
-        convert_types:
-          - str
         default: 180
       expiry_timeout:
         description: Time (in seconds) to purge a MAC duplication issue.
         type: int
-        convert_types:
-          - str

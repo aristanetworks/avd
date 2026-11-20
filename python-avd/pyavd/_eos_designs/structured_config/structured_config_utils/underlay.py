@@ -7,7 +7,7 @@ import ipaddress
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils import as_path_list_match_from_bgp_asns
+from pyavd._utils.as_path_list_match_from_bgp_asns import as_path_list_match_from_bgp_asns
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:

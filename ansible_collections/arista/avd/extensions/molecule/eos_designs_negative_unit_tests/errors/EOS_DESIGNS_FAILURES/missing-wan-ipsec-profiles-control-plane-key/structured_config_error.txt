@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: '`wan_ipsec_profile.control_plane.shared_key` or `wan_ipsec_profile.control_plane.cleartext_shared_key`' is required but was not found.

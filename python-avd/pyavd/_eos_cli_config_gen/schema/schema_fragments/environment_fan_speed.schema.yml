@@ -12,8 +12,6 @@ keys:
     keys:
       minimum:
         type: int
-        convert_types:
-          - str
         min: 30
         max: 100
         description: Set the minimum fan speed in percent.

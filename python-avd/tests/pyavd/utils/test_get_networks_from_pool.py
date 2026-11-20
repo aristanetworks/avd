@@ -7,7 +7,7 @@ from ipaddress import IPv4Network, IPv6Network
 import pytest
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool, get_networks_from_pool
+from pyavd._utils.get_ip_from_pool import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool, get_networks_from_pool
 
 
 def test_get_networks_from_pool() -> None:

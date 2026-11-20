@@ -299,6 +299,12 @@ prefix_lists:
     action: permit 192.168.254.192/29 eq 32
   - sequence: 80
     action: permit 192.168.254.200/32 eq 32
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: ACL-QMS
+  ipv6_access_group: ACLv6-QMS
+  max_connections: 8
+  vrf: vrf1
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -410,12 +416,6 @@ router_bgp:
     metadata:
       peer: dc1-spine4
     description: dc1-spine4_Ethernet23
-  - ip_address: 192.168.255.1
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65001'
-    metadata:
-      peer: dc1-spine1
-    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
@@ -434,6 +434,19 @@ router_bgp:
     metadata:
       peer: dc1-spine4
     description: dc1-spine4
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1
+    password: 5B0XC3gLnsY/sTjyPTZ8og==
+  - ip_address: 192.168.42.43
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65555'
@@ -531,6 +544,8 @@ router_bgp:
       route_map_out: TEST_OUT
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+      default_originate:
+        always: true
   address_family_ipv6:
     peer_groups:
     - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
@@ -539,6 +554,9 @@ router_bgp:
       route_map_out: TEST_OUT
       rcf_in: TEST_RCF_IN()
       rcf_out: TEST_RCF_OUT()
+      default_originate:
+        enabled: true
+        always: true
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
     rd: 192.168.254.15:15
@@ -736,6 +754,12 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 4096
+standard_access_lists:
+- name: ACL-QMS
+  entries:
+  - sequence: 10
+    action: permit
+    source: any
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

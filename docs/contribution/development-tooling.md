@@ -8,7 +8,7 @@
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
   - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leveraged in the project: prek, Molecule and ansible-test.
+- This guide provides additional information about the development tools leveraged in the project: prek, the PyAVD end-to-end test tool, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
@@ -48,7 +48,7 @@ This will be executed automatically by VSCode by following these steps:
 
 Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies installed on your workstation:
 
-- [Python 3.10](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
+- [Python 3.11](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
 - Additional AVD Python package dependencies.
 - [Make](https://www.gnu.org/software/make/manual/make.html): Leveraged for automating software building and test procedures.
 - [Docker](https://docs.docker.com/engine/install/) (Optional): Some of the tests require docker to be executed locally and useful when troubleshooting failures of the CI pipeline.
@@ -156,6 +156,8 @@ The AVD project leverages Molecule for:
 
 The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/extensions/molecule`).
 
+Some projects retain their location under this directory during the transition to PyAVD E2E testing but are no longer Molecule scenarios. See the [E2E-only project list](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/README.md#e2e-only-projects) and use the [PyAVD E2E instructions](e2e-test/using-the-tool.md#run-selected-projects) to run them and review their generated artifacts.
+
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
 ### Executing Molecule with makefile method
@@ -225,6 +227,8 @@ molecule converge -s eos_designs_unit_tests -- -vvv
 
 The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
 
+The `eos_designs_facts` and `eos_designs_structured_config` integration targets exercise the Ansible action plugins, including failed results. CI runs these targets against stable Ansible releases and the Ansible `milestone` branch. Exhaustive negative design cases run directly through PyAVD in E2E tests, while action-plugin unit tests cover exception propagation and conversion to Ansible failures.
+
 Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
 
 - `sanity`: Run ansible-test sanity validation.
@@ -244,17 +248,76 @@ make unit-tests
 make integration-tests ANSIBLE_TEST_MODE=docker
 ```
 
-## Tox
+## PyAVD tests
 
-The AVD project leverages [Tox](https://tox.wiki/) to run unit and integration of the `pyavd` Python package.
+Run PyAVD tests directly with [uv](https://docs.astral.sh/uv/) from the repository root.
+Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
-Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `tox`:
+### Prepare your environment
 
-- `pyavd-test`: Test PyAVD Python code with tox.
-
-Example:
+Activate an existing virtual environment, or create one with the Python version you want to test:
 
 ```shell
-# Run tox on pyavd
-make pyavd-test
+uv venv --python 3.12
+source .venv/bin/activate
 ```
+
+Install the test and coverage requirements, PyAVD, and the coverage plugin into that environment:
+
+```shell
+uv pip install --group pytest --group coverage \
+  -e python-avd -e development/coverage_plugins
+```
+
+Repeat the installation when dependency requirements change.
+The commands below use `uv run --no-project` to reuse the activated environment, or the repository's `.venv`, without synchronizing project dependencies or updating a lock file.
+
+Build the generated schemas and templates before the first test run in a checkout.
+Repeat this step after changing schema or template sources, or their generators:
+
+```shell
+uv run --no-project make -C python-avd dep
+```
+
+Generation rewrites shared files, so complete it before running tests in that checkout.
+Ordinary Python logic changes can be tested directly.
+
+### Run tests
+
+```shell
+# Run both configured test roots: PyAVD and the coverage plugin.
+uv run --no-project python -m pytest
+
+# Select tests and pass pytest options directly.
+uv run --no-project python -m pytest python-avd/tests/pyavd -x -q
+```
+
+To test another supported Python version, create and activate a separate environment, then repeat the requirements installation:
+
+```shell
+uv venv --python 3.13 .venv-3.13
+source .venv-3.13/bin/activate
+```
+
+CI tests Python 3.11, 3.12, 3.13 and 3.14, using coverage on Python 3.12.
+
+### Coverage
+
+Use the prepared environment to run pytest under coverage. You can append test paths and pytest options to the `coverage run -m pytest` command.
+
+```shell
+uv run --no-project python -m coverage erase
+uv run --no-project python -m coverage run -m pytest
+```
+
+After a successful test run, combine the parallel coverage data, write the XML report, and check the configured threshold:
+
+```shell
+uv run --no-project python -m coverage combine
+uv run --no-project python -m coverage xml --fail-under=0
+uv run --no-project python -m coverage report
+```
+
+`coverage erase` removes results from earlier runs, and `coverage combine` is required because the repository enables parallel coverage data files.
+The XML report is written before checking the threshold, so a below-threshold result still produces an updated `coverage.xml`.
+This local report measures pytest coverage; CI combines pytest and end-to-end coverage before checking the repository threshold.

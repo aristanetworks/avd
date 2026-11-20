@@ -1,0 +1,11 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    dns_settings_profile: empty_dns_profile
+  nodes:
+    - name: dns-settings-profile-empty
+
+# An empty selected profile must not require servers or emit DNS configuration.
+dns_settings_profiles:
+  - profile: empty_dns_profile

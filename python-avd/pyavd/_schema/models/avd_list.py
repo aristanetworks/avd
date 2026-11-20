@@ -8,14 +8,14 @@ from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
 
 from pyavd._schema.coerce_type import coerce_type
-from pyavd._utils import Undefined, UndefinedType
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 from .avd_base import AvdBase
 from .avd_model import AvdModel
 from .type_vars import T, T_AvdList, T_ItemType
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    from typing import Self
 
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 

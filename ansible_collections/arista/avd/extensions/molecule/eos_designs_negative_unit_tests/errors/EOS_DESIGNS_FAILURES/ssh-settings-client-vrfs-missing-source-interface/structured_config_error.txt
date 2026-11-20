@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ssh_settings.client_vrfs[name=default].source_interface' is required but was not found for host 'ssh-settings-client-vrfs-missing-source-interface'.

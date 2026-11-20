@@ -16,5 +16,3 @@ keys:
             type: bool
       mtu:
         type: int
-        convert_types:
-          - str

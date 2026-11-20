@@ -36,11 +36,21 @@ ipv6_access_lists:
         protocol: ipv6
         source: 2001:db8::/64
         destination: any
+        # copy_captive_portal is only supported with deny entries, so this will be ignored.
+        copy_captive_portal: true
       - sequence: 10
         action: deny
         protocol: ipv6
         source: 2001:db8::/32
         destination: any
+      - sequence: 20
+        action: deny
+        protocol: ipv6
+        source: 2001:db9::/32
+        destination: any
+        copy_captive_portal: true
+        # copy_captive_portal takes precedence
+        log: true
   - name: TEST3
     counters_per_entry: false
     entries:

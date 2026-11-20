@@ -4,18 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# doc - boot #}
-{% if boot is arista.avd.defined %}
+{% if boot.secret.key is arista.avd.defined %}
 
 ## System Boot Settings
-{%     if boot.secret is arista.avd.defined %}
-{%         if boot.secret.key is arista.avd.defined %}
 
 ### Boot Secret Summary
-{%             set method = boot.secret.hash_algorithm | arista.avd.default("sha512") ~ " hashed" %}
+{%     set method = boot.secret.hash_algorithm | arista.avd.default("sha512") ~ " hashed" %}
 
 - The {{ method }} Aboot password is configured
-{%         endif %}
-{%     endif %}
 
 ### System Boot Device Configuration
 

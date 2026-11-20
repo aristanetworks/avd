@@ -137,8 +137,8 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 - All code submissions should meet the following criteria (CI will enforce these checks):
 
   - Jinja2 templates follow our [guidelines](style-guide.md).
-  - Molecule is updated with data covering your fix.
-  - Molecule artifacts are updated with your coverage.
+  - Relevant E2E or Molecule fixtures are updated with data covering your fix.
+  - Expected test artifacts are updated and reviewed.
   - Python syntax is valid.
   - All unit tests pass successfully.
 

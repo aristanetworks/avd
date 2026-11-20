@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ntp_settings.servers[name=192.0.2.10].source_address' resolves to 'invalid-literal', which is not a valid IP address.

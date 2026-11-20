@@ -18,7 +18,7 @@ from grpclib.exceptions import GRPCError, StreamTerminatedError
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVClientInvalidServerName, CVGRPCError, CVResourceNotFound, CVTimeoutError
 from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX, CVAAS_STREAMING_PREFIX
-from pyavd._utils import batch
+from pyavd._utils.batch import batch
 
 from .constants import CVAAS_VERSION_STRING
 from .exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
@@ -244,7 +244,7 @@ class GRPCRequestHandler:
         for attempt in range(1, self.max_retries + 2):
             try:
                 return await self.func(*call_args, **call_kwargs)
-            except Exception as e:  # noqa: PERF203
+            except Exception as e:
                 match e:
                     case CVClientException():
                         raise

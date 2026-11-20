@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 
-from pyavd._utils import strip_null_from_data
+from pyavd._utils.strip_empties import strip_null_from_data
 
 STRIP_EMPTIES_LIST = {
     "None": ["string1", "string2", "string3", None],

@@ -14,6 +14,3 @@ source_interfaces:
   http_client:
     mgmt_interface: true
     inband_mgmt_interface: true
-
-expected_error_message: >-
-  Unable to configure multiple IP HTTP Client source-interfaces for the same VRF 'default'.

@@ -1,0 +1,29 @@
+---
+- name: "Run CV deployment - {{ probe_case }}"
+  cv_workflow_probe:
+    configuration_dir: "{{ playbook_dir }}"
+    device_list: [leaf1]
+    cv_servers: [cv.invalid]
+    workspace:
+      name: "{{ probe_case }}"
+    return_details: "{{ probe_case.endswith('details') }}"
+  register: cv_probe_result
+  ignore_errors: true
+
+- name: "Verify retained diagnostics and deployment failure policy - {{ probe_case }}"
+  ansible.builtin.assert:
+    that:
+      - cv_probe_result.changed
+      - cv_probe_result.failed == probe_case.startswith('failure')
+      - cv_probe_result.warnings | length == 3
+      - "('CV_LOGGING_PROBE_pyavd_' ~ probe_case) in cv_probe_result.warnings"
+      - "('CV_LOGGING_PROBE_urllib3_' ~ probe_case) in cv_probe_result.warnings"
+      - "('CV_WORKFLOW_WARNING_' ~ probe_case) in cv_probe_result.warnings"
+      - cv_probe_result.stderr_lines == expected_logged_errors
+      - cv_probe_result.stderr == (expected_logged_errors | join('\n')) ~ '\n'
+      - cv_probe_result.errors == expected_workflow_errors
+  vars:
+    expected_logged_errors:
+      - "CV_LOGGING_PROBE_ERROR_{{ probe_case }}"
+      - "CV_LOGGING_PROBE_CRITICAL_{{ probe_case }}"
+    expected_workflow_errors: "{{ ['Workflow rejected deployment'] if probe_case.startswith('failure') else [] }}"

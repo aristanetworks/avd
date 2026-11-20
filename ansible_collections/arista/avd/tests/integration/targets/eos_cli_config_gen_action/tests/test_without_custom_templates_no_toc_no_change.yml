@@ -1,0 +1,97 @@
+---
+- name: Create structured-config directory for no-TOC test
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/structured_config_no_toc"
+    state: directory
+    mode: "0775"
+
+- name: Copy structured config for no-TOC test
+  ansible.builtin.copy:
+    src: "{{ structured_config_dir }}/testhost.yml"
+    dest: "{{ actual_output_dir }}/structured_config_no_toc/testhost.yml"
+    mode: "0664"
+
+- name: Disable documentation TOC in structured config for this test
+  ansible.builtin.blockinfile:
+    path: "{{ actual_output_dir }}/structured_config_no_toc/testhost.yml"
+    marker: "# {mark} no_toc_for_test"
+    block: |
+      eos_cli_config_gen_documentation:
+        toc: false
+
+- name: Validate eos_cli_config_gen inputs for no-custom-template test
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    input_dir: "{{ actual_output_dir }}/structured_config_no_toc"
+    input_suffix: yml
+    read_from_input_dir: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Remove previous no-custom-template output directory
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs"
+    state: absent
+
+- name: First run without custom templates and without TOC
+  vars:
+    custom_templates: []
+  register: result_first
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+    documentation_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.md"
+    device_doc_toc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
+  delegate_to: localhost
+
+- name: Second run without custom templates and without TOC
+  vars:
+    custom_templates: []
+  register: result_second
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+    documentation_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.md"
+    device_doc_toc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
+  delegate_to: localhost
+
+- name: Tamper existing no-custom-template configuration file
+  ansible.builtin.lineinfile:
+    path: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+    line: "! integration tamper marker"
+
+- name: Third run after tampering existing file
+  vars:
+    custom_templates: []
+  register: result_third
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+    documentation_filename: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.md"
+    device_doc_toc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen_no_custom"
+  delegate_to: localhost
+
+- name: Load regenerated configuration
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.cfg"
+  register: regenerated_config
+
+- name: Load regenerated documentation
+  ansible.builtin.slurp:
+    src: "{{ actual_output_dir }}/eos_cli_config_gen_no_custom_outputs/testhost.md"
+  register: regenerated_doc
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result_first is success
+      - result_first.changed == true
+      - result_second is success
+      - result_second.changed == false
+      - result_third is success
+      - result_third.changed == true
+      - "'! integration tamper marker' not in (regenerated_config.content | b64decode)"
+      - "'## Table of Contents' not in (regenerated_doc.content | b64decode)"
+      - "'## Custom Templates' not in (regenerated_doc.content | b64decode)"

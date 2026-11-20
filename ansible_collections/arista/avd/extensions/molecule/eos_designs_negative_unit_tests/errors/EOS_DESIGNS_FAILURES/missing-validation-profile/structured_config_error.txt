@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Validation profile 'profile1' referenced in node configuration is not defined under 'validation_profiles'.

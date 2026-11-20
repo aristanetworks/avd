@@ -16,6 +16,9 @@ dhcp relay
 {%     if dhcp_relay.client_requests.flooding_suppression_vlans is arista.avd.defined %}
    client requests flooding suppression vlan {{ dhcp_relay.client_requests.flooding_suppression_vlans | arista.avd.natural_sort | join(',') }}
 {%     endif %}
+{%     if dhcp_relay.reply_source_address_validation is arista.avd.defined(true) %}
+   reply source-address validation
+{%     endif %}
 {%     for server in dhcp_relay.servers | arista.avd.natural_sort %}
    server {{ server }}
 {%     endfor %}

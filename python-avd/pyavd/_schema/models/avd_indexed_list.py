@@ -9,15 +9,13 @@ from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
-from pyavd._utils import Undefined, UndefinedType
+from pyavd._utils.undefined import Undefined, UndefinedType
 
 from .avd_base import AvdBase
 from .type_vars import T_AvdModel, T_PrimaryKey
 
 if TYPE_CHECKING:
-    from typing import Any
-
-    from typing_extensions import Self
+    from typing import Any, Self
 
     from .avd_model import AvdModel
     from .type_vars import T, T_AvdIndexedList

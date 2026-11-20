@@ -68,7 +68,7 @@ flow_tracking_settings:
           local_interface: Loopback0
 
 # Vaulting bgp_password variable as an example. It is encrypted with the
-# password in .vault
+# password in example_vault
 bgp_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   33383161313537343432366430633733356331616665323132303263316531373135383439383730

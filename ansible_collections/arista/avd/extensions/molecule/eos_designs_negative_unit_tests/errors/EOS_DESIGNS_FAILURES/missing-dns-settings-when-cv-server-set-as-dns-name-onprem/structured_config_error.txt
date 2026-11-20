@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name.

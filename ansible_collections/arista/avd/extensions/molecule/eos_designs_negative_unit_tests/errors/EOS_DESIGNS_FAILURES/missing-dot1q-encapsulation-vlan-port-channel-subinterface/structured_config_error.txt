@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'encapsulation_vlan.client_dot1q' must be set for 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]' since the subinterface number is above 4094.

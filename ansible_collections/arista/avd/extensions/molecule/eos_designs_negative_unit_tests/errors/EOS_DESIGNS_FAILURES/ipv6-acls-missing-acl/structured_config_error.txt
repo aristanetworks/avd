@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdMissingVariableError: 'ipv6_acls[name=NON-EXISTENT-IPV6-ACL]' is required but was not found.

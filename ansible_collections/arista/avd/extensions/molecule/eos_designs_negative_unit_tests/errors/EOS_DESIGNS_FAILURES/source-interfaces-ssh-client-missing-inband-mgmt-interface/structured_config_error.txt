@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set.

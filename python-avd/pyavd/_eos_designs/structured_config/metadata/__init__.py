@@ -26,12 +26,12 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         self.structured_config.metadata._update(
             platform=self.shared_utils.platform,
             is_deployed=self.inputs.is_deployed,
-            system_mac_address=self.shared_utils.system_mac_address,
+            system_mac_address=self.structured_config_utils.metadata_system_mac_address,
             rack=self.shared_utils.node_config.rack,
             pod_name=self.inputs.pod_name,
             dc_name=self.inputs.dc_name,
             fabric_name=self.shared_utils.fabric_name,
-            serial_number=self.shared_utils.serial_number,
+            serial_number=self.structured_config_utils.metadata_serial_number,
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()
@@ -53,6 +53,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
         if resolved_profile.interfaces.errdisable.only_avd_interfaces:
             self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces = True
+        self.structured_config.metadata.bgp = resolved_profile.bgp
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

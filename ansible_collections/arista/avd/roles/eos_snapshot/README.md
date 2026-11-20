@@ -74,7 +74,7 @@ commands_list:
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-requirements-installation)
+Requirements are located here: [avd-requirements](../../../../../docs/installation/collection-installation.md#python-dependencies)
 
 ## Example Playbook
 

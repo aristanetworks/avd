@@ -19,11 +19,13 @@ metadata:
 ntp:
   servers:
   - name: 10.10.10.1
+    source_address: 192.168.0.2
     preferred: true
   - name: 10.10.10.2
     burst: true
     iburst: true
     key: 1
+    source_address: 192.0.2.10
     maxpoll: 5
     minpoll: 3
     version: 4

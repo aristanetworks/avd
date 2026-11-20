@@ -15,7 +15,7 @@ from grpclib import GRPCError, Status
 from grpclib.exceptions import ProtocolError, StreamTerminatedError
 
 from pyavd._cv.workflows.models import AvdDevice, CVDevice
-from pyavd._utils import get_v2
+from pyavd._utils.get import get_v2
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator

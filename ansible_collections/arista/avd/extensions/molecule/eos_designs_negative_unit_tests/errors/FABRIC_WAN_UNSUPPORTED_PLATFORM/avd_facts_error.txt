@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The WAN features are not compatible with the 'vEOS' platform for host 'wan-unsupported-platform'.

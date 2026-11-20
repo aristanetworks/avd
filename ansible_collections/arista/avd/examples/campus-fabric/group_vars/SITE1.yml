@@ -1,0 +1,19 @@
+---
+### group_vars/SITE1.yml
+
+fabric_name: SITE1
+
+# Underlay Routing Protocol
+underlay_routing_protocol: ospf
+
+#### WAN/Core Edge Links ####
+core_interfaces:
+  p2p_links:
+    - ip: [10.0.0.3/31, 10.0.0.2/31]
+      nodes: [SITE1_SPINE1, WAN]
+      interfaces: [Ethernet52/1, Ethernet1]
+      include_in_underlay_protocol: true
+    - ip: [10.0.0.5/31, 10.0.0.4/31]
+      nodes: [SITE1_SPINE2, WAN]
+      interfaces: [Ethernet52/1, Ethernet2]
+      include_in_underlay_protocol: true

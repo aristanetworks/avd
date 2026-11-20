@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'sflow_settings.destinations[destination=10.10.10.10].vrf' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

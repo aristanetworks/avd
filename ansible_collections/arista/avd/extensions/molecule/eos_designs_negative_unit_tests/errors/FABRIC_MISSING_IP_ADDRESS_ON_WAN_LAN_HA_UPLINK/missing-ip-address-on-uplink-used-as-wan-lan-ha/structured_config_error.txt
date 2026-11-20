@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The uplink interface Ethernet52 used as WAN LAN HA does not have an IP address.

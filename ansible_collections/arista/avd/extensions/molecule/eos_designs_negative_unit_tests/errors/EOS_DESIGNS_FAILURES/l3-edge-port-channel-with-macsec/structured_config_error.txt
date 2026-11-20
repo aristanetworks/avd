@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'macsec_profile' is not supported for l3_edge.p2p_links[0] when 'port_channel' is configured.

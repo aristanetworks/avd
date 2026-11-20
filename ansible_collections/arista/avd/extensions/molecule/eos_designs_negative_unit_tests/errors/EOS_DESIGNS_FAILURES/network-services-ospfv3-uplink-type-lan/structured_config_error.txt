@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'tenants[name=TENANT_A].vrfs[name=VRF_A].svis[id=110].ospfv3.enabled: true' is not supported on SVIs deployed as subinterfaces with 'uplink_type: lan'.

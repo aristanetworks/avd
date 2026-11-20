@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._utils import default
+from pyavd._utils.default import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol

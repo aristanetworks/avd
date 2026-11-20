@@ -1,1 +1,5 @@
+{% if loopback_ipv4_address is arista.avd.defined %}
+{{ loopback_ipv4_address }}
+{% else %}
 {{ loopback_ipv4_pool | ansible.utils.ipaddr("network") | ansible.utils.ipmath(switch_id + loopback_ipv4_offset + ip_offset_20) }}
+{% endif %}
