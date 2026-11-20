@@ -67,6 +67,9 @@ schema-tools = [
     "referencing>=0.37.0",
     "ruff==0.17.5",
 ]
+benchmark = [
+    "pytest-codspeed>=5.0.4",
+]
 
 [tool.uv]
 required-version = ">=0.9.17"
@@ -168,6 +171,10 @@ convention = "google"
   "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
   "PLC0415", # `import` should be at the top-level of a file
 ]
+"benchmarks/**/*" = [
+  "S101",   # Accept 'assert' in benchmarks (they are tests).
+  "PLC0415", # `import` should be at the top-level of a file
+]
 "python-avd/pyavd/_anta/index.py" = [
   "F403", # Allow wildcard imports to avoid cluttering the index
   "F405", # Allow names defined in via a wildcard import
@@ -219,6 +226,8 @@ pythonpath = [
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
+    "benchmark_scale: Benchmarks excluded from the default CodSpeed PR suite.",
+    "benchmark_diagnostic: Temporary phase benchmarks for investigating memory allocation profiles.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 # log_file = "pytest.log"

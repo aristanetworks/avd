@@ -1,0 +1,103 @@
+---
+name: "Benchmarks"
+
+"on":
+  push:
+    branches: [devel]
+    paths:
+      - ".github/workflows/benchmarks.yml"
+      - "benchmarks/**"
+      - "pyproject.toml"
+      - "python-avd/pyavd/**"
+      - "python-avd/scripts/**"
+      - "python-avd/schema_tools/**"
+      - "python-avd/Makefile"
+      - "python-avd/tests/models.py"
+      - "ansible_collections/arista/avd/extensions/molecule/**"
+      - "tools/e2e_test_avd.py"
+  pull_request:
+    types: [reopened, synchronize, labeled]
+    branches: [devel]
+
+env:
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  benchmarks:
+    name: CodSpeed benchmarks (${{ matrix.suite }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: simulation
+            mode: simulation
+            filter: ""
+          - suite: memory-main
+            mode: memory
+            filter: "not test_large_fabric_full_workflow_benchmark"
+          - suite: memory-scaling
+            mode: memory
+            filter: "test_large_fabric_full_workflow_benchmark"
+          - suite: memory-facts
+            mode: memory
+            filter: "test_synthetic_facts_memory_benchmark"
+            markers: "benchmark_diagnostic"
+          - suite: memory-structured-config
+            mode: memory
+            filter: "test_synthetic_structured_config_memory_benchmark"
+            markers: "benchmark_diagnostic"
+          - suite: memory-cli
+            mode: memory
+            filter: "test_synthetic_cli_memory_benchmark"
+            markers: "benchmark_diagnostic"
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+    if: >-
+      github.event_name != 'pull_request' ||
+      (contains(github.event.pull_request.labels.*.name, 'benchmark') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'benchmark'))
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.14.9"
+
+      - name: Install dependencies
+        run: |
+          pip install --group dev --group benchmark --upgrade
+
+      - name: Generate PyAVD artifacts
+        run: |
+          make -C python-avd dep
+
+      - name: Install libc debug symbols
+        if: matrix.mode == 'memory'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libc6-dbg
+
+      - name: Run default benchmarks
+        uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
+        env:
+          BENCHMARK_FILTER: ${{ matrix.filter }}
+          BENCHMARK_MARKERS: ${{ matrix.markers || 'not benchmark_scale and not benchmark_diagnostic' }}
+        with:
+          mode: ${{ matrix.mode }}
+          run: |
+            python -m pytest --codspeed \
+              benchmarks/test_molecule_scenarios.py \
+              benchmarks/test_large_fabric_scaling.py \
+              benchmarks/test_synthetic_memory_phases.py \
+              -m "$BENCHMARK_MARKERS" \
+              -k "$BENCHMARK_FILTER" \
+              -q
