@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+-#}
+{% autoescape false -%}
+{% macro entries(items, parents=[]) -%}
+{% for item in items -%}
+{% if item.is_section -%}
+{{ entries(item.children, parents + [item.title]) }}
+{%- elif item.is_link or item.file.inclusion.is_included() -%}
+- [{{ (parents + [item.title]) | join(' / ') | replace('\\', '\\\\') | replace('[', '\\[') | replace(']', '\\]') }}]({{ item.url }}){% if item.is_page and item.meta.description %}: {{ item.meta.description.split() | join(' ') }}{% endif %}
+{% endif -%}
+{% endfor -%}
+{% endmacro -%}
+# {{ config.site_description }}
+
+> Index of documentation pages for this AVD version.
+
+{% for item in nav -%}
+{% set links = entries(item.children if item.is_section else [item]) -%}
+{% if links.strip() -%}
+## {{ item.title }}
+
+{{ links }}
+{% endif -%}
+{% endfor -%}
+{% endautoescape -%}
