@@ -5,6 +5,21 @@ router_ospfv3:
   bfd_adjacency_state_any: true
   passive_interface_default: true
   auto_cost_reference_bandwidth: 1000
+  # Shared timers render because neither enabled address family overrides them.
+  timers:
+    spf:
+      delay:
+        initial: 1000
+        min_hold_time: 5000
+        max_wait_time: 30000
+    lsa:
+      rx:
+        min_interval: 2000
+      tx:
+        delay:
+          initial: 1000
+          min: 2000
+          max: 5000
   address_family_ipv4:
     enabled: true
     router_id: 2.2.2.2

@@ -116,6 +116,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | 1000 / 5000 / 30000 |
+| LSA RX Min Interval (msec) | 2000 |
+| LSA TX Delay (initial/min/max, msec) | 1000 / 2000 / 5000 |
 
 ##### Address Family IPv4
 
@@ -126,6 +129,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ###### Redistribution
 
@@ -144,6 +150,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ###### Redistribution
 
@@ -159,6 +168,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 !
 router ospfv3
    bfd default
+   timers spf delay initial 1000 5000 30000
+   timers lsa rx min interval 2000
+   timers lsa tx delay initial 1000 2000 5000
    !
    address-family ipv4
       router-id 2.2.2.2

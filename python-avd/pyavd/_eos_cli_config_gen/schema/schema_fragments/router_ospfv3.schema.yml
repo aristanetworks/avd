@@ -34,6 +34,72 @@ keys:
         min: 1
         max: 4294967
         description: Reference bandwidth in Mbps.
+      timers:
+        type: dict
+        keys:
+          spf:
+            type: dict
+            keys:
+              delay:
+                type: dict
+                required: true
+                keys:
+                  initial:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 65535000
+                    description: Initial SPF schedule delay in msecs.
+                  min_hold_time:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 65535000
+                    description: Min Hold time between two SPFs in msecs.
+                  max_wait_time:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 65535000
+                    description: Max wait time between two SPFs in msecs.
+          lsa:
+            type: dict
+            keys:
+              rx:
+                type: dict
+                description: Configure OSPFv3 LSA receiving timers.
+                keys:
+                  min_interval:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 600000
+                    description: Min interval in msecs between accepting the same LSA.
+              tx:
+                type: dict
+                description: Configure OSPFv3 LSA transmission timers.
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      initial:
+                        type: int
+                        required: true
+                        min: 0
+                        max: 600000
+                        description: Delay to generate first occurrence of LSA in msecs.
+                      min:
+                        type: int
+                        required: true
+                        min: 1
+                        max: 600000
+                        description: Min delay between originating the same LSA in msecs.
+                      max:
+                        type: int
+                        required: true
+                        min: 1
+                        max: 600000
+                        description: Maximum delay between originating the same LSA in msecs.
       address_family_ipv4:
         type: dict
         description: |-
@@ -61,6 +127,9 @@ keys:
             min: 1
             max: 4294967
             description: Reference bandwidth in Mbps.
+          timers:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/timers"
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -199,6 +268,9 @@ keys:
               min: 1
               max: 4294967
               description: Reference bandwidth in Mbps.
+            timers:
+              type: dict
+              $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/timers"
             address_family_ipv4:
               type: dict
               $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
