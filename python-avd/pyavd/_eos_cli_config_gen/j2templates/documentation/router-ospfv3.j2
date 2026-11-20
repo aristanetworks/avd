@@ -23,9 +23,9 @@
 {%     set default_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%     set default_lsa = router_ospfv3.lsa.limit is arista.avd.defined
-           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.lsa.limit is not arista.avd.defined)
-           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.lsa.limit is not arista.avd.defined) %}
+{%     set default_lsa = router_ospfv3.lsa is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.lsa is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.lsa is not arista.avd.defined) %}
 {%     set default_address_family_ipv4 = router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%     set default_address_family_ipv6 = router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%     if default_router_id
@@ -98,7 +98,7 @@
                    or router_ospfv3.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
-                   or router_ospfv3.address_family_ipv4.lsa.limit is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv4.lsa is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -110,7 +110,7 @@
 {%                 set af_lsa_incident_count_clear_timeout = '-' %}
 {%                 set af_lsa_warning_limit = '-' %}
 {%                 set af_lsa_exceed_action_warn = '-' %}
-{%                 if router_ospfv3.address_family_ipv4.lsa.limit is arista.avd.defined %}
+{%                 if router_ospfv3.address_family_ipv4.lsa is arista.avd.defined %}
 {%                     set lsa_limit_has_disabled_or_incident = router_ospfv3.address_family_ipv4.lsa.disabled_time is arista.avd.defined
                            or router_ospfv3.address_family_ipv4.lsa.incident_count.limit is arista.avd.defined
                            or router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
@@ -199,7 +199,7 @@
                    or router_ospfv3.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.passive_interface_default is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
-                   or router_ospfv3.address_family_ipv6.lsa.limit is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv6.lsa is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -211,7 +211,7 @@
 {%                 set af_lsa_incident_count_clear_timeout = '-' %}
 {%                 set af_lsa_warning_limit = '-' %}
 {%                 set af_lsa_exceed_action_warn = '-' %}
-{%                 if router_ospfv3.address_family_ipv6.lsa.limit is arista.avd.defined %}
+{%                 if router_ospfv3.address_family_ipv6.lsa is arista.avd.defined %}
 {%                     set lsa_limit_has_disabled_or_incident = router_ospfv3.address_family_ipv6.lsa.disabled_time is arista.avd.defined
                            or router_ospfv3.address_family_ipv6.lsa.incident_count.limit is arista.avd.defined
                            or router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
@@ -314,9 +314,9 @@
 {%         set vrf_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth is arista.avd.defined
                and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.auto_cost_reference_bandwidth is not arista.avd.defined)
                and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.auto_cost_reference_bandwidth is not arista.avd.defined) %}
-{%         set vrf_lsa = vrf.lsa.limit is arista.avd.defined
-               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.lsa.limit is not arista.avd.defined)
-               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.lsa.limit is not arista.avd.defined) %}
+{%         set vrf_lsa = vrf.lsa is arista.avd.defined
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.lsa is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.lsa is not arista.avd.defined) %}
 {%         set vrf_address_family_ipv4 = vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set vrf_address_family_ipv6 = vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         if vrf_router_id
@@ -389,7 +389,7 @@
                        or vrf.address_family_ipv4.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv4.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
-                       or vrf.address_family_ipv4.lsa.limit is arista.avd.defined %}
+                       or vrf.address_family_ipv4.lsa is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -401,7 +401,7 @@
 {%                     set af_lsa_incident_count_clear_timeout = '-' %}
 {%                     set af_lsa_warning_limit = '-' %}
 {%                     set af_lsa_exceed_action_warn = '-' %}
-{%                     if vrf.address_family_ipv4.lsa.limit is arista.avd.defined %}
+{%                     if vrf.address_family_ipv4.lsa is arista.avd.defined %}
 {%                         set lsa_limit_has_disabled_or_incident = vrf.address_family_ipv4.lsa.disabled_time is arista.avd.defined
                                or vrf.address_family_ipv4.lsa.incident_count.limit is arista.avd.defined
                                or vrf.address_family_ipv4.lsa.incident_count.clear_timeout is arista.avd.defined %}
@@ -490,7 +490,7 @@
                        or vrf.address_family_ipv6.bfd_adjacency_state_any is arista.avd.defined
                        or vrf.address_family_ipv6.passive_interface_default is arista.avd.defined
                        or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
-                       or vrf.address_family_ipv6.lsa.limit is arista.avd.defined %}
+                       or vrf.address_family_ipv6.lsa is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -502,7 +502,7 @@
 {%                     set af_lsa_incident_count_clear_timeout = '-' %}
 {%                     set af_lsa_warning_limit = '-' %}
 {%                     set af_lsa_exceed_action_warn = '-' %}
-{%                     if vrf.address_family_ipv6.lsa.limit is arista.avd.defined %}
+{%                     if vrf.address_family_ipv6.lsa is arista.avd.defined %}
 {%                         set lsa_limit_has_disabled_or_incident = vrf.address_family_ipv6.lsa.disabled_time is arista.avd.defined
                                or vrf.address_family_ipv6.lsa.incident_count.limit is arista.avd.defined
                                or vrf.address_family_ipv6.lsa.incident_count.clear_timeout is arista.avd.defined %}
