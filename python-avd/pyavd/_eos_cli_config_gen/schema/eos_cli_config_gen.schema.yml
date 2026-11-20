@@ -24613,6 +24613,30 @@ keys:
             valid_values:
             - error
             - warn
+          modules:
+            type: list
+            description: Unified module profile assignments.
+            items:
+              type: dict
+              keys:
+                linecards:
+                  type: str
+                  required: true
+                  description: 'Linecard selector for this profile.
+
+                    Accepts a single slot, comma-separated slots, or slot ranges.
+
+                    - `0` applies to Linecard 0.
+
+                    - `1,3` applies to Linecards 1 and 3.
+
+                    - `4-10` applies to Linecards 4 through 10 (inclusive).
+
+                    '
+                profile:
+                  type: str
+                  required: true
+                  description: Builtin module L1 profile name.
       mac_address:
         type: str
         description: Unicast (the least-significant bit of the first octet must be

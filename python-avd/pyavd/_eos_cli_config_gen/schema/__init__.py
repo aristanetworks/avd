@@ -73755,9 +73755,64 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             UnsupportedSpeedAction: TypeAlias = Literal["error", "warn"]
             UnsupportedErrorCorrectionAction: TypeAlias = Literal["error", "warn"]
-            _fields: ClassVar[dict] = {"unsupported_speed_action": {"type": str}, "unsupported_error_correction_action": {"type": str}}
+
+            class ModulesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"linecards": {"type": str}, "profile": {"type": str}}
+                linecards: str
+                """
+                Linecard selector for this profile.
+                Accepts a single slot, comma-separated slots, or slot ranges.
+                -
+                `0` applies to Linecard 0.
+                - `1,3` applies to Linecards 1 and 3.
+                - `4-10` applies to Linecards 4
+                through 10 (inclusive).
+                """
+                profile: str
+                """Builtin module L1 profile name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, linecards: str | UndefinedType = Undefined, profile: str | UndefinedType = Undefined) -> None:
+                        """
+                        ModulesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            linecards:
+                               Linecard selector for this profile.
+                               Accepts a single slot, comma-separated slots, or slot ranges.
+                               -
+                               `0` applies to Linecard 0.
+                               - `1,3` applies to Linecards 1 and 3.
+                               - `4-10` applies to Linecards 4
+                               through 10 (inclusive).
+                            profile: Builtin module L1 profile name.
+
+                        """
+
+            class Modules(AvdList[ModulesItem]):
+                """Subclass of AvdList with `ModulesItem` items."""
+
+            Modules._item_type = ModulesItem
+
+            _fields: ClassVar[dict] = {
+                "unsupported_speed_action": {"type": str},
+                "unsupported_error_correction_action": {"type": str},
+                "modules": {"type": Modules},
+            }
             unsupported_speed_action: UnsupportedSpeedAction | None
             unsupported_error_correction_action: UnsupportedErrorCorrectionAction | None
+            modules: Modules
+            """
+            Unified module profile assignments.
+
+            Subclass of AvdList with `ModulesItem` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -73766,6 +73821,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     unsupported_speed_action: UnsupportedSpeedAction | UndefinedType | None = Undefined,
                     unsupported_error_correction_action: UnsupportedErrorCorrectionAction | UndefinedType | None = Undefined,
+                    modules: Modules | UndefinedType = Undefined,
                 ) -> None:
                     """
                     L1.
@@ -73776,6 +73832,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         unsupported_speed_action: unsupported_speed_action
                         unsupported_error_correction_action: unsupported_error_correction_action
+                        modules:
+                           Unified module profile assignments.
+
+                           Subclass of AvdList with `ModulesItem` items.
 
                     """
 

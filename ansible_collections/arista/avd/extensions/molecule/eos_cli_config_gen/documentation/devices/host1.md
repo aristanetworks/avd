@@ -258,6 +258,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Platform Device Configuration](#platform-device-configuration)
 - [System L1](#system-l1)
   - [Unsupported Interface Configurations](#unsupported-interface-configurations)
+  - [L1 Module Profiles](#l1-module-profiles)
   - [System L1 Device Configuration](#system-l1-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
@@ -13719,11 +13720,32 @@ platform trident mmu headroom-pool limit cells 556
 | Speed | warn |
 | Error correction | error |
 
+### L1 Module Profiles
+
+| Module | Profile |
+| ------ | ------- |
+| Linecard9 | 1 |
+| Linecard7 | 11 |
+| Linecard10 | 12 |
+| Linecard8 | 2 |
+| Linecard1 | CAPITAL |
+| Linecard3,4 | Uniform-4x100G-2-R |
+| Linecard5-6 | Uniform-4x10G-1 |
+| Linecard0 | small |
+
 ### System L1 Device Configuration
 
 ```eos
 !
 system l1
+   module Linecard9 profile 1
+   module Linecard7 profile 11
+   module Linecard10 profile 12
+   module Linecard8 profile 2
+   module Linecard1 profile CAPITAL
+   module Linecard3,4 profile Uniform-4x100G-2-R
+   module Linecard5-6 profile Uniform-4x10G-1
+   module Linecard0 profile small
    unsupported speed action warn
    unsupported error-correction action error
 ```
