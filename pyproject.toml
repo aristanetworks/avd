@@ -68,6 +68,15 @@ schema-tools = [
     "referencing>=0.37.0",
 ]
 
+[tool.uv]
+required-version = ">=0.9.17"
+# Apply a seven-day cutoff to each distribution's upload time, including transitive dependencies.
+# Renovate's release-age check instead uses the version's earliest upload.
+exclude-newer = "7 days"
+
+[tool.uv.workspace]
+members = ["python-avd"]
+
 [tool.ruff]
 line-length = 160
 extend-exclude = [
