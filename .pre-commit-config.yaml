@@ -133,7 +133,7 @@ repos:
           - 'coverage[toml]==7.17.3'
           - 'deepmerge>=1.1.1'
           - 'gitpython>=3.1.57'
-          - 'jinja2>=3.0'
+          - 'jinja2>=3.1.6'
           - 'jsonschema-rs>=0.46.0'
           - 'pyavd-utils==0.0.14'
           - 'pyavd-utils-gen==0.0.14'
@@ -326,7 +326,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
+        additional_dependencies: ['Jinja2>=3.1.6', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -334,7 +334,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
+        additional_dependencies: ['Jinja2>=3.1.6', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: c01a1853c19b175aee6a09f24e2ad9b748c485ad  # frozen: v0.24.1
