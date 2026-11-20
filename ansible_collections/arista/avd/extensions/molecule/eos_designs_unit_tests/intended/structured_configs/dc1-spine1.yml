@@ -38,6 +38,10 @@ ethernet_interfaces:
     peer: dc1-leaf2a
     peer_interface: Ethernet49/1
     peer_type: l3leaf
+    transceiver: Arista QSFP-100G-XSR4
+    peer_transceiver: Arista QSFP-100G-SR4
+    media: OM4
+    cable_path: A
   switchport:
     enabled: false
 - name: Ethernet4/1

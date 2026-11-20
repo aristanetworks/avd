@@ -172,12 +172,27 @@ port_profiles:
 
 servers:
   - name: server01_MLAG
+    site: "Vancouver Campus - Building A"
+    location: "Hall 1"
+    row: "B"
     rack: RackB
+    rack_unit: "12-13"
+    platform: "Generic 2U Server"
+    serial_number: "SRV00001234"
     adapters:
       - endpoint_ports: [Eth2, Eth3]
         switch_ports: [Ethernet10, Ethernet10]
         switches: [dc1-leaf2a, dc1-leaf2b]
         profile: TENANT_B
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
+          - transceiver: "Arista SFP-10G-LR"
+            peer_transceiver: "Arista SFP-10G-LRL"
+            media: "SM"
+            cable_path: "B"
         port_channel:
           endpoint_port_channel: PortChanne1
           mode: active
@@ -221,7 +236,13 @@ servers:
         spanning_tree_bpduguard: false
 
   - name: server02_SINGLE_NODE
+    site: "Burnaby Operations Centre"
+    location: "Hall 2"
+    row: "C"
     rack: RackB
+    rack_unit: "24"
+    platform: "Generic 1U Server"
+    serial_number: "SRV00005678"
     adapters:
       - endpoint_ports: [Eth1]
         switch_ports: [Ethernet7]

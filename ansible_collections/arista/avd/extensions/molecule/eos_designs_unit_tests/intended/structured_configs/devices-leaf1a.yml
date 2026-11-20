@@ -14,6 +14,10 @@ ethernet_interfaces:
     peer: devices-leaf1b
     peer_interface: Ethernet5
     peer_type: mlag_peer
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet6
   description: MLAG_devices-leaf1b_Ethernet6
   shutdown: false

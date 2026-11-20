@@ -143,14 +143,27 @@ l3leaf:
           vtep_loopback_ipv4_address: 192.168.43.43
     - group: DC1_LEAF2
       bgp_as: 65102
-      rack: "rackD"
+      site: "Vancouver Campus - Building A"
+      location: "Hall 1"
+      row: "1"
+      rack: rackD
+      rack_unit: "042-043"
       mlag: false
       # Test for multiple parallel uplinks
       uplink_switches: ['dc1-spine1', 'dc1-spine2', 'dc1-spine2', 'dc1-spine1', 'dc1-spine3', 'dc1-spine4', 'dc1-spine4', 'dc1-spine3']
       nodes:
         - name: dc1-leaf2a
           id: 2
+          uplink_interfaces_metadata:
+            - transceiver: "Arista QSFP-100G-SR4"
+              peer_transceiver: "Arista QSFP-100G-XSR4"
+              media: "OM4"
+              cable_path: "A"
+            - {}
+            - peer_transceiver: "Arista QSFP-100G-SR4"
+          row: "2"
           rack: "rackC"
+          rack_unit: "044"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
@@ -186,6 +199,12 @@ l3leaf:
       bgp_as: 65103
       mlag_port_channel_id: 2000
       mlag_domain_id: custom_mlag_domain_id
+      mlag_interfaces_metadata:
+        - transceiver: "Arista QSFP-100G-SR4"
+          peer_transceiver: "Arista QSFP-100G-XSR4"
+          media: "OM4"
+          cable_path: "A"
+        - transceiver: "Arista QSFP-100G-SR4"
       filter:
         tenants: [Tenant_A, Tenant_B, Tenant_C]
         tags: [opzone, web, app, db, vmotion, nfs, wan, erp3, svc3only]
@@ -401,6 +420,12 @@ l2leaf:
       nodes:
         - name: dc1-l2leaf1a
           id: 8
+          uplink_interfaces_metadata:
+            - transceiver: "Arista SFP-10G-SR"
+              peer_transceiver: "Arista SFP-10G-SRL"
+              media: "OM4"
+              cable_path: "B"
+            - transceiver: "Arista SFP-10G-SR"
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet7, Ethernet7]
@@ -525,6 +550,11 @@ l2leaf:
       nodes:
         - name: dc1-l2leaf8a
           mgmt_ip: 192.168.200.125/24
+          uplink_interfaces_metadata:
+            - transceiver: "Arista SFP-10G-LR"
+              peer_transceiver: "Arista SFP-10G-LRL"
+              media: "SM"
+              cable_path: "A"
           uplink_interfaces: [Ethernet1, Ethernet2]
           uplink_switches: [dc1-leaf2a, dc1-l2leaf8b]
           uplink_switch_interfaces: [Ethernet33, Ethernet1]

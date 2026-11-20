@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mlag_interfaces_metadata' on MLAG secondary node 'conflicting-mlag-interfaces-metadata-leaf2' must match the metadata on MLAG primary node 'conflicting-mlag-interfaces-metadata-leaf1'. Configure the metadata on the MLAG primary node or provide matching metadata on both nodes for host 'conflicting-mlag-interfaces-metadata-leaf2'.

@@ -49,6 +49,10 @@ ethernet_interfaces:
     peer: dc1-leaf2a
     peer_interface: Ethernet7
     peer_type: l3leaf
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: B
 - name: Ethernet2
   description: DC1-LEAF2B_Ethernet7
   shutdown: false
@@ -60,6 +64,7 @@ ethernet_interfaces:
     peer: dc1-leaf2b
     peer_interface: Ethernet7
     peer_type: l3leaf
+    transceiver: Arista SFP-10G-SR
 - name: Ethernet5
   description: server03_ESI_L2LEAF_Eth1
   shutdown: false
@@ -68,6 +73,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server03_ESI_L2LEAF
+    peer_rack: RackC
     peer_interface: Eth1
     peer_type: server
     peer_key: servers

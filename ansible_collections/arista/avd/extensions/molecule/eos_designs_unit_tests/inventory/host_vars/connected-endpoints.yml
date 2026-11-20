@@ -61,12 +61,35 @@ connected_endpoints_keys:
   - key: testing_1
     type: Testing_Type_1
 
+connected_endpoints:
+  - name: "server-link-metadata"
+    type: "server"
+    adapters:
+      - switches: ["connected-endpoints"]
+        switch_ports: ["Ethernet53"]
+        endpoint_ports: ["eth0"]
+        description: "Server link with subinterfaces"
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
+        subinterfaces:
+          - number: 101
+          - number: 102
+
 testing_1:
   - name: testing
+    site: "Vancouver Campus - Building A"
     adapters:
       - endpoint_ports: [Nic1]
         switch_ports: [Ethernet111]
         switches: [connected-endpoints]
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
         trunk_groups: [TG_NOT_MATCHING_ANY_VLANS]
 
 # This should not impact structured config since `connected_endpoints_keys`
@@ -85,10 +108,26 @@ firewalls:
 servers:
   # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
+    site: "Burnaby Operations Centre"
+    location: "Network Room 2"
+    row: "A"
+    rack: "A03"
+    rack_unit: "42"
+    platform: "Generic 1U Server"
+    serial_number: "SRV00009012"
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet1, Ethernet2]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
+          - transceiver: "Arista SFP-10G-LR"
+            peer_transceiver: "Arista SFP-10G-LRL"
+            media: "SM"
+            cable_path: "B"
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
@@ -109,6 +148,9 @@ servers:
     adapters:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet4]
+        links_metadata:
+          - media: "Cat6"
+            cable_path: "A"
         description: "PHYSICAL_PORT_DESCRIPTION"
         mac_acl_in: acl-on-endpoints
         mac_acl_out: acl-on-endpoints
@@ -117,6 +159,11 @@ servers:
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet5, Ethernet6]
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
@@ -125,6 +172,11 @@ servers:
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet7, Ethernet8]
+        links_metadata:
+          - {}
+          - peer_transceiver: "Arista SFP-10G-LRL"
+            media: "SM"
+            cable_path: "B"
         description: "PHYSICAL_PORT_DESCRIPTION"
         port_channel:
           mode: "active"
@@ -147,9 +199,25 @@ servers:
         endpoint_ports: [Endpoint_port4]
         mode: trunk
   - name: OLD_SW-1/9
+    site: "Vancouver Campus - Building A"
+    location: "Network Room 1"
+    row: "A"
+    rack: "A04"
+    rack_unit: "38"
+    platform: "Generic 1U Server"
+    serial_number: "SRV00009019"
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet20, Ethernet21]
+        links_metadata:
+          - transceiver: "Arista SFP-10G-SR"
+            peer_transceiver: "Arista SFP-10G-SRL"
+            media: "OM4"
+            cable_path: "A"
+          - transceiver: "Arista SFP-10G-LR"
+            peer_transceiver: "Arista SFP-10G-LRL"
+            media: "SM"
+            cable_path: "B"
         port_channel:
           mode: active
           subinterfaces:
@@ -362,6 +430,8 @@ servers:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet52]
         profile: profile2
+        links_metadata:
+          - peer_transceiver: "Arista SFP-10G-LRL"
 
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
@@ -430,6 +500,11 @@ port_profiles:
   - profile: profile4
     # Regression test: An empty parent_profile is treated as unset with recursive inheritance enabled.
     parent_profile: ""
+    links_metadata:
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
     mode: trunk
     native_vlan: 42
     link_tracking:

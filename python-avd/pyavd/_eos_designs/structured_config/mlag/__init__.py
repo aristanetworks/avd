@@ -214,6 +214,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
     @structured_config_contributor
     def ethernet_interfaces(self) -> None:
         """Set list of Ethernet Interfaces used for MLAG Peer Link."""
+        is_primary = self.shared_utils.mlag_role == "primary"
+        mlag_interfaces_metadata = (
+            self.shared_utils.switch_facts.mlag_interfaces_metadata if is_primary else self.shared_utils.mlag_peer_facts.mlag_interfaces_metadata
+        )
         for index, mlag_interface in enumerate(self.shared_utils.mlag_interfaces):
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=mlag_interface,
@@ -231,6 +235,14 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 ),
             )
             ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
+            if index in mlag_interfaces_metadata:
+                mlag_metadata = mlag_interfaces_metadata[index]
+                ethernet_interface.metadata._update(
+                    transceiver=mlag_metadata.transceiver if is_primary else mlag_metadata.peer_transceiver,
+                    peer_transceiver=mlag_metadata.peer_transceiver if is_primary else mlag_metadata.transceiver,
+                    media=mlag_metadata.media,
+                    cable_path=mlag_metadata.cable_path,
+                )
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
             if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
                 ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.mlag_peer_facts.inband_ztp_vlan)

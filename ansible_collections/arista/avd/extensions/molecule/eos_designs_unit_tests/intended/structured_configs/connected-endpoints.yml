@@ -20,6 +20,36 @@ dot1x:
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet53
+  description: Server link with subinterfaces
+  shutdown: false
+  metadata:
+    peer: server-link-metadata
+    peer_interface: eth0
+    peer_type: server
+    peer_key: connected_endpoints
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
+  switchport:
+    enabled: false
+- name: Ethernet53.101
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 101
+    network:
+      encapsulation: client
+  vlan_id: 101
+- name: Ethernet53.102
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 102
+    network:
+      encapsulation: client
+  vlan_id: 102
 - name: Ethernet1
   description: Interface description Ethernet1 custom_server_OLD_SW-1/2_ENDPOINT_PORT1
   shutdown: false
@@ -28,9 +58,20 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: OLD_SW-1/2
+    peer_site: Burnaby Operations Centre
+    peer_location: Network Room 2
+    peer_row: A
+    peer_rack: A03
+    peer_rack_unit: '42'
     peer_interface: Endpoint_port1
     peer_type: custom_server
+    peer_platform: Generic 1U Server
+    peer_serial_number: SRV00009012
     peer_key: servers
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet2
   description: Interface description Ethernet2 custom_server_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
@@ -39,9 +80,20 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: OLD_SW-1/2
+    peer_site: Burnaby Operations Centre
+    peer_location: Network Room 2
+    peer_row: A
+    peer_rack: A03
+    peer_rack_unit: '42'
     peer_interface: ENDPOINT_PORT2
     peer_type: custom_server
+    peer_platform: Generic 1U Server
+    peer_serial_number: SRV00009012
     peer_key: servers
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet3
   description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT
   shutdown: false
@@ -62,6 +114,8 @@ ethernet_interfaces:
     peer: OLD_SW-1/4
     peer_type: custom_server
     peer_key: servers
+    media: Cat6
+    cable_path: A
   switchport:
     enabled: true
 - name: Ethernet5
@@ -74,6 +128,10 @@ ethernet_interfaces:
     peer: OLD_SW-1/5
     peer_type: custom_server
     peer_key: servers
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet6
   description: CUSTOM_SERVER_OLD_SW-1/5
   shutdown: false
@@ -104,6 +162,9 @@ ethernet_interfaces:
     peer: OLD_SW-1/6
     peer_type: custom_server
     peer_key: servers
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet10
   description: PHYSICAL_PORT_DESCRIPTION_1
   shutdown: false
@@ -143,8 +204,19 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: OLD_SW-1/9
+    peer_site: Vancouver Campus - Building A
+    peer_location: Network Room 1
+    peer_row: A
+    peer_rack: A04
+    peer_rack_unit: '38'
     peer_type: custom_server
+    peer_platform: Generic 1U Server
+    peer_serial_number: SRV00009019
     peer_key: servers
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet21
   description: CUSTOM_SERVER_OLD_SW-1/9
   shutdown: false
@@ -153,8 +225,19 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: OLD_SW-1/9
+    peer_site: Vancouver Campus - Building A
+    peer_location: Network Room 1
+    peer_row: A
+    peer_rack: A04
+    peer_rack_unit: '38'
     peer_type: custom_server
+    peer_platform: Generic 1U Server
+    peer_serial_number: SRV00009019
     peer_key: servers
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet49
   description: Interface description Et49 Custom_Server_old_sw-1/10_ENDPOINT_PORT1
   shutdown: false
@@ -723,6 +806,10 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
     port_profile: profile1
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
   sflow:
     enable: false
   switchport:
@@ -765,6 +852,7 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
     port_profile: profile2
+    peer_transceiver: Arista SFP-10G-LRL
   sflow:
     enable: false
   switchport:
@@ -787,9 +875,14 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: testing
+    peer_site: Vancouver Campus - Building A
     peer_interface: Nic1
     peer_type: Testing_Type_1
     peer_key: testing_1
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
   switchport:
     enabled: true
 hostname: connected-endpoints

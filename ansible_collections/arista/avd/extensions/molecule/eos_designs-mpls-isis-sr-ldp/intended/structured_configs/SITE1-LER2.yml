@@ -102,6 +102,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: CPE_TENANT_A_SITE1
+    peer_rack: A04
     peer_interface: Ethernet2
     peer_type: cpe
     peer_key: cpes
@@ -118,8 +119,15 @@ ethernet_interfaces:
     route_target: 03:03:02:02:02:01
   metadata:
     peer: CPE2_TENANT_A_SITE1_SUBINTERFACES
+    peer_site: Burnaby Operations Centre
+    peer_location: Network Room 2
+    peer_row: A
+    peer_rack: A05
+    peer_rack_unit: 08
     peer_interface: Ethernet2
     peer_type: cpe
+    peer_platform: Arista DCS-7280SR3-48YC8
+    peer_serial_number: JPE23456781
     peer_key: cpes
   switchport:
     enabled: false

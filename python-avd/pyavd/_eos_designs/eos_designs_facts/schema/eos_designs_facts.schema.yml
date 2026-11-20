@@ -108,6 +108,17 @@ keys:
     type: list
     items:
       type: str
+  mlag_interfaces_metadata:
+    type: list
+    primary_key: index
+    description: Physical link metadata published by the MLAG primary node for both MLAG nodes.
+    items:
+      $ref: eos_designs#/$defs/node_type/keys/defaults/keys/mlag_interfaces_metadata/items
+      type: dict
+      keys:
+        index:
+          type: int
+          description: Zero-based position in the resolved MLAG interface lists.
   mlag_ip:
     type: str
   mlag_l3_ip:
@@ -208,6 +219,14 @@ keys:
         peer_speed:
           type: str
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
+        transceiver:
+          type: str
+        peer_transceiver:
+          type: str
+        media:
+          type: str
+        cable_path:
+          type: str
         ptp:
           type: dict
           documentation_options:

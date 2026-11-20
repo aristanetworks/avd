@@ -57,6 +57,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: HostB
+    peer_rack: POD1
     peer_interface: Eth1
     peer_type: server
     peer_key: servers

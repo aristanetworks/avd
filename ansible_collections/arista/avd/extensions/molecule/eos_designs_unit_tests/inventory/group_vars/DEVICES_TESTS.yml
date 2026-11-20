@@ -11,10 +11,13 @@ devices:
   - name: devices-leaf1b
     profile: L3LEAF1B
     id: 2
+    row: "3"
+    rack_unit: "044"
 
   - name: devices-l2leaf1
     # No profile
     id: 1
+    site: "Burnaby Operations Centre"
     mgmt_ip: 172.16.1.151/24
     uplink_switches: [devices-leaf1a, devices-leaf1b]
     uplink_interfaces: [Ethernet7, Ethernet8]
@@ -39,6 +42,10 @@ devices:
 
 device_profiles:
   - name: L3LEAF_PARENT_PROFILE
+    site: "Burnaby Operations Centre"
+    location: "Hall 1"
+    row: "2"
+    rack_unit: "1"
     mlag_group: L3LEAF1
     type: l3leaf
     bgp_as: 65101
@@ -49,6 +56,13 @@ device_profiles:
     mlag_peer_ipv4_pool: 10.255.1.64/27
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27
     mlag_interfaces: [Ethernet5, Ethernet6]
+    # Both nodes inherit matching metadata, with an extra empty entry on the secondary.
+    mlag_interfaces_metadata:
+      - transceiver: "Arista SFP-10G-LR"
+        peer_transceiver: "Arista SFP-10G-LRL"
+        media: "SM"
+        cable_path: "B"
+      - {}
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
@@ -77,12 +91,19 @@ device_profiles:
     mlag_peer_ipv4_pool: 10.255.1.64/27
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27
     mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_interfaces_metadata:
+      - transceiver: "Arista SFP-10G-LR"
+        peer_transceiver: "Arista SFP-10G-LRL"
+        media: "SM"
+        cable_path: "B"
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
 
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
+    location: "Hall 2"
+    rack_unit: "042-043"
 
   - name: l3leaf
     type: l3leaf

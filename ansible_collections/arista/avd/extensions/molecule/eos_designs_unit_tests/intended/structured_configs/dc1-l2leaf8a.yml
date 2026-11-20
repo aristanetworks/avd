@@ -23,6 +23,10 @@ ethernet_interfaces:
     peer: dc1-leaf2a
     peer_interface: Ethernet33
     peer_type: l3leaf
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: A
   switchport:
     enabled: true
     mode: trunk

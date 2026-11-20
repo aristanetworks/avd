@@ -23,9 +23,27 @@ keys:
           description: |-
             Type of endpoint.
             This is used in descriptions and in documentation.
+        site:
+          type: str
+          description: Physical building or data center facility where the endpoint is located.
+        location:
+          type: str
+          description: Room, floor, data hall, or cage within the site where the endpoint is located.
+        row:
+          type: str
+          description: Row within the location where the endpoint is located.
         rack:
           type: str
-          description: Rack is used for documentation purposes only.
+          description: Rack within the row where the endpoint is located.
+        rack_unit:
+          type: str
+          description: Rack unit or range of rack units occupied by the endpoint.
+        platform:
+          type: str
+          description: Hardware platform of the endpoint.
+        serial_number:
+          type: str
+          description: Serial number of the endpoint.
         # TODO: Add this in a separate PR.
         # digital_twin:
         #   type: dict

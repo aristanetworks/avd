@@ -243,6 +243,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server-1
+    peer_rack: RackB
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -263,6 +264,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server-1
+    peer_rack: RackB
     peer_interface: Eth4
     peer_type: server
     peer_key: servers
@@ -283,6 +285,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server-1
+    peer_rack: RackB
     peer_interface: Eth6
     peer_type: server
     peer_key: servers
@@ -303,6 +306,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server-1
+    peer_rack: RackB
     peer_interface: Eth8
     peer_type: server
     peer_key: servers
