@@ -65,7 +65,7 @@ schema-tools = [
     "deepmerge>=1.1.0",
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
-    "ruff==0.17.4",
+    "ruff==0.17.5",
 ]
 
 [tool.uv]
