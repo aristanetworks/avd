@@ -1890,6 +1890,7 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "sort_snmp_acls_and_local_interfaces_by_vrf": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
+            "configure_ssh_settings_vrfs_ipv4_acl_from_catalog": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -2104,6 +2105,16 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        configure_ssh_settings_vrfs_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.6.0.
+        When this is set to `true`, the presence of access-list
+        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+        An error is raised if the
+        referenced ACL is not defined under `ipv4_acls`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -2131,6 +2142,7 @@ class EosDesigns(EosDesignsRootModel):
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 sort_snmp_acls_and_local_interfaces_by_vrf: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
+                configure_ssh_settings_vrfs_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -2268,6 +2280,12 @@ class EosDesigns(EosDesignsRootModel):
                        VRF.
                        - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing
                        route prerequisites are met).
+                    configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
+                       Available from AVD 6.6.0.
+                       When this is set to `true`, the presence of access-list
+                       `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+                       An error is raised if the
+                       referenced ACL is not defined under `ipv4_acls`.
 
                 """
 
@@ -54829,7 +54847,13 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+            }
             name: str
             """
             VRF name.
@@ -54850,7 +54874,22 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             """Enable SSH in VRF."""
             ipv4_acl: str | None
-            """IPv4 access-list name."""
+            """
+            IPv4 extended access-list name.
+            Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
+            error.
+            If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
+            this ACL must be defined in `ipv4_acls` catalog.
+            An error is raised if ACL is not defined under
+            `ipv4_acls`. Field substitution is not supported.
+            """
+            ipv4_standard_acl: str | None
+            """
+            IPv4 standard access-list name.
+            This ACL must be defined in `ipv4_standard_acls` catalog.
+            Mutually
+            exclusive with `ipv4_acl`. Setting both raises an error.
+            """
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -54862,6 +54901,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -54887,7 +54927,19 @@ class EosDesigns(EosDesignsRootModel):
                            - Any other string will be used directly as the VRF
                            name.
                         enabled: Enable SSH in VRF.
-                        ipv4_acl: IPv4 access-list name.
+                        ipv4_acl:
+                           IPv4 extended access-list name.
+                           Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
+                           error.
+                           If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
+                           this ACL must be defined in `ipv4_acls` catalog.
+                           An error is raised if ACL is not defined under
+                           `ipv4_acls`. Field substitution is not supported.
+                        ipv4_standard_acl:
+                           IPv4 standard access-list name.
+                           This ACL must be defined in `ipv4_standard_acls` catalog.
+                           Mutually
+                           exclusive with `ipv4_acl`. Setting both raises an error.
                         ipv6_acl: IPv6 access-list name.
 
                     """

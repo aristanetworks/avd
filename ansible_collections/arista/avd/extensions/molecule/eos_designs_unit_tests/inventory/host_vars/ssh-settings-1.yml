@@ -6,6 +6,13 @@ l2leaf:
       id: 43
       mgmt_ip: 10.10.10.43/26
 
+ipv4_standard_acls:
+  - name: ACL-SSH-STANDARD
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+
 mgmt_interface_settings:
   vrf: MGMT
 mgmt_gateway: 10.10.10.1
@@ -19,6 +26,7 @@ ssh_settings:
     - name: VRF10
       enabled: true
       ipv6_acl: ACL-SSH6
+      ipv4_standard_acl: ACL-SSH-STANDARD
     - name: VRF12
       enabled: false
       ipv4_acl: ACL-SSH-VRF-DISABLED

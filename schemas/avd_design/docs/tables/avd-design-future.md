@@ -29,6 +29,7 @@
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;sort_snmp_acls_and_local_interfaces_by_vrf</samp>](## "avd_design_future.sort_snmp_acls_and_local_interfaces_by_vrf") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Sort SNMP ACLs and local interfaces by VRF name in the generated configuration. |
     | [<samp>&nbsp;&nbsp;only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used</samp>](## "avd_design_future.only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used") | Boolean |  | `False` |  | Available from AVD 6.5.0.<br>Configure OOB management VRF and OOB IPv4 static routes only when OOB management is actually used.<br>When enabled:<br>- AVD renders the OOB management VRF only if `default_mgmt_method` is `oob`, or if `mgmt_ip` / `ipv6_mgmt_ip` is configured.<br>- Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.<br>- AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met). |
+    | [<samp>&nbsp;&nbsp;configure_ssh_settings_vrfs_ipv4_acl_from_catalog</samp>](## "avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog") | Boolean |  | `False` |  | Available from AVD 6.6.0.<br>When this is set to `true`, the presence of access-list `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.<br>An error is raised if the referenced ACL is not defined under `ipv4_acls`. |
 
 === "YAML"
 
@@ -143,4 +144,9 @@
       # - Setting only `mgmt_interface_vrf` or `mgmt_interface_settings.vrf` does not by itself render the OOB management VRF.
       # - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and other existing route prerequisites are met).
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: <bool; default=False>
+
+      # Available from AVD 6.6.0.
+      # When this is set to `true`, the presence of access-list `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
+      # An error is raised if the referenced ACL is not defined under `ipv4_acls`.
+      configure_ssh_settings_vrfs_ipv4_acl_from_catalog: <bool; default=False>
     ```
