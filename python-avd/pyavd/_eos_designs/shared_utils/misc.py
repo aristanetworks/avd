@@ -187,7 +187,7 @@ class MiscMixin(Protocol):
             return None
         return configured_mtu
 
-    def get_ipv4_acl(
+    def get_ipv4_acl_with_substitution(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
     ) -> EosDesigns.Ipv4AclsItem:
         """
@@ -225,6 +225,29 @@ class MiscMixin(Protocol):
 
         if changed:
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
+        return ipv4_acl
+
+    def get_ipv4_acl(self: SharedUtilsProtocol, name: str, context: str) -> EosDesigns.Ipv4AclsItem:
+        """Get one IPv4 ACL from the catalog without applying field substitution."""
+        if (ipv4_acl := self.inputs.ipv4_acls.get(name, None)) is None:
+            msg = f"ipv4_acls[name={name}]"
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
+
+        for index, entry in enumerate(ipv4_acl.entries):
+            if entry._get("remark"):
+                continue
+            for field in ("source", "destination"):
+                if not (field_value := entry._get(field)):
+                    msg = f"ipv4_acls[name={name}].entries[{index}].{field}"
+                    raise AristaAvdMissingVariableError(msg, host=self.hostname)
+                if field_value in ("interface_ip", "peer_ip"):
+                    msg = (
+                        f"Field substitution of the value '{field_value}' defined under "
+                        f"'ipv4_acls[name={name}].entries[{index}].{field}' "
+                        f"is not supported for reference '{context}'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
         return ipv4_acl
 
     def get_ipv6_acl(

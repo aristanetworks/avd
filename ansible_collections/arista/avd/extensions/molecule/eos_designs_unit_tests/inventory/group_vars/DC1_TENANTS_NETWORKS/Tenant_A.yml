@@ -453,6 +453,13 @@ ipv4_acls:
         protocol: ip
         source: any
         destination: any
+  - name: ACL-QMS
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
     entries:
       - sequence: 15
