@@ -70,7 +70,8 @@ class ActionModule(AVDActionPlugin):
 
         self.result["changed"] = False
 
-        has_custom_templates = bool(task_vars.get("custom_templates"))
+        custom_templates = task_vars.get("eos_cli_config_gen_custom_templates", task_vars.get("custom_templates"))
+        has_custom_templates = bool(custom_templates)
         template_vars: dict | ChainMap = ChainMap(structured_config, task_vars) if has_custom_templates else {}
 
         if validated_args["generate_device_config"]:

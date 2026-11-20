@@ -94,9 +94,9 @@
                 that:
                   - ansible_play_hosts_all | length == 2
                   - shared_catalog.content | b64decode == 'test content\n'
-                  - hostvars[primary_host].dirs_to_clean == hostvars[secondary_host].dirs_to_clean
+                  - hostvars[primary_host].build_output_folders_dirs_to_clean == hostvars[secondary_host].build_output_folders_dirs_to_clean
                   - >-
-                    hostvars[secondary_host].dirs_to_clean.files | map(attribute='path') | list
+                    hostvars[secondary_host].build_output_folders_dirs_to_clean.files | map(attribute='path') | list
                     == [primary_root ~ '/anta/obsolete']
 
       always:

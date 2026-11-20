@@ -21,7 +21,7 @@
     | [<samp>eos_cli_config_gen_validate_inputs_batch_size</samp>](## "eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
     | [<samp>generate_default_config</samp>](## "generate_default_config") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. See [here](https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated) for details.</span> |
     | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") <span style="color:red">removed</span> | Boolean |  | `True` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_cli_config_gen_documentation.enable</samp> instead.</span> |
-    | [<samp>read_structured_config_from_file</samp>](## "read_structured_config_from_file") | Boolean |  | `True` |  | Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).<br>If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.<br> |
+    | [<samp>eos_cli_config_gen_read_structured_config_from_file</samp>](## "eos_cli_config_gen_read_structured_config_from_file") | Boolean |  | `True` |  | Read structured configuration from files in `avd_structured_dir`.<br>If set to false, `eos_cli_config_gen` reads structured configuration from hostvars.<br> |
 
 === "YAML"
 
@@ -69,7 +69,7 @@
     # Depending on your inventory size and the available resources, you may want to adjust this number.
     eos_cli_config_gen_validate_inputs_batch_size: <int; default=10>
 
-    # Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
-    # If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.
-    read_structured_config_from_file: <bool; default=True>
+    # Read structured configuration from files in `avd_structured_dir`.
+    # If set to false, `eos_cli_config_gen` reads structured configuration from hostvars.
+    eos_cli_config_gen_read_structured_config_from_file: <bool; default=True>
     ```

@@ -1,34 +1,30 @@
 ---
 # Role defaults - directories and paths
 
-# Root directory.
-root_dir: "{{ inventory_dir }}"
-
-# Main output directory used in AVD.
-output_dir_name: "intended"
-output_dir: "{{ root_dir }}/{{ output_dir_name }}"
-
-# Output for structured configuration files.
-structured_dir_name: "structured_configs"
-structured_dir: "{{ output_dir }}/{{ structured_dir_name }}"
+# Collection-wide output paths. The unprefixed names are accepted as legacy
+# inputs when explicitly supplied by the user.
+avd_root_dir: "{{ root_dir | default(inventory_dir) }}"
+avd_output_dir_name: "{{ output_dir_name | default('intended') }}"
+avd_output_dir: "{{ output_dir | default(avd_root_dir ~ '/' ~ avd_output_dir_name) }}"
+avd_structured_dir_name: "{{ structured_dir_name | default('structured_configs') }}"
+avd_structured_dir: "{{ structured_dir | default(avd_output_dir ~ '/' ~ avd_structured_dir_name) }}"
 
 # Main ANTA directory.
-anta_dir_name: "anta"
-anta_dir: "{{ root_dir }}/{{ anta_dir_name }}"
+avd_anta_dir_name: "{{ anta_dir_name | default('anta') }}"
+avd_anta_dir: "{{ anta_dir | default(avd_root_dir ~ '/' ~ avd_anta_dir_name) }}"
 
 # Input for ANTA user-defined catalog files.
-user_catalogs_dir_name: "user_catalogs"
-user_catalogs_dir: "{{ anta_dir }}/{{ user_catalogs_dir_name }}"
+avd_user_catalogs_dir_name: "{{ user_catalogs_dir_name | default('user_catalogs') }}"
+avd_user_catalogs_dir: "{{ user_catalogs_dir | default(avd_anta_dir ~ '/' ~ avd_user_catalogs_dir_name) }}"
 
 # Output for ANTA AVD catalog files.
 avd_catalogs_dir_name: "avd_catalogs"
-avd_catalogs_dir: "{{ anta_dir }}/{{ avd_catalogs_dir_name }}"
+avd_catalogs_dir: "{{ avd_anta_dir ~ '/' ~ avd_catalogs_dir_name }}"
 
 # Output for ANTA reports.
-anta_reports_dir_name: "reports"
-anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
+avd_anta_reports_dir_name: "{{ anta_reports_dir_name | default('reports') }}"
+avd_anta_reports_dir: "{{ anta_reports_dir | default(avd_anta_dir ~ '/' ~ avd_anta_reports_dir_name) }}"
 
-# ANTA report paths.
-anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
-anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
-anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
+anta_runner_report_json_path: "{{ anta_report_json_path | default(avd_anta_reports_dir ~ '/anta_report.json') }}"
+anta_runner_report_md_path: "{{ anta_report_md_path | default(avd_anta_reports_dir ~ '/anta_report.md') }}"
+anta_runner_report_csv_path: "{{ anta_report_csv_path | default(avd_anta_reports_dir ~ '/anta_report.csv') }}"

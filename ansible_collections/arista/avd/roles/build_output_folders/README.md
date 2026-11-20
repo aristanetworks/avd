@@ -23,33 +23,36 @@ The role supports the following variables:
 ```yaml
 # Root directory where to build output structure
 # All folders below will be created in this directory.
-root_dir: '{{ inventory_dir }}'
+avd_root_dir: '{{ inventory_dir }}'
 
 # Main output directory
-output_dir_name: 'intended'
+avd_output_dir_name: "intended"
 # Output for structured YAML files:
-structured_dir_name: 'structured_configs'
+avd_structured_dir_name: 'structured_configs'
 # Output for CloudVision structured YAML files:
-structured_cvp_dir_name: 'cvp'
+avd_structured_cvp_dir_name: 'cvp'
 # EOS configuration directory name
-eos_config_dir_name: 'configs'
+avd_eos_config_dir_name: "configs"
 # Main documentation folder
-documentation_dir_name: 'documentation'
+avd_documentation_dir_name: "documentation"
 # Fabric documentation
-fabric_dir_name: 'fabric'
+avd_fabric_dir_name: "fabric"
 # Device documentation
-devices_dir_name: 'devices'
+avd_devices_dir_name: "devices"
 # EOS config deploy eapi running config backup directory
-post_running_config_backup_dir_name: 'config_backup'
-pre_running_config_backup_dir_name: 'config_backup'
+avd_post_running_config_backup_dir_name: 'config_backup'
+avd_pre_running_config_backup_dir_name: 'config_backup'
 # EOS snapshots
-snapshots_backup_dir_name: 'snapshots'
+avd_snapshots_backup_dir_name: 'snapshots'
 # ANTA catalogs and reports
-anta_dir_name: 'anta'
-user_catalogs_dir_name: 'user_catalogs'
+avd_anta_dir_name: 'anta'
+avd_user_catalogs_dir_name: 'user_catalogs'
 avd_catalogs_dir_name: 'avd_catalogs'
-anta_reports_dir_name: 'reports'
+avd_anta_reports_dir_name: 'reports'
 ```
+
+Existing unprefixed inputs remain supported silently. If both names are set, the
+`avd_*` value wins. Use the `avd_*` paths when consuming the output from another role.
 
 With the default paths, the role creates the following structure:
 
@@ -69,8 +72,8 @@ With the default paths, the role creates the following structure:
 └── snapshots
 ```
 
-The role deletes and recreates `output_dir`. It also deletes subdirectories of `anta_dir`, except for the directory named
-`user_catalogs_dir_name`. It creates the other directories if missing and preserves their existing contents.
+The role deletes and recreates `avd_output_dir`. It also deletes subdirectories of `avd_anta_dir`, except for the directory named
+`avd_user_catalogs_dir_name`. It creates the other directories if missing and preserves their existing contents.
 With the default paths, documentation, configuration backups, snapshots, and ANTA user catalogs are preserved.
 When overriding paths, keep files you want to preserve outside the directories that the role cleans.
 
