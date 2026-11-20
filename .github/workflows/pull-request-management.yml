@@ -211,6 +211,7 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
+          - "3.15"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -224,11 +225,18 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python_version == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: "Install Python requirements"
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
           pip install "$WHEEL_FILE" --group dev --upgrade
+          pip check
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -252,7 +260,7 @@ jobs:
         ansible_version:
           - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.14"
+          - "3.15"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
@@ -271,6 +279,12 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python_version == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -315,7 +329,7 @@ jobs:
         ansible_version:
           - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.14"
+          - "3.15"
         include:
           # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
           # across ansible versions but maybe we don't need it to be these molecule scenario
@@ -340,7 +354,7 @@ jobs:
           # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core>=2.22.0,<2.23.0"
-            python_version: "3.14"
+            python_version: "3.15"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
           - avd_scenario: "eos_designs_unit_tests -- -e avd_ignore_requirements=True"
@@ -360,6 +374,12 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python_version == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -451,7 +471,7 @@ jobs:
         ansible_version:
           - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.14"
+          - "3.15"
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
@@ -469,6 +489,12 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python_version == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -513,6 +539,7 @@ jobs:
             python_version: |
               3.13
               3.14
+              3.15
           - ansible_version: devel
             pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -533,6 +560,12 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.ansible_version == 'latest_stable'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -551,7 +584,7 @@ jobs:
       fail-fast: false
       matrix:
         ansible_version: [latest_stable]
-        python_version: ["3.13", "3.14"]
+        python_version: ["3.13", "3.14", "3.15"]
         include:
           - ansible_version: latest_stable
             pip_installation: "ansible-core>=2.22.0,<2.23.0"
@@ -593,6 +626,12 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python_version == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         id: install
         run: |
@@ -813,11 +852,17 @@ jobs:
             3.12
             3.13
             3.14
+            3.15
       - name: Download pyavd Artifact
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: pyavd
           path: /tmp/pyavd/
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install Python & Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -858,7 +903,7 @@ jobs:
       fail-fast: false
       matrix:
         # 3.12 is in coverage job.
-        python: ["3.11", "3.13", "3.14"]
+        python: ["3.11", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -880,6 +925,12 @@ jobs:
           path: ~/.ansible/collections
           key: ${{ needs.build_collection.outputs.collection_cache_key }}
           fail-on-cache-miss: true
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install AVD collection
         run: |
           uv run --no-project --with-requirements tools/e2e-test-avd.py \
@@ -988,7 +1039,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.11", "3.12", "3.13", "3.14"]
+        python: ["3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -1000,6 +1051,12 @@ jobs:
       - name: Install tox
         run: |
           pip install "tox>=4.52.1,<=4.67.13" tox-gh-actions --upgrade
+      # PyYAML does not yet publish Python 3.15 wheels.
+      - name: Install libyaml development headers
+        if: matrix.python == '3.15'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
           tox run

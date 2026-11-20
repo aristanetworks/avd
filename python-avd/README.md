@@ -12,7 +12,7 @@ See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd/pyavd.html) for de
 
 ## Requirements
 
-PyAVD supports Python 3.11 to 3.14. The optional `pyavd[ansible]` dependencies support Ansible Core 2.16.0 to 2.22.x.
+PyAVD supports Python 3.11 to 3.15. The optional `pyavd[ansible]` dependencies support Ansible Core 2.16.0 to 2.22.x.
 
 Supported Python versions depend on the Ansible Core release. Consult the [Ansible Core support matrix](https://docs.ansible.com/projects/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for compatible control-node Python versions.
 
