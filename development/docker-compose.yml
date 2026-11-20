@@ -1,7 +1,7 @@
 ---
 services:
   webdoc_avd:
-    image: python:3.11.0-alpine3.17
+    image: python:3.11.0-alpine3.17@sha256:a651419779f8b2a0dbd6c46dd238d7309b01ec65164bcce51a680fc868415eea
     container_name: webdoc_avd
     working_dir: /data
     volumes:
