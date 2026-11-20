@@ -311,6 +311,7 @@ def test_main_writes_act_topology_without_containerlab_post_processing(action_mo
                     ztp=None,
                     internet_access=None,
                     ports=None,
+                    instance_type=None,
                 )
             },
         ),
