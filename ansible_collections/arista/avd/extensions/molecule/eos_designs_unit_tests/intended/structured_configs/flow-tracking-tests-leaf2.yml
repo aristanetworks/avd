@@ -175,7 +175,7 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.254.1.0/27 eq 32
+    action: permit 10.254.1.2/32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
 route_maps:
