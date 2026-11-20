@@ -6,3 +6,7 @@ collections:
     # type: git
     # source: https://github.com/ansible-collections/arista.eos
     # version: main
+  # 8.8.0 cannot load the enable become plugin on ansible-core 2.22.
+  # https://github.com/ansible-collections/ansible.netcommon/issues/832
+  - name: ansible.netcommon
+    version: "<8.8.0"
