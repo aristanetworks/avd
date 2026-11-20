@@ -1,4 +1,4 @@
-hostname: avd-ci-leaf1
+hostname: avd-ci-missing
 metadata:
   is_deployed: true
   cv_tags:
