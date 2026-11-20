@@ -46,7 +46,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
     - `router_id_pool` for BGP Router ID (IPv4 format required by BGP)
     - `uplink_ipv6_pool` (or `downlink_pools`) for P2P uplinks
     - `vtep_loopback_ipv6_pool` on VTEPs
-    - `mlag_peer_l3_ipv6_pool` on MLAG pairs
+    - `mlag_peer_l3_ipv6_pool` on MLAG pairs (or `mlag_peer_address_family: ipv6` and `mlag_peer_ipv6_pool` when `mlag_peer_l3_vlan` is 0 or the same as `mlag_peer_vlan`)
 
 ## IPv6 Pool Types
 
@@ -187,7 +187,7 @@ MLAG requires two pools for peer connectivity:
 
 ### Enabling MLAG IPv6
 
-To use IPv6 on the MLAG peer-link SVI (VLAN 4094) instead of `mlag_peer_ipv4_pool`, set `mlag_peer_address_family` to `ipv6`. This does not change the L3 iBGP peering:
+To use IPv6 on the MLAG peer-link SVI (VLAN 4094) instead of `mlag_peer_ipv4_pool`, set `mlag_peer_address_family` to `ipv6`. With a separate L3 peering VLAN (default), this does not change the L3 iBGP peering:
 
 ```yaml hl_lines="18 20 22" title="MLAG IPv6 Settings"
 --8<--
