@@ -88,7 +88,7 @@ class MgmtMixin(Protocol):
         if self.node_config.mgmt_ip is not None:
             return self.node_config.mgmt_ip
 
-        if self.inputs.mgmt_interface_settings.ipv4.dhcp is True:
+        if self.inputs.mgmt_interface_settings.ipv4.default_dhcp:
             return "dhcp"
 
         return None
@@ -115,38 +115,26 @@ class MgmtMixin(Protocol):
         if self.node_config.ipv6_mgmt_ip:
             return self.node_config.ipv6_mgmt_ip
 
-        if self.inputs.mgmt_interface_settings.ipv6.slaac is True:
+        if self.inputs.mgmt_interface_settings.ipv6.default_auto_config:
             return "auto-config"
 
         return None
 
     @cached_property
-    def mgmt_ip_dhcp_accept_default_route(self: SharedUtilsProtocol) -> bool | None:
-        """
-        Whether to accept the DHCP-provided default route for the generated OOB management interface.
+    def mgmt_ip_dhcp_accept_default_route(self: SharedUtilsProtocol) -> bool:
+        """Whether to accept the DHCP-provided default route for the generated OOB management interface."""
+        if self.node_config.mgmt_ip and not self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            return False
 
-        Returns None to leave the legacy node-level behavior unset when the future flag is disabled.
-        """
-        if self.node_config.mgmt_ip:
-            if self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
-                return True
-            return None
-
-        return self.inputs.mgmt_interface_settings.ipv4.accept_default_route
+        return self.inputs.mgmt_interface_settings.ipv4.dhcp_accept_default_route
 
     @cached_property
-    def ipv6_mgmt_ip_auto_config_accept_default_route(self: SharedUtilsProtocol) -> bool | None:
-        """
-        Whether to accept the router advertisement default route for the generated OOB management interface.
+    def ipv6_mgmt_ip_auto_config_accept_default_route(self: SharedUtilsProtocol) -> bool:
+        """Whether to accept the router advertisement default route for the generated OOB management interface."""
+        if self.node_config.ipv6_mgmt_ip and not self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+            return False
 
-        Returns None to leave the legacy node-level behavior unset when the future flag is disabled.
-        """
-        if self.node_config.ipv6_mgmt_ip:
-            if self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
-                return True
-            return None
-
-        return self.inputs.mgmt_interface_settings.ipv6.accept_default_route
+        return self.inputs.mgmt_interface_settings.ipv6.auto_config_accept_default_route
 
     @cached_property
     def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:

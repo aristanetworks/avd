@@ -27,11 +27,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "mgmt_interface_settings.lldp.receive") | Boolean |  |  |  | Enable LLDP reception on the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ztp_vlan</samp>](## "mgmt_interface_settings.lldp.ztp_vlan") | Integer |  |  |  | VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP). |
     | [<samp>&nbsp;&nbsp;ipv4</samp>](## "mgmt_interface_settings.ipv4") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "mgmt_interface_settings.ipv4.dhcp") | Boolean |  |  |  | Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.<br>Ignored if `mgmt_ip` is set under the node config. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accept_default_route</samp>](## "mgmt_interface_settings.ipv4.accept_default_route") | Boolean |  | `True` |  | Accept the default route from DHCP assignment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_dhcp</samp>](## "mgmt_interface_settings.ipv4.default_dhcp") | Boolean |  | `False` |  | Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not set for the node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_accept_default_route</samp>](## "mgmt_interface_settings.ipv4.dhcp_accept_default_route") | Boolean |  | `True` |  | Accept the default route when configured for DHCP. |
     | [<samp>&nbsp;&nbsp;ipv6</samp>](## "mgmt_interface_settings.ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;slaac</samp>](## "mgmt_interface_settings.ipv6.slaac") | Boolean |  |  |  | Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.<br>Ignored if `mgmt_ipv6` is set under the node config. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accept_default_route</samp>](## "mgmt_interface_settings.ipv6.accept_default_route") | Boolean |  | `True` |  | Accept the default route from router advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_auto_config</samp>](## "mgmt_interface_settings.ipv6.default_auto_config") | Boolean |  | `False` |  | Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is not set for the node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_config_accept_default_route</samp>](## "mgmt_interface_settings.ipv6.auto_config_accept_default_route") | Boolean |  | `True` |  | Accept the default route when configured for SLAAC. |
     | [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") <span style="color:red">deprecated</span> | String |  | `MGMT` |  | OOB Management VRF.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.vrf</samp> instead.</span> |
     | [<samp>mgmt_vrf_routing</samp>](## "mgmt_vrf_routing") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | Configure IP routing for the OOB Management VRF.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.vrf_routing</samp> instead.</span> |
 
@@ -133,20 +133,18 @@
         ztp_vlan: <int>
       ipv4:
 
-        # Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.
-        # Ignored if `mgmt_ip` is set under the node config.
-        dhcp: <bool>
+        # Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not set for the node.
+        default_dhcp: <bool; default=False>
 
-        # Accept the default route from DHCP assignment.
-        accept_default_route: <bool; default=True>
+        # Accept the default route when configured for DHCP.
+        dhcp_accept_default_route: <bool; default=True>
       ipv6:
 
-        # Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.
-        # Ignored if `mgmt_ipv6` is set under the node config.
-        slaac: <bool>
+        # Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is not set for the node.
+        default_auto_config: <bool; default=False>
 
-        # Accept the default route from router advertisements.
-        accept_default_route: <bool; default=True>
+        # Accept the default route when configured for SLAAC.
+        auto_config_accept_default_route: <bool; default=True>
 
     # OOB Management VRF.
     # This key is deprecated.

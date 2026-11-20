@@ -16,8 +16,8 @@ mgmt_interface_settings:
   interface: Management0
   shutdown: true
   ipv6: # This would be ignored because node_config.ipv6_mgmt_ip is set
-    slaac: true
-    accept_default_route: true
+    default_auto_config: true
+    auto_config_accept_default_route: true
   ipv4: # This would be ignored because node_config.mgmt_ip is set
-    dhcp: true
-    accept_default_route: true
+    default_dhcp: true
+    dhcp_accept_default_route: true

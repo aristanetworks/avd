@@ -19,34 +19,34 @@ class ManagementInterfaceMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _set_ipv4_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
+    def _update_ipv4_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
         mgmt_ip = self.shared_utils.oob_mgmt_ip
         if not mgmt_ip:
             return
 
         interface_settings.ip_address = mgmt_ip
         if mgmt_ip == "dhcp":
-            if (accept_default_route := self.shared_utils.mgmt_ip_dhcp_accept_default_route) is not None:
-                interface_settings.dhcp_client_accept_default_route = accept_default_route
+            if self.shared_utils.mgmt_ip_dhcp_accept_default_route:
+                interface_settings.dhcp_client_accept_default_route = True
             return
 
         # For static IP, set gateway (metadata field, actual routing done via static_routes)
         interface_settings.gateway = self.shared_utils.oob_mgmt_gateway
 
-    def _set_ipv6_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
-        mgmt_ip = self.shared_utils.ipv6_mgmt_ip
+    def _update_ipv6_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
+        ipv6_mgmt_ip = self.shared_utils.ipv6_mgmt_ip
 
-        if not mgmt_ip:
+        if not ipv6_mgmt_ip:
             return
 
         interface_settings.ipv6_enable = True
-        if mgmt_ip == "auto-config":
+        if ipv6_mgmt_ip == "auto-config":
             interface_settings.ipv6_address_auto_config = True
-            if self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route is True:
+            if self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route:
                 interface_settings.ipv6_nd.ra.rx_accept._update(default_route=True, route_preference=True)
         else:
             interface_settings.ipv6_gateway = self.shared_utils.ipv6_mgmt_gateway
-            interface_settings.ipv6_addresses.append(mgmt_ip)
+            interface_settings.ipv6_addresses.append(ipv6_mgmt_ip)
 
     @structured_config_contributor
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:
@@ -64,8 +64,8 @@ class ManagementInterfaceMixin(Protocol):
                 type="oob",
             )
 
-            self._set_ipv4_config(interface_settings)
-            self._set_ipv6_config(interface_settings)
+            self._update_ipv4_config(interface_settings)
+            self._update_ipv6_config(interface_settings)
 
             if mgmt_settings.lldp:
                 interface_settings.lldp = mgmt_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)

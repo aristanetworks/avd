@@ -30844,23 +30844,24 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv4(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"dhcp": {"type": bool}, "accept_default_route": {"type": bool, "default": True}}
-            dhcp: bool | None
+            _fields: ClassVar[dict] = {"default_dhcp": {"type": bool, "default": False}, "dhcp_accept_default_route": {"type": bool, "default": True}}
+            default_dhcp: bool
             """
-            Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.
-            Ignored if `mgmt_ip`
-            is set under the node config.
+            Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not
+            set for the node.
+
+            Default value: `False`
             """
-            accept_default_route: bool
+            dhcp_accept_default_route: bool
             """
-            Accept the default route from DHCP assignment.
+            Accept the default route when configured for DHCP.
 
             Default value: `True`
             """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, dhcp: bool | UndefinedType | None = Undefined, accept_default_route: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, default_dhcp: bool | UndefinedType = Undefined, dhcp_accept_default_route: bool | UndefinedType = Undefined) -> None:
                     """
                     Ipv4.
 
@@ -30868,34 +30869,39 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        dhcp:
-                           Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.
-                           Ignored if `mgmt_ip`
-                           is set under the node config.
-                        accept_default_route: Accept the default route from DHCP assignment.
+                        default_dhcp:
+                           Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not
+                           set for the node.
+                        dhcp_accept_default_route: Accept the default route when configured for DHCP.
 
                     """
 
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"slaac": {"type": bool}, "accept_default_route": {"type": bool, "default": True}}
-            slaac: bool | None
+            _fields: ClassVar[dict] = {
+                "default_auto_config": {"type": bool, "default": False},
+                "auto_config_accept_default_route": {"type": bool, "default": True},
+            }
+            default_auto_config: bool
             """
-            Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.
-            Ignored if
-            `mgmt_ipv6` is set under the node config.
+            Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is
+            not set for the node.
+
+            Default value: `False`
             """
-            accept_default_route: bool
+            auto_config_accept_default_route: bool
             """
-            Accept the default route from router advertisements.
+            Accept the default route when configured for SLAAC.
 
             Default value: `True`
             """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, slaac: bool | UndefinedType | None = Undefined, accept_default_route: bool | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, default_auto_config: bool | UndefinedType = Undefined, auto_config_accept_default_route: bool | UndefinedType = Undefined
+                ) -> None:
                     """
                     Ipv6.
 
@@ -30903,11 +30909,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        slaac:
-                           Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.
-                           Ignored if
-                           `mgmt_ipv6` is set under the node config.
-                        accept_default_route: Accept the default route from router advertisements.
+                        default_auto_config:
+                           Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is
+                           not set for the node.
+                        auto_config_accept_default_route: Accept the default route when configured for SLAAC.
 
                     """
 

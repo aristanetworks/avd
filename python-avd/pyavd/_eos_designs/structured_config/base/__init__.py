@@ -116,7 +116,7 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.ipv6_mgmt_ip is None:
             return
 
-        if self.shared_utils.ipv6_mgmt_ip == "auto-config" and self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route is True:
+        if self.shared_utils.ipv6_mgmt_ip == "auto-config" and self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route:
             return
 
         if self.inputs.ipv6_mgmt_destination_networks:

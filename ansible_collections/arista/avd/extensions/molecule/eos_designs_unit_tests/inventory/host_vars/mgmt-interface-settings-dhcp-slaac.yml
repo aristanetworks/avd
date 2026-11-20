@@ -4,11 +4,11 @@ mgmt_interface_settings:
   vrf: MGMT
   description: "Management Interface - DHCP"
   ipv4:
-    dhcp: true
-    accept_default_route: true
+    default_dhcp: true
+    dhcp_accept_default_route: true
   ipv6:
-    slaac: true
-    accept_default_route: true
+    default_auto_config: true
+    auto_config_accept_default_route: true
 
 # These gateways and destination networks are ignored because DHCP and router advertisements provide the default routes.
 mgmt_gateway: 10.1.1.1

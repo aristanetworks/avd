@@ -63,26 +63,26 @@ keys:
       ipv4:
         type: dict
         keys:
-          dhcp:
+          default_dhcp:
             type: bool
+            default: false
             description: |-
-              Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment.
-              Ignored if `mgmt_ip` is set under the node config.
-          accept_default_route:
+              Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not set for the node.
+          dhcp_accept_default_route:
             type: bool
             default: true
             description: |-
-              Accept the default route from DHCP assignment.
+              Accept the default route when configured for DHCP.
       ipv6:
         type: dict
         keys:
-          slaac:
+          default_auto_config:
             type: bool
+            default: false
             description: |-
-              Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment.
-              Ignored if `mgmt_ipv6` is set under the node config.
-          accept_default_route:
+              Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is not set for the node.
+          auto_config_accept_default_route:
             type: bool
             default: true
             description: |-
-              Accept the default route from router advertisements.
+              Accept the default route when configured for SLAAC.
