@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import cast
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._utils.default import default
@@ -225,6 +227,8 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
+                        # TODO: Use the CloudVision neighbor interface for MLAG descriptions on crossed links.
+                        # Positional pairing can name the wrong remote port
                         peer_interface=self.shared_utils.mlag_peer_interfaces[index],
                         # The description class has @property methods for other mlag related facts.
                     ),
@@ -234,9 +238,16 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed)
                 ),
             )
-            ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
-            if index in mlag_interfaces_metadata:
-                mlag_metadata = mlag_interfaces_metadata[index]
+            mlag_peer_interface = self.shared_utils.mlag_peer_interfaces[index]
+            if self.shared_utils.cv_topology_config.mlag_interfaces and (cv_topology := self.shared_utils.cv_topology) is not None:
+                # CloudVision sorts local ports independently on each MLAG node.
+                mlag_peer_interface = cast("str", cv_topology.interfaces[mlag_interface].neighbor_interface)
+            ethernet_interface.metadata._update(peer_interface=mlag_peer_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
+            metadata_index = index
+            if mlag_interfaces_metadata and not is_primary and self.shared_utils.cv_topology_config.mlag_interfaces:
+                metadata_index = list(self.shared_utils.mlag_peer_facts.mlag_interfaces).index(mlag_peer_interface)
+            if metadata_index in mlag_interfaces_metadata:
+                mlag_metadata = mlag_interfaces_metadata[metadata_index]
                 ethernet_interface.metadata._update(
                     transceiver=mlag_metadata.transceiver if is_primary else mlag_metadata.peer_transceiver,
                     peer_transceiver=mlag_metadata.peer_transceiver if is_primary else mlag_metadata.transceiver,

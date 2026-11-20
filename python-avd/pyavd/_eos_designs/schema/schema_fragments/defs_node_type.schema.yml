@@ -995,7 +995,8 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: |-
               Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
-              Entries follow the order of the resolved `mlag_interfaces` on each node.
+              Entries follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+              With CloudVision topology, metadata on the secondary node follows the discovered port connections.
               Use an empty dictionary to skip an interface.
               If this list contains fewer entries than the resolved MLAG interfaces, the remaining interfaces receive no link metadata.
               Configure the metadata on the MLAG node group or the MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.

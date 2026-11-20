@@ -667,7 +667,8 @@ schemas/avd_design/docs/tables/node-type-uplink-configuration.md
 Configure `mlag_interfaces_metadata` on the MLAG node group or the MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
 The primary node's resolved metadata is used for both ends of the link.
 If metadata is also configured on the secondary node, it must match the primary node's metadata.
-Entries follow the order of the resolved `mlag_interfaces` on each node.
+Entries follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+With CloudVision topology, metadata on the secondary node follows the discovered port connections.
 Use an empty dictionary to skip an interface.
 If the list contains fewer entries than the resolved MLAG interfaces, the remaining interfaces receive no link metadata.
 The properties are exposed under `ethernet_interfaces[].metadata` on the physical MLAG member interfaces.

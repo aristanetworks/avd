@@ -118,7 +118,7 @@ keys:
       keys:
         index:
           type: int
-          description: Zero-based position in the resolved MLAG interface lists.
+          description: Zero-based position in the MLAG primary node's resolved interface list.
   mlag_ip:
     type: str
   mlag_l3_ip:

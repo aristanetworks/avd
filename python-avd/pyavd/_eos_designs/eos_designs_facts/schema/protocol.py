@@ -169,7 +169,7 @@ class EosDesignsFactsProtocol(Protocol):
             "cable_path": {"type": str},
         }
         index: int
-        """Zero-based position in the resolved MLAG interface lists."""
+        """Zero-based position in the MLAG primary node's resolved interface list."""
         transceiver: str | None
         """Transceiver on the MLAG primary node."""
         peer_transceiver: str | None
@@ -197,7 +197,7 @@ class EosDesignsFactsProtocol(Protocol):
                 Subclass of AvdModel.
 
                 Args:
-                    index: Zero-based position in the resolved MLAG interface lists.
+                    index: Zero-based position in the MLAG primary node's resolved interface list.
                     transceiver: Transceiver on the MLAG primary node.
                     peer_transceiver: Transceiver on the MLAG secondary node.
                     media: Physical medium used for the link, such as SM, OM4, or Cat6.

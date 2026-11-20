@@ -52,7 +52,7 @@
     | [<samp>mlag_interfaces</samp>](## "mlag_interfaces") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mlag_interfaces.[]") | String |  |  |  |  |
     | [<samp>mlag_interfaces_metadata</samp>](## "mlag_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata published by the MLAG primary node for both MLAG nodes. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;index</samp>](## "mlag_interfaces_metadata.[].index") | Integer | Required, Unique |  |  | Zero-based position in the resolved MLAG interface lists. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;index</samp>](## "mlag_interfaces_metadata.[].index") | Integer | Required, Unique |  |  | Zero-based position in the MLAG primary node's resolved interface list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver</samp>](## "mlag_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the MLAG primary node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "mlag_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the MLAG secondary node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "mlag_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
@@ -262,7 +262,7 @@
     # Physical link metadata published by the MLAG primary node for both MLAG nodes.
     mlag_interfaces_metadata:
 
-        # Zero-based position in the resolved MLAG interface lists.
+        # Zero-based position in the MLAG primary node's resolved interface list.
       - index: <int; required; unique>
 
         # Transceiver on the MLAG primary node.

@@ -12,7 +12,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: mlag-link-metadata-tests-leaf1
-    peer_interface: Ethernet3
+    peer_interface: Ethernet7
     peer_type: mlag_peer
     transceiver: Arista SFP-10G-SR
     peer_transceiver: Arista SFP-10G-SRL
@@ -26,7 +26,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: mlag-link-metadata-tests-leaf1
-    peer_interface: Ethernet4
+    peer_interface: Ethernet8
     peer_type: mlag_peer
 - name: Ethernet5
   description: MLAG_mlag-link-metadata-tests-leaf1_Ethernet9
@@ -36,7 +36,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: mlag-link-metadata-tests-leaf1
-    peer_interface: Ethernet5
+    peer_interface: Ethernet9
     peer_type: mlag_peer
     peer_transceiver: Arista SFP-10G-LRL
     media: SM
@@ -49,7 +49,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: mlag-link-metadata-tests-leaf1
-    peer_interface: Ethernet6
+    peer_interface: Ethernet10
     peer_type: mlag_peer
 hostname: mlag-link-metadata-tests-leaf2
 ip_igmp_snooping:
