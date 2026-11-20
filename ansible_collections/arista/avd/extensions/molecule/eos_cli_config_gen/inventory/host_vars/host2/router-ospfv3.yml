@@ -181,9 +181,15 @@ router_ospfv3:
           dhcp:
             enabled: true
     - name: Test
+      # An explicit address-family setting takes precedence over the shared setting, including enabled: false.
+      graceful_restart:
+        enabled: true
+        grace_period: 23
       address_family_ipv4:
         enabled: true
         router_id: 1.1.1.1
+        graceful_restart:
+          enabled: false
         redistribute:
           ospfv3:
             leaked:
@@ -204,6 +210,13 @@ router_ospfv3:
             leaked_match_nssa_external:
               enabled: true
     - name: Test_VRF
+      # The shared setting is rendered when an enabled address family does not define graceful_restart.
       router_id: 1.1.1.1
       passive_interface_default: true
       auto_cost_reference_bandwidth: 1000
+      graceful_restart:
+        enabled: true
+        grace_period: 22
+      graceful_restart_helper: false
+      address_family_ipv4:
+        enabled: true

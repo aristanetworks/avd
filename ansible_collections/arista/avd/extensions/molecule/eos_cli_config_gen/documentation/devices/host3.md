@@ -406,6 +406,17 @@ router ospf 702
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
@@ -415,6 +426,9 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | True |
+| Grace Period | 4 |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -433,6 +447,9 @@ router ospf 702
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -447,6 +464,7 @@ router ospf 702
 ```eos
 !
 router ospfv3
+   graceful-restart-helper
    address-family ipv4
       router-id 2.2.2.2
       bfd default
@@ -456,6 +474,8 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      graceful-restart grace-period 4
+      graceful-restart-helper
    !
    address-family ipv6
       router-id 3.3.3.3
@@ -465,6 +485,8 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      graceful-restart
+      no graceful-restart-helper
 ```
 
 ### Router ISIS

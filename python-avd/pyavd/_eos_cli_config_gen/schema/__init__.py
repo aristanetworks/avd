@@ -67203,8 +67203,54 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterOspfv3(AvdModel):
         """Subclass of AvdModel."""
 
+        class GracefulRestart(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+            enabled: bool
+            grace_period: int | None
+            """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                    """
+                    GracefulRestart.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                    """
+
         class AddressFamilyIpv4(AvdModel):
             """Subclass of AvdModel."""
+
+            class GracefulRestart(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+                enabled: bool
+                grace_period: int | None
+                """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                        """
+                        GracefulRestart.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                        """
 
             class Redistribute(AvdModel):
                 """Subclass of AvdModel."""
@@ -67511,6 +67557,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
                 "redistribute": {"type": Redistribute},
             }
             enabled: bool
@@ -67524,6 +67572,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            graceful_restart: GracefulRestart
+            """Subclass of AvdModel."""
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
             redistribute: Redistribute
             """
             Redistribute routes into OSPFv3.
@@ -67542,6 +67594,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -67557,6 +67611,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        graceful_restart: Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
                         redistribute:
                            Redistribute routes into OSPFv3.
 
@@ -67892,6 +67948,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class GracefulRestart(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+                enabled: bool
+                grace_period: int | None
+                """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                        """
+                        GracefulRestart.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "redistribute": {"type": Redistribute},
                 "enabled": {"type": bool},
@@ -67900,6 +67979,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
             }
             redistribute: Redistribute
             """
@@ -67918,6 +67999,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            graceful_restart: GracefulRestart
+            """Subclass of AvdModel."""
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
 
             if TYPE_CHECKING:
 
@@ -67931,6 +68016,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -67949,14 +68036,62 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        graceful_restart: Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
 
                     """
 
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class GracefulRestart(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+                enabled: bool
+                grace_period: int | None
+                """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                        """
+                        GracefulRestart.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                        """
+
             class AddressFamilyIpv4(AvdModel):
                 """Subclass of AvdModel."""
+
+                class GracefulRestart(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+                    enabled: bool
+                    grace_period: int | None
+                    """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            GracefulRestart.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                            """
 
                 class Redistribute(AvdModel):
                     """Subclass of AvdModel."""
@@ -68268,6 +68403,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
+                    "graceful_restart": {"type": GracefulRestart},
+                    "graceful_restart_helper": {"type": bool},
                     "redistribute": {"type": Redistribute},
                 }
                 enabled: bool
@@ -68281,6 +68418,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
+                graceful_restart: GracefulRestart
+                """Subclass of AvdModel."""
+                graceful_restart_helper: bool | None
+                """Enable graceful-restart helper."""
                 redistribute: Redistribute
                 """
                 Redistribute routes into OSPFv3.
@@ -68299,6 +68440,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                        graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                        graceful_restart_helper: bool | UndefinedType | None = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -68314,6 +68457,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                            graceful_restart: Subclass of AvdModel.
+                            graceful_restart_helper: Enable graceful-restart helper.
                             redistribute:
                                Redistribute routes into OSPFv3.
 
@@ -68654,6 +68799,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class GracefulRestart(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "grace_period": {"type": int}}
+                    enabled: bool
+                    grace_period: int | None
+                    """Specify maximum time in seconds to wait for graceful-restart to complete."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, grace_period: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            GracefulRestart.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                grace_period: Specify maximum time in seconds to wait for graceful-restart to complete.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "redistribute": {"type": Redistribute},
                     "enabled": {"type": bool},
@@ -68662,6 +68830,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
+                    "graceful_restart": {"type": GracefulRestart},
+                    "graceful_restart_helper": {"type": bool},
                 }
                 redistribute: Redistribute
                 """
@@ -68680,6 +68850,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
+                graceful_restart: GracefulRestart
+                """Subclass of AvdModel."""
+                graceful_restart_helper: bool | None
+                """Enable graceful-restart helper."""
 
                 if TYPE_CHECKING:
 
@@ -68693,6 +68867,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                        graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                        graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -68711,6 +68887,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                            graceful_restart: Subclass of AvdModel.
+                            graceful_restart_helper: Enable graceful-restart helper.
 
                         """
 
@@ -68721,6 +68899,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "graceful_restart": {"type": GracefulRestart},
+                "graceful_restart_helper": {"type": bool},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
                 "eos_cli": {"type": str},
@@ -68751,6 +68931,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            graceful_restart: GracefulRestart
+            """
+            Graceful restart configuration.
+            This setting is mutually exclusive with the address-family level
+            graceful-restart settings.
+            If both are provided, the address-family level settings take precedence.
+            Subclass of AvdModel.
+            """
+            graceful_restart_helper: bool | None
+            """Enable graceful-restart helper."""
             address_family_ipv4: AddressFamilyIpv4
             """
             Address family IPv4 configuration.
@@ -68785,6 +68975,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    graceful_restart_helper: bool | UndefinedType | None = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                     eos_cli: str | UndefinedType | None = Undefined,
@@ -68814,6 +69006,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            adjacency command is rendered only when that family setting is true.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        graceful_restart:
+                           Graceful restart configuration.
+                           This setting is mutually exclusive with the address-family level
+                           graceful-restart settings.
+                           If both are provided, the address-family level settings take precedence.
+                           Subclass of AvdModel.
+                        graceful_restart_helper: Enable graceful-restart helper.
                         address_family_ipv4:
                            Address family IPv4 configuration.
                            Common configurations defined at the router-level and address-
@@ -68847,6 +69046,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "bfd_adjacency_state_any": {"type": bool},
             "passive_interface_default": {"type": bool},
             "auto_cost_reference_bandwidth": {"type": int},
+            "graceful_restart": {"type": GracefulRestart},
+            "graceful_restart_helper": {"type": bool},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
             "address_family_ipv6": {"type": AddressFamilyIpv6},
             "vrfs": {"type": Vrfs},
@@ -68873,6 +69074,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         passive_interface_default: bool | None
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
+        graceful_restart: GracefulRestart
+        """
+        Graceful restart configuration.
+        This setting is mutually exclusive with the address-family level
+        graceful-restart settings.
+        If both are provided, the address-family level settings take precedence.
+        Subclass of AvdModel.
+        """
+        graceful_restart_helper: bool | None
+        """Enable graceful-restart helper."""
         address_family_ipv4: AddressFamilyIpv4
         """
         Address family IPv4 configuration.
@@ -68908,6 +69119,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                 passive_interface_default: bool | UndefinedType | None = Undefined,
                 auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                graceful_restart_helper: bool | UndefinedType | None = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
@@ -68935,6 +69148,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        command is rendered only when that family setting is true.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                    graceful_restart:
+                       Graceful restart configuration.
+                       This setting is mutually exclusive with the address-family level
+                       graceful-restart settings.
+                       If both are provided, the address-family level settings take precedence.
+                       Subclass of AvdModel.
+                    graceful_restart_helper: Enable graceful-restart helper.
                     address_family_ipv4:
                        Address family IPv4 configuration.
                        Common configurations defined at the router-level and address-

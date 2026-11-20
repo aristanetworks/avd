@@ -158,6 +158,9 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| Graceful Restart | True |
+| Grace Period | 10 |
+| Graceful Restart Helper | True |
 
 ##### Address Family IPv4
 
@@ -193,6 +196,22 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | True |
+| Grace Period | 21 |
+| Graceful Restart Helper | False |
 
 #### Router OSPFv3 Device Configuration
 
@@ -202,9 +221,16 @@ router ospfv3 vrf Test
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
    passive-interface default
+   graceful-restart-helper
+   !
+   address-family ipv4
+      graceful-restart grace-period 21
+      no graceful-restart-helper
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   graceful-restart grace-period 10
+   graceful-restart-helper
    bfd default
    !
    address-family ipv4
