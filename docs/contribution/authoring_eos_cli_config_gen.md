@@ -82,11 +82,11 @@ When adding a top-level feature, add a new Jinja2 template following the naming 
     ```
 
     An empty `default_originate:` block must not trigger configuration generation. The template should check `default_originate.enabled` rather than just the presence of `default_originate`.
-12. Validate the template using j2lint tool, run `prek run j2lint --all`.
+12. Validate the template using j2lint tool, run `prek run j2lint --all-files`.
 
 ### Run prek to build schemas and documentation
 
-Run `prek run --all`, this will trigger recompiling the schemas and the templates you have created.
+Run `prek run --all-files`, this will trigger recompiling the schemas and the templates you have created.
 
 !!! Note
 
@@ -94,8 +94,8 @@ Run `prek run --all`, this will trigger recompiling the schemas and the template
 
     However, if you are using pyavd or need to manually recompile the schemas and templates for any other reason, you can run the following commands:
 
-    `prek run schemas --all` to regenerate the eos_cli_config_gen schema.
-    `prek run templates --all` to regenerate the templates.
+    `prek run schemas --all-files` to regenerate the eos_cli_config_gen schema.
+    `prek run templates --all-files` to regenerate the templates.
 
     These commands should be executed whenever the schema or templates are modified, even if only a description is updated.
 
@@ -126,7 +126,7 @@ Run `prek run --all`, this will trigger recompiling the schemas and the template
 
 ### Run Prek Checks
 
-Run all prek checks `prek run --all` to ensure that all files added or modified are correctly following the coding standards and formatting rules. Running these checks also ensures that the changes pass CI checks.
+Run all prek checks `prek run --all-files` to ensure that all files added or modified are correctly following the coding standards and formatting rules. Running these checks also ensures that the changes pass CI checks.
 
 !!! Note
 

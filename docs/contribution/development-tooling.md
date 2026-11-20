@@ -111,8 +111,8 @@ Configure the prek git hook to automatically run prek. This is optional, but hig
 # Change to directory to your cloned avd repository.
 cd avd
 
-# Install prek hooks to run automatically.
-prek install
+# Install prek hooks to run automatically, replacing any existing hooks.
+prek install --force
 ```
 
 ### Run prek manually
@@ -128,10 +128,10 @@ cd avd
 prek run
 
 # Run prek hooks on all un-staged and staged files.
-prek run --all
+prek run --all-files
 
 # Run specific prek schemas hook on all un-staged and staged files.
-prek run schemas --all
+prek run schemas --all-files
 ```
 
 !!! note
