@@ -4,6 +4,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ipaddress import IPv4Address, IPv6Address
 
 
 @dataclass(frozen=True)
@@ -12,3 +16,5 @@ class InterfaceData:
 
     interface: str
     context: str
+    interface_ip: IPv4Address | None = None
+    interface_ipv6: IPv6Address | None = None

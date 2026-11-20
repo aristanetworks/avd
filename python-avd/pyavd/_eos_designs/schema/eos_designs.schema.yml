@@ -665,6 +665,18 @@ keys:
           - AVD renders OOB IPv4 static routes only when `mgmt_ip` is configured (and
           other existing route prerequisites are met).'
         default: false
+      configure_monitor_session_acls_from_catalog:
+        type: bool
+        description: 'Available from AVD 6.6.0.
+
+          When enabled, raise an error if a monitor-session access group of type `ip`,
+          `ipv6`, or `mac` references an ACL missing from its corresponding catalog,
+
+          and configure the referenced ACL definition from that catalog.
+
+          When disabled (default), skip catalog validation and automatic ACL configuration
+          for these types.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -13426,13 +13438,20 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: 'ACL catalog type. `ip` references `ipv4_acls`, `ipv6`
+                    references `ipv6_acls`, and `mac` references `mac_acls`.
+
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration
+                    require `avd_design_future.configure_monitor_session_acls_from_catalog`.'
                   valid_values:
                   - ip
                   - ipv6
                   - mac
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
                 priority:
                   type: int
         session_settings:
@@ -13453,6 +13472,11 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: 'ACL catalog type. `ip` references `ipv4_acls`, `ipv6`
+                    references `ipv6_acls`, and `mac` references `mac_acls`.
+
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration
+                    require `avd_design_future.configure_monitor_session_acls_from_catalog`.'
                   valid_values:
                   - ip
                   - ipv6

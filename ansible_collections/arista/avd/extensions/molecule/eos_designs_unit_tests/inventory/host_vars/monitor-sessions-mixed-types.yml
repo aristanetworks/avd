@@ -7,6 +7,35 @@ l2leaf:
       id: 1
       mgmt_ip: 192.168.1.2/24
 
+avd_design_future:
+  configure_monitor_session_acls_from_catalog: true
+
+ipv4_acls:
+  - name: MONITOR-SESSION-IP-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+ipv6_acls:
+  - name: MONITOR-SESSION-IPV6-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+
+mac_acls:
+  - name: MONITOR-SESSION-MAC-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+        destination: any
+
 # Same name is intentional: EOS Designs must cast and merge these into one monitor session.
 # Source is supplied by a connected endpoint.
 servers:
@@ -19,6 +48,25 @@ servers:
             role: source
             source_settings:
               direction: rx
+              access_group:
+                type: ip
+                name: MONITOR-SESSION-IP-ACL
+                priority: 10
+          - name: MONITOR-IPV6
+            role: source
+            source_settings:
+              direction: rx
+              access_group:
+                type: ipv6
+                name: MONITOR-SESSION-IPV6-ACL
+          - name: MONITOR-MAC
+            role: source
+            source_settings:
+              direction: rx
+              access_group:
+                type: mac
+                name: MONITOR-SESSION-MAC-ACL
+                priority: 20
 
 # Destination is supplied by a network port with the same session name.
 network_ports:

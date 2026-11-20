@@ -36,13 +36,18 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: |-
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.configure_monitor_session_acls_from_catalog`.
                   valid_values:
                     - "ip"
                     - "ipv6"
                     - "mac"
+                  required: true
                 name:
                   description: ACL name.
                   type: str
+                  required: true
                 priority:
                   type: int
         session_settings:
@@ -61,6 +66,9 @@ $defs:
               keys:
                 type:
                   type: str
+                  description: |-
+                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references `mac_acls`.
+                    For `ip`, `ipv6`, and `mac`, catalog validation and configuration require `avd_design_future.configure_monitor_session_acls_from_catalog`.
                   valid_values:
                     - "ip"
                     - "ipv6"
