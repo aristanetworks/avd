@@ -1,0 +1,37 @@
+---
+fabric_name: MGMT_IPV4_AUTO
+type: l2leaf
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 192.0.2.1
+ipv4_subnets:
+  - name: OOB
+    subnet: 192.0.2.0/24
+    range: 192.0.2.10-192.0.2.20
+fabric_ip_addressing:
+  oob_mgmt:
+    ipv4_subnet:
+      algorithm: auto
+device_profiles:
+  - name: OOB_PARENT
+    mgmt_ipv4_subnet: OOB
+  - name: OOB_CHILD
+    parent_profile: OOB_PARENT
+devices:
+  - name: mgmt-ipv4-auto-a
+    type: l2leaf
+    profile: OOB_CHILD
+  - name: mgmt-ipv4-auto-b
+    type: l2leaf
+    profile: OOB_CHILD
+    mgmt_ipv4_subnet: MISSING
+    mgmt_ip: 192.0.2.10/24
+  - name: mgmt-ipv4-auto-c
+    type: l2leaf
+    profile: OOB_CHILD
+    mgmt_ipv4_subnet: MISSING
+    mgmt_ip: dhcp
+  - name: mgmt-ipv4-auto-d
+    type: l2leaf
+    profile: OOB_CHILD
+    id: 3

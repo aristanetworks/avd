@@ -79,6 +79,15 @@ $defs:
               Node management interface IPv4 address/Mask or 'dhcp'.
               When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is expected to provide the gateway and the default route.
             type: str
+          mgmt_ipv4_subnet:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: |-
+              Name of an `ipv4_subnets` entry used to generate the OOB management IPv4 address.
+              An explicit node `mgmt_ip`, including `dhcp`, takes precedence.
+              Allocation mode is selected with `fabric_ip_addressing.oob_mgmt.ipv4_subnet.algorithm`.
+              Gateway settings are unchanged; the gateway is not inferred from the subnet.
           # TODO 7.0: Move mgmt_gateway to metadata
           mgmt_gateway:
             documentation_options:
