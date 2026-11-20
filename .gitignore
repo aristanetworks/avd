@@ -40,8 +40,6 @@ dist/
 .python-version
 ## direnv
 .envrc
-## pyenv
-uv.lock
 ## .vscode/*
 .vscode/
 
