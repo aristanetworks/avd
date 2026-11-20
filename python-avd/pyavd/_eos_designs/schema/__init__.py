@@ -48724,7 +48724,8 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
-            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_node_size": {"type": str}}
+            ActInstanceType: TypeAlias = Literal["medium", "large", "xlarge"]
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_instance_type": {"type": str}}
             platform: str | None
             """
             Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
@@ -48733,8 +48734,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             act_node_type: ActNodeType | None
             """ACT node type."""
-            act_node_size: str | None
-            """ACT node size to use for the ACT `instance_type`."""
+            act_instance_type: ActInstanceType | None
+            """
+            ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+            types.
+            """
 
             if TYPE_CHECKING:
 
@@ -48743,7 +48747,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     platform: str | UndefinedType | None = Undefined,
                     act_node_type: ActNodeType | UndefinedType | None = Undefined,
-                    act_node_size: str | UndefinedType | None = Undefined,
+                    act_instance_type: ActInstanceType | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -48757,7 +48761,9 @@ class EosDesigns(EosDesignsRootModel):
                            The
                            `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
-                        act_node_size: ACT node size to use for the ACT `instance_type`.
+                        act_instance_type:
+                           ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+                           types.
 
                     """
 
@@ -50660,7 +50666,8 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
-            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_node_size": {"type": str}}
+            ActInstanceType: TypeAlias = Literal["medium", "large", "xlarge"]
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}, "act_instance_type": {"type": str}}
             platform: str | None
             """
             Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
@@ -50669,8 +50676,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             act_node_type: ActNodeType | None
             """ACT node type."""
-            act_node_size: str | None
-            """ACT node size to use for the ACT `instance_type`."""
+            act_instance_type: ActInstanceType | None
+            """
+            ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+            types.
+            """
 
             if TYPE_CHECKING:
 
@@ -50679,7 +50689,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     platform: str | UndefinedType | None = Undefined,
                     act_node_type: ActNodeType | UndefinedType | None = Undefined,
-                    act_node_size: str | UndefinedType | None = Undefined,
+                    act_instance_type: ActInstanceType | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -50693,7 +50703,9 @@ class EosDesigns(EosDesignsRootModel):
                            The
                            `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
-                        act_node_size: ACT node size to use for the ACT `instance_type`.
+                        act_instance_type:
+                           ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+                           types.
 
                     """
 
