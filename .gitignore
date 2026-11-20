@@ -42,6 +42,7 @@ dist/
 .envrc
 ## pyenv
 uv.lock
+!/uv.lock
 ## .vscode/*
 .vscode/
 
