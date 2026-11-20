@@ -14,6 +14,10 @@ ethernet_interfaces:
     peer: devices-leaf1a
     peer_interface: Ethernet5
     peer_type: mlag_peer
+    transceiver: Arista SFP-10G-LRL
+    peer_transceiver: Arista SFP-10G-LR
+    media: SM
+    cable_path: B
 - name: Ethernet6
   description: MLAG_devices-leaf1a_Ethernet6
   shutdown: false
@@ -51,6 +55,10 @@ loopback_interfaces:
 metadata:
   is_deployed: true
   platform: vEOS-lab
+  site: Burnaby Operations Centre
+  location: Hall 2
+  row: '3'
+  rack_unit: '044'
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   validate_hardware:
     enabled: false

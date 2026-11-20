@@ -1,0 +1,24 @@
+---
+fabric_name: FABRIC_SECONDARY_ONLY_MLAG_INTERFACES_METADATA
+
+device_profiles:
+  - name: MLAG_LINK_METADATA
+    type: l2leaf
+    mlag_interfaces: ["Ethernet3-4"]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+
+devices:
+  # Hostname order determines the MLAG roles regardless of the devices list order.
+  - name: secondary-only-mlag-interfaces-metadata-leaf2
+    id: 2
+    profile: MLAG_LINK_METADATA
+    mlag_group: MLAG_LINK_METADATA
+    mlag_interfaces_metadata:
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+  - name: secondary-only-mlag-interfaces-metadata-leaf1
+    id: 1
+    profile: MLAG_LINK_METADATA
+    mlag_group: MLAG_LINK_METADATA

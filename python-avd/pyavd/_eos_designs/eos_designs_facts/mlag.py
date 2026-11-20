@@ -68,6 +68,34 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
 
     @remove_cached_property_type
     @cached_property
+    def mlag_interfaces_metadata(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MlagInterfacesMetadata:
+        """Keep interface positions when publishing MLAG link metadata."""
+        mlag_interfaces_metadata = EosDesignsFactsProtocol.MlagInterfacesMetadata()
+        if not self.shared_utils.mlag:
+            return mlag_interfaces_metadata
+
+        for index, metadata in enumerate(self.shared_utils.node_config.mlag_interfaces_metadata):
+            link_metadata = metadata._cast_as(EosDesignsFactsProtocol.MlagInterfacesMetadataItem)
+            link_metadata._strip_empties()
+            if link_metadata:
+                link_metadata.index = index
+                mlag_interfaces_metadata.append(link_metadata)
+
+        if self.shared_utils.mlag_role == "primary":
+            return mlag_interfaces_metadata
+
+        if mlag_interfaces_metadata and mlag_interfaces_metadata != self._mlag_peer_facts_generator.mlag_interfaces_metadata:
+            msg = (
+                f"'mlag_interfaces_metadata' on MLAG secondary node '{self.shared_utils.hostname}' "
+                f"must match the metadata on MLAG primary node '{self.shared_utils.mlag_peer}'. "
+                "Configure the metadata on the MLAG primary node or provide matching metadata on both nodes."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        return EosDesignsFactsProtocol.MlagInterfacesMetadata()
+
+    @remove_cached_property_type
+    @cached_property
     def mlag_ip(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.mlag:

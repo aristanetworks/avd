@@ -18,6 +18,10 @@ ethernet_interfaces:
     peer: uplink-p2p-vrfs-tests-spine1
     peer_interface: Ethernet1
     peer_type: spine
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
   switchport:
     enabled: false
 - name: Ethernet1.42

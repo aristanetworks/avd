@@ -49,6 +49,7 @@ ethernet_interfaces:
     direction: downstream
   metadata:
     peer: ROUTER01
+    peer_rack: RackB
     peer_interface: Eth1
     peer_type: router
     peer_key: routers

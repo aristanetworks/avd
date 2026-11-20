@@ -3958,6 +3958,48 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class LinksMetadataItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+                transceiver: str | None
+                """Transceiver on the fabric switch."""
+                peer_transceiver: str | None
+                """Transceiver on the connected endpoint."""
+                media: str | None
+                """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                cable_path: str | None
+                """Identifier of the physical route between the two interfaces."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        transceiver: str | UndefinedType | None = Undefined,
+                        peer_transceiver: str | UndefinedType | None = Undefined,
+                        media: str | UndefinedType | None = Undefined,
+                        cable_path: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        LinksMetadataItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            transceiver: Transceiver on the fabric switch.
+                            peer_transceiver: Transceiver on the connected endpoint.
+                            media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                            cable_path: Identifier of the physical route between the two interfaces.
+
+                        """
+
+            class LinksMetadata(AvdList[LinksMetadataItem]):
+                """Subclass of AvdList with `LinksMetadataItem` items."""
+
+            LinksMetadata._item_type = LinksMetadataItem
+
             Speed: TypeAlias = Literal[
                 "100full",
                 "100g",
@@ -5251,6 +5293,7 @@ class EosDesigns(EosDesignsRootModel):
                 "descriptions": {"type": Descriptions},
                 "subinterfaces": {"type": Subinterfaces},
                 "port_channel": {"type": PortChannel},
+                "links_metadata": {"type": LinksMetadata},
                 "speed": {"type": str},
                 "description": {"type": str},
                 "profile": {"type": str},
@@ -5353,6 +5396,20 @@ class EosDesigns(EosDesignsRootModel):
             Used for port-channel adapter.
 
             Subclass of AvdModel.
+            """
+            links_metadata: LinksMetadata
+            """
+            Physical link metadata.
+            For connected endpoints, entries follow the order of `switches` and
+            `switch_ports` on the adapter.
+            For network ports, entries follow the order of the expanded
+            `switch_ports` and are applied independently on each matched switch.
+            Use an empty dictionary to skip
+            a link.
+            If this list contains fewer entries than the links, the remaining links receive no link
+            metadata.
+
+            Subclass of AvdList with `LinksMetadataItem` items.
             """
             speed: Speed | None
             """
@@ -5558,6 +5615,7 @@ class EosDesigns(EosDesignsRootModel):
                     descriptions: Descriptions | UndefinedType = Undefined,
                     subinterfaces: Subinterfaces | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
+                    links_metadata: LinksMetadata | UndefinedType = Undefined,
                     speed: Speed | UndefinedType | None = Undefined,
                     description: str | UndefinedType | None = Undefined,
                     profile: str | UndefinedType | None = Undefined,
@@ -5656,6 +5714,18 @@ class EosDesigns(EosDesignsRootModel):
                            Used for port-channel adapter.
 
                            Subclass of AvdModel.
+                        links_metadata:
+                           Physical link metadata.
+                           For connected endpoints, entries follow the order of `switches` and
+                           `switch_ports` on the adapter.
+                           For network ports, entries follow the order of the expanded
+                           `switch_ports` and are applied independently on each matched switch.
+                           Use an empty dictionary to skip
+                           a link.
+                           If this list contains fewer entries than the links, the remaining links receive no link
+                           metadata.
+
+                           Subclass of AvdList with `LinksMetadataItem` items.
                         speed:
                            Set adapter speed.
                            If not specified speed will be auto.
@@ -5803,7 +5873,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Adapters._item_type = AdaptersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "type": {"type": str},
+            "site": {"type": str},
+            "location": {"type": str},
+            "row": {"type": str},
+            "rack": {"type": str},
+            "rack_unit": {"type": str},
+            "platform": {"type": str},
+            "serial_number": {"type": str},
+            "adapters": {"type": Adapters},
+        }
         name: str
         """Endpoint name will be used in the switchport description."""
         type: str | None
@@ -5811,8 +5892,20 @@ class EosDesigns(EosDesignsRootModel):
         Type of endpoint.
         This is used in descriptions and in documentation.
         """
+        site: str | None
+        """Physical building or data center facility where the endpoint is located."""
+        location: str | None
+        """Room, floor, data hall, or cage within the site where the endpoint is located."""
+        row: str | None
+        """Row within the location where the endpoint is located."""
         rack: str | None
-        """Rack is used for documentation purposes only."""
+        """Rack within the row where the endpoint is located."""
+        rack_unit: str | None
+        """Rack unit or range of rack units occupied by the endpoint."""
+        platform: str | None
+        """Hardware platform of the endpoint."""
+        serial_number: str | None
+        """Serial number of the endpoint."""
         adapters: Adapters
         """
         A list of adapters, group by adapters leveraging the same port-profile.
@@ -5828,7 +5921,13 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 type: str | UndefinedType | None = Undefined,
+                site: str | UndefinedType | None = Undefined,
+                location: str | UndefinedType | None = Undefined,
+                row: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
+                rack_unit: str | UndefinedType | None = Undefined,
+                platform: str | UndefinedType | None = Undefined,
+                serial_number: str | UndefinedType | None = Undefined,
                 adapters: Adapters | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -5842,7 +5941,13 @@ class EosDesigns(EosDesignsRootModel):
                     type:
                        Type of endpoint.
                        This is used in descriptions and in documentation.
-                    rack: Rack is used for documentation purposes only.
+                    site: Physical building or data center facility where the endpoint is located.
+                    location: Room, floor, data hall, or cage within the site where the endpoint is located.
+                    row: Row within the location where the endpoint is located.
+                    rack: Rack within the row where the endpoint is located.
+                    rack_unit: Rack unit or range of rack units occupied by the endpoint.
+                    platform: Hardware platform of the endpoint.
+                    serial_number: Serial number of the endpoint.
                     adapters:
                        A list of adapters, group by adapters leveraging the same port-profile.
 
@@ -9803,6 +9908,48 @@ class EosDesigns(EosDesignsRootModel):
 
         UplinkInterfaces._item_type = str
 
+        class UplinkInterfacesMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the downstream switch."""
+            peer_transceiver: str | None
+            """Transceiver on the upstream switch."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    UplinkInterfacesMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the downstream switch.
+                        peer_transceiver: Transceiver on the upstream switch.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+            """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+        UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
+
         class UplinkSwitchInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -10739,6 +10886,48 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         MlagInterfaces._item_type = str
+
+        class MlagInterfacesMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the MLAG primary node."""
+            peer_transceiver: str | None
+            """Transceiver on the MLAG secondary node."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    MlagInterfacesMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the MLAG primary node.
+                        peer_transceiver: Transceiver on the MLAG secondary node.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+            """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+        MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
         MlagInterfacesSpeed: TypeAlias = Literal[
             "100full",
@@ -13366,7 +13555,11 @@ class EosDesigns(EosDesignsRootModel):
             "system_mac_address": {"type": str},
             "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
+            "site": {"type": str},
+            "location": {"type": str},
+            "row": {"type": str},
             "rack": {"type": str},
+            "rack_unit": {"type": str},
             "mgmt_ip": {"type": str},
             "mgmt_gateway": {"type": str},
             "ipv6_mgmt_ip": {"type": str},
@@ -13381,6 +13574,7 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_ipv4_pool": {"type": str},
             "uplink_ipv6_pool": {"type": str},
             "uplink_interfaces": {"type": UplinkInterfaces},
+            "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
             "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
             "uplink_switches": {"type": UplinkSwitches},
             "uplink_interface_speed": {"type": str},
@@ -13432,6 +13626,7 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_dual_primary_detection": {"type": bool, "default": False},
             "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
             "mlag_interfaces": {"type": MlagInterfaces},
+            "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
             "mlag_interfaces_speed": {"type": str},
             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
             "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -13573,8 +13768,20 @@ class EosDesigns(EosDesignsRootModel):
         hostvar.
         If both are set, the setting under node type settings takes precedence.
         """
+        site: str | None
+        """Physical building or data center facility where the switch is located."""
+        location: str | None
+        """Room, floor, data hall, or cage within the site where the switch is located."""
+        row: str | None
+        """Row within the location where the switch is located."""
         rack: str | None
-        """Rack that the switch is located in (only used in snmp_settings location)."""
+        """
+        Rack within the row where the switch is located.
+        Used for CloudVision topology tags and SNMP
+        location settings when enabled.
+        """
+        rack_unit: str | None
+        """Rack unit or range of rack units occupied by the switch."""
         mgmt_ip: str | None
         """
         Node management interface IPv4 address/Mask or 'dhcp'.
@@ -13681,6 +13888,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
         Subclass of AvdList with `str` items.
+        """
+        uplink_interfaces_metadata: UplinkInterfacesMetadata
+        """
+        Physical link metadata.
+        Entries correspond by position to the resolved uplink interfaces, after
+        expanding ranges and applying interface defaults.
+        Use an empty dictionary to skip an interface.
+        If
+        this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+        receive no link metadata.
+
+        Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
         """
         uplink_switch_interfaces: UplinkSwitchInterfaces
         """
@@ -14036,6 +14255,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
         Subclass of AvdList with `str` items.
+        """
+        mlag_interfaces_metadata: MlagInterfacesMetadata
+        """
+        Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+        Entries
+        follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+        With CloudVision topology,
+        metadata on the secondary node follows the discovered port connections.
+        Use an empty dictionary to
+        skip an interface.
+        If this list contains fewer entries than the resolved MLAG interfaces, the
+        remaining interfaces receive no link metadata.
+        Configure the metadata on the MLAG node group or the
+        MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+        The primary
+        node's resolved metadata is used for both ends of the link.
+        If metadata is also configured on the
+        secondary node, it must match the primary node's metadata.
+        On the MLAG secondary node, `transceiver`
+        and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+        Subclass of AvdList with `MlagInterfacesMetadataItem` items.
         """
         mlag_interfaces_speed: MlagInterfacesSpeed | None
         """Set MLAG interface speed."""
@@ -14552,7 +14792,11 @@ class EosDesigns(EosDesignsRootModel):
                 system_mac_address: str | UndefinedType | None = Undefined,
                 custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
+                site: str | UndefinedType | None = Undefined,
+                location: str | UndefinedType | None = Undefined,
+                row: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
+                rack_unit: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
                 mgmt_gateway: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -14567,6 +14811,7 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                 uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                 uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -14618,6 +14863,7 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                 mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                 mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -14750,7 +14996,14 @@ class EosDesigns(EosDesignsRootModel):
                        "serial_number" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
-                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                    site: Physical building or data center facility where the switch is located.
+                    location: Room, floor, data hall, or cage within the site where the switch is located.
+                    row: Row within the location where the switch is located.
+                    rack:
+                       Rack within the row where the switch is located.
+                       Used for CloudVision topology tags and SNMP
+                       location settings when enabled.
+                    rack_unit: Rack unit or range of rack units occupied by the switch.
                     mgmt_ip:
                        Node management interface IPv4 address/Mask or 'dhcp'.
                        When set to 'dhcp' and
@@ -14830,6 +15083,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    uplink_interfaces_metadata:
+                       Physical link metadata.
+                       Entries correspond by position to the resolved uplink interfaces, after
+                       expanding ranges and applying interface defaults.
+                       Use an empty dictionary to skip an interface.
+                       If
+                       this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                       receive no link metadata.
+
+                       Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     uplink_switch_interfaces:
                        Interfaces located on uplink switches.
 
@@ -15073,6 +15336,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    mlag_interfaces_metadata:
+                       Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                       Entries
+                       follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                       With CloudVision topology,
+                       metadata on the secondary node follows the discovered port connections.
+                       Use an empty dictionary to
+                       skip an interface.
+                       If this list contains fewer entries than the resolved MLAG interfaces, the
+                       remaining interfaces receive no link metadata.
+                       Configure the metadata on the MLAG node group or the
+                       MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                       The primary
+                       node's resolved metadata is used for both ends of the link.
+                       If metadata is also configured on the
+                       secondary node, it must match the primary node's metadata.
+                       On the MLAG secondary node, `transceiver`
+                       and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                       Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     mlag_interfaces_speed: Set MLAG interface speed.
                     mlag_peer_l3_vlan:
                        Underlay L3 peering SVI interface id.
@@ -15712,6 +15994,48 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         UplinkInterfaces._item_type = str
+
+        class UplinkInterfacesMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the downstream switch."""
+            peer_transceiver: str | None
+            """Transceiver on the upstream switch."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    UplinkInterfacesMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the downstream switch.
+                        peer_transceiver: Transceiver on the upstream switch.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+            """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+        UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
         class UplinkSwitchInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -16649,6 +16973,48 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         MlagInterfaces._item_type = str
+
+        class MlagInterfacesMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the MLAG primary node."""
+            peer_transceiver: str | None
+            """Transceiver on the MLAG secondary node."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    MlagInterfacesMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the MLAG primary node.
+                        peer_transceiver: Transceiver on the MLAG secondary node.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+            """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+        MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
         MlagInterfacesSpeed: TypeAlias = Literal[
             "100full",
@@ -19277,7 +19643,11 @@ class EosDesigns(EosDesignsRootModel):
             "system_mac_address": {"type": str},
             "custom_system_mac_address": {"type": str},
             "serial_number": {"type": str},
+            "site": {"type": str},
+            "location": {"type": str},
+            "row": {"type": str},
             "rack": {"type": str},
+            "rack_unit": {"type": str},
             "mgmt_ip": {"type": str},
             "mgmt_gateway": {"type": str},
             "ipv6_mgmt_ip": {"type": str},
@@ -19292,6 +19662,7 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_ipv4_pool": {"type": str},
             "uplink_ipv6_pool": {"type": str},
             "uplink_interfaces": {"type": UplinkInterfaces},
+            "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
             "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
             "uplink_switches": {"type": UplinkSwitches},
             "uplink_interface_speed": {"type": str},
@@ -19343,6 +19714,7 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_dual_primary_detection": {"type": bool, "default": False},
             "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
             "mlag_interfaces": {"type": MlagInterfaces},
+            "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
             "mlag_interfaces_speed": {"type": str},
             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
             "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -19493,8 +19865,20 @@ class EosDesigns(EosDesignsRootModel):
         hostvar.
         If both are set, the setting under node type settings takes precedence.
         """
+        site: str | None
+        """Physical building or data center facility where the switch is located."""
+        location: str | None
+        """Room, floor, data hall, or cage within the site where the switch is located."""
+        row: str | None
+        """Row within the location where the switch is located."""
         rack: str | None
-        """Rack that the switch is located in (only used in snmp_settings location)."""
+        """
+        Rack within the row where the switch is located.
+        Used for CloudVision topology tags and SNMP
+        location settings when enabled.
+        """
+        rack_unit: str | None
+        """Rack unit or range of rack units occupied by the switch."""
         mgmt_ip: str | None
         """
         Node management interface IPv4 address/Mask or 'dhcp'.
@@ -19601,6 +19985,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
         Subclass of AvdList with `str` items.
+        """
+        uplink_interfaces_metadata: UplinkInterfacesMetadata
+        """
+        Physical link metadata.
+        Entries correspond by position to the resolved uplink interfaces, after
+        expanding ranges and applying interface defaults.
+        Use an empty dictionary to skip an interface.
+        If
+        this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+        receive no link metadata.
+
+        Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
         """
         uplink_switch_interfaces: UplinkSwitchInterfaces
         """
@@ -19956,6 +20352,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
         Subclass of AvdList with `str` items.
+        """
+        mlag_interfaces_metadata: MlagInterfacesMetadata
+        """
+        Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+        Entries
+        follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+        With CloudVision topology,
+        metadata on the secondary node follows the discovered port connections.
+        Use an empty dictionary to
+        skip an interface.
+        If this list contains fewer entries than the resolved MLAG interfaces, the
+        remaining interfaces receive no link metadata.
+        Configure the metadata on the MLAG node group or the
+        MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+        The primary
+        node's resolved metadata is used for both ends of the link.
+        If metadata is also configured on the
+        secondary node, it must match the primary node's metadata.
+        On the MLAG secondary node, `transceiver`
+        and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+        Subclass of AvdList with `MlagInterfacesMetadataItem` items.
         """
         mlag_interfaces_speed: MlagInterfacesSpeed | None
         """Set MLAG interface speed."""
@@ -20473,7 +20890,11 @@ class EosDesigns(EosDesignsRootModel):
                 system_mac_address: str | UndefinedType | None = Undefined,
                 custom_system_mac_address: str | UndefinedType | None = Undefined,
                 serial_number: str | UndefinedType | None = Undefined,
+                site: str | UndefinedType | None = Undefined,
+                location: str | UndefinedType | None = Undefined,
+                row: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
+                rack_unit: str | UndefinedType | None = Undefined,
                 mgmt_ip: str | UndefinedType | None = Undefined,
                 mgmt_gateway: str | UndefinedType | None = Undefined,
                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -20488,6 +20909,7 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                 uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                 uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -20539,6 +20961,7 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                 mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                 mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -20678,7 +21101,14 @@ class EosDesigns(EosDesignsRootModel):
                        "serial_number" can also be set directly as a
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
-                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                    site: Physical building or data center facility where the switch is located.
+                    location: Room, floor, data hall, or cage within the site where the switch is located.
+                    row: Row within the location where the switch is located.
+                    rack:
+                       Rack within the row where the switch is located.
+                       Used for CloudVision topology tags and SNMP
+                       location settings when enabled.
+                    rack_unit: Rack unit or range of rack units occupied by the switch.
                     mgmt_ip:
                        Node management interface IPv4 address/Mask or 'dhcp'.
                        When set to 'dhcp' and
@@ -20758,6 +21188,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    uplink_interfaces_metadata:
+                       Physical link metadata.
+                       Entries correspond by position to the resolved uplink interfaces, after
+                       expanding ranges and applying interface defaults.
+                       Use an empty dictionary to skip an interface.
+                       If
+                       this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                       receive no link metadata.
+
+                       Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     uplink_switch_interfaces:
                        Interfaces located on uplink switches.
 
@@ -21001,6 +21441,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    mlag_interfaces_metadata:
+                       Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                       Entries
+                       follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                       With CloudVision topology,
+                       metadata on the secondary node follows the discovered port connections.
+                       Use an empty dictionary to
+                       skip an interface.
+                       If this list contains fewer entries than the resolved MLAG interfaces, the
+                       remaining interfaces receive no link metadata.
+                       Configure the metadata on the MLAG node group or the
+                       MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                       The primary
+                       node's resolved metadata is used for both ends of the link.
+                       If metadata is also configured on the
+                       secondary node, it must match the primary node's metadata.
+                       On the MLAG secondary node, `transceiver`
+                       and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                       Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     mlag_interfaces_speed: Set MLAG interface speed.
                     mlag_peer_l3_vlan:
                        Underlay L3 peering SVI interface id.
@@ -31401,6 +31860,48 @@ class EosDesigns(EosDesignsRootModel):
 
         SwitchPorts._item_type = str
 
+        class LinksMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the fabric switch."""
+            peer_transceiver: str | None
+            """Transceiver on the connected endpoint."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    LinksMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the fabric switch.
+                        peer_transceiver: Transceiver on the connected endpoint.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class LinksMetadata(AvdList[LinksMetadataItem]):
+            """Subclass of AvdList with `LinksMetadataItem` items."""
+
+        LinksMetadata._item_type = LinksMetadataItem
+
         Speed: TypeAlias = Literal[
             "100full",
             "100g",
@@ -32984,6 +33485,7 @@ class EosDesigns(EosDesignsRootModel):
             "switch_ports": {"type": SwitchPorts},
             "description": {"type": str},
             "endpoint": {"type": str},
+            "links_metadata": {"type": LinksMetadata},
             "speed": {"type": str},
             "profile": {"type": str},
             "enabled": {"type": bool, "default": True},
@@ -33091,6 +33593,20 @@ class EosDesigns(EosDesignsRootModel):
         """
         endpoint: str | None
         """Name or description of the endpoints connected to these ports."""
+        links_metadata: LinksMetadata
+        """
+        Physical link metadata.
+        For connected endpoints, entries follow the order of `switches` and
+        `switch_ports` on the adapter.
+        For network ports, entries follow the order of the expanded
+        `switch_ports` and are applied independently on each matched switch.
+        Use an empty dictionary to skip
+        a link.
+        If this list contains fewer entries than the links, the remaining links receive no link
+        metadata.
+
+        Subclass of AvdList with `LinksMetadataItem` items.
+        """
         speed: Speed | None
         """
         Set adapter speed.
@@ -33280,6 +33796,7 @@ class EosDesigns(EosDesignsRootModel):
                 switch_ports: SwitchPorts | UndefinedType = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 endpoint: str | UndefinedType | None = Undefined,
+                links_metadata: LinksMetadata | UndefinedType = Undefined,
                 speed: Speed | UndefinedType | None = Undefined,
                 profile: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType = Undefined,
@@ -33385,6 +33902,18 @@ class EosDesigns(EosDesignsRootModel):
                        By default the description is templated from the `endpoint`
                        key if set.
                     endpoint: Name or description of the endpoints connected to these ports.
+                    links_metadata:
+                       Physical link metadata.
+                       For connected endpoints, entries follow the order of `switches` and
+                       `switch_ports` on the adapter.
+                       For network ports, entries follow the order of the expanded
+                       `switch_ports` and are applied independently on each matched switch.
+                       Use an empty dictionary to skip
+                       a link.
+                       If this list contains fewer entries than the links, the remaining links receive no link
+                       metadata.
+
+                       Subclass of AvdList with `LinksMetadataItem` items.
                     speed:
                        Set adapter speed.
                        If not specified speed will be auto.
@@ -51366,6 +51895,48 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class LinksMetadataItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transceiver": {"type": str}, "peer_transceiver": {"type": str}, "media": {"type": str}, "cable_path": {"type": str}}
+            transceiver: str | None
+            """Transceiver on the fabric switch."""
+            peer_transceiver: str | None
+            """Transceiver on the connected endpoint."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    LinksMetadataItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transceiver: Transceiver on the fabric switch.
+                        peer_transceiver: Transceiver on the connected endpoint.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
+
+                    """
+
+        class LinksMetadata(AvdList[LinksMetadataItem]):
+            """Subclass of AvdList with `LinksMetadataItem` items."""
+
+        LinksMetadata._item_type = LinksMetadataItem
+
         Speed: TypeAlias = Literal[
             "100full",
             "100g",
@@ -52651,6 +53222,7 @@ class EosDesigns(EosDesignsRootModel):
             "profile": {"type": str},
             "parent_profile": {"type": str},
             "port_channel": {"type": PortChannel},
+            "links_metadata": {"type": LinksMetadata},
             "speed": {"type": str},
             "description": {"type": str},
             "enabled": {"type": bool, "default": True},
@@ -52705,6 +53277,20 @@ class EosDesigns(EosDesignsRootModel):
         Used for port-channel adapter.
 
         Subclass of AvdModel.
+        """
+        links_metadata: LinksMetadata
+        """
+        Physical link metadata.
+        For connected endpoints, entries follow the order of `switches` and
+        `switch_ports` on the adapter.
+        For network ports, entries follow the order of the expanded
+        `switch_ports` and are applied independently on each matched switch.
+        Use an empty dictionary to skip
+        a link.
+        If this list contains fewer entries than the links, the remaining links receive no link
+        metadata.
+
+        Subclass of AvdList with `LinksMetadataItem` items.
         """
         speed: Speed | None
         """
@@ -52905,6 +53491,7 @@ class EosDesigns(EosDesignsRootModel):
                 profile: str | UndefinedType = Undefined,
                 parent_profile: str | UndefinedType | None = Undefined,
                 port_channel: PortChannel | UndefinedType = Undefined,
+                links_metadata: LinksMetadata | UndefinedType = Undefined,
                 speed: Speed | UndefinedType | None = Undefined,
                 description: str | UndefinedType | None = Undefined,
                 enabled: bool | UndefinedType = Undefined,
@@ -52962,6 +53549,18 @@ class EosDesigns(EosDesignsRootModel):
                        Used for port-channel adapter.
 
                        Subclass of AvdModel.
+                    links_metadata:
+                       Physical link metadata.
+                       For connected endpoints, entries follow the order of `switches` and
+                       `switch_ports` on the adapter.
+                       For network ports, entries follow the order of the expanded
+                       `switch_ports` and are applied independently on each matched switch.
+                       Use an empty dictionary to skip
+                       a link.
+                       If this list contains fewer entries than the links, the remaining links receive no link
+                       metadata.
+
+                       Subclass of AvdList with `LinksMetadataItem` items.
                     speed:
                        Set adapter speed.
                        If not specified speed will be auto.
@@ -60799,6 +61398,53 @@ class EosDesigns(EosDesignsRootModel):
 
                     UplinkInterfaces._item_type = str
 
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
+
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -61743,6 +62389,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -64373,7 +65066,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -64388,6 +65085,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -64439,6 +65137,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -64555,8 +65254,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -64663,6 +65374,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -65018,6 +65741,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -65530,7 +66274,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -65545,6 +66293,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -65596,6 +66345,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -65711,7 +66461,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -65791,6 +66548,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -66034,6 +66801,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
@@ -66677,6 +67463,53 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         UplinkInterfaces._item_type = str
+
+                        class UplinkInterfacesMetadataItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "transceiver": {"type": str},
+                                "peer_transceiver": {"type": str},
+                                "media": {"type": str},
+                                "cable_path": {"type": str},
+                            }
+                            transceiver: str | None
+                            """Transceiver on the downstream switch."""
+                            peer_transceiver: str | None
+                            """Transceiver on the upstream switch."""
+                            media: str | None
+                            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                            cable_path: str | None
+                            """Identifier of the physical route between the two interfaces."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    transceiver: str | UndefinedType | None = Undefined,
+                                    peer_transceiver: str | UndefinedType | None = Undefined,
+                                    media: str | UndefinedType | None = Undefined,
+                                    cable_path: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    UplinkInterfacesMetadataItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        transceiver: Transceiver on the downstream switch.
+                                        peer_transceiver: Transceiver on the upstream switch.
+                                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                        cable_path: Identifier of the physical route between the two interfaces.
+
+                                    """
+
+                        class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                            """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                        UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                         class UplinkSwitchInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -67622,6 +68455,53 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         MlagInterfaces._item_type = str
+
+                        class MlagInterfacesMetadataItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "transceiver": {"type": str},
+                                "peer_transceiver": {"type": str},
+                                "media": {"type": str},
+                                "cable_path": {"type": str},
+                            }
+                            transceiver: str | None
+                            """Transceiver on the MLAG primary node."""
+                            peer_transceiver: str | None
+                            """Transceiver on the MLAG secondary node."""
+                            media: str | None
+                            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                            cable_path: str | None
+                            """Identifier of the physical route between the two interfaces."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    transceiver: str | UndefinedType | None = Undefined,
+                                    peer_transceiver: str | UndefinedType | None = Undefined,
+                                    media: str | UndefinedType | None = Undefined,
+                                    cable_path: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MlagInterfacesMetadataItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        transceiver: Transceiver on the MLAG primary node.
+                                        peer_transceiver: Transceiver on the MLAG secondary node.
+                                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                        cable_path: Identifier of the physical route between the two interfaces.
+
+                                    """
+
+                        class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                            """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                        MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                         MlagInterfacesSpeed: TypeAlias = Literal[
                             "100full",
@@ -70263,7 +71143,11 @@ class EosDesigns(EosDesignsRootModel):
                             "system_mac_address": {"type": str},
                             "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
+                            "site": {"type": str},
+                            "location": {"type": str},
+                            "row": {"type": str},
                             "rack": {"type": str},
+                            "rack_unit": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "ipv6_mgmt_ip": {"type": str},
@@ -70278,6 +71162,7 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_ipv4_pool": {"type": str},
                             "uplink_ipv6_pool": {"type": str},
                             "uplink_interfaces": {"type": UplinkInterfaces},
+                            "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                             "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                             "uplink_switches": {"type": UplinkSwitches},
                             "uplink_interface_speed": {"type": str},
@@ -70329,6 +71214,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_dual_primary_detection": {"type": bool, "default": False},
                             "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                             "mlag_interfaces": {"type": MlagInterfaces},
+                            "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                             "mlag_interfaces_speed": {"type": str},
                             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                             "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -70455,8 +71341,20 @@ class EosDesigns(EosDesignsRootModel):
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
                         """
+                        site: str | None
+                        """Physical building or data center facility where the switch is located."""
+                        location: str | None
+                        """Room, floor, data hall, or cage within the site where the switch is located."""
+                        row: str | None
+                        """Row within the location where the switch is located."""
                         rack: str | None
-                        """Rack that the switch is located in (only used in snmp_settings location)."""
+                        """
+                        Rack within the row where the switch is located.
+                        Used for CloudVision topology tags and SNMP
+                        location settings when enabled.
+                        """
+                        rack_unit: str | None
+                        """Rack unit or range of rack units occupied by the switch."""
                         mgmt_ip: str | None
                         """
                         Node management interface IPv4 address/Mask or 'dhcp'.
@@ -70563,6 +71461,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        uplink_interfaces_metadata: UplinkInterfacesMetadata
+                        """
+                        Physical link metadata.
+                        Entries correspond by position to the resolved uplink interfaces, after
+                        expanding ranges and applying interface defaults.
+                        Use an empty dictionary to skip an interface.
+                        If
+                        this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                        receive no link metadata.
+
+                        Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                         """
                         uplink_switch_interfaces: UplinkSwitchInterfaces
                         """
@@ -70918,6 +71828,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        mlag_interfaces_metadata: MlagInterfacesMetadata
+                        """
+                        Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                        Entries
+                        follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                        With CloudVision topology,
+                        metadata on the secondary node follows the discovered port connections.
+                        Use an empty dictionary to
+                        skip an interface.
+                        If this list contains fewer entries than the resolved MLAG interfaces, the
+                        remaining interfaces receive no link metadata.
+                        Configure the metadata on the MLAG node group or the
+                        MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                        The primary
+                        node's resolved metadata is used for both ends of the link.
+                        If metadata is also configured on the
+                        secondary node, it must match the primary node's metadata.
+                        On the MLAG secondary node, `transceiver`
+                        and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                        Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                         """
                         mlag_interfaces_speed: MlagInterfacesSpeed | None
                         """Set MLAG interface speed."""
@@ -71432,7 +72363,11 @@ class EosDesigns(EosDesignsRootModel):
                                 system_mac_address: str | UndefinedType | None = Undefined,
                                 custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
+                                site: str | UndefinedType | None = Undefined,
+                                location: str | UndefinedType | None = Undefined,
+                                row: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
+                                rack_unit: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -71447,6 +72382,7 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                                 uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                                 uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -71498,6 +72434,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                                mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                                 mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -71620,7 +72557,14 @@ class EosDesigns(EosDesignsRootModel):
                                        "serial_number" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
-                                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                                    site: Physical building or data center facility where the switch is located.
+                                    location: Room, floor, data hall, or cage within the site where the switch is located.
+                                    row: Row within the location where the switch is located.
+                                    rack:
+                                       Rack within the row where the switch is located.
+                                       Used for CloudVision topology tags and SNMP
+                                       location settings when enabled.
+                                    rack_unit: Rack unit or range of rack units occupied by the switch.
                                     mgmt_ip:
                                        Node management interface IPv4 address/Mask or 'dhcp'.
                                        When set to 'dhcp' and
@@ -71700,6 +72644,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    uplink_interfaces_metadata:
+                                       Physical link metadata.
+                                       Entries correspond by position to the resolved uplink interfaces, after
+                                       expanding ranges and applying interface defaults.
+                                       Use an empty dictionary to skip an interface.
+                                       If
+                                       this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                       receive no link metadata.
+
+                                       Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                     uplink_switch_interfaces:
                                        Interfaces located on uplink switches.
 
@@ -71943,6 +72897,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    mlag_interfaces_metadata:
+                                       Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                       Entries
+                                       follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                       With CloudVision topology,
+                                       metadata on the secondary node follows the discovered port connections.
+                                       Use an empty dictionary to
+                                       skip an interface.
+                                       If this list contains fewer entries than the resolved MLAG interfaces, the
+                                       remaining interfaces receive no link metadata.
+                                       Configure the metadata on the MLAG node group or the
+                                       MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                       The primary
+                                       node's resolved metadata is used for both ends of the link.
+                                       If metadata is also configured on the
+                                       secondary node, it must match the primary node's metadata.
+                                       On the MLAG secondary node, `transceiver`
+                                       and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                       Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                     mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
@@ -72511,6 +73484,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkInterfaces._item_type = str
+
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -73456,6 +74476,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -76088,7 +77155,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -76103,6 +77174,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -76154,6 +77226,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -76283,8 +77356,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -76391,6 +77476,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -76746,6 +77843,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -77260,7 +78378,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -77275,6 +78397,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -77326,6 +78449,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -77450,7 +78574,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -77530,6 +78661,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -77773,6 +78914,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
@@ -78416,6 +79576,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkInterfaces._item_type = str
+
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -79361,6 +80568,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -81993,7 +83247,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -82008,6 +83266,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -82059,6 +83318,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -82185,8 +83445,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -82293,6 +83565,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -82648,6 +83932,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -83162,7 +84467,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -83177,6 +84486,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -83228,6 +84538,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -83350,7 +84661,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -83430,6 +84748,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -83673,6 +85001,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
@@ -84757,6 +86104,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class LinksMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the fabric switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the connected endpoint."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                LinksMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the fabric switch.
+                                    peer_transceiver: Transceiver on the connected endpoint.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class LinksMetadata(AvdList[LinksMetadataItem]):
+                        """Subclass of AvdList with `LinksMetadataItem` items."""
+
+                    LinksMetadata._item_type = LinksMetadataItem
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -86057,6 +87451,7 @@ class EosDesigns(EosDesignsRootModel):
                         "descriptions": {"type": Descriptions},
                         "subinterfaces": {"type": Subinterfaces},
                         "port_channel": {"type": PortChannel},
+                        "links_metadata": {"type": LinksMetadata},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -86159,6 +87554,20 @@ class EosDesigns(EosDesignsRootModel):
                     Used for port-channel adapter.
 
                     Subclass of AvdModel.
+                    """
+                    links_metadata: LinksMetadata
+                    """
+                    Physical link metadata.
+                    For connected endpoints, entries follow the order of `switches` and
+                    `switch_ports` on the adapter.
+                    For network ports, entries follow the order of the expanded
+                    `switch_ports` and are applied independently on each matched switch.
+                    Use an empty dictionary to skip
+                    a link.
+                    If this list contains fewer entries than the links, the remaining links receive no link
+                    metadata.
+
+                    Subclass of AvdList with `LinksMetadataItem` items.
                     """
                     speed: Speed | None
                     """
@@ -86364,6 +87773,7 @@ class EosDesigns(EosDesignsRootModel):
                             descriptions: Descriptions | UndefinedType = Undefined,
                             subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             port_channel: PortChannel | UndefinedType = Undefined,
+                            links_metadata: LinksMetadata | UndefinedType = Undefined,
                             speed: Speed | UndefinedType | None = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             profile: str | UndefinedType | None = Undefined,
@@ -86462,6 +87872,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Used for port-channel adapter.
 
                                    Subclass of AvdModel.
+                                links_metadata:
+                                   Physical link metadata.
+                                   For connected endpoints, entries follow the order of `switches` and
+                                   `switch_ports` on the adapter.
+                                   For network ports, entries follow the order of the expanded
+                                   `switch_ports` and are applied independently on each matched switch.
+                                   Use an empty dictionary to skip
+                                   a link.
+                                   If this list contains fewer entries than the links, the remaining links receive no link
+                                   metadata.
+
+                                   Subclass of AvdList with `LinksMetadataItem` items.
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -86609,7 +88031,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Adapters._item_type = AdaptersItem
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "type": {"type": str},
+                    "site": {"type": str},
+                    "location": {"type": str},
+                    "row": {"type": str},
+                    "rack": {"type": str},
+                    "rack_unit": {"type": str},
+                    "platform": {"type": str},
+                    "serial_number": {"type": str},
+                    "adapters": {"type": Adapters},
+                }
                 name: str
                 """Endpoint name will be used in the switchport description."""
                 type: str | None
@@ -86619,8 +88052,20 @@ class EosDesigns(EosDesignsRootModel):
                 The default value is taken from
                 `connected_endpoints_keys[].type`.
                 """
+                site: str | None
+                """Physical building or data center facility where the endpoint is located."""
+                location: str | None
+                """Room, floor, data hall, or cage within the site where the endpoint is located."""
+                row: str | None
+                """Row within the location where the endpoint is located."""
                 rack: str | None
-                """Rack is used for documentation purposes only."""
+                """Rack within the row where the endpoint is located."""
+                rack_unit: str | None
+                """Rack unit or range of rack units occupied by the endpoint."""
+                platform: str | None
+                """Hardware platform of the endpoint."""
+                serial_number: str | None
+                """Serial number of the endpoint."""
                 adapters: Adapters
                 """
                 A list of adapters, group by adapters leveraging the same port-profile.
@@ -86636,7 +88081,13 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         type: str | UndefinedType | None = Undefined,
+                        site: str | UndefinedType | None = Undefined,
+                        location: str | UndefinedType | None = Undefined,
+                        row: str | UndefinedType | None = Undefined,
                         rack: str | UndefinedType | None = Undefined,
+                        rack_unit: str | UndefinedType | None = Undefined,
+                        platform: str | UndefinedType | None = Undefined,
+                        serial_number: str | UndefinedType | None = Undefined,
                         adapters: Adapters | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -86652,7 +88103,13 @@ class EosDesigns(EosDesignsRootModel):
                                This is used in descriptions and in documentation.
                                The default value is taken from
                                `connected_endpoints_keys[].type`.
-                            rack: Rack is used for documentation purposes only.
+                            site: Physical building or data center facility where the endpoint is located.
+                            location: Room, floor, data hall, or cage within the site where the endpoint is located.
+                            row: Row within the location where the endpoint is located.
+                            rack: Rack within the row where the endpoint is located.
+                            rack_unit: Rack unit or range of rack units occupied by the endpoint.
+                            platform: Hardware platform of the endpoint.
+                            serial_number: Serial number of the endpoint.
                             adapters:
                                A list of adapters, group by adapters leveraging the same port-profile.
 
@@ -87328,6 +88785,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class LinksMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the fabric switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the connected endpoint."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                LinksMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the fabric switch.
+                                    peer_transceiver: Transceiver on the connected endpoint.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class LinksMetadata(AvdList[LinksMetadataItem]):
+                        """Subclass of AvdList with `LinksMetadataItem` items."""
+
+                    LinksMetadata._item_type = LinksMetadataItem
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -88628,6 +90132,7 @@ class EosDesigns(EosDesignsRootModel):
                         "descriptions": {"type": Descriptions},
                         "subinterfaces": {"type": Subinterfaces},
                         "port_channel": {"type": PortChannel},
+                        "links_metadata": {"type": LinksMetadata},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -88730,6 +90235,20 @@ class EosDesigns(EosDesignsRootModel):
                     Used for port-channel adapter.
 
                     Subclass of AvdModel.
+                    """
+                    links_metadata: LinksMetadata
+                    """
+                    Physical link metadata.
+                    For connected endpoints, entries follow the order of `switches` and
+                    `switch_ports` on the adapter.
+                    For network ports, entries follow the order of the expanded
+                    `switch_ports` and are applied independently on each matched switch.
+                    Use an empty dictionary to skip
+                    a link.
+                    If this list contains fewer entries than the links, the remaining links receive no link
+                    metadata.
+
+                    Subclass of AvdList with `LinksMetadataItem` items.
                     """
                     speed: Speed | None
                     """
@@ -88935,6 +90454,7 @@ class EosDesigns(EosDesignsRootModel):
                             descriptions: Descriptions | UndefinedType = Undefined,
                             subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             port_channel: PortChannel | UndefinedType = Undefined,
+                            links_metadata: LinksMetadata | UndefinedType = Undefined,
                             speed: Speed | UndefinedType | None = Undefined,
                             description: str | UndefinedType | None = Undefined,
                             profile: str | UndefinedType | None = Undefined,
@@ -89033,6 +90553,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Used for port-channel adapter.
 
                                    Subclass of AvdModel.
+                                links_metadata:
+                                   Physical link metadata.
+                                   For connected endpoints, entries follow the order of `switches` and
+                                   `switch_ports` on the adapter.
+                                   For network ports, entries follow the order of the expanded
+                                   `switch_ports` and are applied independently on each matched switch.
+                                   Use an empty dictionary to skip
+                                   a link.
+                                   If this list contains fewer entries than the links, the remaining links receive no link
+                                   metadata.
+
+                                   Subclass of AvdList with `LinksMetadataItem` items.
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -89180,7 +90712,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Adapters._item_type = AdaptersItem
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "type": {"type": str},
+                    "site": {"type": str},
+                    "location": {"type": str},
+                    "row": {"type": str},
+                    "rack": {"type": str},
+                    "rack_unit": {"type": str},
+                    "platform": {"type": str},
+                    "serial_number": {"type": str},
+                    "adapters": {"type": Adapters},
+                }
                 name: str
                 """Endpoint name will be used in the switchport description."""
                 type: str | None
@@ -89190,8 +90733,20 @@ class EosDesigns(EosDesignsRootModel):
                 The default value is taken from
                 `connected_endpoints_keys[].type`.
                 """
+                site: str | None
+                """Physical building or data center facility where the endpoint is located."""
+                location: str | None
+                """Room, floor, data hall, or cage within the site where the endpoint is located."""
+                row: str | None
+                """Row within the location where the endpoint is located."""
                 rack: str | None
-                """Rack is used for documentation purposes only."""
+                """Rack within the row where the endpoint is located."""
+                rack_unit: str | None
+                """Rack unit or range of rack units occupied by the endpoint."""
+                platform: str | None
+                """Hardware platform of the endpoint."""
+                serial_number: str | None
+                """Serial number of the endpoint."""
                 adapters: Adapters
                 """
                 A list of adapters, group by adapters leveraging the same port-profile.
@@ -89207,7 +90762,13 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         type: str | UndefinedType | None = Undefined,
+                        site: str | UndefinedType | None = Undefined,
+                        location: str | UndefinedType | None = Undefined,
+                        row: str | UndefinedType | None = Undefined,
                         rack: str | UndefinedType | None = Undefined,
+                        rack_unit: str | UndefinedType | None = Undefined,
+                        platform: str | UndefinedType | None = Undefined,
+                        serial_number: str | UndefinedType | None = Undefined,
                         adapters: Adapters | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -89223,7 +90784,13 @@ class EosDesigns(EosDesignsRootModel):
                                This is used in descriptions and in documentation.
                                The default value is taken from
                                `connected_endpoints_keys[].type`.
-                            rack: Rack is used for documentation purposes only.
+                            site: Physical building or data center facility where the endpoint is located.
+                            location: Room, floor, data hall, or cage within the site where the endpoint is located.
+                            row: Row within the location where the endpoint is located.
+                            rack: Rack within the row where the endpoint is located.
+                            rack_unit: Rack unit or range of rack units occupied by the endpoint.
+                            platform: Hardware platform of the endpoint.
+                            serial_number: Serial number of the endpoint.
                             adapters:
                                A list of adapters, group by adapters leveraging the same port-profile.
 
@@ -101022,6 +102589,53 @@ class EosDesigns(EosDesignsRootModel):
 
                     UplinkInterfaces._item_type = str
 
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
+
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -101966,6 +103580,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -104596,7 +106257,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -104611,6 +106276,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -104662,6 +106328,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -104778,8 +106445,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -104886,6 +106565,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -105241,6 +106932,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -105753,7 +107465,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -105768,6 +107484,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -105819,6 +107536,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -105934,7 +107652,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -106014,6 +107739,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -106257,6 +107992,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
@@ -106900,6 +108654,53 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         UplinkInterfaces._item_type = str
+
+                        class UplinkInterfacesMetadataItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "transceiver": {"type": str},
+                                "peer_transceiver": {"type": str},
+                                "media": {"type": str},
+                                "cable_path": {"type": str},
+                            }
+                            transceiver: str | None
+                            """Transceiver on the downstream switch."""
+                            peer_transceiver: str | None
+                            """Transceiver on the upstream switch."""
+                            media: str | None
+                            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                            cable_path: str | None
+                            """Identifier of the physical route between the two interfaces."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    transceiver: str | UndefinedType | None = Undefined,
+                                    peer_transceiver: str | UndefinedType | None = Undefined,
+                                    media: str | UndefinedType | None = Undefined,
+                                    cable_path: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    UplinkInterfacesMetadataItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        transceiver: Transceiver on the downstream switch.
+                                        peer_transceiver: Transceiver on the upstream switch.
+                                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                        cable_path: Identifier of the physical route between the two interfaces.
+
+                                    """
+
+                        class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                            """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                        UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                         class UplinkSwitchInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -107845,6 +109646,53 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         MlagInterfaces._item_type = str
+
+                        class MlagInterfacesMetadataItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "transceiver": {"type": str},
+                                "peer_transceiver": {"type": str},
+                                "media": {"type": str},
+                                "cable_path": {"type": str},
+                            }
+                            transceiver: str | None
+                            """Transceiver on the MLAG primary node."""
+                            peer_transceiver: str | None
+                            """Transceiver on the MLAG secondary node."""
+                            media: str | None
+                            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                            cable_path: str | None
+                            """Identifier of the physical route between the two interfaces."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    transceiver: str | UndefinedType | None = Undefined,
+                                    peer_transceiver: str | UndefinedType | None = Undefined,
+                                    media: str | UndefinedType | None = Undefined,
+                                    cable_path: str | UndefinedType | None = Undefined,
+                                ) -> None:
+                                    """
+                                    MlagInterfacesMetadataItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        transceiver: Transceiver on the MLAG primary node.
+                                        peer_transceiver: Transceiver on the MLAG secondary node.
+                                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                        cable_path: Identifier of the physical route between the two interfaces.
+
+                                    """
+
+                        class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                            """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                        MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                         MlagInterfacesSpeed: TypeAlias = Literal[
                             "100full",
@@ -110486,7 +112334,11 @@ class EosDesigns(EosDesignsRootModel):
                             "system_mac_address": {"type": str},
                             "custom_system_mac_address": {"type": str},
                             "serial_number": {"type": str},
+                            "site": {"type": str},
+                            "location": {"type": str},
+                            "row": {"type": str},
                             "rack": {"type": str},
+                            "rack_unit": {"type": str},
                             "mgmt_ip": {"type": str},
                             "mgmt_gateway": {"type": str},
                             "ipv6_mgmt_ip": {"type": str},
@@ -110501,6 +112353,7 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_ipv4_pool": {"type": str},
                             "uplink_ipv6_pool": {"type": str},
                             "uplink_interfaces": {"type": UplinkInterfaces},
+                            "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                             "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                             "uplink_switches": {"type": UplinkSwitches},
                             "uplink_interface_speed": {"type": str},
@@ -110552,6 +112405,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_dual_primary_detection": {"type": bool, "default": False},
                             "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                             "mlag_interfaces": {"type": MlagInterfaces},
+                            "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                             "mlag_interfaces_speed": {"type": str},
                             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                             "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -110678,8 +112532,20 @@ class EosDesigns(EosDesignsRootModel):
                         hostvar.
                         If both are set, the setting under node type settings takes precedence.
                         """
+                        site: str | None
+                        """Physical building or data center facility where the switch is located."""
+                        location: str | None
+                        """Room, floor, data hall, or cage within the site where the switch is located."""
+                        row: str | None
+                        """Row within the location where the switch is located."""
                         rack: str | None
-                        """Rack that the switch is located in (only used in snmp_settings location)."""
+                        """
+                        Rack within the row where the switch is located.
+                        Used for CloudVision topology tags and SNMP
+                        location settings when enabled.
+                        """
+                        rack_unit: str | None
+                        """Rack unit or range of rack units occupied by the switch."""
                         mgmt_ip: str | None
                         """
                         Node management interface IPv4 address/Mask or 'dhcp'.
@@ -110786,6 +112652,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        uplink_interfaces_metadata: UplinkInterfacesMetadata
+                        """
+                        Physical link metadata.
+                        Entries correspond by position to the resolved uplink interfaces, after
+                        expanding ranges and applying interface defaults.
+                        Use an empty dictionary to skip an interface.
+                        If
+                        this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                        receive no link metadata.
+
+                        Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                         """
                         uplink_switch_interfaces: UplinkSwitchInterfaces
                         """
@@ -111141,6 +113019,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        mlag_interfaces_metadata: MlagInterfacesMetadata
+                        """
+                        Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                        Entries
+                        follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                        With CloudVision topology,
+                        metadata on the secondary node follows the discovered port connections.
+                        Use an empty dictionary to
+                        skip an interface.
+                        If this list contains fewer entries than the resolved MLAG interfaces, the
+                        remaining interfaces receive no link metadata.
+                        Configure the metadata on the MLAG node group or the
+                        MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                        The primary
+                        node's resolved metadata is used for both ends of the link.
+                        If metadata is also configured on the
+                        secondary node, it must match the primary node's metadata.
+                        On the MLAG secondary node, `transceiver`
+                        and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                        Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                         """
                         mlag_interfaces_speed: MlagInterfacesSpeed | None
                         """Set MLAG interface speed."""
@@ -111655,7 +113554,11 @@ class EosDesigns(EosDesignsRootModel):
                                 system_mac_address: str | UndefinedType | None = Undefined,
                                 custom_system_mac_address: str | UndefinedType | None = Undefined,
                                 serial_number: str | UndefinedType | None = Undefined,
+                                site: str | UndefinedType | None = Undefined,
+                                location: str | UndefinedType | None = Undefined,
+                                row: str | UndefinedType | None = Undefined,
                                 rack: str | UndefinedType | None = Undefined,
+                                rack_unit: str | UndefinedType | None = Undefined,
                                 mgmt_ip: str | UndefinedType | None = Undefined,
                                 mgmt_gateway: str | UndefinedType | None = Undefined,
                                 ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -111670,6 +113573,7 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                                 uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                                 uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -111721,6 +113625,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                                mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                                 mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -111843,7 +113748,14 @@ class EosDesigns(EosDesignsRootModel):
                                        "serial_number" can also be set directly as a
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
-                                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                                    site: Physical building or data center facility where the switch is located.
+                                    location: Room, floor, data hall, or cage within the site where the switch is located.
+                                    row: Row within the location where the switch is located.
+                                    rack:
+                                       Rack within the row where the switch is located.
+                                       Used for CloudVision topology tags and SNMP
+                                       location settings when enabled.
+                                    rack_unit: Rack unit or range of rack units occupied by the switch.
                                     mgmt_ip:
                                        Node management interface IPv4 address/Mask or 'dhcp'.
                                        When set to 'dhcp' and
@@ -111923,6 +113835,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    uplink_interfaces_metadata:
+                                       Physical link metadata.
+                                       Entries correspond by position to the resolved uplink interfaces, after
+                                       expanding ranges and applying interface defaults.
+                                       Use an empty dictionary to skip an interface.
+                                       If
+                                       this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                       receive no link metadata.
+
+                                       Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                     uplink_switch_interfaces:
                                        Interfaces located on uplink switches.
 
@@ -112166,6 +114088,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    mlag_interfaces_metadata:
+                                       Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                       Entries
+                                       follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                       With CloudVision topology,
+                                       metadata on the secondary node follows the discovered port connections.
+                                       Use an empty dictionary to
+                                       skip an interface.
+                                       If this list contains fewer entries than the resolved MLAG interfaces, the
+                                       remaining interfaces receive no link metadata.
+                                       Configure the metadata on the MLAG node group or the
+                                       MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                       The primary
+                                       node's resolved metadata is used for both ends of the link.
+                                       If metadata is also configured on the
+                                       secondary node, it must match the primary node's metadata.
+                                       On the MLAG secondary node, `transceiver`
+                                       and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                       Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                     mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
@@ -112734,6 +114675,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkInterfaces._item_type = str
+
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -113679,6 +115667,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -116311,7 +118346,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -116326,6 +118365,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -116377,6 +118417,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -116506,8 +118547,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -116614,6 +118667,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -116969,6 +119034,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -117483,7 +119569,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -117498,6 +119588,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -117549,6 +119640,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -117673,7 +119765,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -117753,6 +119852,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -117996,6 +120105,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
@@ -118639,6 +120767,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkInterfaces._item_type = str
+
+                    class UplinkInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the downstream switch."""
+                        peer_transceiver: str | None
+                        """Transceiver on the upstream switch."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                UplinkInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the downstream switch.
+                                    peer_transceiver: Transceiver on the upstream switch.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class UplinkInterfacesMetadata(AvdList[UplinkInterfacesMetadataItem]):
+                        """Subclass of AvdList with `UplinkInterfacesMetadataItem` items."""
+
+                    UplinkInterfacesMetadata._item_type = UplinkInterfacesMetadataItem
 
                     class UplinkSwitchInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -119584,6 +121759,53 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     MlagInterfaces._item_type = str
+
+                    class MlagInterfacesMetadataItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "transceiver": {"type": str},
+                            "peer_transceiver": {"type": str},
+                            "media": {"type": str},
+                            "cable_path": {"type": str},
+                        }
+                        transceiver: str | None
+                        """Transceiver on the MLAG primary node."""
+                        peer_transceiver: str | None
+                        """Transceiver on the MLAG secondary node."""
+                        media: str | None
+                        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+                        cable_path: str | None
+                        """Identifier of the physical route between the two interfaces."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                transceiver: str | UndefinedType | None = Undefined,
+                                peer_transceiver: str | UndefinedType | None = Undefined,
+                                media: str | UndefinedType | None = Undefined,
+                                cable_path: str | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                MlagInterfacesMetadataItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    transceiver: Transceiver on the MLAG primary node.
+                                    peer_transceiver: Transceiver on the MLAG secondary node.
+                                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                                    cable_path: Identifier of the physical route between the two interfaces.
+
+                                """
+
+                    class MlagInterfacesMetadata(AvdList[MlagInterfacesMetadataItem]):
+                        """Subclass of AvdList with `MlagInterfacesMetadataItem` items."""
+
+                    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
 
                     MlagInterfacesSpeed: TypeAlias = Literal[
                         "100full",
@@ -122216,7 +124438,11 @@ class EosDesigns(EosDesignsRootModel):
                         "system_mac_address": {"type": str},
                         "custom_system_mac_address": {"type": str},
                         "serial_number": {"type": str},
+                        "site": {"type": str},
+                        "location": {"type": str},
+                        "row": {"type": str},
                         "rack": {"type": str},
+                        "rack_unit": {"type": str},
                         "mgmt_ip": {"type": str},
                         "mgmt_gateway": {"type": str},
                         "ipv6_mgmt_ip": {"type": str},
@@ -122231,6 +124457,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_ipv4_pool": {"type": str},
                         "uplink_ipv6_pool": {"type": str},
                         "uplink_interfaces": {"type": UplinkInterfaces},
+                        "uplink_interfaces_metadata": {"type": UplinkInterfacesMetadata},
                         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
                         "uplink_switches": {"type": UplinkSwitches},
                         "uplink_interface_speed": {"type": str},
@@ -122282,6 +124509,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_dual_primary_detection": {"type": bool, "default": False},
                         "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
                         "mlag_interfaces": {"type": MlagInterfaces},
+                        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
@@ -122408,8 +124636,20 @@ class EosDesigns(EosDesignsRootModel):
                     hostvar.
                     If both are set, the setting under node type settings takes precedence.
                     """
+                    site: str | None
+                    """Physical building or data center facility where the switch is located."""
+                    location: str | None
+                    """Room, floor, data hall, or cage within the site where the switch is located."""
+                    row: str | None
+                    """Row within the location where the switch is located."""
                     rack: str | None
-                    """Rack that the switch is located in (only used in snmp_settings location)."""
+                    """
+                    Rack within the row where the switch is located.
+                    Used for CloudVision topology tags and SNMP
+                    location settings when enabled.
+                    """
+                    rack_unit: str | None
+                    """Rack unit or range of rack units occupied by the switch."""
                     mgmt_ip: str | None
                     """
                     Node management interface IPv4 address/Mask or 'dhcp'.
@@ -122516,6 +124756,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    uplink_interfaces_metadata: UplinkInterfacesMetadata
+                    """
+                    Physical link metadata.
+                    Entries correspond by position to the resolved uplink interfaces, after
+                    expanding ranges and applying interface defaults.
+                    Use an empty dictionary to skip an interface.
+                    If
+                    this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                    receive no link metadata.
+
+                    Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                     """
                     uplink_switch_interfaces: UplinkSwitchInterfaces
                     """
@@ -122871,6 +125123,27 @@ class EosDesigns(EosDesignsRootModel):
 
 
                     Subclass of AvdList with `str` items.
+                    """
+                    mlag_interfaces_metadata: MlagInterfacesMetadata
+                    """
+                    Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                    Entries
+                    follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                    With CloudVision topology,
+                    metadata on the secondary node follows the discovered port connections.
+                    Use an empty dictionary to
+                    skip an interface.
+                    If this list contains fewer entries than the resolved MLAG interfaces, the
+                    remaining interfaces receive no link metadata.
+                    Configure the metadata on the MLAG node group or the
+                    MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                    The primary
+                    node's resolved metadata is used for both ends of the link.
+                    If metadata is also configured on the
+                    secondary node, it must match the primary node's metadata.
+                    On the MLAG secondary node, `transceiver`
+                    and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                    Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                     """
                     mlag_interfaces_speed: MlagInterfacesSpeed | None
                     """Set MLAG interface speed."""
@@ -123385,7 +125658,11 @@ class EosDesigns(EosDesignsRootModel):
                             system_mac_address: str | UndefinedType | None = Undefined,
                             custom_system_mac_address: str | UndefinedType | None = Undefined,
                             serial_number: str | UndefinedType | None = Undefined,
+                            site: str | UndefinedType | None = Undefined,
+                            location: str | UndefinedType | None = Undefined,
+                            row: str | UndefinedType | None = Undefined,
                             rack: str | UndefinedType | None = Undefined,
+                            rack_unit: str | UndefinedType | None = Undefined,
                             mgmt_ip: str | UndefinedType | None = Undefined,
                             mgmt_gateway: str | UndefinedType | None = Undefined,
                             ipv6_mgmt_ip: str | UndefinedType | None = Undefined,
@@ -123400,6 +125677,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_ipv4_pool: str | UndefinedType | None = Undefined,
                             uplink_ipv6_pool: str | UndefinedType | None = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                            uplink_interfaces_metadata: UplinkInterfacesMetadata | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
                             uplink_interface_speed: UplinkInterfaceSpeed | UndefinedType | None = Undefined,
@@ -123451,6 +125729,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
                             mlag_interfaces_speed: MlagInterfacesSpeed | UndefinedType | None = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | UndefinedType | None = Undefined,
@@ -123573,7 +125852,14 @@ class EosDesigns(EosDesignsRootModel):
                                    "serial_number" can also be set directly as a
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
-                                rack: Rack that the switch is located in (only used in snmp_settings location).
+                                site: Physical building or data center facility where the switch is located.
+                                location: Room, floor, data hall, or cage within the site where the switch is located.
+                                row: Row within the location where the switch is located.
+                                rack:
+                                   Rack within the row where the switch is located.
+                                   Used for CloudVision topology tags and SNMP
+                                   location settings when enabled.
+                                rack_unit: Rack unit or range of rack units occupied by the switch.
                                 mgmt_ip:
                                    Node management interface IPv4 address/Mask or 'dhcp'.
                                    When set to 'dhcp' and
@@ -123653,6 +125939,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                uplink_interfaces_metadata:
+                                   Physical link metadata.
+                                   Entries correspond by position to the resolved uplink interfaces, after
+                                   expanding ranges and applying interface defaults.
+                                   Use an empty dictionary to skip an interface.
+                                   If
+                                   this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces
+                                   receive no link metadata.
+
+                                   Subclass of AvdList with `UplinkInterfacesMetadataItem` items.
                                 uplink_switch_interfaces:
                                    Interfaces located on uplink switches.
 
@@ -123896,6 +126192,25 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
+                                mlag_interfaces_metadata:
+                                   Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+                                   Entries
+                                   follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+                                   With CloudVision topology,
+                                   metadata on the secondary node follows the discovered port connections.
+                                   Use an empty dictionary to
+                                   skip an interface.
+                                   If this list contains fewer entries than the resolved MLAG interfaces, the
+                                   remaining interfaces receive no link metadata.
+                                   Configure the metadata on the MLAG node group or the
+                                   MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+                                   The primary
+                                   node's resolved metadata is used for both ends of the link.
+                                   If metadata is also configured on the
+                                   secondary node, it must match the primary node's metadata.
+                                   On the MLAG secondary node, `transceiver`
+                                   and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+                                   Subclass of AvdList with `MlagInterfacesMetadataItem` items.
                                 mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.

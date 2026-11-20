@@ -4672,12 +4672,35 @@ keys:
             peer:
               type: str
               description: Key only used for documentation or validation purposes.
+            peer_site:
+              type: str
+              description: Physical building or data center facility where the peer
+                is located.
+            peer_location:
+              type: str
+              description: Room, floor, data hall, or cage within the site where the
+                peer is located.
+            peer_row:
+              type: str
+              description: Row within the location where the peer is located.
+            peer_rack:
+              type: str
+              description: Rack within the row where the peer is located.
+            peer_rack_unit:
+              type: str
+              description: Rack unit or range of rack units occupied by the peer.
             peer_interface:
               type: str
               description: Key only used for documentation or validation purposes.
             peer_type:
               type: str
               description: Key only used for documentation or validation purposes.
+            peer_platform:
+              type: str
+              description: Hardware platform of the peer.
+            peer_serial_number:
+              type: str
+              description: Serial number of the peer.
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
@@ -4702,6 +4725,19 @@ keys:
                 managed by AVD.
 
                 - `false`: Disables validation for the interface.'
+            transceiver:
+              type: str
+              description: Transceiver on the local interface.
+            peer_transceiver:
+              type: str
+              description: Transceiver on the remote interface.
+            media:
+              type: str
+              description: Physical medium used for the link, such as SM, OM4, or
+                Cat6.
+            cable_path:
+              type: str
+              description: Identifier of the physical route between the two interfaces.
         sflow:
           type: dict
           keys:
@@ -10074,8 +10110,22 @@ keys:
         type: str
       system_mac_address:
         type: str
+      site:
+        type: str
+        description: Physical building or data center facility where the switch is
+          located.
+      location:
+        type: str
+        description: Room, floor, data hall, or cage within the site where the switch
+          is located.
+      row:
+        type: str
+        description: Row within the location where the switch is located.
       rack:
         type: str
+      rack_unit:
+        type: str
+        description: Rack unit or range of rack units occupied by the switch.
       pod_name:
         type: str
       dc_name:

@@ -100,6 +100,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MLAG
+    peer_rack: RackB
     peer_interface: Eth3
     peer_type: server
     peer_key: servers
@@ -112,6 +113,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MTU_PROFILE_MLAG
+    peer_rack: RackB
     peer_interface: Eth5
     peer_type: server
     peer_key: servers
@@ -124,6 +126,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MTU_ADAPTOR_MLAG
+    peer_rack: RackB
     peer_interface: Eth7
     peer_type: server
     peer_key: servers
@@ -135,6 +138,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MTU_ADAPTOR_MLAG
+    peer_rack: RackB
     peer_interface: Eth9
     peer_type: server
     peer_key: servers
@@ -146,6 +150,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: FIREWALL01
+    peer_rack: RackB
     peer_interface: E1
     peer_type: firewall
     peer_key: firewalls
@@ -155,6 +160,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: ROUTER01
+    peer_rack: RackB
     peer_interface: Eth1
     peer_type: router
     peer_key: routers

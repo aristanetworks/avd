@@ -10,7 +10,13 @@
     | [<samp>&lt;connected_endpoints_keys.key&gt;</samp>](## "<connected_endpoints_keys.key>") | List, items: Dictionary |  |  |  | List of endpoint connected to the fabric.<br>This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys". |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<connected_endpoints_keys.key>.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<connected_endpoints_keys.key>.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation.<br>The default value is taken from `connected_endpoints_keys[].type`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;site</samp>](## "<connected_endpoints_keys.key>.[].site") | String |  |  |  | Physical building or data center facility where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "<connected_endpoints_keys.key>.[].location") | String |  |  |  | Room, floor, data hall, or cage within the site where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;row</samp>](## "<connected_endpoints_keys.key>.[].row") | String |  |  |  | Row within the location where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack within the row where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack_unit</samp>](## "<connected_endpoints_keys.key>.[].rack_unit") | String |  |  |  | Rack unit or range of rack units occupied by the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<connected_endpoints_keys.key>.[].platform") | String |  |  |  | Hardware platform of the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<connected_endpoints_keys.key>.[].serial_number") | String |  |  |  | Serial number of the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
@@ -58,6 +64,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_metadata</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].links_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.<br>For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.<br>Use an empty dictionary to skip a link.<br>If this list contains fewer entries than the links, the remaining links receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].transceiver") | String |  |  |  | Transceiver on the fabric switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the connected endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -215,7 +226,13 @@
     | [<samp>&lt;custom_connected_endpoints_keys.key&gt;</samp>](## "<custom_connected_endpoints_keys.key>") | List, items: Dictionary |  |  |  | List of endpoint connected to the fabric.<br>This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys". |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<custom_connected_endpoints_keys.key>.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<custom_connected_endpoints_keys.key>.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation.<br>The default value is taken from `connected_endpoints_keys[].type`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<custom_connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;site</samp>](## "<custom_connected_endpoints_keys.key>.[].site") | String |  |  |  | Physical building or data center facility where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "<custom_connected_endpoints_keys.key>.[].location") | String |  |  |  | Room, floor, data hall, or cage within the site where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;row</samp>](## "<custom_connected_endpoints_keys.key>.[].row") | String |  |  |  | Row within the location where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<custom_connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack within the row where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack_unit</samp>](## "<custom_connected_endpoints_keys.key>.[].rack_unit") | String |  |  |  | Rack unit or range of rack units occupied by the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<custom_connected_endpoints_keys.key>.[].platform") | String |  |  |  | Hardware platform of the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<custom_connected_endpoints_keys.key>.[].serial_number") | String |  |  |  | Serial number of the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
@@ -263,6 +280,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_metadata</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].links_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.<br>For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.<br>Use an empty dictionary to skip a link.<br>If this list contains fewer entries than the links, the remaining links receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].transceiver") | String |  |  |  | Transceiver on the fabric switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the connected endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].links_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -420,7 +442,13 @@
     | [<samp>connected_endpoints</samp>](## "connected_endpoints") | List, items: Dictionary |  |  |  | List of endpoint connected to the fabric.<br>This should be applied to group_vars or host_vars where endpoints are connecting. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "connected_endpoints.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "connected_endpoints.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;site</samp>](## "connected_endpoints.[].site") | String |  |  |  | Physical building or data center facility where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;location</samp>](## "connected_endpoints.[].location") | String |  |  |  | Room, floor, data hall, or cage within the site where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;row</samp>](## "connected_endpoints.[].row") | String |  |  |  | Row within the location where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "connected_endpoints.[].rack") | String |  |  |  | Rack within the row where the endpoint is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack_unit</samp>](## "connected_endpoints.[].rack_unit") | String |  |  |  | Rack unit or range of rack units occupied by the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "connected_endpoints.[].platform") | String |  |  |  | Hardware platform of the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "connected_endpoints.[].serial_number") | String |  |  |  | Serial number of the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "connected_endpoints.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "connected_endpoints.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
@@ -468,6 +496,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_metadata</samp>](## "connected_endpoints.[].adapters.[].links_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.<br>For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.<br>Use an empty dictionary to skip a link.<br>If this list contains fewer entries than the links, the remaining links receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "connected_endpoints.[].adapters.[].links_metadata.[].transceiver") | String |  |  |  | Transceiver on the fabric switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "connected_endpoints.[].adapters.[].links_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the connected endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "connected_endpoints.[].adapters.[].links_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "connected_endpoints.[].adapters.[].links_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "connected_endpoints.[].adapters.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "connected_endpoints.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -639,8 +672,26 @@
         # The default value is taken from `connected_endpoints_keys[].type`.
         type: <str>
 
-        # Rack is used for documentation purposes only.
+        # Physical building or data center facility where the endpoint is located.
+        site: <str>
+
+        # Room, floor, data hall, or cage within the site where the endpoint is located.
+        location: <str>
+
+        # Row within the location where the endpoint is located.
+        row: <str>
+
+        # Rack within the row where the endpoint is located.
         rack: <str>
+
+        # Rack unit or range of rack units occupied by the endpoint.
+        rack_unit: <str>
+
+        # Hardware platform of the endpoint.
+        platform: <str>
+
+        # Serial number of the endpoint.
+        serial_number: <str>
 
         # A list of adapters, group by adapters leveraging the same port-profile.
         adapters:
@@ -831,6 +882,25 @@
 
               # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
+
+            # Physical link metadata.
+            # For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.
+            # For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.
+            # Use an empty dictionary to skip a link.
+            # If this list contains fewer entries than the links, the remaining links receive no link metadata.
+            links_metadata:
+
+                # Transceiver on the fabric switch.
+              - transceiver: <str>
+
+                # Transceiver on the connected endpoint.
+                peer_transceiver: <str>
+
+                # Physical medium used for the link, such as SM, OM4, or Cat6.
+                media: <str>
+
+                # Identifier of the physical route between the two interfaces.
+                cable_path: <str>
 
             # Set adapter speed.
             # If not specified speed will be auto.
@@ -1247,8 +1317,26 @@
         # The default value is taken from `connected_endpoints_keys[].type`.
         type: <str>
 
-        # Rack is used for documentation purposes only.
+        # Physical building or data center facility where the endpoint is located.
+        site: <str>
+
+        # Room, floor, data hall, or cage within the site where the endpoint is located.
+        location: <str>
+
+        # Row within the location where the endpoint is located.
+        row: <str>
+
+        # Rack within the row where the endpoint is located.
         rack: <str>
+
+        # Rack unit or range of rack units occupied by the endpoint.
+        rack_unit: <str>
+
+        # Hardware platform of the endpoint.
+        platform: <str>
+
+        # Serial number of the endpoint.
+        serial_number: <str>
 
         # A list of adapters, group by adapters leveraging the same port-profile.
         adapters:
@@ -1439,6 +1527,25 @@
 
               # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
+
+            # Physical link metadata.
+            # For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.
+            # For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.
+            # Use an empty dictionary to skip a link.
+            # If this list contains fewer entries than the links, the remaining links receive no link metadata.
+            links_metadata:
+
+                # Transceiver on the fabric switch.
+              - transceiver: <str>
+
+                # Transceiver on the connected endpoint.
+                peer_transceiver: <str>
+
+                # Physical medium used for the link, such as SM, OM4, or Cat6.
+                media: <str>
+
+                # Identifier of the physical route between the two interfaces.
+                cable_path: <str>
 
             # Set adapter speed.
             # If not specified speed will be auto.
@@ -1853,8 +1960,26 @@
         # This is used in descriptions and in documentation.
         type: <str>
 
-        # Rack is used for documentation purposes only.
+        # Physical building or data center facility where the endpoint is located.
+        site: <str>
+
+        # Room, floor, data hall, or cage within the site where the endpoint is located.
+        location: <str>
+
+        # Row within the location where the endpoint is located.
+        row: <str>
+
+        # Rack within the row where the endpoint is located.
         rack: <str>
+
+        # Rack unit or range of rack units occupied by the endpoint.
+        rack_unit: <str>
+
+        # Hardware platform of the endpoint.
+        platform: <str>
+
+        # Serial number of the endpoint.
+        serial_number: <str>
 
         # A list of adapters, group by adapters leveraging the same port-profile.
         adapters:
@@ -2045,6 +2170,25 @@
 
               # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
+
+            # Physical link metadata.
+            # For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.
+            # For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.
+            # Use an empty dictionary to skip a link.
+            # If this list contains fewer entries than the links, the remaining links receive no link metadata.
+            links_metadata:
+
+                # Transceiver on the fabric switch.
+              - transceiver: <str>
+
+                # Transceiver on the connected endpoint.
+                peer_transceiver: <str>
+
+                # Physical medium used for the link, such as SM, OM4, or Cat6.
+                media: <str>
+
+                # Identifier of the physical route between the two interfaces.
+                cable_path: <str>
 
             # Set adapter speed.
             # If not specified speed will be auto.

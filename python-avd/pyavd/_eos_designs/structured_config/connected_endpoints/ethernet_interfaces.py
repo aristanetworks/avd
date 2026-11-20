@@ -46,6 +46,14 @@ class EthernetInterfacesMixin(Protocol):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    if node_index < len(adapter.links_metadata):
+                        link_metadata = adapter.links_metadata[node_index]
+                        ethernet_interface.metadata._update(
+                            transceiver=link_metadata.transceiver,
+                            peer_transceiver=link_metadata.peer_transceiver,
+                            media=link_metadata.media,
+                            cable_path=link_metadata.cable_path,
+                        )
 
                     self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
@@ -79,7 +87,7 @@ class EthernetInterfacesMixin(Protocol):
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
-            for ethernet_interface_name in range_expand(network_port.switch_ports):
+            for link_index, ethernet_interface_name in enumerate(range_expand(network_port.switch_ports)):
                 # Skip the interface if it was already created by some other feature like connected endpoints or uplinks etc.
                 if ethernet_interface_name in self.structured_config.ethernet_interfaces:
                     continue
@@ -94,6 +102,14 @@ class EthernetInterfacesMixin(Protocol):
 
                 # Using __setitem__ to replace any previous network_port.
                 ethernet_interface = self._get_ethernet_interface_cfg(network_port_as_adapter, 0, connected_endpoint)
+                if link_index < len(network_port_as_adapter.links_metadata):
+                    link_metadata = network_port_as_adapter.links_metadata[link_index]
+                    ethernet_interface.metadata._update(
+                        transceiver=link_metadata.transceiver,
+                        peer_transceiver=link_metadata.peer_transceiver,
+                        media=link_metadata.media,
+                        cable_path=link_metadata.cable_path,
+                    )
 
                 network_ports_ethernet_interfaces[ethernet_interface_name] = ethernet_interface, network_port_as_adapter.structured_config
 
@@ -234,8 +250,15 @@ class EthernetInterfacesMixin(Protocol):
             eos_cli=adapter.raw_eos_cli,
             metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                 peer=peer,
+                peer_site=connected_endpoint.site,
+                peer_location=connected_endpoint.location,
+                peer_row=connected_endpoint.row,
+                peer_rack=connected_endpoint.rack,
+                peer_rack_unit=connected_endpoint.rack_unit,
                 peer_interface=peer_interface,
                 peer_type=connected_endpoint.type,
+                peer_platform=connected_endpoint.platform,
+                peer_serial_number=connected_endpoint.serial_number,
                 port_profile=adapter.profile,
                 peer_key=connected_endpoint._internal_data.context,
                 # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file

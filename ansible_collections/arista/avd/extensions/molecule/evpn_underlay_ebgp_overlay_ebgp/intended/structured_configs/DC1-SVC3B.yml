@@ -110,6 +110,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server03_ESI
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -136,6 +137,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: server04_inherit_all_from_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -166,6 +168,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: server05_no_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -196,6 +199,7 @@ ethernet_interfaces:
   spanning_tree_portfast: network
   metadata:
     peer: server06_override_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -212,6 +216,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server07_inherit_all_from_profile_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -224,6 +229,7 @@ ethernet_interfaces:
     mode: 'on'
   metadata:
     peer: server08_no_profile_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -249,6 +255,7 @@ ethernet_interfaces:
   spanning_tree_portfast: network
   metadata:
     peer: server09_override_profile_no_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -266,6 +273,7 @@ ethernet_interfaces:
   lacp_port_priority: 32768
   metadata:
     peer: server10_no_profile_port_channel_lacp_fallback
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -278,6 +286,7 @@ ethernet_interfaces:
   lacp_port_priority: 32768
   metadata:
     peer: server11_inherit_profile_port_channel_lacp_fallback
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -291,6 +300,7 @@ ethernet_interfaces:
   lacp_port_priority: 32768
   metadata:
     peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -300,6 +310,7 @@ ethernet_interfaces:
   shutdown: true
   metadata:
     peer: server13_disabled_interfaces
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -313,6 +324,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: server14_explicitly_enabled_interfaces
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -329,6 +341,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server15_port_channel_disabled_interfaces
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers

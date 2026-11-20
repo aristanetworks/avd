@@ -72,6 +72,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: server02_SINGLE_NODE_TRUNK
+    peer_rack: RackB
     peer_interface: Eth1
     peer_type: server
     peer_key: servers
@@ -86,8 +87,15 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: server02_SINGLE_NODE
+    peer_site: Burnaby Operations Centre
+    peer_location: Hall 2
+    peer_row: C
+    peer_rack: RackB
+    peer_rack_unit: '24'
     peer_interface: Eth1
     peer_type: server
+    peer_platform: Generic 1U Server
+    peer_serial_number: SRV00005678
     peer_key: servers
     port_profile: TENANT_A
   switchport:

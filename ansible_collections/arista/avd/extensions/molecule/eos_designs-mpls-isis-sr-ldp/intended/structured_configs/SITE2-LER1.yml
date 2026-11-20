@@ -172,6 +172,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: CPE_TENANT_A_SITE2
+    peer_rack: B01
     peer_interface: eth0
     peer_type: cpe
     peer_key: cpes

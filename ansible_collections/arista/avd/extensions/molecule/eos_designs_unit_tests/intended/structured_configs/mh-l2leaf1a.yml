@@ -34,6 +34,7 @@ ethernet_interfaces:
     direction: downstream
   metadata:
     peer: server02
+    peer_rack: RackA
     peer_interface: Eth1
     peer_type: server
     peer_key: servers

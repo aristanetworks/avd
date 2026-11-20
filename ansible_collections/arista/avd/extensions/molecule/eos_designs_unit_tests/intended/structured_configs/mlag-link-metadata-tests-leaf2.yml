@@ -1,0 +1,106 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet3
+  description: MLAG_mlag-link-metadata-tests-leaf1_Ethernet7
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: mlag-link-metadata-tests-leaf1
+    peer_interface: Ethernet7
+    peer_type: mlag_peer
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
+- name: Ethernet4
+  description: MLAG_mlag-link-metadata-tests-leaf1_Ethernet8
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: mlag-link-metadata-tests-leaf1
+    peer_interface: Ethernet8
+    peer_type: mlag_peer
+- name: Ethernet5
+  description: MLAG_mlag-link-metadata-tests-leaf1_Ethernet9
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: mlag-link-metadata-tests-leaf1
+    peer_interface: Ethernet9
+    peer_type: mlag_peer
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
+- name: Ethernet6
+  description: MLAG_mlag-link-metadata-tests-leaf1_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: mlag-link-metadata-tests-leaf1
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
+hostname: mlag-link-metadata-tests-leaf2
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+mlag_configuration:
+  domain_id: MLAG_LINK_METADATA_TESTS
+  local_interface: Vlan4094
+  peer_address: 10.255.252.1
+  peer_link: Port-Channel3
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel3
+  description: MLAG_mlag-link-metadata-tests-leaf1_Port-Channel7
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: '4094'
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.255.252.0/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

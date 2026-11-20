@@ -1,0 +1,26 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: "vEOS-lab"
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: MLAG_LINK_METADATA_TESTS
+      nodes:
+        # Node order determines the primary even when hostname order differs.
+        - name: mlag-link-metadata-tests-leaf2
+          id: 1
+          mlag_interfaces: ["Ethernet3-6"]
+          mlag_interfaces_metadata:
+            - transceiver: "Arista SFP-10G-SR"
+              peer_transceiver: "Arista SFP-10G-SRL"
+              media: "OM4"
+              cable_path: "A"
+            - {}
+            - peer_transceiver: "Arista SFP-10G-LRL"
+              media: "SM"
+              cable_path: "B"
+        - name: mlag-link-metadata-tests-leaf1
+          id: 2
+          mlag_interfaces: ["Ethernet7-10"]

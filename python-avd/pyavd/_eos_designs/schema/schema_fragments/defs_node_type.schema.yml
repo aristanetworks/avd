@@ -67,10 +67,32 @@ $defs:
               Only used for documentation purpose in the fabric documentation and part of the structured_config.
               "serial_number" can also be set directly as a hostvar.
               If both are set, the setting under node type settings takes precedence.
+          site:
+            documentation_options:
+              table: node-type-location
+            description: Physical building or data center facility where the switch is located.
+            type: str
+          location:
+            documentation_options:
+              table: node-type-location
+            description: Room, floor, data hall, or cage within the site where the switch is located.
+            type: str
+          row:
+            documentation_options:
+              table: node-type-location
+            description: Row within the location where the switch is located.
+            type: str
           rack:
             documentation_options:
-              table: node-type-common-configuration
-            description: Rack that the switch is located in (only used in snmp_settings location).
+              table: node-type-location
+            description: |-
+              Rack within the row where the switch is located.
+              Used for CloudVision topology tags and SNMP location settings when enabled.
+            type: str
+          rack_unit:
+            documentation_options:
+              table: node-type-location
+            description: Rack unit or range of rack units occupied by the switch.
             type: str
           mgmt_ip:
             documentation_options:
@@ -246,6 +268,30 @@ $defs:
             items:
               type: str
               pattern: "Ethernet.*"
+          uplink_interfaces_metadata:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: |-
+              Physical link metadata.
+              Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+              Use an empty dictionary to skip an interface.
+              If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+            type: list
+            items:
+              type: dict
+              keys:
+                transceiver:
+                  type: str
+                  description: Transceiver on the downstream switch.
+                peer_transceiver:
+                  type: str
+                  description: Transceiver on the upstream switch.
+                media:
+                  type: str
+                  description: Physical medium used for the link, such as SM, OM4, or Cat6.
+                cable_path:
+                  type: str
+                  description: Identifier of the physical route between the two interfaces.
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -944,6 +990,35 @@ $defs:
             type: list
             items:
               type: str
+          mlag_interfaces_metadata:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              Physical link metadata defined from the MLAG primary node toward the MLAG secondary node.
+              Entries follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+              With CloudVision topology, metadata on the secondary node follows the discovered port connections.
+              Use an empty dictionary to skip an interface.
+              If this list contains fewer entries than the resolved MLAG interfaces, the remaining interfaces receive no link metadata.
+              Configure the metadata on the MLAG node group or the MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+              The primary node's resolved metadata is used for both ends of the link.
+              If metadata is also configured on the secondary node, it must match the primary node's metadata.
+              On the MLAG secondary node, `transceiver` and `peer_transceiver` are swapped. The `media` and `cable_path` values are the same at both ends.
+            type: list
+            items:
+              type: dict
+              keys:
+                transceiver:
+                  type: str
+                  description: Transceiver on the MLAG primary node.
+                peer_transceiver:
+                  type: str
+                  description: Transceiver on the MLAG secondary node.
+                media:
+                  type: str
+                  description: Physical medium used for the link, such as SM, OM4, or Cat6.
+                cable_path:
+                  type: str
+                  description: Identifier of the physical route between the two interfaces.
           mlag_interfaces_speed:
             documentation_options:
               table: node-type-l2-mlag-configuration

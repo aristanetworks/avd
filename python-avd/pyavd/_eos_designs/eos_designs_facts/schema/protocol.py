@@ -158,6 +158,60 @@ class EosDesignsFactsProtocol(Protocol):
 
     MlagInterfaces._item_type = str
 
+    class MlagInterfacesMetadataItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "index": {"type": int},
+            "transceiver": {"type": str},
+            "peer_transceiver": {"type": str},
+            "media": {"type": str},
+            "cable_path": {"type": str},
+        }
+        index: int
+        """Zero-based position in the MLAG primary node's resolved interface list."""
+        transceiver: str | None
+        """Transceiver on the MLAG primary node."""
+        peer_transceiver: str | None
+        """Transceiver on the MLAG secondary node."""
+        media: str | None
+        """Physical medium used for the link, such as SM, OM4, or Cat6."""
+        cable_path: str | None
+        """Identifier of the physical route between the two interfaces."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                index: int | UndefinedType = Undefined,
+                transceiver: str | UndefinedType | None = Undefined,
+                peer_transceiver: str | UndefinedType | None = Undefined,
+                media: str | UndefinedType | None = Undefined,
+                cable_path: str | UndefinedType | None = Undefined,
+            ) -> None:
+                """
+                MlagInterfacesMetadataItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    index: Zero-based position in the MLAG primary node's resolved interface list.
+                    transceiver: Transceiver on the MLAG primary node.
+                    peer_transceiver: Transceiver on the MLAG secondary node.
+                    media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                    cable_path: Identifier of the physical route between the two interfaces.
+
+                """
+
+    class MlagInterfacesMetadata(AvdIndexedList[int, MlagInterfacesMetadataItem]):
+        """Subclass of AvdIndexedList with `MlagInterfacesMetadataItem` items. Primary key is `index` (`int`)."""
+
+        _primary_key: ClassVar[str] = "index"
+
+    MlagInterfacesMetadata._item_type = MlagInterfacesMetadataItem
+
     class MlagSwitchIds(AvdModel):
         """Subclass of AvdModel."""
 
@@ -580,6 +634,10 @@ class EosDesignsFactsProtocol(Protocol):
             "speed": {"type": str},
             "bfd": {"type": bool},
             "peer_speed": {"type": str},
+            "transceiver": {"type": str},
+            "peer_transceiver": {"type": str},
+            "media": {"type": str},
+            "cable_path": {"type": str},
             "ptp": {"type": Ptp},
             "mac_security": {"type": MacSecurity},
             "underlay_multicast_pim_sm": {"type": bool},
@@ -626,6 +684,10 @@ class EosDesignsFactsProtocol(Protocol):
         bfd: bool | None
         peer_speed: PeerSpeed | None
         """Interface Speed."""
+        transceiver: str | None
+        peer_transceiver: str | None
+        media: str | None
+        cable_path: str | None
         ptp: Ptp
         """
         Enable PTP on all infrastructure links.
@@ -690,6 +752,10 @@ class EosDesignsFactsProtocol(Protocol):
                 speed: Speed | UndefinedType | None = Undefined,
                 bfd: bool | UndefinedType | None = Undefined,
                 peer_speed: PeerSpeed | UndefinedType | None = Undefined,
+                transceiver: str | UndefinedType | None = Undefined,
+                peer_transceiver: str | UndefinedType | None = Undefined,
+                media: str | UndefinedType | None = Undefined,
+                cable_path: str | UndefinedType | None = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
                 underlay_multicast_pim_sm: bool | UndefinedType | None = Undefined,
@@ -741,6 +807,10 @@ class EosDesignsFactsProtocol(Protocol):
                     speed: Interface Speed.
                     bfd: bfd
                     peer_speed: Interface Speed.
+                    transceiver: transceiver
+                    peer_transceiver: peer_transceiver
+                    media: media
+                    cable_path: cable_path
                     ptp:
                        Enable PTP on all infrastructure links.
 
@@ -1134,6 +1204,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mlag_peer": {"type": str},
         "mlag_port_channel_id": {"type": int},
         "mlag_interfaces": {"type": MlagInterfaces},
+        "mlag_interfaces_metadata": {"type": MlagInterfacesMetadata},
         "mlag_ip": {"type": str},
         "mlag_l3_ip": {"type": str},
         "mlag_switch_ids": {"type": MlagSwitchIds},
@@ -1219,6 +1290,13 @@ class EosDesignsFactsProtocol(Protocol):
     mlag_port_channel_id: int | None
     mlag_interfaces: MlagInterfaces
     """Subclass of AvdList with `str` items."""
+    mlag_interfaces_metadata: MlagInterfacesMetadata
+    """
+    Physical link metadata published by the MLAG primary node for both MLAG nodes.
+
+    Subclass of
+    AvdIndexedList with `MlagInterfacesMetadataItem` items. Primary key is `index` (`int`).
+    """
     mlag_ip: str | None
     mlag_l3_ip: str | None
     mlag_switch_ids: MlagSwitchIds
@@ -1366,6 +1444,7 @@ class EosDesignsFactsProtocol(Protocol):
             mlag_peer: str | UndefinedType | None = Undefined,
             mlag_port_channel_id: int | UndefinedType | None = Undefined,
             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+            mlag_interfaces_metadata: MlagInterfacesMetadata | UndefinedType = Undefined,
             mlag_ip: str | UndefinedType | None = Undefined,
             mlag_l3_ip: str | UndefinedType | None = Undefined,
             mlag_switch_ids: MlagSwitchIds | UndefinedType = Undefined,
@@ -1448,6 +1527,11 @@ class EosDesignsFactsProtocol(Protocol):
                 mlag_peer: mlag_peer
                 mlag_port_channel_id: mlag_port_channel_id
                 mlag_interfaces: Subclass of AvdList with `str` items.
+                mlag_interfaces_metadata:
+                   Physical link metadata published by the MLAG primary node for both MLAG nodes.
+
+                   Subclass of
+                   AvdIndexedList with `MlagInterfacesMetadataItem` items. Primary key is `index` (`int`).
                 mlag_ip: mlag_ip
                 mlag_l3_ip: mlag_l3_ip
                 mlag_switch_ids:

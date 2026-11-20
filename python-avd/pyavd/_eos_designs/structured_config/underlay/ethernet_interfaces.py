@@ -45,7 +45,15 @@ class EthernetInterfacesMixin(Protocol):
                 speed=self.structured_config_utils.get_interface_speed(link.speed),
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
-            ethernet_interface.metadata._update(peer_interface=link.peer_interface, peer=link.peer, peer_type=link.peer_type)
+            ethernet_interface.metadata._update(
+                peer_interface=link.peer_interface,
+                peer=link.peer,
+                peer_type=link.peer_type,
+                transceiver=link.transceiver,
+                peer_transceiver=link.peer_transceiver,
+                media=link.media,
+                cable_path=link.cable_path,
+            )
             # Structured Config
             if link.ethernet_structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(

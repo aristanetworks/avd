@@ -43,6 +43,10 @@ ethernet_interfaces:
     peer: dc1-l2leaf1a
     peer_interface: Ethernet1
     peer_type: l2leaf
+    transceiver: Arista SFP-10G-SRL
+    peer_transceiver: Arista SFP-10G-SR
+    media: OM4
+    cable_path: B
 - name: Ethernet8
   description: DC1-L2LEAF1B_Ethernet1
   shutdown: false
@@ -124,6 +128,10 @@ ethernet_interfaces:
     peer: dc1-l2leaf8a
     peer_interface: Ethernet1
     peer_type: l2leaf
+    transceiver: Arista SFP-10G-LRL
+    peer_transceiver: Arista SFP-10G-LR
+    media: SM
+    cable_path: A
   switchport:
     enabled: true
     mode: trunk
@@ -144,6 +152,10 @@ ethernet_interfaces:
     peer: dc1-spine1
     peer_interface: Ethernet3/1
     peer_type: spine
+    transceiver: Arista QSFP-100G-SR4
+    peer_transceiver: Arista QSFP-100G-XSR4
+    media: OM4
+    cable_path: A
   switchport:
     enabled: false
 - name: Ethernet50/1
@@ -178,6 +190,7 @@ ethernet_interfaces:
     peer: dc1-spine2
     peer_interface: Ethernet1/4/1
     peer_type: spine
+    peer_transceiver: Arista QSFP-100G-SR4
   switchport:
     enabled: false
 - name: Ethernet52/1
@@ -293,10 +306,21 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MLAG
+    peer_site: Vancouver Campus - Building A
+    peer_location: Hall 1
+    peer_row: B
+    peer_rack: RackB
+    peer_rack_unit: 12-13
     peer_interface: Eth2
     peer_type: server
+    peer_platform: Generic 2U Server
+    peer_serial_number: SRV00001234
     peer_key: servers
     port_profile: TENANT_B
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet11
   description: server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
@@ -305,6 +329,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MTU_PROFILE_MLAG
+    peer_rack: RackB
     peer_interface: Eth4
     peer_type: server
     peer_key: servers
@@ -317,6 +342,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_MTU_ADAPTOR_MLAG
+    peer_rack: RackB
     peer_interface: Eth6
     peer_type: server
     peer_key: servers
@@ -328,6 +354,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: FIREWALL01
+    peer_rack: RackB
     peer_interface: E0
     peer_type: firewall
     peer_key: firewalls
@@ -337,6 +364,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: ROUTER01
+    peer_rack: RackB
     peer_interface: Eth0
     peer_type: router
     peer_key: routers
@@ -554,7 +582,11 @@ management_interfaces:
 metadata:
   is_deployed: true
   platform: 7280R
+  site: Vancouver Campus - Building A
+  location: Hall 1
+  row: '2'
   rack: rackC
+  rack_unit: '044'
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 monitor_sessions:
 - name: MonitoringSessionServer18

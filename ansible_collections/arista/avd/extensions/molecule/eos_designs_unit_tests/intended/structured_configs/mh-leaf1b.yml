@@ -39,6 +39,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server01_ES1
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -51,6 +52,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server03_AUTO_ESI
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -63,6 +65,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server04_AUTO_ESI_Profile
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -75,6 +78,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server05_AUTO_ESI_Profile_Override
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -87,6 +91,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server06_Single_Active_Port_Channel
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -99,6 +104,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server07_Single_Active_Port_Channel_Manual_DF
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -115,6 +121,7 @@ ethernet_interfaces:
     route_target: 50:bc:ec:09:d8:de
   metadata:
     peer: server08_Single_Active_Ethernet
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -135,6 +142,7 @@ ethernet_interfaces:
     route_target: 00:dd:00:dd:00:dd
   metadata:
     peer: server09_All_Active_Ethernet
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -156,6 +164,7 @@ ethernet_interfaces:
     route_target: 38:c2:e5:c5:1c:37
   metadata:
     peer: server10_Single_Active_Ethernet_Manual_DF
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -173,6 +182,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -190,6 +200,7 @@ ethernet_interfaces:
     route_target: 28:a4:62:35:c0:2e
   metadata:
     peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -207,6 +218,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -222,6 +234,7 @@ ethernet_interfaces:
     route_target: 17:95:3e:52:05:21
   metadata:
     peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
+    peer_rack: RackA
     peer_interface: Eth2
     peer_type: server
     peer_key: servers

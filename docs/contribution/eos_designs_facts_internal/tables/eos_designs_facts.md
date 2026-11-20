@@ -51,6 +51,12 @@
     | [<samp>mlag_port_channel_id</samp>](## "mlag_port_channel_id") | Integer |  |  |  |  |
     | [<samp>mlag_interfaces</samp>](## "mlag_interfaces") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mlag_interfaces.[]") | String |  |  |  |  |
+    | [<samp>mlag_interfaces_metadata</samp>](## "mlag_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata published by the MLAG primary node for both MLAG nodes. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;index</samp>](## "mlag_interfaces_metadata.[].index") | Integer | Required, Unique |  |  | Zero-based position in the MLAG primary node's resolved interface list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver</samp>](## "mlag_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the MLAG primary node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "mlag_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the MLAG secondary node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "mlag_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "mlag_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>mlag_ip</samp>](## "mlag_ip") | String |  |  |  |  |
     | [<samp>mlag_l3_ip</samp>](## "mlag_l3_ip") | String |  |  |  |  |
     | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
@@ -83,6 +89,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "uplinks.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "uplinks.[].bfd") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_speed</samp>](## "uplinks.[].peer_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver</samp>](## "uplinks.[].transceiver") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "uplinks.[].peer_transceiver") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "uplinks.[].media") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "uplinks.[].cable_path") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "uplinks.[].ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "uplinks.[].ptp.enable") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
@@ -248,6 +258,24 @@
     mlag_port_channel_id: <int>
     mlag_interfaces:
       - <str>
+
+    # Physical link metadata published by the MLAG primary node for both MLAG nodes.
+    mlag_interfaces_metadata:
+
+        # Zero-based position in the MLAG primary node's resolved interface list.
+      - index: <int; required; unique>
+
+        # Transceiver on the MLAG primary node.
+        transceiver: <str>
+
+        # Transceiver on the MLAG secondary node.
+        peer_transceiver: <str>
+
+        # Physical medium used for the link, such as SM, OM4, or Cat6.
+        media: <str>
+
+        # Identifier of the physical route between the two interfaces.
+        cable_path: <str>
     mlag_ip: <str>
     mlag_l3_ip: <str>
 
@@ -303,6 +331,10 @@
 
         # Interface Speed.
         peer_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+        transceiver: <str>
+        peer_transceiver: <str>
+        media: <str>
+        cable_path: <str>
 
         # Enable PTP on all infrastructure links.
         ptp:

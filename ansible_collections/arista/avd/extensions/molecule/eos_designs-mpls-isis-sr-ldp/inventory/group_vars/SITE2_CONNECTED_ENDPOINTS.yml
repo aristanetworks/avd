@@ -14,4 +14,4 @@ cpes:
           - Ethernet8
         switches:
           - SITE2-LER1
-    rack: Undefined
+    rack: "B01"

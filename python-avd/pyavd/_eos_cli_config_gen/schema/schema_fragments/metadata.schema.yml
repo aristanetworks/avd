@@ -19,8 +19,20 @@ keys:
         type: str
       system_mac_address:
         type: str
+      site:
+        type: str
+        description: Physical building or data center facility where the switch is located.
+      location:
+        type: str
+        description: Room, floor, data hall, or cage within the site where the switch is located.
+      row:
+        type: str
+        description: Row within the location where the switch is located.
       rack:
         type: str
+      rack_unit:
+        type: str
+        description: Rack unit or range of rack units occupied by the switch.
       pod_name:
         type: str
       dc_name:
