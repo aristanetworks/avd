@@ -49,13 +49,20 @@ class DeviceConfigMixin(Protocol):
             return device_config
 
         if device_profile.parent_profile:
-            if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
+            if not (parent_profile_item := self.inputs.device_profiles.get(device_profile.parent_profile)):
                 msg = (
                     f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
                     "does not exist under 'device_profiles'."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-            resolved_profile._deepinherit(parent_profile)
+            if parent_profile_item.parent_profile:
+                self.emit_warning_for_grandparent_profile(
+                    parent_profile=parent_profile_item.name,
+                    context=f"device_profiles[name={parent_profile_item.name}]",
+                    profile=device_profile.name,
+                    location=f"devices[name={self.hostname}] or device_profile",
+                )
+            resolved_profile._deepinherit(parent_profile_item)
 
         device_config._deepinherit(resolved_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
         return device_config

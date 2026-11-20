@@ -1,0 +1,1 @@
+Profile 'profile1' applied under 'servers[name=port-profiles-chain].adapters[0]' has a parent profile 'profile2' having a parent_profile set under port_profiles[profile=profile2]. Set 'avd_design_future.allow_recursive_profile_inheritance' to inherit through multiple levels, or remove the 'parent_profile' from port_profiles[profile=profile2] for host 'dc1-svc3a'
