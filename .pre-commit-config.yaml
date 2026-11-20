@@ -139,7 +139,7 @@ repos:
           - 'pyavd-utils-gen==0.0.14'
           - 'pytest>=9.2.0'
           - 'pyyaml>=6.0.3'
-          - 'referencing>=0.35.0'
+          - 'referencing>=0.37.0'
           - 'ruff==0.17.5'
           - 'setuptools>=82.0.1'
 
@@ -302,7 +302,7 @@ repos:
           - jsonschema-rs>=0.61.2
           - PyYAML>=6.0.3
           - pyavd-utils-gen==0.0.14
-          - referencing>=0.35.0
+          - referencing>=0.37.0
           - ruff==0.17.5
 
       - id: check-schema-tables-in-docs
@@ -337,7 +337,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.1.6', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: c01a1853c19b175aee6a09f24e2ad9b748c485ad  # frozen: v0.24.1
+    rev: d4df4cec471ce155946474590d7b95920f623ccb  # frozen: v0.24.2
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
