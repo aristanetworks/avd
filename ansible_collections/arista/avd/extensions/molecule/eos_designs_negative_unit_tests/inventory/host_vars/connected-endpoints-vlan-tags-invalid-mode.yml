@@ -1,0 +1,25 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-vlan-tags-invalid-mode
+
+port_profiles:
+  - profile: TAGGED_ACCESS
+    mode: access
+    vlan_tags: [ESX]
+
+servers:
+  - name: server_1
+    adapters:
+      - switches: [connected-endpoints-vlan-tags-invalid-mode]
+        switch_ports: [Ethernet1]
+        profile: TAGGED_ACCESS
+
+tenants:
+  - name: TENANT_A
+    l2vlans:
+      - id: 600
+        name: L2VLAN_ESX
+        tags: [ESX]

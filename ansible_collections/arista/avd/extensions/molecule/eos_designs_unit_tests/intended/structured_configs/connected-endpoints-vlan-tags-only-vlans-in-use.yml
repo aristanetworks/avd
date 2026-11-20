@@ -1,0 +1,68 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: vlan_tags=[ESX] -> 110,600 (701 is in TENANT_B which is filtered out)
+  shutdown: false
+  metadata:
+    peer: esx
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110,600
+- name: Ethernet2
+  description: access vlan 200
+  shutdown: false
+  metadata:
+    peer: access
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 200
+hostname: connected-endpoints-vlan-tags-only-vlans-in-use
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: SVI_ESX_IN_USE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 200
+  name: L2VLAN_ACCESS_IN_USE
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 600
+  name: L2VLAN_ESX_IN_USE
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false

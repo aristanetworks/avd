@@ -1,0 +1,54 @@
+---
+# Testing 'vlan_tags' together with 'filter.only_vlans_in_use'.
+# VLANs matching 'vlan_tags' on any port are considered in use and configured.
+# Other VLANs are not configured unless used elsewhere.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-vlan-tags-only-vlans-in-use
+      mgmt_ip: 192.168.0.2/24
+      filter:
+        only_vlans_in_use: true
+        tenants: [TENANT_A]
+
+servers:
+  - name: esx
+    adapters:
+      - switches: [connected-endpoints-vlan-tags-only-vlans-in-use]
+        switch_ports: [Ethernet1]
+        mode: trunk
+        vlan_tags: [ESX]
+        description: vlan_tags=[ESX] -> 110,600 (701 is in TENANT_B which is filtered out)
+  - name: access
+    adapters:
+      - switches: [connected-endpoints-vlan-tags-only-vlans-in-use]
+        switch_ports: [Ethernet2]
+        mode: access
+        vlans: "200"
+        description: access vlan 200
+
+tenants:
+  - name: TENANT_A
+    vrfs:
+      - name: VRF_A
+        svis:
+          - id: 110
+            name: SVI_ESX_IN_USE
+            tags: [ESX]
+          - id: 111
+            name: SVI_NOT_IN_USE
+            tags: [OTHER]
+    l2vlans:
+      - id: 200
+        name: L2VLAN_ACCESS_IN_USE
+      - id: 600
+        name: L2VLAN_ESX_IN_USE
+        tags: [ESX]
+      - id: 601
+        name: L2VLAN_NOT_IN_USE
+        tags: [OTHER]
+  - name: TENANT_B
+    l2vlans:
+      - id: 701
+        name: L2VLAN_ESX_FILTERED_TENANT
+        tags: [ESX]

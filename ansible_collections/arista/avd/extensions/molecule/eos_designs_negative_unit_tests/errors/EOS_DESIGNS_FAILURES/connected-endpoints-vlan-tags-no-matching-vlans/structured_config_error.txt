@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: No VLANs configured on this device match 'vlan_tags: [UNKNOWN_TAG]'. Found under 'servers[name=server_1].adapters[0]'.
