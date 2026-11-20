@@ -25,9 +25,8 @@ class ManagementInterfaceMixin(Protocol):
             return
 
         interface_settings.ip_address = mgmt_ip
-        if mgmt_ip == "dhcp":
-            if self.shared_utils.mgmt_ip_dhcp_accept_default_route:
-                interface_settings.dhcp_client_accept_default_route = True
+        if mgmt_ip == "dhcp" and self.shared_utils.mgmt_ip_dhcp_accept_default_route:
+            interface_settings.dhcp_client_accept_default_route = True
             return
 
         # For static IP, set gateway (metadata field, actual routing done via static_routes)
@@ -44,9 +43,12 @@ class ManagementInterfaceMixin(Protocol):
             interface_settings.ipv6_address_auto_config = True
             if self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route:
                 interface_settings.ipv6_nd.ra.rx_accept._update(default_route=True, route_preference=True)
+                return
+
         else:
-            interface_settings.ipv6_gateway = self.shared_utils.ipv6_mgmt_gateway
             interface_settings.ipv6_addresses.append(ipv6_mgmt_ip)
+
+        interface_settings.ipv6_gateway = self.shared_utils.ipv6_mgmt_gateway
 
     @structured_config_contributor
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:

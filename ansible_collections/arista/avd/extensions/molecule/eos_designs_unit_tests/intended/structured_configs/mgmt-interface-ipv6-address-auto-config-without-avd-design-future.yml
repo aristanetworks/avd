@@ -21,6 +21,7 @@ management_interfaces:
   ipv6_enable: true
   ipv6_address_auto_config: true
   type: oob
+  ipv6_gateway: 0200::1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
