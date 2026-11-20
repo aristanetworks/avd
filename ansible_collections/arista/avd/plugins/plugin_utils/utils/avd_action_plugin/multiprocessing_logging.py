@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from logging.handlers import QueueListener
 from typing import TYPE_CHECKING, TextIO
 
+from pyavd._errors import AvdFutureBehaviorWarning
+
 from .log_handlers import LogContextFilter
 
 if TYPE_CHECKING:
@@ -86,7 +88,7 @@ def forward_worker_warnings(queue: Queue | None) -> Generator[None, None, None]:
         queue.put_nowait(
             WarningEvent(
                 message=str(message),
-                is_deprecation=issubclass(category, DeprecationWarning),
+                is_deprecation=issubclass(category, (DeprecationWarning, AvdFutureBehaviorWarning)),
                 version=str(version) if version is not None else None,
                 date=str(date) if date is not None else None,
             )

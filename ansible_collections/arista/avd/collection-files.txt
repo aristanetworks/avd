@@ -242,6 +242,10 @@ examples/single-dc-l3ls-ipv6/clab/interface_mapping.json
 examples/single-dc-l3ls-ipv6/clab/topology.clab.yml
 examples/single-dc-l3ls-ipv6/deploy-cvp.yml
 examples/single-dc-l3ls-ipv6/deploy.yml
+examples/single-dc-l3ls-ipv6/errors/FABRIC/dc1-leaf1a/structured_config_deprecations.txt
+examples/single-dc-l3ls-ipv6/errors/FABRIC/dc1-leaf1b/structured_config_deprecations.txt
+examples/single-dc-l3ls-ipv6/errors/FABRIC/dc1-leaf2a/structured_config_deprecations.txt
+examples/single-dc-l3ls-ipv6/errors/FABRIC/dc1-leaf2b/structured_config_deprecations.txt
 examples/single-dc-l3ls-ipv6/group_vars/CONNECTED_ENDPOINTS/connected_endpoints.yml
 examples/single-dc-l3ls-ipv6/group_vars/DC1/dc1.yml
 examples/single-dc-l3ls-ipv6/group_vars/DC1_L2_LEAVES/l2_leaves.yml

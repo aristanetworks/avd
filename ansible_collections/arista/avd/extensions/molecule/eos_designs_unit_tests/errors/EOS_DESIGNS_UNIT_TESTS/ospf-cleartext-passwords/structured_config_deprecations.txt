@@ -1,0 +1,1 @@
+pyavd._errors.AvdFutureBehaviorWarning: Host 'ospf-cleartext-passwords': L3 Port-Channel at path 'tenants[name=Tenant_OSPF].vrfs[name=Tenant_OSPF_VRF_LEVEL_SIMPLE_ENCRYPTION].l3_port_channels[name=Port-Channel1111]' must have at least one member interface defined. This configuration is deprecated and will no longer be supported in AVD 7.0.0.
