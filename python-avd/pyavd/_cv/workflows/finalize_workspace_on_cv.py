@@ -27,11 +27,14 @@ from .models import (
 )
 
 if TYPE_CHECKING:
+    from pyavd._cv.api.arista.workspace.v1 import Response, Workspace
     from pyavd._cv.client import CVClient
 
     from .models import CVWorkspace
 
 LOGGER = getLogger(__name__)
+
+MAXIMUM_WORKSPACE_BUILD_RETRIES = 5
 
 WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
     WorkspaceState.ABANDONED: "abandoned",
@@ -55,8 +58,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
     if workspace.requested_state in (workspace.state, "pending"):
         return
 
-    workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
-    build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    build_result, cv_workspace = await build_workspace_on_cv(workspace_id=workspace.id, cv_client=cv_client)
     # Check if Workspace needs to be synchronized/rebased after the build attempt
     if cv_workspace.needs_rebase:
         # Return to initiate Workspace sync/rebase procedure
@@ -64,15 +66,20 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
     workspace.build_id = cv_workspace.last_build_id
     workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
-    if build_result.status != ResponseStatus.SUCCESS:
+    if build_result.status != ResponseStatus.SUCCESS or cv_workspace.needs_build is True:
         workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         if workspace.requested_state == "abandoned":
             await cv_client.abandon_workspace(workspace_id=workspace.id)
             workspace.state = "abandoned"
             LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.id)
+        failure_reason = (
+            f"Workspace still needs a build after {MAXIMUM_WORKSPACE_BUILD_RETRIES + 1} successful build attempts"
+            if build_result.status == ResponseStatus.SUCCESS
+            else str(build_result)
+        )
         msg = (
-            f"Failed to build workspace {workspace.id}: {build_result}. "
+            f"Failed to build workspace {workspace.id}: {failure_reason}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
         raise CVWorkspaceBuildFailed(msg)
@@ -145,6 +152,46 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
 
     return
+
+
+async def build_workspace_on_cv(workspace_id: str, cv_client: CVClient, max_retries: int = MAXIMUM_WORKSPACE_BUILD_RETRIES) -> tuple[Response, Workspace]:
+    """
+    Build a Workspace and retry when concurrent CloudVision Workspace changes require another build.
+
+    Retry only when the build response status is SUCCESS and Workspace.needs_build is True.
+    Return if the Workspace needs a rebase or the retry limit is reached.
+
+    Parameters:
+        workspace_id: Unique identifier for the Workspace.
+        cv_client: CVClient.
+        max_retries: Maximum number of retries after the initial build. Total attempts = 1 + max_retries.
+
+    Returns:
+        Tuple of the final Response object and full Workspace object.
+    """
+    build_attempt = 0
+    while True:
+        build_attempt += 1
+        workspace_config = await cv_client.build_workspace(workspace_id=workspace_id)
+        build_result, cv_workspace = await cv_client.wait_for_workspace_response(
+            workspace_id=workspace_id,
+            request_id=workspace_config.request_params.request_id,
+        )
+        if (
+            # Workspace needs to be rebased before retrying to build
+            cv_workspace.needs_rebase
+            or build_result.status != ResponseStatus.SUCCESS
+            or cv_workspace.needs_build is not True
+            or build_attempt >= max_retries + 1
+        ):
+            return build_result, cv_workspace
+
+        LOGGER.debug(
+            "build_workspace_on_cv: Workspace %s still needs a build after a successful build response. Starting build attempt %s/%s.",
+            workspace_id,
+            build_attempt + 1,
+            max_retries + 1,
+        )
 
 
 def _prepare_build_warnings_suppress_patterns(

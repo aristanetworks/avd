@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
+from collections import defaultdict
 from hashlib import sha1
 from logging import getLogger
 from os import environ
@@ -32,6 +33,9 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 RECORDING_DIR = Path(__file__).parent / "api_recordings"
+# RECORDING_FILE_CALLS_PER_REQUEST_TRACKER persists across tests in the same process.
+# Mock it with monkeypatch.setattr to reset tracker with a fresh defaultdict(int) for each test
+RECORDING_FILE_CALLS_PER_REQUEST_TRACKER: defaultdict[Path, int] = defaultdict(int)
 
 
 def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:
@@ -53,8 +57,18 @@ def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | Non
 
 
 def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
+    """
+    Select a recording path, adding a per-request suffix when UNIQUE_FILES_FOR_REPETITIVE_CALLS environment variable is set.
+
+    Unique per-call recording files are required in cases where calling side makes multiple repetitive calls targeting same request path
+    but each such call expects unique response(s).
+    Example: multiple build attempts for the same Workspace.
+    """
     digest = sha1(str(request).encode("UTF-8"), usedforsecurity=False).hexdigest()
     recording_file = recording_dir / Path(route.strip("/")) / cv_server / f"{digest}.json"
+    if environ.get("UNIQUE_FILES_FOR_REPETITIVE_CALLS"):
+        RECORDING_FILE_CALLS_PER_REQUEST_TRACKER[recording_file] += 1
+        recording_file = recording_file.with_stem(f"{digest}_{RECORDING_FILE_CALLS_PER_REQUEST_TRACKER[recording_file]}")
     LOGGER.debug("get_recording_file:\nRoute: '%s'\nRequest: '%s'\nRecording file: '%s'", route, request, recording_file)
     if environ.get("RECORDING"):
         recording_file.parent.mkdir(parents=True, exist_ok=True)

@@ -6,20 +6,20 @@ from __future__ import annotations
 import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
-from logging import INFO
-from typing import TYPE_CHECKING, Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from logging import DEBUG, INFO
+from typing import TYPE_CHECKING, Any, Literal
+from unittest.mock import AsyncMock, MagicMock, call, patch
 
 import pytest
 
-from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
+from pyavd._cv.api.arista.workspace.v1 import RequestParams, Response, ResponseCode, ResponseStatus, Workspace, WorkspaceConfig
 from pyavd._cv.client.exceptions import (
     CVWorkspaceBuildFailed,
     CVWorkspaceSubmitFailed,
     CVWorkspaceSubmitFailedInactiveDevices,
     CVWorkspaceSynchronizationFailed,
 )
-from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv, rebase_workspace_on_cv
+from pyavd._cv.workflows.finalize_workspace_on_cv import build_workspace_on_cv, finalize_workspace_on_cv, rebase_workspace_on_cv
 from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVWorkspace, DeployToCvResult
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
@@ -704,3 +704,104 @@ async def test_finalize_workspace_on_cv_submit_synchronization_required() -> Non
     assert result is None
     assert workspace.synchronization_required is True
     assert workspace.state == "submit failed"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    # Mocked Response.status, Workspace.needs_build, Workspace.needs_rebase and expected_attempts
+    ("build_status", "needs_build", "needs_rebase", "expected_attempts"),
+    [
+        pytest.param(ResponseStatus.SUCCESS, False, False, 1, id="SUCCESS_NO_REBUILDS"),
+        pytest.param(ResponseStatus.SUCCESS, None, False, 1, id="NEEDS_BUILD_UNSET"),
+        pytest.param(ResponseStatus.FAIL, True, False, 1, id="FAILED_BUILD"),
+        pytest.param(ResponseStatus.SUCCESS, True, True, 1, id="REBASE_REQUIRED"),
+        pytest.param(ResponseStatus.SUCCESS, True, False, 6, id="RETRIES_EXHAUSTED"),
+    ],
+)
+async def test_build_workspace_on_cv_retry_conditions(
+    caplog: pytest.LogCaptureFixture,
+    build_status: ResponseStatus,
+    needs_build: bool | None,
+    needs_rebase: bool,
+    expected_attempts: int,
+) -> None:
+    """Test that only successful builds requiring another build trigger build retry logic."""
+    mock_workspace_configs = [WorkspaceConfig(request_params=RequestParams(request_id=f"req-build-{attempt}")) for attempt in range(1, expected_attempts + 1)]
+    mock_build_response = Response(status=build_status)
+    mock_cv_workspace = Workspace(last_build_id=mock_workspace_configs[-1].request_params.request_id, needs_build=needs_build, needs_rebase=needs_rebase)
+    mock_client = AsyncMock()
+    mock_client.build_workspace.side_effect = mock_workspace_configs
+    mock_client.wait_for_workspace_response.return_value = (mock_build_response, mock_cv_workspace)
+
+    with caplog.at_level(DEBUG):
+        build_result, cv_workspace = await build_workspace_on_cv(workspace_id=MOCKED_WORKSPACE_ID, cv_client=mock_client)
+
+    assert mock_client.build_workspace.await_args_list == [call(workspace_id=MOCKED_WORKSPACE_ID)] * expected_attempts
+    assert mock_client.wait_for_workspace_response.await_args_list == [
+        call(workspace_id=MOCKED_WORKSPACE_ID, request_id=workspace_config.request_params.request_id) for workspace_config in mock_workspace_configs
+    ]
+    assert build_result is mock_build_response
+    assert cv_workspace is mock_cv_workspace
+    assert build_result.status == build_status
+    assert cv_workspace.needs_build is needs_build
+    assert cv_workspace.needs_rebase is needs_rebase
+
+    # Assert that log messages match expected log patterns
+    log_patterns = [
+        rf"build_workspace_on_cv: Workspace {MOCKED_WORKSPACE_ID}.*Starting build attempt {attempt}/6\." for attempt in range(2, expected_attempts + 1)
+    ]
+    for expected_pattern in log_patterns:
+        assert any(re.search(re.compile(expected_pattern), str(record.message)) for record in caplog.records)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("workspace_requested_state", "workspace_expected_state"),
+    [
+        pytest.param("built", "build failed", id="BUILT"),
+        pytest.param("submitted", "build failed", id="SUBMITTED"),
+        pytest.param("abandoned", "abandoned", id="ABANDONED"),
+        pytest.param("deleted", "build failed", id="DELETED"),
+    ],
+)
+async def test_finalize_workspace_on_cv_rebuild_retries_exhausted(
+    caplog: pytest.LogCaptureFixture,
+    workspace_requested_state: Literal["built", "submitted", "abandoned", "deleted"],
+    workspace_expected_state: str,
+) -> None:
+    """Test that a Workspace still requiring a build after all retries are exhausted raises CVWorkspaceBuildFailed."""
+    mock_workspace_configs = [WorkspaceConfig(request_params=RequestParams(request_id=f"req-build-{attempt}")) for attempt in range(1, 7)]
+    mock_build_response = Response(status=ResponseStatus.SUCCESS)
+    mock_cv_workspace = Workspace(last_build_id="req-build-6", needs_build=True, needs_rebase=False)
+    mock_client = AsyncMock()
+    mock_client._servers = ["www.cv-staging.corp.arista.io"]
+    mock_client.build_workspace.side_effect = mock_workspace_configs
+    mock_client.wait_for_workspace_response.return_value = (mock_build_response, mock_cv_workspace)
+    mock_client.get_workspace_build_details.return_value = []
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=MOCKED_WORKSPACE_ID, requested_state=workspace_requested_state))
+    warnings = []
+
+    with (
+        caplog.at_level(INFO),
+        pytest.raises(CVWorkspaceBuildFailed, match="Workspace still needs a build after 6 successful build attempts") as exception_info,
+    ):
+        await finalize_workspace_on_cv(workspace=workspace, cv_client=mock_client, devices=[], warnings=warnings)
+
+    assert workspace.state == workspace_expected_state
+    assert workspace.build_id == "req-build-6"
+    assert not workspace.device_build_results
+    assert workspace.synchronization_required is False
+    assert not warnings
+    assert mock_client.build_workspace.await_args_list == [call(workspace_id=MOCKED_WORKSPACE_ID)] * 6
+    assert mock_client.wait_for_workspace_response.await_args_list == [
+        call(workspace_id=MOCKED_WORKSPACE_ID, request_id=workspace_config.request_params.request_id) for workspace_config in mock_workspace_configs
+    ]
+    mock_client.get_workspace_build_details.assert_awaited_once_with(workspace_id=MOCKED_WORKSPACE_ID, build_id="req-build-6")
+    mock_client.submit_workspace.assert_not_awaited()
+    mock_client.delete_workspace.assert_not_awaited()
+    if workspace_requested_state == "abandoned":
+        mock_client.abandon_workspace.assert_awaited_once_with(workspace_id=MOCKED_WORKSPACE_ID)
+    else:
+        mock_client.abandon_workspace.assert_not_awaited()
+    assert f"https://www.cv-staging.corp.arista.io/cv/provisioning/workspaces?ws={MOCKED_WORKSPACE_ID}" in str(exception_info.value)
+    assert any(re.search(re.compile("finalize_workspace_on_cv: .*build failed"), str(record.message)) for record in caplog.records)
