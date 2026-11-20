@@ -29,3 +29,5 @@ inventory_file = "inventory/hosts.yml"
 [documentation]
 topology_csv = true
 p2p_links_csv = true
+include_vrf_summary = true
+include_bgp_peer_groups = true

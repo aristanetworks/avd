@@ -377,6 +377,11 @@ router_bgp:
     password: SHsTgDgjVUU5a9blyxSt3Q==
     send_community: all
     maximum_routes: 0
+  - name: DOCUMENTATION-EBGP-PEERS
+    remote_as: '65101'
+    update_source: Loopback0
+    bfd: true
+    send_community: all
   neighbors:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS

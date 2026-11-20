@@ -1,0 +1,20 @@
+---
+# Test fabric documentation when a shared peer group and VRF have node-specific settings.
+custom_structured_configuration_router_bgp:
+  peer_groups:
+    - name: DOCUMENTATION-EBGP-PEERS
+      remote_as: '65102'
+      update_source: Ethernet1
+      bfd: false
+      send_community: standard
+  vrfs:
+    - name: TENANT_B_WAN
+      route_targets:
+        import:
+          - address_family: vpn-ipv4
+            route_targets:
+              - '65000:120'
+        export:
+          - address_family: vpn-ipv4
+            route_targets:
+              - '65000:220'
