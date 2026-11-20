@@ -114,17 +114,22 @@
       "commitMessagePrefix": "CI: ",
       "rangeStrategy": "bump"
     },
-    // Raising Ansible floors or the collection-files builder pin to 2.22 would
-    // prevent hook installation on contributor Python 3.11/3.12 environments.
-    // The doc extractor also needs its <2.19 compatibility cap. Review upgrades
-    // manually until extractor compatibility and local hook support are resolved.
-    // This is temporary: the extractor's old Ansible will also age out of newer Python.
-    // See https://github.com/aristanetworks/avd/pull/7750.
+    // Propose support for new Ansible releases without dropping older Python/Ansible combinations.
     {
-      "description": "Manage pre-commit Ansible constraints manually",
+      "description": "Widen supported Ansible ranges without raising their minimum",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["ansible-core"],
+      "rangeStrategy": "widen"
+    },
+    // Keep the doc extractor on compatible 2.18.x releases until its newer-Ansible issues are fixed.
+    // See https://github.com/xlab-steampunk/ansible-doc-extractor/issues/34.
+    {
+      "description": "Keep doc extractor Ansible updates within 2.18",
       "matchManagers": ["pre-commit"],
       "matchPackageNames": ["ansible-core"],
-      "enabled": false
+      "matchCurrentValue": "/^~=2\\.18\\./",
+      "allowedVersions": ">=2.18.0,<2.19.0",
+      "rangeStrategy": "bump"
     },
     {
       "description": "Maintain Ansible Galaxy collection requirements",
