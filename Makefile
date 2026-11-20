@@ -145,7 +145,7 @@ schema-explorer-build: ## Build the Schema Explorer (static assets + SQLite) int
 		--avd-root . --site-dir $(SCHEMA_EXPLORER_BUILD)
 
 .PHONY: docs-serve
-docs-serve: ## Run `mkdocs serve` on http://127.0.0.1:8000. The Schema Explorer hook builds its own cache outside the watched repo tree.
+docs-serve: ## Run `mkdocs serve` on http://127.0.0.1:8000. The Schema Explorer rebuilds into MkDocs' temporary site directory.
 	uv run --group doc mkdocs serve --dev-addr=127.0.0.1:8000 -f mkdocs.yml
 
 .PHONY: docs-serve-docker

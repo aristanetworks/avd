@@ -46,75 +46,84 @@ The Markdown formatter renders the block as a `<schema-explorer>` custom element
 
 ## Components
 
-| Path                                                                    | What it is                                                                                                                                                                                   |
-| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tools/schema-explorer/generate.py`                                     | CLI: loads the YAML schemas and metaschema, resolves them through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, and copies the SPA assets.                         |
-| `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                    |
-| `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                              |
-| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts.                    |
-| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — auto-builds a cache outside the repo tree, registers the SPA CSS/JS loader, and copies the built SPA into `<site_dir>/_assets/schema-explorer/`. |
-| `tools/schema_explorer_markdown.py`                                     | Markdown formatter registered through `pymdownx.superfences`; converts `schema-explorer` fenced blocks into `<schema-explorer>` custom elements.                                             |
-| `tools/schema-explorer/build/`                                          | **Gitignored.** Manual output of `make schema-explorer-build`; not used by the MkDocs hook.                                                                                                  |
-| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                                       |
-| `development/entrypoint.sh`                                             | Webdoc container entrypoint — installs docs dependencies and starts `mkdocs serve`; the hook builds the explorer cache.                                                                      |
-| `mkdocs.yml` (`markdown_extensions:`, `hooks:`, `exclude_docs:`)        | Registers the Markdown formatter and hook; excludes `tools/*` from the docs build.                                                                                                           |
-| `pyproject.toml` (`doc` group)                                          | Build-time deps for the generator.                                                                                                                                                           |
+| Path                                                                    | What it is                                                                                                                                                                |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tools/schema-explorer/generate.py`                                     | CLI: exports field rows using pyavd-utils-gen, imports JSONL into `schema.sqlite`, and copies the SPA assets.                                                             |
+| `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                 |
+| `tools/schema-explorer/static/css/style.css`                            | Schema Explorer styles + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                           |
+| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. Lazy-loads runtime JS and icon CSS only when the explorer mounts. |
+| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — registers the SPA CSS/JS loader and rebuilds the SPA directly into `<site_dir>/_assets/schema-explorer/`.                     |
+| `tools/schema_explorer_markdown.py`                                     | Markdown formatter registered through `pymdownx.superfences`; converts `schema-explorer` fenced blocks into `<schema-explorer>` custom elements.                          |
+| `tools/schema-explorer/build/`                                          | **Gitignored.** Manual output of `make schema-explorer-build`; not used by the MkDocs hook.                                                                               |
+| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                    |
+| `development/entrypoint.sh`                                             | Webdoc container entrypoint — installs docs dependencies and starts `mkdocs serve`; the hook rebuilds the explorer in MkDocs output.                                      |
+| `mkdocs.yml` (`markdown_extensions:`, `hooks:`, `exclude_docs:`)        | Registers the Markdown formatter and hook; excludes `tools/*` from the docs build.                                                                                        |
+| `pyproject.toml` (`doc` group)                                          | Build-time deps for the generator.                                                                                                                                        |
 
 ## Build pipeline
 
 ```text
-        combined YAML schemas + metaschema
-                          │
-                          ▼
- mkdocs build / serve  →  mkdocs_hook.py  →  generate.py  ──►  temp cache outside repo/
-                                                                    ├── index.html
-                                                                    ├── css/style.css
-                                                                    ├── js/app.js
-                                                                    └── data/schema.sqlite
-                                                                           │
-                                                                           ▼
-                                                         <site_dir>/_assets/schema-explorer/
-                                                         ├── index.html
-                                                         ├── css/style.css
-                                                         ├── js/app.js
-                                                         └── data/schema.sqlite
+ combined YAML schemas
+          │
+          ▼
+ mkdocs build / serve → on_post_build → generate.py
+                                            │
+                                            ▼
+                         <site_dir>/_assets/schema-explorer/
+                         ├── index.html
+                         ├── css/style.css
+                         ├── js/app.js
+                         └── data/schema.sqlite
 ```
 
-Two key invariants:
+The explorer is rebuilt on every documentation build, directly into MkDocs'
+`site_dir`. MkDocs cleans that directory before a normal build. During
+`mkdocs serve`, MkDocs supplies a temporary output directory outside the watched
+repository and removes it when the server exits. The hook needs no separate
+cache or staging directory.
 
-- **MkDocs does not write intermediate assets under the repo tree.** The hook
-  builds into a temp cache outside the repository and copies the result into the
-  *built* site. This avoids `mkdocs serve` seeing its own generated files when
-  `docs_dir` is `.`.
-- **Assets live under `_assets/`, not `docs/`.** The explorer is a shared
-  site-wide resource embedded across many doc pages, so it lives at a path
-  that says so. The hook registers only the SPA's own CSS and JS loader globally;
-  Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only when the
-  explorer actually mounts.
+Assets live under `_assets/` as a shared resource for embedded explorers and the
+standalone page. The hook registers only the SPA's CSS and JS loader globally;
+Bootstrap Icons, Bootstrap JS, and sql.js are loaded when an explorer mounts.
 
 ### What `generate.py` does
 
-Loads unresolved schemas directly from the checked-in source files:
+Passes the combined source schemas to `pyavd_utils_gen.schema_generation.generate_schema_explorer_jsonl_from_paths`:
 
 - `python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml`
 - `python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml`
-- `python-avd/pyavd/_schema/avd_meta_schema.json` for the resolver's metaschema
 
 It does not read or regenerate `schemas.json.gz`, `schemas.rkyv`, or the
-resolved schema pickles. Keeping the explorer on the combined YAML sources
-avoids the archive metaschema mismatch while preserving the docs-shaped trees.
+resolved schema pickles. The generator compiles the source schemas in memory;
+it does not require the authoring metaschema. Generation does not alter the
+runtime validation archive.
 
-Then each module is processed through pyavd's `schema_tools` resolver so:
+The generator exports one JSONL row per visible field occurrence:
 
 - `dynamic_keys` placeholders (`<node_type_keys.key>`,
   `<connected_endpoints_keys.key>`, …) are fully expanded.
 - Same-schema `$ref` blocks are resolved.
-- Cross-schema `$ref` with `documentation_options.hide_keys: true` (for example
-  `structured_config` → `eos_cli_config_gen#`) is neutralized before resolution
-  and surfaced as a `cross_ref` column on the leaf row, matching generated schema
-  tables. Other cross-schema `$ref` values (for example reuse under
+- Dictionary `documentation_options.hide_keys: true` stops child traversal,
+  including for local schemas, same-schema references, and dictionary list items.
+  The dictionary's effective properties are retained. Hidden cross-schema
+  references (for example `structured_config` → `eos_cli_config_gen#`) also
+  appear as a `cross_ref` link. Other cross-schema `$ref` values (for example reuse under
   `aaa_settings.authentication.login`) are resolved so children appear under the
   `eos_designs` path in reference and YAML views.
+- List-item dictionaries supply path, primary-key, and documentation-table
+  context without producing their own rows. Deprecated lists retain item
+  restrictions. Removed fields remain in the reference database and are
+  excluded from browser-generated YAML examples.
+
+The script streams those rows into SQLite in their exported order, preserving
+schema-order row IDs. Defaults and constraints are encoded as JSON text columns.
+It owns the database tables and indexes; schema interpretation lives in
+pyavd-utils-gen. The JSONL and intermediate database live in a temporary
+directory. A successful build replaces only the requested database, never
+cleans its parent directory, and leaves the old database intact on failure.
+
+Browser presentation remains in the static assets:
+
 - Reference search keeps the hierarchical nav (segment labels and indentation),
   loads ancestor rows for each match, auto-expands branches on the path, and
   mutes ancestor-only rows that matched only as context.
@@ -129,21 +138,17 @@ Then each module is processed through pyavd's `schema_tools` resolver so:
 
 Two callbacks:
 
-- **`on_config`** — auto-builds a temp/cache Schema Explorer when the SQLite
-  artifact is missing or stale, then appends the SPA's `style.css` and `app.js`
-  to `extra_css` / `extra_javascript`. Every page gets the lightweight loader;
-  `app.js` no-ops on pages without a `<schema-explorer>` element or a standalone
-  `#app` mount. Bootstrap Icons, Bootstrap JS, and sql.js are lazy-loaded only
-  when the explorer mounts, and Bootstrap's full CSS is kept to the standalone
-  `static/index.html` page.
-- **`on_post_build`** — copies the hook cache into
-  `<site_dir>/_assets/schema-explorer/` so the generated site serves the SPA,
-  static assets, and SQLite database from one shared location.
+- **`on_config`** — registers the Markdown fence formatter and appends the SPA's
+  `style.css` and `app.js` to `extra_css` / `extra_javascript`. Every page gets
+  the lightweight loader; `app.js` does nothing on pages without an explorer.
+  Bootstrap Icons, Bootstrap JS, and sql.js are loaded when an explorer mounts.
+- **`on_post_build`** — runs `generate.py` on every build to write the SPA assets
+  and SQLite database directly into `<site_dir>/_assets/schema-explorer/`.
 
 ## Local development
 
 ```bash
-# Run `mkdocs serve`; the hook builds the explorer cache on demand
+# Run `mkdocs serve`; the hook rebuilds the explorer on each docs build
 make docs-serve
 
 # Same, but inside the webdoc container (no host Python deps required)
@@ -164,9 +169,8 @@ URLs once `mkdocs serve` is up:
 
 The docs publishing workflow builds each docs version from the relevant branch.
 The MkDocs hook publishes one SQLite bundle for that docs build under
-`<site_dir>/_assets/schema-explorer/data/`. Its intermediate cache lives
-outside the repository tree, so local `mkdocs serve` does not reload because of
-its own generated files.
+`<site_dir>/_assets/schema-explorer/data/` on every build. Local `mkdocs serve`
+writes into MkDocs' temporary site directory, outside the watched repository.
 
 The SPA fetches the SQLite with `cache: "no-cache"` so newly published files
 are picked up via a conditional GET on the next page load — no hard reload
@@ -185,9 +189,9 @@ pre-commit run schemas --all-files
 make schema-explorer-build
 ```
 
-The MkDocs hook freshness check tracks the combined YAML sources and the
-metaschema. Fragment-only edits can look stale until the repository schema
-workflow regenerates the combined YAML files.
+Each documentation build regenerates the explorer from the combined YAML
+sources. Fragment-only edits appear after the repository schema workflow
+regenerates those combined files.
 
 ## Architecture decisions
 
@@ -195,10 +199,11 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
 
 - **MkDocs static + sql.js**, not App Engine — picked at the May 8th
   maintainers call.
-- **`schema_tools` resolver**, not raw `yaml.safe_load` — see
-  `aristanetworks/avd-internal#539`. Closes the dynamic_keys hole and the
-  same-schema `$ref` hole. Cross-schema `$ref` with `hide_keys` stays a leaf
-  `cross_ref` link; other cross-schema reuse is resolved like schema docs.
+- **Schema interpretation through `pyavd-utils-gen`.** The Explorer and
+  generated schema documentation share reference resolution, dynamic-key
+  expansion, and hidden-key boundaries. AVD owns the JSONL-to-SQLite import
+  and browser assets. Hidden cross-schema references remain leaf `cross_ref`
+  links; visible cross-schema reuse is expanded.
 - **Embedded views via a Markdown fence**, not iframe / template override
   — picked at the May 15th maintainers call. Docs authors use
   `schema-explorer` fenced blocks, which the Markdown formatter renders into
@@ -206,5 +211,6 @@ See `aristanetworks/avd-internal#503` for the full thread. Short version:
   TOC, headings nav, and search stay native. Earlier iframe and
   Jinja-override variants were collapsed into the current Material-hosted
   entry page, `docs/schema-explorer.md`.
-- **Source and build output both under `tools/`**, copied into `site/_assets/`
-  by `mkdocs_hook.py` — keeps `docs/` to documentation only (`.md`, images).
+- **Source under `tools/`, generated assets in MkDocs output.** The hook
+  rebuilds directly into `<site_dir>/_assets/schema-explorer/`; only the manual
+  build target writes under `tools/schema-explorer/build/`.

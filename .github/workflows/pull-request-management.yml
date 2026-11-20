@@ -142,6 +142,7 @@ jobs:
               - 'schemas/cv_deploy/**/*.yml'
             pytest:
               - 'tox.ini'
+              - 'tools/schema-explorer/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'

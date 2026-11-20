@@ -1,10 +1,14 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+"""AVD-owned SQLite import, publication, and asset integration contracts."""
+
 from __future__ import annotations
 
 import importlib.util
-from copy import deepcopy
+import json
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -18,91 +22,100 @@ GENERATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GENERATE)
 
 
-def test_load_unresolved_store_from_yaml() -> None:
-    store = GENERATE.load_unresolved_store(REPO_ROOT)
-
-    assert set(store) == {"avd_meta_schema", "eos_designs", "eos_cli_config_gen"}
-    login = store["eos_designs"]["keys"]["aaa_settings"]["keys"]["authentication"]["keys"]["login"]
-    assert login["$ref"].startswith("eos_cli_config_gen#")
-
-
-def test_neutralize_hidden_cross_schema_refs_keeps_visible_reuse() -> None:
-    node = {
-        "type": "dict",
-        "$ref": "eos_cli_config_gen#/keys/aaa_authentication/keys/login",
-        "documentation_options": {},
-    }
-    GENERATE.neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
-    assert node["$ref"] == "eos_cli_config_gen#/keys/aaa_authentication/keys/login"
-    assert "_cross_ref" not in node
+@pytest.fixture
+def source_root(tmp_path: Path) -> Path:
+    """Supply minimal named sources to exercise the real JSONL-to-SQLite pipeline."""
+    root = tmp_path / "avd"
+    for relative in GENERATE.SCHEMA_SOURCE_FILES.values():
+        source = root / relative
+        source.parent.mkdir(parents=True)
+        source.write_text(
+            json.dumps({"type": "dict", "keys": {"value": {"type": "bool", "default": False}}}),
+            encoding="UTF-8",
+        )
+    return root
 
 
-def test_neutralize_hidden_cross_schema_refs_strips_hide_keys() -> None:
-    node = {
-        "type": "dict",
-        "documentation_options": {"hide_keys": True},
-        "$ref": "eos_cli_config_gen#",
-    }
-    GENERATE.neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
-    assert node["_cross_ref"] == "eos_cli_config_gen#"
-    assert "$ref" not in node
+def test_build_imports_jsonl_with_browser_layout(source_root: Path, tmp_path: Path) -> None:
+    out = tmp_path / "data" / "schema.sqlite"
+    assert GENERATE.build(source_root, out) == dict.fromkeys(GENERATE.SCHEMA_IDS, 1)
+    with closing(sqlite3.connect(out)) as connection:
+        assert connection.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        assert connection.execute("SELECT id, module, key_path, default_value, required, parent_path, depth FROM schema_vars ORDER BY id").fetchall() == [
+            (1, "eos_designs", "value", "false", 0, "", 1),
+            (2, "eos_cli_config_gen", "value", "false", 0, "", 1),
+        ]
+        assert connection.execute("SELECT module, var_count FROM schema_meta ORDER BY rowid").fetchall() == [(name, 1) for name in GENERATE.SCHEMA_IDS]
+        assert all(isinstance(row[0], int) for row in connection.execute("SELECT loaded_at FROM schema_meta"))
+        columns = [row[1] for row in connection.execute("PRAGMA table_info(schema_vars)")]
+        assert columns == [
+            "id",
+            "module",
+            "key_path",
+            "var_type",
+            "description",
+            "default_value",
+            "required",
+            "primary_key",
+            "unique_key",
+            "parent_path",
+            "depth",
+            "doc_table",
+            "deprecated",
+            "removed",
+            "cross_ref",
+            "constraints",
+        ]
+        indexes = {row[1]: row[2] for row in connection.execute("PRAGMA index_list(schema_vars)")}
+        assert indexes == {"idx_schema_unique": 1, "idx_schema_search": 0, "idx_schema_parent": 0, "idx_schema_doc_table": 0}
 
 
-def test_neutralize_hidden_cross_schema_refs_leaves_same_schema_ref() -> None:
-    node = {"$ref": "eos_designs#/$defs/node_type"}
-    GENERATE.neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
-    assert node["$ref"] == "eos_designs#/$defs/node_type"
+def test_build_replaces_database_without_cleaning_siblings(source_root: Path, tmp_path: Path) -> None:
+    directory = tmp_path / "data"
+    directory.mkdir()
+    out = directory / "schema.sqlite"
+    out.write_bytes(b"old database")
+    sibling = directory / "preserved.txt"
+    sibling.write_bytes(b"keep")
+    GENERATE.build(source_root, out)
+    with closing(sqlite3.connect(out)) as connection:
+        assert connection.execute("SELECT COUNT(*) FROM schema_vars").fetchone() == (2,)
+    assert sibling.read_bytes() == b"keep"
+    assert set(directory.iterdir()) == {out, sibling}
 
 
-def test_neutralize_hidden_cross_schema_refs_ignores_non_dict() -> None:
-    GENERATE.neutralize_hidden_cross_schema_refs([], own_schema_id="eos_designs")  # type: ignore[arg-type]
+def test_schema_failure_preserves_database(source_root: Path, tmp_path: Path) -> None:
+    source = source_root / GENERATE.SCHEMA_SOURCE_FILES["eos_designs"]
+    source.write_text(json.dumps({"type": "dict", "keys": {"broken": {"type": "dict", "$ref": "absent#"}}}), encoding="UTF-8")
+    out = tmp_path / "schema.sqlite"
+    out.write_bytes(b"old database")
+    with pytest.raises(RuntimeError, match="absent"):
+        GENERATE.build(source_root, out)
+    assert out.read_bytes() == b"old database"
+    assert not list(tmp_path.glob(".schema-explorer-*"))
 
 
-def test_neutralize_hidden_cross_schema_refs_hide_keys_same_schema() -> None:
-    node = {
-        "documentation_options": {"hide_keys": True},
-        "$ref": "eos_designs#/$defs/node_type",
-    }
-    GENERATE.neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
-    assert node["$ref"] == "eos_designs#/$defs/node_type"
-    assert "_cross_ref" not in node
+def test_sqlite_failure_preserves_database(source_root: Path, tmp_path: Path) -> None:
+    source = source_root / GENERATE.SCHEMA_SOURCE_FILES["eos_designs"]
+    # Deliberately colliding Explorer paths reach the database's unique index.
+    # This exercises import failure without adding instrumentation to production.
+    source.write_text(
+        json.dumps({"type": "dict", "keys": {"<selector.key>": {"type": "str"}}, "dynamic_keys": {"selector.key": {"type": "str"}}}),
+        encoding="UTF-8",
+    )
+    out = tmp_path / "schema.sqlite"
+    out.write_bytes(b"old database")
+    with pytest.raises(sqlite3.IntegrityError):
+        GENERATE.build(source_root, out)
+    assert out.read_bytes() == b"old database"
+    assert not list(tmp_path.glob(".schema-explorer-*"))
 
 
-def test_neutralize_hidden_cross_schema_refs_recurses_nested_containers() -> None:
-    node = {
-        "dynamic_keys": {
-            "dyn": {
-                "documentation_options": {"hide_keys": True},
-                "$ref": "eos_cli_config_gen#/keys/foo",
-            },
-        },
-        "items": {
-            "documentation_options": {"hide_keys": True},
-            "$ref": "eos_cli_config_gen#/keys/bar",
-        },
-        "$defs": {
-            "inner": {
-                "documentation_options": {"hide_keys": True},
-                "$ref": "eos_cli_config_gen#",
-            },
-        },
-    }
-    GENERATE.neutralize_hidden_cross_schema_refs(node, own_schema_id="eos_designs")
-    assert node["dynamic_keys"]["dyn"]["_cross_ref"] == "eos_cli_config_gen#/keys/foo"
-    assert node["items"]["_cross_ref"] == "eos_cli_config_gen#/keys/bar"
-    assert node["$defs"]["inner"]["_cross_ref"] == "eos_cli_config_gen#"
-
-
-def test_hide_keys_structured_config_neutralized_in_yaml_store() -> None:
-    store = deepcopy(GENERATE.load_unresolved_store(REPO_ROOT))
-    GENERATE.neutralize_hidden_cross_schema_refs(store["eos_designs"], own_schema_id="eos_designs")
-    structured = store["eos_designs"]["$defs"]["node_type"]["keys"]["defaults"]["keys"]["structured_config"]
-    assert structured["_cross_ref"].startswith("eos_cli_config_gen")
-    assert "$ref" not in structured
-
-
-@pytest.mark.parametrize("schema_id", ["eos_designs", "eos_cli_config_gen"])
-def test_load_resolved_store_expands_schema(schema_id: str) -> None:
-    store = GENERATE._load_resolved_store(REPO_ROOT)
-
-    assert store[schema_id]["$id"] == schema_id
+def test_static_assets_copy_is_independent_of_database(tmp_path: Path) -> None:
+    database = tmp_path / "data" / "schema.sqlite"
+    database.parent.mkdir()
+    database.write_bytes(b"database")
+    GENERATE._copy_static_assets(tmp_path)
+    assert (tmp_path / "index.html").read_bytes() == (GENERATE.STATIC_DIR / "index.html").read_bytes()
+    assert (tmp_path / "js" / "app.js").read_bytes() == (GENERATE.STATIC_DIR / "js" / "app.js").read_bytes()
+    assert database.read_bytes() == b"database"
