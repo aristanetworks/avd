@@ -337,7 +337,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.1.6', 'pyavd-utils==0.0.14', 'deepmerge>=1.1.1']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: c01a1853c19b175aee6a09f24e2ad9b748c485ad  # frozen: v0.24.1
+    rev: d4df4cec471ce155946474590d7b95920f623ccb  # frozen: v0.24.2
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.markdownlint-cli2.yaml`.
