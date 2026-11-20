@@ -1490,7 +1490,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
+| Graceful Restart | False |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
@@ -1535,6 +1535,8 @@ router ospf 701
 | Graceful Restart | True |
 | Grace Period | 22 |
 | Graceful Restart Helper | False |
+
+##### Address Family IPv4
 
 #### VRF: data
 
@@ -1666,6 +1668,8 @@ router ospfv3 vrf Test_VRF
    passive-interface default
    graceful-restart grace-period 22
    no graceful-restart-helper
+   !
+   address-family ipv4
 !
 router ospfv3 vrf data
    router-id 2.2.2.2

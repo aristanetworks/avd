@@ -129,7 +129,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| Graceful Restart | - |
+| Graceful Restart | False |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
