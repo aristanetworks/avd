@@ -34,7 +34,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
     | [<samp>queue_monitor_streaming</samp>](## "queue_monitor_streaming") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "queue_monitor_streaming.enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ip_access_group</samp>](## "queue_monitor_streaming.ip_access_group") | String |  |  |  | Name of IP ACL. |
+    | [<samp>&nbsp;&nbsp;ip_access_group</samp>](## "queue_monitor_streaming.ip_access_group") <span style="color:red">deprecated</span> | String |  |  |  | Name of IP ACL.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv4_acl or ipv4_standard_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv4_acl</samp>](## "queue_monitor_streaming.ipv4_acl") | String |  |  |  | IPv4 extended access-list name. The access-list must be defined under `ipv4_acls`.<br>Field substitution is not supported for queue-monitor streaming references.<br>Mutually exclusive with `ipv4_standard_acl` and the deprecated `ip_access_group`. |
+    | [<samp>&nbsp;&nbsp;ipv4_standard_acl</samp>](## "queue_monitor_streaming.ipv4_standard_acl") | String |  |  |  | IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.<br>Field substitution is not supported for queue-monitor streaming references.<br>Mutually exclusive with `ipv4_acl` and the deprecated `ip_access_group`. |
     | [<samp>&nbsp;&nbsp;ipv6_access_group</samp>](## "queue_monitor_streaming.ipv6_access_group") | String |  |  |  | Name of IPv6 ACL. |
     | [<samp>&nbsp;&nbsp;max_connections</samp>](## "queue_monitor_streaming.max_connections") | Integer |  |  | Min: 1<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "queue_monitor_streaming.vrf") | String |  |  |  |  |
@@ -104,7 +106,20 @@
       enable: <bool>
 
       # Name of IP ACL.
+      # This key is deprecated.
+      # Support will be removed in AVD version 7.0.0.
+      # Use `ipv4_acl` or `ipv4_standard_acl` instead.
       ip_access_group: <str>
+
+      # IPv4 extended access-list name. The access-list must be defined under `ipv4_acls`.
+      # Field substitution is not supported for queue-monitor streaming references.
+      # Mutually exclusive with `ipv4_standard_acl` and the deprecated `ip_access_group`.
+      ipv4_acl: <str>
+
+      # IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+      # Field substitution is not supported for queue-monitor streaming references.
+      # Mutually exclusive with `ipv4_acl` and the deprecated `ip_access_group`.
+      ipv4_standard_acl: <str>
 
       # Name of IPv6 ACL.
       ipv6_access_group: <str>
