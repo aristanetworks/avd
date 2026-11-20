@@ -25,7 +25,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_bgp(self: SharedUtilsProtocol) -> bool:
-        return self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router and self.uplink_type in ["p2p", "p2p-vrfs"]
+        return self.bgp and self.underlay_routing_protocol in ["ebgp", "ibgp"] and self.underlay_router and self.uplink_type in ["p2p", "p2p-vrfs"]
 
     @cached_property
     def underlay_mpls(self: SharedUtilsProtocol) -> bool:

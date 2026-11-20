@@ -1,0 +1,24 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_INBAND_MGMT
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-inband-mgmt-leaf1
+      id: 1
+
+# leaf1 has no inband management settings, and raises as the inband management parent of l2leaf1.
+l2leaf:
+  defaults:
+    mlag: false
+    uplink_switches: [underlay-ibgp-inband-mgmt-leaf1]
+    uplink_interfaces: [Ethernet1]
+    inband_mgmt_subnet: 10.254.100.0/24
+    inband_mgmt_vlan: 100
+  nodes:
+    - name: underlay-ibgp-inband-mgmt-l2leaf1
+      id: 1
+      uplink_switch_interfaces: [Ethernet10]

@@ -1,0 +1,24 @@
+---
+# Common settings for the 'underlay_routing_protocol: ibgp' failure cases.
+# Each case sets its own 'fabric_name', since the route reflector checks look at all the devices of the fabric.
+default_node_types:
+  - node_type: super-spine
+    match_hostnames:
+      - underlay-ibgp-.*-ssp\d
+  - node_type: spine
+    match_hostnames:
+      - underlay-ibgp-.*-spine\d
+  - node_type: l3leaf
+    match_hostnames:
+      - underlay-ibgp-.*-leaf\d
+  - node_type: l2leaf
+    match_hostnames:
+      - underlay-ibgp-.*-l2leaf\d
+  - node_type: p
+    match_hostnames:
+      - underlay-ibgp-.*-p\d
+
+underlay_routing_protocol: ibgp
+underlay_rfc5549: true
+overlay_routing_protocol: none
+bgp_as: "65000"

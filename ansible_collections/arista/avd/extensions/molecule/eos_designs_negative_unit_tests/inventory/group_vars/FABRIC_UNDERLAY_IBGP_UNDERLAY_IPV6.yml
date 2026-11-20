@@ -1,0 +1,14 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_UNDERLAY_IPV6
+
+underlay_ipv6: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    loopback_ipv6_pool: 2001:db8:254:1::/64
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-underlay-ipv6-leaf1
+      id: 1

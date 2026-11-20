@@ -29,6 +29,7 @@ from .profiled_data import ProfiledDataMixin
 from .ptp import PtpMixin
 from .routing import RoutingMixin
 from .underlay import UnderlayMixin
+from .underlay_ibgp import UnderlayIbgpMixin
 from .utils import UtilsMixin
 from .wan import WanMixin
 
@@ -64,6 +65,7 @@ class SharedUtilsProtocol(
     WanMixin,
     RoutingMixin,
     UnderlayMixin,
+    UnderlayIbgpMixin,
     UtilsMixin,
     FlowTrackingMixin,
     Protocol,

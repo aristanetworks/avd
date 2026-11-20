@@ -1,0 +1,22 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_EBGP_DOWNLINK
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-ebgp-downlink-spine1
+      id: 1
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+    uplink_switches: [underlay-ibgp-ebgp-downlink-spine1]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: underlay-ibgp-ebgp-downlink-leaf1
+      id: 1
+      uplink_switch_interfaces: [Ethernet1]
+      # 'underlay_routing_protocol: ebgp' is set in host_vars.

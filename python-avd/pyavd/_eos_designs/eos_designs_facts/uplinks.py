@@ -165,6 +165,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
             uplinks.append(uplink)
 
+        if self.shared_utils.underlay_ibgp:
+            self._validate_underlay_ibgp_uplink_switches()
+
         return uplinks
 
     def _get_p2p_uplink(
