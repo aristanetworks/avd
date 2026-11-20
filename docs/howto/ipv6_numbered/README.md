@@ -40,10 +40,13 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 !!! warning "Requirements"
     IPv6 numbered underlay requires:
 
-    - `underlay_ipv6: true` - Enables IPv6 on underlay interfaces
+    - `underlay_ipv6: true` - Enables IPv6 routing in the underlay
     - `underlay_ipv6_numbered: true` - Uses explicit IPv6 addresses (not link-local)
     - `loopback_ipv6_pool` defined for each node type
     - `router_id_pool` for BGP Router ID (IPv4 format required by BGP)
+    - `uplink_ipv6_pool` (or `downlink_pools`) for P2P uplinks
+    - `vtep_loopback_ipv6_pool` on VTEPs
+    - `mlag_peer_l3_ipv6_pool` on MLAG pairs
 
 ## IPv6 Pool Types
 
@@ -51,7 +54,7 @@ AVD uses several IPv6 pools for different purposes:
 
 | Pool Variable | Purpose | Default Interface |
 | ------------- | ------- | ----------------- |
-| `loopback_ipv6_pool` | Router ID and BGP peering | Loopback0 |
+| `loopback_ipv6_pool` | EVPN overlay peering | Loopback0 |
 | `vtep_loopback_ipv6_pool` | VXLAN tunnel endpoints | Loopback1 |
 | `uplink_ipv6_pool` | P2P links between devices | Ethernet uplinks |
 | `mlag_peer_ipv6_pool` | MLAG peer-link SVI | VLAN 4094 |
@@ -133,7 +136,7 @@ docs/howto/ipv6_numbered/artifacts/leaf2-loopback.cfg
 ```
 
 !!! note "MLAG VTEP Sharing"
-    MLAG pairs share the same VTEP IPv6 address. AVD automatically uses the **MLAG primary ID** in the group for both peers. This translates to `IPv6 = pool + mlag_primary_id + loopback_ipv6_offset`. Non-MLAG nodes use their own ID.
+    MLAG pairs share the same VTEP IPv6 address, based on the **MLAG primary ID**: `mlag_primary_id + loopback_ipv6_offset` selects a /64 subnet in the pool, and the VTEP uses its first address (`2001:db8:3:3::1` in this example). Non-MLAG nodes use `IPv6 = pool + nodes[].id + loopback_ipv6_offset`.
 
 ## P2P Uplink IPv6 Allocation
 
@@ -179,12 +182,12 @@ MLAG requires two pools for peer connectivity:
 
 | Pool | Purpose | Default VLAN |
 | ---- | ------- | ------------ |
-| `mlag_peer_ipv6_pool` | L2 peer-link SVI | 4094 |
+| `mlag_peer_ipv6_pool` | MLAG peer-link SVI | 4094 |
 | `mlag_peer_l3_ipv6_pool` | L3 iBGP peering | 4093 |
 
 ### Enabling MLAG IPv6
 
-To use IPv6 for MLAG peering, set `mlag_peer_address_family` to `ipv6`:
+To use IPv6 on the MLAG peer-link SVI (VLAN 4094) instead of `mlag_peer_ipv4_pool`, set `mlag_peer_address_family` to `ipv6`. This does not change the L3 iBGP peering:
 
 ```yaml hl_lines="18 20 22" title="MLAG IPv6 Settings"
 --8<--
@@ -218,7 +221,7 @@ AVD supports three MLAG IPv6 allocation algorithms configured via `fabric_ip_add
         algorithm: odd_id
     ```
 
-    Formula: `offset = (odd_id - 1)`
+    Formula: `offset = (odd_id - 1) / 2`
 
 === "same_subnet"
 
@@ -302,16 +305,37 @@ l3leaf:
 !!! note
     There is no `loopback_ipv6_address` override for Loopback0. Use `loopback_ipv6_pool` with `loopback_ipv6_offset` to control IPv6 address allocation.
 
-## Unsupported Features
+## Supported Designs and Limitations
+
+The IPv6 numbered underlay is supported for Layer 3 Leaf Spine with VXLAN EVPN, using eBGP for both the underlay and the overlay.
+
+### Dual-Stack Network Services
+
+Dual-stack (IPv4 and IPv6) Layer 3 network services are supported in tenant VRFs, including the MLAG iBGP peering in VRFs. For MLAG pairs on AVD 6.x (from 6.5.0), enable the following settings:
+
+```yaml
+overlay_mlag_rfc5549: true
+avd_design_future:
+  fix_mlag_ibgp_peering_vrfs_address_families: true
+  fix_mlag_ibgp_peering_ipv6_pool: true
+  fix_match_ipv6_prefix_list_on_mlag_route_map: true
+```
+
+### Unsupported Features
 
 Some AVD features are not yet supported with IPv6 numbered underlay:
 
 - `underlay_multicast_pim_sm`
 - `underlay_multicast_rp_interfaces`
+- `underlay_multicast_static`
+- EVPN multicast (`evpn_multicast`, `evpn_l2_multicast`, `evpn_l3_multicast`)
 - `underlay_rfc5549` (mutually exclusive with numbered)
 - `wan_role`
 - `vtep_vvtep_ip`
 - `inband_ztp`
+- `l3_edge` and `core_interfaces` links with `include_in_underlay_protocol: true` (default). This includes using these links as the DCI underlay for the Multi-Domain EVPN Gateway.
+- Dual-stack SVIs in VRF `default`
+- IPv6 addresses on VRF subinterfaces with `uplink_type: p2p-vrfs`
 
 ## Best Practices
 
@@ -329,11 +353,11 @@ Some AVD features are not yet supported with IPv6 numbered underlay:
 
 | Issue | Cause | Solution |
 | ----- | ----- | -------- |
-| BGP session not establishing | Missing `router_id_pool` | Define IPv4 pool for Router ID |
-| No IPv6 addresses on interfaces | `underlay_ipv6` not enabled | Set `underlay_ipv6: true` |
-| MLAG using IPv4 | `mlag_peer_address_family` not set | Set to `ipv6` |
+| Error: `'router_id_pool' is required` | Missing `router_id_pool` | Define IPv4 pool for Router ID |
+| Error: `'underlay_ipv6: true' is required` | `underlay_ipv6` not enabled | Set `underlay_ipv6: true` |
+| MLAG peer-link SVI using IPv4 | `mlag_peer_address_family` not set | Set to `ipv6` |
 | Validation error on routing protocol | Wrong underlay protocol | Ensure `underlay_routing_protocol` is `ebgp` (default for spine/l3leaf) |
-| Missing VTEP IPv6 address | `vtep_loopback_ipv6_pool` not defined | Define pool for leaf nodes |
+| Error: `'vtep_loopback_ipv6_pool' is required` | `vtep_loopback_ipv6_pool` not defined | Define pool for leaf nodes |
 | IPv6 address conflict between spine and leaf | Shared pool without offset | Add `loopback_ipv6_offset` to leaf defaults |
 | Pool exhausted | Too many nodes for pool size | Use larger pool or multiple prefixes |
 

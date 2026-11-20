@@ -21,7 +21,7 @@ The **eos_designs** role:
   - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
-  - [cv_deploy](../cv_deploy/README.md)  role.
+  - [cv_deploy](../cv_deploy/README.md) role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
 - Facilitates the evaluation of the configuration post-deployment with the [anta_runner](../anta_runner/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
@@ -63,7 +63,7 @@ To understand the interaction between `eos_designs` input variables and `eos_cli
 
 ## Reference Designs
 
-The following reference design types are included in the role's default variables:
+The following reference design types are supported:
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
 - L2LS: Layer 2 Leaf Spine
@@ -77,19 +77,17 @@ Feasible Layer 3 Leaf & Spine topologies leveraging VXLAN data-plane with an EVP
 | Underlay | Overlay | Topology |
 | -------- | ------- | -------- |
 | eBGP | eBGP | Multi-Stage + L2 Leafs |
+| eBGP (IPv6 unnumbered - RFC5549) | eBGP | Multi-Stage + L2 Leafs |
+| [eBGP (IPv6 numbered)](../../../../../docs/howto/ipv6_numbered/README.md#supported-designs-and-limitations) | eBGP | Multi-Stage + L2 Leafs |
 | ISIS | eBGP | Multi-Stage + L2 Leafs |
 | ISIS | iBGP | Multi-Stage + L2 Leafs |
 | OSPF | eBGP | Multi-Stage + L2 Leafs |
 | OSPF | iBGP | Multi-Stage + L2 Leafs |
-| eBGP (IPv6 unnumbered - RFC5549) | eBGP | Multi-Stage + L2 Leafs |
-| eBGP (IPv6 numbered) | eBGP | Multi-Stage + L2 Leafs |
 
 Across all designs, the following functionality is provided:
 
 - Flexible placement of EVPN Route Server (RS) or Route Reflector (RR), including dedicated overlay controller
-- EVPN service definition:
-  - Layer 2 and Layer 3 network services
-  - For L3 Network services dual-stack IPv4 and IPv6 is supported with eBGP IPv6 numbered underlay
+- EVPN service definition: Layer 2 and Layer 3 (Network Services)
 - L3 Edge ports definition
 - L2 Edge ports definition (connected endpoints)
 - Multi-Domain EVPN Gateway functionality
@@ -162,11 +160,11 @@ Input variables are grouped by configuration elements and are typically stored i
 
 ## Role Configuration
 
-The role configuration are documented in the [Role Configuration](docs/role-configuration.md) section.
+The role configuration is documented in the [Role Configuration](docs/role-configuration.md) section.
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
-## vEOS-LAB Know Caveats and Recommendations
+## vEOS-LAB Known Caveats and Recommendations
 
 - vEOS-LAB is a great tool to learn and test the AVD automation framework. This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
 - vEOS-lab enables you to create and run replicas of physical networks within a risk-free virtual environment.
