@@ -38,7 +38,7 @@ tags: ["arista", "network", "networking", "eos", "avd", "cloudvision", "cvp"]
 # https://github.com/ansible-collections/ansible.netcommon/issues/832
 dependencies:
   "arista.eos": ">=12.2.0"
-  "ansible.netcommon": "<8.8.0"
+  "ansible.netcommon": "<8.8.1"
 # Test with arista.eos with main branch
 #  "git+https://github.com/ansible-collections/arista.eos.git": main
 
