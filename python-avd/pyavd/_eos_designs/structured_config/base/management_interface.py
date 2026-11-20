@@ -19,45 +19,55 @@ class ManagementInterfaceMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
+    def _update_ipv4_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
+        mgmt_ip = self.shared_utils.oob_mgmt_ip
+        if not mgmt_ip:
+            return
+
+        interface_settings.ip_address = mgmt_ip
+        if mgmt_ip == "dhcp" and self.shared_utils.mgmt_ip_dhcp_accept_default_route:
+            interface_settings.dhcp_client_accept_default_route = True
+            return
+
+        # For static IP, set gateway (metadata field, actual routing done via static_routes)
+        interface_settings.gateway = self.shared_utils.oob_mgmt_gateway
+
+    def _update_ipv6_config(self: AvdStructuredConfigBaseProtocol, interface_settings: EosCliConfigGen.ManagementInterfacesItem) -> None:
+        ipv6_mgmt_ip = self.shared_utils.ipv6_mgmt_ip
+
+        if not ipv6_mgmt_ip:
+            return
+
+        interface_settings.ipv6_enable = True
+        if ipv6_mgmt_ip == "auto-config":
+            interface_settings.ipv6_address_auto_config = True
+            if self.shared_utils.ipv6_mgmt_ip_auto_config_accept_default_route:
+                interface_settings.ipv6_nd.ra.rx_accept._update(default_route=True, route_preference=True)
+                return
+
+        else:
+            interface_settings.ipv6_addresses.append(ipv6_mgmt_ip)
+
+        interface_settings.ipv6_gateway = self.shared_utils.ipv6_mgmt_gateway
+
     @structured_config_contributor
     def management_interfaces(self: AvdStructuredConfigBaseProtocol) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         mgmt_settings = self.inputs.mgmt_interface_settings
 
-        if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
+        if self.shared_utils.mgmt_ip or self.shared_utils.ipv6_mgmt_ip:
             self.structured_config_utils.set_once_oob_mgmt_vrf()
 
-            # Check if mgmt_ip is set to "dhcp"
-            is_dhcp = self.shared_utils.oob_mgmt_ip == "dhcp"
-            is_auto_config = self.shared_utils.node_config.ipv6_mgmt_ip == "auto-config"
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.shared_utils.mgmt_interface_description,
                 shutdown=mgmt_settings.shutdown == "true",
                 vrf=self.shared_utils.mgmt_interface_vrf,
-                ip_address=self.shared_utils.oob_mgmt_ip,
                 type="oob",
             )
 
-            # For DHCP, automatically accept default route instead of using gateway
-            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
-                interface_settings.dhcp_client_accept_default_route = True
-            else:
-                # For static IP, set gateway (metadata field, actual routing done via static_routes)
-                interface_settings.gateway = self.shared_utils.oob_mgmt_gateway
-
-            """
-            inserting ipv6 variables if ipv6_mgmt_ip is set
-            """
-            if is_auto_config and self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
-                interface_settings._update(ipv6_enable=True, ipv6_address_auto_config=True)
-                interface_settings.ipv6_nd.ra.rx_accept._update(default_route=True, route_preference=True)
-            elif self.shared_utils.node_config.ipv6_mgmt_ip:
-                interface_settings._update(
-                    ipv6_enable=True,
-                    ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
-                )
-                interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
+            self._update_ipv4_config(interface_settings)
+            self._update_ipv6_config(interface_settings)
 
             if mgmt_settings.lldp:
                 interface_settings.lldp = mgmt_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)

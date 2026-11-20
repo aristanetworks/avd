@@ -19,8 +19,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ipv6_enable: true
-  ipv6_addresses:
-  - auto-config
+  ipv6_address_auto_config: true
   type: oob
   ipv6_gateway: 0200::1
 metadata:

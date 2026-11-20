@@ -92,11 +92,11 @@ class SnmpServerMixin(Protocol):
 
         match local_engineid_ip:
             case "use_mgmt_interface":
-                has_mgmt_ip = (self.shared_utils.oob_mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+                has_mgmt_ip = (self.shared_utils.oob_mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
-                return default(self.shared_utils.oob_mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
+                return default(self.shared_utils.oob_mgmt_ip, self.shared_utils.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = (

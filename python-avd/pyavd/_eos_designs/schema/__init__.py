@@ -30841,6 +30841,81 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Ipv4(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"default_dhcp": {"type": bool, "default": False}, "dhcp_accept_default_route": {"type": bool, "default": True}}
+            default_dhcp: bool
+            """
+            Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not
+            set for the node.
+
+            Default value: `False`
+            """
+            dhcp_accept_default_route: bool
+            """
+            Accept the default route when configured for DHCP.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, default_dhcp: bool | UndefinedType = Undefined, dhcp_accept_default_route: bool | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv4.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        default_dhcp:
+                           Enable DHCP (Dynamic Host Configuration Protocol) for IPv4 address assignment if `mgmt_ip` is not
+                           set for the node.
+                        dhcp_accept_default_route: Accept the default route when configured for DHCP.
+
+                    """
+
+        class Ipv6(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "default_auto_config": {"type": bool, "default": False},
+                "auto_config_accept_default_route": {"type": bool, "default": True},
+            }
+            default_auto_config: bool
+            """
+            Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is
+            not set for the node.
+
+            Default value: `False`
+            """
+            auto_config_accept_default_route: bool
+            """
+            Accept the default route when configured for SLAAC.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, default_auto_config: bool | UndefinedType = Undefined, auto_config_accept_default_route: bool | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Ipv6.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        default_auto_config:
+                           Enable SLAAC (Stateless Address Auto-Configuration) for IPv6 address assignment if `ipv6_mgmt_ip` is
+                           not set for the node.
+                        auto_config_accept_default_route: Accept the default route when configured for SLAAC.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "description": {"type": str, "default": "OOB_MANAGEMENT"},
             "vrf": {"type": str, "default": "MGMT"},
@@ -30848,6 +30923,8 @@ class EosDesigns(EosDesignsRootModel):
             "interface": {"type": str, "default": "Management1"},
             "shutdown": {"type": str, "default": "false"},
             "lldp": {"type": Lldp},
+            "ipv4": {"type": Ipv4},
+            "ipv6": {"type": Ipv6},
         }
         description: str
         """
@@ -30895,6 +30972,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        ipv4: Ipv4
+        """Subclass of AvdModel."""
+        ipv6: Ipv6
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -30907,6 +30988,8 @@ class EosDesigns(EosDesignsRootModel):
                 interface: str | UndefinedType = Undefined,
                 shutdown: Shutdown | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
+                ipv4: Ipv4 | UndefinedType = Undefined,
+                ipv6: Ipv6 | UndefinedType = Undefined,
             ) -> None:
                 """
                 MgmtInterfaceSettings.
@@ -30935,6 +31018,8 @@ class EosDesigns(EosDesignsRootModel):
                        LLDP settings for the management interface.
 
                        Subclass of AvdModel.
+                    ipv4: Subclass of AvdModel.
+                    ipv6: Subclass of AvdModel.
 
                 """
 
