@@ -1,0 +1,21 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: address-locking-11
+      id: 101
+      bgp_as: 101
+
+# Testing auto_dhcp_server_interfaces: true merged with manually specified dhcp_server_interfaces.
+# This node has no L2 uplinks (p2p uplink_type), so only the manually specified interface is included.
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  auto_dhcp_server_interfaces: true
+  dhcp_server_interfaces:
+    - Ethernet1

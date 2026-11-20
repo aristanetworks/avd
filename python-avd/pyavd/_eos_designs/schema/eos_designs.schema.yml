@@ -430,10 +430,29 @@ keys:
 
           When enabled, this setting is mutually exclusive with `local_interface`.
 
+          When `auto_dhcp_server_interfaces` is also enabled, the interfaces from
+          this list are merged with the auto-detected interfaces.
+
           Requires EOS version 4.36 or later.'
         items:
           type: str
           description: Interface name.
+      auto_dhcp_server_interfaces:
+        type: bool
+        default: false
+        description: 'When enabled, automatically populates the DHCP server interfaces
+          with all L2 uplinks (Ethernet or Port-Channel) and the MLAG Port-Channel
+          (if applicable).
+
+          Requires `avd_design_future.fix_address_locking_dhcp_server_interfaces:
+          true`. Otherwise this setting is ignored.
+
+          When enabled, this setting is mutually exclusive with `local_interface`.
+
+          Any interfaces manually specified in `dhcp_server_interfaces` are merged
+          with the auto-detected interfaces.
+
+          Requires EOS version 4.36 or later.'
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
