@@ -320,7 +320,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
-                    instance_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..instance_type", separator=".."),
+                    instance_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..act_instance_type", separator=".."),
                     serial_number=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..serial_number", separator="..")
                     if act_node_type_supports_feature(digital_twin_node_type, "serial_number")
                     else None,

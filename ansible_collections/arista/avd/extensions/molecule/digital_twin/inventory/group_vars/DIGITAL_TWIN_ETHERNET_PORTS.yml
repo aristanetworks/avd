@@ -80,7 +80,7 @@ custom_platform_settings:
       - custom-platform
     digital_twin:
       act_node_type: third-party
-      act_node_size: xlarge
+      act_instance_type: xlarge
 
 firewalls:
   - name: firewall-1
