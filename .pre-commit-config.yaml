@@ -130,7 +130,7 @@ repos:
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.23.0'
           - 'anta>=1.10.0'
-          - 'coverage[toml]==7.15.2'
+          - 'coverage[toml]==7.17.3'
           - 'deepmerge>=1.1.1'
           - 'gitpython>=3.1.57'
           - 'jinja2>=3.0'
