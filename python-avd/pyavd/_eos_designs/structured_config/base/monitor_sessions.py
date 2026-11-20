@@ -141,7 +141,7 @@ class MonitorSessionsMixin(Protocol):
             return
 
         if access_group.type == "ip":
-            acl = self.shared_utils.get_ipv4_acl(
+            acl = self.shared_utils.get_ipv4_acl_with_substitution(
                 name=access_group.name,
                 interface_name=interface_name,
                 interface_ip=str(interface_data.interface_ip) if interface_data and interface_data.interface_ip else None,
