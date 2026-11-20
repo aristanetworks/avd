@@ -100,6 +100,7 @@ nodes:
     node_type: third-party
     ip_addr: 192.169.3.3/32
     version: byod
+    instance_type: xlarge
 - digital-twin-hardware-identity-custom-system-mac-tests-veos:
     node_type: veos
     ip_addr: 192.168.10.20/32

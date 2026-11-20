@@ -17783,6 +17783,14 @@ $defs:
               - third-party
               - tools-server
               - veos
+            act_instance_type:
+              type: str
+              description: ACT instance type to use for the ACT `instance_type`. ACT
+                uses `medium` by default for all node types.
+              valid_values:
+              - medium
+              - large
+              - xlarge
         structured_config:
           type: dict
           relaxed_validation: true

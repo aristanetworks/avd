@@ -436,6 +436,13 @@ keys:
           version:
             type: str
             description: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+          act_instance_type:
+            type: str
+            description: ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node types.
+            valid_values:
+              - medium
+              - large
+              - xlarge
           username:
             type: str
             description: Local username assigned to a replica of the fabric device within the Digital Twin environment.
