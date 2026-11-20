@@ -13,6 +13,14 @@
     | [<samp>&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -20,6 +28,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.address_family_ipv4.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv4.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv4.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -88,6 +104,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.address_family_ipv6.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv6.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv6.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -95,6 +119,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -102,6 +134,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -170,6 +210,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceed_action_warn</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.exceed_action_warn") | Boolean |  |  |  | Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning_limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.warning_limit") | Integer |  |  | Min: 25<br>Max: 99 | Percentage of maximum number of LSAs to reach before warning. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on this VRF OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance. |
 
@@ -195,6 +243,26 @@
 
       # Reference bandwidth in Mbps.
       auto_cost_reference_bandwidth: <int; 1-4294967>
+      lsa:
+
+        # Configure maximum number of LSAs permitted (0 for unlimited).
+        limit: <int; 0-100000; required>
+
+        # Minutes to shut down the instances.
+        disabled_time: <int; 1-60>
+        incident_count:
+
+          # Minutes of not increasing the incident count before resetting the incident count.
+          clear_timeout: <int; 1-60>
+
+          # Limit maximum number of times the maximum number of LSAs can be reached.
+          limit: <int; 1-20>
+
+        # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+        exceed_action_warn: <bool>
+
+        # Percentage of maximum number of LSAs to reach before warning.
+        warning_limit: <int; 25-99>
 
       # Address family IPv4 configuration.
       # Common configurations defined at the router-level and address-family level are mutually exclusive.
@@ -216,6 +284,26 @@
 
         # Reference bandwidth in Mbps.
         auto_cost_reference_bandwidth: <int; 1-4294967>
+        lsa:
+
+          # Configure maximum number of LSAs permitted (0 for unlimited).
+          limit: <int; 0-100000; required>
+
+          # Minutes to shut down the instances.
+          disabled_time: <int; 1-60>
+          incident_count:
+
+            # Minutes of not increasing the incident count before resetting the incident count.
+            clear_timeout: <int; 1-60>
+
+            # Limit maximum number of times the maximum number of LSAs can be reached.
+            limit: <int; 1-20>
+
+          # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+          exceed_action_warn: <bool>
+
+          # Percentage of maximum number of LSAs to reach before warning.
+          warning_limit: <int; 25-99>
 
         # Redistribute routes into OSPFv3.
         redistribute:
@@ -318,6 +406,26 @@
 
         # Reference bandwidth in Mbps.
         auto_cost_reference_bandwidth: <int; 1-4294967>
+        lsa:
+
+          # Configure maximum number of LSAs permitted (0 for unlimited).
+          limit: <int; 0-100000; required>
+
+          # Minutes to shut down the instances.
+          disabled_time: <int; 1-60>
+          incident_count:
+
+            # Minutes of not increasing the incident count before resetting the incident count.
+            clear_timeout: <int; 1-60>
+
+            # Limit maximum number of times the maximum number of LSAs can be reached.
+            limit: <int; 1-20>
+
+          # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+          exceed_action_warn: <bool>
+
+          # Percentage of maximum number of LSAs to reach before warning.
+          warning_limit: <int; 25-99>
       vrfs:
 
           # VRF name.
@@ -339,6 +447,26 @@
 
           # Reference bandwidth in Mbps.
           auto_cost_reference_bandwidth: <int; 1-4294967>
+          lsa:
+
+            # Configure maximum number of LSAs permitted (0 for unlimited).
+            limit: <int; 0-100000; required>
+
+            # Minutes to shut down the instances.
+            disabled_time: <int; 1-60>
+            incident_count:
+
+              # Minutes of not increasing the incident count before resetting the incident count.
+              clear_timeout: <int; 1-60>
+
+              # Limit maximum number of times the maximum number of LSAs can be reached.
+              limit: <int; 1-20>
+
+            # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+            exceed_action_warn: <bool>
+
+            # Percentage of maximum number of LSAs to reach before warning.
+            warning_limit: <int; 25-99>
 
           # Address family IPv4 configuration.
           # Common configurations defined at the router-level and address-family level are mutually exclusive.
@@ -360,6 +488,26 @@
 
             # Reference bandwidth in Mbps.
             auto_cost_reference_bandwidth: <int; 1-4294967>
+            lsa:
+
+              # Configure maximum number of LSAs permitted (0 for unlimited).
+              limit: <int; 0-100000; required>
+
+              # Minutes to shut down the instances.
+              disabled_time: <int; 1-60>
+              incident_count:
+
+                # Minutes of not increasing the incident count before resetting the incident count.
+                clear_timeout: <int; 1-60>
+
+                # Limit maximum number of times the maximum number of LSAs can be reached.
+                limit: <int; 1-20>
+
+              # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+              exceed_action_warn: <bool>
+
+              # Percentage of maximum number of LSAs to reach before warning.
+              warning_limit: <int; 25-99>
 
             # Redistribute routes into OSPFv3.
             redistribute:
@@ -462,6 +610,26 @@
 
             # Reference bandwidth in Mbps.
             auto_cost_reference_bandwidth: <int; 1-4294967>
+            lsa:
+
+              # Configure maximum number of LSAs permitted (0 for unlimited).
+              limit: <int; 0-100000; required>
+
+              # Minutes to shut down the instances.
+              disabled_time: <int; 1-60>
+              incident_count:
+
+                # Minutes of not increasing the incident count before resetting the incident count.
+                clear_timeout: <int; 1-60>
+
+                # Limit maximum number of times the maximum number of LSAs can be reached.
+                limit: <int; 1-20>
+
+              # Only give warning message when limit is exceeded. Not rendered when `disabled_time` or `incident_count` is set.
+              exceed_action_warn: <bool>
+
+              # Percentage of maximum number of LSAs to reach before warning.
+              warning_limit: <int; 25-99>
 
           # Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
           eos_cli: <str>

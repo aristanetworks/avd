@@ -29,6 +29,10 @@ router_ospfv3:
         route_map: map1
   address_family_ipv6:
     enabled: true
+    lsa:
+      limit: 9100
+      warning_limit: 70
+      exceed_action_warn: true
     redistribute:
       ospfv3:
         leaked:

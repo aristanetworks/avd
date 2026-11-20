@@ -1340,6 +1340,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | 80 percent |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -1377,6 +1383,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| LSA Limit | 5000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 70 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -1398,6 +1410,12 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
+| LSA Limit | 6000 |
+| LSA Disabled Time | 15 minutes |
+| LSA Incident Count Limit | 4 |
+| LSA Incident Count Clear Timeout | 12 minutes |
+| LSA Warning Limit | 75 percent |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1419,6 +1437,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -1429,6 +1453,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | 4100 |
+| LSA Disabled Time | 9 minutes |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1449,6 +1479,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1472,6 +1508,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1490,6 +1532,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1508,6 +1556,28 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA Limit | 4500 |
+| LSA Disabled Time | 7 minutes |
+| LSA Incident Count Limit | 2 |
+| LSA Incident Count Clear Timeout | 5 minutes |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
+
+#### VRF: WARN_ONLY
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| LSA Limit | 8000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 65 percent |
+| LSA Exceed Action Warn | True |
 
 #### VRF: data
 
@@ -1518,6 +1588,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -1528,6 +1604,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA Limit | 7000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | 3 |
+| LSA Incident Count Clear Timeout | 6 minutes |
+| LSA Warning Limit | 90 percent |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -1548,6 +1630,12 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA Limit | 8000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 65 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -1577,6 +1665,7 @@ router ospfv3 vrf FULL
       redistribute ospfv3 leaked match internal route-map map2
       redistribute ospfv3 leaked match external route-map map2
       redistribute ospfv3 leaked match nssa-external route-map map2
+      lsa limit 5000 warning limit 70 percent exceed-action warn
    !
    address-family ipv6
       router-id 4.4.4.4
@@ -1590,6 +1679,7 @@ router ospfv3 vrf FULL
       redistribute ospfv3 leaked match internal route-map map2
       redistribute ospfv3 leaked match external route-map map2
       redistribute ospfv3 leaked match nssa-external route-map map2
+      lsa limit 6000 warning limit 75 percent disabled-time 15 minutes incident-count limit 4 incident-count clear-timeout 12 minutes
 !
 router ospfv3 vrf MGMT
    router-id 2.2.2.2
@@ -1601,6 +1691,7 @@ router ospfv3 vrf MGMT
       redistribute isis
       redistribute ospfv3 leaked
       redistribute static
+      lsa limit 4100 disabled-time 9 minutes
    !
    address-family ipv6
       passive-interface default
@@ -1628,6 +1719,10 @@ router ospfv3 vrf Test_VRF
    router-id 1.1.1.1
    auto-cost reference-bandwidth 1000
    passive-interface default
+   lsa limit 4500 disabled-time 7 minutes incident-count limit 2 incident-count clear-timeout 5 minutes
+!
+router ospfv3 vrf WARN_ONLY
+   lsa limit 8000 warning limit 65 percent exceed-action warn
 !
 router ospfv3 vrf data
    router-id 2.2.2.2
@@ -1640,6 +1735,7 @@ router ospfv3 vrf data
       redistribute isis route-map map1
       redistribute ospfv3 leaked route-map map1
       redistribute static include leaked route-map map1
+      lsa limit 7000 warning limit 90 percent incident-count limit 3 incident-count clear-timeout 6 minutes
    !
    address-family ipv6
       auto-cost reference-bandwidth 1000
@@ -1649,11 +1745,13 @@ router ospfv3 vrf data
       redistribute isis route-map map1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
+      lsa limit 8000 warning limit 65 percent exceed-action warn
 !
 router ospfv3
    bfd default
    bfd adjacency state any
    passive-interface default
+   lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
    !
    address-family ipv4
       redistribute bgp

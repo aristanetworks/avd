@@ -198,6 +198,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -212,6 +218,20 @@ ipv6 unicast-routing vrf TENANT_C
 | static | True | map1 |
 
 ##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| LSA Limit | 9100 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 70 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -233,6 +253,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv6
 
@@ -258,6 +284,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 #### VRF: TEST_VRF
 
@@ -268,6 +300,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv6
 
@@ -278,6 +316,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -294,6 +338,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 #### VRF: data
 
@@ -306,6 +356,12 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 #### Router OSPFv3 Device Configuration
 
@@ -369,6 +425,7 @@ router ospfv3
       redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked
       redistribute static include leaked route-map map1
+      lsa limit 9100 warning limit 70 percent exceed-action warn
 ```
 
 ### Router BGP

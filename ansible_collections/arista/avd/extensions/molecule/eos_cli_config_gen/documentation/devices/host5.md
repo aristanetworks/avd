@@ -116,6 +116,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
+| LSA Limit | - |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | - |
+| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -126,6 +132,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA Limit | 3333 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 85 percent |
+| LSA Exceed Action Warn | True |
 
 ###### Redistribution
 
@@ -144,6 +156,12 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA Limit | 4444 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | 4 |
+| LSA Incident Count Clear Timeout | 8 minutes |
+| LSA Warning Limit | 88 percent |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -167,6 +185,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      lsa limit 3333 warning limit 85 percent exceed-action warn
    !
    address-family ipv6
       router-id 3.3.3.3
@@ -176,6 +195,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      lsa limit 4444 warning limit 88 percent incident-count limit 4 incident-count clear-timeout 8 minutes
 ```
 
 ### Router BGP
