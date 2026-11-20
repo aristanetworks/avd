@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, cast
 
 from coverage import Coverage
 from coverage_plugins.jinja import JinjaTemplateCoveragePlugin
+from coverage_plugins.jinja.instrument import instrument_compiled_templates
 from jinja2 import Environment, FileSystemLoader, ModuleLoader
 
 if TYPE_CHECKING:
@@ -41,7 +42,14 @@ def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, o
     return _analyze_rendered_template_contexts(tmp_path, source, [context])
 
 
-def _analyze_rendered_template_contexts(tmp_path: Path, source: str, contexts: list[dict[str, object]]) -> Analysis:
+def _analyze_rendered_template_contexts(
+    tmp_path: Path,
+    source: str,
+    contexts: list[dict[str, object]],
+    *,
+    instrument: bool = False,
+    trim_blocks: bool = False,
+) -> Analysis:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
     source_file = template_root / "template.j2"
@@ -50,8 +58,19 @@ def _analyze_rendered_template_contexts(tmp_path: Path, source: str, contexts: l
     compiled_root.mkdir()
     source_file.write_text(source, encoding="utf-8")
 
-    Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
+    Environment(  # noqa: S701
+        loader=FileSystemLoader(template_root), extensions=["jinja2.ext.do"], trim_blocks=trim_blocks, lstrip_blocks=trim_blocks
+    ).compile_templates(compiled_root, zip=None, ignore_errors=False)
+    original_output: list[str] = []
+    if instrument:
+        original_environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+        original_output = [original_environment.get_template("template.j2").render(**context) for context in contexts]
+        instrument_compiled_templates(compiled_root)
     environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
+    if instrument:
+        assert [environment.get_template("template.j2").render(**context) for context in contexts] == original_output
+        # Use a fresh module loader so coverage also measures module initialization.
+        environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
     coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
