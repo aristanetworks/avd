@@ -41,6 +41,14 @@ jobs:
           - suite: memory-scaling
             mode: memory
             filter: "test_large_fabric_full_workflow_benchmark"
+          - suite: memory-validation
+            mode: memory
+            filter: "test_synthetic_validation_memory_benchmark"
+            markers: "benchmark_diagnostic"
+          - suite: memory-generation
+            mode: memory
+            filter: "test_synthetic_generation_memory_benchmark"
+            markers: "benchmark_diagnostic"
     concurrency:
       group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}
       cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -78,12 +86,14 @@ jobs:
         uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
         env:
           BENCHMARK_FILTER: ${{ matrix.filter }}
+          BENCHMARK_MARKERS: ${{ matrix.markers || 'not benchmark_scale and not benchmark_diagnostic' }}
         with:
           mode: ${{ matrix.mode }}
           run: |
             python -m pytest --codspeed \
               benchmarks/test_molecule_scenarios.py \
               benchmarks/test_large_fabric_scaling.py \
-              -m "not benchmark_scale" \
+              benchmarks/test_synthetic_memory_phases.py \
+              -m "$BENCHMARK_MARKERS" \
               -k "$BENCHMARK_FILTER" \
               -q

@@ -78,18 +78,27 @@ python -m pytest --codspeed \
 CodSpeed runs this suite in both simulation and memory modes. The memory run
 also records peak physical memory on supported runners.
 
-The workflow splits collection across three jobs: simulation runs all 15 default
+The workflow's three standard jobs split collection as follows: simulation runs all 15 default
 cases, one memory job runs the 14 molecule cases, and another memory job runs the
 15-device synthetic workflow alone. The synthetic case remains isolated while
 its missing memory allocation profile is investigated. Each job uploads its
 results separately.
+
+Two additional memory jobs run temporary `benchmark_diagnostic` cases from
+`test_synthetic_memory_phases.py` using the same 15-device topology and service
+density. One measures input validation alone. The other validates inputs before
+measurement and measures facts, structured configuration, and EOS CLI generation.
+Fresh copies reset mutable inputs before every warmup and measured invocation.
+The standard jobs exclude these diagnostics, preserving their benchmark IDs and
+workloads. Compare the actual allocation profiles of all three synthetic cases;
+successful measurements or uploads alone do not establish that profiles rendered.
 
 Local full-suite runs include the 150-device scale benchmark. They do not add an
 all-host render benchmark for the full molecule scenario; that kind of load test
 is intentionally outside the CodSpeed suite.
 
 ```bash
-python -m pytest --codspeed benchmarks -q
+python -m pytest --codspeed benchmarks -m "not benchmark_diagnostic" -q
 ```
 
 ## Local Usage
@@ -105,10 +114,19 @@ make -C python-avd dep
 Run benchmarks from the repository root:
 
 ```bash
-python -m pytest --codspeed benchmarks -q
+python -m pytest --codspeed benchmarks -m "not benchmark_diagnostic" -q
 python -m pytest --codspeed benchmarks/test_molecule_scenarios.py -q
 python -m pytest --codspeed benchmarks/test_large_fabric_scaling.py -m "not benchmark_scale" -q
 ```
+
+Run the temporary phase diagnostics locally to check execution:
+
+```bash
+python -m pytest --codspeed benchmarks/test_synthetic_memory_phases.py -m benchmark_diagnostic -q
+```
+
+Native allocation-stack collection requires the Linux CodSpeed runner. CI runs
+each diagnostic in its own job so their profile artifacts are collected separately.
 
 Or use the `python-avd` Makefile targets:
 
