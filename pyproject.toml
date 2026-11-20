@@ -8,7 +8,6 @@ dev = [
     # dev requirements"
     {include-group = "molecule"},
     {include-group = "pytest"},
-    "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",
     "codespell>=2.4.3",
@@ -211,6 +210,7 @@ reportMissingImports = "error"
 testpaths = [
   "development/coverage_plugins/tests",
   "python-avd/tests",
+  "tools/tests",
 ]
 pythonpath = [
   ".", # This is needed to import from ansible_collections

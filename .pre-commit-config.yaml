@@ -222,53 +222,47 @@ repos:
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
         entry: >-
-          ansible-doc-extractor --template docs/templates/plugin-docs.j2
-          --markdown "docs/plugins/Modules_and_action_plugins/"
+          python tools/generate_plugin_docs.py docs/plugins/Modules_and_action_plugins/
         language: python
-        types: [python]
-        # Issue with Ansible 2.19 and the doc extractor.
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        types_or: [python, yaml]
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
         name: Build documentation for collection filter plugins.
         entry: >-
-          ansible-doc-extractor --template docs/templates/plugin-docs.j2
-          --markdown "docs/plugins/Filter_plugins/"
+          python tools/generate_plugin_docs.py docs/plugins/Filter_plugins/
         language: python
         types_or: [python, yaml]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
         files: ansible_collections/arista/avd/plugins/filter/
         exclude: ^(ansible_collections/arista/avd/plugins/filter/deprecated_filters.py)$
 
       - id: docs-plugin-lookup
         name: Build documentation for collection lookup plugins.
         entry: >-
-          ansible-doc-extractor --template docs/templates/plugin-docs.j2
-          --markdown "docs/plugins/Lookup_plugins/"
+          python tools/generate_plugin_docs.py docs/plugins/Lookup_plugins/
         language: python
-        types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        types_or: [python, yaml]
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
         name: Build documentation for collection test plugins.
         entry: >-
-          ansible-doc-extractor --template docs/templates/plugin-docs.j2
-          --markdown "docs/plugins/Test_plugins/"
+          python tools/generate_plugin_docs.py docs/plugins/Test_plugins/
         language: python
-        types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        types_or: [python, yaml]
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
         name: Build documentation for collection var plugins.
         entry: >-
-          ansible-doc-extractor --template docs/templates/plugin-docs.j2
-          --markdown "docs/plugins/Vars_plugins/"
+          python tools/generate_plugin_docs.py docs/plugins/Vars_plugins/
         language: python
-        types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        types_or: [python, yaml]
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: metaschema
