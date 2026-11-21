@@ -112,6 +112,7 @@ class VlanInterfacesMixin(Protocol):
             "ipv4_standard_acl_out",
             context,
         )
+
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl_with_substitution(
                 name=svi.ipv4_acl_in,

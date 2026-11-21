@@ -77,7 +77,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=member_intf.name,
                     description=interface_description or None,
                     shutdown=not l3_port_channel.enabled,
-                    speed=member_intf.speed or None,
+                    speed=self.structured_config_utils.get_interface_speed(member_intf.speed),
                     metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                         peer_interface=member_intf.peer_interface or None,
                         peer_type="l3_port_channel_member",
@@ -179,18 +179,10 @@ class EthernetInterfacesMixin(Protocol):
         interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[interfaces={interface.name}]"
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_interface.ipv4_acl_in,
-            l3_interface.ipv4_standard_acl_in,
-            "ipv4_acl_in",
-            "ipv4_standard_acl_in",
-            context,
+            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, "ipv4_acl_in", "ipv4_standard_acl_in", context
         )
         self.structured_config_utils._validate_ipv4_acl_exclusion(
-            l3_interface.ipv4_acl_out,
-            l3_interface.ipv4_standard_acl_out,
-            "ipv4_acl_out",
-            "ipv4_standard_acl_out",
-            context,
+            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context
         )
         if l3_interface.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl_with_substitution(name=l3_interface.ipv4_acl_in, interface_name=interface.name, interface_ip=interface_ip)

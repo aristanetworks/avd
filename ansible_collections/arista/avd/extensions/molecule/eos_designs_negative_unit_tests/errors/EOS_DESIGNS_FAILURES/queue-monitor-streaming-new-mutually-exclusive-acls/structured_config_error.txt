@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'queue-monitor streaming'. Only one IPv4 ACL can be configured for host 'queue-monitor-streaming-new-mutually-exclusive-acls'.
