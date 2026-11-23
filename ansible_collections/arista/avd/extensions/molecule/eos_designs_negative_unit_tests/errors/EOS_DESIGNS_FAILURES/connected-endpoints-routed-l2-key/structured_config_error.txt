@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'mode: routed' is not supported with the following keys under 'servers[name=ROUTED_SERVER].adapters[0]' (port profile 'L2_PROFILE'): 'vlans', 'spanning_tree_portfast'. Remove them or set them to null to override inherited values.
+pyavd._errors.AristaAvdInvalidInputsError: 'servers[name=ROUTED_SERVER].adapters[0].mode: routed' is not supported with 'vlans', 'spanning_tree_portfast'. Keys inherited from port profile 'L2_PROFILE' can be set to null to override them.

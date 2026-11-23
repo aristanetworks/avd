@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: A network port with 'switch_ipv4_addresses' must match exactly one switch, since the same addresses would be configured on every matching switch. 'network_ports[0]' matches 'network-ports-routed-two-switches-2' and 'network-ports-routed-two-switches-1'.
+pyavd._errors.AristaAvdInvalidInputsError: 'network_ports[0].switch_ipv4_addresses' is only supported on network ports matching a single switch. 'network_ports[0]' matches 'network-ports-routed-two-switches-2' and 'network-ports-routed-two-switches-1'.

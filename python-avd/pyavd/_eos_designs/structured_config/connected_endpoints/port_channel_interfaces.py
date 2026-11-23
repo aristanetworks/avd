@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
@@ -194,6 +194,10 @@ class PortChannelInterfacesMixin(Protocol):
         port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
+
+        if adapter.mode == "routed":
+            msg = f"'{adapter._internal_data.context}.mode: routed' is not supported on port-channels."
+            raise AristaAvdError(msg)
 
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False

@@ -255,8 +255,8 @@ class UtilsMixin(Protocol):
         merged_individual_adapter = self._merge_adapter_settings_with_profile(individual_adapter)
         if merged_individual_adapter._get_defined_attr("mode") == "routed":
             msg = (
-                f"'mode: routed' is not supported for LACP fallback individual member interfaces. "
-                f"Found under '{individual_adapter._internal_data.context}' through port profile '{individual_adapter.profile}'."
+                f"'{individual_adapter._internal_data.context}.profile: {individual_adapter.profile}' is not supported "
+                "since the port profile sets 'mode: routed', which is not supported for LACP fallback individual interfaces."
             )
             raise AristaAvdInvalidInputsError(msg)
 
@@ -285,7 +285,7 @@ class UtilsMixin(Protocol):
         is_routed = merged_settings._get_defined_attr("mode") == "routed"
         if not is_routed:
             if _is_set(merged_settings._get_defined_attr("switch_ipv4_addresses")):
-                msg = f"'switch_ipv4_addresses' is set under '{self._get_adapter_context(adapter_or_network_port_settings)}' but requires 'mode: routed'."
+                msg = f"'{self._get_adapter_context(adapter_or_network_port_settings)}.switch_ipv4_addresses' is only supported with 'mode: routed'."
                 raise AristaAvdInvalidInputsError(msg)
             return
 
@@ -295,11 +295,10 @@ class UtilsMixin(Protocol):
         if not unsupported_keys:
             return
 
-        location = f"'{self._get_adapter_context(adapter_or_network_port_settings)}'"
-        if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str):
-            location += f" (port profile '{profile_name}')"
         keys = ", ".join(f"'{key}'" for key in unsupported_keys)
-        msg = f"'mode: routed' is not supported with the following keys under {location}: {keys}. Remove them or set them to null to override inherited values."
+        msg = f"'{self._get_adapter_context(adapter_or_network_port_settings)}.mode: routed' is not supported with {keys}."
+        if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str):
+            msg += f" Keys inherited from port profile '{profile_name}' can be set to null to override them."
         raise AristaAvdInvalidInputsError(msg)
 
     def _get_adapter_context(self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS) -> str:

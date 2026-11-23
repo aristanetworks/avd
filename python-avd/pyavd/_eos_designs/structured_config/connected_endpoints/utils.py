@@ -96,21 +96,23 @@ class UtilsMixin(Protocol):
         shared_utils = self.shared_utils
         underlay_routing_protocol = shared_utils.underlay_routing_protocol
         if not shared_utils.underlay_router:
-            reason = "the node is not an underlay router"
+            reason = "on nodes with 'underlay_router: false'."
         elif shared_utils.is_wan_router:
-            reason = "WAN routers are not supported"
+            reason = "on WAN routers."
         elif shared_utils.overlay_routing_protocol != "none":
-            reason = f"'overlay_routing_protocol: {shared_utils.overlay_routing_protocol}' is not supported. Only 'none' is supported"
+            reason = f"with 'overlay_routing_protocol: {shared_utils.overlay_routing_protocol}'. Only 'none' is supported."
         elif underlay_routing_protocol not in ("ebgp", "ospf"):
-            reason = f"'underlay_routing_protocol: {underlay_routing_protocol}' is not supported. Only 'ebgp' and 'ospf' are supported"
+            reason = f"with 'underlay_routing_protocol: {underlay_routing_protocol}'. Only 'ebgp' and 'ospf' are supported."
+        elif shared_utils.uplink_type not in ("p2p", "p2p-vrfs"):
+            reason = f"with 'uplink_type: {shared_utils.uplink_type}'."
         elif not (shared_utils.underlay_bgp if underlay_routing_protocol == "ebgp" else shared_utils.underlay_ospf):
-            reason = f"the node does not run the '{underlay_routing_protocol}' underlay"
+            reason = f"on nodes without the '{underlay_routing_protocol}' underlay."
         elif underlay_routing_protocol == "ebgp" and shared_utils.underlay_ipv6_numbered:
-            reason = "'underlay_ipv6_numbered' is not supported"
+            reason = "with 'underlay_ipv6_numbered: true'."
         else:
             return
 
-        msg = f"'mode: routed' is set under '{adapter._internal_data.context}', but routed ports are not supported on this node: {reason}."
+        msg = f"'{adapter._internal_data.context}.mode: routed' is not supported {reason}"
         raise AristaAvdInvalidInputsError(msg, host=shared_utils.hostname)
 
     def _get_network_port_switch_ipv4_addresses(
@@ -132,13 +134,13 @@ class UtilsMixin(Protocol):
 
         context = network_port._internal_data.context
         if not (switch_ipv4_addresses := network_port.switch_ipv4_addresses._as_list()):
-            msg = f"'switch_ipv4_addresses' is required with 'mode: routed' under '{context}'."
+            msg = f"'{context}.switch_ipv4_addresses' is required with 'mode: routed'."
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if len(switch_ipv4_addresses) != len(switch_ports):
             msg = (
-                f"The length of 'switch_ipv4_addresses' ({len(switch_ipv4_addresses)}) must match the number of ports in the expanded 'switch_ports' "
-                f"({len(switch_ports)}) under '{context}'."
+                f"'{context}.switch_ipv4_addresses' must have one address per port in the expanded 'switch_ports'. "
+                f"Got {len(switch_ipv4_addresses)} addresses for {len(switch_ports)} ports."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
@@ -149,8 +151,8 @@ class UtilsMixin(Protocol):
             and self.shared_utils.network_port_matches(network_port, device, self.shared_utils.get_peer_facts(device).platform)
         ]:
             msg = (
-                "A network port with 'switch_ipv4_addresses' must match exactly one switch, since the same addresses would be configured on every "
-                f"matching switch. '{context}' matches '{self.shared_utils.hostname}' and {', '.join(other_matching_devices)}."
+                f"'{context}.switch_ipv4_addresses' is only supported on network ports matching a single switch. "
+                f"'{context}' matches '{self.shared_utils.hostname}' and {', '.join(other_matching_devices)}."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 

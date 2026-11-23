@@ -260,7 +260,7 @@ class EthernetInterfacesMixin(Protocol):
         if adapter.mode == "routed":
             self._validate_routed_port_support(adapter)
             if not adapter.switch_ipv4_addresses:
-                msg = f"'switch_ipv4_addresses' is required with 'mode: routed' under '{adapter._internal_data.context}'."
+                msg = f"'{adapter._internal_data.context}.switch_ipv4_addresses' is required with 'mode: routed'."
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             ethernet_interface.ip_address = adapter.switch_ipv4_addresses[node_index]
 

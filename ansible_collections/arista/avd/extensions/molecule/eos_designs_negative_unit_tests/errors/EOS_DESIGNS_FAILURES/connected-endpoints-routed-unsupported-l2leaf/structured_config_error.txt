@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'mode: routed' is set under 'servers[name=ROUTED_SERVER].adapters[0]', but routed ports are not supported on this node: the node is not an underlay router.
+pyavd._errors.AristaAvdInvalidInputsError: 'servers[name=ROUTED_SERVER].adapters[0].mode: routed' is not supported on nodes with 'underlay_router: false'.

@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'switch_ipv4_addresses' is set under 'servers[name=L2_SERVER].adapters[0]' but requires 'mode: routed'.
+pyavd._errors.AristaAvdInvalidInputsError: 'servers[name=L2_SERVER].adapters[0].switch_ipv4_addresses' is only supported with 'mode: routed'.
