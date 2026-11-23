@@ -1,0 +1,8 @@
+---
+- name: Verify ANTA workflow with real Ansible logging and callbacks
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+  roles:
+    - role: "{{ playbook_dir }}"
