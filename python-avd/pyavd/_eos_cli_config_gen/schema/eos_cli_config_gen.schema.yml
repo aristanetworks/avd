@@ -3869,6 +3869,10 @@ keys:
                 valid_values:
                 - '7'
                 - 8a
+        ospfv3:
+          type: dict
+          description: OSPFv3 configuration.
+          $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ospfv3
         pim:
           type: dict
           keys:
@@ -8451,6 +8455,10 @@ keys:
           type: bool
         ospf_area:
           type: str
+        ospfv3:
+          type: dict
+          description: OSPFv3 configuration.
+          $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ospfv3
         mpls:
           type: dict
           keys:
@@ -13552,6 +13560,10 @@ keys:
                 valid_values:
                 - '7'
                 - 8a
+        ospfv3:
+          type: dict
+          description: OSPFv3 configuration.
+          $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ospfv3
         flow_tracker:
           type: dict
           keys:
