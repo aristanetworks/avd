@@ -46,7 +46,7 @@ loopback_interfaces:
   ip_address: 192.168.200.1/32
 metadata:
   is_deployed: true
-  platform: vEOS
+  platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   validate_hardware:
     enabled: false

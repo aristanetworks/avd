@@ -28,7 +28,7 @@ default_node_types:
 
 spine:
   defaults:
-    platform: vEOS
+    platform: vEOS-lab
     bgp_as: 65100
     loopback_ipv4_pool: 192.168.200.0/24
   nodes:
@@ -179,8 +179,14 @@ network_ports:
     switch_ports: [Ethernet31]
     profile: ROUTED
     switch_ipv4_addresses: [10.40.1.0/31]
-  # Routed network port matching through 'platforms' (shared with routed-endpoints-spine1).
+  # Routed network port matching a single switch through 'platforms'.
   - platforms: [vEOS]
     switch_ports: [Ethernet40]
     profile: ROUTED
     switch_ipv4_addresses: [10.40.2.0/31]
+  # Destination port for MON1 monitor session.
+  - switches: [routed-endpoints-leaf1a]
+    switch_ports: [Ethernet15]
+    monitor_sessions:
+      - name: MON1
+        role: destination
