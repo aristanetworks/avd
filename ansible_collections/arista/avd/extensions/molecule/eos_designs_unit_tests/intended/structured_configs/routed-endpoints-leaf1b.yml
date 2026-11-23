@@ -78,6 +78,8 @@ ethernet_interfaces:
     mode: access
     access_vlan: 10
 hostname: routed-endpoints-leaf1b
+ip_igmp_snooping:
+  globally_enabled: true
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -161,7 +163,6 @@ router_bgp:
       activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
-  mode: none
   no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -196,6 +197,11 @@ vlans:
   metadata:
     tenants:
     - system
+- id: 10
+  name: VLAN10
+  metadata:
+    tenants:
+    - TENANT_A
 vrfs:
 - name: MGMT
   ip_routing: false

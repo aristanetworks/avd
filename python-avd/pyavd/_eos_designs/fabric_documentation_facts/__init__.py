@@ -296,10 +296,7 @@ class FabricDocumentationFacts(AvdFacts):
                     port_channel_interface = {}
                     description = get(ethernet_interface, "description", default="-")
                     shutdown = get(ethernet_interface, "shutdown", default="-")
-                    if get(ethernet_interface, "switchport.enabled") is False and get(ethernet_interface, "ip_address") is not None:
-                        mode = "routed"
-                    else:
-                        mode = get(ethernet_interface, "switchport.mode", default="-")
+                    mode = get(ethernet_interface, "switchport.mode", default="-")
                     access_vlan = get(ethernet_interface, "switchport.access_vlan", default="-")
                     trunk_allowed_vlan = get(ethernet_interface, "switchport.trunk.allowed_vlan", default="-")
                     fabric_port = ethernet_interface["name"]

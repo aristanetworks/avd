@@ -105,8 +105,6 @@ class UtilsMixin(Protocol):
             reason = f"with 'underlay_routing_protocol: {underlay_routing_protocol}'. Only 'ebgp' and 'ospf' are supported."
         elif shared_utils.uplink_type not in ("p2p", "p2p-vrfs"):
             reason = f"with 'uplink_type: {shared_utils.uplink_type}'."
-        elif not (shared_utils.underlay_bgp if underlay_routing_protocol == "ebgp" else shared_utils.underlay_ospf):
-            reason = f"on nodes without the '{underlay_routing_protocol}' underlay."
         elif underlay_routing_protocol == "ebgp" and shared_utils.underlay_ipv6_numbered:
             reason = "with 'underlay_ipv6_numbered: true'."
         else:

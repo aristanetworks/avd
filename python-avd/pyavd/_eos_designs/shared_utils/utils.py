@@ -106,8 +106,6 @@ def _is_set(value: Any) -> bool:
         if isinstance(value, AvdModel):
             return any(_is_set(nested_value) for nested_value in value.__dict__.values())
         return len(value) > 0  # type: ignore[arg-type]
-    if isinstance(value, (list, dict)):
-        return bool(value)
     return True
 
 
