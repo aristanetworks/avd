@@ -1,0 +1,44 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: digital-twin-hardware-identity-containerlab-tests-l2leaf
+ip_igmp_snooping:
+  globally_enabled: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.103/24
+  type: oob
+  gateway: 172.16.1.1
+metadata:
+  is_deployed: true
+  platform: cEOSLab
+  system_mac_address: 02:1c:73:00:00:03
+  fabric_name: DIGITAL_TWIN_CONTAINERLAB
+  serial_number: PRODCONTAINERLAB03
+  validate_hardware:
+    enabled: false
+  digital_twin:
+    environment: containerlab
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

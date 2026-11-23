@@ -85,7 +85,7 @@ The supported schema options depend on the type of variable that is described. T
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned
 above can address the usability aspect by helping the user with common mistakes.
 
-The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft-7 format. The meta-schema
+The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft 2020-12 format. The meta-schema
 can be seen [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
@@ -95,6 +95,20 @@ This means that the validator may report multiple errors about the same piece of
 This also means that a poorly written schema could have conflicting schema options, which may not allow any value. For example `type: str` schema with `min_length: 10` and `max_length: 5` would never be satisfied.
 
 The `deprecation.new_key` field is used for detecting conflicts with old and new data models. To properly detect conflicts the `new_key` must be a relative path to the new data model or multiple relative paths separated by `" or "`. Conflict detection only works if the new data model in or below the same dict as the deprecated model.
+
+The meta-schema is generated from the source-schema models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) and committed to this repository.
+When using the VS Code YAML extension, Draft 2020-12 support requires version 1.20.0 or later.
+
+- The `metaschema` pre-commit hook regenerates the JSON when `.pre-commit-config.yaml` changes.
+  To regenerate it explicitly, run `pre-commit run metaschema --all-files` and stage any generated changes.
+- Every schema build validates all authored YAML schema fragments and the standalone EOS Designs facts schema against the
+  meta-schema before combining fragments or writing generated artifacts. This includes the `schemas` pre-commit hook,
+  `make -C python-avd compile-schemas`, and package builds from source.
+  Validation checks schema structure and authoring conventions such as nonempty descriptions, using `jsonschema-rs` with
+  format validation enabled. Errors identify the source filename, JSON Pointer, and cause, and abort the build.
+  Regex syntax checks do not detect all features unsupported by AVD's runtime regex engine, such as `\p{Greek}`.
+  Generated combined schemas are skipped to avoid validating the same content twice. Source-model loading and compilation
+  in `pyavd-utils-gen` still run after fragment validation.
 
 ### Schema Options for type `int` (Integer)
 

@@ -1,0 +1,4 @@
+# Test the deprecated queue-monitor streaming IPv4 ACL key.
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: QMS-DEPRECATED
