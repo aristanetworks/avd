@@ -8,6 +8,8 @@ tenant_c:
         remote_as: "666"
         description: "Tenant C peer group"
         send_community: all
+        received_attribute_discard:
+          disabled: true
         next_hop_self: true
         maximum_routes: 1000
         address_family_ipv4:
@@ -28,6 +30,8 @@ tenant_c:
       - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
         remote_as: "666"
         description: "Tenant C peer group"
+        received_attribute_discard:
+          type_codes: 10-20
         nodes: ['dc1-bl[12]a']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"

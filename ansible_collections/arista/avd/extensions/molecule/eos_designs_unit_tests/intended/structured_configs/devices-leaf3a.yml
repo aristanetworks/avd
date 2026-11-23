@@ -3,6 +3,36 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet20
+  description: EXPLICIT_AUTO_MODE_SUPPRESSED
+  shutdown: false
+  metadata:
+    peer: EXPLICIT_AUTO_MODE_SUPPRESSED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet21
+  description: PLAIN_AUTO_PRESERVED
+  shutdown: false
+  speed: auto
+  metadata:
+    peer: PLAIN_AUTO_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+- name: Ethernet22
+  description: FIXED_SPEED_PRESERVED
+  shutdown: false
+  speed: 10g
+  metadata:
+    peer: FIXED_SPEED_PRESERVED
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
 hostname: devices-leaf3a
 ip_igmp_snooping:
   globally_enabled: true
@@ -18,8 +48,10 @@ loopback_interfaces:
   ip_address: 10.255.2.101/32
 metadata:
   is_deployed: true
-  platform: cEOS-lab
+  platform: cEOSLab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -44,8 +76,6 @@ router_bgp:
   router_id: 10.254.0.5
   maximum_paths:
     paths: 4
-  updates:
-    wait_install: true
   bgp:
     default:
       ipv4_unicast: false

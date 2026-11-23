@@ -429,7 +429,27 @@ class AvdStructuredConfigBaseProtocol(
             # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
-        self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
+        ip_access_group = self.inputs.queue_monitor_streaming.ip_access_group
+        ipv4_acl = self.inputs.queue_monitor_streaming.ipv4_acl
+        ipv4_standard_acl = self.inputs.queue_monitor_streaming.ipv4_standard_acl
+        context = "queue-monitor streaming"
+        # TODO: 7.0.0: Only validate ipv4_standard_acl and ipv4_acl, once ip_access_group is removed from the schema.
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_acl, "ip_access_group", "ipv4_acl", context)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ip_access_group, ipv4_standard_acl, "ip_access_group", "ipv4_standard_acl", context)
+        self.structured_config_utils._validate_ipv4_acl_exclusion(ipv4_acl, ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context)
+
+        queue_monitor_streaming = self.inputs.queue_monitor_streaming._cast_as(EosCliConfigGen.QueueMonitorStreaming, ignore_extra_keys=True)
+        if ipv4_standard_acl is not None:
+            self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
+            queue_monitor_streaming.ip_access_group = ipv4_standard_acl
+        elif ipv4_acl is not None:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=ipv4_acl,
+                context="queue_monitor_streaming.ipv4_acl",
+            )
+            self.structured_config_utils._set_ipv4_acl(acl)
+            queue_monitor_streaming.ip_access_group = acl.name
+        self.structured_config.queue_monitor_streaming = queue_monitor_streaming
 
     @structured_config_contributor
     def management_api_http(self) -> None:
@@ -458,14 +478,14 @@ class AvdStructuredConfigBaseProtocol(
 
             context = f"management_eapi.vrfs[name={vrf.name}]"
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.{context}")
-            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, context)
+            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context)
 
             enable_vrf = EosCliConfigGen.ManagementApiHttp.EnableVrfsItem(name=vrf_name)
             if vrf.ipv4_standard_acl is not None:
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                 enable_vrf._update(access_group=vrf.ipv4_standard_acl, ipv6_access_group=vrf.ipv6_acl)
             elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.configure_management_eapi_ipv4_acl_from_catalog:
-                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, substitution_support=False, context=context)
+                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=context)
                 self.structured_config_utils._set_ipv4_acl(acl)
                 enable_vrf._update(access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
             else:
