@@ -33,9 +33,9 @@ from .workspace import WorkspaceMixin
 
 if TYPE_CHECKING:
     from types import TracebackType
+    from typing import Self
 
     from grpclib.protocol import H2Protocol
-    from typing_extensions import Self
 
     from pyavd._cv.workflows.models import CVGRPCChannelConfiguration
 
@@ -295,7 +295,7 @@ class CVClientProtocol(
         for dependent_package in ["aristaproto", "grpclib", "python-socks", "requests"]:
             try:
                 user_agent_parts.append(f"{dependent_package}/{version(dependent_package)}")
-            except PackageNotFoundError:  # noqa: PERF203
+            except PackageNotFoundError:
                 continue
 
         return " ".join(user_agent_parts)

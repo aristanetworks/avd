@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import sys
+from datetime import UTC, datetime
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, mock_open, patch
@@ -39,6 +40,10 @@ if TYPE_CHECKING:
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.anta_workflow"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
+DEFAULT_RUN_OVERVIEW_DATA = anta_module.RunOverviewData(
+    test_execution_start_time=datetime(2026, 1, 1, 0, 0, 0, tzinfo=UTC),
+    test_execution_end_time=datetime(2026, 1, 1, 0, 0, 1, tzinfo=UTC),
+)
 
 
 def test_get_ansible_vars_logs_info_when_device_not_deployed(caplog: pytest.LogCaptureFixture) -> None:
@@ -271,17 +276,30 @@ def test_build_reports_logs_warning_when_all_results_hidden_by_filters(caplog: p
         patch(f"{MODULE_PATH}.sort_result_manager"),
         caplog.at_level(logging.WARNING, logger=AVD_LOGGER_NAME),
     ):
-        build_reports(iter([batch_manager]), report_settings)
+        build_reports(iter([batch_manager]), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
 
     assert "The report is empty because all results were hidden by the provided status filters: success" in caplog.messages
 
 
 @pytest.mark.parametrize(
-    ("report_settings_extra", "expected_log"),
+    ("report_settings_extra", "expected_log", "expect_markdown_report_call", "expect_run_overview_data"),
     [
-        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", id="csv"),
-        pytest.param({"md_output": "/out/report.md"}, "Generating Markdown report at /out/report.md", id="markdown"),
-        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", id="json"),
+        pytest.param({"csv_output": "/out/report.csv"}, "Generating CSV report at /out/report.csv", False, False, id="csv"),
+        pytest.param(
+            {"md_output": "/out/report.md"},
+            "Generating Markdown report at /out/report.md",
+            True,
+            False,
+            id="markdown-default-no-run-overview",
+        ),
+        pytest.param(
+            {"md_output": "/out/report.md", "generate_run_overview": True},
+            "Generating Markdown report at /out/report.md",
+            True,
+            True,
+            id="markdown-run-overview",
+        ),
+        pytest.param({"json_output": "/out/report.json"}, "Generating JSON report at /out/report.json", False, False, id="json"),
     ],
 )
 def test_build_reports_logs_info_for_each_report_type(
@@ -289,6 +307,8 @@ def test_build_reports_logs_info_for_each_report_type(
     *,
     report_settings_extra: dict,
     expected_log: str,
+    expect_markdown_report_call: bool,
+    expect_run_overview_data: bool,
 ) -> None:
     """An INFO log naming the output path is emitted for each report format that is configured."""
     mock_result_manager = MagicMock()
@@ -308,13 +328,54 @@ def test_build_reports_logs_info_for_each_report_type(
         patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
         patch(f"{MODULE_PATH}.sort_result_manager"),
         patch(f"{MODULE_PATH}.ReportCsv"),
-        patch(f"{MODULE_PATH}.MDReportGenerator"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
         patch("pathlib.Path.open", mock_open()),
         caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
     ):
-        build_reports(iter([]), report_settings)
+        build_reports(iter([]), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
 
     assert expected_log in caplog.messages
+    assert mock_md_report.return_value.generate.called is expect_markdown_report_call
+    if expect_markdown_report_call:
+        md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+        run_overview_keys = {"test_execution_start_time", "test_execution_end_time", "total_duration"}
+        assert run_overview_keys.issubset(md_extra_data) is expect_run_overview_data
+
+
+def test_build_reports_adds_markdown_run_overview_when_enabled() -> None:
+    """The Markdown report includes start time, end time and duration in Run Overview when enabled."""
+    mock_result_manager = MagicMock()
+    mock_result_manager.results = []
+    mock_result_manager.get_total_results.return_value = 0
+    mock_result_manager.device_stats = {}
+    test_execution_start_time = datetime(2026, 1, 1, 12, 30, 0, tzinfo=UTC)
+    test_execution_end_time = datetime(2026, 1, 1, 12, 34, 56, tzinfo=UTC)
+    report_settings = {
+        "md_output": "/out/report.md",
+        "generate_run_overview": True,
+        "sorting": {
+            "sort_fields": ["device", "test"],
+            "status_priority": ["error", "failure", "skipped", "success", "unset"],
+        },
+    }
+    with (
+        patch(f"{MODULE_PATH}.ResultManager", return_value=mock_result_manager),
+        patch(f"{MODULE_PATH}.sort_result_manager"),
+        patch(f"{MODULE_PATH}.MDReportGenerator") as mock_md_report,
+    ):
+        build_reports(
+            iter([]),
+            report_settings,
+            run_overview_data=anta_module.RunOverviewData(
+                test_execution_start_time=test_execution_start_time,
+                test_execution_end_time=test_execution_end_time,
+            ),
+        )
+
+    md_extra_data = mock_md_report.return_value.generate.call_args.kwargs["extra_data"]
+    assert md_extra_data["test_execution_start_time"] == test_execution_start_time
+    assert md_extra_data["test_execution_end_time"] == test_execution_end_time
+    assert md_extra_data["total_duration"] == test_execution_end_time - test_execution_start_time
 
 
 def test_action_module_run_raises_when_pyavd_missing(action_module: Callable[..., ActionModule]) -> None:
@@ -620,6 +681,7 @@ def test_validate_argument_spec_materializes_report_sorting_defaults(
     _validation_result, validated_args = module.validate_argument_spec(anta_module.ARGUMENT_SPEC)
     validated_args = anta_module.strip_empties_from_dict(validated_args)
 
+    assert validated_args["report"]["generate_run_overview"] is False
     assert validated_args["report"]["sorting"]["status_priority"] == ["error", "failure", "skipped", "success", "unset"]
     assert validated_args["report"]["sorting"]["sort_fields"] == ["device", "categories", "test", "description", "custom_field"]
 
@@ -768,7 +830,7 @@ def test_build_reports_aggregates_results_and_device_statistics() -> None:
     }
 
     with patch(f"{MODULE_PATH}.ResultManager", FakeResultManager):
-        summary = build_reports(iter(batch_results), report_settings)
+        summary = build_reports(iter(batch_results), report_settings, run_overview_data=DEFAULT_RUN_OVERVIEW_DATA)
 
     assert summary == {
         "total_tests": 3,

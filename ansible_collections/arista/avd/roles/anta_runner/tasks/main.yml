@@ -47,6 +47,7 @@
       tags: "{{ anta_runner_tags | arista.avd.default([]) }}"
       dry_run: "{{ anta_runner_dry_run }}"
     report:
+      generate_run_overview: "{{ anta_report_run_overview }}"
       expand_results: "{{ anta_report_expand_results }}"
       generate_custom_field: "{{ anta_report_custom_field }}"
       csv_output: "{{ anta_report_csv_path }}"

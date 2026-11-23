@@ -1029,6 +1029,87 @@ schemas/avd_design/docs/tables/wan-cv-pathfinder-zscaler-integration.md
 schemas/avd_design/docs/tables/aaa-settings.md
 --8<--
 
+AAA settings profiles can be selected from node type defaults, node groups, or nodes using `aaa_settings_profile`.
+Profiles without a `parent_profile` inherit from global `aaa_settings`; child profiles inherit their parent, and the chain falls back to global settings.
+Child profile values override matching values from their parent.
+For TACACS and RADIUS, `vrfs` entries merge by name across global settings and the profile chain; a more specific entry overrides matching fields.
+A defined `servers` list replaces the inherited list for that protocol, while an omitted list keeps the inherited servers.
+
+```yaml
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+
+aaa_settings_profiles:
+  - profile: common_aaa
+    authorization:
+      exec:
+        default: group tacacs+ local
+
+  - profile: restricted_aaa
+    parent_profile: common_aaa
+    authorization:
+      exec:
+        default: local
+
+l3leaf:
+  defaults:
+    aaa_settings_profile: restricted_aaa
+```
+
+The effective `aaa_settings` after applying profiles are:
+
+```yaml
+aaa_settings:
+  authentication:
+    login:
+      default: group tacacs+ local
+    authorization:
+      exec:
+        default: local
+```
+
+!!! note
+
+    Exercise caution when changing a password through profile inheritance. If global or parent
+    settings define `aaa_settings.enable_password.password` and a profile sets
+    `aaa_settings.enable_password.cleartext_password`, inheritance retains both values.
+    `aaa_settings.enable_password.password` takes precedence over
+    `aaa_settings.enable_password.cleartext_password`, so the generated configuration keeps using the
+    old password and ignores the new cleartext password. For local users,
+    `aaa_settings.local_users[name=<username>].sha512_password` takes precedence over
+    `aaa_settings.local_users[name=<username>].cleartext_password` with the same result.
+
+    To override both credentials, explicitly clear the inherited hashes in the selected profile:
+
+    ```yaml
+    aaa_settings:
+      enable_password:
+        password: "<sha512-hash>"
+      local_users:
+        - name: rotating-user
+          sha512_password: "<sha512-hash>"
+
+    aaa_settings_profiles:
+      - profile: vaulted_passwords
+        enable_password:
+          password: null  # Overriding the value in base aaa_settings
+          cleartext_password: "<enable-password-from-vault>"
+        local_users:
+          - name: rotating-user
+            sha512_password: null  # Overriding the value in base aaa_settings
+            cleartext_password: "<local-user-password-from-vault>"
+
+    l3leaf:
+      defaults:
+        aaa_settings_profile: vaulted_passwords
+    ```
+
+--8<--
+schemas/avd_design/docs/tables/aaa-settings-profiles.md
+--8<--
+
 ### DNS
 
 --8<--

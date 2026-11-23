@@ -50,27 +50,54 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Installation
 
-!!! warning "Python 3.10 end of life"
+!!! warning "Python 3.10 is no longer supported"
 
-    Python 3.10 has reached [end of life](https://devguide.python.org/versions/) and no longer receives security updates.
-    AVD support for Python 3.10 is deprecated and will be removed in a future release. Please upgrade to a supported Python version.
-    Importing `pyavd` on Python 3.10 emits a `DeprecationWarning`.
+    Upgrade to Python 3.11 or later before installing or upgrading PyAVD.
+
+!!! important "Keep Python dependencies up to date"
+
+    When installing or upgrading PyAVD, update its Python dependencies to the
+    latest compatible releases to pick up available security fixes using:
+
+    - pip: `--upgrade --upgrade-strategy eager`
+    - uv: `--upgrade`
+
+!!! note
+
+    Before using a `uv` tab, create or activate the intended virtual environment.
+    For example, run `uv venv` and then `source .venv/bin/activate` on macOS or Linux.
 
 Install the `pyavd` Python package:
 
-```sh
-pip install pyavd
-```
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd"
+    ```
 
 Python dependencies are automatically installed with above command.
 
 ### Optional requirements
 
-To install Ansible [AVD collection Python requirements](../installation/collection-installation.md#python-requirements-installation) install with extra `ansible`:
+To install Ansible [AVD collection Python requirements](../installation/collection-installation.md#python-dependencies) install with extra `ansible`:
 
-```sh
-pip install pyavd[ansible]
-```
+=== "pip"
+
+    ```shell
+    pip install --upgrade --upgrade-strategy eager "pyavd[ansible]"
+    ```
+
+=== "uv"
+
+    ```shell
+    uv pip install --upgrade "pyavd[ansible]"
+    ```
 
 ## Reference
 

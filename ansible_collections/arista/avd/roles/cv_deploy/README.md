@@ -347,10 +347,47 @@ The optional settings below provide direct control over Workspace and Change Con
 # Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
 # cv_workspace_requested_state: <str>
 
-# Set the requested state of the created Change Control.
+# Set the requested state of the created or existing Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
 # cv_change_control_requested_state: <str>
+
+# Set the ID of an existing Change Control to manage without performing a deployment.
+# Setting the ID cannot be combined with any devices, tags, manifests or similar work items. It will only be used when operating on an existing Change Control.
+# cv_change_control_id: <str>
+
+# Set the note used when approving or unapproving the Change Control. By default this will be "Automatic approval by AVD".
+# cv_change_control_approval_note: <str>
+
+# Set the note used when starting the Change Control. By default this will be "Automatically started by AVD".
+# cv_change_control_start_note: <str>
 ```
+
+**`cv_change_control_id`**
+
+Setting `cv_change_control_id` enables Change-Control-only mode. This mode only manages the existing Change Control. It cannot be combined with `cv_workspace_id` and cannot deploy configurations, tags, metadata, or Static Configuration Studio content in the same run. Set `cv_devices: []` and leave `cv_static_config_manifest` empty. If any deployment content is found, the role fails before making changes to CloudVision.
+
+The existing Change Control is managed according to `cv_change_control_requested_state`. If `cv_change_control_requested_state` is not set, the role derives the requested Change Control state from `cv_run_change_control`. When `cv_run_change_control` is `true`, the requested state is `completed`. When `cv_run_change_control` is `false` (default), the requested state is `pending approval`.
+
+AVD validates that the requested state is compatible with the current Change Control state before making any changes. The table below shows how each requested state interacts with the current Change Control state:
+
+| Requested Change Control state | Current Change Control state | Outcome |
+| ------------------------------ | ---------------------------- | ------- |
+| `pending approval` | Not started | Unapproves the Change Control if currently approved. Otherwise no-op. |
+| `pending approval` | Scheduled / running / completed | **Error** — Change Control has already entered execution. No changes are made. |
+| `approved` | Not started | Approves the Change Control if not already approved. Otherwise no-op. |
+| `approved` | Scheduled / running / completed | **Error** — Change Control has already entered execution. No changes are made. |
+| `running` | Not started | Approves (if needed) and starts the Change Control. Does not wait for completion. |
+| `running` | Scheduled | Starts the Change Control immediately. Does not wait for completion. |
+| `running` | Running | No-op — Change Control is already running. |
+| `running` | Completed successfully | No-op — Change Control has already run successfully. |
+| `running` | Completed with errors | **Error** — reports the prior execution failure. |
+| `completed` | Not started | Approves (if needed), starts, and waits for the Change Control to finish. |
+| `completed` | Scheduled | Starts the Change Control immediately and waits for completion. |
+| `completed` | Running | Waits for the Change Control to finish. |
+| `completed` | Completed successfully | No-op — Change Control has already completed. |
+| `completed` | Completed with errors | **Error** — reports the prior execution failure. |
+
+In both the regular deployment and Change-Control-only modes, `cv_change_control_name` and `cv_change_control_description` update the Change Control, except when the Change Control is already in a completed state. `cv_change_control_approval_note` controls the note used when approving or unapproving the Change Control. `cv_change_control_start_note` controls the note used when starting it.
 
 **`cv_workspace_id`**
 
@@ -382,7 +419,7 @@ flowchart LR
 
 **`cv_change_control_requested_state`**
 
-By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Only applicable when the requested state of the Workspace is `submitted`.
+By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Without `cv_change_control_id`, this is only applicable when the requested state of the Workspace is `submitted`.
 
 ```mermaid
 flowchart LR
