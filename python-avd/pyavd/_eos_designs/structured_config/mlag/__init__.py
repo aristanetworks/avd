@@ -7,6 +7,7 @@ from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
@@ -240,12 +241,21 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             )
             mlag_peer_interface = self.shared_utils.mlag_peer_interfaces[index]
             if self.shared_utils.cv_topology_config.mlag_interfaces and (cv_topology := self.shared_utils.cv_topology) is not None:
-                # CloudVision sorts local ports independently on each MLAG node.
+                # Use the topology neighbor since local and peer ports are sorted separately.
                 mlag_peer_interface = cast("str", cv_topology.interfaces[mlag_interface].neighbor_interface)
             ethernet_interface.metadata._update(peer_interface=mlag_peer_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
             metadata_index = index
             if mlag_interfaces_metadata and not is_primary and self.shared_utils.cv_topology_config.mlag_interfaces:
-                metadata_index = list(self.shared_utils.mlag_peer_facts.mlag_interfaces).index(mlag_peer_interface)
+                try:
+                    metadata_index = list(self.shared_utils.mlag_peer_facts.mlag_interfaces).index(mlag_peer_interface)
+                except ValueError as err:
+                    msg = (
+                        f"'cv_topology' for MLAG interface '{mlag_interface}' on node '{self.shared_utils.hostname}' "
+                        f"references peer interface '{mlag_peer_interface}' on MLAG primary node '{self.shared_utils.mlag_peer}', "
+                        "but that interface is not in the primary node's resolved MLAG interfaces. "
+                        "Check the CloudVision topology data for both nodes."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from err
             if metadata_index in mlag_interfaces_metadata:
                 mlag_metadata = mlag_interfaces_metadata[metadata_index]
                 ethernet_interface.metadata._update(
