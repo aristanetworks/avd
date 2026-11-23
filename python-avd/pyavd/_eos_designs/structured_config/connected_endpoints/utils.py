@@ -286,15 +286,23 @@ class UtilsMixin(Protocol):
                 f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action' for host '{self.shared_utils.hostname}'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        # Check after inheritance to catch mutually exclusive keys supplied at different levels.
+        if ipv4_standard_acl and legacy_access_list:
+            msg = (
+                "'traffic_allow_ipv4_standard_acl' and 'traffic_allow_access_list' are mutually exclusive under "
+                f"'{adapter._internal_data.context}.dot1x.aaa.unresponsive.action' for host '{self.shared_utils.hostname}'."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if ipv4_standard_acl:
             self.structured_config_utils._set_ipv4_standard_acl(ipv4_standard_acl)
             dot1x.aaa.unresponsive.action.traffic_allow_access_list = ipv4_standard_acl
         elif ipv4_acl:
-            if ipv4_acl not in self.inputs.ipv4_acls:
-                msg = f"ipv4_acls[name={ipv4_acl}]"
-                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+            acl = self.shared_utils.get_ipv4_acl(
+                name=ipv4_acl,
+                context=f"{adapter._internal_data.context}.dot1x.aaa.unresponsive.action.traffic_allow_ipv4_acl",
+            )
+            self.structured_config_utils._set_ipv4_acl(acl)
             dot1x.aaa.unresponsive.action.traffic_allow_access_list = ipv4_acl
-            self.structured_config_utils._set_ipv4_acl(self.inputs.ipv4_acls[ipv4_acl])
         elif legacy_access_list:
             # Deprecated input kept for backwards compatibility. Preserve the interface ACL reference without catalog validation.
             dot1x.aaa.unresponsive.action.traffic_allow_access_list = legacy_access_list
