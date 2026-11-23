@@ -1,1 +1,1 @@
-pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'snmp_settings.vrfs[name=default]'. Only one IPv4 ACL can be configured.
+pyavd._errors.AristaAvdInvalidInputsError: 'ipv4_acl' and 'ipv4_standard_acl' are mutually exclusive on 'snmp_settings.vrfs[name=default]'. Only one IPv4 ACL can be configured for host 'snmp-vrf-ipv4-acl-and-ipv4-standard-acl-conflict'.

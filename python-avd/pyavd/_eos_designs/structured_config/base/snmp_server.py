@@ -307,7 +307,9 @@ class SnmpServerMixin(Protocol):
                 continue
 
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
-            self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", f"snmp_settings.vrfs[name={vrf.name}]")
+            self.structured_config_utils._validate_ipv4_acl_exclusion(
+                vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", f"snmp_settings.vrfs[name={vrf.name}]"
+            )
 
             if sort_snmp_acls_and_local_interfaces_by_vrf:
                 vrf_item = EosCliConfigGen.SnmpServer.VrfsItem(name=vrf_name, enable=vrf.enable)
@@ -318,7 +320,7 @@ class SnmpServerMixin(Protocol):
                     else:
                         vrf_item.ipv4_acl = vrf.ipv4_acl
                     if self.inputs.avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog:
-                        acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name) 
+                        acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context="snmp_settings.vrfs")
                         self.structured_config_utils._set_ipv4_acl(acl)
                 elif vrf.ipv4_standard_acl is not None:
                     self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_standard_acl, vrf=vrf_name if vrf_name != "default" else None)
@@ -337,7 +339,7 @@ class SnmpServerMixin(Protocol):
                 if vrf.ipv4_acl is not None:
                     self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
                     if self.inputs.avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog:
-                        acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, interface_name=vrf_name) 
+                        acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context="snmp_settings.vrfs")
                         self.structured_config_utils._set_ipv4_acl(acl)
                 elif vrf.ipv4_standard_acl is not None:
                     self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_standard_acl, vrf=vrf_name if vrf_name != "default" else None)
