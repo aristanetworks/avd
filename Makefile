@@ -25,10 +25,6 @@ pyavd-build: ## Build PyAVD Python package locally.
 uv-pyavd-build: ## Build PyAVD Python package locally.
 	cd python-avd && $(MAKE) uv-build
 
-.PHONY: pyavd-test
-pyavd-test: ## Test PyAVD Python code with tox.
-	tox run -r
-
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
 	cd python-avd && $(MAKE) build publish

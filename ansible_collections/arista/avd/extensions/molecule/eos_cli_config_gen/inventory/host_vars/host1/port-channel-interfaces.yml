@@ -601,6 +601,15 @@ port_channel_interfaces:
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
         key_type: "8a"
+    ospfv3:
+      bfd: true
+      passive_interface: true
+      cost: 411
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.1"
+      ipv6:
+        area: "0.0.9.2"
     bfd:
       echo: false
       per_link:
@@ -611,6 +620,13 @@ port_channel_interfaces:
     switchport:
       enabled: false
     ip_address: 192.0.2.3/31
+    ospfv3:
+      bfd: false
+      no_passive_interface: true
+      ipv4:
+        area: "0.0.9.3"
+      ipv6:
+        area: "0.0.9.4"
     service_policy:
       pbr:
         input: MyPolicy
@@ -618,10 +634,31 @@ port_channel_interfaces:
   - name: Port-Channel21
     description: Loop protection enable
     loop_protection: true
+    ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
+      ipv4:
+        bfd: true
+        cost: 421
+        area: "0.0.9.21"
+      ipv6:
+        bfd: true
+        cost: 422
+        area: "0.0.9.22"
 
   - name: Port-Channel22
     description: Loop protection disable
     loop_protection: false
+    ospfv3:
+      ipv4:
+        bfd: false
+        cost: 431
+        area: "0.0.9.23"
+      ipv6:
+        bfd: false
+        cost: 432
+        area: "0.0.9.24"
 
   - name: Port-Channel99
     description: MCAST
