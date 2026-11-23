@@ -1255,7 +1255,7 @@ class EosDesigns(EosDesignsRootModel):
         remove_mpls_lsr_dependency_for_mpls_overlay_role_server: bool
         """
         Available from AVD 6.6.0.
-        In EVPN MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+        In MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
         server` with `mpls_lsr: false`,
         configure `bgp route-reflector preserve-attributes` and
         `next-hop
@@ -1433,7 +1433,7 @@ class EosDesigns(EosDesignsRootModel):
                        since this combination is not supported.
                     remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
                        Available from AVD 6.6.0.
-                       In EVPN MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+                       In MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
                        server` with `mpls_lsr: false`,
                        configure `bgp route-reflector preserve-attributes` and
                        `next-hop
