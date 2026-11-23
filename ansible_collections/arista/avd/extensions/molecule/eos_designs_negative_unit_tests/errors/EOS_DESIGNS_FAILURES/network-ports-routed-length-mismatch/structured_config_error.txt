@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: The length of 'switch_ipv4_addresses' (2) must match the number of ports in the expanded 'switch_ports' (3) under 'network_ports[0]'.

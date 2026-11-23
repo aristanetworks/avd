@@ -1,0 +1,17 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-routed-pending-key
+
+servers:
+  # 'mode: routed' with a key not supported on routed ports yet.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-pending-key]
+        switch_ports: [Ethernet1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]
+        storm_control:
+          broadcast:
+            level: "10"

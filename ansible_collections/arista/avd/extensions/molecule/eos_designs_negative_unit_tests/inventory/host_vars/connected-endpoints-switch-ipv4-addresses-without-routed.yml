@@ -1,0 +1,14 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-switch-ipv4-addresses-without-routed
+
+servers:
+  # 'switch_ipv4_addresses' without 'mode: routed'.
+  - name: L2_SERVER
+    adapters:
+      - switches: [connected-endpoints-switch-ipv4-addresses-without-routed]
+        switch_ports: [Ethernet1]
+        mode: access
+        switch_ipv4_addresses: [10.0.0.0/31]

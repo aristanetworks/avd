@@ -1,0 +1,27 @@
+---
+# Routed connected endpoint with an OSPF underlay and no overlay.
+underlay_routing_protocol: ospf
+overlay_routing_protocol: none
+
+node_type_keys:
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+
+type: l3leaf
+l3leaf:
+  nodes:
+    - name: routed-endpoints-ospf
+      id: 1
+      platform: vEOS-lab
+      loopback_ipv4_pool: 192.168.201.0/24
+
+routers:
+  - name: ROUTER01
+    adapters:
+      - switches: [routed-endpoints-ospf]
+        switch_ports: [Ethernet10]
+        endpoint_ports: [ge-0/0/0]
+        mode: routed
+        mtu: 1500
+        switch_ipv4_addresses: [10.50.0.1/29]

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mode: routed' is not supported for LACP fallback individual member interfaces. Found under 'servers[name=L2_SERVER].adapters[0].port_channel.lacp_fallback.individual' through port profile 'ROUTED'.

@@ -44,10 +44,16 @@ class ConnectedEndpointsMixin(Protocol):
                     # Verify that length of all lists are the same
                     nodes_length = len(adapter_settings.switches)
                     endpoint_ports = adapter_settings.endpoint_ports
-                    if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
+                    switch_ipv4_addresses = adapter_settings.switch_ipv4_addresses
+                    if (
+                        len(adapter_settings.switch_ports) != nodes_length
+                        or (endpoint_ports and len(endpoint_ports) != nodes_length)
+                        or (switch_ipv4_addresses and len(switch_ipv4_addresses) != nodes_length)
+                    ):
                         msg = (
                             f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
-                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
+                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}), 'switch_ipv4_addresses' ({len(switch_ipv4_addresses) or '-'}) "
+                            f"(if used) did not match on adapter {adapter_index} on"
                             f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
@@ -73,13 +79,22 @@ class ConnectedEndpointsMixin(Protocol):
             network_port._internal_data.context = f"network_ports[{index}]"
             network_port_settings = self.get_merged_adapter_settings(network_port)
 
-            if not network_port_settings.switches and not network_port_settings.platforms:
-                continue
-            if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, self.hostname):
-                continue
-            if network_port_settings.platforms and (not self.platform or not self.match_regexes(network_port_settings.platforms, self.platform)):
+            if not self.network_port_matches(network_port_settings, self.hostname, self.platform):
                 continue
 
             filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
+
+    def network_port_matches(self: SharedUtilsProtocol, network_port_settings: EosDesigns.NetworkPortsItem, hostname: str, platform: str | None) -> bool:
+        """
+        Return True if the given network_ports entry matches the given hostname and platform.
+
+        Entries without 'switches' and 'platforms' never match.
+        When both are set, both must match.
+        """
+        if not network_port_settings.switches and not network_port_settings.platforms:
+            return False
+        if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, hostname):
+            return False
+        return not network_port_settings.platforms or bool(platform and self.match_regexes(network_port_settings.platforms, platform))

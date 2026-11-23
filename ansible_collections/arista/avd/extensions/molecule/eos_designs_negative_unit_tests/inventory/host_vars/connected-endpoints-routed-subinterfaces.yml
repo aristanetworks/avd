@@ -1,0 +1,16 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-routed-subinterfaces
+
+servers:
+  # 'mode: routed' with L2 subinterfaces.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-subinterfaces]
+        switch_ports: [Ethernet1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]
+        subinterfaces:
+          - number: 10

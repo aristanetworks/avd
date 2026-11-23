@@ -1422,6 +1422,17 @@ keys:
                   \ - `port_channel_id`: The port-channel number for the switch."
                 items:
                   type: str
+              switch_ipv4_addresses:
+                type: list
+                description: 'List of IPv4 addresses for the switch ports.
+
+                  Required with `mode: routed` and not supported with other modes.
+
+                  The lists `switch_ipv4_addresses`, `switch_ports`, and `switches`
+                  must have the same length.'
+                items:
+                  type: str
+                  description: IPv4 address with prefix length, for example `10.0.0.0/31`.
               subinterfaces:
                 type: list
                 description: 'L2 Subinterfaces
@@ -5430,6 +5441,19 @@ keys:
             of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../../../../docs/plugins/Filter_plugins/range_expand.md).\n"
           items:
             type: str
+        switch_ipv4_addresses:
+          type: list
+          description: 'List of IPv4 addresses for the switch ports.
+
+            Required with `mode: routed` and not supported with other modes.
+
+            The list must contain one address per port of the expanded `switch_ports`,
+            in the same order.
+
+            `switches` and `platforms` must match exactly one switch in the fabric.'
+          items:
+            type: str
+            description: IPv4 address with prefix length, for example `10.0.0.0/31`.
         description:
           type: str
           description: "Description or description template to be used on all ports.\nThis
@@ -10401,8 +10425,13 @@ keys:
     description: 'Optional profiles to share common settings for connected_endpoints
       and/or network_ports.
 
-      Keys are the same used under endpoints adapters. Keys defined under endpoints
-      adapters take precedence.
+      Profiles support the shared settings of connected endpoint adapters and network
+      ports.
+
+      The per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions`,
+      `switch_ipv4_addresses` and the adapter `subinterfaces` cannot be set in profiles.
+
+      Keys defined under connected endpoint adapters or network ports take precedence.
 
       '
     items:
@@ -12558,7 +12587,17 @@ $defs:
         - dot1q-tunnel
         - trunk
         - trunk phone
-        description: Interface mode.
+        - routed
+        description: 'Interface mode.
+
+          `routed` configures a routed port in the default VRF with the addresses
+          from `switch_ipv4_addresses`.
+
+          Routed ports are only supported with `underlay_routing_protocol` set to
+          `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
+
+          L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to
+          routed ports are not supported.'
       mtu:
         type: int
         min: 68

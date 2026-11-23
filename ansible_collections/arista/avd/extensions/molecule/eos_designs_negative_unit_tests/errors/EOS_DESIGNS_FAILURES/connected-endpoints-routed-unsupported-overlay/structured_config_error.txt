@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mode: routed' is set under 'servers[name=ROUTED_SERVER].adapters[0]', but routed ports are not supported on this node: 'overlay_routing_protocol: ebgp' is not supported. Only 'none' is supported.

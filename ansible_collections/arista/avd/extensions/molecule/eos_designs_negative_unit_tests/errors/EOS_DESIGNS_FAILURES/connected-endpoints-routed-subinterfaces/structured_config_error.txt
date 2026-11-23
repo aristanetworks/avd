@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'mode: routed' is not supported with the following keys under 'servers[name=ROUTED_SERVER].adapters[0]': 'subinterfaces'. Remove them or set them to null to override inherited values.

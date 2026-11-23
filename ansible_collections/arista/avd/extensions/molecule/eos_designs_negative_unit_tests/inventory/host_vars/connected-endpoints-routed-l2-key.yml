@@ -1,0 +1,20 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-routed-l2-key
+
+port_profiles:
+  - profile: L2_PROFILE
+    vlans: "10"
+    spanning_tree_portfast: edge
+
+servers:
+  # 'mode: routed' with L2 keys inherited from a port profile.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-l2-key]
+        switch_ports: [Ethernet1]
+        profile: L2_PROFILE
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]

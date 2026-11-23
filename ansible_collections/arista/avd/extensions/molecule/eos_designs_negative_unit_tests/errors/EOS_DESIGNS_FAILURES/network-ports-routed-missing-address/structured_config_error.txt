@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'switch_ipv4_addresses' is required with 'mode: routed' under 'network_ports[0]'.

@@ -12,6 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvd
 from pyavd._utils.get import get_v2
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.undefined import Undefined, UndefinedType
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -80,6 +81,80 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg)
 
         return short_esi
+
+    def _validate_routed_port_support(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> None:
+        """
+        Raise if routed ports are not supported on this device.
+
+        Routed ports are placed in the default VRF and advertised through the 'redistribute connected' of the underlay.
+        This is only the case for an 'ebgp' or 'ospf' underlay without overlay and outside of WAN.
+        The protocol names are compared on purpose, so new protocols are not supported until verified.
+        """
+        shared_utils = self.shared_utils
+        underlay_routing_protocol = shared_utils.underlay_routing_protocol
+        if not shared_utils.underlay_router:
+            reason = "the node is not an underlay router"
+        elif shared_utils.is_wan_router:
+            reason = "WAN routers are not supported"
+        elif shared_utils.overlay_routing_protocol != "none":
+            reason = f"'overlay_routing_protocol: {shared_utils.overlay_routing_protocol}' is not supported. Only 'none' is supported"
+        elif underlay_routing_protocol not in ("ebgp", "ospf"):
+            reason = f"'underlay_routing_protocol: {underlay_routing_protocol}' is not supported. Only 'ebgp' and 'ospf' are supported"
+        elif not (shared_utils.underlay_bgp if underlay_routing_protocol == "ebgp" else shared_utils.underlay_ospf):
+            reason = f"the node does not run the '{underlay_routing_protocol}' underlay"
+        elif underlay_routing_protocol == "ebgp" and shared_utils.underlay_ipv6_numbered:
+            reason = "'underlay_ipv6_numbered' is not supported"
+        else:
+            return
+
+        msg = f"'mode: routed' is set under '{adapter._internal_data.context}', but routed ports are not supported on this node: {reason}."
+        raise AristaAvdInvalidInputsError(msg, host=shared_utils.hostname)
+
+    def _get_network_port_switch_ipv4_addresses(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        network_port: EosDesigns.NetworkPortsItem,
+        switch_ports: list[str],
+    ) -> list[str]:
+        """
+        Return the validated 'switch_ipv4_addresses' of a routed network_port, aligned with the expanded switch_ports.
+
+        Returns an empty list for network_ports without 'mode: routed'.
+
+        Raises:
+            AristaAvdInvalidInputsError: If the addresses are missing, do not match the number of ports,
+                or if the network_port matches more than one switch.
+        """
+        if network_port.mode != "routed":
+            return []
+
+        context = network_port._internal_data.context
+        if not (switch_ipv4_addresses := network_port.switch_ipv4_addresses._as_list()):
+            msg = f"'switch_ipv4_addresses' is required with 'mode: routed' under '{context}'."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if len(switch_ipv4_addresses) != len(switch_ports):
+            msg = (
+                f"The length of 'switch_ipv4_addresses' ({len(switch_ipv4_addresses)}) must match the number of ports in the expanded 'switch_ports' "
+                f"({len(switch_ports)}) under '{context}'."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if other_matching_devices := [
+            f"'{device}'"
+            for device in natural_sort(self.shared_utils.all_fabric_devices)
+            if device != self.shared_utils.hostname
+            and self.shared_utils.network_port_matches(network_port, device, self.shared_utils.get_peer_facts(device).platform)
+        ]:
+            msg = (
+                "A network port with 'switch_ipv4_addresses' must match exactly one switch, since the same addresses would be configured on every "
+                f"matching switch. '{context}' matches '{self.shared_utils.hostname}' and {', '.join(other_matching_devices)}."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        return switch_ipv4_addresses
 
     def _get_adapter_trunk_groups(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

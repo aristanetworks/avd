@@ -86,6 +86,15 @@ keys:
                     - `port_channel_id`: The port-channel number for the switch.
                 items:
                   type: str
+              switch_ipv4_addresses:
+                type: list
+                description: |-
+                  List of IPv4 addresses for the switch ports.
+                  Required with `mode: routed` and not supported with other modes.
+                  The lists `switch_ipv4_addresses`, `switch_ports`, and `switches` must have the same length.
+                items:
+                  type: str
+                  description: IPv4 address with prefix length, for example `10.0.0.0/31`.
               subinterfaces:
                 type: list
                 description: |-

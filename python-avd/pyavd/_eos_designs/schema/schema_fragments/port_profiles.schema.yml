@@ -11,7 +11,9 @@ keys:
     primary_key: profile
     description: |
       Optional profiles to share common settings for connected_endpoints and/or network_ports.
-      Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
+      Profiles support the shared settings of connected endpoint adapters and network ports.
+      The per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions`, `switch_ipv4_addresses` and the adapter `subinterfaces` cannot be set in profiles.
+      Keys defined under connected endpoint adapters or network ports take precedence.
     items:
       type: dict
       $ref: "eos_designs#/$defs/adapter_config"

@@ -1614,8 +1614,13 @@ schemas/avd_design/docs/tables/default-connected-endpoints-description.md
 
 ### Network ports settings
 
-The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
-but all features and keys supported under `connected_endpoints.adapters` are also supported directly under `network_ports`.
+The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact.
+
+Settings shared through `port_profiles` are supported in both models.
+Per-port keys (`endpoint_ports`, `descriptions`) and `subinterfaces` exist only on connected endpoint adapters.
+`switch_ipv4_addresses` exists on connected endpoint adapters and network ports, but not in port profiles.
+`platforms` and `endpoint` exist only on network ports.
+`port_channel.subinterfaces` can be set in port profiles, but raises an error when the profile is used by a network port.
 
 To filter what switches to configure, match on a switch full hostname or platform type using regex patterns. When both criteria are used together, the switch must match both in order to generate the assigned port configuration.
 
@@ -1782,7 +1787,9 @@ schemas/avd_design/docs/tables/default-network-ports-description.md
 ### Port profiles settings
 
 Optional profiles to share common settings for connected_endpoints and/or network_ports.
-Keys are the same as used under endpoint adapters. Keys defined under endpoints adapters take precedence.
+Profiles support the shared settings of connected endpoint adapters and network ports.
+The per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions`, `switch_ipv4_addresses` and the adapter `subinterfaces` cannot be set in profiles.
+Keys defined under connected endpoint adapters or network ports take precedence.
 
 A port profile can refer to another port profile using `parent_profile` to inherit settings in up to two levels (adapter->profile->parent_profile).
 

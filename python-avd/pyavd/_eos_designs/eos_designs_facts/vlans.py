@@ -49,6 +49,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         adapter_settings: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem | EosDesigns.NetworkPortsItem,
     ) -> tuple[set, set]:
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
+        if adapter_settings.mode == "routed":
+            return set(), set()
+
         vlans = set()
         trunk_groups = set(adapter_settings.trunk_groups)
         # Return an empty VLAN set and defined trunk groups if VLANs are explicitly set to "none"

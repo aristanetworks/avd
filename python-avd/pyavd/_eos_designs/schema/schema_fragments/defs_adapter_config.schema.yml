@@ -42,7 +42,12 @@ $defs:
           - "dot1q-tunnel"
           - "trunk"
           - "trunk phone"
-        description: Interface mode.
+          - "routed"
+        description: |-
+          Interface mode.
+          `routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.
+          Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
+          L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported.
       mtu:
         type: int
         min: 68

@@ -31,7 +31,7 @@ Use `network_ports` instead when:
 
 ## Concepts
 
-**port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Keys are the same as those used under endpoint adapters. Keys defined under endpoint adapters take precedence.
+**port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Profiles support the shared settings of endpoint adapters, but not the per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions` and `switch_ipv4_addresses`, nor the adapter `subinterfaces`. Keys defined under endpoint adapters take precedence.
 
 **adapters**:  An adapter represents a network interface on the connected_endpoint.
 

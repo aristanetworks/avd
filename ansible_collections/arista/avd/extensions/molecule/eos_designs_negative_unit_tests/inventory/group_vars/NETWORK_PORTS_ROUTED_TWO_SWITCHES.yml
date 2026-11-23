@@ -1,0 +1,20 @@
+---
+type: l3leaf
+overlay_routing_protocol: none
+l3leaf:
+  defaults:
+    bgp_as: 65101
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: network-ports-routed-two-switches-1
+      id: 1
+    - name: network-ports-routed-two-switches-2
+      id: 2
+
+network_ports:
+  # Static 'switch_ipv4_addresses' on an entry matching two switches.
+  - switches: [network-ports-routed-two-switches-.*]
+    switch_ports: [Ethernet1]
+    mode: routed
+    switch_ipv4_addresses: [10.0.0.0/31]

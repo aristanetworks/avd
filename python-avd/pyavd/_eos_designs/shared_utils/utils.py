@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Any, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._schema.models.avd_base import AvdBase
+from pyavd._schema.models.avd_model import AvdModel
 from pyavd._utils.template_var import template_var
 from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import range_expand
@@ -54,6 +56,59 @@ if TYPE_CHECKING:
         def __contains__(self, profile_name: str, /) -> bool: ...
 
         def __getitem__(self, profile_name: str, /) -> T_ProfileItem_co: ...
+
+
+ROUTED_ALLOWED_KEYS = frozenset(
+    (
+        "mode",
+        "profile",
+        "enabled",
+        "speed",
+        "mtu",
+        "qos_profile",
+        "ptp",
+        "sflow",
+        "flow_tracking",
+        "link_tracking",
+        "monitor_sessions",
+        "poe",
+        "flowcontrol",
+        "description",
+        "descriptions",
+        "switches",
+        "switch_ports",
+        "endpoint_ports",
+        "switch_ipv4_addresses",
+        "validate_state",
+        "validate_lldp",
+        "campus_link_type",
+        "raw_eos_cli",
+        "structured_config",
+        "platforms",
+        "endpoint",
+        "parent_profile",
+    )
+)
+"""Adapter, network port and port profile keys supported with `mode: routed`. Any other key raises."""
+
+
+def _is_set(value: Any) -> bool:
+    """
+    Return True if the given value was set in the inputs.
+
+    None, null models, empty models and empty lists are considered unset.
+    """
+    if value is None or value is Undefined:
+        return False
+    if isinstance(value, AvdBase):
+        if value._created_from_null:
+            return False
+        if isinstance(value, AvdModel):
+            return any(_is_set(nested_value) for nested_value in value.__dict__.values())
+        return len(value) > 0  # type: ignore[arg-type]
+    if isinstance(value, (list, dict)):
+        return bool(value)
+    return True
 
 
 class UtilsMixin(Protocol):
@@ -151,7 +206,17 @@ class UtilsMixin(Protocol):
 
         Args:
             adapter_or_network_port_settings: can either be an adapter of a connected endpoint or one item under network_ports.
+
+        Raises:
+            AristaAvdInvalidInputsError: If the merged settings combine `mode: routed` with unsupported keys,
+                or set `switch_ipv4_addresses` without `mode: routed`.
         """
+        merged_settings = self._merge_adapter_settings_with_profile(adapter_or_network_port_settings)
+        self._validate_routed_adapter_settings(adapter_or_network_port_settings, merged_settings)
+        return merged_settings
+
+    def _merge_adapter_settings_with_profile(self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS) -> ADAPTER_SETTINGS:
+        """Return a copy of the given adapter_or_network_port with the port-profile applied."""
         # Deepcopy to avoid modifying the original.
         adapter_or_network_port_settings = adapter_or_network_port_settings._deepcopy()
 
@@ -187,7 +252,59 @@ class UtilsMixin(Protocol):
             EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
         )
         individual_adapter._internal_data.context = f"{adapter_or_network_port_settings._internal_data.context}.port_channel.lacp_fallback.individual"
-        return self.get_merged_adapter_settings(individual_adapter)
+        merged_individual_adapter = self._merge_adapter_settings_with_profile(individual_adapter)
+        if merged_individual_adapter._get_defined_attr("mode") == "routed":
+            msg = (
+                f"'mode: routed' is not supported for LACP fallback individual member interfaces. "
+                f"Found under '{individual_adapter._internal_data.context}' through port profile '{individual_adapter.profile}'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        self._validate_routed_adapter_settings(individual_adapter, merged_individual_adapter)
+        return merged_individual_adapter
+
+    def _validate_routed_adapter_settings(
+        self: SharedUtilsProtocol,
+        adapter_or_network_port_settings: ADAPTER_SETTINGS,
+        merged_settings: ADAPTER_SETTINGS,
+    ) -> None:
+        """
+        Validate `mode: routed` and `switch_ipv4_addresses` on merged adapter or network_port settings.
+
+        Only inputs are used, so the validation does not depend on the device.
+        Values are read with `_get_defined_attr` to avoid storing schema defaults on the models.
+
+        Args:
+            adapter_or_network_port_settings: The adapter or network_port as given in the inputs, before applying the port profile.
+            merged_settings: The same adapter or network_port after applying the port profile.
+
+        Raises:
+            AristaAvdInvalidInputsError: If `switch_ipv4_addresses` is set without `mode: routed`,
+                or if `mode: routed` is combined with keys that are not supported on routed ports.
+        """
+        is_routed = merged_settings._get_defined_attr("mode") == "routed"
+        if not is_routed:
+            if _is_set(merged_settings._get_defined_attr("switch_ipv4_addresses")):
+                msg = f"'switch_ipv4_addresses' is set under '{self._get_adapter_context(adapter_or_network_port_settings)}' but requires 'mode: routed'."
+                raise AristaAvdInvalidInputsError(msg)
+            return
+
+        unsupported_keys = [
+            field for field in type(merged_settings)._fields if field not in ROUTED_ALLOWED_KEYS and _is_set(merged_settings._get_defined_attr(field))
+        ]
+        if not unsupported_keys:
+            return
+
+        location = f"'{self._get_adapter_context(adapter_or_network_port_settings)}'"
+        if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str):
+            location += f" (port profile '{profile_name}')"
+        keys = ", ".join(f"'{key}'" for key in unsupported_keys)
+        msg = f"'mode: routed' is not supported with the following keys under {location}: {keys}. Remove them or set them to null to override inherited values."
+        raise AristaAvdInvalidInputsError(msg)
+
+    def _get_adapter_context(self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS) -> str:
+        """Return the input path of the given adapter or network_port for error messages."""
+        return getattr(adapter_or_network_port_settings._internal_data, "context", None) or "adapter"
 
     def match_regexes(self: SharedUtilsProtocol, regexes: Iterable[str], value: str) -> bool:
         """
