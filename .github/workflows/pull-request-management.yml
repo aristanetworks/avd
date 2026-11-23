@@ -222,12 +222,6 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python_version == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: "Install Python requirements"
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -276,12 +270,6 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python_version == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -371,12 +359,6 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python_version == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -486,12 +468,6 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python_version == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -557,12 +533,6 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.ansible_version == 'latest_stable'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -623,12 +593,6 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python_version }}
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python_version == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install pyavd and Ansible requirements
         id: install
         run: |
@@ -855,11 +819,6 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install Python & Ansible requirements
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
@@ -922,12 +881,6 @@ jobs:
           path: ~/.ansible/collections
           key: ${{ needs.build_collection.outputs.collection_cache_key }}
           fail-on-cache-miss: true
-      # PyYAML does not yet publish Python 3.15 wheels.
-      - name: Install libyaml development headers
-        if: matrix.python == '3.15'
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends libyaml-dev
       - name: Install AVD collection
         run: |
           uv run --no-project --with-requirements tools/e2e-test-avd.py \

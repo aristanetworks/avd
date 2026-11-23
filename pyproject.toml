@@ -64,6 +64,7 @@ schema-tools = [
     "pyavd-utils-gen==0.0.14",
     "deepmerge>=1.1.0",
     "pyyaml>=6.0.0",
+    "pyyaml>=6.0.4; python_version >= '3.15'",
     "referencing>=0.37.0",
     "ruff==0.17.5",
 ]
