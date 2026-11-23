@@ -10,4 +10,36 @@ keys:
     documentation_options:
       table: latency-analyzer
     type: dict
-    $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming"
+    keys:
+      enable:
+        type: bool
+        $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming/keys/enable"
+      ip_access_group:
+        type: str
+        $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming/keys/ip_access_group"
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ipv4_acl or ipv4_standard_acl
+      ipv4_acl:
+        type: str
+        description: |-
+          IPv4 extended access-list name. The access-list must be defined under `ipv4_acls`.
+          Field substitution is not supported for queue-monitor streaming references.
+          Mutually exclusive with `ipv4_standard_acl` and the deprecated `ip_access_group`.
+      ipv4_standard_acl:
+        type: str
+        description: |-
+          IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+          Field substitution is not supported for queue-monitor streaming references.
+          Mutually exclusive with `ipv4_acl` and the deprecated `ip_access_group`.
+      ipv6_access_group:
+        type: str
+        $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming/keys/ipv6_access_group"
+      max_connections:
+        type: int
+        $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming/keys/max_connections"
+      vrf:
+        type: str
+        $ref: "eos_cli_config_gen#/keys/queue_monitor_streaming/keys/vrf"

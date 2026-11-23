@@ -87,7 +87,6 @@ jobs:
       config_gen: ${{ steps.filter.outputs.config_gen }}
       plugins: ${{ steps.filter.outputs.plugins }}
       pyavd: ${{ steps.filter.outputs.pyavd }}
-      pytest: ${{ steps.filter.outputs.pytest }}
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       e2e: ${{ steps.filter.outputs.e2e }}
@@ -140,8 +139,6 @@ jobs:
               - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
               - 'schemas/cv_deploy/**/*.yml'
-            pytest:
-              - 'tox.ini'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -980,7 +977,6 @@ jobs:
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
-      needs.file-changes.outputs.pytest == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
       github.event_name == 'merge_group' ||
@@ -993,16 +989,28 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python 3
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           python-version: ${{ matrix.python }}
-      - name: Install tox
+      - name: Install test requirements
         run: |
-          pip install "tox>=4.52.1,<=4.67.13" tox-gh-actions --upgrade
-      - name: Run pytest via tox for ${{ matrix.python }}
+          uv venv
+          uv pip install --group pytest --group coverage \
+            -e python-avd -e development/coverage_plugins
+      - name: Build schemas and templates
         run: |
-          tox run
+          uv run --no-project python python-avd/scripts/compile_templates.py
+          uv run --no-project python python-avd/scripts/build_schemas.py
+      - name: Run pytest for Python ${{ matrix.python }}
+        if: matrix.python != '3.12'
+        run: uv run --no-project python -m pytest
+      - name: Run pytest with coverage for Python 3.12
+        if: matrix.python == '3.12'
+        run: |
+          uv run --no-project python -m coverage erase
+          uv run --no-project python -m coverage run -m pytest
+          uv run --no-project python -m coverage combine
       - name: Rename the coverage file
         if: matrix.python == '3.12'
         run: |

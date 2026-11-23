@@ -598,6 +598,10 @@ interface {{ ethernet_interface.name }}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
+{%     if ethernet_interface.ospfv3 is arista.avd.defined %}
+{%         set ospfv3_interface = ethernet_interface %}
+{%         include 'eos/interface-ospfv3.j2' %}
+{%     endif %}
 {%     if ethernet_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ ethernet_interface.service_policy.pbr.input }}
 {%     endif %}
