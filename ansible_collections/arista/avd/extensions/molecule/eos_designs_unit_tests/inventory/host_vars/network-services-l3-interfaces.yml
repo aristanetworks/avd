@@ -62,7 +62,7 @@ mac_acls:
         destination: any
 
 avd_design_future:
-  configure_monitor_session_acls_from_catalog: true
+  configure_monitor_session_ipv4_acl_from_catalog: true
 
 type: l3leaf
 l3leaf:

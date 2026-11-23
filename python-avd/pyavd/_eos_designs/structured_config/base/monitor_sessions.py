@@ -92,7 +92,7 @@ class MonitorSessionsMixin(Protocol):
             use_interface_specific_source_acls = (
                 session_access_group is not None
                 and len(source_sessions) > 1
-                and self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog
+                and self.inputs.avd_design_future.configure_monitor_session_ipv4_acl_from_catalog
                 and self._monitor_session_acl_has_interface_substitution(session_access_group)
             )
 
@@ -137,7 +137,7 @@ class MonitorSessionsMixin(Protocol):
         interface_name: str,
     ) -> None:
         """Configure the ACL catalog entry referenced by a monitor-session access group when enabled."""
-        if not self.inputs.avd_design_future.configure_monitor_session_acls_from_catalog or not access_group.name:
+        if not self.inputs.avd_design_future.configure_monitor_session_ipv4_acl_from_catalog or not access_group.name:
             return
 
         if access_group.type == "ip":
