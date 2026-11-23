@@ -12,6 +12,7 @@ import pytest
 
 from benchmarks.generate_inventory import generate_hostvars
 from pyavd import get_avd_facts, get_device_config, get_device_structured_config, validate_inputs
+from pyavd.api.schemas import AVDDesign
 
 if TYPE_CHECKING:
     from pytest_codspeed import BenchmarkFixture
@@ -47,6 +48,28 @@ def test_synthetic_structured_config_memory_benchmark(benchmark: BenchmarkFixtur
     def setup() -> None:
         nonlocal all_inputs, avd_facts
         all_inputs, avd_facts = deepcopy((source_inputs, source_facts))
+
+    def run() -> None:
+        structured_configs = {
+            hostname: get_device_structured_config(hostname=hostname, inputs=inputs, avd_facts=avd_facts) for hostname, inputs in all_inputs.items()
+        }
+        assert len(structured_configs) == 15
+
+    benchmark.pedantic(run, setup=setup, iterations=1, rounds=1, warmup_rounds=1)
+
+
+@pytest.mark.benchmark_diagnostic
+def test_synthetic_preloaded_structured_config_memory_benchmark(benchmark: BenchmarkFixture, synthetic_hostvars: dict[str, dict[str, Any]]) -> None:
+    """Compare structured configuration with AVDDesign model loading outside measurement."""
+    source_hostvars = deepcopy(synthetic_hostvars)
+    source_inputs = _validate_hostvars(source_hostvars)
+    source_facts = get_avd_facts(all_inputs=source_inputs, all_hostvars=source_hostvars)
+    source_models = {hostname: AVDDesign._from_dict(inputs) for hostname, inputs in source_inputs.items()}
+    all_inputs, avd_facts = source_models, source_facts
+
+    def setup() -> None:
+        nonlocal all_inputs, avd_facts
+        all_inputs, avd_facts = deepcopy((source_models, source_facts))
 
     def run() -> None:
         structured_configs = {

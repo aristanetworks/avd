@@ -49,6 +49,10 @@ jobs:
             mode: memory
             filter: "test_synthetic_structured_config_memory_benchmark"
             markers: "benchmark_diagnostic"
+          - suite: memory-structured-preloaded
+            mode: memory
+            filter: "test_synthetic_preloaded_structured_config_memory_benchmark"
+            markers: "benchmark_diagnostic"
           - suite: memory-cli
             mode: memory
             filter: "test_synthetic_cli_memory_benchmark"
