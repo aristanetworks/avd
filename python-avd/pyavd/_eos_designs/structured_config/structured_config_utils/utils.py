@@ -79,8 +79,6 @@ class UtilsMixin(Protocol):
         ipv4_standard_acl: str | None,
         ipv4_acl_key_name: str,
         ipv4_standard_acl_key_name: str,
-        ipv4_acl_key_name: str,
-        ipv4_standard_acl_key_name: str,
         context: str,
     ) -> None:
         """Raise if both extended and standard IPv4 ACLs are configured together."""
