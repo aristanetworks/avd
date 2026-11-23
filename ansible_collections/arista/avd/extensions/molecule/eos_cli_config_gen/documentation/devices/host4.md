@@ -199,12 +199,6 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 #### Router OSPFv3 Device Configuration
 

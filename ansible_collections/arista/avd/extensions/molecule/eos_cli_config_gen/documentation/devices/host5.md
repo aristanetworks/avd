@@ -116,12 +116,6 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 

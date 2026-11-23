@@ -83,12 +83,14 @@
 | BFD Adjacency State Any | {{ default_vrf_bfd_adjacency_state_any if default_bfd_adjacency_state_any else '-' }} |
 | Passive Interface Default | {{ default_vrf_passive_interface_default if default_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ default_vrf_auto_cost_reference_bandwidth if default_auto_cost_reference_bandwidth else '-' }} |
+{%             if default_lsa %}
 | LSA Limit | {{ default_vrf_lsa_limit }} |
 | LSA Disabled Time | {{ default_vrf_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ default_vrf_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ default_vrf_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ default_vrf_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ default_vrf_lsa_exceed_action_warn }} |
+{%             endif %}
 {%         endif %}
 {%         if default_address_family_ipv4 %}
 
@@ -138,12 +140,14 @@
 | BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%                 if router_ospfv3.address_family_ipv4.lsa is arista.avd.defined %}
 | LSA Limit | {{ af_lsa_limit }} |
 | LSA Disabled Time | {{ af_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ af_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ af_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ af_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ af_lsa_exceed_action_warn }} |
+{%                 endif %}
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -239,12 +243,14 @@
 | BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%                 if router_ospfv3.address_family_ipv6.lsa is arista.avd.defined %}
 | LSA Limit | {{ af_lsa_limit }} |
 | LSA Disabled Time | {{ af_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ af_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ af_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ af_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ af_lsa_exceed_action_warn }} |
+{%                 endif %}
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -374,12 +380,14 @@
 | BFD Adjacency State Any | {{ vrf_summary_bfd_adjacency_state_any if vrf_bfd_adjacency_state_any else '-' }} |
 | Passive Interface Default | {{ vrf_summary_passive_interface_default if vrf_passive_interface_default else '-' }} |
 | Auto Cost Reference Bandwidth | {{ vrf_summary_auto_cost_reference_bandwidth if vrf_auto_cost_reference_bandwidth else '-' }} |
+{%                 if vrf_lsa %}
 | LSA Limit | {{ vrf_summary_lsa_limit }} |
 | LSA Disabled Time | {{ vrf_summary_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ vrf_summary_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ vrf_summary_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ vrf_summary_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ vrf_summary_lsa_exceed_action_warn }} |
+{%                 endif %}
 {%             endif %}
 {%             if vrf_address_family_ipv4 %}
 
@@ -429,12 +437,14 @@
 | BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%                     if vrf.address_family_ipv4.lsa is arista.avd.defined %}
 | LSA Limit | {{ af_lsa_limit }} |
 | LSA Disabled Time | {{ af_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ af_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ af_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ af_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ af_lsa_exceed_action_warn }} |
+{%                     endif %}
 {%                 endif %}
 {%                 if vrf.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}
@@ -530,12 +540,14 @@
 | BFD Adjacency State Any | {{ af_bfd_adjacency_state_any }} |
 | Passive Interface Default | {{ af_passive_interface_default }} |
 | Auto Cost Reference Bandwidth | {{ af_auto_cost_reference_bandwidth }} |
+{%                     if vrf.address_family_ipv6.lsa is arista.avd.defined %}
 | LSA Limit | {{ af_lsa_limit }} |
 | LSA Disabled Time | {{ af_lsa_disabled_time }} |
 | LSA Incident Count Limit | {{ af_lsa_incident_count_limit }} |
 | LSA Incident Count Clear Timeout | {{ af_lsa_incident_count_clear_timeout }} |
 | LSA Warning Limit | {{ af_lsa_warning_limit }} |
 | LSA Exceed Action Warn | {{ af_lsa_exceed_action_warn }} |
+{%                     endif %}
 {%                 endif %}
 {%                 if vrf.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}

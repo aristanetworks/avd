@@ -198,12 +198,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv4
 
@@ -253,12 +247,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv6
 
@@ -284,12 +272,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 #### VRF: TEST_VRF
 
@@ -300,12 +282,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 ##### Address Family IPv6
 
@@ -316,12 +292,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -338,12 +308,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 #### VRF: data
 
@@ -356,12 +320,6 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
-| LSA Limit | - |
-| LSA Disabled Time | - |
-| LSA Incident Count Limit | - |
-| LSA Incident Count Clear Timeout | - |
-| LSA Warning Limit | - |
-| LSA Exceed Action Warn | - |
 
 #### Router OSPFv3 Device Configuration
 
