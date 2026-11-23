@@ -74,6 +74,8 @@ required-version = ">=0.9.17"
 # Apply a seven-day cutoff to each distribution's upload time, including transitive dependencies.
 # Renovate's release-age check instead uses the version's earliest upload.
 exclude-newer = "7 days"
+# Temporary exception for PyYAML 6.0.4's Python 3.15 wheels; remove on or after 2026-11-28.
+exclude-newer-package = { pyyaml = "2026-11-21T00:00:00Z" }
 
 [tool.uv.workspace]
 members = ["python-avd"]
