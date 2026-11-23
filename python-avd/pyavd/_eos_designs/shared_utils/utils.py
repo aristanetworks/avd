@@ -5,12 +5,10 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._schema.models.avd_base import AvdBase
-from pyavd._schema.models.avd_model import AvdModel
 from pyavd._utils.template_var import template_var
 from pyavd._utils.undefined import Undefined
 from pyavd.j2filters import range_expand
@@ -89,23 +87,6 @@ ROUTED_ALLOWED_KEYS = frozenset(
     )
 )
 """Adapter, network port and port profile keys supported with `mode: routed`. Any other key raises."""
-
-
-def _is_set(value: Any) -> bool:
-    """
-    Return True if the given value was set in the inputs.
-
-    None, null models, empty models and empty lists are considered unset.
-    """
-    if value is None or value is Undefined:
-        return False
-    if isinstance(value, AvdBase):
-        if value._created_from_null:
-            return False
-        if isinstance(value, AvdModel):
-            return any(_is_set(nested_value) for nested_value in value.__dict__.values())
-        return len(value) > 0  # type: ignore[arg-type]
-    return True
 
 
 class UtilsMixin(Protocol):
@@ -268,7 +249,7 @@ class UtilsMixin(Protocol):
         Validate `mode: routed` and `switch_ipv4_addresses` on merged adapter or network_port settings.
 
         Only inputs are used, so the validation does not depend on the device.
-        Values are read with `_get_defined_attr` to avoid storing schema defaults on the models.
+        Values are read with `_get_defined_attr` and `_has_attr_value` to avoid storing schema defaults on the models.
 
         Args:
             adapter_or_network_port_settings: The adapter or network_port as given in the inputs, before applying the port profile.
@@ -280,21 +261,19 @@ class UtilsMixin(Protocol):
         """
         is_routed = merged_settings._get_defined_attr("mode") == "routed"
         if not is_routed:
-            if _is_set(merged_settings._get_defined_attr("switch_ipv4_addresses")):
+            if merged_settings._has_attr_value("switch_ipv4_addresses"):
                 msg = f"'{self._get_adapter_context(adapter_or_network_port_settings)}.switch_ipv4_addresses' is only supported with 'mode: routed'."
                 raise AristaAvdInvalidInputsError(msg)
             return
 
-        unsupported_keys = [
-            field for field in type(merged_settings)._fields if field not in ROUTED_ALLOWED_KEYS and _is_set(merged_settings._get_defined_attr(field))
-        ]
+        unsupported_keys = [field for field in type(merged_settings)._fields if field not in ROUTED_ALLOWED_KEYS and merged_settings._has_attr_value(field)]
         if not unsupported_keys:
             return
 
         keys = ", ".join(f"'{key}'" for key in unsupported_keys)
         msg = f"'{self._get_adapter_context(adapter_or_network_port_settings)}.mode: routed' is not supported with {keys}."
         if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str) and any(
-            not _is_set(adapter_or_network_port_settings._get_defined_attr(key)) for key in unsupported_keys
+            not adapter_or_network_port_settings._has_attr_value(key) for key in unsupported_keys
         ):
             msg += f" Keys inherited from port profile '{profile_name}' can be set to null to override them."
         raise AristaAvdInvalidInputsError(msg)
