@@ -165,6 +165,6 @@ keys:
         type: bool
         description: |-
           Available from AVD 6.6.0.
-          When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6` references an ACL missing from its corresponding catalog,
-          and configure the referenced ACL definition from that catalog.
+          When enabled, raise an error if a monitor-session access group of type `ip`, `ipv6` or `mac` references an ACL missing from its corresponding catalog.
+          Configure the referenced ACL definition from its catalog for access groups of type `ip`, `ipv6`, or `mac`.
         default: false

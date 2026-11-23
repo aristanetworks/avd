@@ -2109,9 +2109,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.6.0.
         When enabled, raise an error if a monitor-session access group of type
-        `ip`, `ipv6` references an ACL missing from its corresponding catalog,
-        and configure the referenced
-        ACL definition from that catalog.
+        `ip`, `ipv6` or `mac` references an ACL missing from its corresponding catalog.
+        Configure the
+        referenced ACL definition from its catalog for access groups of type `ip`, `ipv6`, or `mac`.
 
         Default value: `False`
         """
@@ -2283,9 +2283,9 @@ class EosDesigns(EosDesignsRootModel):
                     configure_monitor_session_ipv4_acl_from_catalog:
                        Available from AVD 6.6.0.
                        When enabled, raise an error if a monitor-session access group of type
-                       `ip`, `ipv6` references an ACL missing from its corresponding catalog,
-                       and configure the referenced
-                       ACL definition from that catalog.
+                       `ip`, `ipv6` or `mac` references an ACL missing from its corresponding catalog.
+                       Configure the
+                       referenced ACL definition from its catalog for access groups of type `ip`, `ipv6`, or `mac`.
 
                 """
 
@@ -4918,7 +4918,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                         `mac_acls`.
-                        For `ip`, `ipv6` catalog validation and configuration require
+                        For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                         `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                         """
                         name: str | None
@@ -4944,7 +4944,7 @@ class EosDesigns(EosDesignsRootModel):
                                     type:
                                        ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                        `mac_acls`.
-                                       For `ip`, `ipv6` catalog validation and configuration require
+                                       For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                        `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                     name: ACL name.
                                     priority: priority
@@ -4992,7 +4992,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                         `mac_acls`.
-                        For `ip`, `ipv6` catalog validation and configuration require
+                        For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                         `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                         """
                         name: str | None
@@ -5011,7 +5011,7 @@ class EosDesigns(EosDesignsRootModel):
                                     type:
                                        ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                        `mac_acls`.
-                                       For `ip`, `ipv6` catalog validation and configuration require
+                                       For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                        `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                     name: ACL name.
 
@@ -32376,7 +32376,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
-                    For `ip`, `ipv6` catalog validation and configuration require
+                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                     """
                     name: str | None
@@ -32402,7 +32402,7 @@ class EosDesigns(EosDesignsRootModel):
                                 type:
                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                    `mac_acls`.
-                                   For `ip`, `ipv6` catalog validation and configuration require
+                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 name: ACL name.
                                 priority: priority
@@ -32450,7 +32450,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
-                    For `ip`, `ipv6` catalog validation and configuration require
+                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                     """
                     name: str | None
@@ -32469,7 +32469,7 @@ class EosDesigns(EosDesignsRootModel):
                                 type:
                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                    `mac_acls`.
-                                   For `ip`, `ipv6` catalog validation and configuration require
+                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 name: ACL name.
 
@@ -39542,7 +39542,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                             `mac_acls`.
-                            For `ip`, `ipv6` catalog validation and configuration require
+                            For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                             `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                             """
                             name: str | None
@@ -39568,7 +39568,7 @@ class EosDesigns(EosDesignsRootModel):
                                         type:
                                            ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                            `mac_acls`.
-                                           For `ip`, `ipv6` catalog validation and configuration require
+                                           For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                            `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                         name: ACL name.
                                         priority: priority
@@ -39616,7 +39616,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                             `mac_acls`.
-                            For `ip`, `ipv6` catalog validation and configuration require
+                            For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                             `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                             """
                             name: str | None
@@ -39635,7 +39635,7 @@ class EosDesigns(EosDesignsRootModel):
                                         type:
                                            ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                            `mac_acls`.
-                                           For `ip`, `ipv6` catalog validation and configuration require
+                                           For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                            `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                         name: ACL name.
 
@@ -52381,7 +52381,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
-                    For `ip`, `ipv6` catalog validation and configuration require
+                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                     """
                     name: str | None
@@ -52407,7 +52407,7 @@ class EosDesigns(EosDesignsRootModel):
                                 type:
                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                    `mac_acls`.
-                                   For `ip`, `ipv6` catalog validation and configuration require
+                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 name: ACL name.
                                 priority: priority
@@ -52455,7 +52455,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                     `mac_acls`.
-                    For `ip`, `ipv6` catalog validation and configuration require
+                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                     """
                     name: str | None
@@ -52474,7 +52474,7 @@ class EosDesigns(EosDesignsRootModel):
                                 type:
                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                    `mac_acls`.
-                                   For `ip`, `ipv6` catalog validation and configuration require
+                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 name: ACL name.
 
@@ -85878,7 +85878,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
-                                For `ip`, `ipv6` catalog validation and configuration require
+                                For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                 `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 """
                                 name: str | None
@@ -85904,7 +85904,7 @@ class EosDesigns(EosDesignsRootModel):
                                             type:
                                                ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                `mac_acls`.
-                                               For `ip`, `ipv6` catalog validation and configuration require
+                                               For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                             name: ACL name.
                                             priority: priority
@@ -85952,7 +85952,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
-                                For `ip`, `ipv6` catalog validation and configuration require
+                                For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                 `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 """
                                 name: str | None
@@ -85971,7 +85971,7 @@ class EosDesigns(EosDesignsRootModel):
                                             type:
                                                ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                `mac_acls`.
-                                               For `ip`, `ipv6` catalog validation and configuration require
+                                               For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                             name: ACL name.
 
@@ -88469,7 +88469,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
-                                For `ip`, `ipv6` catalog validation and configuration require
+                                For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                 `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 """
                                 name: str | None
@@ -88495,7 +88495,7 @@ class EosDesigns(EosDesignsRootModel):
                                             type:
                                                ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                `mac_acls`.
-                                               For `ip`, `ipv6` catalog validation and configuration require
+                                               For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                             name: ACL name.
                                             priority: priority
@@ -88543,7 +88543,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                 `mac_acls`.
-                                For `ip`, `ipv6` catalog validation and configuration require
+                                For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                 `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                 """
                                 name: str | None
@@ -88562,7 +88562,7 @@ class EosDesigns(EosDesignsRootModel):
                                             type:
                                                ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                `mac_acls`.
-                                               For `ip`, `ipv6` catalog validation and configuration require
+                                               For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                             name: ACL name.
 
@@ -95482,7 +95482,7 @@ class EosDesigns(EosDesignsRootModel):
                                     """
                                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                     `mac_acls`.
-                                    For `ip`, `ipv6` catalog validation and configuration require
+                                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                     """
                                     name: str | None
@@ -95508,7 +95508,7 @@ class EosDesigns(EosDesignsRootModel):
                                                 type:
                                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                    `mac_acls`.
-                                                   For `ip`, `ipv6` catalog validation and configuration require
+                                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                                 name: ACL name.
                                                 priority: priority
@@ -95556,7 +95556,7 @@ class EosDesigns(EosDesignsRootModel):
                                     """
                                     ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                     `mac_acls`.
-                                    For `ip`, `ipv6` catalog validation and configuration require
+                                    For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                     `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                     """
                                     name: str | None
@@ -95577,7 +95577,7 @@ class EosDesigns(EosDesignsRootModel):
                                                 type:
                                                    ACL catalog type. `ip` references `ipv4_acls`, `ipv6` references `ipv6_acls`, and `mac` references
                                                    `mac_acls`.
-                                                   For `ip`, `ipv6` catalog validation and configuration require
+                                                   For `ip`, `ipv6`, and `mac`, configuring the referenced ACL from its catalog requires
                                                    `avd_design_future.configure_monitor_session_ipv4_acl_from_catalog`.
                                                 name: ACL name.
 
