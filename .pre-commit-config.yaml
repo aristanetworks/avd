@@ -144,7 +144,7 @@ repos:
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
-    rev: ba1eab0aab630d2ea89835c2d7c662fa6f3a4adb  # frozen: v4.1.4
+    rev: edc8e376ba4affd43bc07571bdf3a90efc281ba7  # frozen: v4.1.4
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
