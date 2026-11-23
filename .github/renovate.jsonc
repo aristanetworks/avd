@@ -116,9 +116,6 @@
     },
     // Raising Ansible floors or the collection-files builder pin to 2.22 would
     // prevent hook installation on contributor Python 3.11/3.12 environments.
-    // The doc extractor also needs its <2.19 compatibility cap. Review upgrades
-    // manually until extractor compatibility and local hook support are resolved.
-    // This is temporary: the extractor's old Ansible will also age out of newer Python.
     // See https://github.com/aristanetworks/avd/pull/7750.
     {
       "description": "Manage pre-commit Ansible constraints manually",
