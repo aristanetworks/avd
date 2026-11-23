@@ -81,6 +81,14 @@
       "groupSlug": "python-tooling"
     },
     {
+      "description": "Keep legacy Molecule compatibility pins under manual control",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
+      "matchPackageNames": ["molecule", "ansible-compat"],
+      "matchCurrentValue": "==26.6.0",
+      "enabled": false
+    },
+    {
       "description": "Keep supported Python versions under manual control",
       "matchManagers": ["pep621"],
       "matchDepTypes": ["requires-python"],
