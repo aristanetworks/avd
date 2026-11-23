@@ -28,6 +28,9 @@ ethernet_interfaces:
   description: P2P_routed-endpoints-spine1_Ethernet1
   shutdown: false
   mtu: 9214
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 10.200.0.1/31
   metadata:
     peer: routed-endpoints-spine1
@@ -89,6 +92,37 @@ ethernet_interfaces:
     port_profile: ROUTED
   switchport:
     enabled: false
+- name: Ethernet14
+  description: SERVER_ROUTED_SERVER_nic5
+  shutdown: false
+  flow_tracker:
+    sampled: FLOW-TRACKER
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  ip_address: 10.30.1.6/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: QOS_PROFILE
+  ip_proxy_arp: true
+  metadata:
+    peer: ROUTED_SERVER
+    peer_interface: nic5
+    peer_type: server
+    peer_key: servers
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+  eos_cli: '! custom routed cli'
 - name: Ethernet10
   description: FIREWALL_FW01_eth1
   shutdown: false
@@ -146,10 +180,28 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 10
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 hostname: routed-endpoints-leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -168,6 +220,10 @@ mlag_configuration:
   peer_link: Port-Channel3
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
+monitor_sessions:
+- name: MON1
+  sources:
+  - name: Ethernet14
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_routed-endpoints-leaf1b_Port-Channel3
@@ -231,6 +287,10 @@ router_bgp:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
 service_routing_protocols_model: multi-agent
+sflow:
+  destinations:
+  - destination: 10.0.0.10
+  run: true
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true

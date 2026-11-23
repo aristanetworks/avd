@@ -27,6 +27,7 @@
 inventory_file = "inventory/hosts.yml"
 
 [documentation]
+include_connected_endpoints = true
 toc = false
 topology_csv = true
 p2p_links_csv = true

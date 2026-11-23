@@ -1376,8 +1376,8 @@ keys:
                 required: true
                 description: 'List of switch interfaces.
 
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses`
+                  (when used) must have the same length.
 
                   '
                 items:
@@ -1388,8 +1388,8 @@ keys:
                 required: true
                 description: 'List of switches.
 
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses`
+                  (when used) must have the same length.
 
                   '
                 items:
@@ -1400,8 +1400,8 @@ keys:
                 description: 'Endpoint ports is used for description, required unless
                   `description` or `descriptions` is set.
 
-                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches`
-                  must have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`,
+                  and `switch_ipv4_addresses` (when used) must have the same length.
 
                   Each list item is one switchport.
 
@@ -5450,7 +5450,8 @@ keys:
             The list must contain one address per port of the expanded `switch_ports`,
             in the same order.
 
-            `switches` and `platforms` must match exactly one switch in the fabric.'
+            The entry should target a single switch, because the same addresses are
+            otherwise configured on every matching switch.'
           items:
             type: str
             description: IPv4 address with prefix length, for example `10.0.0.0/31`.
@@ -12588,16 +12589,13 @@ $defs:
         - trunk
         - trunk phone
         - routed
-        description: 'Interface mode.
-
-          `routed` configures a routed port in the default VRF with the addresses
-          from `switch_ipv4_addresses`.
-
-          Routed ports are only supported with `underlay_routing_protocol` set to
-          `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-
-          L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to
-          routed ports are not supported.'
+        description: "Interface mode.\n`routed` configures a routed port in the default
+          VRF with the addresses from `switch_ipv4_addresses`.\nRouted ports are only
+          supported on non-WAN nodes with:\n  - `underlay_router: true`\n  - `overlay_routing_protocol:
+          none`\n  - `underlay_routing_protocol` set to `ebgp` or `ospf`\n  - `uplink_type`
+          set to `p2p` or `p2p-vrfs`\n  - `underlay_routing_protocol: ebgp` not combined
+          with `underlay_ipv6_numbered: true`\nL3 port-channels, L3 subinterfaces,
+          and L2 settings that do not apply to routed ports are not supported."
       mtu:
         type: int
         min: 68

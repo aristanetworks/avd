@@ -40,6 +40,7 @@ l3spine,BGP-SPINE1,,Ethernet17,firewall,CAMPUS_EGRESS_FW_1,,Eth6,True
 l3spine,BGP-SPINE1,,Ethernet18,l3_interface,,,,True
 l3spine,BGP-SPINE1,,Ethernet18.100,l3_interface,,,,True
 l3spine,BGP-SPINE1,,Ethernet18.101,l3_interface,,,,True
+l3spine,BGP-SPINE1,,Ethernet19,firewall,CAMPUS_EGRESS_FW_1,,Eth8,True
 l3spine,BGP-SPINE2,,Ethernet1,l2leaf,BGP-LEAF1,,Ethernet2,True
 l3spine,BGP-SPINE2,,Ethernet2,l2leaf,BGP-LEAF2,,Ethernet2,True
 l3spine,BGP-SPINE2,,Ethernet3,mlag_peer,BGP-SPINE1,,Ethernet3,True

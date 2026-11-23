@@ -52,7 +52,7 @@ keys:
                 required: true
                 description: |
                   List of switch interfaces.
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
                 items:
                   type: str
                   description: Switchport interface.
@@ -61,7 +61,7 @@ keys:
                 required: true
                 description: |
                   List of switches.
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
                 items:
                   type: str
                   description: Device.
@@ -69,7 +69,7 @@ keys:
                 type: list
                 description: |
                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
                   Each list item is one switchport.
                 items:
                   type: str

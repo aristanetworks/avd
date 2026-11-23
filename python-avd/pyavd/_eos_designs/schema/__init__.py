@@ -5298,30 +5298,34 @@ class EosDesigns(EosDesignsRootModel):
             switch_ports: SwitchPorts
             """
             List of switch interfaces.
-            The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-            same length.
+            The lists `endpoint_ports`, `switch_ports`, `switches`, and
+            `switch_ipv4_addresses` (when used) must have the same length.
 
 
-            Subclass of AvdList with `str` items.
+            Subclass of AvdList with `str`
+            items.
             """
             switches: Switches
             """
             List of switches.
-            The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-            length.
+            The lists `endpoint_ports`, `switch_ports`, `switches`, and
+            `switch_ipv4_addresses` (when used) must have the same length.
 
 
-            Subclass of AvdList with `str` items.
+            Subclass of AvdList with `str`
+            items.
             """
             endpoint_ports: EndpointPorts
             """
             Endpoint ports is used for description, required unless `description` or `descriptions` is set.
             The
-            lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+            lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+            (when used) must have the same length.
             Each list item is one switchport.
 
 
-            Subclass of AvdList with `str` items.
+            Subclass of AvdList with
+            `str` items.
             """
             descriptions: Descriptions
             """
@@ -5409,10 +5413,17 @@ class EosDesigns(EosDesignsRootModel):
             Interface mode.
             `routed` configures a routed port in the default VRF with the addresses from
             `switch_ipv4_addresses`.
-            Routed ports are only supported with `underlay_routing_protocol` set to
-            `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-            L3 port-channels, L3 subinterfaces,
-            and L2 settings that do not apply to routed ports are not supported.
+            Routed ports are only supported on non-WAN nodes with:
+              -
+            `underlay_router: true`
+              - `overlay_routing_protocol: none`
+              - `underlay_routing_protocol` set to
+            `ebgp` or `ospf`
+              - `uplink_type` set to `p2p` or `p2p-vrfs`
+              - `underlay_routing_protocol: ebgp`
+            not combined with `underlay_ipv6_numbered: true`
+            L3 port-channels, L3 subinterfaces, and L2 settings
+            that do not apply to routed ports are not supported.
             """
             mtu: int | None
             l2_mtu: int | None
@@ -5630,26 +5641,30 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         switch_ports:
                            List of switch interfaces.
-                           The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                           same length.
+                           The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                           `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                           Subclass of AvdList with `str` items.
+                           Subclass of AvdList with `str`
+                           items.
                         switches:
                            List of switches.
-                           The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                           length.
+                           The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                           `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                           Subclass of AvdList with `str` items.
+                           Subclass of AvdList with `str`
+                           items.
                         endpoint_ports:
                            Endpoint ports is used for description, required unless `description` or `descriptions` is set.
                            The
-                           lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                           lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+                           (when used) must have the same length.
                            Each list item is one switchport.
 
 
-                           Subclass of AvdList with `str` items.
+                           Subclass of AvdList with
+                           `str` items.
                         descriptions:
                            Unique description per port. When set, takes priority over description.
                            This can be a template using
@@ -5718,10 +5733,17 @@ class EosDesigns(EosDesignsRootModel):
                            Interface mode.
                            `routed` configures a routed port in the default VRF with the addresses from
                            `switch_ipv4_addresses`.
-                           Routed ports are only supported with `underlay_routing_protocol` set to
-                           `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                           L3 port-channels, L3 subinterfaces,
-                           and L2 settings that do not apply to routed ports are not supported.
+                           Routed ports are only supported on non-WAN nodes with:
+                             -
+                           `underlay_router: true`
+                             - `overlay_routing_protocol: none`
+                             - `underlay_routing_protocol` set to
+                           `ebgp` or `ospf`
+                             - `uplink_type` set to `p2p` or `p2p-vrfs`
+                             - `underlay_routing_protocol: ebgp`
+                           not combined with `underlay_ipv6_numbered: true`
+                           L3 port-channels, L3 subinterfaces, and L2 settings
+                           that do not apply to routed ports are not supported.
                         mtu: mtu
                         l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                         l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -33123,10 +33145,10 @@ class EosDesigns(EosDesignsRootModel):
         other modes.
         The list must contain one address per port of the expanded `switch_ports`, in the same
         order.
-        `switches` and `platforms` must match exactly one switch in the fabric.
+        The entry should target a single switch, because the same addresses are otherwise configured
+        on every matching switch.
 
-        Subclass of AvdList
-        with `str` items.
+        Subclass of AvdList with `str` items.
         """
         description: str | None
         """
@@ -33168,10 +33190,17 @@ class EosDesigns(EosDesignsRootModel):
         Interface mode.
         `routed` configures a routed port in the default VRF with the addresses from
         `switch_ipv4_addresses`.
-        Routed ports are only supported with `underlay_routing_protocol` set to
-        `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-        L3 port-channels, L3 subinterfaces,
-        and L2 settings that do not apply to routed ports are not supported.
+        Routed ports are only supported on non-WAN nodes with:
+          -
+        `underlay_router: true`
+          - `overlay_routing_protocol: none`
+          - `underlay_routing_protocol` set to
+        `ebgp` or `ospf`
+          - `uplink_type` set to `p2p` or `p2p-vrfs`
+          - `underlay_routing_protocol: ebgp`
+        not combined with `underlay_ipv6_numbered: true`
+        L3 port-channels, L3 subinterfaces, and L2 settings
+        that do not apply to routed ports are not supported.
         """
         mtu: int | None
         l2_mtu: int | None
@@ -33440,10 +33469,10 @@ class EosDesigns(EosDesignsRootModel):
                        other modes.
                        The list must contain one address per port of the expanded `switch_ports`, in the same
                        order.
-                       `switches` and `platforms` must match exactly one switch in the fabric.
+                       The entry should target a single switch, because the same addresses are otherwise configured
+                       on every matching switch.
 
-                       Subclass of AvdList
-                       with `str` items.
+                       Subclass of AvdList with `str` items.
                     description:
                        Description or description template to be used on all ports.
                        This can be a template using the AVD
@@ -33473,10 +33502,17 @@ class EosDesigns(EosDesignsRootModel):
                        Interface mode.
                        `routed` configures a routed port in the default VRF with the addresses from
                        `switch_ipv4_addresses`.
-                       Routed ports are only supported with `underlay_routing_protocol` set to
-                       `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                       L3 port-channels, L3 subinterfaces,
-                       and L2 settings that do not apply to routed ports are not supported.
+                       Routed ports are only supported on non-WAN nodes with:
+                         -
+                       `underlay_router: true`
+                         - `overlay_routing_protocol: none`
+                         - `underlay_routing_protocol` set to
+                       `ebgp` or `ospf`
+                         - `uplink_type` set to `p2p` or `p2p-vrfs`
+                         - `underlay_routing_protocol: ebgp`
+                       not combined with `underlay_ipv6_numbered: true`
+                       L3 port-channels, L3 subinterfaces, and L2 settings
+                       that do not apply to routed ports are not supported.
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -52827,10 +52863,17 @@ class EosDesigns(EosDesignsRootModel):
         Interface mode.
         `routed` configures a routed port in the default VRF with the addresses from
         `switch_ipv4_addresses`.
-        Routed ports are only supported with `underlay_routing_protocol` set to
-        `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-        L3 port-channels, L3 subinterfaces,
-        and L2 settings that do not apply to routed ports are not supported.
+        Routed ports are only supported on non-WAN nodes with:
+          -
+        `underlay_router: true`
+          - `overlay_routing_protocol: none`
+          - `underlay_routing_protocol` set to
+        `ebgp` or `ospf`
+          - `uplink_type` set to `p2p` or `p2p-vrfs`
+          - `underlay_routing_protocol: ebgp`
+        not combined with `underlay_ipv6_numbered: true`
+        L3 port-channels, L3 subinterfaces, and L2 settings
+        that do not apply to routed ports are not supported.
         """
         mtu: int | None
         l2_mtu: int | None
@@ -53082,10 +53125,17 @@ class EosDesigns(EosDesignsRootModel):
                        Interface mode.
                        `routed` configures a routed port in the default VRF with the addresses from
                        `switch_ipv4_addresses`.
-                       Routed ports are only supported with `underlay_routing_protocol` set to
-                       `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                       L3 port-channels, L3 subinterfaces,
-                       and L2 settings that do not apply to routed ports are not supported.
+                       Routed ports are only supported on non-WAN nodes with:
+                         -
+                       `underlay_router: true`
+                         - `overlay_routing_protocol: none`
+                         - `underlay_routing_protocol` set to
+                       `ebgp` or `ospf`
+                         - `uplink_type` set to `p2p` or `p2p-vrfs`
+                         - `underlay_routing_protocol: ebgp`
+                       not combined with `underlay_ipv6_numbered: true`
+                       L3 port-channels, L3 subinterfaces, and L2 settings
+                       that do not apply to routed ports are not supported.
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -86279,30 +86329,34 @@ class EosDesigns(EosDesignsRootModel):
                     switch_ports: SwitchPorts
                     """
                     List of switch interfaces.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                    same length.
+                    The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                    `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with `str`
+                    items.
                     """
                     switches: Switches
                     """
                     List of switches.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                    length.
+                    The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                    `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with `str`
+                    items.
                     """
                     endpoint_ports: EndpointPorts
                     """
                     Endpoint ports is used for description, required unless `description` or `descriptions` is set.
                     The
-                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                    lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+                    (when used) must have the same length.
                     Each list item is one switchport.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with
+                    `str` items.
                     """
                     descriptions: Descriptions
                     """
@@ -86390,10 +86444,17 @@ class EosDesigns(EosDesignsRootModel):
                     Interface mode.
                     `routed` configures a routed port in the default VRF with the addresses from
                     `switch_ipv4_addresses`.
-                    Routed ports are only supported with `underlay_routing_protocol` set to
-                    `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                    L3 port-channels, L3 subinterfaces,
-                    and L2 settings that do not apply to routed ports are not supported.
+                    Routed ports are only supported on non-WAN nodes with:
+                      -
+                    `underlay_router: true`
+                      - `overlay_routing_protocol: none`
+                      - `underlay_routing_protocol` set to
+                    `ebgp` or `ospf`
+                      - `uplink_type` set to `p2p` or `p2p-vrfs`
+                      - `underlay_routing_protocol: ebgp`
+                    not combined with `underlay_ipv6_numbered: true`
+                    L3 port-channels, L3 subinterfaces, and L2 settings
+                    that do not apply to routed ports are not supported.
                     """
                     mtu: int | None
                     l2_mtu: int | None
@@ -86611,26 +86672,30 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 switch_ports:
                                    List of switch interfaces.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                                   same length.
+                                   The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                                   `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with `str`
+                                   items.
                                 switches:
                                    List of switches.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                                   length.
+                                   The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                                   `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with `str`
+                                   items.
                                 endpoint_ports:
                                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
                                    The
-                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                                   lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+                                   (when used) must have the same length.
                                    Each list item is one switchport.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with
+                                   `str` items.
                                 descriptions:
                                    Unique description per port. When set, takes priority over description.
                                    This can be a template using
@@ -86699,10 +86764,17 @@ class EosDesigns(EosDesignsRootModel):
                                    Interface mode.
                                    `routed` configures a routed port in the default VRF with the addresses from
                                    `switch_ipv4_addresses`.
-                                   Routed ports are only supported with `underlay_routing_protocol` set to
-                                   `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                                   L3 port-channels, L3 subinterfaces,
-                                   and L2 settings that do not apply to routed ports are not supported.
+                                   Routed ports are only supported on non-WAN nodes with:
+                                     -
+                                   `underlay_router: true`
+                                     - `overlay_routing_protocol: none`
+                                     - `underlay_routing_protocol` set to
+                                   `ebgp` or `ospf`
+                                     - `uplink_type` set to `p2p` or `p2p-vrfs`
+                                     - `underlay_routing_protocol: ebgp`
+                                   not combined with `underlay_ipv6_numbered: true`
+                                   L3 port-channels, L3 subinterfaces, and L2 settings
+                                   that do not apply to routed ports are not supported.
                                 mtu: mtu
                                 l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                                 l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -88890,30 +88962,34 @@ class EosDesigns(EosDesignsRootModel):
                     switch_ports: SwitchPorts
                     """
                     List of switch interfaces.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                    same length.
+                    The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                    `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with `str`
+                    items.
                     """
                     switches: Switches
                     """
                     List of switches.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                    length.
+                    The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                    `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with `str`
+                    items.
                     """
                     endpoint_ports: EndpointPorts
                     """
                     Endpoint ports is used for description, required unless `description` or `descriptions` is set.
                     The
-                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                    lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+                    (when used) must have the same length.
                     Each list item is one switchport.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass of AvdList with
+                    `str` items.
                     """
                     descriptions: Descriptions
                     """
@@ -89001,10 +89077,17 @@ class EosDesigns(EosDesignsRootModel):
                     Interface mode.
                     `routed` configures a routed port in the default VRF with the addresses from
                     `switch_ipv4_addresses`.
-                    Routed ports are only supported with `underlay_routing_protocol` set to
-                    `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                    L3 port-channels, L3 subinterfaces,
-                    and L2 settings that do not apply to routed ports are not supported.
+                    Routed ports are only supported on non-WAN nodes with:
+                      -
+                    `underlay_router: true`
+                      - `overlay_routing_protocol: none`
+                      - `underlay_routing_protocol` set to
+                    `ebgp` or `ospf`
+                      - `uplink_type` set to `p2p` or `p2p-vrfs`
+                      - `underlay_routing_protocol: ebgp`
+                    not combined with `underlay_ipv6_numbered: true`
+                    L3 port-channels, L3 subinterfaces, and L2 settings
+                    that do not apply to routed ports are not supported.
                     """
                     mtu: int | None
                     l2_mtu: int | None
@@ -89222,26 +89305,30 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 switch_ports:
                                    List of switch interfaces.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                                   same length.
+                                   The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                                   `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with `str`
+                                   items.
                                 switches:
                                    List of switches.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                                   length.
+                                   The lists `endpoint_ports`, `switch_ports`, `switches`, and
+                                   `switch_ipv4_addresses` (when used) must have the same length.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with `str`
+                                   items.
                                 endpoint_ports:
                                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
                                    The
-                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                                   lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses`
+                                   (when used) must have the same length.
                                    Each list item is one switchport.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass of AvdList with
+                                   `str` items.
                                 descriptions:
                                    Unique description per port. When set, takes priority over description.
                                    This can be a template using
@@ -89310,10 +89397,17 @@ class EosDesigns(EosDesignsRootModel):
                                    Interface mode.
                                    `routed` configures a routed port in the default VRF with the addresses from
                                    `switch_ipv4_addresses`.
-                                   Routed ports are only supported with `underlay_routing_protocol` set to
-                                   `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
-                                   L3 port-channels, L3 subinterfaces,
-                                   and L2 settings that do not apply to routed ports are not supported.
+                                   Routed ports are only supported on non-WAN nodes with:
+                                     -
+                                   `underlay_router: true`
+                                     - `overlay_routing_protocol: none`
+                                     - `underlay_routing_protocol` set to
+                                   `ebgp` or `ospf`
+                                     - `uplink_type` set to `p2p` or `p2p-vrfs`
+                                     - `underlay_routing_protocol: ebgp`
+                                   not combined with `underlay_ipv6_numbered: true`
+                                   L3 port-channels, L3 subinterfaces, and L2 settings
+                                   that do not apply to routed ports are not supported.
                                 mtu: mtu
                                 l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                                 l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.

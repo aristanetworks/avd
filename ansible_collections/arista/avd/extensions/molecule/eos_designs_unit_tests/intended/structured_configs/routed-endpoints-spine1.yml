@@ -26,6 +26,17 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet3
+  description: P2P_routed-endpoints-leaf2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.200.0.4/31
+  metadata:
+    peer: routed-endpoints-leaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: routed-endpoints-spine1
 ip_routing: true
 loopback_interfaces:
@@ -35,7 +46,7 @@ loopback_interfaces:
   ip_address: 192.168.200.1/32
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: vEOS
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   validate_hardware:
     enabled: false
@@ -66,6 +77,12 @@ router_bgp:
     metadata:
       peer: routed-endpoints-leaf1b
     description: routed-endpoints-leaf1b_Ethernet1
+  - ip_address: 10.200.0.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65102'
+    metadata:
+      peer: routed-endpoints-leaf2
+    description: routed-endpoints-leaf2_Ethernet1
   redistribute:
     connected:
       enabled: true

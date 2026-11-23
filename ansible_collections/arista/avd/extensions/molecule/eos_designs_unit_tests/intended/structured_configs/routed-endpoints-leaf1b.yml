@@ -77,6 +77,17 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 10
+- name: Ethernet40
+  shutdown: false
+  speed: forced 100gfull
+  mtu: 9214
+  ip_address: 10.40.2.0/31
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: ROUTED
+  switchport:
+    enabled: false
 hostname: routed-endpoints-leaf1b
 ip_igmp_snooping:
   globally_enabled: true
@@ -88,7 +99,7 @@ loopback_interfaces:
   ip_address: 192.168.200.4/32
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: vEOS
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   validate_hardware:
     enabled: false

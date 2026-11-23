@@ -1,8 +1,13 @@
 ---
-type: l2leaf
-l2leaf:
+type: l3leaf
+overlay_routing_protocol: none
+l3leaf:
   nodes:
     - name: connected-endpoints-switch-ipv4-addresses-without-routed
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
 
 servers:
   # 'switch_ipv4_addresses' without 'mode: routed'.

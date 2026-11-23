@@ -1,0 +1,19 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: network-ports-routed-shadowed-unsupported-l2leaf
+
+servers:
+  - name: L2_SERVER
+    adapters:
+      - switches: [network-ports-routed-shadowed-unsupported-l2leaf]
+        switch_ports: [Ethernet1]
+        mode: access
+
+network_ports:
+  # Routed network_port whose switch_ports are all shadowed on an unsupported node.
+  - switches: [network-ports-routed-shadowed-unsupported-l2leaf]
+    switch_ports: [Ethernet1]
+    mode: routed
+    switch_ipv4_addresses: [10.0.0.0/31]

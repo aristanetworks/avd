@@ -57,7 +57,7 @@ keys:
             List of IPv4 addresses for the switch ports.
             Required with `mode: routed` and not supported with other modes.
             The list must contain one address per port of the expanded `switch_ports`, in the same order.
-            `switches` and `platforms` must match exactly one switch in the fabric.
+            The entry should target a single switch, because the same addresses are otherwise configured on every matching switch.
           items:
             type: str
             description: IPv4 address with prefix length, for example `10.0.0.0/31`.

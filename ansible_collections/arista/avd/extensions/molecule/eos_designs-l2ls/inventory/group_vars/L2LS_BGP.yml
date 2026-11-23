@@ -222,6 +222,12 @@ firewalls:
         port_channel:
           mode: active
         profile: no_campus_eggress
+      # Routed connected endpoint (verifies 'mode: routed' in fabric documentation)
+      - endpoint_ports: [Eth8]
+        switch_ports: [Ethernet19]
+        switches: [BGP-SPINE1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.2.0/31]
 
 # Tests covering both core_interfaces and l3_edge data models
 core_interfaces:

@@ -12,7 +12,6 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvd
 from pyavd._utils.get import get_v2
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd._utils.undefined import Undefined, UndefinedType
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -124,8 +123,7 @@ class UtilsMixin(Protocol):
         Returns an empty list for network_ports without 'mode: routed'.
 
         Raises:
-            AristaAvdInvalidInputsError: If the addresses are missing, do not match the number of ports,
-                or if the network_port matches more than one switch.
+            AristaAvdInvalidInputsError: If the addresses are missing or do not match the number of ports.
         """
         if network_port.mode != "routed":
             return []
@@ -139,18 +137,6 @@ class UtilsMixin(Protocol):
             msg = (
                 f"'{context}.switch_ipv4_addresses' must have one address per port in the expanded 'switch_ports'. "
                 f"Got {len(switch_ipv4_addresses)} addresses for {len(switch_ports)} ports."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-
-        if other_matching_devices := [
-            f"'{device}'"
-            for device in natural_sort(self.shared_utils.all_fabric_devices)
-            if device != self.shared_utils.hostname
-            and self.shared_utils.network_port_matches(network_port, device, self.shared_utils.get_peer_facts(device).platform)
-        ]:
-            msg = (
-                f"'{context}.switch_ipv4_addresses' is only supported on network ports matching a single switch. "
-                f"'{context}' matches '{self.shared_utils.hostname}' and {', '.join(other_matching_devices)}."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 

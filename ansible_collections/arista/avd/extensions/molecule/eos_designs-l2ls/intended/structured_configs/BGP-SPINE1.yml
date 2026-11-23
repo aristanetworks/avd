@@ -152,6 +152,17 @@ ethernet_interfaces:
     peer_type: firewall
     peer_key: firewalls
     port_profile: campus_eggress
+- name: Ethernet19
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth8
+  shutdown: false
+  ip_address: 10.0.2.0/31
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth8
+    peer_type: firewall
+    peer_key: firewalls
+  switchport:
+    enabled: false
 - name: Ethernet10
   shutdown: false
   metadata:
@@ -341,6 +352,12 @@ metadata:
         value: AVD-Managed
       - name: Link-Type
         value: Egress
+    - interface: Ethernet19
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
     - interface: Ethernet10
       tags:
       - name: Link-Type

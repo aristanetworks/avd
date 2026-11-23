@@ -86,7 +86,6 @@ ROUTED_ALLOWED_KEYS = frozenset(
         "structured_config",
         "platforms",
         "endpoint",
-        "parent_profile",
     )
 )
 """Adapter, network port and port profile keys supported with `mode: routed`. Any other key raises."""
@@ -258,7 +257,6 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        self._validate_routed_adapter_settings(individual_adapter, merged_individual_adapter)
         return merged_individual_adapter
 
     def _validate_routed_adapter_settings(
@@ -295,7 +293,9 @@ class UtilsMixin(Protocol):
 
         keys = ", ".join(f"'{key}'" for key in unsupported_keys)
         msg = f"'{self._get_adapter_context(adapter_or_network_port_settings)}.mode: routed' is not supported with {keys}."
-        if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str):
+        if isinstance(profile_name := adapter_or_network_port_settings._get_defined_attr("profile"), str) and any(
+            not _is_set(adapter_or_network_port_settings._get_defined_attr(key)) for key in unsupported_keys
+        ):
             msg += f" Keys inherited from port profile '{profile_name}' can be set to null to override them."
         raise AristaAvdInvalidInputsError(msg)
 

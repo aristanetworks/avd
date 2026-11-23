@@ -79,6 +79,8 @@ class EthernetInterfacesMixin(Protocol):
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
+            if network_port.mode == "routed":
+                self._validate_routed_port_support(network_port_as_adapter)
             switch_ports = range_expand(network_port.switch_ports)
             switch_ipv4_addresses = self._get_network_port_switch_ipv4_addresses(network_port, switch_ports)
             for port_index, ethernet_interface_name in enumerate(switch_ports):

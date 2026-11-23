@@ -79,22 +79,13 @@ class ConnectedEndpointsMixin(Protocol):
             network_port._internal_data.context = f"network_ports[{index}]"
             network_port_settings = self.get_merged_adapter_settings(network_port)
 
-            if not self.network_port_matches(network_port_settings, self.hostname, self.platform):
+            if not network_port_settings.switches and not network_port_settings.platforms:
+                continue
+            if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, self.hostname):
+                continue
+            if network_port_settings.platforms and (not self.platform or not self.match_regexes(network_port_settings.platforms, self.platform)):
                 continue
 
             filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
-
-    def network_port_matches(self: SharedUtilsProtocol, network_port_settings: EosDesigns.NetworkPortsItem, hostname: str, platform: str | None) -> bool:
-        """
-        Return True if the given network_ports entry matches the given hostname and platform.
-
-        Entries without 'switches' and 'platforms' never match.
-        When both are set, both must match.
-        """
-        if not network_port_settings.switches and not network_port_settings.platforms:
-            return False
-        if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, hostname):
-            return False
-        return not network_port_settings.platforms or bool(platform and self.match_regexes(network_port_settings.platforms, platform))

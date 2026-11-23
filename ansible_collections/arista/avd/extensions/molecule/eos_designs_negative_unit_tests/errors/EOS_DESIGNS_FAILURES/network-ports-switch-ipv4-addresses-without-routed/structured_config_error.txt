@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'network_ports[0].switch_ipv4_addresses' is only supported with 'mode: routed'.

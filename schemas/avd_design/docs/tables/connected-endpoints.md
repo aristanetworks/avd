@@ -12,11 +12,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<connected_endpoints_keys.key>.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation.<br>The default value is taken from `connected_endpoints_keys[].type`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switches.[]") | String |  |  |  | Device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions.[]") | String |  |  |  |  |
@@ -64,7 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported on non-WAN nodes with:<br>  - `underlay_router: true`<br>  - `overlay_routing_protocol: none`<br>  - `underlay_routing_protocol` set to `ebgp` or `ospf`<br>  - `uplink_type` set to `p2p` or `p2p-vrfs`<br>  - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
@@ -219,11 +219,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<custom_connected_endpoints_keys.key>.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation.<br>The default value is taken from `connected_endpoints_keys[].type`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<custom_connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].switches.[]") | String |  |  |  | Device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].descriptions.[]") | String |  |  |  |  |
@@ -271,7 +271,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported on non-WAN nodes with:<br>  - `underlay_router: true`<br>  - `overlay_routing_protocol: none`<br>  - `underlay_routing_protocol` set to `ebgp` or `ospf`<br>  - `uplink_type` set to `p2p` or `p2p-vrfs`<br>  - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
@@ -426,11 +426,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "connected_endpoints.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "connected_endpoints.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "connected_endpoints.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "connected_endpoints.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "connected_endpoints.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "connected_endpoints.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].switches.[]") | String |  |  |  | Device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "connected_endpoints.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "connected_endpoints.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "connected_endpoints.[].adapters.[].descriptions") | List, items: String |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].descriptions.[]") | String |  |  |  |  |
@@ -478,7 +478,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "connected_endpoints.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "connected_endpoints.[].adapters.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "connected_endpoints.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "connected_endpoints.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported on non-WAN nodes with:<br>  - `underlay_router: true`<br>  - `overlay_routing_protocol: none`<br>  - `underlay_routing_protocol` set to `ebgp` or `ospf`<br>  - `uplink_type` set to `p2p` or `p2p-vrfs`<br>  - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "connected_endpoints.[].adapters.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "connected_endpoints.[].adapters.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "connected_endpoints.[].adapters.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
@@ -652,21 +652,21 @@
         adapters:
 
             # List of switch interfaces.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
           - switch_ports: # required
 
                 # Switchport interface.
               - <str>
 
             # List of switches.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             switches: # required
 
                 # Device.
               - <str>
 
             # Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-            # The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             # Each list item is one switchport.
             endpoint_ports:
 
@@ -869,7 +869,12 @@
 
             # Interface mode.
             # `routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.
-            # Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
+            # Routed ports are only supported on non-WAN nodes with:
+            #   - `underlay_router: true`
+            #   - `overlay_routing_protocol: none`
+            #   - `underlay_routing_protocol` set to `ebgp` or `ospf`
+            #   - `uplink_type` set to `p2p` or `p2p-vrfs`
+            #   - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`
             # L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported.
             mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "routed">
             mtu: <int; 68-65535>
@@ -1271,21 +1276,21 @@
         adapters:
 
             # List of switch interfaces.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
           - switch_ports: # required
 
                 # Switchport interface.
               - <str>
 
             # List of switches.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             switches: # required
 
                 # Device.
               - <str>
 
             # Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-            # The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             # Each list item is one switchport.
             endpoint_ports:
 
@@ -1488,7 +1493,12 @@
 
             # Interface mode.
             # `routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.
-            # Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
+            # Routed ports are only supported on non-WAN nodes with:
+            #   - `underlay_router: true`
+            #   - `overlay_routing_protocol: none`
+            #   - `underlay_routing_protocol` set to `ebgp` or `ospf`
+            #   - `uplink_type` set to `p2p` or `p2p-vrfs`
+            #   - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`
             # L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported.
             mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "routed">
             mtu: <int; 68-65535>
@@ -1888,21 +1898,21 @@
         adapters:
 
             # List of switch interfaces.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
           - switch_ports: # required
 
                 # Switchport interface.
               - <str>
 
             # List of switches.
-            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             switches: # required
 
                 # Device.
               - <str>
 
             # Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-            # The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+            # The lists `endpoint_ports`, `switch_ports`, `descriptions`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
             # Each list item is one switchport.
             endpoint_ports:
 
@@ -2105,7 +2115,12 @@
 
             # Interface mode.
             # `routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.
-            # Routed ports are only supported with `underlay_routing_protocol` set to `ebgp` or `ospf` and `overlay_routing_protocol` set to `none`.
+            # Routed ports are only supported on non-WAN nodes with:
+            #   - `underlay_router: true`
+            #   - `overlay_routing_protocol: none`
+            #   - `underlay_routing_protocol` set to `ebgp` or `ospf`
+            #   - `uplink_type` set to `p2p` or `p2p-vrfs`
+            #   - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`
             # L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported.
             mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "routed">
             mtu: <int; 68-65535>
