@@ -82,6 +82,8 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
   - We do not enforce any branch naming convention.
   - All PRs should be submitted towards the `devel` branch.
 
+See [Branch Rulesets and Pull Request Approvals](branch-rulesets.md) for the branch restrictions, required reviewers, checks, merge queue, and bypass permissions.
+
 #### Reporting Bugs
 
 - First, ensure that you're running the [latest development version](../installation/collection-installation.md#install-latest-devel-version-from-avd-github) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
