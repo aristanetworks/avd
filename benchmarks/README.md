@@ -99,6 +99,19 @@ The standard jobs exclude these diagnostics, preserving their benchmark IDs and
 workloads. Compare the actual allocation profiles of the full workflow and each isolated stage;
 successful measurements or uploads alone do not establish that profiles rendered.
 
+Each workflow job collects only its own benchmark file or exact test node. The
+full synthetic workflow therefore does not import the phase diagnostic module
+through test collection. No benchmark code or workload changes for this control.
+
+The full synthetic workflow, dictionary-based structured configuration, and facts
+control jobs enable CodSpeed debug logging and the observational
+`benchmarks.codspeed_memory_probe` plugin. The plugin records Python profiling
+state and loaded benchmark modules outside measured calls; it does not activate
+profiling. After CodSpeed finishes, including failed runs, these jobs retain the
+raw profile, symbol maps, unwind artifacts, dependency versions, and state records
+as separate `codspeed-memory-<suite>` GitHub artifacts for seven days. Missing
+profile evidence fails clearly rather than silently producing an empty archive.
+
 Local full-suite runs include the 150-device scale benchmark. They do not add an
 all-host render benchmark for the full molecule scenario; that kind of load test
 is intentionally outside the CodSpeed suite.

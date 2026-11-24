@@ -34,29 +34,32 @@ jobs:
         include:
           - suite: simulation
             mode: simulation
-            filter: ""
+            targets: |-
+              benchmarks/test_molecule_scenarios.py
+              benchmarks/test_large_fabric_scaling.py
           - suite: memory-main
             mode: memory
-            filter: "not test_large_fabric_full_workflow_benchmark"
+            targets: benchmarks/test_molecule_scenarios.py
           - suite: memory-scaling
             mode: memory
-            filter: "test_large_fabric_full_workflow_benchmark"
+            targets: benchmarks/test_large_fabric_scaling.py::test_large_fabric_full_workflow_benchmark[15_devices]
+            capture: true
           - suite: memory-facts
             mode: memory
-            filter: "test_synthetic_facts_memory_benchmark"
-            markers: "benchmark_diagnostic"
+            targets: benchmarks/test_synthetic_memory_phases.py::test_synthetic_facts_memory_benchmark
+            capture: true
           - suite: memory-structured-config
             mode: memory
-            filter: "test_synthetic_structured_config_memory_benchmark"
-            markers: "benchmark_diagnostic"
+            targets: benchmarks/test_synthetic_memory_phases.py::test_synthetic_structured_config_memory_benchmark
+            capture: true
           - suite: memory-structured-preloaded
             mode: memory
-            filter: "test_synthetic_preloaded_structured_config_memory_benchmark"
-            markers: "benchmark_diagnostic"
+            targets: benchmarks/test_synthetic_memory_phases.py::test_synthetic_preloaded_structured_config_memory_benchmark
           - suite: memory-cli
             mode: memory
-            filter: "test_synthetic_cli_memory_benchmark"
-            markers: "benchmark_diagnostic"
+            targets: benchmarks/test_synthetic_memory_phases.py::test_synthetic_cli_memory_benchmark
+    env:
+      MEMORY_DIAGNOSTIC_OUTPUT: /tmp/codspeed-memory-evidence
     concurrency:
       group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}
       cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -90,18 +93,47 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes libc6-dbg
 
+      - name: Record diagnostic dependency versions
+        if: matrix.capture
+        run: |
+          mkdir -p "$MEMORY_DIAGNOSTIC_OUTPUT"
+          python -m pip freeze > "$MEMORY_DIAGNOSTIC_OUTPUT/pip-freeze.txt"
+
       - name: Run default benchmarks
         uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
         env:
-          BENCHMARK_FILTER: ${{ matrix.filter }}
-          BENCHMARK_MARKERS: ${{ matrix.markers || 'not benchmark_scale and not benchmark_diagnostic' }}
+          BENCHMARK_TARGETS: ${{ matrix.targets }}
+          CAPTURE_MEMORY_PROFILE: ${{ matrix.capture && 'true' || 'false' }}
+          CODSPEED_LOG: ${{ matrix.capture && 'debug' || 'info' }}
         with:
           mode: ${{ matrix.mode }}
           run: |
+            benchmark_targets=()
+            while IFS= read -r benchmark_target; do
+              if [[ -n "$benchmark_target" ]]; then
+                benchmark_targets+=("$benchmark_target")
+              fi
+            done <<< "$BENCHMARK_TARGETS"
+            diagnostic_args=()
+            if [[ "$CAPTURE_MEMORY_PROFILE" == "true" ]]; then
+              diagnostic_args=(-p benchmarks.codspeed_memory_probe)
+            fi
             python -m pytest --codspeed \
-              benchmarks/test_molecule_scenarios.py \
-              benchmarks/test_large_fabric_scaling.py \
-              benchmarks/test_synthetic_memory_phases.py \
-              -m "$BENCHMARK_MARKERS" \
-              -k "$BENCHMARK_FILTER" \
+              "${benchmark_targets[@]}" \
+              "${diagnostic_args[@]}" \
+              -m "not benchmark_scale" \
               -q
+
+      - name: Retain completed memory profile
+        if: always() && matrix.capture
+        run: python -m benchmarks.codspeed_memory_probe
+
+      - name: Upload memory profiling evidence
+        if: always() && matrix.capture
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: codspeed-memory-${{ matrix.suite }}
+          path: ${{ env.MEMORY_DIAGNOSTIC_OUTPUT }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
