@@ -1,0 +1,10 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: queue-monitor-streaming-missing-extended-acl
+
+queue_monitor_streaming:
+  enable: true
+  ipv4_acl: QMS-EXTENDED

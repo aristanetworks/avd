@@ -11,7 +11,6 @@ exclude_docs: |
   /site/
   /.venv/
   /venv/
-  /.tox/
 
 # Repository information
 repo_name: AVD on Github
@@ -78,7 +77,6 @@ plugins:
         # so a `.venv/` here drags every site-packages .md file into the build.
         - .venv/*
         - venv/*
-        - .tox/*
         # Schema Explorer source and manual build output live under tools/.
         # The hook generates site assets directly in site/_assets/schema-explorer/.
         - tools/*

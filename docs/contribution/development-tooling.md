@@ -246,17 +246,76 @@ make unit-tests
 make integration-tests ANSIBLE_TEST_MODE=docker
 ```
 
-## Tox
+## PyAVD tests
 
-The AVD project leverages [Tox](https://tox.wiki/) to run unit and integration of the `pyavd` Python package.
+Run PyAVD tests directly with [uv](https://docs.astral.sh/uv/) from the repository root.
+Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
-Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `tox`:
+### Prepare your environment
 
-- `pyavd-test`: Test PyAVD Python code with tox.
-
-Example:
+Activate an existing virtual environment, or create one with the Python version you want to test:
 
 ```shell
-# Run tox on pyavd
-make pyavd-test
+uv venv --python 3.12
+source .venv/bin/activate
 ```
+
+Install the test and coverage requirements, PyAVD, and the coverage plugin into that environment:
+
+```shell
+uv pip install --group pytest --group coverage \
+  -e python-avd -e development/coverage_plugins
+```
+
+Repeat the installation when dependency requirements change.
+The commands below use `uv run --no-project` to reuse the activated environment, or the repository's `.venv`, without synchronizing project dependencies or updating a lock file.
+
+Build the generated schemas and templates before the first test run in a checkout.
+Repeat this step after changing schema or template sources, or their generators:
+
+```shell
+uv run --no-project make -C python-avd dep
+```
+
+Generation rewrites shared files, so complete it before running tests in that checkout.
+Ordinary Python logic changes can be tested directly.
+
+### Run tests
+
+```shell
+# Run both configured test roots: PyAVD and the coverage plugin.
+uv run --no-project python -m pytest
+
+# Select tests and pass pytest options directly.
+uv run --no-project python -m pytest python-avd/tests/pyavd -x -q
+```
+
+To test another supported Python version, create and activate a separate environment, then repeat the requirements installation:
+
+```shell
+uv venv --python 3.13 .venv-3.13
+source .venv-3.13/bin/activate
+```
+
+CI tests Python 3.11, 3.12, 3.13 and 3.14, using coverage on Python 3.12.
+
+### Coverage
+
+Use the prepared environment to run pytest under coverage. You can append test paths and pytest options to the `coverage run -m pytest` command.
+
+```shell
+uv run --no-project python -m coverage erase
+uv run --no-project python -m coverage run -m pytest
+```
+
+After a successful test run, combine the parallel coverage data, write the XML report, and check the configured threshold:
+
+```shell
+uv run --no-project python -m coverage combine
+uv run --no-project python -m coverage xml --fail-under=0
+uv run --no-project python -m coverage report
+```
+
+`coverage erase` removes results from earlier runs, and `coverage combine` is required because the repository enables parallel coverage data files.
+The XML report is written before checking the threshold, so a below-threshold result still produces an updated `coverage.xml`.
+This local report measures pytest coverage; CI combines pytest and end-to-end coverage before checking the repository threshold.

@@ -384,6 +384,15 @@ ethernet_interfaces:
         hash_algorithm: sha512
         key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
         key_type: "8a"
+    ospfv3:
+      bfd: true
+      passive_interface: true
+      cost: 111
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.11"
+      ipv6:
+        area: "0.0.9.12"
     pim:
       ipv4:
         dr_priority: 200
@@ -476,6 +485,13 @@ ethernet_interfaces:
     # test for ospf_authentication_key_type: "8a"
     ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
     ospf_authentication_key_type: "8a"
+    ospfv3:
+      bfd: false
+      no_passive_interface: true
+      ipv4:
+        area: "0.0.9.13"
+      ipv6:
+        area: "0.0.9.14"
 
   - name: Ethernet7
     description: Molecule L2
@@ -2308,9 +2324,30 @@ ethernet_interfaces:
   - name: Ethernet88
     description: Loop protection disable
     loop_protection: false
+    ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
+      ipv4:
+        bfd: true
+        cost: 211
+        area: "0.0.9.21"
+      ipv6:
+        bfd: true
+        cost: 212
+        area: "0.0.9.22"
   - name: Ethernet89
     description: Loop protection disable
     loop_protection: false
+    ospfv3:
+      ipv4:
+        bfd: false
+        cost: 221
+        area: "0.0.9.23"
+      ipv6:
+        bfd: false
+        cost: 222
+        area: "0.0.9.24"
   # IPv6 ND new structure with cache and other_config_flag
   - name: Ethernet90
     description: IPv6 ND new structure test
