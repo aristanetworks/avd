@@ -142,6 +142,7 @@ def format_path(path: Path, site_dir: Path) -> str:
 
 
 def check_links(site_dir: Path, *, check_anchors: bool, ignored_html_patterns: list[str]) -> list[str]:
+    site_dir = site_dir.resolve()
     anchors_by_file, links = parse_html_files(site_dir, ignored_html_patterns)
     errors: list[str] = []
 
@@ -152,6 +153,12 @@ def check_links(site_dir: Path, *, check_anchors: bool, ignored_html_patterns: l
         target_path, fragment = resolve_target(site_dir, link.source, link.target)
         if target_path.is_dir():
             target_path /= "index.html"
+        if not target_path.resolve().is_relative_to(site_dir):
+            errors.append(
+                f"{format_path(link.source, site_dir)}:{link.line}: {link.attribute} points outside the current documentation build: {link.target!r}. "
+                "Use an absolute URL for cross-version links."
+            )
+            continue
         if not target_path.is_file():
             errors.append(
                 f"{format_path(link.source, site_dir)}:{link.line}: {link.attribute} points to missing file {link.target!r} "
