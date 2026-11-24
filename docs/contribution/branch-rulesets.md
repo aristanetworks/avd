@@ -6,6 +6,8 @@
 
 # Branch Rulesets and Pull Request Approvals
 
+**Last updated:** 2026-11-24 (verified against the live GitHub rulesets).
+
 This page describes the branch rulesets downloaded from `aristanetworks/avd` on **2026-11-24**.
 The default branch at capture time was **`devel`**, not `main`.
 The downloaded rulesets include changes through **10:03:33 UTC**, as recorded in their `updated_at` fields.
