@@ -7,7 +7,6 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
-  /.github/maintainer-notes/
   /tools/
   /site/
   /.venv/
