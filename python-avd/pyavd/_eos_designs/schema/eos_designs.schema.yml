@@ -659,6 +659,12 @@ keys:
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
           IPv4 is activated by default instead of always deactivating it.'
         default: false
+      sort_snmp_acls_and_local_interfaces_by_vrf:
+        type: bool
+        default: false
+        description: 'Available from AVD 6.5.0.
+
+          Sort SNMP ACLs and local interfaces by VRF name in the generated configuration.'
       only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used:
         type: bool
         description: 'Available from AVD 6.5.0.
@@ -2650,6 +2656,77 @@ keys:
               Any IPv4 ACL applied to SSH in the default VRF is removed. IPv6 ACLs
               and SSH configuration for non-default VRFs are preserved.'
             default: false
+          serial_number_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the serial
+              number of ACT Digital Twin devices.
+
+              When set, the rendered value is written into the device metadata and
+              provided as the serial number in the ACT topology.
+
+              Can be overridden per device with `digital_twin.serial_number` at node
+              level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (resolved production system MAC address), `hostname`,
+              `device_id`, `fabric_name`.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no serial number is included in the metadata or the ACT topology.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          system_mac_address_template:
+            type: str
+            min_length: 1
+            description: 'AVD string formatter template for generating the system
+              MAC address of ACT Digital Twin devices.
+
+              When set, the rendered value is used throughout the device''s EOS configuration
+              (e.g., SNMPv3 engine ID), written into the device metadata, and provided
+              as the system MAC address in the ACT topology.
+
+              Can be overridden per device with `digital_twin.system_mac_address`
+              at node level.
+
+              Supported template variables: `serial_number` (production serial number),
+              `system_mac_address` (production system MAC address), `hostname`, `device_id`,
+              `fabric_name`.
+
+              The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+              `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+              digit). The all-zero address is reserved and not accepted by EOS.
+
+              Regardless of the input format, the MAC address is normalized to `hh:hh:hh:hh:hh:hh`
+              format.
+
+              The rendered value should be unique across all devices in the fabric.
+              AVD does not enforce uniqueness automatically.
+
+              If unset, no system MAC address is included in the metadata or the ACT
+              topology, and the production `system_mac_address` is used for EOS configuration.
+
+              Applies only to `veos` and `cloudeos` node types. Ignored for all other
+              ACT node types.
+
+              Ignored when `digital_twin.environment` is `containerlab`.'
+          ztp:
+            type: bool
+            default: false
+            description: 'Enable ZTP (Zero Touch Provisioning) mode for all Digital
+              Twin devices.
+
+              Can be overridden by `digital_twin.ztp` at node level.
+
+              Supported Digital Twin environments:
+
+              - `act`: Applies only to `veos` and `cloudeos` node types. Ignored for
+              all other node types.'
       use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
@@ -4939,6 +5016,30 @@ keys:
         type: str
         description: Name of the management interface (e.g. Management0, Management1).
         default: Management1
+      shutdown:
+        type: str
+        default: 'false'
+        description: 'Control the management interface shutdown state.
+
+          - "true": Always shut down the interface, even when management addressing
+          is configured.
+
+          - "false": Configure "no shutdown" when management addressing is configured;
+          otherwise, generate no interface configuration.
+
+          - "auto": Configure "no shutdown" when management addressing is configured;
+          otherwise, shut down the interface.
+
+          Management addressing is determined by node `mgmt_ip` or `ipv6_mgmt_ip`,
+          including DHCP and SLAAC.
+
+          When shutting down an interface without node management addressing, only
+          its name and shutdown state are configured.'
+        valid_values:
+        - 'true'
+        - 'false'
+        - auto
+        convert_to_lower_case: true
       lldp:
         type: dict
         description: LLDP settings for the management interface.
@@ -6216,9 +6317,7 @@ keys:
                   created on all leafs where the VRF is deployed. This will also cause
                   automatic OSPF redistribution into BGP unless
 
-                  explicitly turned off with "redistribute_ospf: false".
-
-                  '
+                  `bgp.redistribute_ospf.internal.enabled` is set to `false`.'
                 keys:
                   enabled:
                     type: bool
@@ -6392,6 +6491,11 @@ keys:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
                   inside the VRF.
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: bgp.redistribute_ospf.internal.enabled
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -7551,6 +7655,60 @@ keys:
                             default: true
                             description: Redistribute OSPFv3 internal routes into
                               BGP.
+                  redistribute_ospf:
+                    type: dict
+                    description: 'Redistribution of OSPF routes into BGP for this
+                      VRF.
+
+                      Ignored on devices where BGP is not configured for this VRF
+                      or where the VRF has no OSPF instance.'
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPF internal routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF external routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      nssa_external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF NSSA external routes into
+                              BGP.
+                          nssa_type:
+                            type: int
+                            valid_values:
+                            - 1
+                            - 2
+                            description: NSSA type for the redistributed routes.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -9803,9 +9961,11 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -9885,9 +10045,11 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_for_convergence: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         queue_monitor_length_notify: false
         subinterface_mtu: false
         per_interface_l2_mtu: false
@@ -9965,8 +10127,10 @@ keys:
     - platforms:
       - CloudEOS
       feature_support:
+        dot1x_mac_based_access_list: false
         bgp_update_wait_install: false
         interface_storm_control: false
+        explicit_interface_speed_auto_mode: false
         per_interface_l2_mru: false
         queue_monitor_length_notify: false
         sflow: false
@@ -10477,7 +10641,43 @@ keys:
     documentation_options:
       table: latency-analyzer
     type: dict
-    $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
+    keys:
+      enable:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/queue_monitor_streaming/keys/enable
+      ip_access_group:
+        type: str
+        $ref: eos_cli_config_gen#/keys/queue_monitor_streaming/keys/ip_access_group
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: ipv4_acl or ipv4_standard_acl
+      ipv4_acl:
+        type: str
+        description: 'IPv4 extended access-list name. The access-list must be defined
+          under `ipv4_acls`.
+
+          Field substitution is not supported for queue-monitor streaming references.
+
+          Mutually exclusive with `ipv4_standard_acl` and the deprecated `ip_access_group`.'
+      ipv4_standard_acl:
+        type: str
+        description: 'IPv4 standard access-list name. The access-list must be defined
+          under `ipv4_standard_acls`.
+
+          Field substitution is not supported for queue-monitor streaming references.
+
+          Mutually exclusive with `ipv4_acl` and the deprecated `ip_access_group`.'
+      ipv6_access_group:
+        type: str
+        $ref: eos_cli_config_gen#/keys/queue_monitor_streaming/keys/ipv6_access_group
+      max_connections:
+        type: int
+        $ref: eos_cli_config_gen#/keys/queue_monitor_streaming/keys/max_connections
+      vrf:
+        type: str
+        $ref: eos_cli_config_gen#/keys/queue_monitor_streaming/keys/vrf
   redundancy:
     documentation_options:
       table: system-settings
@@ -15474,6 +15674,69 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+              serial_number:
+                type: str
+                min_length: 1
+                description: 'Serial number or AVD string formatter template for this
+                  ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.serial_number_template`
+                  for this device.
+
+                  When set, the rendered value is written into the device metadata
+                  and provided as the serial number in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax and variables
+                  as `digital_twin.fabric.serial_number_template`.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              system_mac_address:
+                type: str
+                min_length: 1
+                description: 'System MAC address or AVD string formatter template
+                  for this ACT Digital Twin device.
+
+                  Overrides the global `digital_twin.fabric.system_mac_address_template`
+                  for this device.
+
+                  When set, the rendered value is used throughout the device''s EOS
+                  configuration (e.g., SNMPv3 engine ID), written into the device
+                  metadata, and provided as the system MAC address in the ACT topology.
+
+                  Supports the same AVD string formatter template syntax, variables,
+                  MAC address formats, and normalization as `digital_twin.fabric.system_mac_address_template`.
+
+                  The rendered value must be a unicast MAC address in `hhhh.hhhh.hhhh`,
+                  `hh:hh:hh:hh:hh:hh` or `hhhhhhhhhhhh` format (where `h` is a hexadecimal
+                  digit). The all-zero address is reserved and not accepted by EOS.
+
+                  Regardless of the input format, the MAC address is normalized to
+                  `hh:hh:hh:hh:hh:hh` format.
+
+                  The rendered value should be unique across all devices in the fabric.
+                  AVD does not enforce uniqueness automatically.
+
+                  Applies only to `veos` and `cloudeos` node types. Ignored for all
+                  other ACT node types.
+
+                  Ignored when `digital_twin.environment` is `containerlab`.'
+              ztp:
+                type: bool
+                description: 'Enable ZTP (Zero Touch Provisioning) mode for this Digital
+                  Twin device.
+
+                  Supported Digital Twin environments:
+
+                  - `act`: Applies only to `veos` and `cloudeos` node types. Ignored
+                  for all other node types.
+
+                  Overrides global `digital_twin.fabric.ztp` when defined.'
           validation_profile:
             documentation_options:
               table: node-type-common-configuration
@@ -16898,6 +17161,12 @@ $defs:
               description: 'Support for 802.1X BPDU bypass.
 
                 The feature will be ignored on platforms where this is false.'
+            dot1x_mac_based_access_list:
+              type: bool
+              default: true
+              description: 'Support for 802.1X Per-MAC ACL mode on the interfaces.
+
+                The feature will be ignored on platforms where this is false.'
             address_locking:
               type: dict
               keys:
@@ -16954,6 +17223,14 @@ $defs:
               description: 'Support for storm-control.
 
                 The feature will be ignored on platforms where this is false.'
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: 'Support for `speed sfp-1000baset auto 100full` and `speed
+                auto <mode>` commands on Ethernet interfaces.
+
+                When set to false, these commands are omitted while `speed auto`,
+                `speed <mode>` and `speed forced <mode>` commands are preserved.'
             poe:
               type: bool
               default: false
