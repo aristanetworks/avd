@@ -7,6 +7,7 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
+  /.github/maintainer-notes/
   /tools/
   /site/
   /.venv/
@@ -264,7 +265,6 @@ nav:
       - Porting Guide: docs/porting-guides/6.x.x.md
   - Contribute:
       - Overview: docs/contribution/overview.md
-      - Branch Rulesets and Approvals: docs/contribution/branch-rulesets.md
       - Development Tooling: docs/contribution/development-tooling.md
       - End-to-End Test Tool:
           - Using the Tool: docs/contribution/e2e-test/using-the-tool.md

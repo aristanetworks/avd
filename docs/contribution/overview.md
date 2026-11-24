@@ -82,8 +82,6 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
   - We do not enforce any branch naming convention.
   - All PRs should be submitted towards the `devel` branch.
 
-See [Branch Rulesets and Pull Request Approvals](branch-rulesets.md) for the branch restrictions, required reviewers, checks, merge queue, and bypass permissions.
-
 #### Reporting Bugs
 
 - First, ensure that you're running the [latest development version](../installation/collection-installation.md#install-latest-devel-version-from-avd-github) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
@@ -121,6 +119,10 @@ See [Branch Rulesets and Pull Request Approvals](branch-rulesets.md) for the bra
 The issue will be reviewed by a moderator after submission, and the appropriate labels will be applied for categorization.
 
 #### Submitting Pull Requests
+
+Submit pull requests from your fork against `devel`. Follow the contribution guidelines, include relevant tests, and resolve review conversations before merging.
+
+Normally, merging requires two approvals: one maintainer and one additional developer or maintainer. Both reviewers must belong to `avd-developers`. Someone other than the latest pusher must approve the latest changes. Required checks must pass, and approved PRs merge through the merge queue using squash.
 
 - If you are submitting a Pull Request towards `eos_cli_config_gen`, also follow this [guide](./authoring_eos_cli_config_gen.md).
 

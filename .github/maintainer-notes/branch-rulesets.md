@@ -8,24 +8,23 @@
 
 **Last updated:** 2026-11-24 (verified against the live GitHub rulesets).
 
-This page describes the branch rulesets downloaded from `aristanetworks/avd` on **2026-11-24**.
-The default branch at capture time was **`devel`**, not `main`.
-The downloaded rulesets include changes through **10:03:33 UTC**, as recorded in their `updated_at` fields.
+Maintainers should review this note alongside changes to the repository rulesets.
+
+This page describes the branch rulesets verified in `aristanetworks/avd` on the date above.
+The default branch at verification time was **`devel`**, not `main`.
 GitHub settings can change independently of this documentation; consult the [live rulesets](https://github.com/aristanetworks/avd/rules) for the current policy.
 These are repository branch rulesets, not rules for branches in contributors' forks.
 
 ## Sources and Scope
 
-The [ruleset index](branch-rulesets/rulesets.json) and full API responses below preserve the downloaded settings, including bypass actors and timestamps.
-The responses are read-only snapshots, not configuration managed or applied by this repository.
-In particular, `current_user_can_bypass` describes the account that downloaded the response, not every contributor's permissions.
+The links below point to the rulesets maintained in GitHub's repository settings.
 
-| Ruleset | Full API response | Branch selection | Enforcement |
-| --- | --- | --- | --- |
-| [Do not allow new branches](https://github.com/aristanetworks/avd/rules/651945) | [651945.json](branch-rulesets/651945.json) | All branches except `devel` and `releases/**/*` | Active |
-| [Do not delete or force push protected branches](https://github.com/aristanetworks/avd/rules/8322346) | [8322346.json](branch-rulesets/8322346.json) | Default branch and `releases/**/*` | Active |
-| [Old release branches PRs](https://github.com/aristanetworks/avd/rules/27972713) | [27972713.json](branch-rulesets/27972713.json) | `releases/*` | Active |
-| [PR-Approval](https://github.com/aristanetworks/avd/rules/27971823) | [27971823.json](branch-rulesets/27971823.json) | Default branch and exactly `releases/v5.7.x` | Active |
+| Ruleset | Branch selection | Enforcement |
+| --- | --- | --- |
+| [Do not allow new branches](https://github.com/aristanetworks/avd/rules/651945) | All branches except `devel` and `releases/**/*` | Active |
+| [Do not delete or force push protected branches](https://github.com/aristanetworks/avd/rules/8322346) | Default branch and `releases/**/*` | Active |
+| [Old release branches PRs](https://github.com/aristanetworks/avd/rules/27972713) | `releases/*` | Active |
+| [PR-Approval](https://github.com/aristanetworks/avd/rules/27971823) | Default branch and exactly `releases/v5.7.x` | Active |
 
 The API stores literal branch names and patterns with the prefix `refs/heads/`.
 `~ALL` selects all branches; `~DEFAULT_BRANCH` follows the repository's default branch if it changes.
@@ -63,7 +62,7 @@ It contains no deletion restriction.
 The creation restriction is why contributors use branches in personal forks.
 
 Two GitHub Apps can always bypass this ruleset: Renovate (integration ID `2740`) and integration ID `262318`.
-The name of integration `262318` was not resolved during capture; its numeric identity is preserved rather than guessed.
+The name of integration `262318` was not resolved during verification; its numeric identity is preserved rather than guessed.
 
 ### Do not delete or force push protected branches
 
@@ -83,12 +82,12 @@ No live push, deletion, or merge was attempted.
 
 `PR-Approval` requires **two approving reviews overall**, with these additional team requirements for all files (`file_patterns: ["*"]`):
 
-| Team | Team ID | Minimum team approvals | Repository access verified at capture |
+| Team | Team ID | Minimum team approvals | Verified repository access |
 | --- | --- | --- | --- |
 | `@aristanetworks/avd-developers` | `5615379` | 2 | Write |
 | `@aristanetworks/avd-maintainers` | `7565600` | 1 | Maintain |
 
-The membership lists checked at capture time showed that every maintainer, including every member of `avd-admins`, was also in `avd-developers`.
+The membership lists checked at verification time showed that every maintainer, including every member of `avd-admins`, was also in `avd-developers`.
 `avd-admins` is a child team of `avd-maintainers`; `avd-maintainers` is not a child team of `avd-developers`.
 The developer overlap therefore depends on membership being maintained, rather than that parent-child relationship.
 
@@ -127,7 +126,7 @@ An approval after the latest reviewable push must also meet the separate latest-
 
 ### Code owners and review requests
 
-At the captured revision, [`.github/CODEOWNERS`](https://github.com/aristanetworks/avd/blob/7bb3151de8/.github/CODEOWNERS) contains:
+At the verified revision, [`.github/CODEOWNERS`](https://github.com/aristanetworks/avd/blob/7bb3151de8/.github/CODEOWNERS) contains:
 
 ```text
 *   @aristanetworks/avd-developers @aristanetworks/avd-maintainers
@@ -172,7 +171,7 @@ The separate deletion and force-push restrictions still apply.
 The merge queue validates queued changes against the current target branch and preceding queued changes.
 The workflows in `.github/workflows/pull-request-management.yml` and `.github/workflows/pull-request-autofix.yml` handle `merge_group` events.
 
-| Merge queue parameter | Captured value | Meaning |
+| Merge queue parameter | Verified value | Meaning |
 | --- | --- | --- |
 | `merge_method` | `SQUASH` | Squash merge queued PRs. |
 | `max_entries_to_build` | `5` | At most five queue entries request builds concurrently. |
@@ -198,18 +197,18 @@ For example, membership in `avd-admins` grants bypass of `PR-Approval` only thro
 It does not grant bypass of protected-branch deletion or force-push restrictions, or of the general branch creation and update restrictions.
 Renovate's exception in the new-branch ruleset does not grant it an exception from the PR ruleset.
 
-## Refreshing and Verifying the Snapshot
+## Verifying and Updating This Guide
 
-Download the index first, then download each ruleset ID it returns; new rulesets may have been added since this capture.
-For example, from the repository root:
+Inspect the current ruleset list, then inspect each ruleset ID it returns; rulesets may have been added or changed since the last verification.
+For example:
 
 ```bash
-gh api repos/aristanetworks/avd/rulesets --paginate > docs/contribution/branch-rulesets/rulesets.json
-gh api repos/aristanetworks/avd/rulesets/27971823 > docs/contribution/branch-rulesets/27971823.json
+gh api repos/aristanetworks/avd/rulesets --paginate
+gh api repos/aristanetworks/avd/rulesets/27971823
 ```
 
 Repeat the second command for every ID in the current index.
-The committed JSON is indented for readability; no response fields have been removed.
+The `current_user_can_bypass` field describes the account making the API request, not every contributor's permissions.
 To inspect all effective rules for a branch, including overlapping rulesets:
 
 ```bash
@@ -219,7 +218,8 @@ gh api repos/aristanetworks/avd/rules/branches/releases%2Fv6.0.x
 ```
 
 Recheck the default branch, team IDs, repository access, team membership overlap, and each target branch's `CODEOWNERS` when refreshing this explanation.
-The snapshot does not establish every other possible merge condition, such as legacy branch protection, repository-wide merge-method settings, or the state of an individual PR.
+Update the **Last updated** date after verifying the guide against the current settings.
+This guide does not establish every other possible merge condition, such as legacy branch protection, repository-wide merge-method settings, or the state of an individual PR.
 
 GitHub references:
 
