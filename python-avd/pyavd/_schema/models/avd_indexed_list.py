@@ -151,6 +151,10 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
         for item in items:
             self.append(item)
 
+    def _has_data(self) -> bool:
+        """Return True if this indexed list is not null and contains at least one item."""
+        return not self._created_from_null and len(self._items) > 0
+
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
         [item._strip_empties() for item in self._items.values()]
