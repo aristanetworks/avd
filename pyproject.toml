@@ -50,6 +50,13 @@ molecule = [
     "molecule>=26.4.0",
     "molecule-plugins[docker]>=25.8.12",
 ]
+# Keep these pins for Ansible 2.16.0 and 2.17 compatibility; newer releases exclude these versions.
+molecule-legacy = [
+    "ansible-core>=2.16.0,<2.18.0",
+    "molecule==26.6.0",
+    "ansible-compat==26.6.0",
+    "molecule-plugins[docker]>=25.8.12",
+]
 # anta is pinned to the latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
 pytest = [
@@ -70,6 +77,10 @@ schema-tools = [
 
 [tool.uv]
 required-version = ">=0.9.17"
+conflicts = [
+    [{group = "molecule"}, {group = "molecule-legacy"}],
+    [{group = "dev"}, {group = "molecule-legacy"}],
+]
 # Apply a seven-day cutoff to each distribution's upload time, including transitive dependencies.
 # Renovate's release-age check instead uses the version's earliest upload.
 exclude-newer = "7 days"

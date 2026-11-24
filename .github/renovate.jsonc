@@ -81,6 +81,13 @@
       "groupSlug": "python-tooling"
     },
     {
+      "description": "Keep all legacy Molecule dependencies under manual control",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
+      "matchJsonata": ["managerData.depGroup = 'molecule-legacy'"],
+      "enabled": false
+    },
+    {
       "description": "Keep supported Python versions under manual control",
       "matchManagers": ["pep621"],
       "matchDepTypes": ["requires-python"],
