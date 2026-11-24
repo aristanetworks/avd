@@ -256,6 +256,8 @@ core_interfaces:
     # core Port-Channel with custom structured configs
     - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 14
+      # Suppressed on core-1 and rendered on core-2.
+      speed: auto 10000full
       port_channel:
         mode: active
         channel_id_algorithm: first_port
@@ -276,6 +278,8 @@ core_interfaces:
     - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
       id: 16
       interfaces: [Ethernet26, Ethernet26]
+      # Suppressed on core-1 and rendered on core-5.
+      speed: auto 10000full
       ip_pool: ipv6_only_pool
       include_in_underlay_protocol: false
 

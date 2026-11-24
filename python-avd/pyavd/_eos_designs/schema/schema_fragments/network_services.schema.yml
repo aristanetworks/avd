@@ -643,11 +643,11 @@ keys:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
                 type: dict
-                description: |
+                description: |-
                   Router OSPF configuration.
                   This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
                   created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
-                  explicitly turned off with "redistribute_ospf: false".
+                  `bgp.redistribute_ospf.internal.enabled` is set to `false`.
                 keys:
                   enabled:
                     type: bool
@@ -793,6 +793,11 @@ keys:
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: bgp.redistribute_ospf.internal.enabled
               evpn_l3_multicast:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -1003,8 +1008,28 @@ keys:
                     mtu:
                       type: int
                     ipv4_acl_in:
+                      description: |-
+                        Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                       type: str
                     ipv4_acl_out:
+                      description: |-
+                        Name of the IPv4 access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field substitution for "interface_ip" is required.
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field substitution for "interface_ip" is required.
                       type: str
                     ipv6_acl_in:
                       description: |-
@@ -1242,10 +1267,26 @@ keys:
                     ipv4_acl_in:
                       description: |-
                         Name of the IPv4 access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error.
                       type: str
                     ipv4_acl_out:
                       description: |-
                         Name of the IPv4 Access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip".
+                        Mutually exclusive with `ipv4_standard_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error.
+                      type: str
+                    ipv4_standard_acl_in:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the ingress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_in`, setting both `ipv4_acl_in` and `ipv4_standard_acl_in` raises an error. Use `ipv4_acl_in` instead when field substitution for "interface_ip" is required.
+                      type: str
+                    ipv4_standard_acl_out:
+                      description: |-
+                        Name of the IPv4 standard access-list to be assigned in the egress direction.
+                        The access-list must be defined under `ipv4_standard_acls`.
+                        Mutually exclusive with `ipv4_acl_out`, setting both `ipv4_acl_out` and `ipv4_standard_acl_out` raises an error. Use `ipv4_acl_out` instead when field substitution for "interface_ip" is required.
                       type: str
                     ipv6_acl_in:
                       description: |-
@@ -1668,6 +1709,57 @@ keys:
                             type: bool
                             default: true
                             description: Redistribute OSPFv3 internal routes into BGP.
+                  redistribute_ospf:
+                    type: dict
+                    description: |-
+                      Redistribution of OSPF routes into BGP for this VRF.
+                      Ignored on devices where BGP is not configured for this VRF or where the VRF has no OSPF instance.
+                    keys:
+                      internal:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: true
+                            description: Redistribute OSPF internal routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF external routes into BGP.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
+                      nssa_external:
+                        type: dict
+                        keys:
+                          enabled:
+                            type: bool
+                            default: false
+                            description: Redistribute OSPF NSSA external routes into BGP.
+                          nssa_type:
+                            type: int
+                            valid_values:
+                              - 1
+                              - 2
+                            description: NSSA type for the redistributed routes.
+                          include_leaked:
+                            type: bool
+                            description: Include OSPF leaked routes into BGP.
+                          route_map:
+                            type: str
+                            description: Route-map name.
                   raw_eos_cli:
                     type: str
                     description: |

@@ -11,7 +11,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -20,7 +19,7 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "anta>=1.10.0",
     "aristaproto>=0.1.1",
@@ -40,7 +39,7 @@ repository = "https://github.com/aristanetworks/avd"
 
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.22.0",
+    "ansible-core>=2.16.0,<2.23.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
@@ -51,11 +50,11 @@ ansible-collection = [
 requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
-    "jsonschema-rs>=0.24",
+    "jsonschema-rs>=0.46.0",
     "pyavd-utils-gen==0.0.14",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.17.3",
+    "ruff==0.17.5",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"

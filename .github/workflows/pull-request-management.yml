@@ -29,6 +29,8 @@ env:
 jobs:
   required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
+      - file-changes
+      - build_pyavd
       - build_collection
       - python_type_checking
       - python_requirements
@@ -38,6 +40,7 @@ jobs:
       - molecule_anta_runner
       - ansible_test_sanity
       - ansible_test
+      - upload_ansible_coverage
       - galaxy_importer
       - ansible_lint
       - e2e
@@ -45,15 +48,39 @@ jobs:
       - test_pyavd
       - generate_pyavd_coverage_report
       - check_built_docs_links
+      - upload_pyavd_coverage
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - env:
+      - name: Check required job results
+        env:
           NEEDS_JSON: ${{ toJSON(needs) }}
-        run: echo "$NEEDS_JSON" | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
+          EVENT_NAME: ${{ github.event_name }}
+          REPOSITORY: ${{ github.repository }}
+          REQUIREMENTS_CHANGED: ${{ needs.file-changes.outputs.requirements }}
+        # Preserve path-filtered and repository-filtered skips; merge groups force the main test suites to run.
+        run: |
+          echo "$NEEDS_JSON" | jq 'map_values(.result)'
+          echo "$NEEDS_JSON" | jq -e --arg event "$EVENT_NAME" --arg repository "$REPOSITORY" --arg requirements "$REQUIREMENTS_CHANGED" '
+            to_entries | all(
+              .value.result == "success" or
+              (.value.result == "skipped" and (
+                (.key == "python_requirements" and $requirements == "false") or
+                ($repository != "aristanetworks/avd" and (.key | IN("upload_ansible_coverage", "upload_pyavd_coverage"))) or
+                ($event != "merge_group" and (.key | IN(
+                  "molecule_eos_cli_config_gen",
+                  "molecule_eos_designs",
+                  "molecule_eos_designs_minimum_requirements",
+                  "molecule_anta_runner",
+                  "e2e",
+                  "e2e_coverage",
+                  "test_pyavd",
+                  "generate_pyavd_coverage_report",
+                  "upload_pyavd_coverage",
+                  "check_built_docs_links"
+                )))
+              ))
+            )'
 
   file-changes:
     runs-on: ubuntu-latest
@@ -101,6 +128,9 @@ jobs:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
+              - '.codecov.yml'
+              - 'pyproject.toml'
+              - 'python-avd/pyproject.toml'
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
@@ -111,6 +141,7 @@ jobs:
             pyavd:
               - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
+              - 'schemas/cv_deploy/**/*.yml'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -192,7 +223,6 @@ jobs:
       fail-fast: true
       matrix:
         python_version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
@@ -236,14 +266,15 @@ jobs:
           - "eos_cli_config_gen"
           - "eos_cli_config_gen_deprecated_vars"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -261,7 +292,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -299,18 +330,20 @@ jobs:
           - "example-cv-pathfinder"
           - "howto"
         ansible_version:
-          - "ansible-core>=2.16.0,<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         include:
           # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
           # across ansible versions but maybe we don't need it to be these molecule scenario
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.17.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.18.0"
+            ansible_version: "ansible-core>=2.17.0,<2.18.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
             python_version: "3.11"
@@ -320,9 +353,12 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.12"
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.13"
           # Test latest ansible-core with latest Python
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.22.0"
+            ansible_version: "ansible-core>=2.22.0,<2.23.0"
             python_version: "3.14"
           # Test ansible-core milestone release
           # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
@@ -347,7 +383,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -380,11 +416,11 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
-      - name: Use Python 3.10 for minimum requirements
+      - name: Use Python 3.11 for minimum requirements
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: |
-            3.10
+            3.11
       - name: Install pyavd and Ansible minimum requirements
         # Installing molecule and requirements in different pip command because of jsonschema>=3.2.0 in AVD is incompatible
         # with jsonschema>=4.9.1 in molecule when using pip compile with lowest
@@ -397,7 +433,7 @@ jobs:
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
-          python -m pip install --group molecule
+          python -m pip install --group molecule-legacy
           python -m pip install "ansible-core==2.16.0" "$WHEEL_FILE[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -432,13 +468,14 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.22.0"
+          - "ansible-core>=2.22.0,<2.23.0"
         python_version:
-          - "3.12"
+          - "3.14"
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -456,7 +493,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -485,13 +522,15 @@ jobs:
           - ansible_version: first_stable
             pip_installation: "ansible-core<2.17.0"
             python_version: |
-              3.10
               3.11
               3.12
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
+            python_version: "3.12"
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core>=2.22.0,<2.23.0"
             python_version: |
-              3.12
               3.13
               3.14
           - ansible_version: devel
@@ -532,14 +571,22 @@ jobs:
       fail-fast: false
       matrix:
         ansible_version: [latest_stable]
-        python_version: ["3.12", "3.13", "3.14"]
+        python_version: ["3.13", "3.14"]
         include:
           - ansible_version: latest_stable
-            pip_installation: "ansible-core<2.22.0"
+            pip_installation: "ansible-core>=2.22.0,<2.23.0"
+            integration_args: ""
+          - ansible_version: latest_stable
+            python_version: "3.14"
+            run_units: true
+          # Ansible 2.21 is the newest supported version for Python 3.12.
+          - ansible_version: ansible_core_2_21
+            python_version: "3.12"
+            pip_installation: "ansible-core>=2.21.0,<2.22.0"
             integration_args: ""
           # Exercise the minimum supported Python and Ansible controller versions.
           - ansible_version: first_stable
-            python_version: "3.10"
+            python_version: "3.11"
             pip_installation: "ansible-core>=2.16.0,<2.17.0"
             # Log warnings are not returned in result["warnings"] on ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
@@ -550,6 +597,7 @@ jobs:
           - ansible_version: ansible_core_2_18
             python_version: "3.12"
             pip_installation: "ansible-core>=2.18.0,<2.19.0"
+            run_units: true
             # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
           # Exercise only the design action plugins against the Ansible milestone branch.
@@ -571,7 +619,7 @@ jobs:
           pip install "${{ matrix.pip_installation }}" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test units
         id: units
-        if: matrix.python_version == '3.12'
+        if: matrix.run_units == true
         working-directory: ansible_collections/arista/avd
         run: ansible-test units --python "${{ matrix.python_version }}" --coverage --requirements -vv
       - name: Run ansible-test integration
@@ -584,27 +632,99 @@ jobs:
         id: coverage
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         working-directory: ansible_collections/arista/avd
+        env:
+          RUN_UNITS: ${{ matrix.run_units }}
+          REPORT_SUFFIX: ${{ matrix.ansible_version }}-${{ matrix.python_version }}
         run: |
+          set -euo pipefail
           ansible-test coverage report --group-by command --show-missing
           ansible-test coverage xml --group-by command
-          if [ -f tests/output/reports/coverage=units.xml ]; then
-            mv tests/output/reports/coverage=units.xml "./units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml"
+          if [[ "$RUN_UNITS" == "true" ]]; then
+            test -s tests/output/reports/coverage=units.xml
+            mv tests/output/reports/coverage=units.xml "./units-coverage-$REPORT_SUFFIX.xml"
           fi
-          if [ -f tests/output/reports/coverage=integration.xml ]; then
-            mv tests/output/reports/coverage=integration.xml "./integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml"
-          fi
+          test -s tests/output/reports/coverage=integration.xml
+          mv tests/output/reports/coverage=integration.xml "./integration-coverage-$REPORT_SUFFIX.xml"
       - name: Upload coverage from ansible-test units
-        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.python_version == '3.12' }}
+        if: ${{ !cancelled() && steps.coverage.outcome == 'success' && matrix.run_units == true }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
+          if-no-files-found: error
           path: ansible_collections/arista/avd/units-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
       - name: Upload coverage from ansible-test integration
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ansible-test-integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}
+          if-no-files-found: error
           path: ansible_collections/arista/avd/integration-coverage-${{ matrix.ansible_version }}-${{ matrix.python_version }}.xml
+
+  upload_ansible_coverage:
+    name: Upload Ansible ${{ matrix.coverage_type }} coverage to Codecov
+    runs-on: ubuntu-latest
+    needs: [ansible_test]
+    if: |
+      !cancelled() &&
+      github.repository == 'aristanetworks/avd' &&
+      needs.ansible_test.result == 'success'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - coverage_type: unit
+            artifact_pattern: ansible-test-units-coverage-*
+            reports_path: reports/ansible-units
+            reports_prefix: units
+            codecov_flags: ansible_unit_tests
+          - coverage_type: integration
+            artifact_pattern: ansible-test-integration-coverage-*
+            reports_path: reports/ansible-integration
+            reports_prefix: integration
+            codecov_flags: ansible_integration_tests
+    permissions:
+      contents: read
+      id-token: write # Required by Codecov OIDC.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download Ansible ${{ matrix.coverage_type }} coverage
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ${{ matrix.artifact_pattern }}
+          merge-multiple: true
+          path: ${{ matrix.reports_path }}
+      - name: Verify expected coverage reports
+        id: coverage_reports
+        env:
+          COVERAGE_TYPE: ${{ matrix.coverage_type }}
+          REPORTS_DIR: ${{ matrix.reports_path }}
+          REPORT_PREFIX: ${{ matrix.reports_prefix }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          reports=("$REPORTS_DIR"/"$REPORT_PREFIX"-coverage-*.xml)
+          if (( ${#reports[@]} == 0 )); then
+            echo "::error::No Ansible $COVERAGE_TYPE coverage reports found"
+            exit 1
+          fi
+          for report in "${reports[@]}"; do
+            if [[ ! -s "$report" ]]; then
+              echo "::error::Missing or empty Ansible $COVERAGE_TYPE coverage report: $report"
+              exit 1
+            fi
+          done
+          printf -v files '%s,' "${reports[@]}"
+          echo "files=${files%,}" >> "$GITHUB_OUTPUT"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
+          disable_search: true
+          files: ${{ steps.coverage_reports.outputs.files }}
+          flags: ${{ matrix.codecov_flags }}
 
   # ----------------------------------- #
   # Build Collection
@@ -618,13 +738,13 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: |
-            3.12
+            3.14
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install Python & Ansible requirements
         run: |
-          pip install "ansible-core<2.22.0" --upgrade
+          pip install "ansible-core>=2.22.0,<2.23.0" --upgrade
       - name: Set Ansible collection cache key
         id: collection_cache_key
         env:
@@ -709,7 +829,6 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: |
-            3.10
             3.11
             3.12
             3.13
@@ -834,7 +953,8 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
-      github.event_name == 'merge_group'
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/devel')
     strategy:
       fail-fast: false
       matrix:
@@ -905,7 +1025,8 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
-      github.event_name == 'merge_group'
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/devel')
     strategy:
       fail-fast: false
       matrix:
@@ -914,16 +1035,28 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python 3
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           python-version: ${{ matrix.python }}
-      - name: Install tox
+      - name: Install test requirements
         run: |
-          pip install tox tox-gh-actions --upgrade
-      - name: Run pytest via tox for ${{ matrix.python }}
+          uv venv
+          uv pip install --group pytest --group coverage \
+            -e python-avd -e development/coverage_plugins
+      - name: Build schemas and templates
         run: |
-          tox run
+          uv run --no-project python python-avd/scripts/compile_templates.py
+          uv run --no-project python python-avd/scripts/build_schemas.py
+      - name: Run pytest for Python ${{ matrix.python }}
+        if: matrix.python != '3.12'
+        run: uv run --no-project python -m pytest
+      - name: Run pytest with coverage for Python 3.12
+        if: matrix.python == '3.12'
+        run: |
+          uv run --no-project python -m coverage erase
+          uv run --no-project python -m coverage run -m pytest
+          uv run --no-project python -m coverage combine
       - name: Rename the coverage file
         if: matrix.python == '3.12'
         run: |
@@ -938,11 +1071,16 @@ jobs:
   generate_pyavd_coverage_report:
     name: Test pyavd python 3.12 coverage report
     runs-on: ubuntu-latest
-    needs: [e2e_coverage, test_pyavd]
-    # The coverage threshold requires data from both producers.
+    needs: [file-changes, e2e_coverage, test_pyavd]
+    outputs:
+      pyavd_tests: ${{ needs.test_pyavd.result == 'success' }}
+      e2e_tests: ${{ needs.e2e_coverage.result == 'success' }}
+    # Run with coverage from either producer when the other is skipped by path filtering, but not if either producer fails or both are skipped.
     if: |
-      needs.e2e_coverage.result == 'success' &&
-      needs.test_pyavd.result == 'success'
+      always() &&
+      (needs.e2e_coverage.result == 'success' || needs.e2e_coverage.result == 'skipped') &&
+      (needs.test_pyavd.result == 'success' || needs.test_pyavd.result == 'skipped') &&
+      (needs.e2e_coverage.result == 'success' || needs.test_pyavd.result == 'success')
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -960,25 +1098,96 @@ jobs:
         with:
           pattern: coverage-data-*
           merge-multiple: true
-      - name: Combine and report test coverage
+      - name: Export coverage by test suite and check complete coverage
+        env:
+          PYAVD_RESULT: ${{ needs.test_pyavd.result }}
+          E2E_RESULT: ${{ needs.e2e_coverage.result }}
+          E2E_MATRIX: ${{ needs.file-changes.outputs.e2e_test_matrix }}
         run: |
-          set -ex
-          coverage combine coverage-*.dat
-          coverage report
-          coverage xml
-      - name: Upload pytest coverage report
+          set -euo pipefail
+          shopt -s nullglob
+          if [[ "$PYAVD_RESULT" == "success" ]]; then
+            test -f coverage-PyAVD.dat
+            COVERAGE_FILE=coverage-PyAVD.dat coverage xml --fail-under=0 -o pyavd-tests.xml
+          fi
+          if [[ "$E2E_RESULT" == "success" ]]; then
+            e2e_data=(coverage-End-to-End-*.dat)
+            expected_count=$(jq 'length' <<< "$E2E_MATRIX")
+            if (( expected_count == 0 || ${#e2e_data[@]} != expected_count )); then
+              echo "::error::Expected $expected_count E2E coverage reports, found ${#e2e_data[@]}"
+              exit 1
+            fi
+            COVERAGE_FILE=.coverage-e2e coverage combine --keep "${e2e_data[@]}"
+            COVERAGE_FILE=.coverage-e2e coverage xml --fail-under=0 -o e2e-tests.xml
+          fi
+          # The repository threshold requires both current-commit datasets.
+          if [[ "$PYAVD_RESULT" == "success" && "$E2E_RESULT" == "success" ]]; then
+            coverage combine coverage-*.dat
+            coverage report
+            coverage xml
+          fi
+      - name: Upload coverage reports
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pytest-coverage
-          path: coverage.xml
+          if-no-files-found: error
+          path: |
+            pyavd-tests.xml
+            e2e-tests.xml
+            coverage.xml
 
-  codecov:
-    name: Upload coverage to codecov
-    needs:
-      - ansible_test
-      - generate_pyavd_coverage_report
-    if: github.repository == 'aristanetworks/avd'
+  upload_pyavd_coverage:
+    name: Upload PyAVD coverage to Codecov
+    runs-on: ubuntu-latest
+    needs: [generate_pyavd_coverage_report]
+    if: |
+      !cancelled() &&
+      github.repository == 'aristanetworks/avd' &&
+      needs.generate_pyavd_coverage_report.result == 'success'
     permissions:
       contents: read
-      id-token: write
-    uses: $/.github/workflows/codecov.yml
+      id-token: write # Required by Codecov OIDC.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download PyAVD coverage reports
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: pytest-coverage
+          path: reports/pyavd
+      - name: Verify expected coverage reports
+        env:
+          PYAVD_TESTS: ${{ needs.generate_pyavd_coverage_report.outputs.pyavd_tests }}
+          E2E_TESTS: ${{ needs.generate_pyavd_coverage_report.outputs.e2e_tests }}
+        run: |
+          set -euo pipefail
+          if [[ "$PYAVD_TESTS" != "true" && "$E2E_TESTS" != "true" ]]; then
+            echo "::error::No coverage suites reported by the producer"
+            exit 1
+          fi
+          if [[ "$PYAVD_TESTS" == "true" ]]; then
+            test -f reports/pyavd/pyavd-tests.xml
+          fi
+          if [[ "$E2E_TESTS" == "true" ]]; then
+            test -f reports/pyavd/e2e-tests.xml
+          fi
+      - name: Upload PyAVD pytest coverage to Codecov
+        if: needs.generate_pyavd_coverage_report.outputs.pyavd_tests == 'true'
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
+          disable_search: true
+          files: reports/pyavd/pyavd-tests.xml
+          flags: pyavd_tests
+      - name: Upload end-to-end coverage to Codecov
+        if: needs.generate_pyavd_coverage_report.outputs.e2e_tests == 'true'
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
+          disable_search: true
+          files: reports/pyavd/e2e-tests.xml
+          flags: e2e_tests

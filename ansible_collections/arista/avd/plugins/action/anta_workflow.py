@@ -11,7 +11,7 @@ import warnings
 from asyncio import run
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from multiprocessing import get_context
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -286,12 +286,12 @@ class ActionModule(AVDActionPlugin):
                 message=r"This process \(pid=\d+\) is multi-threaded, use of fork\(\) may lead to deadlocks in the child\.",
                 category=DeprecationWarning,
             )
-            test_execution_start_time = datetime.now(timezone.utc)
+            test_execution_start_time = datetime.now(UTC)
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
                 batches = [deployed_devices[i : i + batch_size] for i in range(0, len(deployed_devices), batch_size)]
                 batch_results = executor.map(run_anta, batches)
-            test_execution_end_time = datetime.now(timezone.utc)
+            test_execution_end_time = datetime.now(UTC)
 
         # Build the ANTA reports and summary
         run_overview_data = RunOverviewData(

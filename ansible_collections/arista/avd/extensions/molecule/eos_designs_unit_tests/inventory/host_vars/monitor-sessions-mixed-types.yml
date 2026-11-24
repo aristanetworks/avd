@@ -1,0 +1,29 @@
+---
+# Use the built-in l2leaf type to exercise the standard connected-endpoint and network-port path.
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: monitor-sessions-mixed-types
+      id: 1
+      mgmt_ip: 192.168.1.2/24
+
+# Same name is intentional: EOS Designs must cast and merge these into one monitor session.
+# Source is supplied by a connected endpoint.
+servers:
+  - name: server1
+    adapters:
+      - switches: [monitor-sessions-mixed-types]
+        switch_ports: [Ethernet1]
+        monitor_sessions:
+          - name: MIXED
+            role: source
+            source_settings:
+              direction: rx
+
+# Destination is supplied by a network port with the same session name.
+network_ports:
+  - switches: [monitor-sessions-mixed-types]
+    switch_ports: [Ethernet2]
+    monitor_sessions:
+      - name: MIXED
+        role: destination
