@@ -63,14 +63,14 @@
       "groupName": "Python runtime dependencies",
       "groupSlug": "python-runtime"
     },
-    // Advance tooling minimums without raising published runtime compatibility floors.
+    // Preserve tooling minimums and widen supported ranges when needed.
     {
       "description": "Maintain Python development and build dependencies",
       "matchManagers": ["pep621"],
       "matchDepTypes": ["dependency-groups", "build-system.requires"],
       "labels": ["type: dependencies"],
       "commitMessagePrefix": "CI(requirements): ",
-      "rangeStrategy": "bump"
+      "rangeStrategy": "widen"
     },
     {
       "description": "Group non-major Python tooling updates",
