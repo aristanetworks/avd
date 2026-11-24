@@ -81,11 +81,10 @@
       "groupSlug": "python-tooling"
     },
     {
-      "description": "Keep legacy Molecule compatibility pins under manual control",
+      "description": "Keep all legacy Molecule dependencies under manual control",
       "matchManagers": ["pep621"],
       "matchDepTypes": ["dependency-groups"],
-      "matchPackageNames": ["molecule", "ansible-compat"],
-      "matchCurrentValue": "==26.6.0",
+      "matchJsonata": ["managerData.depGroup = 'molecule-legacy'"],
       "enabled": false
     },
     {
