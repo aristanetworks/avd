@@ -311,10 +311,7 @@ class EthernetInterfacesMixin(Protocol):
                         self.inputs.fabric_sflow.l3_interfaces,
                     )
                     if parent_sflow is True:
-                        msg = (
-                            f"sFlow cannot be enabled on both physical interface '{parent_interface_name}' and "
-                            f"subinterface '{l3_interface.name}' when 'avd_design_future.fix_sflow_parent_subinterface_conflicts' is enabled."
-                        )
+                        msg = f"sFlow cannot be enabled on both physical interface '{parent_interface_name}' and subinterface '{l3_interface.name}'."
                         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 else:
                     self.structured_config_utils.parent_interfaces_tracker.mark_required_ethernet_parent_to_disable_sflow(parent_interface_name)
