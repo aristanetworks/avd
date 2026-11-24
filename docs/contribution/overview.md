@@ -120,9 +120,9 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
 #### Submitting Pull Requests
 
-Submit pull requests from your fork against `devel`. Follow the contribution guidelines, include relevant tests, and resolve review conversations before merging.
+Submit pull requests from your fork against `devel`. Follow the contribution guidelines, include relevant tests, and resolve review conversations as you address the feedback.
 
-Normally, merging requires two approvals: one maintainer and one additional developer or maintainer. Both reviewers must belong to `avd-developers`. Someone other than the latest pusher must approve the latest changes. Required checks must pass, and approved PRs merge through the merge queue using squash.
+Merging into `devel` requires at least two approvals: one maintainer and one additional developer or maintainer, both members of `avd-developers`. Someone other than the latest pusher must approve the latest changes. Required checks must pass, and all review conversations must be resolved. Approved PRs merge through the merge queue using squash.
 
 - If you are submitting a Pull Request towards `eos_cli_config_gen`, also follow this [guide](./authoring_eos_cli_config_gen.md).
 
