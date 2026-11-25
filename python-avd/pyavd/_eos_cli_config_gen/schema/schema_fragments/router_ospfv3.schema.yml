@@ -52,12 +52,15 @@ keys:
               Specify maximum time in seconds to wait for graceful-restart to complete.
       graceful_restart_helper:
         type: bool
-        description: Enable graceful-restart helper.
+        description: |-
+          Enable or disable graceful-restart helper at the router level.
+          If an enabled address family configures the same value, only the address-family command is rendered.
+          If an enabled address family configures the opposite value, both commands are rendered.
       address_family_ipv4:
         type: dict
         description: |-
           Address family IPv4 configuration.
-          Common configurations defined at the router-level and address-family level are mutually exclusive.
+          Common configurations defined at the router-level and address-family level are mutually exclusive, except for graceful-restart helper.
           If both are provided, the address-family level configuration takes precedence.
         keys:
           enabled:
@@ -93,7 +96,10 @@ keys:
                 description: Specify maximum time in seconds to wait for graceful-restart to complete.
           graceful_restart_helper:
             type: bool
-            description: Enable graceful-restart helper.
+            description: |-
+              Enable or disable graceful-restart helper for this OSPFv3 address family.
+              If the router-level setting has the same value, only the address-family command is rendered.
+              If the router-level setting has the opposite value, both commands are rendered.
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -183,7 +189,7 @@ keys:
         type: dict
         description: |-
           Address family IPv6 configuration.
-          Common configurations defined at the router-level and address-family level are mutually exclusive.
+          Common configurations defined at the router-level and address-family level are mutually exclusive, except for graceful-restart helper.
           If both are provided, the address-family level configuration takes precedence.
         $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
         keys:
@@ -250,7 +256,10 @@ keys:
                     Specify maximum time in seconds to wait for graceful-restart to complete.
             graceful_restart_helper:
               type: bool
-              description: Enable graceful-restart helper.
+              description: |-
+                Enable or disable graceful-restart helper at the router level for this VRF.
+                If an enabled address family configures the same value, only the address-family command is rendered.
+                If an enabled address family configures the opposite value, both commands are rendered.
             address_family_ipv4:
               type: dict
               $ref: "eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4"
