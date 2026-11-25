@@ -34213,6 +34213,71 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class MaximumAdvertisedRoutes(AvdModel):
+                """Subclass of AvdModel."""
+
+                class WarningLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                    count: int | None
+                    """
+                    Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                    exclusive with `percent`. `count` takes precedence.
+                    """
+                    percent: int | None
+                    """
+                    Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                    exclusive with `count`. `count` takes precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                            """
+                            WarningLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                   exclusive with `percent`. `count` takes precedence.
+                                percent:
+                                   Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                   exclusive with `count`. `count` takes precedence.
+
+                            """
+
+                _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                limit: int
+                """Maximum number of advertised routes (0 means unlimited)."""
+                warning_limit: WarningLimit
+                """
+                Warning threshold for the maximum number of advertised routes.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                        """
+                        MaximumAdvertisedRoutes.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            limit: Maximum number of advertised routes (0 means unlimited).
+                            warning_limit:
+                               Warning threshold for the maximum number of advertised routes.
+
+                               Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "password": {"type": str},
@@ -34260,8 +34325,7 @@ class EosDesigns(EosDesignsRootModel):
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
-                "maximum_advertised_routes": {"type": int},
-                "maximum_advertised_routes_warning_limit": {"type": str},
+                "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
             }
             name: str
             """BGP peer group name."""
@@ -34396,14 +34460,8 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             ttl_maximum_hops: int | None
             """Maximum number of hops."""
-            maximum_advertised_routes: int | None
-            """Maximum number of advertised routes (0 means unlimited)."""
-            maximum_advertised_routes_warning_limit: str | None
-            """
-            Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-            never warn) or
-            Percentage of maximum number of routes at which to warn ("<1-100> percent").
-            """
+            maximum_advertised_routes: MaximumAdvertisedRoutes
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -34456,8 +34514,7 @@ class EosDesigns(EosDesignsRootModel):
                     session_tracker: str | UndefinedType | None = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType | None = Undefined,
-                    maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                    maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                    maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     BgpPeerGroupsItem.
@@ -34552,11 +34609,7 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
-                        maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
-                        maximum_advertised_routes_warning_limit:
-                           Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                           never warn) or
-                           Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                        maximum_advertised_routes: Subclass of AvdModel.
 
                     """
 
@@ -42503,6 +42556,71 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class MaximumAdvertisedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                        exclusive with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                        exclusive with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                       exclusive with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                       exclusive with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of advertised routes (0 means unlimited)."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of advertised routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAdvertisedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of advertised routes (0 means unlimited).
+                                warning_limit:
+                                   Warning threshold for the maximum number of advertised routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "nodes": {"type": Nodes},
@@ -42550,8 +42668,7 @@ class EosDesigns(EosDesignsRootModel):
                     "session_tracker": {"type": str},
                     "shared_secret": {"type": SharedSecret},
                     "ttl_maximum_hops": {"type": int},
-                    "maximum_advertised_routes": {"type": int},
-                    "maximum_advertised_routes_warning_limit": {"type": str},
+                    "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
                 }
                 name: str
                 """BGP peer group name."""
@@ -42690,14 +42807,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 ttl_maximum_hops: int | None
                 """Maximum number of hops."""
-                maximum_advertised_routes: int | None
-                """Maximum number of advertised routes (0 means unlimited)."""
-                maximum_advertised_routes_warning_limit: str | None
-                """
-                Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                never warn) or
-                Percentage of maximum number of routes at which to warn ("<1-100> percent").
-                """
+                maximum_advertised_routes: MaximumAdvertisedRoutes
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -42750,8 +42861,7 @@ class EosDesigns(EosDesignsRootModel):
                         session_tracker: str | UndefinedType | None = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         ttl_maximum_hops: int | UndefinedType | None = Undefined,
-                        maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                        maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                        maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         BgpPeerGroupsItem.
@@ -42850,11 +42960,7 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: session_tracker
                             shared_secret: Subclass of AvdModel.
                             ttl_maximum_hops: Maximum number of hops.
-                            maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
-                            maximum_advertised_routes_warning_limit:
-                               Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                               never warn) or
-                               Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                            maximum_advertised_routes: Subclass of AvdModel.
 
                         """
 
@@ -89970,6 +90076,71 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class MaximumAdvertisedRoutes(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class WarningLimit(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                            count: int | None
+                            """
+                            Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                            exclusive with `percent`. `count` takes precedence.
+                            """
+                            percent: int | None
+                            """
+                            Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                            exclusive with `count`. `count` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                    """
+                                    WarningLimit.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                           exclusive with `percent`. `count` takes precedence.
+                                        percent:
+                                           Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                           exclusive with `count`. `count` takes precedence.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                        limit: int
+                        """Maximum number of advertised routes (0 means unlimited)."""
+                        warning_limit: WarningLimit
+                        """
+                        Warning threshold for the maximum number of advertised routes.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                """
+                                MaximumAdvertisedRoutes.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    limit: Maximum number of advertised routes (0 means unlimited).
+                                    warning_limit:
+                                       Warning threshold for the maximum number of advertised routes.
+
+                                       Subclass of AvdModel.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "password": {"type": str},
@@ -90017,8 +90188,7 @@ class EosDesigns(EosDesignsRootModel):
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
-                        "maximum_advertised_routes": {"type": int},
-                        "maximum_advertised_routes_warning_limit": {"type": str},
+                        "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
                     }
                     name: str
                     """BGP peer group name."""
@@ -90153,14 +90323,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     ttl_maximum_hops: int | None
                     """Maximum number of hops."""
-                    maximum_advertised_routes: int | None
-                    """Maximum number of advertised routes (0 means unlimited)."""
-                    maximum_advertised_routes_warning_limit: str | None
-                    """
-                    Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                    never warn) or
-                    Percentage of maximum number of routes at which to warn ("<1-100> percent").
-                    """
+                    maximum_advertised_routes: MaximumAdvertisedRoutes
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -90213,8 +90377,7 @@ class EosDesigns(EosDesignsRootModel):
                             session_tracker: str | UndefinedType | None = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | UndefinedType | None = Undefined,
-                            maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                            maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                            maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
                         ) -> None:
                             """
                             BgpPeerGroupsItem.
@@ -90309,11 +90472,7 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
-                                maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
-                                maximum_advertised_routes_warning_limit:
-                                   Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                                   never warn) or
-                                   Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                                maximum_advertised_routes: Subclass of AvdModel.
 
                             """
 
@@ -98307,6 +98466,73 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MaximumAdvertisedRoutes(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class WarningLimit(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                                count: int | None
+                                """
+                                Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                exclusive with `percent`. `count` takes precedence.
+                                """
+                                percent: int | None
+                                """
+                                Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                exclusive with `count`. `count` takes precedence.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined
+                                    ) -> None:
+                                        """
+                                        WarningLimit.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                               exclusive with `percent`. `count` takes precedence.
+                                            percent:
+                                               Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                               exclusive with `count`. `count` takes precedence.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                            limit: int
+                            """Maximum number of advertised routes (0 means unlimited)."""
+                            warning_limit: WarningLimit
+                            """
+                            Warning threshold for the maximum number of advertised routes.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                                    """
+                                    MaximumAdvertisedRoutes.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        limit: Maximum number of advertised routes (0 means unlimited).
+                                        warning_limit:
+                                           Warning threshold for the maximum number of advertised routes.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "nodes": {"type": Nodes},
@@ -98354,8 +98580,7 @@ class EosDesigns(EosDesignsRootModel):
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
-                            "maximum_advertised_routes": {"type": int},
-                            "maximum_advertised_routes_warning_limit": {"type": str},
+                            "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
                         }
                         name: str
                         """BGP peer group name."""
@@ -98494,14 +98719,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         ttl_maximum_hops: int | None
                         """Maximum number of hops."""
-                        maximum_advertised_routes: int | None
-                        """Maximum number of advertised routes (0 means unlimited)."""
-                        maximum_advertised_routes_warning_limit: str | None
-                        """
-                        Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                        never warn) or
-                        Percentage of maximum number of routes at which to warn ("<1-100> percent").
-                        """
+                        maximum_advertised_routes: MaximumAdvertisedRoutes
+                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
@@ -98554,8 +98773,7 @@ class EosDesigns(EosDesignsRootModel):
                                 session_tracker: str | UndefinedType | None = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | UndefinedType | None = Undefined,
-                                maximum_advertised_routes: int | UndefinedType | None = Undefined,
-                                maximum_advertised_routes_warning_limit: str | UndefinedType | None = Undefined,
+                                maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 BgpPeerGroupsItem.
@@ -98654,11 +98872,7 @@ class EosDesigns(EosDesignsRootModel):
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
-                                    maximum_advertised_routes: Maximum number of advertised routes (0 means unlimited).
-                                    maximum_advertised_routes_warning_limit:
-                                       Maximum number of advertised routes ("<0-4294967294>") after which a warning is issued (0 means
-                                       never warn) or
-                                       Percentage of maximum number of routes at which to warn ("<1-100> percent").
+                                    maximum_advertised_routes: Subclass of AvdModel.
 
                                 """
 
