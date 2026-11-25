@@ -19,27 +19,6 @@ if TYPE_CHECKING:
 class EosDesignsFactsProtocol(Protocol):
     """Subclass of Protocol."""
 
-    class DigitalTwin(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"act_legacy_eos_versioning": {"type": bool}}
-        act_legacy_eos_versioning: bool | None
-        """ACT legacy EOS versioning fabric setting."""
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, act_legacy_eos_versioning: bool | UndefinedType | None = Undefined) -> None:
-                """
-                DigitalTwin.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    act_legacy_eos_versioning: ACT legacy EOS versioning fabric setting.
-
-                """
-
     class DownlinkPoolsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -1125,7 +1104,6 @@ class EosDesignsFactsProtocol(Protocol):
         "type": {"type": str},
         "platform": {"type": str},
         "is_deployed": {"type": bool},
-        "digital_twin": {"type": DigitalTwin},
         "serial_number": {"type": str},
         "mgmt_interface": {"type": str},
         "mgmt_ip": {"type": str},
@@ -1186,12 +1164,6 @@ class EosDesignsFactsProtocol(Protocol):
     type: str
     platform: str | None
     is_deployed: bool
-    digital_twin: DigitalTwin
-    """
-    Digital Twin fabric facts.
-
-    Subclass of AvdModel.
-    """
     serial_number: str | None
     mgmt_interface: str | None
     mgmt_ip: str | None
@@ -1364,7 +1336,6 @@ class EosDesignsFactsProtocol(Protocol):
             type: str | UndefinedType = Undefined,
             platform: str | UndefinedType | None = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
-            digital_twin: DigitalTwin | UndefinedType = Undefined,
             serial_number: str | UndefinedType | None = Undefined,
             mgmt_interface: str | UndefinedType | None = Undefined,
             mgmt_ip: str | UndefinedType | None = Undefined,
@@ -1432,10 +1403,6 @@ class EosDesignsFactsProtocol(Protocol):
                 type: type
                 platform: platform
                 is_deployed: is_deployed
-                digital_twin:
-                   Digital Twin fabric facts.
-
-                   Subclass of AvdModel.
                 serial_number: serial_number
                 mgmt_interface: mgmt_interface
                 mgmt_ip: mgmt_ip

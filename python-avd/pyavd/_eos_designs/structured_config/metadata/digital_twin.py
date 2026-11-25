@@ -78,6 +78,7 @@ class DigitalTwinMixin(Protocol):
                     version=version,
                     username=username,
                     password=password,
+                    act_legacy_eos_versioning=self.inputs.digital_twin.fabric.act_legacy_eos_versioning,
                 )
                 if self.structured_config_utils.current_act_node_supports_feature("internet_access") and (
                     act_internet_access := default(
