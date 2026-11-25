@@ -15,7 +15,6 @@ def test_router_bgp_ipv6_labeled_unicast_is_validated_and_rendered() -> None:
                 {
                     "name": "MPLS-OVERLAY-PEERS",
                     "remote_as": 65000,
-                    "maximum_advertised_routes": {"limit": 120000, "warning_limit": {"percent": 10}},
                 }
             ],
             "address_family_ipv6_labeled_unicast": {
@@ -23,7 +22,7 @@ def test_router_bgp_ipv6_labeled_unicast_is_validated_and_rendered() -> None:
                     {
                         "name": "MPLS-OVERLAY-PEERS",
                         "activate": True,
-                        "maximum_advertised_routes": {"limit": 1200, "warning_limit": {"count": 100}},
+                        "maximum_advertised_routes": {"limit": 1200, "warning_limit": {"percent": 10}},
                     }
                 ],
                 "neighbors": [
@@ -47,12 +46,10 @@ def test_router_bgp_ipv6_labeled_unicast_is_validated_and_rendered() -> None:
     documentation = get_device_doc(result.validated_data)
 
     assert "address-family ipv6 labeled-unicast" in config
-    assert "neighbor MPLS-OVERLAY-PEERS maximum-advertised-routes 120000 warning-limit 10 percent" in config
-    assert "neighbor MPLS-OVERLAY-PEERS maximum-advertised-routes 1200 warning-limit 100" in config
+    assert "neighbor MPLS-OVERLAY-PEERS maximum-advertised-routes 1200 warning-limit 10 percent" in config
     assert "neighbor 2001:db8::1 maximum-advertised-routes 1000 warning-limit 0" in config
     assert "neighbor MPLS-OVERLAY-PEERS activate" in config
     assert "neighbor 2001:db8::1 next-hop-self" in config
     assert "network 2001:db8:1::/64 route-map RM-V6-LU" in config
     assert "next-hop 2001:db8::2 originate lfib-backup ip-forwarding" in config
     assert "Router BGP IPv6 Labeled Unicast" in documentation
-    assert "Maximum Advertised Routes | 120000 (warning-limit 10 percent)" in documentation

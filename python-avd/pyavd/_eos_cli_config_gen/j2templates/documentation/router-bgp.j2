@@ -274,19 +274,17 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Maximum routes | {{ value }} |
 {%             endif %}
 {%             if peer_group.maximum_advertised_routes is arista.avd.defined %}
-{%                 if peer_group.maximum_advertised_routes.limit == 0 %}
+{%                 if peer_group.maximum_advertised_routes == 0 %}
 {%                     set value = "0 (no limit)" %}
 {%                 else %}
-{%                     set value = peer_group.maximum_advertised_routes.limit %}
+{%                     set value = peer_group.maximum_advertised_routes %}
 {%                 endif %}
-{%                 if peer_group.maximum_advertised_routes.warning_limit.count is arista.avd.defined %}
-{%                     if peer_group.maximum_advertised_routes.warning_limit.count == 0 %}
+{%                 if peer_group.maximum_advertised_routes_warning_limit is arista.avd.defined %}
+{%                     if peer_group.maximum_advertised_routes_warning_limit == "0" %}
 {%                         set value = value ~ " (never warn)" %}
 {%                     else %}
-{%                         set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes.warning_limit.count ~ ")" %}
+{%                         set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes_warning_limit ~ ")" %}
 {%                     endif %}
-{%                 elif peer_group.maximum_advertised_routes.warning_limit.percent is arista.avd.defined %}
-{%                     set value = value ~ " (warning-limit " ~ peer_group.maximum_advertised_routes.warning_limit.percent ~ " percent)" %}
 {%                 endif %}
 | Maximum Advertised Routes | {{ value }} |
 {%             endif %}
@@ -427,19 +425,17 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endif %}
 {%             set active_parameter.maximum_routes = value | arista.avd.default(inherited.maximum_routes, '-') %}
 {%             if neighbor.maximum_advertised_routes is arista.avd.defined %}
-{%                 if neighbor.maximum_advertised_routes.limit == 0 %}
+{%                 if neighbor.maximum_advertised_routes == 0 %}
 {%                     set maximum_advertised_routes_value = "0 (no limit)" %}
 {%                 else %}
-{%                     set maximum_advertised_routes_value = neighbor.maximum_advertised_routes.limit %}
+{%                     set maximum_advertised_routes_value = neighbor.maximum_advertised_routes %}
 {%                 endif %}
-{%                 if neighbor.maximum_advertised_routes.warning_limit.count is arista.avd.defined %}
-{%                     if neighbor.maximum_advertised_routes.warning_limit.count == 0 %}
+{%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
+{%                     if neighbor.maximum_advertised_routes_warning_limit == "0" %}
 {%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (never warn)" %}
 {%                     else %}
-{%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes.warning_limit.count ~ ")" %}
+{%                         set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit ~ ")" %}
 {%                     endif %}
-{%                 elif neighbor.maximum_advertised_routes.warning_limit.percent is arista.avd.defined %}
-{%                     set maximum_advertised_routes_value = maximum_advertised_routes_value ~ " (warning-limit " ~ neighbor.maximum_advertised_routes.warning_limit.percent ~ " percent)" %}
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.maximum_advertised_routes = maximum_advertised_routes_value | arista.avd.default(inherited.maximum_advertised_routes, '-') %}
