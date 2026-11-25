@@ -1,0 +1,1 @@
+pyavd._errors.AvdFutureBehaviorWarning: Host 'legacy-autovpn-cv-interface-tags-test': L3 Port-Channel at path 'wan_rr.nodes[name=legacy-autovpn-cv-interface-tags-test].l3_port_channels[name=Port-Channel10]' must have at least one member interface defined. This configuration is deprecated and will no longer be supported in AVD 7.0.0.

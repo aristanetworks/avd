@@ -3,11 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdFutureBehaviorWarning
 from pyavd._utils.default import default
 from pyavd._utils.short_esi_to_route_target import short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -115,7 +116,28 @@ class PortChannelInterfacesMixin(Protocol):
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces
-        for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
+        l3_port_channels = self.shared_utils.node_config.l3_port_channels
+        if not self.inputs.avd_design_future.raise_for_port_channels_without_members:
+            node_config_path = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}]"
+            l3_port_channel_paths_without_members = [
+                f"{node_config_path}.l3_port_channels[name={l3_port_channel.name}]"
+                for l3_port_channel in l3_port_channels
+                if "." not in l3_port_channel.name and not l3_port_channel.member_interfaces
+            ]
+            if l3_port_channel_paths_without_members:
+                if len(l3_port_channel_paths_without_members) == 1:
+                    msg = f"L3 Port-Channel at path '{l3_port_channel_paths_without_members[0]}' must have at least one member interface defined."
+                else:
+                    msg = (
+                        f"L3 Port-Channels at paths {', '.join(repr(path) for path in l3_port_channel_paths_without_members)} "
+                        "must each have at least one member interface defined."
+                    )
+                warnings.warn(
+                    AvdFutureBehaviorWarning(f"Host '{self.shared_utils.hostname}': {msg}", version="7.0.0"),
+                    stacklevel=2,
+                )
+
+        for l3_port_channel in l3_port_channels:
             self._set_l3_port_channel(l3_port_channel)
 
         # WAN HA interface for direct connection
