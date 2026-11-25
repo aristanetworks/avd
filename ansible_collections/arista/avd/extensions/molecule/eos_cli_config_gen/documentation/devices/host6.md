@@ -211,7 +211,7 @@ ipv6 unicast-routing vrf TENANT_C
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
+| Graceful Restart | True |
 | Grace Period | - |
 | Graceful Restart Helper | True |
 
@@ -226,6 +226,17 @@ ipv6 unicast-routing vrf TENANT_C
 | static | True | map1 |
 
 ##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | True |
+| Grace Period | 26 |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -394,6 +405,7 @@ router ospfv3
       redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked
       redistribute static include leaked route-map map1
+      graceful-restart
       graceful-restart-helper
    !
    address-family ipv6
@@ -403,6 +415,8 @@ router ospfv3
       redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked
       redistribute static include leaked route-map map1
+      graceful-restart grace-period 26
+      graceful-restart-helper
 ```
 
 ### Router BGP

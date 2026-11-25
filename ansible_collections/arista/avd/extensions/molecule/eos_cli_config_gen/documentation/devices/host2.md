@@ -1441,7 +1441,7 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
+| Graceful Restart | True |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
@@ -1464,9 +1464,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
+| Graceful Restart | True |
 | Grace Period | - |
-| Graceful Restart Helper | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -1522,9 +1522,9 @@ router ospf 701
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
-| Grace Period | - |
-| Graceful Restart Helper | - |
+| Graceful Restart | True |
+| Grace Period | 25 |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -1661,6 +1661,7 @@ router ospfv3 vrf MGMT
       redistribute isis
       redistribute ospfv3 leaked
       redistribute static
+      graceful-restart
    !
    address-family ipv6
       passive-interface default
@@ -1670,6 +1671,8 @@ router ospfv3 vrf MGMT
       redistribute isis
       redistribute ospfv3 leaked
       redistribute static
+      graceful-restart
+      no graceful-restart-helper
 !
 router ospfv3 vrf Test
    no graceful-restart-helper
@@ -1686,6 +1689,8 @@ router ospfv3 vrf Test
       redistribute ospfv3 leaked
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      graceful-restart grace-period 25
+      graceful-restart-helper
 !
 router ospfv3 vrf Test_VRF
    router-id 1.1.1.1

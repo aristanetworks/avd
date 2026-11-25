@@ -450,6 +450,17 @@ router ospf 702
 
 #### VRF: SAME_HELPER
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | - |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
@@ -468,6 +479,8 @@ router ospf 702
 ```eos
 !
 router ospfv3 vrf SAME_HELPER
+   graceful-restart
+   !
    address-family ipv4
       graceful-restart-helper
 !

@@ -56,6 +56,8 @@ router_ospfv3:
           route_map: map1
   vrfs:
     - name: SAME_HELPER
+      graceful_restart:
+        enabled: true
       graceful_restart_helper: true
       address_family_ipv4:
         enabled: true

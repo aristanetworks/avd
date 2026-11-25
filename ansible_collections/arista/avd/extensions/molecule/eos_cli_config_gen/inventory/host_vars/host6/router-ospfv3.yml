@@ -8,6 +8,8 @@ router_ospfv3:
   address_family_ipv4:
     enabled: true
     # A positive address-family setting can coexist with a negative shared setting.
+    graceful_restart:
+      enabled: true
     graceful_restart_helper: true
     redistribute:
       bgp:
@@ -32,6 +34,10 @@ router_ospfv3:
         route_map: map1
   address_family_ipv6:
     enabled: true
+    graceful_restart:
+      enabled: true
+      grace_period: 26
+    graceful_restart_helper: true
     redistribute:
       ospfv3:
         leaked:

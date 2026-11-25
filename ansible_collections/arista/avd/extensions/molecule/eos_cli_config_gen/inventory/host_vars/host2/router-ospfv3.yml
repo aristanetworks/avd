@@ -151,6 +151,8 @@ router_ospfv3:
       address_family_ipv4:
         enabled: true
         passive_interface_default: false
+        graceful_restart:
+          enabled: true
         redistribute:
           bgp:
             enabled: true
@@ -166,6 +168,9 @@ router_ospfv3:
       address_family_ipv6:
         enabled: true
         passive_interface_default: true
+        graceful_restart:
+          enabled: true
+        graceful_restart_helper: false
         redistribute:
           bgp:
             enabled: true
@@ -203,6 +208,10 @@ router_ospfv3:
       address_family_ipv6:
         enabled: true
         passive_interface_default: true
+        graceful_restart:
+          enabled: true
+          grace_period: 25
+        graceful_restart_helper: true
         redistribute:
           ospfv3:
             leaked:
