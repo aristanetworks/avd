@@ -545,6 +545,7 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
             maximum_advertised_routes:
               type: int
               description: Maximum number of advertised routes (0 means unlimited).
@@ -823,6 +824,7 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
             maximum_advertised_routes:
               type: int
               description: Maximum number of advertised routes (0 means unlimited).
@@ -1708,6 +1710,7 @@ keys:
                           required: true
                         originate:
                           type: bool
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).
@@ -1785,6 +1788,7 @@ keys:
                           description: Enables advertising the Extended Next Hop Encoding capability.
                         originate:
                           type: bool
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).
@@ -2132,6 +2136,7 @@ keys:
                   keys:
                     stale_route_map:
                       type: str
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).
@@ -2244,6 +2249,7 @@ keys:
                   keys:
                     stale_route_map:
                       type: str
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).
@@ -3098,6 +3104,7 @@ keys:
                     route_map:
                       type: str
                       description: Route-map name.
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).
@@ -3167,6 +3174,7 @@ keys:
                     prefix_list:
                       type: str
                       description: Apply the configurations only to the routes matching the prefix list.
+                # TODO: 7.0 Update the maximum_advertised_routes type to dict similar to maximum_accepted_routes
                 maximum_advertised_routes:
                   type: int
                   description: Maximum number of advertised routes (0 means unlimited).

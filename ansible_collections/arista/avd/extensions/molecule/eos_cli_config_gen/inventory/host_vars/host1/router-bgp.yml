@@ -1110,6 +1110,22 @@ router_bgp:
         additional_paths:
           send: limit
           send_limit: 10
+  address_family_ipv6_labeled_unicast:
+    peer_groups:
+      - name: IPV6-UNDERLAY
+        activate: true
+        maximum_advertised_routes:
+          limit: 1200
+          warning_limit:
+            percent: 10
+    neighbors:
+      - ip_address: 2001:db8:ffff::1
+        activate: true
+        next_hop_self: true
+        maximum_advertised_routes:
+          limit: 1000
+          warning_limit:
+            count: 0
   address_family_link_state:
     bgp:
       missing_policy:

@@ -10358,6 +10358,25 @@ ASN Notation: asdot
 | 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
 | 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
+##### IPv6 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| IPV6-UNDERLAY | True | - | - | - | - | - | - |
+
+##### IPv6 BGP-LU Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 2001:db8:ffff::1 | True | - | - | - | - | - | - |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |
@@ -11188,6 +11207,13 @@ router bgp 65101
       tunnel source-protocol ldp rcf TEST()
       aigp-session confederation
       aigp-session ebgp
+   !
+   address-family ipv6 labeled-unicast
+      neighbor IPV6-UNDERLAY activate
+      neighbor IPV6-UNDERLAY maximum-advertised-routes 1200 warning-limit 10 percent
+      neighbor 2001:db8:ffff::1 activate
+      neighbor 2001:db8:ffff::1 next-hop-self
+      neighbor 2001:db8:ffff::1 maximum-advertised-routes 1000 warning-limit 0
    !
    address-family ipv4 multicast
       bgp additional-paths receive
