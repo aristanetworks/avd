@@ -99,6 +99,52 @@
             | list
             | length == 1
 
+- name: Test verify_requirements respects Python environment markers
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_collection_name: "arista.avd"  # noqa: var-naming[read-only]
+  tasks:
+    - name: Run verify_requirements with an inactive requirement for a missing package
+      arista.avd.verify_requirements:
+        requirements:
+          - "nonexistent-package-xyz-abc>=99.0.0; python_version < '3.0'"
+        avd_ignore_requirements: true
+        save_logs: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert the inactive requirement produced no missing-package error
+      ansible.builtin.assert:
+        that:
+          - result is succeeded
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'nonexistent-package-xyz-abc'")
+            | list
+            | length == 0
+
+    - name: Run verify_requirements with an active impossible version requirement
+      arista.avd.verify_requirements:
+        requirements:
+          - "jinja2>=999.0.0; python_version >= '3.11'"
+        avd_ignore_requirements: true
+        save_logs: true
+      register: result
+      run_once: true
+      check_mode: false
+
+    - name: Assert the active requirement still reports its version mismatch
+      ansible.builtin.assert:
+        that:
+          - result is succeeded
+          - >-
+            result.logs.errors
+            | select("search", "Python library 'jinja2' version running .* - requirement is jinja2>=999.0.0")
+            | list
+            | length == 1
+
 # Test 5: Valid installed python requirement - covers _check_requirement happy path
 # (lines 100-107, 118-122, 161 in verify_requirements.py)
 # jinja2 is always installed in any ansible-test environment.

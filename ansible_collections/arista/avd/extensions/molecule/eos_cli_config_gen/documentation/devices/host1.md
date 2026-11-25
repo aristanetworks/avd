@@ -258,6 +258,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Platform Device Configuration](#platform-device-configuration)
 - [System L1](#system-l1)
   - [Unsupported Interface Configurations](#unsupported-interface-configurations)
+  - [L1 Module Profiles](#l1-module-profiles)
   - [System L1 Device Configuration](#system-l1-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
@@ -5295,6 +5296,15 @@ interface Dps1
 | Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:66::1 | text |
 | Ethernet66 | 3 | - | - | Disabled | - | - | 10.66.0.5 | 3 | - | - |
 
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Ethernet5 | True | True | True | 111 | - | 0.0.9.11 | - | - | 0.0.9.12 | - |
+| Ethernet6 | False | - | False | - | - | 0.0.9.13 | - | - | 0.0.9.14 | - |
+| Ethernet88 | - | - | - | - | True | 0.0.9.21 | 211 | True | 0.0.9.22 | 212 |
+| Ethernet89 | - | - | - | - | False | 0.0.9.23 | 221 | False | 0.0.9.24 | 222 |
+
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -5606,6 +5616,12 @@ interface Ethernet5
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
    ip ospf message-digest-key 2 sha512 8a <removed>
+   ospfv3 bfd
+   ospfv3 passive-interface
+   ospfv3 cost 111
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
    pim ipv4 border-router
@@ -5638,6 +5654,10 @@ interface Ethernet6
       locked-address ipv4 enforcement disabled
    no lldp transmit
    ip ospf authentication-key 8a <removed>
+   no ospfv3 bfd
+   no ospfv3 passive-interface
+   ospfv3 ipv4 area 0.0.9.13
+   ospfv3 ipv6 area 0.0.9.14
    ptp enable
    no ptp management drop
    ptp announce interval 3
@@ -6598,10 +6618,22 @@ interface Ethernet87
 interface Ethernet88
    description Loop protection disable
    no loop-protection
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 211
+   ospfv3 ipv4 area 0.0.9.21
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 212
+   ospfv3 ipv6 area 0.0.9.22
 !
 interface Ethernet89
    description Loop protection disable
    no loop-protection
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 221
+   ospfv3 ipv4 area 0.0.9.23
+   no ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 222
+   ospfv3 ipv6 area 0.0.9.24
 !
 interface Ethernet90
    description IPv6 ND new structure test
@@ -6833,6 +6865,15 @@ interface Ethernet90
 | Port-Channel333 | 3 | - | - | Disabled | - | - | 10.33.0.5 | 3 | - | - |
 | Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 10.66.10.1, 10.66.11.3, 10.66.12.4 | 2 | - | ietf-md5 |
 | Port-Channel667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:4667::1 | text |
+
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Port-Channel17 | False | - | False | - | - | 0.0.9.3 | - | - | 0.0.9.4 | - |
+| Port-Channel18 | True | True | True | 411 | - | 0.0.9.1 | - | - | 0.0.9.2 | - |
+| Port-Channel21 | - | - | - | - | True | 0.0.9.21 | 421 | True | 0.0.9.22 | 422 |
+| Port-Channel22 | - | - | - | - | False | 0.0.9.23 | 431 | False | 0.0.9.24 | 432 |
 
 ##### ISIS
 
@@ -7078,6 +7119,10 @@ interface Port-Channel17
    description PBR Description
    no switchport
    ip address 192.0.2.3/31
+   no ospfv3 bfd
+   no ospfv3 passive-interface
+   ospfv3 ipv4 area 0.0.9.3
+   ospfv3 ipv6 area 0.0.9.4
    service-policy type pbr input MyPolicy
 !
 interface Port-Channel18
@@ -7090,6 +7135,12 @@ interface Port-Channel18
    ip ospf area 0.0.0.12
    ip ospf message-digest-key 55 md5 7 <removed>
    ip ospf message-digest-key 56 sha512 8a <removed>
+   ospfv3 bfd
+   ospfv3 passive-interface
+   ospfv3 cost 411
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.1
+   ospfv3 ipv6 area 0.0.9.2
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -7104,10 +7155,22 @@ interface Port-Channel20
 interface Port-Channel21
    description Loop protection enable
    loop-protection
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 421
+   ospfv3 ipv4 area 0.0.9.21
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 422
+   ospfv3 ipv6 area 0.0.9.22
 !
 interface Port-Channel22
    description Loop protection disable
    no loop-protection
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 431
+   ospfv3 ipv4 area 0.0.9.23
+   no ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 432
+   ospfv3 ipv6 area 0.0.9.24
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
@@ -7695,6 +7758,15 @@ interface Port-Channel667
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | auto-config |
 
+##### OSPFv3
+
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Loopback0 | True | True | True | 311 | - | 0.0.9.11 | - | - | 0.0.9.12 | - |
+| Loopback1 | False | - | False | - | - | 0.0.9.13 | - | - | 0.0.9.14 | - |
+| Loopback2 | - | - | - | - | False | 0.0.9.23 | 321 | False | 0.0.9.24 | 322 |
+| Loopback10 | - | - | - | - | True | 0.0.9.21 | 331 | True | 0.0.9.22 | 332 |
+
 ##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
@@ -7711,6 +7783,12 @@ interface Loopback0
    description EVPN_Overlay_Peering
    ip address 192.168.255.3/32
    mpls ldp interface
+   ospfv3 bfd
+   ospfv3 passive-interface
+   ospfv3 cost 311
+   ospfv3 network point-to-point
+   ospfv3 ipv4 area 0.0.9.11
+   ospfv3 ipv6 area 0.0.9.12
    comment
    Comment created from eos_cli under loopback_interfaces.Loopback0
    EOF
@@ -7720,10 +7798,20 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
    no mpls ldp interface
+   no ospfv3 bfd
+   no ospfv3 passive-interface
+   ospfv3 ipv4 area 0.0.9.13
+   ospfv3 ipv6 area 0.0.9.14
 !
 interface Loopback2
    shutdown
    ip ospf area 0.0.0.2
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 321
+   ospfv3 ipv4 area 0.0.9.23
+   no ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 322
+   ospfv3 ipv6 area 0.0.9.24
    isis enable ISIS_PASSIVE_TEST
    isis passive
 !
@@ -7731,6 +7819,12 @@ interface Loopback10
    description Test_Node_Segment
    ip address 10.2.255.3/32
    ipv6 address 2002::CAFE/128
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 331
+   ospfv3 ipv4 area 0.0.9.21
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 332
+   ospfv3 ipv6 area 0.0.9.22
    node-segment ipv4 index 34
    node-segment ipv6 index 23
 !
@@ -13759,11 +13853,32 @@ platform trident mmu headroom-pool limit cells 556
 | Speed | warn |
 | Error correction | error |
 
+### L1 Module Profiles
+
+| Module | Profile |
+| ------ | ------- |
+| Linecard9 | 1 |
+| Linecard7 | 11 |
+| Linecard10 | 12 |
+| Linecard8 | 2 |
+| Linecard1 | CAPITAL |
+| Linecard3,4 | Uniform-4x100G-2-R |
+| Linecard5-6 | Uniform-4x10G-1 |
+| Linecard0 | small |
+
 ### System L1 Device Configuration
 
 ```eos
 !
 system l1
+   module Linecard9 profile 1
+   module Linecard7 profile 11
+   module Linecard10 profile 12
+   module Linecard8 profile 2
+   module Linecard1 profile CAPITAL
+   module Linecard3,4 profile Uniform-4x100G-2-R
+   module Linecard5-6 profile Uniform-4x10G-1
+   module Linecard0 profile small
    unsupported speed action warn
    unsupported error-correction action error
 ```
