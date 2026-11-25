@@ -137,6 +137,27 @@ def test_has_attr_value_false_after_empty_model_materialized_by_getattr() -> Non
     assert model._has_data() is False
 
 
+def test_has_attr_value_true_after_default_materialized_by_getattr() -> None:
+    """Accessing a field with a schema default stores it on the model, so subsequent checks return True."""
+    model = SampleModel()
+    assert model._has_attr_value("flag_with_default") is False
+    assert model._has_data() is False
+
+    assert model.flag_with_default is True
+    assert model._has_attr_value("flag_with_default") is True
+    assert model._has_data() is True
+
+    nested_model = SampleModel()
+    assert nested_model._has_attr_value("nested") is False
+    assert nested_model._has_data() is False
+
+    assert nested_model.nested.flag is True
+    assert nested_model.nested._has_attr_value("flag") is True
+    assert nested_model.nested._has_data() is True
+    assert nested_model._has_attr_value("nested") is True
+    assert nested_model._has_data() is True
+
+
 def test_has_attr_value_after_deepinherit_null_override() -> None:
     """Null overrides applied before _deepinherit clear inherited scalar, model, list, and indexed list fields."""
     profile = SampleModel._from_dict(
