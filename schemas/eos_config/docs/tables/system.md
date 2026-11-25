@@ -23,6 +23,9 @@
     | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;modules</samp>](## "system.l1.modules") | List, items: Dictionary |  |  |  | Unified module profile assignments. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;linecards</samp>](## "system.l1.modules.[].linecards") | String | Required |  |  | Linecard selector for this profile.<br>Accepts a single slot, comma-separated slots, or slot ranges.<br>- `0` applies to Linecard 0.<br>- `1,3` applies to Linecards 1 and 3.<br>- `4-10` applies to Linecards 4 through 10 (inclusive).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "system.l1.modules.[].profile") | String | Required |  |  | Builtin module L1 profile name. |
     | [<samp>&nbsp;&nbsp;mac_address</samp>](## "system.mac_address") | String |  |  | Value is converted to lower case.<br>Pattern: `[0-9a-f][02468ace](:[0-9a-f]{2}){5}` | Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit). |
 
 === "YAML"
@@ -52,6 +55,19 @@
       l1:
         unsupported_speed_action: <str; "error" | "warn">
         unsupported_error_correction_action: <str; "error" | "warn">
+
+        # Unified module profile assignments.
+        modules:
+
+            # Linecard selector for this profile.
+            # Accepts a single slot, comma-separated slots, or slot ranges.
+            # - `0` applies to Linecard 0.
+            # - `1,3` applies to Linecards 1 and 3.
+            # - `4-10` applies to Linecards 4 through 10 (inclusive).
+          - linecards: <str; required>
+
+            # Builtin module L1 profile name.
+            profile: <str; required>
 
       # Unicast (the least-significant bit of the first octet must be zero) system MAC address in `hh:hh:hh:hh:hh:hh` format (where `h` is a hexadecimal digit).
       mac_address: <str>
