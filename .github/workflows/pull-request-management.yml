@@ -163,6 +163,7 @@ jobs:
               - 'ansible_collections/arista/avd/examples/**'
               - 'ansible_collections/arista/avd/roles/*/README.md'
               - 'ansible_collections/arista/avd/roles/*/docs/**'
+              - 'ansible_collections/arista/avd/roles/*/defaults/**'
               - 'schemas/**'
               - 'tools/schema-explorer/**'
               - 'tools/schema_explorer_markdown.py'

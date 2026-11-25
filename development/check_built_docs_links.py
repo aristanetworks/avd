@@ -84,12 +84,37 @@ class BuiltDocsParser(HTMLParser):
 
 
 def srcset_urls(srcset: str) -> list[str]:
+    # HTML srcset URLs extend to ASCII whitespace, so commas inside a URL
+    # must be preserved. Trailing commas separate candidates without descriptors.
+    whitespace = " \t\n\f\r"
     urls: list[str] = []
-    for srcset_candidate in srcset.split(","):
-        stripped_candidate = srcset_candidate.strip()
-        if not stripped_candidate:
+    position = 0
+    while position < len(srcset):
+        if srcset[position] in whitespace + ",":
+            position += 1
             continue
-        urls.append(stripped_candidate.split()[0])
+
+        start = position
+        while position < len(srcset) and srcset[position] not in whitespace:
+            position += 1
+        url = srcset[start:position]
+        urls.append(url.rstrip(","))
+        if url.endswith(","):
+            continue
+
+        # Skip descriptors up to the next candidate separator. Commas within
+        # parenthesized descriptor content do not end the candidate.
+        in_parentheses = False
+        while position < len(srcset):
+            char = srcset[position]
+            position += 1
+            if char == ")":
+                in_parentheses = False
+            elif not in_parentheses:
+                if char == ",":
+                    break
+                if char == "(":
+                    in_parentheses = True
     return urls
 
 
