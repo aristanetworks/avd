@@ -1,5 +1,5 @@
 ---
-# Used by pre-commit. There is a similar file under the Ansible collection used by ansible-lint.
+# Used by prek. There is a similar file under the Ansible collection used by ansible-lint.
 extends: default
 
 yaml-files:
