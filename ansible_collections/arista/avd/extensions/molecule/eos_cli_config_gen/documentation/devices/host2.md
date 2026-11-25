@@ -1885,6 +1885,9 @@ router bgp 65101
       bgp additional-paths send any
       graceful-restart
    !
+   address-family ipv6 labeled-unicast
+      no bgp additional-paths send
+   !
    address-family ipv4 multicast
       redistribute ospf match internal route-map AFIPV4M_OSPF_INTERNAL
       redistribute ospfv3 route-map AFIPV4M_OSPFV3
