@@ -323,6 +323,14 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+| Label local-termination | implicit-null |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |

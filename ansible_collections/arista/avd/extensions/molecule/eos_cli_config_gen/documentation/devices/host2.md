@@ -1806,6 +1806,13 @@ ASN Notation: asplain
 | -------- | ----- |
 | Graceful-restart | Enabled |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |

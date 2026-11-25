@@ -201,6 +201,10 @@ router_bgp:
     bgp:
       additional_paths:
         send: any
+  address_family_ipv6_labeled_unicast:
+    bgp:
+      additional_paths:
+        send: disabled
   address_family_path_selection:
     bgp:
       additional_paths:

@@ -223,6 +223,13 @@ ASN Notation: asplain
 | evpn-overlay-peers | True | - | - | - | - | - | - |
 | IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
 #### Router BGP Device Configuration
 
 ```eos

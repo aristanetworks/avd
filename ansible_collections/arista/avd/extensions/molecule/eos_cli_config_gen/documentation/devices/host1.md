@@ -10364,18 +10364,32 @@ ASN Notation: asdot
 
 | Settings | Value |
 | -------- | ----- |
+| Next-hop Unchanged | True |
+| LFIB entry installation skipped | True |
+| Label local-termination | explicit-null |
+| Graceful-restart | Enabled |
+| Neighbor default next-hop-self | True |
+| Next-hop resolution | Disabled |
 
 ##### IPv6 BGP-LU Peer-groups
 
 | Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
-| IPV6-UNDERLAY | True | - | - | - | - | - | - |
+| IPV6-LU-ANY | True | - | - | - | - | - | - |
+| IPV6-LU-ECMP | False | - | - | - | - | - | - |
+| IPV6-LU-LIMIT | True | - | - | - | - | - | - |
+| IPV6-LU-LIMIT-NO-LIMIT | True | - | - | - | - | - | - |
+| IPV6-UNDERLAY | True | RM-V6-LU-IN | RM-V6-LU-OUT | RCF-V6-LU-IN() | RCF-V6-LU-OUT() | V6-LU-IN | V6-LU-OUT |
 
 ##### IPv6 BGP-LU Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
 | -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
-| 2001:db8:ffff::1 | True | - | - | - | - | - | - |
+| 2001:db8:ffff::1 | True | RM-V6-LU-N-IN | RM-V6-LU-N-OUT | RCF-V6-LU-N-IN() | RCF-V6-LU-N-OUT() | V6-LU-N-IN | V6-LU-N-OUT |
+| 2001:db8:ffff::2 | False | - | - | - | - | - | - |
+| 2001:db8:ffff::3 | True | - | - | - | - | - | - |
+| 2001:db8:ffff::4 | True | - | - | - | - | - | - |
+| 2001:db8:ffff::5 | True | - | - | - | - | - | - |
 
 ##### BGP LU RIB
 
