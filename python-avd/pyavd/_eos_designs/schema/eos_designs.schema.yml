@@ -512,8 +512,9 @@ keys:
         type: bool
         description: 'Available from AVD 6.6.0.
 
-          Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from `ipv4_acls`
-          for enabled/disabled SNMP VRFs.
+          Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from `ipv4_acls`.
+
+          Applies to all VRFs where `snmp_settings.vrfs[].enable` is set.
 
           An error will be raised if the referenced ACL is not defined under `ipv4_acls`.'
         default: false

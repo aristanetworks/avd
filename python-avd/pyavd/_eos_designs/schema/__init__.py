@@ -1935,9 +1935,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         Available from AVD 6.6.0.
         Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
-        `ipv4_acls` for enabled/disabled SNMP VRFs.
-        An error will be raised if the referenced ACL is not
-        defined under `ipv4_acls`.
+        `ipv4_acls`.
+        Applies to all VRFs where `snmp_settings.vrfs[].enable` is set.
+        An error will be raised
+        if the referenced ACL is not defined under `ipv4_acls`.
 
         Default value: `False`
         """
@@ -2173,9 +2174,10 @@ class EosDesigns(EosDesignsRootModel):
                     configure_snmp_server_vrfs_ipv4_acl_from_catalog:
                        Available from AVD 6.6.0.
                        Configure ACLs referenced by `snmp_settings.vrfs[].ipv4_acl` from
-                       `ipv4_acls` for enabled/disabled SNMP VRFs.
-                       An error will be raised if the referenced ACL is not
-                       defined under `ipv4_acls`.
+                       `ipv4_acls`.
+                       Applies to all VRFs where `snmp_settings.vrfs[].enable` is set.
+                       An error will be raised
+                       if the referenced ACL is not defined under `ipv4_acls`.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
