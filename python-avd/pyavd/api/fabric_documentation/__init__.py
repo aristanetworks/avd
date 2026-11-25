@@ -74,7 +74,7 @@ class ActNodeSettings:
 class ACTDigitalTwin:
     """ACT Digital Twin fabric documentation dataclass."""
 
-    settings: ActSettings | None
+    settings: ActSettings | None = field(default=None, kw_only=True)
     nodes: tuple[dict[str, ActNodeSettings], ...]
     cloudeos: ActNodeTypeSettings | None = None
     cvp: ActNodeTypeSettings | None = None
