@@ -1790,7 +1790,7 @@ class EosDesigns(EosDesignsRootModel):
           - Any other string will be used directly as the local interface.
         When
         `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
-        exclusive with `dhcp_server_interfaces`.
+        exclusive with `dhcp_server_interfaces` and `auto_dhcp_server_interfaces`.
         """
         dhcp_server_interfaces: DhcpServerInterfaces
         """
@@ -1864,7 +1864,7 @@ class EosDesigns(EosDesignsRootModel):
                          - Any other string will be used directly as the local interface.
                        When
                        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
-                       exclusive with `dhcp_server_interfaces`.
+                       exclusive with `dhcp_server_interfaces` and `auto_dhcp_server_interfaces`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
                        Requires
@@ -1973,9 +1973,10 @@ class EosDesigns(EosDesignsRootModel):
         fix_address_locking_dhcp_server_interfaces: bool
         """
         Available from AVD 6.4.0.
-        Fix support for `address_locking_settings.dhcp_server_interfaces`.
-        When
-        enabled, `address_locking_settings.dhcp_server_interfaces` and
+        Fix support for `address_locking_settings.dhcp_server_interfaces` and
+        `address_locking_settings.auto_dhcp_server_interfaces`.
+        When enabled, `address_locking_settings.dhcp
+        _server_interfaces`/`address_locking_settings.auto_dhcp_server_interfaces` and
         `address_locking_settings.local_interface` are mutually exclusive.
 
         Default value: `False`
@@ -2196,9 +2197,10 @@ class EosDesigns(EosDesignsRootModel):
                        'uplink_switches'.
                     fix_address_locking_dhcp_server_interfaces:
                        Available from AVD 6.4.0.
-                       Fix support for `address_locking_settings.dhcp_server_interfaces`.
-                       When
-                       enabled, `address_locking_settings.dhcp_server_interfaces` and
+                       Fix support for `address_locking_settings.dhcp_server_interfaces` and
+                       `address_locking_settings.auto_dhcp_server_interfaces`.
+                       When enabled, `address_locking_settings.dhcp
+                       _server_interfaces`/`address_locking_settings.auto_dhcp_server_interfaces` and
                        `address_locking_settings.local_interface` are mutually exclusive.
                     fix_match_ipv6_prefix_list_on_mlag_route_map:
                        Available from AVD 6.4.0.
