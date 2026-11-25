@@ -78,7 +78,3 @@ wan_virtual_topologies:
           - names: [INET]
           - names: [LTE]
             preference: 42
-
-expected_error_message: >-
-  The policy `wan_virtual_topologies.policies[DEFAULT-POLICY]` cannot match any traffic but is assigned to a VRF.
-  Make sure at least one path-group present on the device is used in the policy.

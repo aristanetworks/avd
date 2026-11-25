@@ -1,0 +1,43 @@
+---
+# With 'use_router_general_for_router_id' the OSPFv3 VRF instance inherits the Router ID from 'router general'
+# unless the VRF sets an explicit Router ID.
+type: l3leaf
+
+use_router_general_for_router_id: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65101
+  nodes:
+    - name: network-services-ospfv3-router-general
+      id: 1
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF_MAIN_ROUTER_ID
+        vrf_id: 10
+        svis:
+          - id: 110
+            name: VRF_MAIN_ROUTER_ID_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:110::1/64
+            ospfv3:
+              enabled: true
+      - name: VRF_EXPLICIT_ROUTER_ID
+        vrf_id: 11
+        ospfv3:
+          router_id: 10.255.11.1
+        svis:
+          - id: 111
+            name: VRF_EXPLICIT_ROUTER_ID_TRANSIT
+            enabled: true
+            vxlan: false
+            ipv6_address: 2001:db8:111::1/64
+            ospfv3:
+              enabled: true

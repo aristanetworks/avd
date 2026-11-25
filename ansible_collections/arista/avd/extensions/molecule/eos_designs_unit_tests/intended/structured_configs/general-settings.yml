@@ -13,6 +13,10 @@ hostname: general-settings
 ip_icmp_redirect: false
 ip_igmp_snooping:
   globally_enabled: true
+ip_software_forwarding:
+  mtu:
+    size: 9000
+    exceed_action_drop: true
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

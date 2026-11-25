@@ -36,7 +36,12 @@ router_bgp:
     send_failure_hold_time: 300
   neighbor_default:
     send_community: all
+    received_attribute_discard:
+      disabled: true
   bgp:
+    convergence: # Issue 7390
+      slow_peer_time: 500
+      time: 400
     default:
       ipv4_unicast: true
       ipv4_unicast_transport_ipv6: true
@@ -89,9 +94,13 @@ router_bgp:
           percent: 80
     - name: SR-TE-PG-1
       remote_as: 65000
+      received_attribute_discard:
+        type_codes: 10,11,12-35
     - name: SR-TE-PG-2
       remote_as: 65000
       maximum_advertised_routes: 120000
+      received_attribute_discard:
+        disabled: true
     - name: STARDARD-COMMUNITY
       metadata:
         type: ipv4
@@ -555,6 +564,8 @@ router_bgp:
         rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 1.1.1.0/24 # GH Issue 6500: Validate RCF config
         rcf: RCF-TEST()
+    next_hop:
+      resolution_disabled: true
     bgp:
       redistribute_internal: false
       additional_paths:
@@ -749,6 +760,8 @@ router_bgp:
         rcf: RCF-IPV6-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 2001:db8:300::/40 # GH Issue 6500: Validate RCF config
         rcf: RCF-IPV6-TEST()
+    next_hop:
+      resolution_disabled: true
     bgp:
       redistribute_internal: true
       additional_paths:
@@ -998,6 +1011,8 @@ router_bgp:
       - rib_type: "system-connected"
     label_local_termination: implicit-null
     lfib_entry_installation_skipped: true
+    next_hop:
+      resolution_disabled: true
     next_hops:
       - ip_address: 192.51.100.1
         lfib_backup_ip_forwarding: true
@@ -1365,6 +1380,8 @@ router_bgp:
         rcf_out: Address_Family_VPN_IPV6_Out()
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
+    next_hop:
+      resolution_disabled: true
   address_family_flow_spec_ipv4:
     bgp:
       missing_policy:
@@ -1423,14 +1440,20 @@ router_bgp:
         limit: 100
         warning_limit:
           count: 90
+      received_attribute_discard:
+        type_codes: 10
     - ip_address: 192.168.255.201
       peer_group: MPLS-IBGP-PEERS
       maximum_advertised_routes: 120000
       maximum_advertised_routes_warning_limit: 11236
+      received_attribute_discard:
+        disabled: true
     - ip_address: 192.168.255.4
       remote_as: 65004
       send_community: all
       maximum_advertised_routes: 120000
+      received_attribute_discard:
+        type_codes: 10,11,12-35
     - ip_address: 2001:cafe:192:168::4
       remote_as: 65004
       send_community: all
@@ -2175,12 +2198,16 @@ router_bgp:
           as_path:
             prepend_own_disabled: true
           route_reflector_client: false
+          received_attribute_discard:
+            type_codes: 10,11,12-35
         - ip_address: 10.255.1.1
           peer_group: WELCOME_ROUTERS
           route_reflector_client: true
           weight: 65535
           as_path:
             remote_as_replace_out: true
+          received_attribute_discard:
+            disabled: true
         - ip_address: 101.0.3.1
           peer_group: SEDI
           weight: 100
@@ -2388,6 +2415,7 @@ router_bgp:
           remote_as: 1234
           local_as: 123
           description: Tenant A BGP Peer
+          ttl_maximum_hops: 1
           remove_private_as:
             enabled: true
             all: true
@@ -2556,6 +2584,15 @@ router_bgp:
           - address_family: evpn
             route_targets:
               - "14:14"
+    - name: TTL-SECURITY
+      neighbors:
+        # Documentation-only inheritance check: EOS inherits the peer-group setting natively.
+        - ip_address: 192.0.2.1
+          peer_group: TEST
+        # Explicit zero must render in CLI and override inheritance in documentation.
+        - ip_address: 192.0.2.2
+          peer_group: TEST
+          ttl_maximum_hops: 0
   eos_cli: |-
     address-family evpn
        evpn ethernet-segment domain all

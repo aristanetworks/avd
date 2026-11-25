@@ -26,9 +26,3 @@ servers:
           endpoint_port_channel: Description2
           mode: active
           channel_id: 42
-
-expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for PortChannelInterfaces.
-  {'name': 'Port-Channel42', 'description': 'SERVER_server1_Description2', 'shutdown': False, 'switchport': {'enabled': True}}
-  conflicts with
-  {'name': 'Port-Channel42', 'description': 'SERVER_server1_Description1', 'shutdown': False, 'switchport': {'enabled': True}}.

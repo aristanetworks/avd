@@ -5,6 +5,7 @@ fabric_name: EOS_DESIGNS_UNIT_TESTS
 # Fix known bugs where the fix was introduced after 6.0.
 avd_design_future:
   fix_match_ipv6_prefix_list_on_mlag_route_map: true
+  fix_mlag_ibgp_peering_ipv6_pool: true
 
 # Define underlay and overlay routing protocol to be used
 underlay_routing_protocol: ebgp
@@ -194,3 +195,22 @@ tenants:
             name: VRF11_VLAN22
             enabled: true
             ipv6_address_virtuals: [2001:DB8:33::1/48]
+      - name: VRF13
+        vrf_vni: 13
+        # Test that vrf.mlag_ibgp_peering_ipv4_pool is ignored for the MLAG iBGP peering
+        mlag_ibgp_peering_ipv4_pool: 172.31.13.0/24
+        svis:
+          - id: 41
+            name: VRF13_VLAN41
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:41::1/48]
+      - name: VRF14
+        vrf_vni: 14
+        # Test that vrf.mlag_ibgp_peering_ipv6_pool is used when both pools are set
+        mlag_ibgp_peering_ipv4_pool: 172.31.14.0/24
+        mlag_ibgp_peering_ipv6_pool: 2001:DB8:14::/48
+        svis:
+          - id: 51
+            name: VRF14_VLAN51
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:51::1/48]

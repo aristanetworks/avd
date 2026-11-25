@@ -22,9 +22,13 @@
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+  - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
+- [Address Locking](#address-locking)
+  - [Address Locking Summary](#address-locking-summary)
+  - [Address Locking Device Configuration](#address-locking-device-configuration)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
@@ -79,6 +83,8 @@
   - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+  - [Static Routes](#static-routes)
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
   - [Router OSPF](#router-ospf)
@@ -91,6 +97,9 @@
   - [BFD Interfaces](#bfd-interfaces)
 - [Monitor Loop Protection](#monitor-loop-protection)
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
+- [Monitor Security Awake](#monitor-security-awake)
+  - [Nucleus](#nucleus)
+  - [Monitor Security Awake Device Configuration](#monitor-security-awake-device-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -107,6 +116,9 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Device Configuration](#platform-device-configuration)
@@ -129,6 +141,9 @@
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Software Forwarding](#ip-software-forwarding)
+  - [IP Software Forwarding Summary](#ip-software-forwarding-summary)
+  - [IP Software Forwarding Configuration](#ip-software-forwarding-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -447,6 +462,22 @@ ip radius vrf BLAH source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
 ```
 
+### AAA Server Groups
+
+#### AAA Server Groups Summary
+
+| Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
+| ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| TACACS | tacacs+ | MGMT | 10.10.11.157 | - | - |
+
+#### AAA Server Groups Device Configuration
+
+```eos
+!
+aaa group server tacacs+ TACACS
+   server 10.10.11.157 vrf MGMT
+```
+
 ### AAA Authentication
 
 #### AAA Authentication Summary
@@ -514,6 +545,21 @@ aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```
 
+## Address Locking
+
+### Address Locking Summary
+
+| Setting | Value |
+| -------- | ----- |
+| Disable IP locking on configured ports | False |
+
+### Address Locking Device Configuration
+
+```eos
+!
+address locking
+```
+
 ## Management Security
 
 ### Management Security Summary
@@ -576,16 +622,16 @@ dhcp relay
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | False |
-| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | False |
-| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | False |
-| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | False |
-| gzip | 10.20.20.3:9910 | - | - | - | - | False |
-| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | - | False |
+| gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | - | False |
+| gzip | 10.40.40.1:9910 | mgt | token-secure,/tmp/tokenDC4 | - | - | - | False |
+| gzip | 10.20.20.2:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key | - | - | - | False |
+| gzip | 10.20.20.3:9910 | - | - | - | - | - | False |
+| gzip | apiserver.arista.io:443 | - | key,<removed> | - | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -641,9 +687,9 @@ logging event link-status global
 
 MCS client is shutdown
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | - | False |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | - | - | Management0 | False |
 
 #### MCS Client Device Configuration
 
@@ -654,6 +700,7 @@ mcs client
    !
    cvx secondary default
       shutdown
+      source-interface Management0
 ```
 
 ### SNMP
@@ -1008,6 +1055,11 @@ interface Dps1
 | Vlan85 | SVI Description | default | - | - |
 | Vlan1000 | Vlan with minimal ospfv3 configurations | default | - | - |
 | Vlan1001 | Test VLAN with both ospfv3 and ipv6_ospf configurations | default | - | - |
+| Vlan1002 | Test OSPFv3 without passive-interface settings | default | - | - |
+| Vlan1003 | OSPFv3 BFD disabled at interface level | default | - | - |
+| Vlan1004 | OSPFv3 address-family BFD without area configuration | default | - | - |
+| Vlan1005 | OSPFv3 IPv6 BFD disabled at address-family level | default | - | - |
+| Vlan1006 | OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence | default | - | - |
 
 ##### IPv4
 
@@ -1016,14 +1068,24 @@ interface Dps1
 | Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
 | Vlan1000 | default | - | - | - | - | - |
 | Vlan1001 | default | - | - | - | - | - |
+| Vlan1002 | default | - | - | - | - | - |
+| Vlan1003 | default | - | - | - | - | - |
+| Vlan1004 | default | - | - | - | - | - |
+| Vlan1005 | default | - | - | - | - | - |
+| Vlan1006 | default | - | - | - | - | - |
 
 ##### OSPFv3
 
-| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 IPv4 Area | OSPFv3 IPv6 Area |
-| --------- | ------------------------ | ----------------------------- | ---------------- | ---------------- |
-| Vlan85 | True | True | 0.0.0.0 | 1000 |
-| Vlan1000 | - | - | 1000 | 0.0.0.0 |
-| Vlan1001 | True | True | 1000 | 0.0.0.0 |
+| Interface | OSPFv3 Passive Interface | OSPFv3 Network Point to Point | OSPFv3 BFD | OSPFv3 Cost | OSPFv3 IPv4 BFD | OSPFv3 IPv4 Area | OSPFv3 IPv4 Cost | OSPFv3 IPv6 BFD | OSPFv3 IPv6 Area | OSPFv3 IPv6 Cost |
+| --------- | ------------------------ | ----------------------------- | ---------- | ----------- | --------------- | ---------------- | ---------------- | --------------- | ---------------- | ---------------- |
+| Vlan85 | True | True | - | - | True | 0.0.0.0 | 10 | True | 1000 | 20 |
+| Vlan1000 | False | - | True | - | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1001 | True | True | - | 30 | - | 1000 | - | - | 0.0.0.0 | - |
+| Vlan1002 | - | - | - | - | - | 0.0.0.0 | - | - | 0.0.0.0 | - |
+| Vlan1003 | - | - | False | - | - | - | - | - | - | 50 |
+| Vlan1004 | - | - | - | - | False | - | - | True | - | - |
+| Vlan1005 | - | - | - | - | - | - | - | False | - | - |
+| Vlan1006 | - | - | - | - | True | - | - | - | - | - |
 
 ##### ISIS
 
@@ -1044,7 +1106,11 @@ interface Vlan85
    no mpls ip
    ospfv3 passive-interface
    ospfv3 network point-to-point
+   ospfv3 ipv4 bfd
+   ospfv3 ipv4 cost 10
    ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 bfd
+   ospfv3 ipv6 cost 20
    ospfv3 ipv6 area 1000
    isis enable EVPN_UNDERLAY
    no isis hello padding
@@ -1053,15 +1119,41 @@ interface Vlan85
 !
 interface Vlan1000
    description Vlan with minimal ospfv3 configurations
+   ospfv3 bfd
+   no ospfv3 passive-interface
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
 !
 interface Vlan1001
    description Test VLAN with both ospfv3 and ipv6_ospf configurations
    ospfv3 passive-interface
+   ospfv3 cost 30
    ospfv3 network point-to-point
    ospfv3 ipv4 area 1000
    ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1002
+   description Test OSPFv3 without passive-interface settings
+   ospfv3 ipv4 area 0.0.0.0
+   ospfv3 ipv6 area 0.0.0.0
+!
+interface Vlan1003
+   description OSPFv3 BFD disabled at interface level
+   no ospfv3 bfd
+   ospfv3 ipv6 cost 50
+!
+interface Vlan1004
+   description OSPFv3 address-family BFD without area configuration
+   no ospfv3 ipv4 bfd
+   ospfv3 ipv6 bfd
+!
+interface Vlan1005
+   description OSPFv3 IPv6 BFD disabled at address-family level
+   no ospfv3 ipv6 bfd
+!
+interface Vlan1006
+   description OSPFv3 IPv6 BFD disabled as IPv4 address-family level gets precedence
+   ospfv3 ipv4 bfd
 ```
 
 ### VXLAN Interface
@@ -1143,6 +1235,7 @@ service routing protocols model ribd
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| MGMT | True |
 
 #### IP Routing Device Configuration
 
@@ -1150,6 +1243,31 @@ service routing protocols model ribd
 !
 no ip routing
 no ip icmp redirect
+ip routing vrf MGMT
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
+### Static Routes
+
+#### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| MGMT | 0.0.0.0/0 | 10.73.255.2 | - | 1 | - | - | - |
+
+#### Static Routes Device Configuration
+
+```eos
+!
+ip route vrf MGMT 0.0.0.0/0 10.73.255.2
 ```
 
 ### ARP
@@ -1218,6 +1336,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1253,6 +1373,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1272,6 +1394,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 4.4.4.4 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
 
@@ -1291,6 +1415,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
 
@@ -1299,6 +1425,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | False |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1317,6 +1445,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1338,6 +1468,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1354,6 +1486,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1370,6 +1504,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 1.1.1.1 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1378,6 +1514,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
 
@@ -1386,6 +1524,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1404,6 +1544,8 @@ router ospf 701
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 1000 |
 
@@ -1425,6 +1567,8 @@ router ospf 701
 router ospfv3 vrf FULL
    address-family ipv4
       router-id 3.3.3.3
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1436,6 +1580,8 @@ router ospfv3 vrf FULL
    !
    address-family ipv6
       router-id 4.4.4.4
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 500
       passive-interface default
       redistribute bgp include leaked
@@ -1505,6 +1651,8 @@ router ospfv3 vrf data
       redistribute static route-map map1
 !
 router ospfv3
+   bfd default
+   bfd adjacency state any
    passive-interface default
    !
    address-family ipv4
@@ -1665,6 +1813,8 @@ ASN Notation: asplain
 | IP | True | RM-test2 |
 | Tunnel | True | - |
 
+#### Router BGP VPN-IPv6 Address Family
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -1688,6 +1838,7 @@ router bgp 65101
    bgp route-reflector preserve-attributes
    no bgp additional-paths receive
    no bgp additional-paths send
+   neighbor default received attribute discard 10-23
    neighbor default send-community large
    bgp redistribute-internal
    redistribute connected include leaked route-map RM-CONN-2-BGP
@@ -1754,6 +1905,9 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   address-family vpn-ipv6
+      domain identifier 65000:0
    !
    vrf VRF01
       rd evpn domain all 10.50.64.15:30003
@@ -1825,6 +1979,29 @@ monitor loop-protection
    rate-limit 100
    transmit-interval 10
    disabled-time 100
+```
+
+## Monitor Security Awake
+
+| Disabled | Flow Table Size Entries | Ipfix Listener Port | Monitor Point Identifier | Unknown Udp Ndr Application | Topic |
+| -------- | ----------------------- | ------------------- | ------------------------ | --------------------------- | ----- |
+| True | - | 4739 | - | False | - |
+
+### Nucleus
+
+| Name | Local Interface | Destination IP | Port | SSL Profile |
+| ---- | --------------- | -------------- | ---- | ----------- |
+| NUCLEUS-B.EXAMPLE.COM | - | 192.0.2.22 | - | - |
+| nucleus-a.example.com | - | - | - | - |
+
+### Monitor Security Awake Device Configuration
+
+```eos
+!
+monitor security awake
+   nucleus NUCLEUS-B.EXAMPLE.COM
+      destination 192.0.2.22
+   disabled
 ```
 
 ## MPLS
@@ -2062,6 +2239,21 @@ dot1x protocol bpdu bypass
 dot1x dynamic-authorization
 ```
 
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | enabled |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
+```
+
 ## Platform
 
 ### Platform Summary
@@ -2104,7 +2296,7 @@ platform trident mmu headroom-pool limit 557
 
 | Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | - | src_port_set1 | dest_port_set1 | - | - | 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62 |
 
 #### Layer 4 Applications
 
@@ -2123,7 +2315,6 @@ application traffic recognition
       destination prefix field-set dest_prefix_set1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
-      protocol 25
       dscp 12-19 af43 af41 ef 1-4,6 32-33,34-35 11 56-57, 58 59-60, 61-62
    !
    application l4 l4-app-1
@@ -2223,6 +2414,20 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 !
 ip nat pool host2-pool prefix-length 32
 ip nat synchronization
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Size | 9000 |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu 9000
 ```
 
 ## Errdisable

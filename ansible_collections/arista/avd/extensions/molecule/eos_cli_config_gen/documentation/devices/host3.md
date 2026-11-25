@@ -220,9 +220,9 @@ boot secret 5 <removed>
 
 #### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | apiserver.arista.io:443 | mgt | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Sysdb Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | -------------- | ---------- |
+| gzip | apiserver.arista.io:443 | mgt | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
@@ -274,9 +274,9 @@ logging vrf check_source_interface_table_created source-interface Ethernet1
 
 MCS client is shutdown
 
-| Secondary CVX cluster | Server Hosts | Enabled |
-| --------------------- | ------------ | ------- |
-| default | - | - |
+| Secondary CVX cluster | Server Hosts | VRF | Source Interface | Enabled |
+| --------------------- | ------------ | --- | ---------------- | ------- |
+| default | - | mgt | - | - |
 
 #### MCS Client Device Configuration
 
@@ -286,6 +286,7 @@ mcs client
    shutdown
    !
    cvx secondary default
+      vrf mgt
 ```
 
 ### SFlow
@@ -353,6 +354,30 @@ spanning-tree mst configuration
 
 ## Routing
 
+### IP Routing
+
+#### IP Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
+#### IP Routing Device Configuration
+
+```eos
+no ip routing vrf MGMT
+```
+
+### IPv6 Routing
+
+#### IPv6 Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+
 ### Router OSPF
 
 #### Router OSPF Summary
@@ -386,6 +411,8 @@ router ospf 702
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
+| BFD Default | True |
+| BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -402,6 +429,8 @@ router ospf 702
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 3.3.3.3 |
+| BFD Default | True |
+| BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 
@@ -420,6 +449,8 @@ router ospf 702
 router ospfv3
    address-family ipv4
       router-id 2.2.2.2
+      bfd default
+      bfd adjacency state any
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal route-map map1
@@ -428,6 +459,7 @@ router ospfv3
    !
    address-family ipv6
       router-id 3.3.3.3
+      bfd default
       auto-cost reference-bandwidth 2000
       passive-interface default
       redistribute ospfv3 leaked match internal route-map map1
@@ -529,6 +561,21 @@ router multicast
       multipath deterministic
 ```
 
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+
+### VRF Instances Device Configuration
+
+```eos
+!
+vrf instance MGMT
+```
+
 ## Group-Based Multi-domain Segmentation Services (MSS-Group)
 
 MSS-G is disabled.
@@ -560,6 +607,20 @@ ipv6 dhcp relay always-on
 ipv6 dhcp relay all-subnets default
 ipv6 dhcp relay option link-layer address
 ipv6 dhcp relay option remote-id format %m:%h:%p
+```
+
+## IP Software Forwarding
+
+### IP Software Forwarding Summary
+
+| Setting | Value |
+| ------- | ----- |
+| MTU Exceed Action | Drop |
+
+### IP Software Forwarding Configuration
+
+```eos
+ip software forwarding mtu exceed action drop
 ```
 
 ## Errdisable

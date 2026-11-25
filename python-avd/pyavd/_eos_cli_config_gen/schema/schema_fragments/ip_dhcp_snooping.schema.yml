@@ -21,8 +21,6 @@ keys:
             description: Enable insertion of option-82 in DHCP request packets.
           circuit_id_type:
             type: str
-            convert_types:
-              - int
             description: |-
               "none" or <0 - 255>.
           circuit_id_format:
@@ -36,8 +34,6 @@ keys:
               - "%p:%v"
       vlan:
         type: str
-        convert_types:
-          - int
         description: |-
           VLAN range as string.
           "< vlan_id >, < vlan_id >-< vlan_id >"

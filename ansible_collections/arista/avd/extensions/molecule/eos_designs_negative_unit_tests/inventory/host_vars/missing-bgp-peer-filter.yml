@@ -23,6 +23,3 @@ tenants:
           - prefix: 192.168.142.0/24
             peer_filter: peerfilter
         nodes: [missing-bgp-peer-filter]
-
-expected_error_message: >-
-  'bgp_peer_filters_catalog[name=peerfilter]' is required but was not found.

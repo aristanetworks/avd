@@ -1,10 +1,7 @@
 # DC1-POD1-SPINE2
 
-Serial Number: DEADBEEFC0FFEE
-
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)

@@ -1,6 +1,9 @@
 ---
 profile: production
 
+enable_list:
+  - no-log-password
+
 mock_modules:
   # The following task files depend on other collections and ansible-lint is running in offline mode on galaxy/automation hub
   # so need to mock the modules or ignore the files.
@@ -9,6 +12,8 @@ mock_modules:
   - arista.eos.eos_config
   # - roles/eos_snapshot/tasks/main.yml
   - arista.eos.eos_command
+  # Mock the direct netcommon dependency so Galaxy does not resolve dependencies of the EOS mock.
+  - ansible.netcommon.cli_command
 kinds:
   - yaml: "**/extensions/molecule/eos_cli_config_gen/inventory/host_vars/host1/roles.yml"
   - yaml: "**/extensions/molecule/howto/artifacts.yml"

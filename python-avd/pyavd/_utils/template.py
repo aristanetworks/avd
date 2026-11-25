@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import ChainMap, UserDict
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections import ChainMap
     from typing import Any
 
     from pyavd._utils.avd_templar import AVDTemplar
@@ -39,6 +39,13 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         raise NotImplementedError(msg)
 
     template_file_path = templar.loader.path_dwim_relative_stack(templar.searchpath, "", template_file)
+
+    # Ansible only supports concrete dicts as ChainMap layers. Reuse UserDict data to avoid copying
+    # cached lazy mappings, and materialize other mappings only at the templating boundary.
+    if isinstance(template_vars, ChainMap):
+        template_vars = ChainMap(
+            *(mapping.data if isinstance(mapping, UserDict) else mapping if isinstance(mapping, dict) else dict(mapping) for mapping in template_vars.maps)
+        )
 
     if templar.ansible_above_2_19:
         # New templar from ansible-core 2.19 and above

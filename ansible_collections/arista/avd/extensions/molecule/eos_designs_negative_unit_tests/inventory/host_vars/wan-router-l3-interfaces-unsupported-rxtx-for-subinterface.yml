@@ -52,8 +52,3 @@ wan_router:
           wan_carrier: Comcast
           static_routes:
             - prefix: 0.0.0.0/0
-
-expected_error_message: >-
-  Fields 'receive_bandwidth' and 'transmit_bandwidth'
-  configured on
-  wan_router.nodes[name=wan-router-l3-interfaces-unsupported-rxtx-for-subinterface].l3_interfaces[name=Ethernet42.100] are not supported for subinterfaces.

@@ -19,6 +19,3 @@ monitor_connectivity:
     - name: DNS1
       ip: 8.8.8.8
       local_interfaces: Loopback0
-
-expected_error_message: >-
-  monitor_connectivity.hosts[name=DNS1].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.

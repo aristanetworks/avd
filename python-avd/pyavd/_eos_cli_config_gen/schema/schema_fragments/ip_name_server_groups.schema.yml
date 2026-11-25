@@ -22,8 +22,6 @@ keys:
             keys:
               name:
                 type: str
-                convert_types:
-                  - int
                 description: VRF name. Use "default" for the default VRF.
               name_servers:
                 type: list
@@ -39,8 +37,6 @@ keys:
                     priority:
                       description: Priority value (lower is first).
                       type: int
-                      convert_types:
-                        - str
                       min: 0
                       max: 15
         name_servers:
@@ -61,13 +57,9 @@ keys:
                 description: VRF Name.
                 type: str
                 required: true
-                convert_types:
-                  - int
               priority:
                 description: Priority value (lower is first).
                 type: int
-                convert_types:
-                  - str
                 min: 0
                 max: 15
         dns_domain:

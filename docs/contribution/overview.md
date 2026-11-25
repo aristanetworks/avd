@@ -120,6 +120,10 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
 #### Submitting Pull Requests
 
+Submit pull requests from your fork against `devel`. Follow the contribution guidelines, include relevant tests, and resolve review conversations as you address the feedback.
+
+Merging into `devel` requires at least two approvals: one maintainer and one additional developer or maintainer, both members of `avd-developers`. Someone other than the latest pusher must approve the latest changes. Required checks must pass, and all review conversations must be resolved. Approved PRs merge through the merge queue using squash.
+
 - If you are submitting a Pull Request towards `eos_cli_config_gen`, also follow this [guide](./authoring_eos_cli_config_gen.md).
 
 - If you're interested in contributing to AVD, check out our [development tooling](development-tooling.md) documentation for tips on setting up your development environment.
@@ -137,8 +141,8 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 - All code submissions should meet the following criteria (CI will enforce these checks):
 
   - Jinja2 templates follow our [guidelines](style-guide.md).
-  - Molecule is updated with data covering your fix.
-  - Molecule artifacts are updated with your coverage.
+  - Relevant E2E or Molecule fixtures are updated with data covering your fix.
+  - Expected test artifacts are updated and reviewed.
   - Python syntax is valid.
   - All unit tests pass successfully.
 

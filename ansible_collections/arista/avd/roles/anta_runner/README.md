@@ -22,7 +22,7 @@ Results are reported in various formats, including JSON, CSV, and Markdown.
 
 ## Requirements
 
-Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-requirements-installation) documentation.
+Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-dependencies) documentation.
 
 ## Basic Example
 
@@ -47,6 +47,9 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 - **No tests executed:** If no tests were run against any device (and it's not a `dry_run`).
 - **Execution errors:** If errors arise during the role execution, originating from Ansible, PyAVD, or ANTA.
 - **Test failures or errors:** If any ANTA test reports a failure or error status.
+
+!!! note
+    An exception to the no-tests failure condition is when `avd_catalogs_enabled: false`, `user_catalogs_enabled: true`, and no tests are found in `user_catalogs_dir`. In this case, the role logs the warning `No tests found in the user-defined ANTA catalogs, exiting` and exits successfully without running tests or generating reports.
 
 !!! tip
     To continue running the playbook when `anta_runner` fails, use Ansible `ignore_errors`. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
@@ -158,6 +161,10 @@ ansible_httpapi_use_ssl: <bool; default=true>
 # Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL.
 anta_port: <int>
 ansible_httpapi_port: <int; default=80 or 443 depending on anta_use_ssl or ansible_httpapi_use_ssl>
+
+# Use eAPI session-based authentication.
+# When enabled, ANTA logs in once with username/password and reuses the session cookie for subsequent requests.
+anta_use_session_auth: <bool; default=false>
 ```
 
 ### Directory Configuration
@@ -347,6 +354,14 @@ These settings control the format and content of the generated reports.
 
 `anta_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
 
+`anta_report_run_overview`: Controls whether the Markdown report Run Overview section is generated. It currently includes test execution start time, end time, and total duration.
+
+!!! tip
+    Keep this disabled when deterministic report content is required in CI change-detection workflows.
+
+!!! note
+    Additional run metrics may be added to the Run Overview section in future releases.
+
 !!! info
     ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
 
@@ -365,6 +380,8 @@ These settings control the format and content of the generated reports.
         anta_report_expand_results: true
         # Generate the custom_field column in the Markdown report
         anta_report_custom_field: true
+        # Generate Run Overview section in Markdown report
+        anta_report_run_overview: true
 ```
 
 ### Extra Fabric Validation
@@ -631,8 +648,28 @@ The `anta_runner` role uses Ansible standard verbosity flags (`-v`, `-vv`, etc.)
 ansible-playbook playbooks/anta-runner.yml -vvv
 ```
 
+The verbosity levels control the loggers used by the role as follows:
+
+| Ansible verbosity | AVD action plugin | PyAVD | ANTA and `asynceapi` | Other external libraries |
+| :--- | :--- | :--- | :--- | :--- |
+| None | WARNING | WARNING | WARNING | WARNING |
+| `-v` | INFO | INFO | WARNING | WARNING |
+| `-vv` | INFO | DEBUG | WARNING | WARNING |
+| `-vvv` | DEBUG | DEBUG | INFO | WARNING |
+| `-vvvv` | DEBUG | DEBUG | DEBUG | WARNING |
+| `-vvvvv` | DEBUG | DEBUG | DEBUG | INFO |
+| `-vvvvvv` or higher | DEBUG | DEBUG | DEBUG | DEBUG |
+
+The "Other external libraries" column includes dependencies such as `pyavd-utils`, `httpx`, `httpcore`, and `asyncio`. `pyavd-utils` has no dedicated verbosity setting and does not use the PyAVD column.
+
 !!! tip
-    Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
+    Running `ansible-playbook` with `-vv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
+
+!!! tip
+    When debugging eAPI connectivity or session-based authentication (`anta_use_session_auth`), run with `-vvvv`. Logs from the `asynceapi` library (HTTP login, session cookies, and request flow) are emitted at DEBUG alongside ANTA logs.
+
+!!! tip
+    To debug lower-level third-party libraries such as `httpx`, `httpcore`, or `asyncio`, run with `-vvvvvv`.
 
 ### Understanding Log Output
 
@@ -653,4 +690,5 @@ Project is published under [Apache 2.0 License](https://github.com/aristanetwork
 
 ## Known Issues
 
+- `No ANTA tests were run.` The role currently fails when no test results are produced, even if `anta_runner_dry_run: true`. This affects runs where no selected devices are deployed or none have eAPI enabled. See [#7729](https://github.com/aristanetworks/avd/issues/7729) for details.
 - `[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.` This issue affects OSX users only and is covered in Ansible documentation: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node.

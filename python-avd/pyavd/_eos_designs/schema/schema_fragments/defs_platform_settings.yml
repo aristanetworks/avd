@@ -15,8 +15,6 @@ $defs:
           type: list
           items:
             type: str
-            convert_types:
-              - int
         trident_forwarding_table_partition:
           type: str
           description: Only applied when evpn_multicast is true.
@@ -25,26 +23,32 @@ $defs:
           keys:
             mlag:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 86400
               description: In seconds.
             non_mlag:
               type: int
-              convert_types:
-                - str
               min: 0
               max: 86400
               description: In seconds.
         tcam_profile:
           type: str
+          description: |-
+            TCAM profile name to activate as the system profile.
+            If the profile is defined under `tcam_profiles`, it will also be configured in the device.
+            Built-in profiles (e.g., system-profile) can be used without being defined in `tcam_profiles`.
+        additional_tcam_profiles:
+          type: list
+          description: |-
+            List of additional TCAM profile names that must be defined under `tcam_profiles`.
+            These profiles are configured in the device but are not set as the system profile.
+            If a profile is specified in both `tcam_profile` and `additional_tcam_profiles`, it will be configured only once.
+          items:
+            type: str
         lag_hardware_only:
           type: bool
         default_interface_mtu:
           type: int
-          convert_types:
-            - str
           description: |
             Default interface MTU configured on EOS under "interface defaults".
             Takes precedence over the root key "default_interface_mtu".
@@ -52,8 +56,6 @@ $defs:
           max: 65535
         p2p_uplinks_mtu:
           type: int
-          convert_types:
-            - str
           description: |
             Set MTU on point to point uplink interfaces.
             Takes precedence over the root key "p2p_uplinks_mtu".
@@ -63,6 +65,19 @@ $defs:
         feature_support:
           type: dict
           keys:
+            # TODO 7.0: Disable for cEOS-lab, vEOS-lab, CloudEOS
+            dot1x_bpdu_bypass:
+              type: bool
+              default: true
+              description: |-
+                Support for 802.1X BPDU bypass.
+                The feature will be ignored on platforms where this is false.
+            dot1x_mac_based_access_list:
+              type: bool
+              default: true
+              description: |-
+                Support for 802.1X Per-MAC ACL mode on the interfaces.
+                The feature will be ignored on platforms where this is false.
             address_locking:
               type: dict
               keys:
@@ -118,6 +133,12 @@ $defs:
               description: |-
                 Support for storm-control.
                 The feature will be ignored on platforms where this is false.
+            explicit_interface_speed_auto_mode:
+              type: bool
+              default: true
+              description: |-
+                Support for `speed sfp-1000baset auto 100full` and `speed auto <mode>` commands on Ethernet interfaces.
+                When set to false, these commands are omitted while `speed auto`, `speed <mode>` and `speed forced <mode>` commands are preserved.
             poe:
               type: bool
               default: false
@@ -181,8 +202,6 @@ $defs:
                 max_rx_queues:
                   type: int
                   default: 6
-                  convert_types:
-                    - str
                   description: Maximum rx_queue count supported on any interface.
             evpn_gateway_all_active_multihoming:
               type: bool

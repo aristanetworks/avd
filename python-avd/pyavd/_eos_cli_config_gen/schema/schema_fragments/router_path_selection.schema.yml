@@ -20,8 +20,6 @@ keys:
         description: MTU discovery interval in seconds.
         min: 60
         max: 600
-        convert_types:
-          - str
       mtu_discovery_hosts:
         type: dict
         keys:
@@ -30,8 +28,6 @@ keys:
             description: Enable MTU discovery for hosts.
           fragmentation_needed_rate_limit:
             type: int
-            convert_types:
-              - str
             description: Maximum rate of ICMP packet generation per CPU core(packets per second).
             min: 1
             max: 500
@@ -47,8 +43,6 @@ keys:
             id:
               type: int
               description: Path group ID.
-              convert_types:
-                - str
               min: 1
               max: 65535
             ipsec_profile:
@@ -148,15 +142,11 @@ keys:
                   description: Interval in milliseconds.
                   min: 50
                   max: 60000
-                  convert_types:
-                    - str
                 failure_threshold:
                   type: int
                   min: 2
                   max: 100
                   description: Failure threshold in number of intervals. Required when `interval` is set.
-                  convert_types:
-                    - str
       load_balance_policies:
         type: list
         primary_key: name
@@ -172,15 +162,11 @@ keys:
             jitter:
               type: int
               description: Jitter requirement for this load balance policy in milliseconds.
-              convert_types:
-                - str
               min: 0
               max: 10000
             latency:
               type: int
               description: One way delay requirement for this load balance policy in milliseconds.
-              convert_types:
-                - str
               min: 0
               max: 10000
             loss_rate:
@@ -188,9 +174,6 @@ keys:
               description: |-
                 Loss Rate requirement in percentage for this load balance policy.
                 Value between 0.00 and 100.00.
-              convert_types:
-                - int
-                - float
               pattern: "\\d+(\\.\\d{1,2})?"
             path_groups:
               type: list
@@ -207,8 +190,6 @@ keys:
                     description: |-
                       Priority for this path-group.
                       The EOS default value is 1.
-                    convert_types:
-                      - str
                     min: 1
                     max: 65535
       policies:
@@ -235,8 +216,6 @@ keys:
                   id:
                     type: int
                     description: Rule ID.
-                    convert_types:
-                      - str
                     min: 1
                     max: 255
                   application_profile:
@@ -267,8 +246,6 @@ keys:
               Can be an integer in the range 64-65515 or "auto".
               "auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths
               and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
-            convert_types:
-              - int
           direction:
             type: str
             valid_values: ["ingress"]
@@ -299,12 +276,8 @@ keys:
                   type: int
                   min: 1
                   max: 4294967295
-                  convert_types:
-                    - str
                 transmit:
                   description: Maximum transmit bandwidth in Mbps.
                   type: int
                   min: 1
                   max: 4294967295
-                  convert_types:
-                    - str

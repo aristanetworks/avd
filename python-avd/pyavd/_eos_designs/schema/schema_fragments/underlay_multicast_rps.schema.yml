@@ -37,8 +37,6 @@ keys:
                 description: Hostname.
               loopback_number:
                 type: int
-                convert_types:
-                  - str
                 required: true
               description:
                 type: str
@@ -55,6 +53,5 @@ keys:
             description: Multicast Group IPv4 prefix/mask.
         access_list_name:
           type: str
-          convert_types: [ int ]
           description: |
             Name of standard Access-List.

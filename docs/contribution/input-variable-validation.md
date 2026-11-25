@@ -19,20 +19,23 @@ For details on the schema format see the [Schema Details](#schema-details) secti
 
 ## Automatic Type Conversion
 
-The validation of input variables is performed in most AVD Action Plugins. The validation also supports automatic conversion of
-variable types, if configured in the schema. The supported types that can be converted from depends on the type to be converted to.
-The current implementation supports the automatic conversions listed below.
+The validation of input variables is performed in most AVD Action Plugins using `pyavd-utils`. During coercion and validation,
+`pyavd-utils` automatically converts supported input types to the target `type` declared in the schema.
 
-| From (`convert_types`) | To (`type`) |
-| ---------------------- | ----------- |
-| `bool`, `str` | `int` |
-| `bool`, `int` | `str` |
+| From | To (`type`) |
+| ---- | ----------- |
+| `bool`, `str`, integral `float` | `int` |
+| `bool`, `int`, `float` | `str` |
+
+Strings can be converted to integers if they contain a valid integer. Floating-point values can be converted to integers only
+if they have no fractional part and fit in a signed 64-bit integer. Booleans are converted to integers as `true` → `1` and
+`false` → `0`, or to strings as `true` → `"True"` and `false` → `"False"`. Boolean, dictionary and list schema types do not support
+automatic type conversion. Values that cannot be converted to the target type cause a validation error.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
 written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001`
-will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the
-`convert_types` option is configured to `['int']` which means AVD Action Plugins will automatically convert
-`bgp_as: 65001` to `bgp_as: "65001"`.
+will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. Since the schema declares
+`type: str`, `pyavd-utils` automatically converts `bgp_as: 65001` to `bgp_as: "65001"`.
 
 ## Data model deprecations
 
@@ -69,8 +72,6 @@ keys:
     display_name: BGP AS
     description: AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
     type: str
-    convert_types:
-      - int
 ```
 
 This fragment will be merged with other fragments during development, to form the complete role schema.
@@ -84,7 +85,7 @@ The supported schema options depend on the type of variable that is described. T
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned
 above can address the usability aspect by helping the user with common mistakes.
 
-The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft-7 format. The meta-schema
+The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft 2020-12 format. The meta-schema
 can be seen [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
@@ -95,13 +96,25 @@ This also means that a poorly written schema could have conflicting schema optio
 
 The `deprecation.new_key` field is used for detecting conflicts with old and new data models. To properly detect conflicts the `new_key` must be a relative path to the new data model or multiple relative paths separated by `" or "`. Conflict detection only works if the new data model in or below the same dict as the deprecated model.
 
+The meta-schema is generated from the source-schema models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) and committed to this repository.
+When using the VS Code YAML extension, Draft 2020-12 support requires version 1.20.0 or later.
+
+- The `metaschema` pre-commit hook regenerates the JSON when `.pre-commit-config.yaml` changes.
+  To regenerate it explicitly, run `pre-commit run metaschema --all-files` and stage any generated changes.
+- Every schema build validates all authored YAML schema fragments and the standalone EOS Designs facts schema against the
+  meta-schema before combining fragments or writing generated artifacts. This includes the `schemas` pre-commit hook,
+  `make -C python-avd compile-schemas`, and package builds from source.
+  Validation checks schema structure and authoring conventions such as nonempty descriptions, using `jsonschema-rs` with
+  format validation enabled. Errors identify the source filename, JSON Pointer, and cause, and abort the build.
+  Regex syntax checks do not detect all features unsupported by AVD's runtime regex engine, such as `\p{Greek}`.
+  Generated combined schemas are skipped to avoid validating the same content twice. Source-model loading and compilation
+  in `pyavd-utils-gen` still run after fragment validation.
+
 ### Schema Options for type `int` (Integer)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
 | --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"int"` | Type of variable using the Python short names for each type.<br>`int` for Integer |
-| <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `int`, auto-conversion is supported from `bool` and `str` |
-| <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"str"` | |
 | <samp>default</samp> | Integer | | | | Default value |
 | <samp>max</samp> | Integer | | | | Maximum value |
 | <samp>min</samp> | Integer | | | | Minimum value |
@@ -148,13 +161,11 @@ The meta-schema does not allow for other keys to be set in the schema.
 | --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"str"` | Type of variable using the Python short names for each type.<br>`str` for String |
 | <samp>convert_to_lower_case</samp> | Boolean | | False | | Convert string value to lower case before performing validation |
-| <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `str`, auto-conversion is supported from `bool` and `int` |
-| <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"int"` | |
 | <samp>default</samp> | String | | | | Default value |
 | <samp>format</samp> | String | | | Valid Values:<br>- `"ipv4"`<br>- `"ipv4_cidr"`<br>- `"ipv6"`<br>- `"ipv6_cidr"`<br>- `"ip"`<br>- `"cidr"`<br>- `"mac"` | Expected format of the string value.<br>`ipv4` accepts a single IPv4 address (`x.x.x.x`)<br>`ipv4_cidr` accepts an IPv4 CIDR (`x.x.x.x/x`)<br>`ipv6` accepts a single IPv6 address (`x:x::x:x`)<br>`ipv6_cidr` accepts an IPv6 CIDR (`x:x::x:x/x`)<br>`ip` accepts a single IPv4 or IPv6 address<br>`cidr` accepts an IPv4 or IPv6 CIDR<br>`mac` accepts a MAC address (`xx:xx:xx:xx:xx:xx`) |
 | <samp>max_length</samp> | Integer | | | | Maximum length |
 | <samp>min_length</samp> | Integer | | | | Minimum length |
-| <samp>pattern</samp> | String | | | Format: Regex | A regular expression which will be matched on the variable value.<br>The regular expression should follow the syntax of [JSON Schema Regular Expressions](https://json-schema.org/understanding-json-schema/reference/regular_expressions.html)<br>Remember to use double escapes |
+| <samp>pattern</samp> | String | | | Format: Regex | An AVD regular expression which will be matched against the complete variable value.<br>The supported dialect includes Unicode-aware Perl shorthand classes (`\\d`, `\\s`, and `\\w`, including their uppercase complements) and word boundaries, Unicode-safe wildcards and explicit character classes, lookarounds, and variable-length lookbehinds.<br>Broader Unicode properties and scripts such as `\\p{Greek}` are not supported.<br>Remember to use double escapes. |
 | <samp>valid_values</samp> | List, items: String | | | | List of valid values |
 | <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | | |
 | <samp>dynamic_valid_values</samp> | String | | | | Path to variable under the parent dictionary containing valid values.<br>Variable path use dot-notation and variable path must be relative to the parent dictionary.<br>If an element of the variable path is a list, every list item will unpacked.<br>**Note that this is building the schema from values in the *data* being validated!** |

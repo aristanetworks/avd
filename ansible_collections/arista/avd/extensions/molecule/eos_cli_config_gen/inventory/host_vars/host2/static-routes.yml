@@ -1,0 +1,5 @@
+---
+static_routes:
+  - vrf: MGMT
+    prefix: 0.0.0.0/0
+    next_hop: 10.73.255.2

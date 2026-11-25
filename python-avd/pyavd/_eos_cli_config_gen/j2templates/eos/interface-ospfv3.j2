@@ -1,0 +1,50 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{% if ospfv3_interface.ospfv3.ipv4.bfd is not arista.avd.defined
+      and ospfv3_interface.ospfv3.ipv6.bfd is not arista.avd.defined %}
+{%     if ospfv3_interface.ospfv3.bfd is arista.avd.defined(true) %}
+   ospfv3 bfd
+{%     elif ospfv3_interface.ospfv3.bfd is arista.avd.defined(false) %}
+   no ospfv3 bfd
+{%     endif %}
+{% endif %}
+{% if ospfv3_interface.ospfv3.passive_interface is arista.avd.defined(true) %}
+   ospfv3 passive-interface
+{% elif ospfv3_interface.ospfv3.no_passive_interface is arista.avd.defined(true) %}
+   no ospfv3 passive-interface
+{% endif %}
+{% if ospfv3_interface.ospfv3.cost is arista.avd.defined and ospfv3_interface.ospfv3.ipv4.cost is not arista.avd.defined and ospfv3_interface.ospfv3.ipv6.cost is not arista.avd.defined %}
+   ospfv3 cost {{ ospfv3_interface.ospfv3.cost }}
+{% endif %}
+{% if ospfv3_interface.ospfv3.network_point_to_point is arista.avd.defined(true) %}
+   ospfv3 network point-to-point
+{% endif %}
+{% if ospfv3_interface.ospfv3.ipv4 is arista.avd.defined %}
+{%     if ospfv3_interface.ospfv3.ipv4.bfd is arista.avd.defined(true) %}
+   ospfv3 ipv4 bfd
+{%     elif ospfv3_interface.ospfv3.ipv4.bfd is arista.avd.defined(false) %}
+   no ospfv3 ipv4 bfd
+{%     endif %}
+{%     if ospfv3_interface.ospfv3.ipv4.cost is arista.avd.defined %}
+   ospfv3 ipv4 cost {{ ospfv3_interface.ospfv3.ipv4.cost }}
+{%     endif %}
+{%     if ospfv3_interface.ospfv3.ipv4.area is arista.avd.defined %}
+   ospfv3 ipv4 area {{ ospfv3_interface.ospfv3.ipv4.area }}
+{%     endif %}
+{% endif %}
+{% if ospfv3_interface.ospfv3.ipv6 is arista.avd.defined %}
+{%     if ospfv3_interface.ospfv3.ipv6.bfd is arista.avd.defined(true) %}
+   ospfv3 ipv6 bfd
+{%     elif ospfv3_interface.ospfv3.ipv6.bfd is arista.avd.defined(false) %}
+   no ospfv3 ipv6 bfd
+{%     endif %}
+{%     if ospfv3_interface.ospfv3.ipv6.cost is arista.avd.defined %}
+   ospfv3 ipv6 cost {{ ospfv3_interface.ospfv3.ipv6.cost }}
+{%     endif %}
+{%     if ospfv3_interface.ospfv3.ipv6.area is arista.avd.defined %}
+   ospfv3 ipv6 area {{ ospfv3_interface.ospfv3.ipv6.area }}
+{%     endif %}
+{% endif %}

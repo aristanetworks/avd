@@ -9,7 +9,5 @@ keys:
   ip_virtual_router_mac_address_advertisement_interval:
     type: int
     description: Advertisement interval in seconds.
-    convert_types:
-      - str
     min: 0
     max: 86400

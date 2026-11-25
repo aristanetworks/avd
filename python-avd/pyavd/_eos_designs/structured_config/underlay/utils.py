@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import IPv4Network
 from typing import TYPE_CHECKING, Protocol, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -310,7 +311,7 @@ class UtilsMixin(Protocol):
         if interface_ip is not None and "/" in interface_ip:
             interface_ip = get_ip_from_ip_prefix(interface_ip)
 
-        return self.shared_utils.get_ipv4_acl(
+        return self.shared_utils.get_ipv4_acl_with_substitution(
             name=acl_name,
             interface_name=interface.name,
             interface_ip=interface_ip,
@@ -345,15 +346,32 @@ class UtilsMixin(Protocol):
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
         """Apply IPv4 and IPv6 ACLs to an L3 interface or L3 port-channel."""
+        schema_key = (
+            "l3_port_channels"
+            if isinstance(l3_interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem)
+            else "l3_interfaces"
+        )
+        context = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}[name={l3_interface.name}]"
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_in, l3_interface.ipv4_standard_acl_in, "ipv4_acl_in", "ipv4_standard_acl_in", context
+        )
+        self.structured_config_utils._validate_ipv4_acl_exclusion(
+            l3_interface.ipv4_acl_out, l3_interface.ipv4_standard_acl_out, "ipv4_acl_out", "ipv4_standard_acl_out", context
+        )
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
-
+        elif l3_interface.ipv4_standard_acl_in:
+            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_in)
+            interface.access_group_in = l3_interface.ipv4_standard_acl_in
         if l3_interface.ipv4_acl_out:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
             interface.access_group_out = acl.name
             self.structured_config_utils._set_ipv4_acl(acl)
+        elif l3_interface.ipv4_standard_acl_out:
+            self.structured_config_utils._set_ipv4_standard_acl(l3_interface.ipv4_standard_acl_out)
+            interface.access_group_out = l3_interface.ipv4_standard_acl_out
 
         if l3_interface.ipv6_acl_in:
             acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_in, l3_interface)
@@ -369,3 +387,34 @@ class UtilsMixin(Protocol):
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return a list of P2P underlay links."""
         return [link for link in self._underlay_links if link.type == "underlay_p2p"]
+
+    @cached_property
+    def _underlay_subnets(self: AvdStructuredConfigUnderlayProtocol) -> tuple[list[str], EosCliConfigGen.DhcpServersItem.Ipv4Subnets]:
+        """
+        Returns tuple of list of peer IPv4 subnets and dhcp subnets for downstream p2p interfaces.
+
+        Used for l3 inband ztp/ztr.
+        """
+        subnets = []
+        dhcp_server_ipv4_subnets = EosCliConfigGen.DhcpServersItem.Ipv4Subnets()
+        for peer in self._avd_peers:
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
+                if (
+                    uplink.peer == self.shared_utils.hostname
+                    and uplink.type == "underlay_p2p"
+                    and uplink.ip_address
+                    and "unnumbered" not in uplink.ip_address
+                    and peer_facts.inband_ztp
+                ):
+                    subnet = str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False))
+                    subnets.append(subnet)
+                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
+                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                        subnet=subnet,
+                        name=f"inband ztp for {peer}-{uplink.interface}",
+                        default_gateway=f"{uplink.peer_ip_address}",
+                    )
+                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                    dhcp_server_ipv4_subnets.append(subnet_item)
+        return subnets, dhcp_server_ipv4_subnets

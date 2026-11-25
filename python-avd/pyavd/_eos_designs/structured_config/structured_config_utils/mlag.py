@@ -51,6 +51,16 @@ class MlagMixin(Protocol):
             )
             if self.inputs.underlay_rfc5549:
                 address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+        elif (
+            self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families
+            and self.inputs.overlay_mlag_rfc5549
+            and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs
+        ):
+            # The shared peer group also carries the MLAG iBGP peerings in VRFs.
+            address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(
+                name=bgp_peer_group.name, activate=True
+            )
+            address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
         if self.shared_utils.underlay_ipv6:
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
@@ -59,6 +69,15 @@ class MlagMixin(Protocol):
         """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings using a separate peer-group."""
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
         self.set_mlag_peer_group(bgp_peer_group)
+        if self.inputs.avd_design_future.fix_mlag_ibgp_peering_vrfs_address_families and self.shared_utils.underlay_ipv6_numbered:
+            if self.inputs.overlay_mlag_rfc5549:
+                address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(
+                    name=bgp_peer_group.name, activate=True
+                )
+                address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
+            return
+
         address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
         if self.inputs.overlay_mlag_rfc5549:
             address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)

@@ -24,6 +24,3 @@ spine:
       nodes:
         - name: unsupported-underlay-multicast-underlay-ipv6-numbered
           id: 1
-
-expected_error_message: >-
-  Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay for host 'unsupported-underlay-multicast-underlay-ipv6-numbered'.

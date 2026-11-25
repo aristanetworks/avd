@@ -18,8 +18,7 @@ from .avd_indexed_list import AvdIndexedList
 
 if TYPE_CHECKING:
     from collections.abc import ItemsView
-
-    from typing_extensions import Self
+    from typing import Self
 
     from .type_vars import T_AvdModel
 
@@ -141,15 +140,18 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         super().__init__()
 
-    def __getattr__(self, name: str) -> Any:
-        """
-        Resolves the default value for a field, set the default value on the attribute and return the value.
+    if not TYPE_CHECKING:
+        # Hiding __getattr__ from type checker to force unknown attributes to be flagged.
 
-        We only get here if the attribute is not set already, and next call will skip this since the attribute is set.
-        """
-        default_value = self._get_field_default_value(name)
-        setattr(self, name, default_value)
-        return default_value
+        def __getattr__(self, name: str) -> Any:
+            """
+            Resolves the default value for a field, set the default value on the attribute and return the value.
+
+            We only get here if the attribute is not set already, and next call will skip this since the attribute is set.
+            """
+            default_value = self._get_field_default_value(name)
+            setattr(self, name, default_value)
+            return default_value
 
     def _get_defined_attr(self, name: str) -> Any | UndefinedType:
         """
