@@ -255,6 +255,7 @@ jobs:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -272,7 +273,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -319,9 +320,11 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.17.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.18.0"
+            ansible_version: "ansible-core>=2.17.0,<2.18.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
             python_version: "3.11"
@@ -361,7 +364,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -411,7 +414,7 @@ jobs:
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
-          python -m pip install --group molecule
+          python -m pip install --group molecule-legacy
           python -m pip install "ansible-core==2.16.0" "$WHEEL_FILE[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -453,6 +456,7 @@ jobs:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
             python_version: "3.11"
+            molecule_group: "molecule-legacy"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -470,7 +474,7 @@ jobs:
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "$WHEEL_FILE[ansible-collection]" --group "${{ matrix.molecule_group || 'molecule' }}"
       - name: Restore Ansible collection dependencies
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

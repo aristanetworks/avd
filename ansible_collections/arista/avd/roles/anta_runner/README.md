@@ -48,6 +48,9 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 - **Execution errors:** If errors arise during the role execution, originating from Ansible, PyAVD, or ANTA.
 - **Test failures or errors:** If any ANTA test reports a failure or error status.
 
+!!! note
+    An exception to the no-tests failure condition is when `avd_catalogs_enabled: false`, `user_catalogs_enabled: true`, and no tests are found in `user_catalogs_dir`. In this case, the role logs the warning `No tests found in the user-defined ANTA catalogs, exiting` and exits successfully without running tests or generating reports.
+
 !!! tip
     To continue running the playbook when `anta_runner` fails, use Ansible `ignore_errors`. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
 
@@ -687,4 +690,5 @@ Project is published under [Apache 2.0 License](https://github.com/aristanetwork
 
 ## Known Issues
 
+- `No ANTA tests were run.` The role currently fails when no test results are produced, even if `anta_runner_dry_run: true`. This affects runs where no selected devices are deployed or none have eAPI enabled. See [#7729](https://github.com/aristanetworks/avd/issues/7729) for details.
 - `[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.` This issue affects OSX users only and is covered in Ansible documentation: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node.
