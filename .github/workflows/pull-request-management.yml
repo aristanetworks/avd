@@ -173,10 +173,10 @@ jobs:
     uses: $/.github/workflows/build-pyavd-wheel.yml
 
   # -------------------------------------------- #
-  # Python type checking not covered in pre-commit
+  # Python type checking not covered in prek
   # -------------------------------------------- #
   python_type_checking:
-    name: Python Linting not covered in pre-commit
+    name: Python Linting not covered in prek
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
