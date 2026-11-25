@@ -47,7 +47,7 @@ keys:
             type: int
             min: 1
             max: 60
-            description: Minutes to shut down the instances.
+            description: Minutes to shut down the instance.
           incident_count:
             type: dict
             keys:

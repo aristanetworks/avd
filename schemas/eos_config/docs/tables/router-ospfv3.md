@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -30,7 +30,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv4.lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv4.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -106,7 +106,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv6.lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.address_family_ipv6.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -121,7 +121,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -136,7 +136,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -212,7 +212,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.limit") | Integer | Required |  | Min: 0<br>Max: 100000 | Configure maximum number of LSAs permitted (0 for unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instances. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.disabled_time") | Integer |  |  | Min: 1<br>Max: 60 | Minutes to shut down the instance. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident_count</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear_timeout</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.clear_timeout") | Integer |  |  | Min: 1<br>Max: 60 | Minutes of not increasing the incident count before resetting the incident count. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.lsa.incident_count.limit") | Integer |  |  | Min: 1<br>Max: 20 | Limit maximum number of times the maximum number of LSAs can be reached. |
@@ -248,7 +248,7 @@
         # Configure maximum number of LSAs permitted (0 for unlimited).
         limit: <int; 0-100000; required>
 
-        # Minutes to shut down the instances.
+        # Minutes to shut down the instance.
         disabled_time: <int; 1-60>
         incident_count:
 
@@ -289,7 +289,7 @@
           # Configure maximum number of LSAs permitted (0 for unlimited).
           limit: <int; 0-100000; required>
 
-          # Minutes to shut down the instances.
+          # Minutes to shut down the instance.
           disabled_time: <int; 1-60>
           incident_count:
 
@@ -411,7 +411,7 @@
           # Configure maximum number of LSAs permitted (0 for unlimited).
           limit: <int; 0-100000; required>
 
-          # Minutes to shut down the instances.
+          # Minutes to shut down the instance.
           disabled_time: <int; 1-60>
           incident_count:
 
@@ -452,7 +452,7 @@
             # Configure maximum number of LSAs permitted (0 for unlimited).
             limit: <int; 0-100000; required>
 
-            # Minutes to shut down the instances.
+            # Minutes to shut down the instance.
             disabled_time: <int; 1-60>
             incident_count:
 
@@ -493,7 +493,7 @@
               # Configure maximum number of LSAs permitted (0 for unlimited).
               limit: <int; 0-100000; required>
 
-              # Minutes to shut down the instances.
+              # Minutes to shut down the instance.
               disabled_time: <int; 1-60>
               incident_count:
 
@@ -615,7 +615,7 @@
               # Configure maximum number of LSAs permitted (0 for unlimited).
               limit: <int; 0-100000; required>
 
-              # Minutes to shut down the instances.
+              # Minutes to shut down the instance.
               disabled_time: <int; 1-60>
               incident_count:
 

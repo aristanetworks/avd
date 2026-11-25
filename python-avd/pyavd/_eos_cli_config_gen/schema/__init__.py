@@ -67684,7 +67684,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             limit: int
             """Configure maximum number of LSAs permitted (0 for unlimited)."""
             disabled_time: int | None
-            """Minutes to shut down the instances."""
+            """Minutes to shut down the instance."""
             incident_count: IncidentCount
             """Subclass of AvdModel."""
             exceed_action_warn: bool | None
@@ -67714,7 +67714,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                        disabled_time: Minutes to shut down the instances.
+                        disabled_time: Minutes to shut down the instance.
                         incident_count: Subclass of AvdModel.
                         exceed_action_warn:
                            Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
@@ -67763,7 +67763,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 limit: int
                 """Configure maximum number of LSAs permitted (0 for unlimited)."""
                 disabled_time: int | None
-                """Minutes to shut down the instances."""
+                """Minutes to shut down the instance."""
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
@@ -67793,7 +67793,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                            disabled_time: Minutes to shut down the instances.
+                            disabled_time: Minutes to shut down the instance.
                             incident_count: Subclass of AvdModel.
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
@@ -68530,7 +68530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 limit: int
                 """Configure maximum number of LSAs permitted (0 for unlimited)."""
                 disabled_time: int | None
-                """Minutes to shut down the instances."""
+                """Minutes to shut down the instance."""
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
@@ -68560,7 +68560,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                            disabled_time: Minutes to shut down the instances.
+                            disabled_time: Minutes to shut down the instance.
                             incident_count: Subclass of AvdModel.
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
@@ -68674,7 +68674,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 limit: int
                 """Configure maximum number of LSAs permitted (0 for unlimited)."""
                 disabled_time: int | None
-                """Minutes to shut down the instances."""
+                """Minutes to shut down the instance."""
                 incident_count: IncidentCount
                 """Subclass of AvdModel."""
                 exceed_action_warn: bool | None
@@ -68704,7 +68704,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                            disabled_time: Minutes to shut down the instances.
+                            disabled_time: Minutes to shut down the instance.
                             incident_count: Subclass of AvdModel.
                             exceed_action_warn:
                                Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
@@ -68753,7 +68753,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     limit: int
                     """Configure maximum number of LSAs permitted (0 for unlimited)."""
                     disabled_time: int | None
-                    """Minutes to shut down the instances."""
+                    """Minutes to shut down the instance."""
                     incident_count: IncidentCount
                     """Subclass of AvdModel."""
                     exceed_action_warn: bool | None
@@ -68783,7 +68783,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                                disabled_time: Minutes to shut down the instances.
+                                disabled_time: Minutes to shut down the instance.
                                 incident_count: Subclass of AvdModel.
                                 exceed_action_warn:
                                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or
@@ -69530,7 +69530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     limit: int
                     """Configure maximum number of LSAs permitted (0 for unlimited)."""
                     disabled_time: int | None
-                    """Minutes to shut down the instances."""
+                    """Minutes to shut down the instance."""
                     incident_count: IncidentCount
                     """Subclass of AvdModel."""
                     exceed_action_warn: bool | None
@@ -69560,7 +69560,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 limit: Configure maximum number of LSAs permitted (0 for unlimited).
-                                disabled_time: Minutes to shut down the instances.
+                                disabled_time: Minutes to shut down the instance.
                                 incident_count: Subclass of AvdModel.
                                 exceed_action_warn:
                                    Only give warning message when limit is exceeded. Not rendered when `disabled_time` or

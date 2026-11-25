@@ -1553,7 +1553,7 @@ router ospf 701
 | LSA Incident Count Limit | - |
 | LSA Incident Count Clear Timeout | - |
 | LSA Warning Limit | 65 percent |
-| LSA Exceed Action Warn | True |
+| LSA Exceed Action Warn | False |
 
 #### VRF: data
 
@@ -1692,7 +1692,7 @@ router ospfv3 vrf Test_VRF
    lsa limit 4500 disabled-time 7 minutes incident-count limit 2 incident-count clear-timeout 5 minutes
 !
 router ospfv3 vrf WARN_ONLY
-   lsa limit 8000 warning limit 65 percent exceed-action warn
+   lsa limit 8000 warning limit 65 percent
 !
 router ospfv3 vrf data
    router-id 2.2.2.2

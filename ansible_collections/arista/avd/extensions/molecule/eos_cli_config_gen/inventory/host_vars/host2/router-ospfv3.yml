@@ -256,4 +256,4 @@ router_ospfv3:
       lsa:
         limit: 8000
         warning_limit: 65
-        exceed_action_warn: true
+        exceed_action_warn: false
