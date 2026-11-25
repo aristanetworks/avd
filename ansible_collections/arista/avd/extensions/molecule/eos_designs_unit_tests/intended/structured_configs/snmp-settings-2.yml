@@ -11,7 +11,10 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
-  ipv4_acl: acl-for-vrf-default
+  ipv4_acls:
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-SNMPVRF
+    vrf: SNMPVRF
   ipv6_acls:
   - name: acl-for-vrf-default
   - name: acl-for-vrf-SNMPVRF
@@ -47,7 +50,6 @@ snmp_server:
     enable: true
   - name: SNMPVRF
     enable: true
-    ipv4_acl: acl-for-vrf-SNMPVRF
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan123

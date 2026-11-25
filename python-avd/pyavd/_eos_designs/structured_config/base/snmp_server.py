@@ -337,26 +337,19 @@ class SnmpServerMixin(Protocol):
 
                 vrfs.append(vrf_item)
             else:
-                vrf_item = EosCliConfigGen.SnmpServer.VrfsItem(name=vrf_name, enable=vrf.enable)
+                # TODO: AVD 7.0 - Replace deprecated snmp_server.ipv4_acls with snmp_server.ipv4_acl / vrf_item.ipv4_acl, matching the sort mode logic above.
+                vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
                 if vrf.ipv4_acl is not None:
-                    if vrf_name == "default":
-                        self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
-                    else:
-                        vrf_item.ipv4_acl = vrf.ipv4_acl
+                    self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
                     if self.inputs.avd_design_future.configure_snmp_server_vrfs_ipv4_acl_from_catalog:
                         acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context="snmp_settings.vrfs")
                         self.structured_config_utils._set_ipv4_acl(acl)
                 elif vrf.ipv4_standard_acl is not None:
-                    if vrf_name == "default":
-                        self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_standard_acl
-                    else:
-                        vrf_item.ipv4_acl = vrf.ipv4_standard_acl
+                    self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_standard_acl, vrf=vrf_name if vrf_name != "default" else None)
                     self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
 
                 if vrf.ipv6_acl is not None:
                     self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
-
-                vrfs.append(vrf_item)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()

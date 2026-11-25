@@ -19,10 +19,12 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
+  ipv4_acls:
+  - name: SNMP-VRF-ACL
+    vrf: MGMT
   vrfs:
   - name: MGMT
     enable: true
-    ipv4_acl: SNMP-VRF-ACL
 standard_access_lists:
 - name: SNMP-VRF-ACL
   entries:

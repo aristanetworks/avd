@@ -34,13 +34,15 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
-  ipv4_acl: acl-for-vrf-default
+  ipv4_acls:
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-MGMT
+    vrf: MGMT
   vrfs:
   - name: default
     enable: false
   - name: MGMT
     enable: true
-    ipv4_acl: acl-for-vrf-MGMT
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
