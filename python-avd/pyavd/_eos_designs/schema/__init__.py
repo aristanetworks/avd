@@ -1933,7 +1933,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         configure_management_eapi_ipv4_acl_from_catalog: bool
         """
-        Available from AVD 6.5.0.
+        Available from AVD 6.6.0.
         Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from
         `ipv4_acls` for enabled eAPI VRFs.
         An error will be raised if the referenced ACL is not defined
@@ -2173,7 +2173,7 @@ class EosDesigns(EosDesignsRootModel):
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
                     configure_management_eapi_ipv4_acl_from_catalog:
-                       Available from AVD 6.5.0.
+                       Available from AVD 6.6.0.
                        Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from
                        `ipv4_acls` for enabled eAPI VRFs.
                        An error will be raised if the referenced ACL is not defined

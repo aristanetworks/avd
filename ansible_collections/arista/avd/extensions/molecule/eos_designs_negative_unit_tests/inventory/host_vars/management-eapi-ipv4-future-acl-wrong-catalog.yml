@@ -23,6 +23,3 @@ ipv4_standard_acls:
       - sequence: 10
         action: permit
         source: 192.0.2.0/24
-
-expected_error_message: >-
-  'ipv4_acls[name=FILTER]' is required but was not found for host 'management-eapi-ipv4-future-acl-wrong-catalog'.

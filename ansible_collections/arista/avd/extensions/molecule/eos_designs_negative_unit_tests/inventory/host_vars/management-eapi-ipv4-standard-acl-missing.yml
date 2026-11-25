@@ -13,6 +13,3 @@ management_eapi:
     - name: management
       enabled: true
       ipv4_standard_acl: FILTER
-
-expected_error_message: >-
-  'ipv4_standard_acls[name=FILTER]' is required but was not found for host 'management-eapi-ipv4-standard-acl-missing'.

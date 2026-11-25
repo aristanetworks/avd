@@ -510,7 +510,7 @@ keys:
         default: false
       configure_management_eapi_ipv4_acl_from_catalog:
         type: bool
-        description: 'Available from AVD 6.5.0.
+        description: 'Available from AVD 6.6.0.
 
           Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from `ipv4_acls`
           for enabled eAPI VRFs.

@@ -244,9 +244,9 @@ class MiscMixin(Protocol):
                     msg = (
                         f"Field substitution of the value '{field_value}' defined under "
                         f"'ipv4_acls[name={name}].entries[{index}].{field}' "
-                        f"is not supported for reference '{context}'."
+                        f"is not supported for reference '{context}' for host '{self.hostname}'."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return ipv4_acl
 
