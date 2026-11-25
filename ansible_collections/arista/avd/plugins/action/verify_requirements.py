@@ -172,6 +172,8 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req != "" and req[0] != "#"]
     for raw_req in requirements:
         req = Requirement(raw_req)
+        if req.marker is not None and not req.marker.evaluate():
+            continue
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
             LOGGER.debug("AVD is running from source, *not* checking pyavd version.")
             requirements_dict["valid"][req.name] = {
