@@ -54,3 +54,10 @@ router_ospfv3:
         leaked_match_nssa_external:
           enabled: true
           route_map: map1
+  vrfs:
+    - name: SAME_HELPER
+      graceful_restart_helper: true
+      address_family_ipv4:
+        enabled: true
+        # Duplicate positive helper configuration is rendered only at the address-family level.
+        graceful_restart_helper: true

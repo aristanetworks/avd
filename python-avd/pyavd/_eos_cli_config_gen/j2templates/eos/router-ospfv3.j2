@@ -48,7 +48,11 @@ router ospfv3 vrf {{ vrf.name }}
    {{ graceful_restart_cli }}
 {%         set use_delimiter = true %}
 {%     endif %}
-{%     if vrf.graceful_restart_helper is arista.avd.defined(true) %}
+{%     if vrf.graceful_restart_helper is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv4.graceful_restart_helper is not arista.avd.defined(true))
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv6.graceful_restart_helper is not arista.avd.defined(true)) %}
    graceful-restart-helper
 {%         set use_delimiter = true %}
 {%     elif vrf.graceful_restart_helper is arista.avd.defined(false)
@@ -325,7 +329,11 @@ router ospfv3
    {{ graceful_restart_cli }}
 {%         set use_delimiter = true %}
 {%     endif %}
-{%     if router_ospfv3.graceful_restart_helper is arista.avd.defined(true) %}
+{%     if router_ospfv3.graceful_restart_helper is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv4.graceful_restart_helper is not arista.avd.defined(true))
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv6.graceful_restart_helper is not arista.avd.defined(true)) %}
    graceful-restart-helper
 {%     elif router_ospfv3.graceful_restart_helper is arista.avd.defined(false)
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)

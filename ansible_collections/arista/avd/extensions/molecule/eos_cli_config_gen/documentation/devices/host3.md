@@ -406,17 +406,6 @@ router ospf 702
 
 #### VRF: default
 
-| Parameter | Value |
-| --------- | ----- |
-| Router ID | - |
-| BFD Default | - |
-| BFD Adjacency State Any | - |
-| Passive Interface Default | - |
-| Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
-| Grace Period | - |
-| Graceful Restart Helper | True |
-
 ##### Address Family IPv4
 
 | Parameter | Value |
@@ -459,12 +448,30 @@ router ospf 702
 | ospfv3 leaked match external | True | map1 |
 | ospfv3 leaked match nssa-external | True | map1 |
 
+#### VRF: SAME_HELPER
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
 !
+router ospfv3 vrf SAME_HELPER
+   address-family ipv4
+      graceful-restart-helper
+!
 router ospfv3
-   graceful-restart-helper
    address-family ipv4
       router-id 2.2.2.2
       bfd default
