@@ -54,7 +54,7 @@ class ManagementSshMixin(Protocol):
                             acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=context)
                             self.structured_config_utils._set_ipv4_acl(acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_acl)
-                    elif vrf.ipv4_standard_acl:
+                    if vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                         self.structured_config.management_ssh._update(ip_access_group_in=vrf.ipv4_standard_acl)
             else:
@@ -68,7 +68,7 @@ class ManagementSshMixin(Protocol):
                             acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=context)
                             self.structured_config_utils._set_ipv4_acl(acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl
-                    elif vrf.ipv4_standard_acl:
+                    if vrf.ipv4_standard_acl:
                         self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
                         management_ssh_vrf.ip_access_group_in = vrf.ipv4_standard_acl
                 self.structured_config.management_ssh.vrfs.append(management_ssh_vrf)
