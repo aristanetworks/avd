@@ -466,39 +466,71 @@ def test_action_module_run_wraps_unexpected_exception(
 
 
 @pytest.mark.parametrize(
-    ("summary", "expected_failed", "expected_message"),
+    ("summary", "dry_run", "expected_failed", "expected_message"),
     [
         pytest.param(
             {"total_tests": 0, "tests_failed": 0, "tests_error": 0},
+            False,
             True,
             "No ANTA tests were run.",
-            id="no_tests",
+            id="no_tests_run",
         ),
         pytest.param(
             {"total_tests": 2, "tests_failed": 1, "tests_error": 0},
+            False,
             True,
             "Task failed due to ANTA test failures/errors.",
-            id="test_failure",
+            id="test_failure_run",
         ),
         pytest.param(
             {"total_tests": 2, "tests_failed": 0, "tests_error": 1},
+            False,
             True,
             "Task failed due to ANTA test failures/errors.",
-            id="test_error",
+            id="test_error_run",
         ),
         pytest.param(
             {"total_tests": 2, "tests_failed": 0, "tests_error": 0},
             False,
+            False,
             "ANTA tests completed without reported failures/errors.",
-            id="success",
+            id="success_run",
+        ),
+        pytest.param(
+            {"total_tests": 0, "tests_failed": 0, "tests_error": 0},
+            True,
+            False,
+            "ANTA dry-run completed with no tests to preview.",
+            id="no_tests_dry_run",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 1, "tests_error": 0},
+            True,
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test_failure_dry_run",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 0, "tests_error": 1},
+            True,
+            True,
+            "Task failed due to ANTA test failures/errors.",
+            id="test_error_dry_run",
+        ),
+        pytest.param(
+            {"total_tests": 2, "tests_failed": 0, "tests_error": 0},
+            True,
+            False,
+            "ANTA tests completed without reported failures/errors.",
+            id="success_dry_run",
         ),
     ],
 )
-def test_update_ansible_result_uses_only_test_outcomes(summary: dict[str, int], expected_failed: bool, expected_message: str) -> None:
-    """ANTA domain outcomes, rather than logging severity, determine task failure."""
+def test_update_ansible_result_uses_only_test_outcomes(summary: dict[str, int], expected_failed: bool, expected_message: str, *, dry_run: bool) -> None:
+    """ANTA test outcomes and run mode determine the task result independently of logging."""
     result: dict = {}
 
-    updated_result = update_ansible_result(result, summary)
+    updated_result = update_ansible_result(result, summary, dry_run=dry_run)
 
     assert updated_result is result
     assert result.get("failed", False) is expected_failed
@@ -938,3 +970,42 @@ def test_build_anta_device_applies_anta_overrides_and_connection_defaults(
         tags={"fabric"},
         use_session_auth=True,
     )
+
+
+@pytest.mark.parametrize("dry_run", [True, False])
+@pytest.mark.parametrize("has_workflow_errors", [True, False])
+def test_zero_result_outcome_by_mode(action_module: Callable[..., ActionModule], *, dry_run: bool, has_workflow_errors: bool) -> None:
+    """Only a valid dry-run may succeed without results; existing failures are preserved."""
+    summary = {
+        "total_tests": 0,
+        "tests_passed": 0,
+        "tests_failed": 0,
+        "tests_error": 0,
+        "tests_skipped": 0,
+        "tests_unset": 0,
+        "devices_with_test_failures": [],
+        "devices_with_test_errors": [],
+    }
+    module = action_module(ActionModule, task_args={"save_logs": False, "live_display": False})
+
+    def main(_task_vars: dict) -> None:
+        update_ansible_result(module.result, summary, dry_run=dry_run)
+        if has_workflow_errors:
+            module.logger.error("ANTA workflow error")
+
+    with patch.object(module, "main", side_effect=main):
+        result = module.run()
+
+    assert result.get("failed", False) is (has_workflow_errors or not dry_run)
+    if has_workflow_errors:
+        assert result["msg"] == "Errors detected during ANTA workflow execution. No ANTA tests were run."
+    else:
+        assert result["msg"] == ("ANTA dry-run completed with no tests to preview." if dry_run else "No ANTA tests were run.")
+    assert result["anta_tests_summary"] == summary
+
+
+def test_zero_result_dry_run_preserves_existing_failure() -> None:
+    """The zero-result exception must never clear a previously recorded failure."""
+    result = {"failed": True}
+    update_ansible_result(result, {"total_tests": 0, "tests_failed": 0, "tests_error": 0}, dry_run=True)
+    assert result["failed"] is True
