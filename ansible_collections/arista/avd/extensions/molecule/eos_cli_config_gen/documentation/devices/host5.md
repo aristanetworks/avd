@@ -131,7 +131,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Auto Cost Reference Bandwidth | 2000 |
 | Graceful Restart | False |
 | Grace Period | - |
-| Graceful Restart Helper | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -176,6 +176,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      no graceful-restart-helper
    !
    address-family ipv6
       router-id 3.3.3.3

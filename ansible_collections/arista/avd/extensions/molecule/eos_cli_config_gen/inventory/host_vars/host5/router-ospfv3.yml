@@ -9,13 +9,16 @@ router_ospfv3:
   graceful_restart:
     enabled: true
     grace_period: 24
+  graceful_restart_helper: false
   address_family_ipv4:
     enabled: true
+    # Duplicate negative helper configuration is rendered only at the address-family level.
     router_id: 2.2.2.2
     auto_cost_reference_bandwidth: 2000
     passive_interface_default: true
     graceful_restart:
       enabled: false
+    graceful_restart_helper: false
     redistribute:
       ospfv3:
         leaked:

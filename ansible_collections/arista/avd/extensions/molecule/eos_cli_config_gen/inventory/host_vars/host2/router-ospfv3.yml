@@ -185,11 +185,13 @@ router_ospfv3:
       graceful_restart:
         enabled: true
         grace_period: 23
+      graceful_restart_helper: false
       address_family_ipv4:
         enabled: true
         router_id: 1.1.1.1
         graceful_restart:
           enabled: false
+        graceful_restart_helper: true
         redistribute:
           ospfv3:
             leaked:
@@ -220,3 +222,5 @@ router_ospfv3:
       graceful_restart_helper: false
       address_family_ipv4:
         enabled: true
+        # Duplicate negative helper configuration is rendered only at the address-family level.
+        graceful_restart_helper: false
