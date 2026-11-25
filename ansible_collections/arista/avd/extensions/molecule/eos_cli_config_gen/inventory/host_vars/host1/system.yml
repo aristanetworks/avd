@@ -23,5 +23,22 @@ system:
       - acl_name: "acl6_3"
         vrf: default
   l1:
+    modules:
+      - linecards: 0
+        profile: small
+      - linecards: 1
+        profile: CAPITAL
+      - linecards: 3,4
+        profile: Uniform-4x100G-2-R
+      - linecards: 5-6
+        profile: Uniform-4x10G-1
+      - linecards: 7
+        profile: 11
+      - linecards: 8
+        profile: 2
+      - linecards: 9
+        profile: 1
+      - linecards: 10
+        profile: 12
     unsupported_speed_action: warn
     unsupported_error_correction_action: error

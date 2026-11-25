@@ -6,6 +6,15 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: true
+    ospfv3:
+      bfd: true
+      passive_interface: true
+      cost: 311
+      network_point_to_point: true
+      ipv4:
+        area: "0.0.9.11"
+      ipv6:
+        area: "0.0.9.12"
     eos_cli: |
       comment
       Comment created from eos_cli under loopback_interfaces.Loopback0
@@ -17,10 +26,29 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: false
+    ospfv3:
+      bfd: false
+      no_passive_interface: true
+      ipv4:
+        area: "0.0.9.13"
+      ipv6:
+        area: "0.0.9.14"
 
   - name: Loopback2
     ospf_area: 0.0.0.2
     shutdown: true
+    ospfv3:
+      # Global config won't render as address family parameters are set
+      bfd: true
+      cost: 211
+      ipv4:
+        bfd: false
+        cost: 321
+        area: "0.0.9.23"
+      ipv6:
+        bfd: false
+        cost: 322
+        area: "0.0.9.24"
     isis_enable: ISIS_PASSIVE_TEST
     isis_passive: true
 
@@ -61,3 +89,12 @@ loopback_interfaces:
     node_segment:
       ipv4_index: 34
       ipv6_index: 23
+    ospfv3:
+      ipv4:
+        bfd: true
+        cost: 331
+        area: "0.0.9.21"
+      ipv6:
+        bfd: true
+        cost: 332
+        area: "0.0.9.22"

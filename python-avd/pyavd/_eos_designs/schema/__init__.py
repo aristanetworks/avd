@@ -53610,6 +53610,82 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class QueueMonitorStreaming(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "enable": {"type": bool},
+            "ip_access_group": {"type": str},
+            "ipv4_acl": {"type": str},
+            "ipv4_standard_acl": {"type": str},
+            "ipv6_access_group": {"type": str},
+            "max_connections": {"type": int},
+            "vrf": {"type": str},
+        }
+        enable: bool | None
+        ip_access_group: str | None
+        """Name of IP ACL."""
+        ipv4_acl: str | None
+        """
+        IPv4 extended access-list name. The access-list must be defined under `ipv4_acls`.
+        Field
+        substitution is not supported for queue-monitor streaming references.
+        Mutually exclusive with
+        `ipv4_standard_acl` and the deprecated `ip_access_group`.
+        """
+        ipv4_standard_acl: str | None
+        """
+        IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+        Field
+        substitution is not supported for queue-monitor streaming references.
+        Mutually exclusive with
+        `ipv4_acl` and the deprecated `ip_access_group`.
+        """
+        ipv6_access_group: str | None
+        """Name of IPv6 ACL."""
+        max_connections: int | None
+        vrf: str | None
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enable: bool | UndefinedType | None = Undefined,
+                ip_access_group: str | UndefinedType | None = Undefined,
+                ipv4_acl: str | UndefinedType | None = Undefined,
+                ipv4_standard_acl: str | UndefinedType | None = Undefined,
+                ipv6_access_group: str | UndefinedType | None = Undefined,
+                max_connections: int | UndefinedType | None = Undefined,
+                vrf: str | UndefinedType | None = Undefined,
+            ) -> None:
+                """
+                QueueMonitorStreaming.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enable: enable
+                    ip_access_group: Name of IP ACL.
+                    ipv4_acl:
+                       IPv4 extended access-list name. The access-list must be defined under `ipv4_acls`.
+                       Field
+                       substitution is not supported for queue-monitor streaming references.
+                       Mutually exclusive with
+                       `ipv4_standard_acl` and the deprecated `ip_access_group`.
+                    ipv4_standard_acl:
+                       IPv4 standard access-list name. The access-list must be defined under `ipv4_standard_acls`.
+                       Field
+                       substitution is not supported for queue-monitor streaming references.
+                       Mutually exclusive with
+                       `ipv4_acl` and the deprecated `ip_access_group`.
+                    ipv6_access_group: Name of IPv6 ACL.
+                    max_connections: max_connections
+                    vrf: vrf
+
+                """
+
     class Redundancy(AvdModel):
         """Subclass of AvdModel."""
 
@@ -125660,7 +125736,7 @@ class EosDesigns(EosDesignsRootModel):
         },
         "ptp_settings": {"type": PtpSettings},
         "queue_monitor_length": {"type": QueueMonitorLength},
-        "queue_monitor_streaming": {"type": EosCliConfigGen.QueueMonitorStreaming},
+        "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "redundancy": {"type": Redundancy},
         "router_id_loopback_description": {"type": str, "default": "ROUTER_ID"},
         "serial_number": {"type": str},
@@ -127521,7 +127597,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     queue_monitor_length: QueueMonitorLength
     """Subclass of AvdModel."""
-    queue_monitor_streaming: EosCliConfigGen.QueueMonitorStreaming
+    queue_monitor_streaming: QueueMonitorStreaming
+    """Subclass of AvdModel."""
     redundancy: Redundancy
     """
     Redundancy for chassis platforms with dual supervisors | Optional.
@@ -128202,7 +128279,7 @@ class EosDesigns(EosDesignsRootModel):
             ptp_profiles: PtpProfiles | UndefinedType = Undefined,
             ptp_settings: PtpSettings | UndefinedType = Undefined,
             queue_monitor_length: QueueMonitorLength | UndefinedType = Undefined,
-            queue_monitor_streaming: EosCliConfigGen.QueueMonitorStreaming | UndefinedType = Undefined,
+            queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             router_id_loopback_description: str | UndefinedType = Undefined,
             serial_number: str | UndefinedType | None = Undefined,
@@ -129611,7 +129688,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 queue_monitor_length: Subclass of AvdModel.
-                queue_monitor_streaming: queue_monitor_streaming
+                queue_monitor_streaming: Subclass of AvdModel.
                 redundancy:
                    Redundancy for chassis platforms with dual supervisors | Optional.
 
