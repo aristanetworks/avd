@@ -52,6 +52,7 @@ device_profiles:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+    parent_profile: profile3
 
   - name: profile1
     type: l3leaf

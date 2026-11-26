@@ -233,7 +233,7 @@ Because output paths may be shared, configuration order matters:
 
 ## Diagnostics and failure control flow
 
-Validation deprecations and violations are written as text files. Exceptions from selected build stages are written either as exception summaries or full tracebacks according to `dump_tracebacks`. Diagnostics are grouped under the configured error directory by fabric and, where applicable, device.
+Validation deprecations and violations, along with AVD warnings emitted during structured-config generation, are written as text files. Exceptions from selected build stages are written either as exception summaries or full tracebacks according to `dump_tracebacks`. Diagnostics are grouped under the configured error directory by fabric and, where applicable, device.
 
 Captured stage failures are local:
 
