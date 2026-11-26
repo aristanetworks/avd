@@ -22630,6 +22630,7 @@ keys:
                 keys:
                   delay:
                     type: dict
+                    required: true
                     keys:
                       initial:
                         type: int

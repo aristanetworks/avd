@@ -58,7 +58,7 @@
 {%             set default_vrf_auto_cost_reference_bandwidth = router_ospfv3.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%             set default_spf_timers = router_ospfv3.timers.spf.delay.initial ~ " / " ~ router_ospfv3.timers.spf.delay.min_hold_time ~ " / " ~ router_ospfv3.timers.spf.delay.max_wait_time if default_spf_timers_configured else '-' %}
 {%             set default_lsa_rx_min_interval = router_ospfv3.timers.lsa.rx.min_interval if default_lsa_rx_timer_configured else '-' %}
-{%             set default_lsa_tx_delay = router_ospfv3.timers.lsa.tx.delay.initial ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.min ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.max if default_lsa_tx_timer_configured and router_ospfv3.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%             set default_lsa_tx_delay = router_ospfv3.timers.lsa.tx.delay.initial ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.min ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.max if default_lsa_tx_timer_configured else '-' %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -282,7 +282,7 @@
 {%                 set vrf_summary_auto_cost_reference_bandwidth = vrf.auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%                 set vrf_spf_timers = vrf.timers.spf.delay.initial ~ " / " ~ vrf.timers.spf.delay.min_hold_time ~ " / " ~ vrf.timers.spf.delay.max_wait_time if vrf_spf_timers_configured else '-' %}
 {%                 set vrf_lsa_rx_min_interval = vrf.timers.lsa.rx.min_interval if vrf_lsa_rx_timer_configured else '-' %}
-{%                 set vrf_lsa_tx_delay = vrf.timers.lsa.tx.delay.initial ~ " / " ~ vrf.timers.lsa.tx.delay.min ~ " / " ~ vrf.timers.lsa.tx.delay.max if vrf_lsa_tx_timer_configured and vrf.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%                 set vrf_lsa_tx_delay = vrf.timers.lsa.tx.delay.initial ~ " / " ~ vrf.timers.lsa.tx.delay.min ~ " / " ~ vrf.timers.lsa.tx.delay.max if vrf_lsa_tx_timer_configured else '-' %}
 
 | Parameter | Value |
 | --------- | ----- |

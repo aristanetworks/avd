@@ -172,8 +172,8 @@ router ospf 703
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 | SPF Timers (initial/min hold/max wait, msec) | - |
-| LSA RX Min Interval (msec) | 2000 |
-| LSA TX Delay (initial/min/max, msec) | 1000 / 2000 / 5000 |
+| LSA RX Min Interval (msec) | 0 |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ###### Redistribution
 
@@ -231,8 +231,7 @@ router ospfv3
       redistribute isis include leaked level-1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
-      timers lsa rx min interval 2000
-      timers lsa tx delay initial 1000 2000 5000
+      timers lsa rx min interval 0
    !
    address-family ipv6
       redistribute bgp include leaked

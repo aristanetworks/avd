@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -126,7 +126,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -147,7 +147,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -168,7 +168,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -250,7 +250,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
@@ -301,7 +301,7 @@
 
           # Configure OSPFv3 LSA transmission timers.
           tx:
-            delay:
+            delay: # required
 
               # Delay to generate first occurrence of LSA in msecs.
               initial: <int; 0-600000; required>
@@ -354,7 +354,7 @@
 
             # Configure OSPFv3 LSA transmission timers.
             tx:
-              delay:
+              delay: # required
 
                 # Delay to generate first occurrence of LSA in msecs.
                 initial: <int; 0-600000; required>
@@ -488,7 +488,7 @@
 
             # Configure OSPFv3 LSA transmission timers.
             tx:
-              delay:
+              delay: # required
 
                 # Delay to generate first occurrence of LSA in msecs.
                 initial: <int; 0-600000; required>
@@ -541,7 +541,7 @@
 
               # Configure OSPFv3 LSA transmission timers.
               tx:
-                delay:
+                delay: # required
 
                   # Delay to generate first occurrence of LSA in msecs.
                   initial: <int; 0-600000; required>
@@ -594,7 +594,7 @@
 
                 # Configure OSPFv3 LSA transmission timers.
                 tx:
-                  delay:
+                  delay: # required
 
                     # Delay to generate first occurrence of LSA in msecs.
                     initial: <int; 0-600000; required>
@@ -728,7 +728,7 @@
 
                 # Configure OSPFv3 LSA transmission timers.
                 tx:
-                  delay:
+                  delay: # required
 
                     # Delay to generate first occurrence of LSA in msecs.
                     initial: <int; 0-600000; required>

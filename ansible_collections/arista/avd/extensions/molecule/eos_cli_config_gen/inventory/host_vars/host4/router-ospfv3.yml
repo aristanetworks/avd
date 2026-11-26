@@ -9,15 +9,11 @@ router_ospfv3:
         max_wait_time: 30000
   address_family_ipv4:
     enabled: true
+    # Exercise a standalone LSA RX timer and ensure a zero value renders.
     timers:
       lsa:
         rx:
-          min_interval: 2000
-        tx:
-          delay:
-            initial: 1000
-            min: 2000
-            max: 5000
+          min_interval: 0
     redistribute:
       bgp:
         enabled: true
