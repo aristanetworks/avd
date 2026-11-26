@@ -20,6 +20,16 @@
 | Error correction | {{ system.l1.unsupported_error_correction_action }} |
 {%         endif %}
 {%     endif %}
+{%     if system.l1.modules is arista.avd.defined %}
+
+### L1 Module Profiles
+
+| Module | Profile |
+| ------ | ------- |
+{%         for module in system.l1.modules | arista.avd.default([]) | sort(attribute='profile', case_sensitive=true) %}
+| Linecard{{ module.linecards }} | {{ module.profile }} |
+{%         endfor %}
+{%     endif %}
 
 ### System L1 Device Configuration
 

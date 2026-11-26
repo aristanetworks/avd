@@ -181,7 +181,7 @@ fragments. If you changed files under `schema_fragments/`, regenerate the full
 schemas before rebuilding the explorer:
 
 ```bash
-pre-commit run schemas --all-files
+prek run schemas --all-files
 make schema-explorer-build
 ```
 

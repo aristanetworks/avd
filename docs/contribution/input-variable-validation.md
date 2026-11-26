@@ -99,10 +99,10 @@ The `deprecation.new_key` field is used for detecting conflicts with old and new
 The meta-schema is generated from the source-schema models in [pyavd-utils](https://github.com/aristanetworks/pyavd-utils) and committed to this repository.
 When using the VS Code YAML extension, Draft 2020-12 support requires version 1.20.0 or later.
 
-- The `metaschema` pre-commit hook regenerates the JSON when `.pre-commit-config.yaml` changes.
-  To regenerate it explicitly, run `pre-commit run metaschema --all-files` and stage any generated changes.
+- The `metaschema` prek hook regenerates the JSON when `.pre-commit-config.yaml` changes.
+  To regenerate it explicitly, run `prek run metaschema --all-files` and stage any generated changes.
 - Every schema build validates all authored YAML schema fragments and the standalone EOS Designs facts schema against the
-  meta-schema before combining fragments or writing generated artifacts. This includes the `schemas` pre-commit hook,
+  meta-schema before combining fragments or writing generated artifacts. This includes the `schemas` prek hook,
   `make -C python-avd compile-schemas`, and package builds from source.
   Validation checks schema structure and authoring conventions such as nonempty descriptions, using `jsonschema-rs` with
   format validation enabled. Errors identify the source filename, JSON Pointer, and cause, and abort the build.

@@ -8,7 +8,7 @@
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
   - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leveraged in the project: pre-commit, the PyAVD end-to-end test tool, Molecule and ansible-test.
+- This guide provides additional information about the development tools leveraged in the project: prek, the PyAVD end-to-end test tool, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
@@ -93,50 +93,52 @@ TODO: Add picture.
 
 When running from source, the `verify_requirements` action will check if any schema fragment or templates has changed locally and if so, will recompile on the fly either or both as
 required for `eos_cli_config_gen` and `eos_designs`, allowing a seamless development workflow while using Ansible.
-When using pyavd, it is required to run pre-commit to achieve the same.
+When using pyavd, it is required to run prek to achieve the same.
 
-## Pre-commit
+## Prek
 
-- [pre-commit](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements.
+- [prek](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements.
 - Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
-- Additionally, the AVD project leverages pre-commit hooks to build and update the AVD schemas, templates and documentation artifacts.
+- Additionally, the AVD project leverages prek hooks to build and update the AVD schemas, templates and documentation artifacts.
 
-### Install pre-commit hook
+The `.pre-commit-config.yaml` file name is retained because `prek` supports this configuration format.
 
-Configure pre-commit git hook, to automatically run pre-commit. This is optional, but highly recommended!
+### Install prek hook
+
+Configure the prek git hook to automatically run prek. This is optional, but highly recommended!
 
 ```shell
 # Change to directory to your cloned avd repository.
 cd avd
 
-# Install pre-commit hooks to run automatically.
-pre-commit install
+# Install prek hooks to run automatically, replacing any existing hooks.
+prek install --force
 ```
 
-### Run pre-commit manually
+### Run prek manually
 
-To run `pre-commit` manually before you commit, use this command:
+To run `prek` manually before you commit, use this command:
 
 ```shell
 # Change to directory to your cloned avd repository.
 cd avd
 
-# Run pre-commit hooks on all staged files.
+# Run prek hooks on all staged files.
 # The command will automatically detect changed files using `git status` and run tests according to their type.
-pre-commit run
+prek run
 
-# Run pre-commit hooks on all un-staged and staged files.
-pre-commit run --all
+# Run prek hooks on all un-staged and staged files.
+prek run --all-files
 
-# Run specific pre-commit schemas hook on all un-staged and staged files.
-pre-commit run schemas --all
+# Run specific prek schemas hook on all un-staged and staged files.
+prek run schemas --all-files
 ```
 
 !!! note
     This process is also implemented in the project CI to ensure code quality and compliance.
-    All pre-commit checks must pass, therefore we highly recommend running this workflow before committing changes!
+    All prek checks must pass, therefore we highly recommend running this workflow before committing changes!
 
-    Pre-commit will fail if any files are changed by the pre-commit hooks. Make sure to review the changes, commit them and rerun pre-commit.
+    Prek will fail if any files are changed by the prek hooks. Make sure to review the changes, commit them and rerun prek.
 
 ## Molecule
 
@@ -246,17 +248,76 @@ make unit-tests
 make integration-tests ANSIBLE_TEST_MODE=docker
 ```
 
-## Tox
+## PyAVD tests
 
-The AVD project leverages [Tox](https://tox.wiki/) to run unit and integration of the `pyavd` Python package.
+Run PyAVD tests directly with [uv](https://docs.astral.sh/uv/) from the repository root.
+Install uv using its [installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
-Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `tox`:
+### Prepare your environment
 
-- `pyavd-test`: Test PyAVD Python code with tox.
-
-Example:
+Activate an existing virtual environment, or create one with the Python version you want to test:
 
 ```shell
-# Run tox on pyavd
-make pyavd-test
+uv venv --python 3.12
+source .venv/bin/activate
 ```
+
+Install the test and coverage requirements, PyAVD, and the coverage plugin into that environment:
+
+```shell
+uv pip install --group pytest --group coverage \
+  -e python-avd -e development/coverage_plugins
+```
+
+Repeat the installation when dependency requirements change.
+The commands below use `uv run --no-project` to reuse the activated environment, or the repository's `.venv`, without synchronizing project dependencies or updating a lock file.
+
+Build the generated schemas and templates before the first test run in a checkout.
+Repeat this step after changing schema or template sources, or their generators:
+
+```shell
+uv run --no-project make -C python-avd dep
+```
+
+Generation rewrites shared files, so complete it before running tests in that checkout.
+Ordinary Python logic changes can be tested directly.
+
+### Run tests
+
+```shell
+# Run both configured test roots: PyAVD and the coverage plugin.
+uv run --no-project python -m pytest
+
+# Select tests and pass pytest options directly.
+uv run --no-project python -m pytest python-avd/tests/pyavd -x -q
+```
+
+To test another supported Python version, create and activate a separate environment, then repeat the requirements installation:
+
+```shell
+uv venv --python 3.13 .venv-3.13
+source .venv-3.13/bin/activate
+```
+
+CI tests Python 3.11, 3.12, 3.13 and 3.14, using coverage on Python 3.12.
+
+### Coverage
+
+Use the prepared environment to run pytest under coverage. You can append test paths and pytest options to the `coverage run -m pytest` command.
+
+```shell
+uv run --no-project python -m coverage erase
+uv run --no-project python -m coverage run -m pytest
+```
+
+After a successful test run, combine the parallel coverage data, write the XML report, and check the configured threshold:
+
+```shell
+uv run --no-project python -m coverage combine
+uv run --no-project python -m coverage xml --fail-under=0
+uv run --no-project python -m coverage report
+```
+
+`coverage erase` removes results from earlier runs, and `coverage combine` is required because the repository enables parallel coverage data files.
+The XML report is written before checking the threshold, so a below-threshold result still produces an updated `coverage.xml`.
+This local report measures pytest coverage; CI combines pytest and end-to-end coverage before checking the repository threshold.

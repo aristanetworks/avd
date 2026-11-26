@@ -50,6 +50,10 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ loopback_interface.ospf_area }}
 {%     endif %}
+{%     if loopback_interface.ospfv3 is arista.avd.defined %}
+{%         set ospfv3_interface = loopback_interface %}
+{%         include 'eos/interface-ospfv3.j2' %}
+{%     endif %}
 {%     if loopback_interface.node_segment.ipv4_index is arista.avd.defined %}
    node-segment ipv4 index {{ loopback_interface.node_segment.ipv4_index }}
 {%     endif %}

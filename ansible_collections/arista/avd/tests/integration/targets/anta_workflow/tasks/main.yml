@@ -1,0 +1,6 @@
+---
+- name: Include setup.yml
+  ansible.builtin.include_tasks: setup.yml
+
+- name: Include test.yml
+  ansible.builtin.include_tasks: test.yml

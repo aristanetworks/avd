@@ -1,0 +1,38 @@
+---
+- name: Test user catalogs with supported file formats and multiple batches
+  arista.avd.anta_workflow:
+    device_list: "{{ anta_test_devices + ['anta-undeployed'] }}"
+    avd_catalogs:
+      enabled: false
+    user_catalogs:
+      enabled: true
+      input_dir: "{{ actual_output_dir }}/catalogs/{{ item }}"
+    runner:
+      dry_run: true
+      batch_size: 1
+    report:
+      json_output: "{{ actual_output_dir }}/user_catalogs_{{ item }}.json"
+  register: catalog_results
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  loop: [yml, yaml, json]
+
+- name: Validate results and report content
+  ansible.builtin.assert:
+    that:
+      - item is success
+      - not item.changed
+      - item.anta_tests_summary.total_tests == 4
+      - item.anta_tests_summary.tests_unset == 4
+      - item.anta_tests_summary.tests_failed == 0
+      - item.anta_tests_summary.tests_error == 0
+      - report_data | length == 4
+      - report_data | map(attribute='name') | unique | sort == anta_test_devices | sort
+      - report_data | map(attribute='test') | unique | sort == ['VerifyEOSExtensions', 'VerifyEOSVersion']
+      - report_data | map(attribute='result') | unique | list == ['unset']
+  vars:
+    report_data: "{{ lookup('file', actual_output_dir ~ '/user_catalogs_' ~ item.item ~ '.json') | from_json }}"
+  loop: "{{ catalog_results.results }}"
+  loop_control:
+    label: "{{ item.item }}"
