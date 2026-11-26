@@ -10,9 +10,11 @@ from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 from yaml import CSafeDumper, CSafeLoader, dump, load
 
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
     from pathlib import Path
     from typing import Any
 
@@ -41,15 +43,15 @@ class Pool(Generic[T_ValueType]):
     pool_key: str
     assignments: dict[str, PoolAssignment[T_ValueType]]
 
-    def _is_value_available(self, value: T_ValueType) -> bool:
+    def _is_value_valid(self, value: T_ValueType) -> bool:
         if self.collection.value_type is int and isinstance(value, int):
-            existing_ids = {assignment.value for assignment in self.assignments.values()}
-            return not (
-                value in existing_ids or value < self.collection.min_value or (self.collection.max_value is not None and value > self.collection.max_value)
-            )
+            return not (value < self.collection.min_value or (self.collection.max_value is not None and value > self.collection.max_value))
 
         # currently we only support int pools
         return False
+
+    def _is_value_available(self, value: T_ValueType) -> bool:
+        return self._is_value_valid(value) and all(assignment.value != value for assignment in self.assignments.values())
 
     def _next_available(self) -> T_ValueType:
         if self.collection.value_type is int:
@@ -73,6 +75,39 @@ class Pool(Generic[T_ValueType]):
 
         msg = f"Currently we only support pools of Integers. Got {self.collection.value_type}."
         raise NotImplementedError(msg)
+
+    def prepare_assignments(self, requested_assignments: Mapping[str, T_ValueType]) -> dict[str, PoolAssignment[T_ValueType]]:
+        """
+        Build assignments with explicit requests reserved, without modifying the pool.
+
+        Release the previous assignments of all requesting keys together to allow swaps and cycles.
+        All other assignments are retained, including stale entries until they are pruned when saving.
+        Invalid values, duplicate requests, and conflicts with retained assignments raise an error.
+        """
+        assignments = {key: assignment for key, assignment in self.assignments.items() if key not in requested_assignments}
+        assigned_values = {assignment.value: assignment.key for assignment in assignments.values()}
+
+        for key, value in requested_assignments.items():
+            if not self._is_value_valid(value):
+                msg = f"Cannot reserve '{value}' for '{key}' in '{self.collection.pools_key}' with key '{self.pool_key}': the value is not valid."
+                raise AristaAvdInvalidInputsError(msg)
+
+            if value in assigned_values:
+                msg = (
+                    f"Cannot reserve '{value}' for '{key}' in '{self.collection.pools_key}' with key '{self.pool_key}': "
+                    f"the value is already assigned to '{assigned_values[value]}'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
+            existing_assignment = self.assignments.get(key)
+            assignments[key] = (
+                existing_assignment
+                if existing_assignment is not None and existing_assignment.value == value
+                else self.collection.assignment_cls(key=key, value=value)
+            )
+            assigned_values[value] = key
+
+        return assignments
 
     def get_assignment(self, key: str, requested_value: T_ValueType | None = None) -> PoolAssignment[T_ValueType]:
         """

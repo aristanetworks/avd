@@ -27,7 +27,7 @@ class PoolManager:
     and given to shared_utils for each device.
     """
 
-    _pool_collection_types: ClassVar = {"node_id_pools": NodeIdPoolCollection}
+    _pool_collection_types: ClassVar[dict[PoolType, type[PoolCollection]]] = {"node_id_pools": NodeIdPoolCollection}
     _output_dir: Path
     _pool_collections: dict[PoolType, dict[Path, PoolCollection]]
     """PoolCollection collections keys by file path."""
@@ -36,6 +36,7 @@ class PoolManager:
         self._output_dir = output_dir
         self._pool_collections = {}
         self._changed_pool_files = {}
+        self._assignment_requests: dict[tuple[PoolType, Path, str], tuple[Pool, dict[str, int | str]]] = {}
 
     def save_updated_pools(self, dumper_cls: type = CSafeDumper) -> bool:
         """
@@ -80,3 +81,26 @@ class PoolManager:
         pool = self.get_pool(pool_type, shared_utils)
         key = self._pool_collection_types[pool_type]._assignment_key_from_shared_utils(shared_utils)
         return pool.get_assignment(key, requested_value).value
+
+    def prepare_assignment(self, pool_type: PoolType, shared_utils: SharedUtilsProtocol, requested_value: int | str) -> None:
+        """
+        Collect an explicit assignment request for later reconciliation with other requests in the same pool.
+
+        Call apply_prepared_assignments after collecting requests for all devices and pool types,
+        before any facts consume pool assignments.
+        """
+        pool = self.get_pool(pool_type, shared_utils)
+        _, requests = self._assignment_requests.setdefault((pool_type, pool.collection.pools_file, pool.pool_key), (pool, {}))
+        key = self._pool_collection_types[pool_type]._assignment_key_from_shared_utils(shared_utils)
+        requests[key] = requested_value
+
+    def apply_prepared_assignments(self) -> None:
+        """Validate all requested assignments before applying any, preserving unrelated allocations and allowing explicit swaps."""
+        prepared_assignments = [(pool, pool.prepare_assignments(requests), requests) for pool, requests in self._assignment_requests.values()]
+        for pool, assignments, requests in prepared_assignments:
+            if pool.assignments != assignments:
+                pool.assignments = assignments
+                pool.collection.changed = True
+            for key in requests:
+                pool.assignments[key].accessed = True
+        self._assignment_requests.clear()

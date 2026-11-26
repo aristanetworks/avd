@@ -3,19 +3,25 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from unittest import mock
 
 import pytest
 from yaml import safe_dump
 
+from pyavd import get_avd_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.pool_manager.base_classes import FILE_HEADER, Pool
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 # Load schema from pickled file into lru_cache before we start mocking the file open.
 create_store(load_from_yaml=False)
@@ -437,3 +443,107 @@ def test_avdpoolmanager_upgrade_old_data() -> None:
         assert "mode" in kwargs
         assert kwargs["mode"] == "w"
         mocked_file_write.assert_called_once_with(get_file_content(expected_data_in_new_format))
+
+
+def _node_id_pool_content(assignments: dict[str, int]) -> str:
+    return get_file_content(get_data([get_pool(TESTHOST1, [{f"hostname={hostname}": node_id for hostname, node_id in assignments.items()}])]))
+
+
+@contextmanager
+def _mock_node_id_pool(assignments: dict[str, int]) -> Generator[mock.MagicMock, None, None]:
+    with (
+        mock.patch.object(Path, "exists", return_value=True),
+        mock.patch.object(Path, "open", mock.mock_open(read_data=_node_id_pool_content(assignments))) as mocked_open,
+    ):
+        yield mocked_open
+
+
+def _facts_inputs(node_ids: dict[str, int | None]) -> dict[str, dict]:
+    """Build minimal inputs in the supplied host order, omitting IDs for dynamically numbered nodes."""
+    return {
+        hostname: {
+            "fabric_name": "pool_manager_tests",
+            "fabric_numbering": {"node_id": {"algorithm": "pool_manager"}},
+            "devices": [{"name": hostname, "type": "l2leaf", **({"id": node_id} if node_id is not None else {})}],
+        }
+        for hostname, node_id in node_ids.items()
+    }
+
+
+def test_explicit_ids_swap_existing_allocations() -> None:
+    with _mock_node_id_pool({"testhost1": 2, "testhost2": 1}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        facts = get_avd_facts(_facts_inputs({"testhost1": 1, "testhost2": 2}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 1, "testhost2": 2}
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content({"testhost1": 1, "testhost2": 2}))
+
+
+def test_explicit_ids_swap_existing_allocations_in_reverse_host_order() -> None:
+    with _mock_node_id_pool({"testhost1": 2, "testhost2": 1}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        facts = get_avd_facts(_facts_inputs({"testhost2": 2, "testhost1": 1}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 1, "testhost2": 2}
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content({"testhost1": 1, "testhost2": 2}))
+
+
+def test_explicit_id_cycle_preserves_unaffected_dynamic_allocation() -> None:
+    with _mock_node_id_pool({"testhost1": 1, "testhost2": 2, "testhost3": 3, "testhost4": 7}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        facts = get_avd_facts(_facts_inputs({"testhost1": 2, "testhost2": 3, "testhost3": 1, "testhost4": None}), pool_manager=pool_manager)
+
+        expected = {"testhost3": 1, "testhost1": 2, "testhost2": 3, "testhost4": 7}
+        assert {hostname: fact.id for hostname, fact in facts.items()} == expected
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content(expected))
+
+
+def test_explicit_id_is_reserved_before_new_dynamic_allocation() -> None:
+    with _mock_node_id_pool({}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        # The dynamic node is evaluated first, but must leave ID 1 for the explicit request.
+        facts = get_avd_facts(_facts_inputs({"testhost1": None, "testhost2": 1}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 2, "testhost2": 1}
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content({"testhost2": 1, "testhost1": 2}))
+
+
+def test_new_dynamic_allocation_after_explicit_id() -> None:
+    with _mock_node_id_pool({}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        facts = get_avd_facts(_facts_inputs({"testhost2": 1, "testhost1": None}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 2, "testhost2": 1}
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content({"testhost2": 1, "testhost1": 2}))
+
+
+def test_explicit_id_move_releases_previous_id_for_new_dynamic_node() -> None:
+    with _mock_node_id_pool({"testhost1": 1}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        facts = get_avd_facts(_facts_inputs({"testhost2": None, "testhost1": 2}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 2, "testhost2": 1}
+        assert pool_manager.save_updated_pools() is True
+        mocked_open().write.assert_called_once_with(_node_id_pool_content({"testhost2": 1, "testhost1": 2}))
+
+
+def test_explicit_id_cannot_displace_existing_dynamic_allocation() -> None:
+    with _mock_node_id_pool({"testhost1": 1, "testhost2": 2}) as mocked_open:
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        # The existing dynamic owner must be protected even though it has not been evaluated yet.
+        with pytest.raises(AristaAvdInvalidInputsError, match="testhost2"):
+            get_avd_facts(_facts_inputs({"testhost1": 2, "testhost2": None}), pool_manager=pool_manager)
+
+        mocked_open().write.assert_not_called()

@@ -10,7 +10,7 @@ from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, MutableMapping
+    from collections.abc import Iterable, Mapping, MutableMapping
 
     from pyavd._utils.avd_templar import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
@@ -70,6 +70,9 @@ def get_facts(
     for generator in peer_facts_generators.values():
         generator.update_mlag_groups()
 
+    if pool_manager is not None:
+        _prepare_pools(peer_facts_generators.values(), pool_manager)
+
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
 
@@ -84,6 +87,16 @@ def get_facts(
             raise type(e)(msg, host=host) from e
 
     return all_facts
+
+
+def _prepare_pools(generators: Iterable[EosDesignsFactsGenerator], pool_manager: PoolManager) -> None:
+    """Collect explicit allocation requests for all pool types in one device pass, then reconcile them before generating facts."""
+    for generator in generators:
+        shared_utils = generator.shared_utils
+        if shared_utils.inputs.fabric_numbering.node_id.algorithm == "pool_manager" and (node_id := shared_utils.node_config.id) is not None:
+            pool_manager.prepare_assignment(pool_type="node_id_pools", shared_utils=shared_utils, requested_value=node_id)
+
+    pool_manager.apply_prepared_assignments()
 
 
 def _create_generator_instance(
