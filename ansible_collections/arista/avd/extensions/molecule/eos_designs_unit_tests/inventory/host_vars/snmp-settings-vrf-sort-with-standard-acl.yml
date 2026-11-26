@@ -5,6 +5,11 @@ ipv4_standard_acls:
       - sequence: 10
         action: permit
         source: 10.0.0.14
+  - name: SNMP-DEFAULT-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        source: 10.0.0.15
 
 type: l2leaf
 
@@ -26,3 +31,6 @@ snmp_settings:
     - name: use_default_mgmt_method_vrf
       enable: true
       ipv4_standard_acl: SNMP-VRF-ACL
+    - name: default
+      enable: false
+      ipv4_standard_acl: SNMP-DEFAULT-ACL

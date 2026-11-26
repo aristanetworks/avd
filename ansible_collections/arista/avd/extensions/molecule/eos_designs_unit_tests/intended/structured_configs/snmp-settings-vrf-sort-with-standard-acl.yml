@@ -19,7 +19,10 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
+  ipv4_acl: SNMP-DEFAULT-ACL
   vrfs:
+  - name: default
+    enable: false
   - name: MGMT
     enable: true
     ipv4_acl: SNMP-VRF-ACL
@@ -29,6 +32,11 @@ standard_access_lists:
   - sequence: 10
     action: permit
     source: 10.0.0.14
+- name: SNMP-DEFAULT-ACL
+  entries:
+  - sequence: 10
+    action: permit
+    source: 10.0.0.15
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
