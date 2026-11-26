@@ -12,8 +12,8 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ssh_settings.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ssh_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ssh_settings.vrfs.[].enabled") | Boolean | Required |  |  | Enable SSH in VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "ssh_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 extended access-list name.<br>Mutually exclusive with `ipv4_standard_acl`. Setting both raises an error.<br>If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`, this ACL must be defined in `ipv4_acls` catalog.<br>An error is raised if ACL is not defined under `ipv4_acls`. Field substitution is not supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "ssh_settings.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access-list name.<br>This ACL must be defined in `ipv4_standard_acls` catalog.<br>Mutually exclusive with `ipv4_acl`. Setting both raises an error. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "ssh_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 extended access-list name.<br>For an enabled SSH VRF, when `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled, the access-list must be defined under `ipv4_acls`.<br>Otherwise, no catalog entry is required.<br>An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set.<br>Field substitution is not supported for SSH references. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "ssh_settings.vrfs.[].ipv4_standard_acl") | String |  |  |  | IPv4 standard access-list name. For an enabled SSH VRF, the access-list must be defined under `ipv4_standard_acls`.<br>An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "ssh_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "ssh_settings.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
     | [<samp>&nbsp;&nbsp;client_vrfs</samp>](## "ssh_settings.client_vrfs") | List, items: Dictionary |  |  |  |  |
@@ -43,14 +43,14 @@
           enabled: <bool; required>
 
           # IPv4 extended access-list name.
-          # Mutually exclusive with `ipv4_standard_acl`. Setting both raises an error.
-          # If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`, this ACL must be defined in `ipv4_acls` catalog.
-          # An error is raised if ACL is not defined under `ipv4_acls`. Field substitution is not supported.
+          # For an enabled SSH VRF, when `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled, the access-list must be defined under `ipv4_acls`.
+          # Otherwise, no catalog entry is required.
+          # An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set.
+          # Field substitution is not supported for SSH references.
           ipv4_acl: <str>
 
-          # IPv4 standard access-list name.
-          # This ACL must be defined in `ipv4_standard_acls` catalog.
-          # Mutually exclusive with `ipv4_acl`. Setting both raises an error.
+          # IPv4 standard access-list name. For an enabled SSH VRF, the access-list must be defined under `ipv4_standard_acls`.
+          # An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set.
           ipv4_standard_acl: <str>
 
           # IPv6 access-list name.

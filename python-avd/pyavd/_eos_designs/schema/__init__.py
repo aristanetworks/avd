@@ -2108,10 +2108,12 @@ class EosDesigns(EosDesignsRootModel):
         configure_ssh_settings_vrfs_ipv4_acl_from_catalog: bool
         """
         Available from AVD 6.6.0.
-        When this is set to `true`, the presence of access-list
-        `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
-        An error is raised if the
-        referenced ACL is not defined under `ipv4_acls`.
+        Configure ACLs referenced by `ssh_settings.vrfs[].ipv4_acl` from
+        `ipv4_acls` for enabled SSH VRFs.
+        An error will be raised if the referenced ACL is not defined under
+        `ipv4_acls`.
+        If the referenced ACL is a standard ACL, use `ssh_settings.vrfs[].ipv4_standard_acl`
+        instead.
 
         Default value: `False`
         """
@@ -2282,10 +2284,12 @@ class EosDesigns(EosDesignsRootModel):
                        route prerequisites are met).
                     configure_ssh_settings_vrfs_ipv4_acl_from_catalog:
                        Available from AVD 6.6.0.
-                       When this is set to `true`, the presence of access-list
-                       `ssh_settings.vrfs[].ipv4_acl` in `ipv4_acls` catalog is validated.
-                       An error is raised if the
-                       referenced ACL is not defined under `ipv4_acls`.
+                       Configure ACLs referenced by `ssh_settings.vrfs[].ipv4_acl` from
+                       `ipv4_acls` for enabled SSH VRFs.
+                       An error will be raised if the referenced ACL is not defined under
+                       `ipv4_acls`.
+                       If the referenced ACL is a standard ACL, use `ssh_settings.vrfs[].ipv4_standard_acl`
+                       instead.
 
                 """
 
@@ -54952,19 +54956,20 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_acl: str | None
             """
             IPv4 extended access-list name.
-            Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
-            error.
-            If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
-            this ACL must be defined in `ipv4_acls` catalog.
-            An error is raised if ACL is not defined under
-            `ipv4_acls`. Field substitution is not supported.
+            For an enabled SSH VRF, when
+            `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled, the access-list
+            must be defined under `ipv4_acls`.
+            Otherwise, no catalog entry is required.
+            An error will be raised
+            if both `ipv4_acl` and `ipv4_standard_acl` are set.
+            Field substitution is not supported for SSH
+            references.
             """
             ipv4_standard_acl: str | None
             """
-            IPv4 standard access-list name.
-            This ACL must be defined in `ipv4_standard_acls` catalog.
-            Mutually
-            exclusive with `ipv4_acl`. Setting both raises an error.
+            IPv4 standard access-list name. For an enabled SSH VRF, the access-list must be defined under
+            `ipv4_standard_acls`.
+            An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set.
             """
             ipv6_acl: str | None
             """IPv6 access-list name."""
@@ -55005,17 +55010,18 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: Enable SSH in VRF.
                         ipv4_acl:
                            IPv4 extended access-list name.
-                           Mutually exclusive with `ipv4_standard_acl`. Setting both raises an
-                           error.
-                           If `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is set to `true`,
-                           this ACL must be defined in `ipv4_acls` catalog.
-                           An error is raised if ACL is not defined under
-                           `ipv4_acls`. Field substitution is not supported.
+                           For an enabled SSH VRF, when
+                           `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled, the access-list
+                           must be defined under `ipv4_acls`.
+                           Otherwise, no catalog entry is required.
+                           An error will be raised
+                           if both `ipv4_acl` and `ipv4_standard_acl` are set.
+                           Field substitution is not supported for SSH
+                           references.
                         ipv4_standard_acl:
-                           IPv4 standard access-list name.
-                           This ACL must be defined in `ipv4_standard_acls` catalog.
-                           Mutually
-                           exclusive with `ipv4_acl`. Setting both raises an error.
+                           IPv4 standard access-list name. For an enabled SSH VRF, the access-list must be defined under
+                           `ipv4_standard_acls`.
+                           An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set.
                         ipv6_acl: IPv6 access-list name.
 
                     """
