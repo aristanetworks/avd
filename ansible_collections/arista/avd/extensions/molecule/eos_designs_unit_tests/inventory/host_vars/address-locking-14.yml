@@ -1,0 +1,9 @@
+---
+# Tests auto_dhcp_server_interfaces on an l2leaf MLAG secondary.
+# Same uplink Port-Channel and MLAG Port-Channel as the primary (address-locking-13).
+# Expected address locking dhcp server interfaces: Port-Channel1, Port-Channel3
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  auto_dhcp_server_interfaces: true

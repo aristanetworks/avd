@@ -1,9 +1,9 @@
 ---
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# See https://prek.j178.dev/ for more information.
+# This configuration is executed with prek.
+
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+  - repo: builtin
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
@@ -108,7 +108,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: ef6cf06c079dd6b299dfc720b0f14400c9d168e1  # frozen: v0.17.5
+    rev: 9026c9127e153371d7a78dfcb0c45ae2046a3d10  # frozen: v0.17.6
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -138,9 +138,10 @@ repos:
           - 'pyavd-utils==0.0.14'
           - 'pyavd-utils-gen==0.0.14'
           - 'pytest>=9.2.0'
+          - 'pytest-codspeed>=5.0.4'
           - 'pyyaml>=6.0.3'
           - 'referencing>=0.37.0'
-          - 'ruff==0.17.5'
+          - 'ruff==0.17.6'
           - 'setuptools>=82.0.1'
 
   - repo: https://github.com/pycqa/pylint
@@ -304,7 +305,7 @@ repos:
           - PyYAML>=6.0.3
           - pyavd-utils-gen==0.0.14
           - referencing>=0.37.0
-          - ruff==0.17.5
+          - ruff==0.17.6
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.

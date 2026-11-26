@@ -1,0 +1,20 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: address-locking-auto-dhcp-server-interfaces-no-l2-uplinks
+      id: 101
+      bgp_as: 101
+
+# auto_dhcp_server_interfaces on a standalone l3leaf (no L2 uplinks, no MLAG).
+# Auto-discovery yields no interfaces → must raise an error rather than silently
+# producing a config that EOS would disable address locking enforcement on.
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  auto_dhcp_server_interfaces: true

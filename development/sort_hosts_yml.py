@@ -224,7 +224,7 @@ def process_files(files: set[Path]) -> list[Path]:
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Auto-sort host names and group names in Ansible inventory hosts.yml files.")
-    parser.add_argument("files", nargs="*", type=Path, help="Files to sort (passed by pre-commit)")
+    parser.add_argument("files", nargs="*", type=Path, help="Files to sort (passed by prek)")
     args = parser.parse_args()
 
     # Collect files to process

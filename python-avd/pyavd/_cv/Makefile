@@ -32,7 +32,7 @@ api-models: api-dir
 
 api: api-dir api-models  ## Build/refresh gRPC bindings in ./api
 	@rm -rf $(VENDORPATH)
-	@pre-commit run insert-license --files $(shell find $(APIPATH)/ -name "*.py") || true
+	@prek run insert-license --files $(shell find $(APIPATH)/ -name "*.py") || true
 	@echo "--- done"
 	@echo "If you got here, everything went well."
-	@echo "All the output above is just because we use pre-commit to insert licenses into the generated files."
+	@echo "All the output above is just because we use prek to insert licenses into the generated files."

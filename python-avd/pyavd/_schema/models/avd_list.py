@@ -121,6 +121,10 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
     def extend(self, items: Iterable[T_ItemType]) -> None:
         self._items.extend(items)
 
+    def _has_data(self) -> bool:
+        """Return True if this list is not null and contains at least one item."""
+        return not self._created_from_null and len(self._items) > 0
+
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
         if self._item_type is not Any and issubclass(self._item_type, AvdBase):
