@@ -10,6 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VRF Redistribute Summary](#vrf-redistribute-summary)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -148,6 +149,15 @@
 | DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.9/32 |
+
+### VRF Redistribute Summary
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| DC1-LEAF2A | l3leaf | Tenant_B_OP_Zone | 192.168.255.6 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_B_OP_Zone | 192.168.255.7 | connected |
+| DC1-SVC3A | l3leaf | Tenant_B_OP_Zone | 192.168.255.8 | connected |
+| DC1-SVC3B | l3leaf | Tenant_B_OP_Zone | 192.168.255.9 | connected |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
