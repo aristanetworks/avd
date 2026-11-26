@@ -547,3 +547,16 @@ def test_explicit_id_cannot_displace_existing_dynamic_allocation() -> None:
             get_avd_facts(_facts_inputs({"testhost1": 2, "testhost2": None}), pool_manager=pool_manager)
 
         mocked_open().write.assert_not_called()
+
+
+def test_retry_after_failed_preparation_discards_pending_requests() -> None:
+    with _mock_node_id_pool({}):
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        with pytest.raises(AristaAvdInvalidInputsError, match="testhost1"):
+            get_avd_facts(_facts_inputs({"testhost1": 1, "testhost2": 1}), pool_manager=pool_manager)
+
+        # Neither device requests an explicit ID on retry, so the failed requests must not carry over.
+        facts = get_avd_facts(_facts_inputs({"testhost1": None, "testhost2": None}), pool_manager=pool_manager)
+
+        assert {hostname: fact.id for hostname, fact in facts.items()} == {"testhost1": 1, "testhost2": 2}

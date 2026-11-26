@@ -103,4 +103,12 @@ class PoolManager:
                 pool.collection.changed = True
             for key in requests:
                 pool.assignments[key].accessed = True
+        self.discard_prepared_assignments()
+
+    def discard_prepared_assignments(self) -> None:
+        """
+        Discard all requested assignments which have not been applied.
+
+        Use this to clean up the prepared assignments in case apply fails.
+        """
         self._assignment_requests.clear()

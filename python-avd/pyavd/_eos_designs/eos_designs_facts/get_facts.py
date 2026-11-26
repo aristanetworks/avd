@@ -91,12 +91,15 @@ def get_facts(
 
 def _prepare_pools(generators: Iterable[EosDesignsFactsGenerator], pool_manager: PoolManager) -> None:
     """Collect explicit allocation requests for all pool types in one device pass, then reconcile them before generating facts."""
-    for generator in generators:
-        shared_utils = generator.shared_utils
-        if shared_utils.inputs.fabric_numbering.node_id.algorithm == "pool_manager" and (node_id := shared_utils.node_config.id) is not None:
-            pool_manager.prepare_assignment(pool_type="node_id_pools", shared_utils=shared_utils, requested_value=node_id)
+    try:
+        for generator in generators:
+            shared_utils = generator.shared_utils
+            if shared_utils.inputs.fabric_numbering.node_id.algorithm == "pool_manager" and (node_id := shared_utils.node_config.id) is not None:
+                pool_manager.prepare_assignment(pool_type="node_id_pools", shared_utils=shared_utils, requested_value=node_id)
 
-    pool_manager.apply_prepared_assignments()
+        pool_manager.apply_prepared_assignments()
+    finally:
+        pool_manager.discard_prepared_assignments()
 
 
 def _create_generator_instance(
