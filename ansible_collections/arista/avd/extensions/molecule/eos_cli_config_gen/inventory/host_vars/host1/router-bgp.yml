@@ -1247,6 +1247,9 @@ router_bgp:
     next_hops:
       - ip_address: 2001:db8::2
         lfib_backup_ip_forwarding: true
+      - ip_address: 2001:db8::4
+      - ip_address: 2001:db8::1
+        lfib_backup_ip_forwarding: true
       - ip_address: 2001:db8::3
   address_family_link_state:
     bgp:

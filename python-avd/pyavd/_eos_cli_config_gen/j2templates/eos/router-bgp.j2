@@ -2121,12 +2121,14 @@ router bgp {{ router_bgp.as }}
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv6_labeled_unicast.next_hops is arista.avd.defined %}
-{%             for next_hop in router_bgp.address_family_ipv6_labeled_unicast.next_hops %}
-{%                 set next_hop_cli = "next-hop " ~ next_hop.ip_address ~ " originate" %}
-{%                 if next_hop.lfib_backup_ip_forwarding is arista.avd.defined(true) %}
-{%                     set next_hop_cli = next_hop_cli ~ " lfib-backup ip-forwarding" %}
-{%                 endif %}
+{%             for lfib_backup_ip_forwarding, next_hops in router_bgp.address_family_ipv6_labeled_unicast.next_hops | groupby('lfib_backup_ip_forwarding', default=false) %}
+{%                 for next_hop in next_hops | arista.avd.natural_sort(sort_key='ip_address') %}
+{%                     set next_hop_cli = "next-hop " ~ next_hop.ip_address ~ " originate" %}
+{%                     if lfib_backup_ip_forwarding %}
+{%                         set next_hop_cli = next_hop_cli ~ " lfib-backup ip-forwarding" %}
+{%                     endif %}
       {{ next_hop_cli }}
+{%                 endfor %}
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv6_labeled_unicast.lfib_entry_installation_skipped is arista.avd.defined(true) %}
