@@ -23,6 +23,13 @@ management_eapi:
     - name: default
       enabled: true
       ipv4_standard_acl: ACL_EAPI_IPv4_STANDARD
+    # Reuse both catalog ACLs across enabled VRFs to verify each definition is rendered only once.
+    - name: VRF_EXTENDED
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_4
+    - name: VRF_STANDARD
+      enabled: true
+      ipv4_standard_acl: ACL_EAPI_IPv4_STANDARD
     - name: VRF_Disable
       enabled: false
       ipv4_standard_acl: ACL_NOT_IN_CATALOG

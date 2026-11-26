@@ -31,6 +31,10 @@ management_api_http:
     ipv6_access_group: ACL_EAPI_IPv6_3
   - name: default
     access_group: ACL_EAPI_IPv4_STANDARD
+  - name: VRF_EXTENDED
+    access_group: ACL_EAPI_IPv4_4
+  - name: VRF_STANDARD
+    access_group: ACL_EAPI_IPv4_STANDARD
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

@@ -480,16 +480,16 @@ class AvdStructuredConfigBaseProtocol(
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.{context}")
             self.structured_config_utils._validate_ipv4_acl_exclusion(vrf.ipv4_acl, vrf.ipv4_standard_acl, "ipv4_acl", "ipv4_standard_acl", context)
 
-            enable_vrf = EosCliConfigGen.ManagementApiHttp.EnableVrfsItem(name=vrf_name)
+            enable_vrf = EosCliConfigGen.ManagementApiHttp.EnableVrfsItem(name=vrf_name, ipv6_access_group=vrf.ipv6_acl)
             if vrf.ipv4_standard_acl is not None:
                 self.structured_config_utils._set_ipv4_standard_acl(vrf.ipv4_standard_acl)
-                enable_vrf._update(access_group=vrf.ipv4_standard_acl, ipv6_access_group=vrf.ipv6_acl)
+                enable_vrf.access_group = vrf.ipv4_standard_acl
             elif vrf.ipv4_acl is not None and self.inputs.avd_design_future.configure_management_eapi_ipv4_acl_from_catalog:
-                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=context)
+                acl = self.shared_utils.get_ipv4_acl(name=vrf.ipv4_acl, context=f"{context}.ipv4_acl")
                 self.structured_config_utils._set_ipv4_acl(acl)
-                enable_vrf._update(access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+                enable_vrf.access_group = vrf.ipv4_acl
             else:
-                enable_vrf._update(access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+                enable_vrf.access_group = vrf.ipv4_acl
             self.structured_config.management_api_http.enable_vrfs.append(enable_vrf)
 
     @structured_config_contributor
