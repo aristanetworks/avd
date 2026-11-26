@@ -1539,7 +1539,7 @@ router ospf 701
 | LSA Warning Limit | - |
 | LSA Exceed Action Warn | - |
 
-#### VRF: WARN_ONLY
+#### VRF: WARN_FALSE
 
 | Parameter | Value |
 | --------- | ----- |
@@ -1554,6 +1554,22 @@ router ospf 701
 | LSA Incident Count Clear Timeout | - |
 | LSA Warning Limit | 65 percent |
 | LSA Exceed Action Warn | False |
+
+#### VRF: WARN_ONLY
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| LSA Limit | 8000 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 65 percent |
+| LSA Exceed Action Warn | True |
 
 #### VRF: data
 
@@ -1691,8 +1707,11 @@ router ospfv3 vrf Test_VRF
    passive-interface default
    lsa limit 4500 disabled-time 7 minutes incident-count limit 2 incident-count clear-timeout 5 minutes
 !
-router ospfv3 vrf WARN_ONLY
+router ospfv3 vrf WARN_FALSE
    lsa limit 8000 warning limit 65 percent
+!
+router ospfv3 vrf WARN_ONLY
+   lsa limit 8000 warning limit 65 percent exceed-action warn
 !
 router ospfv3 vrf data
    router-id 2.2.2.2
