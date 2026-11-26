@@ -1,9 +1,9 @@
 ---
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# See https://prek.j178.dev/ for more information.
+# This configuration is executed with prek.
+
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+  - repo: builtin
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
@@ -217,7 +217,8 @@ repos:
         language: python
         files: ^(ansible_collections/arista/avd/|tools/generate_collection_files\.py$)
         pass_filenames: false
-        additional_dependencies: ['ansible-core==2.16.0']
+        # Let pip select a supported Ansible release compatible with the hook's Python.
+        additional_dependencies: ['ansible-core>=2.16.0,<2.23.0']
 
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
@@ -227,7 +228,7 @@ repos:
         language: python
         types: [python]
         # Issue with Ansible 2.19 and the doc extractor.
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core~=2.18.20']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
@@ -237,7 +238,7 @@ repos:
           --markdown "docs/plugins/Filter_plugins/"
         language: python
         types_or: [python, yaml]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core~=2.18.20']
         files: ansible_collections/arista/avd/plugins/filter/
         exclude: ^(ansible_collections/arista/avd/plugins/filter/deprecated_filters.py)$
 
@@ -248,7 +249,7 @@ repos:
           --markdown "docs/plugins/Lookup_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core~=2.18.20']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
@@ -258,7 +259,7 @@ repos:
           --markdown "docs/plugins/Test_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core~=2.18.20']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
@@ -268,7 +269,7 @@ repos:
           --markdown "docs/plugins/Vars_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core>=2.16.0,<2.19.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.11', 'ansible-core~=2.18.20']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: metaschema

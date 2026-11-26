@@ -161,6 +161,32 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         """
         return self.__dict__.get(name, Undefined)
 
+    def _has_attr_value(self, name: str) -> bool:
+        """
+        Return True if the field has a non-null, non-empty configured value without triggering schema defaults.
+
+        `Undefined`, `None`, null models (`_created_from_null`), empty models, empty lists, and empty dicts return False.
+        Falsy scalars such as `False` and `0` return True.
+        """
+        value = self.__dict__.get(name, Undefined)
+        if value is None or value is Undefined:
+            return False
+        if isinstance(value, AvdBase):
+            return value._has_data()
+        if isinstance(value, dict):
+            return len(value) > 0
+        return True
+
+    def _has_data(self) -> bool:
+        """
+        Return True if this model is not null and has at least one field with a configured value.
+
+        Does not trigger schema defaults and ignores `_custom_data`.
+        """
+        if self._created_from_null:
+            return False
+        return any(self._has_attr_value(field) for field in self.__dict__)
+
     def __repr__(self) -> str:
         """Returns a repr with all the fields that are set including any nested models."""
         cls_name = self.__class__.__name__
