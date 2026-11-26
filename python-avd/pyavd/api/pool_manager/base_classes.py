@@ -10,8 +10,9 @@ from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 from yaml import CSafeDumper, CSafeLoader, dump, load
 
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
+
+from ._errors import InvalidPoolValueError, PoolAssignmentConflictError
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from typing import Any
 
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
+    from pyavd._errors import AristaAvdInvalidInputsError
 
 T_ValueType = TypeVar("T_ValueType", int, str)
 
@@ -80,31 +82,26 @@ class Pool(Generic[T_ValueType]):
         """
         Build assignments with explicit requests reserved, without modifying the pool.
 
-        Release the previous assignments of all requesting keys together to allow swaps and cycles.
+        Retain requests matching existing assignments without revalidating them.
+        Release the previous assignments of all changed requests together to allow swaps and cycles.
         All other assignments are retained, including stale entries until they are pruned when saving.
-        Invalid values, duplicate requests, and conflicts with retained assignments raise an error.
+        New and changed requests are validated against the retained assignments and each other.
         """
-        assignments = {key: assignment for key, assignment in self.assignments.items() if key not in requested_assignments}
+        changed_requests = {key: value for key, value in requested_assignments.items() if key not in self.assignments or self.assignments[key].value != value}
+        if not changed_requests:
+            return self.assignments
+
+        assignments = {key: assignment for key, assignment in self.assignments.items() if key not in changed_requests}
         assigned_values = {assignment.value: assignment.key for assignment in assignments.values()}
 
-        for key, value in requested_assignments.items():
+        for key, value in changed_requests.items():
             if not self._is_value_valid(value):
-                msg = f"Cannot reserve '{value}' for '{key}' in '{self.collection.pools_key}' with key '{self.pool_key}': the value is not valid."
-                raise AristaAvdInvalidInputsError(msg)
+                raise InvalidPoolValueError(key, value, self.pool_key)
 
             if value in assigned_values:
-                msg = (
-                    f"Cannot reserve '{value}' for '{key}' in '{self.collection.pools_key}' with key '{self.pool_key}': "
-                    f"the value is already assigned to '{assigned_values[value]}'."
-                )
-                raise AristaAvdInvalidInputsError(msg)
+                raise PoolAssignmentConflictError(key, value, self.pool_key, assigned_values[value])
 
-            existing_assignment = self.assignments.get(key)
-            assignments[key] = (
-                existing_assignment
-                if existing_assignment is not None and existing_assignment.value == value
-                else self.collection.assignment_cls(key=key, value=value)
-            )
+            assignments[key] = self.collection.assignment_cls(key=key, value=value)
             assigned_values[value] = key
 
         return assignments
@@ -346,6 +343,10 @@ class PoolCollection(ABC, Generic[T_ValueType]):
 
         self.changed = False
         return True
+
+    @abstractmethod
+    def _assignment_error(self, error: InvalidPoolValueError | PoolAssignmentConflictError) -> AristaAvdInvalidInputsError:
+        """Translate a reservation failure into an input error with user-facing text and host context."""
 
     @staticmethod
     @abstractmethod

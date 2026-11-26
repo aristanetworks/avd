@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, ClassVar, Literal
 
 from yaml import CSafeDumper
 
+from ._errors import InvalidPoolValueError, PoolAssignmentConflictError
 from .node_id_pools import NodeIdPoolCollection
 
 if TYPE_CHECKING:
@@ -95,8 +96,14 @@ class PoolManager:
         requests[key] = requested_value
 
     def apply_prepared_assignments(self) -> None:
-        """Validate all requested assignments before applying any, preserving unrelated allocations and allowing explicit swaps."""
-        prepared_assignments = [(pool, pool.prepare_assignments(requests), requests) for pool, requests in self._assignment_requests.values()]
+        """Validate new and changed requests before applying any, preserving unrelated allocations and allowing explicit swaps."""
+        prepared_assignments = []
+        for pool, requests in self._assignment_requests.values():
+            try:
+                assignments = pool.prepare_assignments(requests)
+            except (InvalidPoolValueError, PoolAssignmentConflictError) as e:
+                raise pool.collection._assignment_error(e) from e
+            prepared_assignments.append((pool, assignments, requests))
         for pool, assignments, requests in prepared_assignments:
             if pool.assignments != assignments:
                 pool.assignments = assignments

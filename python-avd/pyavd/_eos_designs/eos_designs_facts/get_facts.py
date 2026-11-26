@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts.generator import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping, MutableMapping
@@ -98,6 +98,11 @@ def _prepare_pools(generators: Iterable[EosDesignsFactsGenerator], pool_manager:
                 pool_manager.prepare_assignment(pool_type="node_id_pools", shared_utils=shared_utils, requested_value=node_id)
 
         pool_manager.apply_prepared_assignments()
+    except AristaAvdInvalidInputsError as e:
+        if e.host is None:
+            raise
+        msg = f"{str(e).removesuffix('.')} for host '{e.host}'."
+        raise type(e)(msg, host=e.host) from e
     finally:
         pool_manager.discard_prepared_assignments()
 
