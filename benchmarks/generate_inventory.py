@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 """Generate synthetic AVD inventory for large fabric benchmarking."""
 
-from random import Random
 from typing import Any
 
 FABRIC_VARS = {"fabric_name": "FABRIC"}
@@ -141,9 +140,8 @@ def generate_l3leaf_var(number: int, spines: list[str]) -> dict:
     pair_number = (number + 1) // 2
     first_node_id = 2 * pair_number - 1
     group_name = f"L3LEAF_PAIR{pair_number}"
-    r = Random(group_name)  # noqa: S311
-    spines = spines.copy()
-    r.shuffle(spines)
+    first_spine = (2 * (pair_number - 1)) % len(spines)
+    spines = [spines[first_spine], spines[(first_spine + 1) % len(spines)]]
     return {
         "type": "l3leaf",
         "l3leaf": {
