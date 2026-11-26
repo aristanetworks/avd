@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from pyavd._utils.json_path_to_string import json_path_to_string
@@ -113,15 +114,33 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
+    @dataclass(frozen=True, slots=True)
+    class _Details:
+        """Immutable context describing two conflicting objects."""
+
+        context: str
+        context_item_a: str
+        context_item_b: str
+
     def __init__(self, context: str, context_item_a: str, context_item_b: str) -> None:
         super().__init__(self._init_context(context, context_item_a, context_item_b))
 
     def _init_context(self, context: str, context_item_a: str, context_item_b: str) -> str:
-        """Store the duplicate details and build their diagnostic."""
-        self.context = context
-        self.context_item_a = context_item_a
-        self.context_item_b = context_item_b
+        """Store the immutable duplicate details and build their diagnostic."""
+        self._details = self._Details(context, context_item_a, context_item_b)
         return f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
+
+    @property
+    def context(self) -> str:
+        return self._details.context
+
+    @property
+    def context_item_a(self) -> str:
+        return self._details.context_item_a
+
+    @property
+    def context_item_b(self) -> str:
+        return self._details.context_item_b
 
     def as_host_error(self, hostname: str) -> AristaAvdHostDuplicateDataError:
         """Rebuild this error with a hostname, preserving the original duplicate details."""
