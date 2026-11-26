@@ -36,7 +36,7 @@ def get_avd_facts(
         pool_manager:
             PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
-            Used for dynamic ID allocations using the "pool_manager" feature.
+            Used for dynamic node-ID allocations and persistent management IPv4 allocation with algorithm "auto".
         digital_twin:
             PREVIEW: Optional flag to enable digital-twin mode.
 

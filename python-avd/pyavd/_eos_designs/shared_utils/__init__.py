@@ -77,6 +77,7 @@ class SharedUtilsProtocol(
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
     digital_twin: bool
+    _allocated_mgmt_ip: str | None
 
 
 class SharedUtils(SharedUtilsProtocol):
@@ -109,4 +110,5 @@ class SharedUtils(SharedUtilsProtocol):
         self.peer_facts = peer_facts
         self.pool_manager = pool_manager
         self.digital_twin = digital_twin
+        self._allocated_mgmt_ip = None
         super().__init__()

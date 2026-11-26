@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from itertools import filterfalse
 from typing import TYPE_CHECKING, Generic, TypeVar, cast
@@ -15,8 +14,6 @@ from pyavd.j2filters import natural_sort
 if TYPE_CHECKING:
     from pathlib import Path
     from typing import Any
-
-    from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 T_ValueType = TypeVar("T_ValueType", int, str)
 
@@ -35,13 +32,13 @@ class PoolAssignment(Generic[T_ValueType]):
 
 @dataclass
 class Pool(Generic[T_ValueType]):
-    """One Pool of resources indexed by str. Currently only supporting a pool of Integers."""
+    """One pool of resources indexed by str, with integer allocation as the default policy."""
 
     collection: PoolCollection[T_ValueType]
     pool_key: str
     assignments: dict[str, PoolAssignment[T_ValueType]]
 
-    def _is_value_available(self, value: T_ValueType) -> bool:
+    def _is_value_available(self, value: T_ValueType, key: str | None = None) -> bool:  # noqa: ARG002 - Specialized pools also check ownership.
         if self.collection.value_type is int and isinstance(value, int):
             existing_ids = {assignment.value for assignment in self.assignments.values()}
             return not (
@@ -85,10 +82,10 @@ class Pool(Generic[T_ValueType]):
         """
         if key not in self.assignments:
             # No existing assignment. Use the requested value if given and available. Otherwise use next available.
-            new_assignment_value = requested_value if requested_value is not None and self._is_value_available(requested_value) else self._next_available()
+            new_assignment_value = requested_value if requested_value is not None and self._is_value_available(requested_value, key) else self._next_available()
             self.assignments[key] = self.collection.assignment_cls(key=key, value=new_assignment_value, accessed=True)
             self.collection.changed = True
-        elif requested_value is not None and requested_value != self.assignments[key].value and self._is_value_available(requested_value):
+        elif requested_value is not None and requested_value != self.assignments[key].value and self._is_value_available(requested_value, key):
             # Existing assignment but not with the requested value. Change the existing assignment to the requested_value.
             self.assignments[key] = self.collection.assignment_cls(key=key, value=requested_value, accessed=True)
             self.collection.changed = True
@@ -212,7 +209,7 @@ class Pool(Generic[T_ValueType]):
 
 
 @dataclass
-class PoolCollection(ABC, Generic[T_ValueType]):
+class PoolCollection(Generic[T_ValueType]):
     """
     Collection of similar Pool instances indexed by a str.
 
@@ -229,23 +226,40 @@ class PoolCollection(ABC, Generic[T_ValueType]):
     min_value: T_ValueType = field(init=False)
     max_value: T_ValueType | None = None
     changed: bool = False
+    remove_stale_assignments: bool = True
 
     def __post_init__(self) -> None:
         """Try to load data from the pools_file into _pools. If the file is missing, we just set a blank pools."""
-        if not self.pools_file.exists():
-            self._pools = {}
-            return
-
-        file_data = load(self.pools_file.read_text(encoding="UTF-8"), Loader=CSafeLoader)
-        if not isinstance(file_data, dict) or self.pools_key not in file_data:
-            self._pools = {}
-            return
-
         try:
-            self._pools = self.load(file_data[self.pools_key])
-        except (TypeError, KeyError, ValueError) as e:
-            msg = f"An error occurred during parsing of '{self.pools_file}': {e.__class__.__name__}: {e}"
-            raise TypeError(msg) from e
+            self._pools = self._load_file_data(self._read_file_data())
+            self.validate()
+        except (TypeError, KeyError, ValueError) as error:
+            raise self._invalid_state_error(error) from error
+
+    def _read_file_data(self) -> Any:
+        """Read the collection's file. Resource types can specialize parsing and validation."""
+        if not self.pools_file.exists():
+            return None
+        return load(self.pools_file.read_text(encoding="UTF-8"), Loader=CSafeLoader)
+
+    def _load_file_data(self, file_data: Any) -> dict[str, Pool[T_ValueType]]:
+        """Interpret the file envelope before loading its pools."""
+        if not isinstance(file_data, dict) or self.pools_key not in file_data:
+            return {}
+        return self.load(file_data[self.pools_key])
+
+    def _invalid_state_error(self, error: Exception) -> Exception:
+        msg = f"An error occurred during parsing of '{self.pools_file}': {error.__class__.__name__}: {error}"
+        return TypeError(msg)
+
+    @staticmethod
+    def _pool_key_from_dict(pool_key_dict: dict) -> str:  # noqa: ARG004 - Hook for collections supporting legacy keys.
+        """Interpret legacy pool keys for collection types that support them."""
+        msg = "This pool collection does not support legacy pool keys."
+        raise TypeError(msg)
+
+    def validate(self) -> None:
+        """Validate retained resources, including when there are no changes to save."""
 
     def load(self, data: Any) -> dict[str, Pool[T_ValueType]]:
         """Returns pools from file data."""
@@ -290,51 +304,33 @@ class PoolCollection(ABC, Generic[T_ValueType]):
         """
         Save data if anything changed. Returns a boolean telling if anything was changed.
 
-        Calls self._remove_stale_assignments first to ensure we save the cleaned data.
+        Prunes unaccessed assignments first when the collection's retention policy enables cleanup.
 
         Data is sorted to ensure a consistent layout.
         """
-        self.__remove_stale_assignments()
+        self.validate()
+        if self.remove_stale_assignments:
+            self.__remove_stale_assignments()
         if not self.changed:
             return False
 
+        self._write_file(self._serialize_file(dumper_cls))
+        self.changed = False
+        return True
+
+    def _serialize_file(self, dumper_cls: type) -> str:
+        """Serialize the collection using its deterministic pool/assignment mapping."""
+        return FILE_HEADER + dump({self.pools_key: self.as_dict()}, Dumper=dumper_cls, sort_keys=False)
+
+    def _write_file(self, content: str) -> None:
+        """Write serialized state. Resource types can specialize the persistence policy."""
         if not self.pools_file.exists():
             # Try to create the dir and file.
             self.pools_file.parent.mkdir(mode=0o775, parents=True, exist_ok=True)
             self.pools_file.touch(mode=0o664)
 
         try:
-            self.pools_file.write_text(FILE_HEADER + dump({self.pools_key: self.as_dict()}, Dumper=dumper_cls, sort_keys=False))
+            self.pools_file.write_text(content)
         except OSError as e:
             msg = f"An error occurred during writing of the AVD Pool Manager file '{self.pools_file}': {e}"
             raise type(e)(msg) from e
-
-        self.changed = False
-        return True
-
-    @staticmethod
-    @abstractmethod
-    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
-        """Returns the pool key to use for this device."""
-
-    @staticmethod
-    @abstractmethod
-    def _pool_key_from_dict(pool_key_dict: dict) -> str:
-        """
-        Returns the formatted pool key generated from legacy pool key dict format.
-
-        Caveat: This will always use the default template string to generate the pool names.
-
-        Raises:
-            KeyError: If any of the legacy fields are missing. Caught by the caller.
-        """
-
-    @staticmethod
-    @abstractmethod
-    def _pools_file_from_shared_utils(output_dir: Path, shared_utils: SharedUtilsProtocol) -> Path:
-        """Returns the file to use for this device."""
-
-    @staticmethod
-    @abstractmethod
-    def _assignment_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
-        """Returns the assignment key to use for this device."""

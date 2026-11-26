@@ -93,7 +93,7 @@ class NtpMixin(Protocol):
         match source_address:
             case "use_mgmt_interface_ipv4":
                 required_vrf = self.shared_utils.mgmt_interface_vrf
-                ip_prefix = self.shared_utils.node_config.mgmt_ip
+                ip_prefix = self.shared_utils.oob_mgmt_ip
                 missing_variable = "mgmt_ip"
             case "use_mgmt_interface_ipv6":
                 required_vrf = self.shared_utils.mgmt_interface_vrf

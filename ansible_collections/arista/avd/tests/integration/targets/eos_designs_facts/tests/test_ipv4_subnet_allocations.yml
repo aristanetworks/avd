@@ -1,0 +1,9 @@
+---
+- name: Verify management IPv4 allocation across builds and state reloads
+  ansible.builtin.command:
+    argv:
+      - "{{ ansible_playbook_python }}"
+      - "{{ role_path }}/files/ipv4_subnet_allocations.py"
+  delegate_to: localhost
+  run_once: true
+  changed_when: false
