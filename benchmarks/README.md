@@ -65,12 +65,10 @@ tokenless CodSpeed upload, and no write-capable checkout token. It runs on:
 There is no scheduled or manually dispatched GitHub Actions run. The 150-device
 case is available through the local commands below.
 
-CI runs three jobs: simulation for all 15 default cases, memory for the 14
-molecule cases, and memory for the 15-device synthetic workflow. The synthetic
-memory case is isolated while its missing allocation profile is investigated;
-its memory measurement is still reported. Each job uploads results separately.
-Memory jobs install `libc6-dbg` for native symbol resolution and also report peak
-physical memory on supported runners.
+CI runs all 15 default cases in two parallel jobs: simulation and memory.
+Each job uploads results separately. The memory job installs `libc6-dbg` for
+native symbol resolution and also reports peak physical memory on supported
+runners.
 
 ## Local Usage
 

@@ -25,26 +25,15 @@ env:
 
 jobs:
   benchmarks:
-    name: CodSpeed benchmarks (${{ matrix.suite }})
+    name: CodSpeed benchmarks (${{ matrix.mode }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - suite: simulation
-            mode: simulation
-            targets: |-
-              benchmarks/test_molecule_scenarios.py
-              benchmarks/test_large_fabric_scaling.py
-          - suite: memory-main
-            mode: memory
-            targets: benchmarks/test_molecule_scenarios.py
-          - suite: memory-scaling
-            mode: memory
-            targets: benchmarks/test_large_fabric_scaling.py::test_large_fabric_full_workflow_benchmark[15_devices]
+        mode: [simulation, memory]
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.suite }}
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.mode }}
       cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
@@ -78,10 +67,7 @@ jobs:
 
       - name: Run benchmarks
         uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
-        env:
-          BENCHMARK_TARGETS: ${{ matrix.targets }}
         with:
           mode: ${{ matrix.mode }}
           run: |
-            mapfile -t benchmark_targets <<< "$BENCHMARK_TARGETS"
-            python -m pytest --codspeed "${benchmark_targets[@]}" -m "not benchmark_scale" -q
+            python -m pytest --codspeed benchmarks -m "not benchmark_scale" -q
