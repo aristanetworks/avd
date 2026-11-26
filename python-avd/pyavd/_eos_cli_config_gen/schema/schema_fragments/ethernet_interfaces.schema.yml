@@ -1779,7 +1779,7 @@ keys:
                   type: bool
                   description: |
                     Enable port security in shutdown mode.
-                    When true, takes precedence over `violation.mode`.
+                    When true, takes precedence over `violation.mode` for enabling port security.
                 mac_address_maximum:
                   type: dict
                   description: Maximum number of MAC addresses allowed on the interface.
@@ -1797,6 +1797,7 @@ keys:
                   description: |
                     Configure the violation mode. EOS defaults to 'shutdown'.
                     To configure 'protect' mode, omit `enabled`.
+                    When `violation.mode` is 'protect', `vlans` and `vlan_default_mac_address_maximum` are ignored.
                     When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
                   keys:
                     mode:

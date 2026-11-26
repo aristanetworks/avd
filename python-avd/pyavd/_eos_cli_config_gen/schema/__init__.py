@@ -14173,7 +14173,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool | None
                 """
                 Enable port security in shutdown mode.
-                When true, takes precedence over `violation.mode`.
+                When true, takes precedence over `violation.mode` for
+                enabling port security.
                 """
                 mac_address_maximum: MacAddressMaximum
                 """
@@ -14186,6 +14187,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Configure the violation mode. EOS defaults to 'shutdown'.
                 To configure 'protect' mode, omit
                 `enabled`.
+                When `violation.mode` is 'protect', `vlans` and `vlan_default_mac_address_maximum` are
+                ignored.
                 When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
                 Subclass of AvdModel.
                 """
@@ -14214,7 +14217,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled:
                                Enable port security in shutdown mode.
-                               When true, takes precedence over `violation.mode`.
+                               When true, takes precedence over `violation.mode` for
+                               enabling port security.
                             mac_address_maximum:
                                Maximum number of MAC addresses allowed on the interface.
 
@@ -14223,6 +14227,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Configure the violation mode. EOS defaults to 'shutdown'.
                                To configure 'protect' mode, omit
                                `enabled`.
+                               When `violation.mode` is 'protect', `vlans` and `vlan_default_mac_address_maximum` are
+                               ignored.
                                When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
                                Subclass of AvdModel.
                             vlan_default_mac_address_maximum: Default maximum MAC addresses for all VLANs on this interface.
@@ -39948,7 +39954,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool | None
                 """
                 Enable port security in shutdown mode.
-                When true, takes precedence over `violation.mode`.
+                When true, takes precedence over `violation.mode` for
+                enabling port security.
                 """
                 mac_address_maximum: MacAddressMaximum
                 """
@@ -39961,6 +39968,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Configure the violation mode. EOS defaults to 'shutdown'.
                 To configure 'protect' mode, omit
                 `enabled`.
+                When `violation.mode` is 'protect', `vlans` and `vlan_default_mac_address_maximum` are
+                ignored.
                 When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
                 Subclass of AvdModel.
                 """
@@ -39989,7 +39998,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled:
                                Enable port security in shutdown mode.
-                               When true, takes precedence over `violation.mode`.
+                               When true, takes precedence over `violation.mode` for
+                               enabling port security.
                             mac_address_maximum:
                                Maximum number of MAC addresses allowed on the interface.
 
@@ -39998,6 +40008,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Configure the violation mode. EOS defaults to 'shutdown'.
                                To configure 'protect' mode, omit
                                `enabled`.
+                               When `violation.mode` is 'protect', `vlans` and `vlan_default_mac_address_maximum` are
+                               ignored.
                                When `enabled` is true, protect-mode configuration, including `protect_log`, is ignored.
                                Subclass of AvdModel.
                             vlan_default_mac_address_maximum: Default maximum MAC addresses for all VLANs on this interface.
