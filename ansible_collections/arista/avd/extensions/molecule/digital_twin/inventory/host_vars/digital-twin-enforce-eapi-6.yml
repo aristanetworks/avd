@@ -6,7 +6,7 @@ l2leaf:
   nodes:
     - name: digital-twin-enforce-eapi-6
       id: 1
-      mgmt_ip: 192.168.0.6/32
+      mgmt_ip: 192.168.0.11/32
 
 digital_twin:
   environment: act
