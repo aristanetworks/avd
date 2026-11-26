@@ -28284,9 +28284,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         authentication: Authentication
         """Subclass of AvdModel."""
         ip_access_group_in: str | None
-        """Standard ACL Name."""
+        """IPv4 standard/extended ACL Name."""
         ipv6_access_group_in: str | None
-        """Standard IPv6 ACL Name."""
+        """IPv6 standard/extended ACL Name."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
         cipher: Cipher
@@ -28350,8 +28350,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     authentication: Subclass of AvdModel.
-                    ip_access_group_in: Standard ACL Name.
-                    ipv6_access_group_in: Standard IPv6 ACL Name.
+                    ip_access_group_in: IPv4 standard/extended ACL Name.
+                    ipv6_access_group_in: IPv6 standard/extended ACL Name.
                     idle_timeout: Idle timeout in minutes.
                     cipher:
                        Cryptographic ciphers for SSH to use.

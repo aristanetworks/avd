@@ -126839,37 +126839,41 @@ class EosDesigns(EosDesignsRootModel):
     `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
     profiles.
     They will only be configured on devices where they are in use.
+    They can also be referenced
+    using `ssh_settings.vrfs[].ipv4_acl` when
+    `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled.
+    Field substitution
+    is not supported for `ssh_settings` references.
 
-    The substitution is useful
-    when assigning the same access-list on multiple interfaces where certain fields require unique
-    values.
-    When using substitution, the interface name will be appended to the ACL name.
+    The substitution is useful when assigning the same
+    access-list on multiple interfaces where certain fields require unique values.
+    When using
+    substitution, the interface name will be appended to the ACL name.
 
-    The
-    "interface_ip" substitution field is resolved per interface type:
-    - For SVIs: resolved from
-    `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-    - For network services L3
-    interfaces: resolved from the node's entry in `ip_addresses`.
-    - For network services L3 port-
-    channels: resolved from `ip_address`.
-    - For node type L3 interfaces and L3 port-channels: resolved
-    from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-    If
-    the required field is not set, the substitution will fail with an error.
-
-    The "peer_ip" substitution
+    The "interface_ip" substitution
     field is resolved per interface type:
-    - For SVIs: not supported. Substitution will fail with an
-    error if used.
-    - For network services L3 interfaces and L3 port-channels: not supported.
-    Substitution will fail with an error if used.
-    - For node type L3 interfaces and L3 port-channels:
-    resolved from `peer_ip`.
-    If `peer_ip` is not set on the interface, the substitution will fail with
-    an error.
+    - For SVIs: resolved from `ip_address`. If not set,
+    `ip_address_virtual` is used as a fallback.
+    - For network services L3 interfaces: resolved from the
+    node's entry in `ip_addresses`.
+    - For network services L3 port-channels: resolved from `ip_address`.
+    - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and
+    `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+    If the required field is not set, the
+    substitution will fail with an error.
 
-    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    The "peer_ip" substitution field is resolved per interface
+    type:
+    - For SVIs: not supported. Substitution will fail with an error if used.
+    - For network
+    services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if
+    used.
+    - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+    If `peer_ip` is
+    not set on the interface, the substitution will fail with an error.
+
+    Subclass of AvdIndexedList with
+    `Ipv4AclsItem` items. Primary key is `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -129126,37 +129130,41 @@ class EosDesigns(EosDesignsRootModel):
                    `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
                    profiles.
                    They will only be configured on devices where they are in use.
+                   They can also be referenced
+                   using `ssh_settings.vrfs[].ipv4_acl` when
+                   `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog` is enabled.
+                   Field substitution
+                   is not supported for `ssh_settings` references.
 
-                   The substitution is useful
-                   when assigning the same access-list on multiple interfaces where certain fields require unique
-                   values.
-                   When using substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful when assigning the same
+                   access-list on multiple interfaces where certain fields require unique values.
+                   When using
+                   substitution, the interface name will be appended to the ACL name.
 
-                   The
-                   "interface_ip" substitution field is resolved per interface type:
-                   - For SVIs: resolved from
-                   `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-                   - For network services L3
-                   interfaces: resolved from the node's entry in `ip_addresses`.
-                   - For network services L3 port-
-                   channels: resolved from `ip_address`.
-                   - For node type L3 interfaces and L3 port-channels: resolved
-                   from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-                   If
-                   the required field is not set, the substitution will fail with an error.
-
-                   The "peer_ip" substitution
+                   The "interface_ip" substitution
                    field is resolved per interface type:
-                   - For SVIs: not supported. Substitution will fail with an
-                   error if used.
-                   - For network services L3 interfaces and L3 port-channels: not supported.
-                   Substitution will fail with an error if used.
-                   - For node type L3 interfaces and L3 port-channels:
-                   resolved from `peer_ip`.
-                   If `peer_ip` is not set on the interface, the substitution will fail with
-                   an error.
+                   - For SVIs: resolved from `ip_address`. If not set,
+                   `ip_address_virtual` is used as a fallback.
+                   - For network services L3 interfaces: resolved from the
+                   node's entry in `ip_addresses`.
+                   - For network services L3 port-channels: resolved from `ip_address`.
+                   - For node type L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and
+                   `dhcp_ip` is set for the interface, `dhcp_ip` is used.
+                   If the required field is not set, the
+                   substitution will fail with an error.
 
-                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   The "peer_ip" substitution field is resolved per interface
+                   type:
+                   - For SVIs: not supported. Substitution will fail with an error if used.
+                   - For network
+                   services L3 interfaces and L3 port-channels: not supported. Substitution will fail with an error if
+                   used.
+                   - For node type L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+                   If `peer_ip` is
+                   not set on the interface, the substitution will fail with an error.
+
+                   Subclass of AvdIndexedList with
+                   `Ipv4AclsItem` items. Primary key is `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in

@@ -1,0 +1,32 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-ssh-settings-acl
+      id: 43
+      inband_mgmt_ip: 192.168.0.1/24
+      inband_mgmt_interface: Vlan123
+
+default_mgmt_method: inband
+
+ipv4_acls:
+  - name: ACL-SSH
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: any
+
+digital_twin:
+  environment: act
+  fabric:
+    act_ensure_eapi_access: true
+
+ssh_settings:
+  enabled: true
+  idle_timeout: 0
+  vrfs:
+    - name: default
+      enabled: true
+      ipv4_acl: ACL-SSH

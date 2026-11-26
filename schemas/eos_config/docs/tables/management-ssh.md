@@ -12,8 +12,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;empty_passwords</samp>](## "management_ssh.authentication.empty_passwords") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>deny</code><br>- <code>permit</code> | Permit or deny empty passwords for SSH authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_ssh.authentication.protocols") | List, items: String |  |  |  | Allowed SSH authentication methods. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.authentication.protocols.[]") | String |  |  | Valid Values:<br>- <code>keyboard-interactive</code><br>- <code>password</code><br>- <code>public-key</code> |  |
-    | [<samp>&nbsp;&nbsp;ip_access_group_in</samp>](## "management_ssh.ip_access_group_in") | String |  |  |  | Standard ACL Name. |
-    | [<samp>&nbsp;&nbsp;ipv6_access_group_in</samp>](## "management_ssh.ipv6_access_group_in") | String |  |  |  | Standard IPv6 ACL Name. |
+    | [<samp>&nbsp;&nbsp;ip_access_group_in</samp>](## "management_ssh.ip_access_group_in") | String |  |  |  | IPv4 standard/extended ACL Name. |
+    | [<samp>&nbsp;&nbsp;ipv6_access_group_in</samp>](## "management_ssh.ipv6_access_group_in") | String |  |  |  | IPv6 standard/extended ACL Name. |
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "management_ssh.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
     | [<samp>&nbsp;&nbsp;cipher</samp>](## "management_ssh.cipher") | List, items: String |  |  |  | Cryptographic ciphers for SSH to use. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.cipher.[]") | String |  |  |  |  |
@@ -56,10 +56,10 @@
         protocols:
           - <str; "keyboard-interactive" | "password" | "public-key">
 
-      # Standard ACL Name.
+      # IPv4 standard/extended ACL Name.
       ip_access_group_in: <str>
 
-      # Standard IPv6 ACL Name.
+      # IPv6 standard/extended ACL Name.
       ipv6_access_group_in: <str>
 
       # Idle timeout in minutes.

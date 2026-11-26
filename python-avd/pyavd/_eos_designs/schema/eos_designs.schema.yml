@@ -4229,6 +4229,11 @@ keys:
 
       They will only be configured on devices where they are in use.
 
+      They can also be referenced using `ssh_settings.vrfs[].ipv4_acl` when `avd_design_future.configure_ssh_settings_vrfs_ipv4_acl_from_catalog`
+      is enabled.
+
+      Field substitution is not supported for `ssh_settings` references.
+
 
       The substitution is useful when assigning the same access-list on multiple interfaces
       where certain fields require unique values.

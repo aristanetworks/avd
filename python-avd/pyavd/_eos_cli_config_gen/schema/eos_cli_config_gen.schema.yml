@@ -9845,10 +9845,10 @@ keys:
             description: Allowed SSH authentication methods.
       ip_access_group_in:
         type: str
-        description: Standard ACL Name.
+        description: IPv4 standard/extended ACL Name.
       ipv6_access_group_in:
         type: str
-        description: Standard IPv6 ACL Name.
+        description: IPv6 standard/extended ACL Name.
       idle_timeout:
         type: int
         min: 0
