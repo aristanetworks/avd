@@ -72,4 +72,4 @@ jobs:
         with:
           mode: ${{ matrix.mode }}
           run: |
-            python -m pytest --codspeed benchmarks -m "not benchmark_scale" -q
+            python -m pytest --codspeed benchmarks -q
