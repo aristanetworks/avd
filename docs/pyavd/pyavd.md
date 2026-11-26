@@ -50,6 +50,8 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Installation
 
+PyAVD supports Python **3.11-3.15**. The [Ansible collection](../installation/collection-installation.md) supports Python 3.15 with `ansible-core` 2.22.
+
 !!! warning "Python 3.10 is no longer supported"
 
     Upgrade to Python 3.11 or later before installing or upgrading PyAVD.

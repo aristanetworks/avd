@@ -1,0 +1,12 @@
+---
+# Tests auto_dhcp_server_interfaces merged with manually specified dhcp_server_interfaces on an l2leaf MLAG primary.
+# Auto-detected: Port-Channel1 (uplink) + Port-Channel3 (MLAG)
+# Manual: Ethernet5 (deduplicated merge)
+# Expected address locking dhcp server interfaces: Port-Channel1, Port-Channel3, Ethernet5
+avd_design_future:
+  fix_address_locking_dhcp_server_interfaces: true
+
+address_locking_settings:
+  auto_dhcp_server_interfaces: true
+  dhcp_server_interfaces:
+    - Ethernet5

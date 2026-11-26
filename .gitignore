@@ -31,7 +31,6 @@ coverage.xml
 build/
 dist/
 *.egg-info/
-.tox/
 .pytest_cache/
 # Ansible collection test artifacts
 /ansible_collections/arista/avd/tests/integration/inventory/
@@ -40,9 +39,9 @@ dist/
 .python-version
 ## direnv
 .envrc
-## pyenv
+## uv
 uv.lock
-## .vscode/*
+## VSCode
 .vscode/
 
 # OSX
@@ -51,7 +50,7 @@ uv.lock
 # Checksum of schemas
 *schema.sha1
 
-# Temporary files creating during CI workflow
+# Temporary files created during CI workflow
 /tmp-requirements-minimum.txt
 
 # Hash files created when running pyavd from source

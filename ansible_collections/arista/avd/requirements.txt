@@ -11,4 +11,5 @@ pyavd==6.6.0.dev0
 pyavd-utils==0.0.14
 python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
+pyyaml>=6.0.4; python_version >= "3.15"
 requests>=2.27.0
