@@ -11,8 +11,6 @@ name: Build universal container
       - .github/workflows/container_build_universal.yml
       - ansible_collections/arista/avd/**
   workflow_dispatch:
-    branches:
-      - devel
   release:
     types: [published]
 
