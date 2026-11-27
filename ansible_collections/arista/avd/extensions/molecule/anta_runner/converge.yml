@@ -15,6 +15,8 @@
         name: arista.avd.anta_runner
       vars:
         anta_runner_dry_run: true
+        # A null status filter means no exclusions.
+        anta_runner_report_exclude_statuses: null
         avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/default_run"
         anta_reports_dir: "{{ root_dir }}/anta/reports/default_run"
       run_once: true
@@ -25,6 +27,8 @@
         name: arista.avd.anta_runner
       vars:
         anta_runner_dry_run: true
+        # Preserve the same behavior for the legacy input.
+        anta_report_exclude_statuses: null
         avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/filtered_run"
         anta_reports_dir: "{{ root_dir }}/anta/reports/filtered_run"
         # When a device is part of multiple filters, the last filter will be applied so the order is important

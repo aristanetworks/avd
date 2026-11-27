@@ -38,18 +38,26 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 **Tasks:**
 
 1. Take a backup of the running configuration before configuration is replaced (pre) - (optional, default false).
-   1. Destination: `{{ pre_running_config_backup_dir }}/{{ pre_running_config_backup_filename }}`
+   1. Destination: `{{ eos_config_deploy_eapi_pre_running_config_backup_dir }}/{{ eos_config_deploy_eapi_pre_running_config_backup_filename }}`
 2. Replace configuration on device with intended EOS configuration. If changed, saves to startup-config, and notifies handler to backup configuration.
 3. Backup Configuration after the configuration is replaced (post) with handler.
-   1. Destination: `{{ post_running_config_backup_dir }}/{{ post_running_config_backup_filename }}`.
+   1. Destination: `{{ eos_config_deploy_eapi_post_running_config_backup_dir }}/{{ eos_config_deploy_eapi_post_running_config_backup_filename }}`.
 
 ## Default Variables
 
-``` yaml
---8<--
-ansible_collections/arista/avd/roles/eos_config_deploy_eapi/defaults/main.yml
---8<--
+```yaml
+avd_root_dir: "{{ inventory_dir }}"
+avd_output_dir_name: "intended"
+avd_output_dir: "{{ avd_root_dir }}/{{ avd_output_dir_name }}"
+avd_eos_config_dir_name: "configs"
+avd_eos_config_dir: "{{ avd_output_dir }}/{{ avd_eos_config_dir_name }}"
+avd_pre_running_config_backup_dir_name: "config_backup"
+avd_post_running_config_backup_dir_name: "config_backup"
 ```
+
+Existing unprefixed inputs remain supported silently. If both names are set, the
+`avd_*` value wins. Use `avd_eos_config_dir` and the other `avd_*` paths for
+cross-role reuse; generic defaults are not guaranteed to be exported after a role.
 
 ## Requirements
 

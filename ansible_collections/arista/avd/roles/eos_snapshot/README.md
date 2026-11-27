@@ -49,28 +49,32 @@ The following default variables are defined, and can be modified as desired:
 ```yaml
 ---
 
-root_dir: '{{ inventory_dir }}'
-snapshots_backup_dir_name: 'commands'
-snapshots_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+avd_root_dir: "{{ inventory_dir }}"
+avd_snapshots_backup_dir_name: "snapshots"
+avd_snapshots_backup_dir: "{{ avd_root_dir }}/{{ avd_snapshots_backup_dir_name }}"
 
 # list of desired formats. Supported values are markdown, json and text.
 # text: one file per device and show command
 # markdown: one report per device
 # json: one report per fabric
 # yaml: one report per fabric
-output_format:
- - text
- - markdown
+eos_snapshot_output_formats:
+  - text
+  - markdown
  # - json
  # - yaml
 
-commands_list:
+eos_snapshot_commands:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description
   - show version
   - show running-config
 ```
+
+The previous `root_dir`, `snapshots_backup_dir`, and `snapshots_backup_dir_name`
+inputs remain supported silently. If both names are set, the `avd_*` value wins.
+Use `avd_snapshots_backup_dir` when sharing the snapshot path with another role.
 
 ## Requirements
 
@@ -131,13 +135,13 @@ ansible_become_method: enable
 ```
 
 ```yaml
-output_format:
- - text
- - markdown
+eos_snapshot_output_formats:
+  - text
+  - markdown
  # - json
  # - yaml
 
-commands_list:
+eos_snapshot_commands:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description

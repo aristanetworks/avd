@@ -6,7 +6,9 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  custom_templates:
+  eos_cli_config_gen_custom_templates:
+    documentation_options:
+      table: custom-templates
     type: list
     display_name: Extensibility with Custom Templates
     description: |
@@ -22,7 +24,14 @@ keys:
       - The order of custom templates in the list can be important if they overlap.
       - It is recommended to use a `!` delimiter at the top of each custom template.
 
-      Add `custom_templates` to group/host variables:
+      Add `eos_cli_config_gen_custom_templates` to group/host variables:
     items:
       type: str
       description: Template relative path below playbook directory.
+  custom_templates:
+    documentation_options:
+      table: legacy-role-settings
+    type: list
+    description: Legacy alias for `eos_cli_config_gen_custom_templates`.
+    items:
+      type: str

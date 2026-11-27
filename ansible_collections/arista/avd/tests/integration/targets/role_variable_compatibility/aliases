@@ -1,0 +1,13 @@
+context/controller
+gather_facts/no
+needs/file/roles/anta_runner/defaults/main/directories.yml
+needs/file/roles/anta_runner/defaults/main/main.yml
+needs/file/roles/build_output_folders/defaults/main.yml
+needs/file/roles/cv_deploy/defaults/main/directories.yml
+needs/file/roles/cv_deploy/defaults/main/main.yml
+needs/file/roles/eos_cli_config_gen/defaults/main/main.yml
+needs/file/roles/eos_cli_config_gen/defaults/main/output_directories.yml
+needs/file/roles/eos_config_deploy_eapi/defaults/main.yml
+needs/file/roles/eos_designs/defaults/main/main.yml
+needs/file/roles/eos_designs/defaults/main/output_directories.yml
+needs/file/roles/eos_snapshot/defaults/main.yml
