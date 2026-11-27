@@ -52,35 +52,55 @@ def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True
             raise ValueError(msg)
         val = item.get(sort_key)
         if val is None:
-            if strict and default_value is None and sort_key not in item:
-                msg = f"Missing key '{sort_key}' in item to sort {item}."
-                raise KeyError(msg)
-            val = default_value if default_value is not None else item
+            val = _default_sort_value(item, sort_key, strict, default_value)
     elif isinstance(item, Namespace):
         if sort_key is None:
             msg = f"'natural_sort' requires 'sort_key' to be set when used for a Namespace: {item} "
             raise ValueError(msg)
         val = getattr(item, sort_key, None)
         if val is None:
-            if strict and default_value is None and not hasattr(item, sort_key):
-                msg = f"Missing attribute '{sort_key}' in item to sort {item}."
-                raise KeyError(msg)
-            val = default_value if default_value is not None else f"~{str(item).lstrip('<')}"
+            val = _default_sort_value(item, sort_key, strict, default_value)
     else:
         val = item
 
-    text = str(val)
+    return _scan_key(str(val), ignore_case)
+
+
+def _default_sort_value(item: Mapping | Namespace, sort_key: str, strict: bool, default_value: Any) -> Any:
+    """Apply the default or preserve missing-key diagnostics and fallback ordering."""
+    if default_value is not None:
+        return default_value
+    if isinstance(item, Mapping):
+        if strict and sort_key not in item:
+            msg = f"Missing key '{sort_key}' in item to sort {item}."
+            raise KeyError(msg)
+        return item
+    if strict and not hasattr(item, sort_key):
+        msg = f"Missing attribute '{sort_key}' in item to sort {item}."
+        raise KeyError(msg)
+    return f"~{str(item).lstrip('<')}"
+
+
+def _scan_key(text: str, ignore_case: bool) -> list[int | str]:
+    """Build a natural sort key from decimal-digit and text runs."""
     parts: list[int | str] = []
     start = 0
     in_digits = False
     for index, char in enumerate(text):
         is_digit = char.isdecimal()
-        if is_digit != in_digits:
-            fragment = text[start:index]
-            parts.append(int(fragment) if in_digits else fragment.lower() if ignore_case else fragment)
-            start = index
-            in_digits = is_digit
+        if is_digit == in_digits:
+            continue
+        fragment = text[start:index]
+        if in_digits:
+            parts.append(int(fragment))
+        else:
+            parts.append(fragment.lower() if ignore_case else fragment)
+        start = index
+        in_digits = is_digit
 
     fragment = text[start:]
-    parts.append(int(fragment) if in_digits else fragment.lower() if ignore_case else fragment)
+    if in_digits:
+        parts.append(int(fragment))
+    else:
+        parts.append(fragment.lower() if ignore_case else fragment)
     return parts
