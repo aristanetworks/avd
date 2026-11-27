@@ -42,44 +42,50 @@
       "minimumReleaseAge": "0 days"
     },
     {
-      "description": "Maintain Python runtime, optional, and build dependencies",
+      "description": "Maintain Python runtime and optional dependencies",
       "matchManagers": ["pep621"],
       "matchDepTypes": [
         "project.dependencies",
-        "project.optional-dependencies",
-        "build-system.requires"
+        "project.optional-dependencies"
       ],
       "labels": ["type: dependencies"],
       "commitMessagePrefix": "Bump(requirements): ",
       "rangeStrategy": "auto"
     },
     {
-      "description": "Group non-major Python runtime and build updates",
+      "description": "Group non-major Python runtime updates",
       "matchManagers": ["pep621"],
       "matchDepTypes": [
         "project.dependencies",
-        "project.optional-dependencies",
-        "build-system.requires"
+        "project.optional-dependencies"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "Python runtime dependencies",
       "groupSlug": "python-runtime"
     },
+    // Preserve tooling minimums and widen supported ranges when needed.
     {
-      "description": "Maintain Python development dependencies",
+      "description": "Maintain Python development and build dependencies",
       "matchManagers": ["pep621"],
-      "matchDepTypes": ["dependency-groups"],
+      "matchDepTypes": ["dependency-groups", "build-system.requires"],
       "labels": ["type: dependencies"],
       "commitMessagePrefix": "CI(requirements): ",
-      "rangeStrategy": "bump"
+      "rangeStrategy": "widen"
     },
     {
       "description": "Group non-major Python tooling updates",
       "matchManagers": ["pep621"],
-      "matchDepTypes": ["dependency-groups"],
+      "matchDepTypes": ["dependency-groups", "build-system.requires"],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "Python tooling dependencies",
       "groupSlug": "python-tooling"
+    },
+    {
+      "description": "Keep all legacy Molecule dependencies under manual control",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
+      "matchJsonata": ["managerData.depGroup = 'molecule-legacy'"],
+      "enabled": false
     },
     {
       "description": "Keep supported Python versions under manual control",
@@ -113,6 +119,23 @@
       "matchDepTypes": ["pre-commit-python"],
       "labels": ["type: dependencies"],
       "commitMessagePrefix": "CI: ",
+      "rangeStrategy": "bump"
+    },
+    // Propose support for new Ansible releases without dropping older Python/Ansible combinations.
+    {
+      "description": "Widen supported Ansible ranges without raising their minimum",
+      "matchManagers": ["pep621", "pre-commit"],
+      "matchPackageNames": ["ansible-core"],
+      "rangeStrategy": "widen"
+    },
+    // Keep the doc extractor on compatible 2.18.x releases until its newer-Ansible issues are fixed.
+    // See https://github.com/xlab-steampunk/ansible-doc-extractor/issues/34.
+    {
+      "description": "Keep doc extractor Ansible updates within 2.18",
+      "matchManagers": ["pre-commit"],
+      "matchPackageNames": ["ansible-core"],
+      "matchCurrentValue": "/^~=2\\.18\\./",
+      "allowedVersions": ">=2.18.0,<2.19.0",
       "rangeStrategy": "bump"
     },
     {

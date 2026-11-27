@@ -1,0 +1,25 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-future-acl-wrong-catalog
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_acl: FILTER
+
+avd_design_future:
+  configure_management_eapi_ipv4_acl_from_catalog: true
+
+ipv4_standard_acls:
+  - name: FILTER
+    entries:
+      - sequence: 10
+        action: permit
+        source: 192.0.2.0/24

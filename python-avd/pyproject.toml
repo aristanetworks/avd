@@ -15,6 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Testing",
 ]
@@ -30,6 +31,7 @@ dependencies = [
     "pyavd-utils==0.0.14",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
+    "pyyaml>=6.0.4; python_version >= '3.15'",
     "requests>=2.27.0",
 ]
 
@@ -53,8 +55,9 @@ requires = [
     "jsonschema-rs>=0.46.0",
     "pyavd-utils-gen==0.0.14",
     "pyyaml>=6.0.0",
+    "pyyaml>=6.0.4; python_version >= '3.15'",
     "referencing>=0.35.0",
-    "ruff==0.17.5",
+    "ruff==0.17.6",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -80,7 +83,7 @@ include = ["pyavd*"]
 version = {attr = "pyavd.__version__"}
 
 [dependency-groups]
-# helping pdm generate the flat list of requirements in pre-commit
+# helping pdm generate the flat list of requirements in prek
 self = [
   "pyavd==6.6.0.dev0"
 ]

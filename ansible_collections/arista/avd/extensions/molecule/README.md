@@ -19,38 +19,51 @@ Molecule provides support for testing with multiple instances, operating systems
 
 ## Scenario
 
-Current molecule implementation provides the following scenarios:
+CI runs the following Molecule scenarios for Ansible integration:
 
+- ansible_only
+- anta_runner
+- digital_twin_containerlab
+- digital_twin_containerlab_negative_tests
 - eos_cli_config_gen
 - eos_cli_config_gen_deprecated_vars
-- eos_designs_deprecated_vars
-- eos_designs-l2ls
-- eos_designs-mpls-isis-sr-ldp
-- eos_designs-twodc-5stage-clos
 - eos_designs_unit_tests
-- evpn_underlay_ebgp_overlay_ebgp
-- evpn_underlay_isis_overlay_ibgp
-- evpn_underlay_ospf_overlay_ebgp
-- evpn_underlay_rfc5549_overlay_ebgp
-- example-campus-fabric
-- example-dual-dc-l3ls
-- example-isis-ldp-ipvpn
-- example-l2ls-fabric
-- example-single-dc-l3ls
-- example-single-dc-l3ls-ipv6
+- example-cv-pathfinder
+- howto
 
 ## E2E-only projects
 
 The following projects retain their location under this directory during the transition to PyAVD E2E testing. Run them with the [PyAVD E2E tool](../../../../../docs/contribution/e2e-test/using-the-tool.md#run-selected-projects):
 
+- [digital_twin](./digital_twin/): Regular and ACT Digital Twin generation.
+- [eos_designs_deprecated_vars](./eos_designs_deprecated_vars/): Deprecated design inputs and generated artifacts.
+- [eos_designs-l2ls](./eos_designs-l2ls/): L2 leaf-spine designs.
+- [eos_designs-mpls-isis-sr-ldp](./eos_designs-mpls-isis-sr-ldp/): MPLS designs using IS-IS, segment routing, and LDP.
+- [eos_designs-twodc-5stage-clos](./eos_designs-twodc-5stage-clos/): Two-datacenter five-stage Clos designs and Digital Twin outputs.
+- [evpn_underlay_ebgp_overlay_ebgp](./evpn_underlay_ebgp_overlay_ebgp/): EVPN with eBGP underlay and overlay.
+- [evpn_underlay_isis_overlay_ibgp](./evpn_underlay_isis_overlay_ibgp/): EVPN with IS-IS underlay and iBGP overlay.
+- [evpn_underlay_ospf_overlay_ebgp](./evpn_underlay_ospf_overlay_ebgp/): EVPN with OSPF underlay and eBGP overlay.
+- [evpn_underlay_rfc5549_overlay_ebgp](./evpn_underlay_rfc5549_overlay_ebgp/): EVPN with RFC 5549 underlay and eBGP overlay.
 - [eos_cli_config_gen_negative_unit_tests](./eos_cli_config_gen_negative_unit_tests/): EOS structured configuration validation and CLI rendering failures.
 - [eos_designs_negative_unit_tests](./eos_designs_negative_unit_tests/): AVD design validation and generation failures.
 
-When migrating another project to E2E-only execution, move its entry from the Molecule scenario list above to this list.
+The example projects below run through their existing E2E configurations under `examples/`; their former `example-*` Molecule wrappers have been removed:
+
+- [campus-fabric](../../examples/campus-fabric/)
+- [dual-dc-l3ls](../../examples/dual-dc-l3ls/)
+- [isis-ldp-ipvpn](../../examples/isis-ldp-ipvpn/)
+- [l2ls-fabric](../../examples/l2ls-fabric/)
+- [single-dc-l3ls](../../examples/single-dc-l3ls/)
+- [single-dc-l3ls-ipv6](../../examples/single-dc-l3ls-ipv6/)
+- [single-dc-multipod-l3ls](../../examples/single-dc-multipod-l3ls/)
+
+Run `make e2e` from the repository root to regenerate all E2E projects. The local `refresh-facts` target uses `MOLECULE_SCENARIOS.txt` and only runs the remaining listed Molecule scenarios.
+
+When migrating another project to E2E-only execution, remove its Molecule wrappers and registry entry, and document its E2E location here.
 
 ## How to use scenario
 
-Molecule scenarios are used to validate role execution and coverage of data-model. When you update a role or data-model, the scenario must be updated to reflect your changes and validate it is not breaking other supported scenarios.
+Molecule scenarios validate Ansible role execution and integration behavior. E2E projects validate the data model and generated artifacts. Update the relevant tests when changing either layer.
 
 ```bash
 # Go to test folder
@@ -98,72 +111,23 @@ When you update a template in `eos_cli_config_gen`, you should report a test cas
 git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
 ```
 
-> If you have `pre-commit` enabled, use `--no-verify` trigger to avoid any content change in your commit
+> If you have `prek` enabled, use `--no-verify` trigger to avoid any content change in your commit
 
 #### If you are updating `eos_designs`
 
 ##### Update related to underlay or overlay protocol
 
-In such case, copy an existing scenario to create a new one:
-
-```bash
-# Move to AVD collection
-$ cd ansible_collections/arista/avd/
-
-# Run Molecule scenario
-$ molecule test --scenario-name eos_cli_config_gen
-```
+Update the closest existing E2E project, such as `evpn_underlay_ebgp_overlay_ebgp`, `evpn_underlay_isis_overlay_ibgp`, or `eos_designs-mpls-isis-sr-ldp`. These directories contain inventories and intended artifacts, but no longer contain Molecule scenarios.
 
 ##### General eos_designs update
 
-If your update is not related to underlay or overlay protocol, edit scenario `evpn_underlay_ebgp_overlay_ebgp` and edit group_vars accordingly. Then run molecule to validate it is working as expected
+Update the appropriate E2E project's inventory and regenerate its artifacts from the repository root, for example:
 
-1. Create your scenario
+```shell
+uv run --no-project tools/e2e-test-avd.py \
+  ansible_collections/arista/avd/extensions/molecule/evpn_underlay_ebgp_overlay_ebgp
+```
 
-    ```bash
-    # Move to AVD collection
-    $ cd ansible_collections/arista/avd/
+Inspect the generated diagnostics and complete Git diff, including added and deleted artifacts. Captured build failures do not necessarily produce a nonzero exit status. See the [E2E instructions](../../../../../docs/contribution/e2e-test/using-the-tool.md) for selecting projects, adding cases, and reviewing results.
 
-    # Copy existing molecule scenario
-    $ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
-    ```
-
-2. Edit files from your scenario's inventory
-
-    ```bash
-    $ cd molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>/inventory
-
-    # Edit group_vars
-    $ vim group_vars/DC1_FABRIC.yml
-    ```
-
-3. Run your molecule scenario for validation
-
-    ```bash
-    # Move to AVD collection
-    $ cd ../../../
-
-    # Run Molecule scenario
-    $ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
-    ```
-
-4. Edit CI file to include your scenario
-
-    ```yaml
-    #.github/workflows/molecule-eos-designs.yml
-    jobs:
-      molecule:
-        name: Run CI test for eos_designs
-        runs-on: ubuntu-latest
-        strategy:
-          fail-fast: true
-          matrix:
-            avd_scenario:
-              - 'evpn_underlay_ebgp_overlay_ebgp'
-              - 'evpn_underlay_ospf_overlay_ebgp'
-              - 'evpn_underlay_isis_overlay_ebgp'
-              - 'evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>'
-              - 'upgrade_v1.0_to_v1.1'
-    ```
-
-Once you are ready, commit your change and push to Github.
+For changes to Ansible-specific behavior, use the remaining Molecule scenarios or focused [Ansible integration tests](../../../../../docs/contribution/development-tooling.md#ansible-test).

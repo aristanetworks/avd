@@ -1,0 +1,60 @@
+---
+# Minimal topology for testing auto_dhcp_server_interfaces with L2 uplinks.
+# Tests coverage for address_locking.py lines that handle:
+#   - port-channel uplinks (uplink.channel_group_id)
+#   - l2-ethernet uplinks (uplink.type == "underlay_l2")
+#   - MLAG (self.shared_utils.mlag)
+
+# Minimal upstream l3leaf (no EVPN, no tenants - exists only to give l2leafs valid uplink peers)
+l3leaf:
+  defaults:
+    bgp_as: 65042
+    loopback_ipv4_pool: 192.168.60.0/24
+    vtep_loopback_ipv4_pool: 192.168.61.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    uplink_switches: []
+    uplink_interfaces: []
+  nodes:
+    - name: address-locking-uplink-parent
+      id: 1
+
+# l2leaf test nodes
+l2leaf:
+  defaults:
+    uplink_switches:
+      - address-locking-uplink-parent
+    uplink_interfaces:
+      - Ethernet1
+    mlag_interfaces:
+      - Ethernet3
+      - Ethernet4
+    mlag_peer_vlan: 4094
+    mlag_peer_ipv4_pool: 10.100.0.0/24
+    spanning_tree_mode: mstp
+  node_groups:
+    # MLAG pair with port-channel uplinks: tests channel_group_id branch + MLAG branch.
+    # Ethernet1 → Port-Channel1 (channel_group_id=1), MLAG → Port-Channel3 (from Ethernet3)
+    # Expected address locking: dhcp server interface Port-Channel1, Port-Channel3
+    - group: ADDRESS_LOCKING_MLAG_PAIR
+      mlag: true
+      nodes:
+        - name: address-locking-13
+          id: 1
+          uplink_switch_interfaces:
+            - Ethernet1
+        - name: address-locking-14
+          id: 2
+          uplink_switch_interfaces:
+            - Ethernet2
+    # Standalone l2leaf with l2-ethernet uplinks: tests underlay_l2 branch.
+    # Expected address locking: dhcp server interface Ethernet1
+    - group: ADDRESS_LOCKING_L2ETH
+      mlag: false
+      uplink_type: l2-ethernet
+      uplink_interfaces:
+        - Ethernet1
+      nodes:
+        - name: address-locking-15
+          id: 3
+          uplink_switch_interfaces:
+            - Ethernet5

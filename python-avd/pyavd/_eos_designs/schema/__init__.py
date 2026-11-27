@@ -1770,6 +1770,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str},
             "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
+            "auto_dhcp_server_interfaces": {"type": bool, "default": False},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
@@ -1789,7 +1790,7 @@ class EosDesigns(EosDesignsRootModel):
           - Any other string will be used directly as the local interface.
         When
         `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
-        exclusive with `dhcp_server_interfaces`.
+        exclusive with `dhcp_server_interfaces` and `auto_dhcp_server_interfaces`.
         """
         dhcp_server_interfaces: DhcpServerInterfaces
         """
@@ -1798,10 +1799,26 @@ class EosDesigns(EosDesignsRootModel):
         `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
         ignored.
         When enabled, this setting is mutually exclusive with `local_interface`.
-        Requires EOS
-        version 4.36 or later.
+        When
+        `auto_dhcp_server_interfaces` is also enabled, the interfaces from this list are merged with the
+        auto-detected interfaces.
+        Requires EOS version 4.36 or later.
 
         Subclass of AvdList with `str` items.
+        """
+        auto_dhcp_server_interfaces: bool
+        """
+        When enabled, automatically populates the DHCP server interfaces with all L2 uplinks (Ethernet or
+        Port-Channel) and the MLAG Port-Channel (if applicable).
+        Requires
+        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+        ignored.
+        When enabled, this setting is mutually exclusive with `local_interface`.
+        Any interfaces
+        manually specified in `dhcp_server_interfaces` are merged with the auto-detected interfaces.
+        Requires EOS version 4.36 or later.
+
+        Default value: `False`
         """
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
@@ -1821,6 +1838,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 local_interface: str | UndefinedType | None = Undefined,
                 dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
+                auto_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | UndefinedType | None = Undefined,
                 leases: Leases | UndefinedType = Undefined,
@@ -1846,17 +1864,29 @@ class EosDesigns(EosDesignsRootModel):
                          - Any other string will be used directly as the local interface.
                        When
                        `avd_design_future.fix_address_locking_dhcp_server_interfaces` is `true`, this setting is mutually
-                       exclusive with `dhcp_server_interfaces`.
+                       exclusive with `dhcp_server_interfaces` and `auto_dhcp_server_interfaces`.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
                        Requires
                        `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
                        ignored.
                        When enabled, this setting is mutually exclusive with `local_interface`.
-                       Requires EOS
-                       version 4.36 or later.
+                       When
+                       `auto_dhcp_server_interfaces` is also enabled, the interfaces from this list are merged with the
+                       auto-detected interfaces.
+                       Requires EOS version 4.36 or later.
 
                        Subclass of AvdList with `str` items.
+                    auto_dhcp_server_interfaces:
+                       When enabled, automatically populates the DHCP server interfaces with all L2 uplinks (Ethernet or
+                       Port-Channel) and the MLAG Port-Channel (if applicable).
+                       Requires
+                       `avd_design_future.fix_address_locking_dhcp_server_interfaces: true`. Otherwise this setting is
+                       ignored.
+                       When enabled, this setting is mutually exclusive with `local_interface`.
+                       Any interfaces
+                       manually specified in `dhcp_server_interfaces` are merged with the auto-detected interfaces.
+                       Requires EOS version 4.36 or later.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
@@ -1874,6 +1904,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_inband_mgmt_ip_dhcp": {"type": bool, "default": False},
             "allow_recursive_profile_inheritance": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "configure_management_eapi_ipv4_acl_from_catalog": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
             "fix_address_locking_dhcp_server_interfaces": {"type": bool, "default": False},
             "fix_match_ipv6_prefix_list_on_mlag_route_map": {"type": bool, "default": False},
@@ -1931,6 +1962,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        configure_management_eapi_ipv4_acl_from_catalog: bool
+        """
+        Available from AVD 6.6.0.
+        Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from
+        `ipv4_acls` for enabled eAPI VRFs.
+        An error will be raised if the referenced ACL is not defined
+        under `ipv4_acls`.
+        If the referenced ACL is a standard ACL, use
+        `management_eapi.vrfs[].ipv4_standard_acl` instead.
+
+        Default value: `False`
+        """
         consistent_uplink_vlans: bool
         """
         Available from AVD 6.2.0.
@@ -1944,9 +1987,10 @@ class EosDesigns(EosDesignsRootModel):
         fix_address_locking_dhcp_server_interfaces: bool
         """
         Available from AVD 6.4.0.
-        Fix support for `address_locking_settings.dhcp_server_interfaces`.
-        When
-        enabled, `address_locking_settings.dhcp_server_interfaces` and
+        Fix support for `address_locking_settings.dhcp_server_interfaces` and
+        `address_locking_settings.auto_dhcp_server_interfaces`.
+        When enabled, `address_locking_settings.dhcp
+        _server_interfaces`/`address_locking_settings.auto_dhcp_server_interfaces` and
         `address_locking_settings.local_interface` are mutually exclusive.
 
         Default value: `False`
@@ -2126,6 +2170,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_inband_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 allow_recursive_profile_inheritance: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                configure_management_eapi_ipv4_acl_from_catalog: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
                 fix_address_locking_dhcp_server_interfaces: bool | UndefinedType = Undefined,
                 fix_match_ipv6_prefix_list_on_mlag_route_map: bool | UndefinedType = Undefined,
@@ -2170,6 +2215,14 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf:
                        Available from AVD 6.2.0.
                        Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    configure_management_eapi_ipv4_acl_from_catalog:
+                       Available from AVD 6.6.0.
+                       Configure ACLs referenced by `management_eapi.vrfs[].ipv4_acl` from
+                       `ipv4_acls` for enabled eAPI VRFs.
+                       An error will be raised if the referenced ACL is not defined
+                       under `ipv4_acls`.
+                       If the referenced ACL is a standard ACL, use
+                       `management_eapi.vrfs[].ipv4_standard_acl` instead.
                     consistent_uplink_vlans:
                        Available from AVD 6.2.0.
                        Always configure Port-Channel uplinks with consistent 'switchport trunk
@@ -2178,9 +2231,10 @@ class EosDesigns(EosDesignsRootModel):
                        'uplink_switches'.
                     fix_address_locking_dhcp_server_interfaces:
                        Available from AVD 6.4.0.
-                       Fix support for `address_locking_settings.dhcp_server_interfaces`.
-                       When
-                       enabled, `address_locking_settings.dhcp_server_interfaces` and
+                       Fix support for `address_locking_settings.dhcp_server_interfaces` and
+                       `address_locking_settings.auto_dhcp_server_interfaces`.
+                       When enabled, `address_locking_settings.dhcp
+                       _server_interfaces`/`address_locking_settings.auto_dhcp_server_interfaces` and
                        `address_locking_settings.local_interface` are mutually exclusive.
                     fix_match_ipv6_prefix_list_on_mlag_route_map:
                        Available from AVD 6.4.0.
@@ -30696,7 +30750,13 @@ class EosDesigns(EosDesignsRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enabled": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv4_standard_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+            }
             name: str
             """
             VRF name.
@@ -30717,7 +30777,24 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             """Enable/disable Management eAPI for this VRF."""
             ipv4_acl: str | None
-            """IPv4 access-list name."""
+            """
+            IPv4 extended access-list name.
+            For an enabled eAPI VRF, when
+            `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog` is enabled, the access-list must
+            be defined under `ipv4_acls`.
+            Otherwise, no catalog entry is required.
+            An error will be raised if
+            both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+            Field substitution is not
+            supported for eAPI references.
+            """
+            ipv4_standard_acl: str | None
+            """
+            IPv4 standard access-list name. For an enabled eAPI VRF, the access-list must be defined under
+            `ipv4_standard_acls`.
+            An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for
+            an enabled eAPI VRF.
+            """
             ipv6_acl: str | None
             """IPv6 access-list name."""
 
@@ -30729,6 +30806,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | UndefinedType | None = Undefined,
+                    ipv4_standard_acl: str | UndefinedType | None = Undefined,
                     ipv6_acl: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -30754,7 +30832,21 @@ class EosDesigns(EosDesignsRootModel):
                            - Any
                            other string will be used directly as the VRF name.
                         enabled: Enable/disable Management eAPI for this VRF.
-                        ipv4_acl: IPv4 access-list name.
+                        ipv4_acl:
+                           IPv4 extended access-list name.
+                           For an enabled eAPI VRF, when
+                           `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog` is enabled, the access-list must
+                           be defined under `ipv4_acls`.
+                           Otherwise, no catalog entry is required.
+                           An error will be raised if
+                           both `ipv4_acl` and `ipv4_standard_acl` are set for an enabled eAPI VRF.
+                           Field substitution is not
+                           supported for eAPI references.
+                        ipv4_standard_acl:
+                           IPv4 standard access-list name. For an enabled eAPI VRF, the access-list must be defined under
+                           `ipv4_standard_acls`.
+                           An error will be raised if both `ipv4_acl` and `ipv4_standard_acl` are set for
+                           an enabled eAPI VRF.
                         ipv6_acl: IPv6 access-list name.
 
                     """
@@ -126939,37 +127031,42 @@ class EosDesigns(EosDesignsRootModel):
     `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
     profiles.
     They will only be configured on devices where they are in use.
+    They can also be referenced
+    using `management_eapi.vrfs[].ipv4_acl` when
+    `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog` is enabled.
+    Field substitution
+    is not supported for eAPI references.
 
-    The substitution is useful
-    when assigning the same access-list on multiple interfaces where certain fields require unique
-    values.
-    When using substitution, the interface name will be appended to the ACL name.
+    The substitution is useful when assigning the same access-
+    list on multiple interfaces where certain fields require unique values.
+    When using substitution, the
+    interface name will be appended to the ACL name.
 
-    The
-    "interface_ip" substitution field is resolved per interface type:
-    - For SVIs: resolved from
-    `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-    - For network services L3
-    interfaces: resolved from the node's entry in `ip_addresses`.
-    - For network services L3 port-
-    channels: resolved from `ip_address`.
-    - For node type L3 interfaces and L3 port-channels: resolved
-    from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-    If
-    the required field is not set, the substitution will fail with an error.
+    The "interface_ip" substitution field is resolved
+    per interface type:
+    - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used
+    as a fallback.
+    - For network services L3 interfaces: resolved from the node's entry in
+    `ip_addresses`.
+    - For network services L3 port-channels: resolved from `ip_address`.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is
+    set for the interface, `dhcp_ip` is used.
+    If the required field is not set, the substitution will
+    fail with an error.
 
-    The "peer_ip" substitution
-    field is resolved per interface type:
-    - For SVIs: not supported. Substitution will fail with an
-    error if used.
-    - For network services L3 interfaces and L3 port-channels: not supported.
-    Substitution will fail with an error if used.
-    - For node type L3 interfaces and L3 port-channels:
-    resolved from `peer_ip`.
-    If `peer_ip` is not set on the interface, the substitution will fail with
-    an error.
+    The "peer_ip" substitution field is resolved per interface type:
+    - For SVIs:
+    not supported. Substitution will fail with an error if used.
+    - For network services L3 interfaces
+    and L3 port-channels: not supported. Substitution will fail with an error if used.
+    - For node type
+    L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+    If `peer_ip` is not set on the
+    interface, the substitution will fail with an error.
 
-    Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `Ipv4AclsItem`
+    items. Primary key is `name` (`str`).
     """
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
@@ -126990,9 +127087,10 @@ class EosDesigns(EosDesignsRootModel):
     IPv4 standard access-lists catalog.
     These access-lists will only be configured on devices where they
     are in use.
+    Field substitution is not supported.
 
-    Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
-    (`str`).
+    Subclass of AvdIndexedList with
+    `Ipv4StandardAclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_acls: Ipv6Acls
     """
@@ -129226,37 +129324,42 @@ class EosDesigns(EosDesignsRootModel):
                    `dot1x.authentication_failure.allow_access_list` under connected endpoints, network ports, and port
                    profiles.
                    They will only be configured on devices where they are in use.
+                   They can also be referenced
+                   using `management_eapi.vrfs[].ipv4_acl` when
+                   `avd_design_future.configure_management_eapi_ipv4_acl_from_catalog` is enabled.
+                   Field substitution
+                   is not supported for eAPI references.
 
-                   The substitution is useful
-                   when assigning the same access-list on multiple interfaces where certain fields require unique
-                   values.
-                   When using substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful when assigning the same access-
+                   list on multiple interfaces where certain fields require unique values.
+                   When using substitution, the
+                   interface name will be appended to the ACL name.
 
-                   The
-                   "interface_ip" substitution field is resolved per interface type:
-                   - For SVIs: resolved from
-                   `ip_address`. If not set, `ip_address_virtual` is used as a fallback.
-                   - For network services L3
-                   interfaces: resolved from the node's entry in `ip_addresses`.
-                   - For network services L3 port-
-                   channels: resolved from `ip_address`.
-                   - For node type L3 interfaces and L3 port-channels: resolved
-                   from `ip_address`. If set to "dhcp" and `dhcp_ip` is set for the interface, `dhcp_ip` is used.
-                   If
-                   the required field is not set, the substitution will fail with an error.
+                   The "interface_ip" substitution field is resolved
+                   per interface type:
+                   - For SVIs: resolved from `ip_address`. If not set, `ip_address_virtual` is used
+                   as a fallback.
+                   - For network services L3 interfaces: resolved from the node's entry in
+                   `ip_addresses`.
+                   - For network services L3 port-channels: resolved from `ip_address`.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `ip_address`. If set to "dhcp" and `dhcp_ip` is
+                   set for the interface, `dhcp_ip` is used.
+                   If the required field is not set, the substitution will
+                   fail with an error.
 
-                   The "peer_ip" substitution
-                   field is resolved per interface type:
-                   - For SVIs: not supported. Substitution will fail with an
-                   error if used.
-                   - For network services L3 interfaces and L3 port-channels: not supported.
-                   Substitution will fail with an error if used.
-                   - For node type L3 interfaces and L3 port-channels:
-                   resolved from `peer_ip`.
-                   If `peer_ip` is not set on the interface, the substitution will fail with
-                   an error.
+                   The "peer_ip" substitution field is resolved per interface type:
+                   - For SVIs:
+                   not supported. Substitution will fail with an error if used.
+                   - For network services L3 interfaces
+                   and L3 port-channels: not supported. Substitution will fail with an error if used.
+                   - For node type
+                   L3 interfaces and L3 port-channels: resolved from `peer_ip`.
+                   If `peer_ip` is not set on the
+                   interface, the substitution will fail with an error.
 
-                   Subclass of AvdIndexedList with `Ipv4AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `Ipv4AclsItem`
+                   items. Primary key is `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
@@ -129273,9 +129376,10 @@ class EosDesigns(EosDesignsRootModel):
                    IPv4 standard access-lists catalog.
                    These access-lists will only be configured on devices where they
                    are in use.
+                   Field substitution is not supported.
 
-                   Subclass of AvdIndexedList with `Ipv4StandardAclsItem` items. Primary key is `name`
-                   (`str`).
+                   Subclass of AvdIndexedList with
+                   `Ipv4StandardAclsItem` items. Primary key is `name` (`str`).
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be

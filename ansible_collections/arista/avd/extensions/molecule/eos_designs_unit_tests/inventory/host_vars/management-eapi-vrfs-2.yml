@@ -21,3 +21,13 @@ management_eapi:
     - name: use_inband_mgmt_vrf
       enabled: true
       ipv4_acl: ACL_EAPI_IPv4_3
+    # Standard ACLs are configured with the future knob at its default, while legacy references need no catalog entry.
+    - name: default
+      enabled: true
+      ipv4_standard_acl: ACL_EAPI_IPv4_STANDARD
+
+ipv4_standard_acls:
+  - name: ACL_EAPI_IPv4_STANDARD
+    entries:
+      - action: permit
+        source: 192.0.2.0/24

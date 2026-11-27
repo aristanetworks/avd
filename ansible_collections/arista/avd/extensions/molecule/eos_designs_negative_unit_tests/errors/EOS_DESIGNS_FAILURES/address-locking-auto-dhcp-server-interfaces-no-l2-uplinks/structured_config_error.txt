@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'address_locking_settings.auto_dhcp_server_interfaces' is enabled but no DHCP server interfaces were found (no L2 uplinks or MLAG). Set 'address_locking_settings.dhcp_server_interfaces' manually.
