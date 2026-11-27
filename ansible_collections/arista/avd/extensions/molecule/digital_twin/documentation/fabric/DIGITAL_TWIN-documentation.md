@@ -34,6 +34,8 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-3 | 192.168.0.8/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-4 | 192.168.0.9/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-5 | 192.168.0.10/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-6 | 192.168.0.8/32 | - | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-7 | 192.168.0.8/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-1 | 192.169.3.1/32 | - | Provisioned | - |
 | DIGITAL_TWIN | l3leaf | digital-twin-ethernet-ports-3 | 192.169.3.3/32 | custom-platform | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-hardware-identity-custom-system-mac-tests-veos | 192.168.10.20/32 | - | Provisioned | PROD-CUSTOM-SYSTEM-MAC-VEOS-SERIAL |

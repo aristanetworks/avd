@@ -40,3 +40,18 @@ ssh_settings:
     - name: VRF1
       enabled: true
       ipv4_acl: ACL-SSH
+    - name: VRF2
+      enabled: false
+      ipv4_acl: ACL-SSH
+    - name: VRF3
+      enabled: false
+      ipv4_acl: ACL-SSH
+    - name: VRF4
+      enabled: true
+      ipv4_standard_acl: ACL-SSH-STANDARD
+    - name: VRF5
+      enabled: true
+      ipv4_standard_acl: ACL-SSH-STANDARD
+    - name: VRF6
+      enabled: false
+      ipv4_standard_acl: ACL-SSH-STANDARD

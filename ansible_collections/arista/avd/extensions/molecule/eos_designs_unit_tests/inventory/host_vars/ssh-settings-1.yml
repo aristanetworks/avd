@@ -26,13 +26,6 @@ ssh_settings:
     - name: VRF21
       enabled: true
       ipv4_acl: ACL-SSH
-      # Disabled vrf does not look for catalog
-    - name: VRF22
-      enabled: false
-      ipv4_acl: ACL-SSH1
-    - name: VRF23
-      enabled: false
-      ipv4_standard_acl: ACL-STD
     - name: VRF10
       enabled: true
       ipv6_acl: ACL-SSH6

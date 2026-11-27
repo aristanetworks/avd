@@ -30,6 +30,18 @@ management_ssh:
   - name: VRF1
     enable: true
     ip_access_group_in: ACL-SSH
+  - name: VRF2
+    enable: false
+  - name: VRF3
+    enable: false
+  - name: VRF4
+    enable: true
+    ip_access_group_in: ACL-SSH-STANDARD
+  - name: VRF5
+    enable: true
+    ip_access_group_in: ACL-SSH-STANDARD
+  - name: VRF6
+    enable: false
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
