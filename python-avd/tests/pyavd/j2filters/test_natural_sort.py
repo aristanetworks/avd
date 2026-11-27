@@ -9,27 +9,24 @@ from typing import Any
 import pytest
 from jinja2.utils import Namespace
 
-from pyavd.j2filters.natural_sort import _alphanum_key, _convert, natural_sort
+from pyavd.j2filters.natural_sort import _alphanum_key, natural_sort
 
 
 class TestNaturalSortFilter:
     @pytest.mark.parametrize(
-        ("item_to_convert", "converted_item", "ignore_case"),
-        [
-            pytest.param("100", 100, True),
-            pytest.param("200", 200, True),
-            pytest.param("ABC", "abc", True),
-            pytest.param("ABC", "ABC", False),
-        ],
-    )
-    def test_convert(self, item_to_convert: str, converted_item: int | str, ignore_case: bool) -> None:
-        resp = _convert(item_to_convert, ignore_case)
-        assert resp == converted_item
-
-    @pytest.mark.parametrize(
         ("item_to_natural_sort", "sort_key", "strict", "ignore_case", "default_value", "sorted_list", "expected_raise"),
         [
             pytest.param(["²", "10", "2", "٢", "1"], None, True, True, None, ["1", "2", "٢", "10", "²"], does_not_raise(), id="unicode-digits"),
+            pytest.param(
+                ["a1b", "a1", "a01", "", "2", "a10"],
+                None,
+                True,
+                True,
+                None,
+                ["", "2", "a1", "a01", "a1b", "a10"],
+                does_not_raise(),
+                id="digit-run-boundaries",
+            ),
             pytest.param(None, None, False, True, None, [], does_not_raise(), id="None"),
             pytest.param([], None, False, True, None, [], does_not_raise(), id="empty-list"),
             pytest.param({}, "", False, True, None, [], does_not_raise(), id="empty-dict"),

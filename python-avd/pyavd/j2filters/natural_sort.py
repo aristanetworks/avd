@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from collections.abc import Iterable, Mapping
 from functools import partial
 from typing import TYPE_CHECKING
@@ -15,8 +14,6 @@ if TYPE_CHECKING:
     from typing import Any, TypeVar
 
     T = TypeVar("T")
-
-SPLIT_PATTERN = re.compile(r"(\d+)")
 
 
 def natural_sort(
@@ -47,7 +44,7 @@ def natural_sort(
     return sorted(iterable, key=alphanum_key)
 
 
-def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None) -> list:
+def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None) -> list[int | str]:
     """Get the key to natural sort by. Falling back to the item itself."""
     if isinstance(item, Mapping):
         if sort_key is None:
@@ -59,8 +56,7 @@ def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True
                 msg = f"Missing key '{sort_key}' in item to sort {item}."
                 raise KeyError(msg)
             val = default_value if default_value is not None else item
-        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
-    if isinstance(item, Namespace):
+    elif isinstance(item, Namespace):
         if sort_key is None:
             msg = f"'natural_sort' requires 'sort_key' to be set when used for a Namespace: {item} "
             raise ValueError(msg)
@@ -70,25 +66,21 @@ def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True
                 msg = f"Missing attribute '{sort_key}' in item to sort {item}."
                 raise KeyError(msg)
             val = default_value if default_value is not None else f"~{str(item).lstrip('<')}"
-        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
+    else:
+        val = item
 
-    return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(item))]
+    text = str(val)
+    parts: list[int | str] = []
+    start = 0
+    in_digits = False
+    for index, char in enumerate(text):
+        is_digit = char.isdecimal()
+        if is_digit != in_digits:
+            fragment = text[start:index]
+            parts.append(int(fragment) if in_digits else fragment.lower() if ignore_case else fragment)
+            start = index
+            in_digits = is_digit
 
-
-def _convert(text: str, ignore_case: bool) -> int | str:
-    """
-    Converts the input string to be sorted.
-
-    Converts the string to an integer if it is a digit, otherwise converts
-    it to lower case if ignore_case is True.
-
-    Args:
-        text: Input string.
-        ignore_case: If ignore_case is True, strings are applied lower() function.
-
-    Returns:
-        Converted string.
-    """
-    if text.isdecimal():
-        return int(text)
-    return text.lower() if ignore_case else text
+    fragment = text[start:]
+    parts.append(int(fragment) if in_digits else fragment.lower() if ignore_case else fragment)
+    return parts
