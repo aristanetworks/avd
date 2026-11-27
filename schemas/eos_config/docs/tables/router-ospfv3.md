@@ -13,6 +13,20 @@
     | [<samp>&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;timers</samp>](## "router_ospfv3.timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -20,6 +34,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.address_family_ipv4.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv4.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_ospfv3.address_family_ipv4.timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.address_family_ipv4.timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv4.timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv4.timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.address_family_ipv4.timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.address_family_ipv4.timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -88,6 +116,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.address_family_ipv6.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.address_family_ipv6.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_ospfv3.address_family_ipv6.timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.address_family_ipv6.timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv6.timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv6.timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.address_family_ipv6.timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.address_family_ipv6.timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -95,6 +137,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state in this VRF. If an enabled address family defines<br>this setting, the shared BFD adjacency command is not rendered. A family BFD adjacency command is rendered only when that family setting is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_ospfv3.vrfs.[].timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.vrfs.[].timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.vrfs.[].timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.vrfs.[].timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -102,6 +158,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -170,6 +240,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_adjacency_state_any</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.bfd_adjacency_state_any") | Boolean |  |  |  | Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive_interface_default</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.passive_interface_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Reference bandwidth in Mbps. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spf</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.spf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.spf.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.spf.delay.initial") | Integer | Required |  | Min: 0<br>Max: 65535000 | Initial SPF schedule delay in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_hold_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.spf.delay.min_hold_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Min Hold time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_wait_time</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.spf.delay.max_wait_time") | Integer | Required |  | Min: 0<br>Max: 65535000 | Max wait time between two SPFs in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lsa</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.rx") | Dictionary |  |  |  | Configure OSPFv3 LSA receiving timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_interval</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.rx.min_interval") | Integer | Required |  | Min: 0<br>Max: 600000 | Min interval in msecs between accepting the same LSA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx") | Dictionary |  |  |  | Configure OSPFv3 LSA transmission timers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on this VRF OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance. |
 
@@ -195,6 +279,38 @@
 
       # Reference bandwidth in Mbps.
       auto_cost_reference_bandwidth: <int; 1-4294967>
+      timers:
+        spf:
+          delay: # required
+
+            # Initial SPF schedule delay in msecs.
+            initial: <int; 0-65535000; required>
+
+            # Min Hold time between two SPFs in msecs.
+            min_hold_time: <int; 0-65535000; required>
+
+            # Max wait time between two SPFs in msecs.
+            max_wait_time: <int; 0-65535000; required>
+        lsa:
+
+          # Configure OSPFv3 LSA receiving timers.
+          rx:
+
+            # Min interval in msecs between accepting the same LSA.
+            min_interval: <int; 0-600000; required>
+
+          # Configure OSPFv3 LSA transmission timers.
+          tx:
+            delay: # required
+
+              # Delay to generate first occurrence of LSA in msecs.
+              initial: <int; 0-600000; required>
+
+              # Min delay between originating the same LSA in msecs.
+              min: <int; 1-600000; required>
+
+              # Maximum delay between originating the same LSA in msecs.
+              max: <int; 1-600000; required>
 
       # Address family IPv4 configuration.
       # Common configurations defined at the router-level and address-family level are mutually exclusive.
@@ -216,6 +332,38 @@
 
         # Reference bandwidth in Mbps.
         auto_cost_reference_bandwidth: <int; 1-4294967>
+        timers:
+          spf:
+            delay: # required
+
+              # Initial SPF schedule delay in msecs.
+              initial: <int; 0-65535000; required>
+
+              # Min Hold time between two SPFs in msecs.
+              min_hold_time: <int; 0-65535000; required>
+
+              # Max wait time between two SPFs in msecs.
+              max_wait_time: <int; 0-65535000; required>
+          lsa:
+
+            # Configure OSPFv3 LSA receiving timers.
+            rx:
+
+              # Min interval in msecs between accepting the same LSA.
+              min_interval: <int; 0-600000; required>
+
+            # Configure OSPFv3 LSA transmission timers.
+            tx:
+              delay: # required
+
+                # Delay to generate first occurrence of LSA in msecs.
+                initial: <int; 0-600000; required>
+
+                # Min delay between originating the same LSA in msecs.
+                min: <int; 1-600000; required>
+
+                # Maximum delay between originating the same LSA in msecs.
+                max: <int; 1-600000; required>
 
         # Redistribute routes into OSPFv3.
         redistribute:
@@ -318,6 +466,38 @@
 
         # Reference bandwidth in Mbps.
         auto_cost_reference_bandwidth: <int; 1-4294967>
+        timers:
+          spf:
+            delay: # required
+
+              # Initial SPF schedule delay in msecs.
+              initial: <int; 0-65535000; required>
+
+              # Min Hold time between two SPFs in msecs.
+              min_hold_time: <int; 0-65535000; required>
+
+              # Max wait time between two SPFs in msecs.
+              max_wait_time: <int; 0-65535000; required>
+          lsa:
+
+            # Configure OSPFv3 LSA receiving timers.
+            rx:
+
+              # Min interval in msecs between accepting the same LSA.
+              min_interval: <int; 0-600000; required>
+
+            # Configure OSPFv3 LSA transmission timers.
+            tx:
+              delay: # required
+
+                # Delay to generate first occurrence of LSA in msecs.
+                initial: <int; 0-600000; required>
+
+                # Min delay between originating the same LSA in msecs.
+                min: <int; 1-600000; required>
+
+                # Maximum delay between originating the same LSA in msecs.
+                max: <int; 1-600000; required>
       vrfs:
 
           # VRF name.
@@ -339,6 +519,38 @@
 
           # Reference bandwidth in Mbps.
           auto_cost_reference_bandwidth: <int; 1-4294967>
+          timers:
+            spf:
+              delay: # required
+
+                # Initial SPF schedule delay in msecs.
+                initial: <int; 0-65535000; required>
+
+                # Min Hold time between two SPFs in msecs.
+                min_hold_time: <int; 0-65535000; required>
+
+                # Max wait time between two SPFs in msecs.
+                max_wait_time: <int; 0-65535000; required>
+            lsa:
+
+              # Configure OSPFv3 LSA receiving timers.
+              rx:
+
+                # Min interval in msecs between accepting the same LSA.
+                min_interval: <int; 0-600000; required>
+
+              # Configure OSPFv3 LSA transmission timers.
+              tx:
+                delay: # required
+
+                  # Delay to generate first occurrence of LSA in msecs.
+                  initial: <int; 0-600000; required>
+
+                  # Min delay between originating the same LSA in msecs.
+                  min: <int; 1-600000; required>
+
+                  # Maximum delay between originating the same LSA in msecs.
+                  max: <int; 1-600000; required>
 
           # Address family IPv4 configuration.
           # Common configurations defined at the router-level and address-family level are mutually exclusive.
@@ -360,6 +572,38 @@
 
             # Reference bandwidth in Mbps.
             auto_cost_reference_bandwidth: <int; 1-4294967>
+            timers:
+              spf:
+                delay: # required
+
+                  # Initial SPF schedule delay in msecs.
+                  initial: <int; 0-65535000; required>
+
+                  # Min Hold time between two SPFs in msecs.
+                  min_hold_time: <int; 0-65535000; required>
+
+                  # Max wait time between two SPFs in msecs.
+                  max_wait_time: <int; 0-65535000; required>
+              lsa:
+
+                # Configure OSPFv3 LSA receiving timers.
+                rx:
+
+                  # Min interval in msecs between accepting the same LSA.
+                  min_interval: <int; 0-600000; required>
+
+                # Configure OSPFv3 LSA transmission timers.
+                tx:
+                  delay: # required
+
+                    # Delay to generate first occurrence of LSA in msecs.
+                    initial: <int; 0-600000; required>
+
+                    # Min delay between originating the same LSA in msecs.
+                    min: <int; 1-600000; required>
+
+                    # Maximum delay between originating the same LSA in msecs.
+                    max: <int; 1-600000; required>
 
             # Redistribute routes into OSPFv3.
             redistribute:
@@ -462,6 +706,38 @@
 
             # Reference bandwidth in Mbps.
             auto_cost_reference_bandwidth: <int; 1-4294967>
+            timers:
+              spf:
+                delay: # required
+
+                  # Initial SPF schedule delay in msecs.
+                  initial: <int; 0-65535000; required>
+
+                  # Min Hold time between two SPFs in msecs.
+                  min_hold_time: <int; 0-65535000; required>
+
+                  # Max wait time between two SPFs in msecs.
+                  max_wait_time: <int; 0-65535000; required>
+              lsa:
+
+                # Configure OSPFv3 LSA receiving timers.
+                rx:
+
+                  # Min interval in msecs between accepting the same LSA.
+                  min_interval: <int; 0-600000; required>
+
+                # Configure OSPFv3 LSA transmission timers.
+                tx:
+                  delay: # required
+
+                    # Delay to generate first occurrence of LSA in msecs.
+                    initial: <int; 0-600000; required>
+
+                    # Min delay between originating the same LSA in msecs.
+                    min: <int; 1-600000; required>
+
+                    # Maximum delay between originating the same LSA in msecs.
+                    max: <int; 1-600000; required>
 
           # Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
           eos_cli: <str>

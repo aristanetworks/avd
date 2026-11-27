@@ -51,6 +51,10 @@ nodes:
     node_type: veos
     ip_addr: 192.168.0.5/32
     version: 4.33.1.1F
+- digital-twin-enforce-eapi-6:
+    node_type: veos
+    ip_addr: 192.168.0.11/32
+    version: 4.33.1.1F
 - digital-twin-enforce-ssh-1:
     node_type: veos
     ip_addr: 192.168.0.6/32
@@ -70,6 +74,14 @@ nodes:
 - digital-twin-enforce-ssh-5:
     node_type: veos
     ip_addr: 192.168.0.10/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-6:
+    node_type: veos
+    ip_addr: 192.168.0.8/32
+    version: 4.33.1.1F
+- digital-twin-enforce-ssh-7:
+    node_type: veos
+    ip_addr: 192.168.0.8/32
     version: 4.33.1.1F
 - digital-twin-ethernet-ports-1:
     node_type: veos

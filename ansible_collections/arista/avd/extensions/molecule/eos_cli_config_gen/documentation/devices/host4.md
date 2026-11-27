@@ -158,8 +158,22 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| SPF Timers (initial/min hold/max wait, msec) | 1000 / 5000 / 30000 |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | 0 |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ###### Redistribution
 
@@ -193,6 +207,9 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 100 |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 #### Router OSPFv3 Device Configuration
 
@@ -205,6 +222,7 @@ router ospfv3 vrf Test
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   timers spf delay initial 1000 5000 30000
    bfd default
    !
    address-family ipv4
@@ -213,6 +231,7 @@ router ospfv3
       redistribute isis include leaked level-1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
+      timers lsa rx min interval 0
    !
    address-family ipv6
       redistribute bgp include leaked

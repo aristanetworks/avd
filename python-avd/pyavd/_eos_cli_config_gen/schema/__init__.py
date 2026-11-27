@@ -25044,9 +25044,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """VRF Name."""
             access_group: str | None
-            """Standard IPv4 ACL name."""
+            """IPv4 standard or extended ACL name."""
             ipv6_access_group: str | None
-            """Standard IPv6 ACL name."""
+            """IPv6 standard or extended ACL name."""
 
             if TYPE_CHECKING:
 
@@ -25065,8 +25065,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VRF Name.
-                        access_group: Standard IPv4 ACL name.
-                        ipv6_access_group: Standard IPv6 ACL name.
+                        access_group: IPv4 standard or extended ACL name.
+                        ipv6_access_group: IPv6 standard or extended ACL name.
 
                     """
 
@@ -28188,13 +28188,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable SSH in VRF."""
             ip_access_group_in: str | None
             """
-            Standard ACL Name.
-            This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
-            instead.
+            IPv4 standard or extended ACL Name.
+            This should not be set for VRF 'default'. Use
+            `management_ssh.ip_access_group_in` instead.
             """
             ipv6_access_group_in: str | None
             """
-            Standard IPv6 ACL Name.
+            IPv6 standard or extended ACL Name.
             This should not be set for VRF 'default'. Use
             `management_ssh.ipv6_access_group_in` instead.
             """
@@ -28219,11 +28219,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: VRF Name.
                         enable: Enable SSH in VRF.
                         ip_access_group_in:
-                           Standard ACL Name.
-                           This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
-                           instead.
+                           IPv4 standard or extended ACL Name.
+                           This should not be set for VRF 'default'. Use
+                           `management_ssh.ip_access_group_in` instead.
                         ipv6_access_group_in:
-                           Standard IPv6 ACL Name.
+                           IPv6 standard or extended ACL Name.
                            This should not be set for VRF 'default'. Use
                            `management_ssh.ipv6_access_group_in` instead.
 
@@ -28284,9 +28284,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         authentication: Authentication
         """Subclass of AvdModel."""
         ip_access_group_in: str | None
-        """Standard ACL Name."""
+        """IPv4 standard or extended ACL Name."""
         ipv6_access_group_in: str | None
-        """Standard IPv6 ACL Name."""
+        """IPv6 standard or extended ACL Name."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
         cipher: Cipher
@@ -28350,8 +28350,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     authentication: Subclass of AvdModel.
-                    ip_access_group_in: Standard ACL Name.
-                    ipv6_access_group_in: Standard IPv6 ACL Name.
+                    ip_access_group_in: IPv4 standard or extended ACL Name.
+                    ipv6_access_group_in: IPv6 standard or extended ACL Name.
                     idle_timeout: Idle timeout in minutes.
                     cipher:
                        Cryptographic ciphers for SSH to use.
@@ -67647,8 +67647,386 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterOspfv3(AvdModel):
         """Subclass of AvdModel."""
 
+        class Timers(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Spf(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Delay(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                    initial: int
+                    """Initial SPF schedule delay in msecs."""
+                    min_hold_time: int
+                    """Min Hold time between two SPFs in msecs."""
+                    max_wait_time: int
+                    """Max wait time between two SPFs in msecs."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            initial: int | UndefinedType = Undefined,
+                            min_hold_time: int | UndefinedType = Undefined,
+                            max_wait_time: int | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Delay.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                initial: Initial SPF schedule delay in msecs.
+                                min_hold_time: Min Hold time between two SPFs in msecs.
+                                max_wait_time: Max wait time between two SPFs in msecs.
+
+                            """
+
+                _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                delay: Delay
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                        """
+                        Spf.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delay: Subclass of AvdModel.
+
+                        """
+
+            class Lsa(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Rx(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                    min_interval: int
+                    """Min interval in msecs between accepting the same LSA."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                            """
+                            Rx.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                min_interval: Min interval in msecs between accepting the same LSA.
+
+                            """
+
+                class Tx(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Delay(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                        initial: int
+                        """Delay to generate first occurrence of LSA in msecs."""
+                        min: int
+                        """Min delay between originating the same LSA in msecs."""
+                        max: int
+                        """Maximum delay between originating the same LSA in msecs."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, initial: int | UndefinedType = Undefined, min: int | UndefinedType = Undefined, max: int | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                Delay.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    initial: Delay to generate first occurrence of LSA in msecs.
+                                    min: Min delay between originating the same LSA in msecs.
+                                    max: Maximum delay between originating the same LSA in msecs.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                    delay: Delay
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                            """
+                            Tx.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                delay: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                rx: Rx
+                """
+                Configure OSPFv3 LSA receiving timers.
+
+                Subclass of AvdModel.
+                """
+                tx: Tx
+                """
+                Configure OSPFv3 LSA transmission timers.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                        """
+                        Lsa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rx:
+                               Configure OSPFv3 LSA receiving timers.
+
+                               Subclass of AvdModel.
+                            tx:
+                               Configure OSPFv3 LSA transmission timers.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+            spf: Spf
+            """Subclass of AvdModel."""
+            lsa: Lsa
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                    """
+                    Timers.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        spf: Subclass of AvdModel.
+                        lsa: Subclass of AvdModel.
+
+                    """
+
         class AddressFamilyIpv4(AvdModel):
             """Subclass of AvdModel."""
+
+            class Timers(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Spf(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Delay(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                        initial: int
+                        """Initial SPF schedule delay in msecs."""
+                        min_hold_time: int
+                        """Min Hold time between two SPFs in msecs."""
+                        max_wait_time: int
+                        """Max wait time between two SPFs in msecs."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                initial: int | UndefinedType = Undefined,
+                                min_hold_time: int | UndefinedType = Undefined,
+                                max_wait_time: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Delay.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    initial: Initial SPF schedule delay in msecs.
+                                    min_hold_time: Min Hold time between two SPFs in msecs.
+                                    max_wait_time: Max wait time between two SPFs in msecs.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                    delay: Delay
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                            """
+                            Spf.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                delay: Subclass of AvdModel.
+
+                            """
+
+                class Lsa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Rx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                        min_interval: int
+                        """Min interval in msecs between accepting the same LSA."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                                """
+                                Rx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    min_interval: Min interval in msecs between accepting the same LSA.
+
+                                """
+
+                    class Tx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Delay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                            initial: int
+                            """Delay to generate first occurrence of LSA in msecs."""
+                            min: int
+                            """Min delay between originating the same LSA in msecs."""
+                            max: int
+                            """Maximum delay between originating the same LSA in msecs."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    initial: int | UndefinedType = Undefined,
+                                    min: int | UndefinedType = Undefined,
+                                    max: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Delay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        initial: Delay to generate first occurrence of LSA in msecs.
+                                        min: Min delay between originating the same LSA in msecs.
+                                        max: Maximum delay between originating the same LSA in msecs.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                        delay: Delay
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                """
+                                Tx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    delay: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                    rx: Rx
+                    """
+                    Configure OSPFv3 LSA receiving timers.
+
+                    Subclass of AvdModel.
+                    """
+                    tx: Tx
+                    """
+                    Configure OSPFv3 LSA transmission timers.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                            """
+                            Lsa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rx:
+                                   Configure OSPFv3 LSA receiving timers.
+
+                                   Subclass of AvdModel.
+                                tx:
+                                   Configure OSPFv3 LSA transmission timers.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+                spf: Spf
+                """Subclass of AvdModel."""
+                lsa: Lsa
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                        """
+                        Timers.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            spf: Subclass of AvdModel.
+                            lsa: Subclass of AvdModel.
+
+                        """
 
             class Redistribute(AvdModel):
                 """Subclass of AvdModel."""
@@ -67955,6 +68333,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "timers": {"type": Timers},
                 "redistribute": {"type": Redistribute},
             }
             enabled: bool
@@ -67968,6 +68347,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            timers: Timers
+            """Subclass of AvdModel."""
             redistribute: Redistribute
             """
             Redistribute routes into OSPFv3.
@@ -67986,6 +68367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    timers: Timers | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -68001,6 +68383,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        timers: Subclass of AvdModel.
                         redistribute:
                            Redistribute routes into OSPFv3.
 
@@ -68336,6 +68719,197 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class Timers(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Spf(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Delay(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                        initial: int
+                        """Initial SPF schedule delay in msecs."""
+                        min_hold_time: int
+                        """Min Hold time between two SPFs in msecs."""
+                        max_wait_time: int
+                        """Max wait time between two SPFs in msecs."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                initial: int | UndefinedType = Undefined,
+                                min_hold_time: int | UndefinedType = Undefined,
+                                max_wait_time: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Delay.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    initial: Initial SPF schedule delay in msecs.
+                                    min_hold_time: Min Hold time between two SPFs in msecs.
+                                    max_wait_time: Max wait time between two SPFs in msecs.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                    delay: Delay
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                            """
+                            Spf.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                delay: Subclass of AvdModel.
+
+                            """
+
+                class Lsa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Rx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                        min_interval: int
+                        """Min interval in msecs between accepting the same LSA."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                                """
+                                Rx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    min_interval: Min interval in msecs between accepting the same LSA.
+
+                                """
+
+                    class Tx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Delay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                            initial: int
+                            """Delay to generate first occurrence of LSA in msecs."""
+                            min: int
+                            """Min delay between originating the same LSA in msecs."""
+                            max: int
+                            """Maximum delay between originating the same LSA in msecs."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    initial: int | UndefinedType = Undefined,
+                                    min: int | UndefinedType = Undefined,
+                                    max: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Delay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        initial: Delay to generate first occurrence of LSA in msecs.
+                                        min: Min delay between originating the same LSA in msecs.
+                                        max: Maximum delay between originating the same LSA in msecs.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                        delay: Delay
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                """
+                                Tx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    delay: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                    rx: Rx
+                    """
+                    Configure OSPFv3 LSA receiving timers.
+
+                    Subclass of AvdModel.
+                    """
+                    tx: Tx
+                    """
+                    Configure OSPFv3 LSA transmission timers.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                            """
+                            Lsa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rx:
+                                   Configure OSPFv3 LSA receiving timers.
+
+                                   Subclass of AvdModel.
+                                tx:
+                                   Configure OSPFv3 LSA transmission timers.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+                spf: Spf
+                """Subclass of AvdModel."""
+                lsa: Lsa
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                        """
+                        Timers.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            spf: Subclass of AvdModel.
+                            lsa: Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "redistribute": {"type": Redistribute},
                 "enabled": {"type": bool},
@@ -68344,6 +68918,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "timers": {"type": Timers},
             }
             redistribute: Redistribute
             """
@@ -68362,6 +68937,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            timers: Timers
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -68375,6 +68952,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    timers: Timers | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -68393,14 +68971,397 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        timers: Subclass of AvdModel.
 
                     """
 
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Timers(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Spf(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Delay(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                        initial: int
+                        """Initial SPF schedule delay in msecs."""
+                        min_hold_time: int
+                        """Min Hold time between two SPFs in msecs."""
+                        max_wait_time: int
+                        """Max wait time between two SPFs in msecs."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                initial: int | UndefinedType = Undefined,
+                                min_hold_time: int | UndefinedType = Undefined,
+                                max_wait_time: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Delay.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    initial: Initial SPF schedule delay in msecs.
+                                    min_hold_time: Min Hold time between two SPFs in msecs.
+                                    max_wait_time: Max wait time between two SPFs in msecs.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                    delay: Delay
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                            """
+                            Spf.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                delay: Subclass of AvdModel.
+
+                            """
+
+                class Lsa(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Rx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                        min_interval: int
+                        """Min interval in msecs between accepting the same LSA."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                                """
+                                Rx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    min_interval: Min interval in msecs between accepting the same LSA.
+
+                                """
+
+                    class Tx(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Delay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                            initial: int
+                            """Delay to generate first occurrence of LSA in msecs."""
+                            min: int
+                            """Min delay between originating the same LSA in msecs."""
+                            max: int
+                            """Maximum delay between originating the same LSA in msecs."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    initial: int | UndefinedType = Undefined,
+                                    min: int | UndefinedType = Undefined,
+                                    max: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Delay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        initial: Delay to generate first occurrence of LSA in msecs.
+                                        min: Min delay between originating the same LSA in msecs.
+                                        max: Maximum delay between originating the same LSA in msecs.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                        delay: Delay
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                """
+                                Tx.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    delay: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                    rx: Rx
+                    """
+                    Configure OSPFv3 LSA receiving timers.
+
+                    Subclass of AvdModel.
+                    """
+                    tx: Tx
+                    """
+                    Configure OSPFv3 LSA transmission timers.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                            """
+                            Lsa.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rx:
+                                   Configure OSPFv3 LSA receiving timers.
+
+                                   Subclass of AvdModel.
+                                tx:
+                                   Configure OSPFv3 LSA transmission timers.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+                spf: Spf
+                """Subclass of AvdModel."""
+                lsa: Lsa
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                        """
+                        Timers.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            spf: Subclass of AvdModel.
+                            lsa: Subclass of AvdModel.
+
+                        """
+
             class AddressFamilyIpv4(AvdModel):
                 """Subclass of AvdModel."""
+
+                class Timers(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Spf(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Delay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                            initial: int
+                            """Initial SPF schedule delay in msecs."""
+                            min_hold_time: int
+                            """Min Hold time between two SPFs in msecs."""
+                            max_wait_time: int
+                            """Max wait time between two SPFs in msecs."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    initial: int | UndefinedType = Undefined,
+                                    min_hold_time: int | UndefinedType = Undefined,
+                                    max_wait_time: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Delay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        initial: Initial SPF schedule delay in msecs.
+                                        min_hold_time: Min Hold time between two SPFs in msecs.
+                                        max_wait_time: Max wait time between two SPFs in msecs.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                        delay: Delay
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                """
+                                Spf.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    delay: Subclass of AvdModel.
+
+                                """
+
+                    class Lsa(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Rx(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                            min_interval: int
+                            """Min interval in msecs between accepting the same LSA."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                                    """
+                                    Rx.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        min_interval: Min interval in msecs between accepting the same LSA.
+
+                                    """
+
+                        class Tx(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Delay(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                                initial: int
+                                """Delay to generate first occurrence of LSA in msecs."""
+                                min: int
+                                """Min delay between originating the same LSA in msecs."""
+                                max: int
+                                """Maximum delay between originating the same LSA in msecs."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        initial: int | UndefinedType = Undefined,
+                                        min: int | UndefinedType = Undefined,
+                                        max: int | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Delay.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            initial: Delay to generate first occurrence of LSA in msecs.
+                                            min: Min delay between originating the same LSA in msecs.
+                                            max: Maximum delay between originating the same LSA in msecs.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                            delay: Delay
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                    """
+                                    Tx.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        delay: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                        rx: Rx
+                        """
+                        Configure OSPFv3 LSA receiving timers.
+
+                        Subclass of AvdModel.
+                        """
+                        tx: Tx
+                        """
+                        Configure OSPFv3 LSA transmission timers.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                                """
+                                Lsa.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    rx:
+                                       Configure OSPFv3 LSA receiving timers.
+
+                                       Subclass of AvdModel.
+                                    tx:
+                                       Configure OSPFv3 LSA transmission timers.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+                    spf: Spf
+                    """Subclass of AvdModel."""
+                    lsa: Lsa
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                            """
+                            Timers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                spf: Subclass of AvdModel.
+                                lsa: Subclass of AvdModel.
+
+                            """
 
                 class Redistribute(AvdModel):
                     """Subclass of AvdModel."""
@@ -68712,6 +69673,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
+                    "timers": {"type": Timers},
                     "redistribute": {"type": Redistribute},
                 }
                 enabled: bool
@@ -68725,6 +69687,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
+                timers: Timers
+                """Subclass of AvdModel."""
                 redistribute: Redistribute
                 """
                 Redistribute routes into OSPFv3.
@@ -68743,6 +69707,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                        timers: Timers | UndefinedType = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -68758,6 +69723,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                            timers: Subclass of AvdModel.
                             redistribute:
                                Redistribute routes into OSPFv3.
 
@@ -69098,6 +70064,197 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Timers(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Spf(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Delay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"initial": {"type": int}, "min_hold_time": {"type": int}, "max_wait_time": {"type": int}}
+                            initial: int
+                            """Initial SPF schedule delay in msecs."""
+                            min_hold_time: int
+                            """Min Hold time between two SPFs in msecs."""
+                            max_wait_time: int
+                            """Max wait time between two SPFs in msecs."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    initial: int | UndefinedType = Undefined,
+                                    min_hold_time: int | UndefinedType = Undefined,
+                                    max_wait_time: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Delay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        initial: Initial SPF schedule delay in msecs.
+                                        min_hold_time: Min Hold time between two SPFs in msecs.
+                                        max_wait_time: Max wait time between two SPFs in msecs.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                        delay: Delay
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                """
+                                Spf.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    delay: Subclass of AvdModel.
+
+                                """
+
+                    class Lsa(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Rx(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"min_interval": {"type": int}}
+                            min_interval: int
+                            """Min interval in msecs between accepting the same LSA."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, min_interval: int | UndefinedType = Undefined) -> None:
+                                    """
+                                    Rx.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        min_interval: Min interval in msecs between accepting the same LSA.
+
+                                    """
+
+                        class Tx(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Delay(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"initial": {"type": int}, "min": {"type": int}, "max": {"type": int}}
+                                initial: int
+                                """Delay to generate first occurrence of LSA in msecs."""
+                                min: int
+                                """Min delay between originating the same LSA in msecs."""
+                                max: int
+                                """Maximum delay between originating the same LSA in msecs."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        initial: int | UndefinedType = Undefined,
+                                        min: int | UndefinedType = Undefined,
+                                        max: int | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Delay.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            initial: Delay to generate first occurrence of LSA in msecs.
+                                            min: Min delay between originating the same LSA in msecs.
+                                            max: Maximum delay between originating the same LSA in msecs.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                            delay: Delay
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                                    """
+                                    Tx.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        delay: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"rx": {"type": Rx}, "tx": {"type": Tx}}
+                        rx: Rx
+                        """
+                        Configure OSPFv3 LSA receiving timers.
+
+                        Subclass of AvdModel.
+                        """
+                        tx: Tx
+                        """
+                        Configure OSPFv3 LSA transmission timers.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, rx: Rx | UndefinedType = Undefined, tx: Tx | UndefinedType = Undefined) -> None:
+                                """
+                                Lsa.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    rx:
+                                       Configure OSPFv3 LSA receiving timers.
+
+                                       Subclass of AvdModel.
+                                    tx:
+                                       Configure OSPFv3 LSA transmission timers.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"spf": {"type": Spf}, "lsa": {"type": Lsa}}
+                    spf: Spf
+                    """Subclass of AvdModel."""
+                    lsa: Lsa
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, spf: Spf | UndefinedType = Undefined, lsa: Lsa | UndefinedType = Undefined) -> None:
+                            """
+                            Timers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                spf: Subclass of AvdModel.
+                                lsa: Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "redistribute": {"type": Redistribute},
                     "enabled": {"type": bool},
@@ -69106,6 +70263,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "bfd_adjacency_state_any": {"type": bool},
                     "passive_interface_default": {"type": bool},
                     "auto_cost_reference_bandwidth": {"type": int},
+                    "timers": {"type": Timers},
                 }
                 redistribute: Redistribute
                 """
@@ -69124,6 +70282,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 passive_interface_default: bool | None
                 auto_cost_reference_bandwidth: int | None
                 """Reference bandwidth in Mbps."""
+                timers: Timers
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -69137,6 +70297,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                         passive_interface_default: bool | UndefinedType | None = Undefined,
                         auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                        timers: Timers | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -69155,6 +70316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd_adjacency_state_any: Allow BFD sessions to be established in any OSPFv3 adjacency state for this address family.
                             passive_interface_default: passive_interface_default
                             auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                            timers: Subclass of AvdModel.
 
                         """
 
@@ -69165,6 +70327,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd_adjacency_state_any": {"type": bool},
                 "passive_interface_default": {"type": bool},
                 "auto_cost_reference_bandwidth": {"type": int},
+                "timers": {"type": Timers},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
                 "eos_cli": {"type": str},
@@ -69195,6 +70358,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             passive_interface_default: bool | None
             auto_cost_reference_bandwidth: int | None
             """Reference bandwidth in Mbps."""
+            timers: Timers
+            """Subclass of AvdModel."""
             address_family_ipv4: AddressFamilyIpv4
             """
             Address family IPv4 configuration.
@@ -69229,6 +70394,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                     passive_interface_default: bool | UndefinedType | None = Undefined,
                     auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                    timers: Timers | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                     eos_cli: str | UndefinedType | None = Undefined,
@@ -69258,6 +70424,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            adjacency command is rendered only when that family setting is true.
                         passive_interface_default: passive_interface_default
                         auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                        timers: Subclass of AvdModel.
                         address_family_ipv4:
                            Address family IPv4 configuration.
                            Common configurations defined at the router-level and address-
@@ -69291,6 +70458,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "bfd_adjacency_state_any": {"type": bool},
             "passive_interface_default": {"type": bool},
             "auto_cost_reference_bandwidth": {"type": int},
+            "timers": {"type": Timers},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
             "address_family_ipv6": {"type": AddressFamilyIpv6},
             "vrfs": {"type": Vrfs},
@@ -69317,6 +70485,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         passive_interface_default: bool | None
         auto_cost_reference_bandwidth: int | None
         """Reference bandwidth in Mbps."""
+        timers: Timers
+        """Subclass of AvdModel."""
         address_family_ipv4: AddressFamilyIpv4
         """
         Address family IPv4 configuration.
@@ -69352,6 +70522,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd_adjacency_state_any: bool | UndefinedType | None = Undefined,
                 passive_interface_default: bool | UndefinedType | None = Undefined,
                 auto_cost_reference_bandwidth: int | UndefinedType | None = Undefined,
+                timers: Timers | UndefinedType = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
@@ -69379,6 +70550,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        command is rendered only when that family setting is true.
                     passive_interface_default: passive_interface_default
                     auto_cost_reference_bandwidth: Reference bandwidth in Mbps.
+                    timers: Subclass of AvdModel.
                     address_family_ipv4:
                        Address family IPv4 configuration.
                        Common configurations defined at the router-level and address-
