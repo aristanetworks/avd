@@ -12,12 +12,11 @@ echo "Upgrading pip"
 python -m pip install --upgrade pip
 
 # install pip requirements (the doc group includes the Schema Explorer
-# build-time deps: pyyaml, referencing, deepmerge, jsonschema-rs)
+# build-time dependency: pyavd-utils-gen)
 echo "Installing Documentation python requirements"
 python -m pip install --group doc --upgrade
 
-# mkdocs_hook.py builds the Schema Explorer on demand into a cache outside the
-# repo tree and copies it into MkDocs' site_dir.
+# mkdocs_hook.py rebuilds the Schema Explorer directly into MkDocs' site_dir.
 
 # Start mkdocs
 echo "Starting mkdocs"

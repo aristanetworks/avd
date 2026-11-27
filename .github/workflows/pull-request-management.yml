@@ -87,6 +87,7 @@ jobs:
       config_gen: ${{ steps.filter.outputs.config_gen }}
       plugins: ${{ steps.filter.outputs.plugins }}
       pyavd: ${{ steps.filter.outputs.pyavd }}
+      pytest: ${{ steps.filter.outputs.pytest }}
       requirements: ${{ steps.filter.outputs.requirements }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       e2e: ${{ steps.filter.outputs.e2e }}
@@ -139,6 +140,8 @@ jobs:
               - 'development/coverage_plugins/**/*'
               - 'python-avd/**/*'
               - 'schemas/cv_deploy/**/*.yml'
+            pytest:
+              - 'tools/schema-explorer/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -986,6 +989,7 @@ jobs:
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.plugins == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.pytest == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
       needs.file-changes.outputs.e2e == 'true' ||
       github.event_name == 'merge_group' ||

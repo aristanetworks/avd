@@ -77,9 +77,8 @@ plugins:
         # so a `.venv/` here drags every site-packages .md file into the build.
         - .venv/*
         - venv/*
-        # Schema Explorer source (generator + SPA assets) and build output
-        # both live under tools/. mkdocs_hook.py copies the built tree into
-        # site/_assets/schema-explorer/ on `mkdocs build`.
+        # Schema Explorer source and manual build output live under tools/.
+        # The hook generates site assets directly in site/_assets/schema-explorer/.
         - tools/*
         # Local mkdocs build output. With `docs_dir: .`, serving after a build
         # would otherwise ingest generated `site/` files as source media.
@@ -195,9 +194,8 @@ markdown_extensions:
       permalink: true
 hooks:
   # Schema Explorer integration:
-  #   * Auto-builds a cached Schema Explorer outside the repo tree when the
-  #     SQLite artifact is missing or stale, then copies the SPA + SQLite into
-  #     <site_dir>/_assets/schema-explorer/ on build.
+  #   * Rebuilds the SPA + SQLite directly into
+  #     <site_dir>/_assets/schema-explorer/ after every documentation build.
   #   * Registers only the SPA CSS + JS loader globally; runtime dependencies
   #     are lazy-loaded by app.js when a page hosts the explorer.
   - tools/schema-explorer/mkdocs_hook.py
