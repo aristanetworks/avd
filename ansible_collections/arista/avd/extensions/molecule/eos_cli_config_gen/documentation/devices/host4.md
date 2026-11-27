@@ -158,6 +158,12 @@ router ospf 703
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | 100 |
+| LSA Limit | 1234 |
+| LSA Disabled Time | - |
+| LSA Incident Count Limit | - |
+| LSA Incident Count Clear Timeout | - |
+| LSA Warning Limit | 66 percent |
+| LSA Exceed Action Warn | True |
 
 ##### Address Family IPv4
 
@@ -205,6 +211,7 @@ router ospfv3 vrf Test
 !
 router ospfv3
    auto-cost reference-bandwidth 100
+   lsa limit 1234 warning limit 66 percent exceed-action warn
    bfd default
    !
    address-family ipv4

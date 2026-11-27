@@ -1,6 +1,10 @@
 ---
 router_ospfv3:
   auto_cost_reference_bandwidth: 100
+  lsa:
+    limit: 1234
+    warning_limit: 66
+    exceed_action_warn: true
   address_family_ipv4:
     enabled: true
     redistribute:

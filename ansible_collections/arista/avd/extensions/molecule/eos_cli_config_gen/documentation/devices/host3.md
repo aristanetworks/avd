@@ -415,6 +415,12 @@ router ospf 702
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | 80 percent |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -433,6 +439,12 @@ router ospf 702
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
+| LSA Limit | 20000 |
+| LSA Disabled Time | 30 minutes |
+| LSA Incident Count Limit | 10 |
+| LSA Incident Count Clear Timeout | 20 minutes |
+| LSA Warning Limit | 80 percent |
+| LSA Exceed Action Warn | - |
 
 ###### Redistribution
 
@@ -456,6 +468,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
    !
    address-family ipv6
       router-id 3.3.3.3
@@ -465,6 +478,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      lsa limit 20000 warning limit 80 percent disabled-time 30 minutes incident-count limit 10 incident-count clear-timeout 20 minutes
 ```
 
 ### Router ISIS

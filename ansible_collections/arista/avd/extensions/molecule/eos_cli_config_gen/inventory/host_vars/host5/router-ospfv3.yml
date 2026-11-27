@@ -10,6 +10,10 @@ router_ospfv3:
     router_id: 2.2.2.2
     auto_cost_reference_bandwidth: 2000
     passive_interface_default: true
+    lsa:
+      limit: 3333
+      warning_limit: 85
+      exceed_action_warn: true
     redistribute:
       ospfv3:
         leaked:
@@ -25,6 +29,13 @@ router_ospfv3:
     bfd_adjacency_state_any: true
     auto_cost_reference_bandwidth: 2000
     passive_interface_default: true
+    lsa:
+      limit: 4444
+      incident_count:
+        limit: 4
+        clear_timeout: 8
+      warning_limit: 88
+      exceed_action_warn: true # won't render as incident_count is set
     redistribute:
       ospfv3:
         leaked:
