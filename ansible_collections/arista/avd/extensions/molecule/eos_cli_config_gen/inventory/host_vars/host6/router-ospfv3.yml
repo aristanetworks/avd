@@ -4,6 +4,21 @@ router_ospfv3:
   router_id: 1.1.1.1
   passive_interface_default: true
   auto_cost_reference_bandwidth: 1000
+  # Address family timers below override these shared timers.
+  timers:
+    spf:
+      delay:
+        initial: 1000
+        min_hold_time: 5000
+        max_wait_time: 30000
+    lsa:
+      rx:
+        min_interval: 2000
+      tx:
+        delay:
+          initial: 1000
+          min: 2000
+          max: 5000
   graceful_restart_helper: false
   address_family_ipv4:
     enabled: true
@@ -34,6 +49,21 @@ router_ospfv3:
         route_map: map1
   address_family_ipv6:
     enabled: true
+    # Verify address family IPv6 timers take precedence over shared router timers.
+    timers:
+      spf:
+        delay:
+          initial: 2500
+          min_hold_time: 7000
+          max_wait_time: 30000
+      lsa:
+        rx:
+          min_interval: 3000
+        tx:
+          delay:
+            initial: 1500
+            min: 3000
+            max: 7000
     graceful_restart:
       enabled: true
       grace_period: 26
@@ -64,23 +94,75 @@ router_ospfv3:
         route_map: map1
   vrfs:
     - name: data
-      # These settings will not get rendered as address family level settings gets precedence.
+      # Shared timers are suppressed because the enabled IPv4 address family has its own timers.
       router_id: 2.2.2.2
       passive_interface_default: false
       auto_cost_reference_bandwidth: 100
+      timers:
+        spf:
+          delay:
+            initial: 600
+            min_hold_time: 3000
+            max_wait_time: 12000
+        lsa:
+          rx:
+            min_interval: 500
+          tx:
+            delay:
+              initial: 600
+              min: 900
+              max: 2500
       address_family_ipv4:
         enabled: true
         router_id: 1.1.1.1
         passive_interface_default: true
         auto_cost_reference_bandwidth: 1000
+        timers:
+          spf:
+            delay:
+              initial: 1100
+              min_hold_time: 4000
+              max_wait_time: 16000
+          lsa:
+            rx:
+              min_interval: 750
+            tx:
+              delay:
+                initial: 700
+                min: 1500
+                max: 3500
       eos_cli: |-
         bfd default
     # Test with IPv4 Address family
     - name: MGMT
       auto_cost_reference_bandwidth: 100
+      passive_interface_default: true
+      # Shared timers should render when an enabled address family does not override them.
+      timers:
+        spf:
+          delay:
+            initial: 200
+            min_hold_time: 1000
+            max_wait_time: 5000
+        lsa:
+          tx:
+            delay:
+              initial: 0
+              min: 600
+              max: 1200
       graceful_restart_helper: true
       address_family_ipv6:
         enabled: true
+        # Exercise IPv6 address-family LSA timers and override the shared VRF TX timer.
+        timers:
+          lsa:
+            rx:
+              min_interval: 4500
+            tx:
+              delay:
+                initial: 550
+                min: 950
+                max: 1800
         redistribute:
           bgp:
             enabled: true
@@ -128,16 +210,53 @@ router_ospfv3:
       router_id: 2.2.2.2
       auto_cost_reference_bandwidth: 100
       passive_interface_default: true
+      # The enabled IPv6 address family overrides these VRF-level SPF timers only.
+      timers:
+        spf:
+          delay:
+            initial: 300
+            min_hold_time: 1200
+            max_wait_time: 6000
+        lsa:
+          rx:
+            min_interval: 350
+          tx:
+            delay:
+              initial: 400
+              min: 700
+              max: 1600
       graceful_restart_helper: false
       address_family_ipv4:
         enabled: false
         passive_interface_default: false
+        # These disabled address-family timers must not render or suppress VRF timers.
+        timers:
+          spf:
+            delay:
+              initial: 1600
+              min_hold_time: 1700
+              max_wait_time: 1800
+          lsa:
+            rx:
+              min_interval: 1900
+            tx:
+              delay:
+                initial: 2000
+                min: 2100
+                max: 2200
         redistribute:
           bgp:
             enabled: true
       address_family_ipv6:
         enabled: true
         passive_interface_default: true
+        # Only SPF is overridden; VRF-level LSA RX and TX timers should remain.
+        timers:
+          spf:
+            delay:
+              initial: 800
+              min_hold_time: 2400
+              max_wait_time: 8000
         redistribute:
           bgp:
             enabled: true
