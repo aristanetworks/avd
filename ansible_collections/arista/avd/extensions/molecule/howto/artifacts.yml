@@ -141,3 +141,25 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # L2 Ring Topology artifacts
+  - file: inventory/intended/configs/htl2r-l2leaf1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+    artifact: "l2leaf1-ring-uplinks.cfg"
+    output_dir: "l2_ring_topology/artifacts/"
+
+  - file: inventory/intended/configs/htl2r-l2leaf2.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+      - header: "interface Ethernet10"
+    artifact: "l2leaf2-filtered-ring.cfg"
+    output_dir: "l2_ring_topology/artifacts/"
+
+  - file: inventory/intended/configs/htl2r-leaf1a.cfg
+    sections:
+      - header: "interface Ethernet10"
+    artifact: "leaf1a-ring-entry.cfg"
+    output_dir: "l2_ring_topology/artifacts/"
