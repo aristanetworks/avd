@@ -1918,6 +1918,7 @@ class EosDesigns(EosDesignsRootModel):
             "only_configure_route_map_connected_to_bgp_vrfs_when_used": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
+            "remove_mpls_lsr_dependency_for_mpls_overlay_role_server": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "sort_snmp_acls_and_local_interfaces_by_vrf": {"type": bool, "default": False},
             "only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used": {"type": bool, "default": False},
@@ -2116,6 +2117,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        remove_mpls_lsr_dependency_for_mpls_overlay_role_server: bool
+        """
+        Available from AVD 6.6.0.
+        In MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+        server` with `mpls_lsr: false`,
+        configure `bgp route-reflector preserve-attributes` and
+        `next-hop
+        resolution disabled` under enabled EVPN and/or VPN address families.
+
+        Default value: `False`
+        """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
         Available from AVD 6.1.0.
@@ -2173,6 +2185,7 @@ class EosDesigns(EosDesignsRootModel):
                 only_configure_route_map_connected_to_bgp_vrfs_when_used: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
+                remove_mpls_lsr_dependency_for_mpls_overlay_role_server: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 sort_snmp_acls_and_local_interfaces_by_vrf: bool | UndefinedType = Undefined,
                 only_configure_oob_mgmt_vrf_and_ipv4_static_routes_when_used: bool | UndefinedType = Undefined,
@@ -2302,6 +2315,13 @@ class EosDesigns(EosDesignsRootModel):
                        Raise an error if a node has both 'underlay_router: true' and
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
+                    remove_mpls_lsr_dependency_for_mpls_overlay_role_server:
+                       Available from AVD 6.6.0.
+                       In MPLS designs, for iBGP Route Reflectors using `mpls_overlay_role:
+                       server` with `mpls_lsr: false`,
+                       configure `bgp route-reflector preserve-attributes` and
+                       `next-hop
+                       resolution disabled` under enabled EVPN and/or VPN address families.
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Available from AVD 6.1.0.
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
