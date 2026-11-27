@@ -36,7 +36,7 @@ jobs:
       - python_requirements
       - molecule_eos_cli_config_gen
       - molecule_eos_designs
-      - molecule_eos_designs_minimum_requirements
+      - e2e_minimum_requirements
       - molecule_anta_runner
       - ansible_test_sanity
       - ansible_test
@@ -69,7 +69,7 @@ jobs:
                 ($event != "merge_group" and (.key | IN(
                   "molecule_eos_cli_config_gen",
                   "molecule_eos_designs",
-                  "molecule_eos_designs_minimum_requirements",
+                  "e2e_minimum_requirements",
                   "molecule_anta_runner",
                   "e2e",
                   "e2e_coverage",
@@ -317,38 +317,6 @@ jobs:
           - "ansible-core>=2.22.0,<2.23.0"
         python_version:
           - "3.15"
-        include:
-          # TODO: reevaluate here what we do as this was done to "guarantee" we don't break
-          # across ansible versions but maybe we don't need it to be these molecule scenario
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.17.0"
-            python_version: "3.11"
-            molecule_group: "molecule-legacy"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core>=2.17.0,<2.18.0"
-            python_version: "3.11"
-            molecule_group: "molecule-legacy"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.19.0"
-            python_version: "3.11"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.20.0"
-            python_version: "3.11"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.21.0"
-            python_version: "3.12"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core>=2.21.0,<2.22.0"
-            python_version: "3.13"
-          # Test latest ansible-core with latest Python
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core>=2.22.0,<2.23.0"
-            python_version: "3.15"
-          # Test ansible-core milestone release
-          # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
-          - avd_scenario: "eos_designs_unit_tests -- -e avd_ignore_requirements=True"
-            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
-            python_version: "3.14"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -384,12 +352,17 @@ jobs:
         run: |
           sh .github/check-git-status.sh
 
-  molecule_eos_designs_minimum_requirements:
-    name: Validate eos_designs with minimum requirements
+  e2e_minimum_requirements:
+    name: Validate eos_designs E2E with minimum dependencies
     runs-on: ubuntu-latest
-    needs: [build_pyavd, build_collection, file-changes]
-    if:
-      needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.plugins == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+    needs: [build_pyavd, file-changes]
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      needs.file-changes.outputs.e2e == 'true' ||
       github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -405,33 +378,31 @@ jobs:
         with:
           python-version: |
             3.11
-      - name: Install pyavd and Ansible minimum requirements
-        # Installing molecule and requirements in different pip command because of jsonschema>=3.2.0 in AVD is incompatible
-        # with jsonschema>=4.9.1 in molecule when using pip compile with lowest
-        # Need to delete min_requirements afterwards otherwise git status is sad
-        # pip upgrade to get dependency groups
+      - name: Install PyAVD minimum dependencies and E2E requirements
+        # Install E2E tooling alongside the exact minimum runtime pins.
+        # Run with Python directly afterward so uv cannot replace the installed wheel or pins.
         env:
           WHEEL_FILE: /tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}
         run: |
-          pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct > /tmp/pyavd/min_requirements.txt
-          cat /tmp/pyavd/min_requirements.txt
-          pip install pip --upgrade
-          python -m pip install --group molecule-legacy
-          python -m pip install "ansible-core==2.16.0" "$WHEEL_FILE[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
-      - name: Restore Ansible collection dependencies
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.ansible/collections
-          key: ${{ needs.build_collection.outputs.collection_cache_key }}
-          fail-on-cache-miss: true
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+          python -m pip install uv
+          uv pip compile python-avd/pyproject.toml \
+            --resolution lowest-direct --python 3.11 \
+            --output-file /tmp/pyavd/min_requirements.txt
+          python -m pip install "ansible-core==2.16.0" "gitpython>=3.1.57" \
+            "$WHEEL_FILE" -r /tmp/pyavd/min_requirements.txt
+          python -m pip check
+      - name: Run eos_designs E2E with minimum dependencies
+        run: python tools/e2e-test-avd.py ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests
+      - name: Print new end-to-end errors
+        if: always()
+        shell: bash
         run: |
-          molecule test --scenario-name eos_designs_unit_tests
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
+          while IFS= read -r error_file; do
+            printf '\n===== %s =====\n' "$error_file"
+            cat "$error_file"
+          done < <(git ls-files --others --exclude-standard -- ':(glob)**/errors/**')
+      - name: Check generated outputs
+        run: sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # ANTA Runner MOLECULE
@@ -551,7 +522,8 @@ jobs:
   ansible_test:
     name: Run ansible-test unit and integration tests (${{ matrix.ansible_version }}, Python ${{ matrix.python_version }})
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    # build_collection prepares the external collection dependency cache.
+    needs: [build_collection, file-changes]
     strategy:
       fail-fast: false
       matrix:
@@ -585,11 +557,24 @@ jobs:
             run_units: true
             # TODO: Remove this exclusion once AVDActionPlugin stores log warnings in result["warnings"] for ansible-core <2.19.
             integration_args: "--exclude eos_designs_documentation"
-          # Exercise only the design action plugins against the Ansible milestone branch.
+          # Preserve role compatibility coverage for the other supported Ansible releases.
+          - ansible_version: ansible_core_2_17
+            python_version: "3.11"
+            pip_installation: "ansible-core>=2.17.0,<2.18.0"
+            integration_args: "eos_designs_role"
+          - ansible_version: ansible_core_2_19
+            python_version: "3.11"
+            pip_installation: "ansible-core>=2.19.0,<2.20.0"
+            integration_args: "eos_designs_role"
+          - ansible_version: ansible_core_2_20
+            python_version: "3.12"
+            pip_installation: "ansible-core>=2.20.0,<2.21.0"
+            integration_args: "eos_designs_role"
+          # Exercise the design action plugins and complete roles against the Ansible milestone branch.
           - ansible_version: devel
             python_version: "3.14"
             pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
-            integration_args: "eos_designs_facts eos_designs_structured_config"
+            integration_args: "eos_designs_facts eos_designs_structured_config eos_designs_role"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -607,6 +592,13 @@ jobs:
         if: matrix.run_units == true
         working-directory: ansible_collections/arista/avd
         run: ansible-test units --python "${{ matrix.python_version }}" --coverage --requirements -vv
+      - name: Restore Ansible collection dependencies
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.ansible/collections
+          key: ${{ needs.build_collection.outputs.collection_cache_key }}
+          fail-on-cache-miss: true
       - name: Run ansible-test integration
         id: integration
         # A unit-test failure must not prevent integration tests from running.
@@ -715,7 +707,7 @@ jobs:
   # Build Collection
   # ----------------------------------- #
   build_collection:
-    name: Build Ansible collection
+    name: Prepare collection dependencies and build collection
     runs-on: ubuntu-latest
     outputs:
       collection_cache_key: ${{ steps.collection_cache_key.outputs.value }}
