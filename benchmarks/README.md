@@ -65,8 +65,10 @@ tokenless CodSpeed upload, and no write-capable checkout token. It runs on:
 
 There is no scheduled or manually dispatched GitHub Actions run.
 
-This diagnostic branch includes the 150-device case in CI, running all 16 cases
-in two parallel jobs: simulation and memory. The memory profiler uses
+This diagnostic branch includes the 150-device case in CI, using three parallel
+jobs: simulation of the 15 default cases, simulation of only the 150-device case,
+and memory profiling of all 16 cases. Splitting simulation gives the 150-device
+case its own execution-time budget. The memory profiler uses
 `CODSPEED_MEMTRACK_STACK_BUDGET=32768` to test 32 KiB stack captures.
 Each job uploads results separately. The memory job installs `libc6-dbg` for
 native symbol resolution and also reports peak physical memory on supported

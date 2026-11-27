@@ -25,15 +25,24 @@ env:
 
 jobs:
   benchmarks:
-    name: CodSpeed benchmarks (${{ matrix.mode }})
+    name: CodSpeed benchmarks (${{ matrix.name }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        mode: [simulation, memory]
+        include:
+          - name: simulation
+            mode: simulation
+            marker: not benchmark_scale
+          - name: simulation 150 devices
+            mode: simulation
+            marker: benchmark_scale
+          - name: memory
+            mode: memory
+            marker: ""
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.mode }}
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.name }}
       cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
@@ -72,4 +81,4 @@ jobs:
         with:
           mode: ${{ matrix.mode }}
           run: |
-            python -m pytest --codspeed benchmarks -q
+            python -m pytest --codspeed benchmarks -m "${{ matrix.marker }}" -q
