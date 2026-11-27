@@ -3,6 +3,7 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
+avd_version: 6.5.0
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -17,6 +18,16 @@ daemon_terminattr:
 dns_domain: wan.example.local
 enable_password:
   disabled: true
+eos_config_future:
+  always_render_ip_routing_separator: true
+  render_combined_separator_for_ipv6_hardware_and_unicast_routing: true
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
+  only_render_mpls_rsvp_with_settings: true
+  render_monitor_layer1_without_enabled: true
+  render_spanning_tree_portfast_edge: true
+  only_render_separator_with_boot_secret_key: true
+  new_bgp_peer_group_cli_order: true
 ethernet_interfaces:
 - name: Ethernet5
   description: MLAG_site2-leaf1_Ethernet5

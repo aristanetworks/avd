@@ -379,7 +379,6 @@ router bgp 65100
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
 ```
 

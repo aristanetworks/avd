@@ -13,7 +13,7 @@ from pyavd._schema.utils import get_instance_with_defaults
 from pyavd._utils.get_all import get_all
 
 from .avd_list import AvdList
-from .avd_model import AvdModel
+from .avd_version_model import AvdVersionModel
 
 if TYPE_CHECKING:
     from typing import Self
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 SKIP_KEYS = ["custom_structured_configuration_list_merge", "custom_structured_configuration_prefix"]
 
 
-class EosDesignsRootModel(AvdModel):
+class EosDesignsRootModel(AvdVersionModel):
     @classmethod
     def _from_dict(cls, data: Mapping, load_custom_structured_config: bool = True) -> Self:
         """

@@ -335,7 +335,7 @@ interface Ethernet3
    switchport access vlan 30
    switchport mode access
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
 !
 interface Ethernet47
    description MLAG_LEAF3_Ethernet47
@@ -428,6 +428,7 @@ service routing protocols model multi-agent
 #### IP Routing Device Configuration
 
 ```eos
+!
 no ip routing vrf MGMT
 ```
 

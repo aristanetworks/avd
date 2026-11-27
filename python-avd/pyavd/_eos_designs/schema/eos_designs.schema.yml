@@ -774,6 +774,9 @@ keys:
       table: role-settings
     type: str
     $ref: eos_cli_config_gen#/keys/avd_vault_id
+  avd_version:
+    type: str
+    $ref: eos_cli_config_gen#/keys/avd_version
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -3153,6 +3156,9 @@ keys:
 
       '
     default: false
+  eos_config_future:
+    type: dict
+    $ref: eos_cli_config_gen#/keys/eos_config_future
   eos_designs_custom_templates:
     documentation_options:
       table: role-custom-templates

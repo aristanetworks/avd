@@ -1,5 +1,6 @@
 aaa_root:
   disabled: true
+avd_version: 6.5.0
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -13,6 +14,16 @@ daemon_terminattr:
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
+eos_config_future:
+  always_render_ip_routing_separator: true
+  render_combined_separator_for_ipv6_hardware_and_unicast_routing: true
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
+  only_render_mpls_rsvp_with_settings: true
+  render_monitor_layer1_without_enabled: true
+  render_spanning_tree_portfast_edge: true
+  only_render_separator_with_boot_secret_key: true
+  new_bgp_peer_group_cli_order: true
 ethernet_interfaces:
 - name: Ethernet3
   description: MLAG_dc1-leaf1b_Ethernet3
@@ -91,7 +102,7 @@ ip_name_server:
   - name: MGMT
     servers:
     - ip_address: 192.168.1.1
-ip_routing: true
+ip_routing_ipv6_interfaces: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
@@ -385,8 +396,12 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
+    - name: MLAG-IPv6-UNDERLAY-PEER
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
   address_family_ipv6:
     peer_groups:
     - name: MLAG-IPv6-UNDERLAY-PEER
@@ -659,19 +674,20 @@ vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
-  ip_routing: true
+  ipv6_routing: true
+  ip_routing_ipv6_interfaces: true
   metadata:
     tenants:
     - TENANT1
 - name: VRF11
-  ip_routing: true
   ipv6_routing: true
+  ip_routing_ipv6_interfaces: true
   metadata:
     tenants:
     - TENANT1
 - name: VRF12
-  ip_routing: true
   ipv6_routing: true
+  ip_routing_ipv6_interfaces: true
   metadata:
     tenants:
     - TENANT1

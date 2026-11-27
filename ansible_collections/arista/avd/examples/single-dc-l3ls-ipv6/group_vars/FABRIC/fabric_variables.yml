@@ -1,6 +1,7 @@
 ---
 # Common AVD group variables
 fabric_name: FABRIC
+avd_version: 6.5.0
 
 # Fix known bugs where the fix was introduced after 6.0.
 avd_design_future:
@@ -73,6 +74,9 @@ dns_settings:
 
 underlay_ipv6: true
 underlay_ipv6_numbered: true
+
+# Exchange IPv4 routes with IPv6 next hops over the numbered IPv6 MLAG iBGP peerings.
+overlay_mlag_rfc5549: true
 
 fabric_ip_addressing:
   mlag:

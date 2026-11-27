@@ -294,7 +294,7 @@ interface Ethernet5
    switchport access vlan 11
    switchport mode access
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
 ```
 
 ### Port-Channel Interfaces
@@ -342,6 +342,7 @@ service routing protocols model multi-agent
 #### IP Routing Device Configuration
 
 ```eos
+!
 no ip routing vrf MGMT
 ```
 

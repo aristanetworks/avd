@@ -416,7 +416,7 @@ interface Port-Channel5
    switchport mode trunk
    switchport
    mlag 5
-   spanning-tree portfast
+   spanning-tree portfast edge
 !
 interface Port-Channel8
    description L2_dc1-leaf2c_Port-Channel1
@@ -839,7 +839,6 @@ router bgp 65102
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !

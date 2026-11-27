@@ -429,7 +429,7 @@ interface Port-Channel5
    switchport mode trunk
    switchport
    mlag 5
-   spanning-tree portfast
+   spanning-tree portfast edge
 !
 interface Port-Channel8
    description L2_dc1-leaf2c_Port-Channel1
@@ -707,21 +707,21 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | True (ipv6 interfaces) |
 | MGMT | False |
-| VRF10 | True |
-| VRF11 | True |
-| VRF12 | True |
+| VRF10 | True (ipv6 interfaces) |
+| VRF11 | True (ipv6 interfaces) |
+| VRF12 | True (ipv6 interfaces) |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
-ip routing
+ip routing ipv6 interfaces
 no ip routing vrf MGMT
-ip routing vrf VRF10
-ip routing vrf VRF11
-ip routing vrf VRF12
+ip routing ipv6 interfaces vrf VRF10
+ip routing ipv6 interfaces vrf VRF11
+ip routing ipv6 interfaces vrf VRF12
 ```
 
 ### IPv6 Routing
@@ -732,7 +732,7 @@ ip routing vrf VRF12
 | --- | --------------- |
 | default | True |
 | MGMT | False |
-| VRF10 | False |
+| VRF10 | True |
 | VRF11 | True |
 | VRF12 | True |
 
@@ -741,6 +741,7 @@ ip routing vrf VRF12
 ```eos
 !
 ipv6 unicast-routing
+ipv6 unicast-routing vrf VRF10
 ipv6 unicast-routing vrf VRF11
 ipv6 unicast-routing vrf VRF12
 ```
@@ -935,7 +936,8 @@ router bgp 65102
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER activate
+      neighbor MLAG-IPv6-UNDERLAY-PEER next-hop address-family ipv6 originate
    !
    address-family ipv6
       neighbor IPv6-UNDERLAY-PEERS activate
@@ -1080,9 +1082,9 @@ route-map RM-MLAG-PEER-IN permit 10
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
-| VRF10 | enabled |
-| VRF11 | enabled |
-| VRF12 | enabled |
+| VRF10 | enabled (ipv6 interface) |
+| VRF11 | enabled (ipv6 interface) |
+| VRF12 | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

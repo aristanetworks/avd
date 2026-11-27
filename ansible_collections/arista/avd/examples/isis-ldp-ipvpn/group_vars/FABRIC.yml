@@ -15,6 +15,7 @@ management_eapi:
 
 # Common AVD group variables
 fabric_name: FABRIC # (7)!
+avd_version: 6.5.0
 
 eos_designs_documentation: # (8)!
   topology_csv: true

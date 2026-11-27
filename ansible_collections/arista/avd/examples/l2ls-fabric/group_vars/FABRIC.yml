@@ -3,6 +3,7 @@
 
 # Set the Fabric Name - must match an Ansible Inventory Group
 fabric_name: DC1
+avd_version: 6.5.0
 
 # Documentation
 eos_designs_documentation:

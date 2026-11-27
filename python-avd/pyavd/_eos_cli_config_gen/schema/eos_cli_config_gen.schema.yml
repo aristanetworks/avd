@@ -924,6 +924,22 @@ keys:
       being exposed in the temporary directories.\n  * When `avd_vault_id` is not
       specified, AVD uses the *first* Vault ID in the list for encryption.\n  * When
       `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption."
+  avd_version:
+    type: str
+    pattern: '[0-9]+\.[0-9]+\.[0-9]+'
+    description: 'Opt in to future behaviors introduced in the selected AVD release
+      or earlier.
+
+      Specify a version string in major.minor.patch format, for example "6.5.0".
+
+      Sets defaults for `avd_design_future` and `eos_config_future` flags available
+      in the installed AVD version.
+
+      Explicit values for individual flags take precedence, including `false`.
+
+      Flags introduced after the selected version retain their existing defaults.
+
+      When omitted, future behavior defaults are unchanged.'
   banners:
     type: dict
     keys:

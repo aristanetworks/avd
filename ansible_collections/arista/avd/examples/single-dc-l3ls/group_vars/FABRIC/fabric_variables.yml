@@ -1,6 +1,7 @@
 ---
 # Common AVD group variables
 fabric_name: FABRIC
+avd_version: 6.5.0
 
 # Generate CSVs with fabric link info.
 eos_designs_documentation:

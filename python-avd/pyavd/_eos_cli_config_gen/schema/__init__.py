@@ -80849,6 +80849,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "as_path": {"type": AsPath},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "avd_vault_id": {"type": str},
+        "avd_version": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -81106,6 +81107,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     specified, AVD uses the *first* Vault ID in the list for encryption.
       * When `avd_vault_id` is
     specified, AVD uses the specified Vault ID for encryption.
+    """
+    avd_version: str | None
+    """
+    Opt in to future behaviors introduced in the selected AVD release or earlier.
+    Specify a version
+    string in major.minor.patch format, for example "6.5.0".
+    Sets defaults for `avd_design_future` and
+    `eos_config_future` flags available in the installed AVD version.
+    Explicit values for individual
+    flags take precedence, including `false`.
+    Flags introduced after the selected version retain their
+    existing defaults.
+    When omitted, future behavior defaults are unchanged.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -81737,6 +81751,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             as_path: AsPath | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             avd_vault_id: str | UndefinedType | None = Undefined,
+            avd_version: str | UndefinedType | None = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -81980,6 +81995,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    specified, AVD uses the *first* Vault ID in the list for encryption.
                      * When `avd_vault_id` is
                    specified, AVD uses the specified Vault ID for encryption.
+                avd_version:
+                   Opt in to future behaviors introduced in the selected AVD release or earlier.
+                   Specify a version
+                   string in major.minor.patch format, for example "6.5.0".
+                   Sets defaults for `avd_design_future` and
+                   `eos_config_future` flags available in the installed AVD version.
+                   Explicit values for individual
+                   flags take precedence, including `false`.
+                   Flags introduced after the selected version retain their
+                   existing defaults.
+                   When omitted, future behavior defaults are unchanged.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
