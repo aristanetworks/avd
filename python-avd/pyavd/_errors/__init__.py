@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from pyavd._utils.json_path_to_string import json_path_to_string
@@ -15,19 +16,31 @@ if TYPE_CHECKING:
 
 
 class AristaAvdError(Exception):
-    host: str | None
-
-    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None) -> None:
-        self.host = host
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin") -> None:
         self.message = message
+        # Temporary state for facts errors that have not migrated to AristaAvdHostError yet.
+        self._host_context_added = False
         super().__init__(self.message)
+
+
+class AristaAvdHostError(AristaAvdError):
+    def __init__(self, message: str, *, host: str) -> None:
+        if not isinstance(host, str):
+            msg = "host must be a string"
+            raise TypeError(msg)
+        if not host:
+            msg = "host must not be empty"
+            raise ValueError(msg)
+        self.host = host
+        super().__init__(f"{message.removesuffix('.')} for host '{host}'.")
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
     host: str | None
 
     def __init__(self, message: str, host: str | None = None) -> None:
-        super().__init__(message, host=host)
+        self.host = host
+        super().__init__(message)
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
@@ -40,7 +53,9 @@ class AristaAvdMissingVariableError(AristaAvdError):
         self.host = host
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
-        super().__init__(message, host=host)
+        super().__init__(message)
+        # This constructor already includes a nonempty host in its diagnostic.
+        self._host_context_added = bool(host)
 
 
 class AvdValidationError(AristaAvdError):
@@ -99,11 +114,46 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
-    def __init__(self, context: str, context_item_a: str, context_item_b: str, host: str | None = None) -> None:
-        self.message = (
-            f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
-        )
-        super().__init__(self.message, host=host)
+    @dataclass(frozen=True, slots=True)
+    class _Details:
+        """Immutable context describing two conflicting objects."""
+
+        context: str
+        context_item_a: str
+        context_item_b: str
+
+    def __init__(self, context: str, context_item_a: str, context_item_b: str) -> None:
+        super().__init__(self._init_context(context, context_item_a, context_item_b))
+
+    def _init_context(self, context: str, context_item_a: str, context_item_b: str) -> str:
+        """Store the immutable duplicate details and build their diagnostic."""
+        self._details = self._Details(context, context_item_a, context_item_b)
+        return f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
+
+    @property
+    def context(self) -> str:
+        return self._details.context
+
+    @property
+    def context_item_a(self) -> str:
+        return self._details.context_item_a
+
+    @property
+    def context_item_b(self) -> str:
+        return self._details.context_item_b
+
+    def as_host_error(self, hostname: str) -> AristaAvdHostDuplicateDataError:
+        """Rebuild this error with a hostname, preserving the original duplicate details."""
+        if isinstance(self, AristaAvdHostDuplicateDataError):
+            return self
+        return AristaAvdHostDuplicateDataError(self.context, self.context_item_a, self.context_item_b, host=hostname)
+
+
+class AristaAvdHostDuplicateDataError(AristaAvdDuplicateDataError, AristaAvdHostError):
+    def __init__(self, context: str, context_item_a: str, context_item_b: str, *, host: str) -> None:  # pylint: disable=super-init-not-called
+        message = self._init_context(context, context_item_a, context_item_b)
+        # Initialize the host branch directly so the duplicate details are not initialized twice.
+        AristaAvdHostError.__init__(self, message, host=host)
 
 
 class AristaAvdModelDeprecationWarning(DeprecationWarning):

@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import (
-    AristaAvdDuplicateDataError,
+    AristaAvdHostDuplicateDataError,
     AristaAvdInvalidInputsError,
     AristaAvdMissingVariableError,
     AvdDeprecationWarning,
@@ -546,7 +546,7 @@ class AvdStructuredConfigBaseProtocol(
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
                 if vrf_name == "default" and ip_ssh_client.source_interface and ip_ssh_client.source_interface != source_interface:
-                    raise AristaAvdDuplicateDataError(
+                    raise AristaAvdHostDuplicateDataError(
                         context="ssh_settings.client_vrfs",
                         context_item_a=str({"name": vrf_name, "source_interface": source_interface}),
                         context_item_b=str({"name": vrf_name, "source_interface": ip_ssh_client.source_interface}),

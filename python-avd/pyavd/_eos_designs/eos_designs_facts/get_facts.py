@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts.generator import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdError, AristaAvdHostError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
@@ -76,14 +76,29 @@ def get_facts(
     for hostname, generator in peer_facts_generators.items():
         try:
             all_facts[hostname] = generator.render()
-        except AristaAvdMissingVariableError as e:
-            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
+        except AristaAvdHostError:
+            raise
+        except AristaAvdDuplicateDataError as e:
+            raise e.as_host_error(hostname) from e
         except AristaAvdError as e:
-            host = e.host if hasattr(e, "host") and e.host else hostname
-            msg = f"{str(e).removesuffix('.')} for host '{host}'."
-            raise type(e)(msg, host=host) from e
+            _add_legacy_host_context(e, hostname)
+            raise
 
     return all_facts
+
+
+def _add_legacy_host_context(error: AristaAvdError, hostname: str) -> None:
+    """Preserve enrichment for error categories that have not migrated to host errors yet."""
+    if isinstance(error, (AristaAvdInvalidInputsError, AristaAvdMissingVariableError)):
+        if not error.host:
+            error.host = hostname
+        hostname = error.host
+    if error._host_context_added or not hostname:
+        return
+
+    error.message = f"{error.message.removesuffix('.')} for host '{hostname}'."
+    error.args = (error.message,)
+    error._host_context_added = True
 
 
 def _create_generator_instance(

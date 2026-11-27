@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdHostError, AristaAvdInvalidInputsError
 from pyavd._utils.remove_cached_property_type import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
@@ -484,7 +484,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"Either 'downlink_interfaces' must be set under 'default_interfaces' for uplink_switch' '{uplink_switch}' "
                     "or 'uplink_switch_interfaces' must be set."
                 )
-                raise AristaAvdError(msg, host=self.shared_utils.hostname)
+                raise AristaAvdHostError(msg, host=self.shared_utils.hostname)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
@@ -492,6 +492,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
                     f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
-                raise AristaAvdError(msg, host=uplink_switch)
+                raise AristaAvdHostError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces

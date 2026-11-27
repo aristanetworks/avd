@@ -10,7 +10,7 @@ from pyavd_utils.passwords import simple_7_encrypt
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdHostDuplicateDataError, AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.strip_empties import strip_null_from_data
@@ -254,7 +254,7 @@ class SnmpServerMixin(Protocol):
                             configured_source_interface = self.structured_config.snmp_server.vrfs.obtain(host_vrf).local_interface
 
                         if configured_source_interface and configured_source_interface != source_interface:
-                            raise AristaAvdDuplicateDataError(
+                            raise AristaAvdHostDuplicateDataError(
                                 context="snmp_settings.hosts",
                                 context_item_a=str({"vrf": host_vrf, "source_interface": source_interface}),
                                 context_item_b=str({"vrf": host_vrf, "source_interface": configured_source_interface}),
