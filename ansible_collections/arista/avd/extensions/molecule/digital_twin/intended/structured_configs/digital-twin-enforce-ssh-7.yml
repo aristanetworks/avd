@@ -1,0 +1,43 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: digital-twin-enforce-ssh-7
+ip_igmp_snooping:
+  globally_enabled: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.8/32
+  type: oob
+management_ssh:
+  ip_access_group_in: ssh_default_ipv4_std_acl_in
+  vrfs:
+  - name: default
+    enable: true
+metadata:
+  is_deployed: true
+  fabric_name: DIGITAL_TWIN
+service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: ssh_default_ipv4_std_acl_in
+  entries:
+  - sequence: 15
+    action: deny
+    source: any
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

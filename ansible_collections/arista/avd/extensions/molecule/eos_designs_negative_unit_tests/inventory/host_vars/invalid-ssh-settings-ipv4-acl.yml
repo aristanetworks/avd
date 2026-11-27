@@ -1,0 +1,30 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: invalid-ssh-settings-ipv4-acl
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+avd_design_future:
+  configure_ssh_settings_vrfs_ipv4_acl_from_catalog: true
+
+ipv4_acls:
+  - name: invalid-acl
+    entries:
+      - sequence: 10
+        action: permit
+        source: interface_ip
+        destination: any
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+ssh_settings:
+  enabled: false
+  vrfs:
+    - name: VRF20
+      enabled: true
+      ipv4_acl: invalid-acl
