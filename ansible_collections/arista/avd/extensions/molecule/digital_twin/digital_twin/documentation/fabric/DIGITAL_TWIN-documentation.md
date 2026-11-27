@@ -29,6 +29,7 @@
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-3 | 192.168.0.3/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-4 | 192.168.0.4/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-5 | 192.168.0.5/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-6 | 192.168.0.11/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-1 | 192.168.0.6/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-2 | 192.168.0.7/32 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-ssh-3 | 192.168.0.8/32 | vEOS-lab | Provisioned | - |

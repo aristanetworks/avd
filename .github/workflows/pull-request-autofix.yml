@@ -32,18 +32,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run pre-commit autofix pass
-        id: pre_commit
-        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
-        continue-on-error: ${{ github.event_name != 'merge_group' }}
-        with:
-          extra_args: --all-files
+      - name: Install prek
+        run: python -m pip install --group prek
 
-      - name: Fail if pre-commit failed without fixes
-        if: steps.pre_commit.outcome == 'failure'
+      - name: Run prek autofix pass
+        id: prek
+        continue-on-error: ${{ github.event_name != 'merge_group' }}
+        run: prek run --all-files --show-diff-on-failure --color=always
+
+      - name: Fail if prek failed without fixes
+        if: steps.prek.outcome == 'failure'
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "pre-commit failed and did not produce changes for autofix.ci to commit."
+            echo "prek failed and did not produce changes for autofix.ci to commit."
             exit 1
           fi
 

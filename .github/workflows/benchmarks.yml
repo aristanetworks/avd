@@ -1,0 +1,73 @@
+---
+name: "Benchmarks"
+
+"on":
+  push:
+    branches: [devel]
+    paths:
+      - ".github/workflows/benchmarks.yml"
+      - "benchmarks/**"
+      - "pyproject.toml"
+      - "python-avd/pyavd/**"
+      - "python-avd/scripts/**"
+      - "python-avd/schema_tools/**"
+      - "python-avd/Makefile"
+      - "python-avd/tests/models.py"
+      - "ansible_collections/arista/avd/extensions/molecule/**"
+      - "tools/e2e_test_avd.py"
+  pull_request:
+    types: [reopened, synchronize, labeled]
+    branches: [devel]
+
+env:
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  benchmarks:
+    name: CodSpeed benchmarks (${{ matrix.mode }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [simulation, memory]
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}-${{ matrix.mode }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+    if: >-
+      github.event_name != 'pull_request' ||
+      (contains(github.event.pull_request.labels.*.name, 'benchmark') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'benchmark'))
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.14.9"
+
+      - name: Install dependencies
+        run: |
+          pip install --group dev --group benchmark --upgrade
+
+      - name: Generate PyAVD artifacts
+        run: |
+          make -C python-avd dep
+
+      - name: Install libc debug symbols
+        if: matrix.mode == 'memory'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libc6-dbg
+
+      - name: Run benchmarks
+        uses: CodSpeedHQ/action@af75f77f17a054769abefaa42fe8dc2975469b5f # v5.6.3
+        with:
+          mode: ${{ matrix.mode }}
+          run: |
+            python -m pytest --codspeed benchmarks -m "not benchmark_scale" -q

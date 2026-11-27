@@ -1,0 +1,42 @@
+aaa_root:
+  disabled: true
+address_locking:
+  dhcp_server_interfaces:
+  - Ethernet1
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_address-locking-uplink-parent_Ethernet5
+  shutdown: false
+  metadata:
+    peer: address-locking-uplink-parent
+    peer_interface: Ethernet5
+    peer_type: l3leaf
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+hostname: address-locking-15
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 32768
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -14,14 +14,16 @@ dev = [
     "codespell>=2.4.3",
     "docker>=7.1.0",
     "identify>=2.6.18",
-    "pre-commit-hooks>=6.0.0",
-    "pre-commit>=4.5.1",
+    {include-group = "prek"},
     "pylint>=4.1.4",
-    "ruff==0.17.5",
+    "ruff==0.17.6",
     "setuptools>=82.0.1", # for pyright check in CI
     "yamllint>=1.38.0",
     # TODO: avoid the next line down the line if possible
     "gitpython>=3.1.57",  # for pyright check in CI for e2e script
+]
+prek = [
+    "prek==0.5.11",
 ]
 coverage = [
     "coverage[toml]==7.17.2",
@@ -61,7 +63,7 @@ molecule-legacy = [
 # when generating molecule artifacts.
 pytest = [
     "ansible-core>=2.16.0,<2.23.0",
-    "anta==1.10.0",
+    "anta==1.11.0",
     "pytest>=9.1.0",
     "pytest-asyncio>=1.3.0",
     {include-group = "schema-tools"},
@@ -71,8 +73,12 @@ schema-tools = [
     "pyavd-utils-gen==0.0.14",
     "deepmerge>=1.1.0",
     "pyyaml>=6.0.0",
+    "pyyaml>=6.0.4; python_version >= '3.15'",
     "referencing>=0.37.0",
-    "ruff==0.17.5",
+    "ruff==0.17.6",
+]
+benchmark = [
+    "pytest-codspeed>=5.0.4",
 ]
 
 [tool.uv]
@@ -84,6 +90,8 @@ conflicts = [
 # Apply a seven-day cutoff to each distribution's upload time, including transitive dependencies.
 # Renovate's release-age check instead uses the version's earliest upload.
 exclude-newer = "7 days"
+# Temporary exception for PyYAML 6.0.4's Python 3.15 wheels; remove on or after 2026-11-28.
+exclude-newer-package = { pyyaml = "2026-11-21T00:00:00Z" }
 
 [tool.uv.workspace]
 members = ["python-avd"]
@@ -179,6 +187,10 @@ convention = "google"
   "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
   "PLC0415", # `import` should be at the top-level of a file
 ]
+"benchmarks/**/*" = [
+  "S101",   # Accept 'assert' in benchmarks (they are tests).
+  "PLC0415", # `import` should be at the top-level of a file
+]
 "python-avd/pyavd/_anta/index.py" = [
   "F403", # Allow wildcard imports to avoid cluttering the index
   "F405", # Allow names defined in via a wildcard import
@@ -230,6 +242,7 @@ pythonpath = [
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
+    "benchmark_scale: Benchmarks excluded from the default CodSpeed PR suite.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 # log_file = "pytest.log"
