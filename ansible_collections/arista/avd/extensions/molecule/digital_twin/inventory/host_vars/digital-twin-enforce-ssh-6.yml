@@ -1,0 +1,31 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-enforce-ssh-6
+      id: 1
+      mgmt_ip: 192.168.0.8/32
+
+avd_design_future:
+  configure_ssh_settings_vrfs_ipv4_acl_from_catalog: true
+
+ipv4_acls:
+  - name: ssh_default_ipv4_acl_in
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: 10.0.0.1
+        destination: any
+
+digital_twin:
+  environment: act
+  fabric:
+    act_ensure_ssh_access: true
+
+ssh_settings:
+  vrfs:
+    - name: default
+      enabled: true
+      ipv4_acl: ssh_default_ipv4_acl_in
