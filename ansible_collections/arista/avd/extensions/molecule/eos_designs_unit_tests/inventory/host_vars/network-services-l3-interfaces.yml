@@ -12,6 +12,15 @@ ipv4_standard_acls:
         action: permit
         source: 192.168.0.0/16
 
+ipv4_acls:
+  - name: MONITOR-SESSION-IPV4-STATIC-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
+
 ipv6_acls:
   # Static ACL - no field substitution, name is used as-is.
   - name: TEST-IPV6-ACL-STATIC-IN
@@ -29,6 +38,31 @@ ipv6_acls:
         protocol: ipv6
         source: interface_ip
         destination: any
+  - name: MONITOR-SESSION-IPV6-ACL-FIELD-SUBSTITUTION
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: interface_ipv6
+        destination: any
+  - name: MONITOR-SESSION-IPV6-STATIC-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+
+mac_acls:
+  - name: MONITOR-SESSION-MAC-STATIC-ACL
+    entries:
+      - sequence: 10
+        action: permit
+        source: any
+        destination: any
+
+avd_design_future:
+  configure_monitor_session_ipv4_acl_from_catalog: true
 
 type: l3leaf
 l3leaf:
@@ -50,12 +84,37 @@ tenants:
         bgp:
           enabled: false
         l3_interfaces:
+          # Session-wide static ACLs on Ethernet10 and Ethernet11 cover the ACL inspection path with multiple sources.
           # IPv6-only in default VRF: tests that ipv6_unicast_routing global flag is set
           - interfaces: [Ethernet10]
             nodes: [network-services-l3-interfaces]
             ipv6_addresses: ["2001:db8:10::1/64"]
             enabled: true
             description: "ipv6-only-default-vrf"
+            monitor_sessions:
+              - name: MONITOR-SESSION-IPV4-STATIC
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    type: ip
+              - name: MONITOR-SESSION-IPV6-STATIC
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    type: ipv6
+                    name: MONITOR-SESSION-IPV6-STATIC-ACL
+              - name: MONITOR-SESSION-MAC-STATIC
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    type: mac
+                    name: MONITOR-SESSION-MAC-STATIC-ACL
           # Dual-stack (IPv4 + IPv6) in default VRF, with a static IPv6 ACL in the ingress direction.
           - interfaces: [Ethernet11]
             nodes: [network-services-l3-interfaces]
@@ -64,17 +123,42 @@ tenants:
             enabled: true
             description: "dual-stack-default-vrf"
             ipv6_acl_in: TEST-IPV6-ACL-STATIC-IN
+            monitor_sessions:
+              - name: MONITOR-SESSION-IPV4-STATIC
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    name: MONITOR-SESSION-IPV4-STATIC-ACL
+              - name: MONITOR-SESSION-IPV6-STATIC
+                role: source
+                source_settings:
+                  direction: rx
+              - name: MONITOR-SESSION-MAC-STATIC
+                role: source
+                source_settings:
+                  direction: rx
       - name: L3INTF_TEST
         vrf_id: 2
         l3_interfaces:
           # IPv6-only in non-default VRF: tests VRF-level ipv6_routing set and ipv6_unicast_routing global flag also set.
-          # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the interface name).
+          # Also exercises a session-wide ACL with interface IPv6 substitution across multiple source interfaces.
           - interfaces: [Ethernet12]
             nodes: [network-services-l3-interfaces]
             ipv6_addresses: ["2001:db8:12::1/64"]
             enabled: true
             description: "ipv6-only-non-default-vrf"
             ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+            monitor_sessions:
+              - name: MONITOR-SESSION-IPV6-ACL-SUBSTITUTION
+                role: source
+                source_settings:
+                  direction: rx
+                session_settings:
+                  access_group:
+                    type: ipv6
+                    name: MONITOR-SESSION-IPV6-ACL-FIELD-SUBSTITUTION
           # Tests ipv4_standard_acl_in/out on network_services l3_interface
           - interfaces: [Ethernet13]
             nodes: [network-services-l3-interfaces]
@@ -83,3 +167,12 @@ tenants:
             description: "std-acl-test"
             ipv4_standard_acl_in: STD-L3INTF-ACL-IN
             ipv4_standard_acl_out: STD-L3INTF-ACL-OUT
+          - interfaces: [Ethernet14]
+            nodes: [network-services-l3-interfaces]
+            ipv6_addresses: ["2001:db8:14::1/64"]
+            enabled: true
+            monitor_sessions:
+              - name: MONITOR-SESSION-IPV6-ACL-SUBSTITUTION
+                role: source
+                source_settings:
+                  direction: rx

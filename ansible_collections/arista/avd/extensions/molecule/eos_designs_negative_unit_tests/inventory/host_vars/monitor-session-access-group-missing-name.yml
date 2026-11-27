@@ -1,0 +1,25 @@
+---
+# The session_settings contribution omits the access-group name.
+avd_design_future:
+  configure_monitor_session_ipv4_acl_from_catalog: false
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: monitor-session-access-group-missing-name
+      id: 1
+      mgmt_ip: 192.168.1.2/24
+
+servers:
+  - name: server1
+    adapters:
+      - switches: [monitor-session-access-group-missing-name]
+        switch_ports: [Ethernet1]
+        monitor_sessions:
+          - name: SESSION-INCOMPLETE-ACCESS-GROUP
+            role: source
+            source_settings:
+              direction: rx
+            session_settings:
+              access_group:
+                type: ip
