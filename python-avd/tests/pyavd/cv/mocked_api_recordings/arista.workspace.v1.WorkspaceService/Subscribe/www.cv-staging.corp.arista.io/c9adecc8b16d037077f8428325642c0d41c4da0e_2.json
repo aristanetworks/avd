@@ -1,0 +1,80 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+                },
+                "createdAt": "2026-11-18T07:26:39.909606653",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-11-18T07:27:35.668607427",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-01c8f794-31f6-43ae-b759-5b61074b0e9c",
+                "responses": {
+                    "values": {
+                        "req-792f8bc7-3994-4844-ad57-07f2ed27248e": {
+                            "status": "SUCCESS",
+                            "message": "Build req-792f8bc7-3994-4844-ad57-07f2ed27248e finished successfully",
+                            "startTime": "2026-11-18T07:27:24.115068304",
+                            "endTime": "2026-11-18T07:27:24.620018869",
+                            "requestType": "START_BUILD"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "AVD_CI_PYTEST_WS_REBUILD",
+                "description": "",
+                "excludeNetworkProvisioning": false,
+                "decommissionRequestIds": {}
+            },
+            "time": "2026-11-18T07:27:35.668610387",
+            "type": "INITIAL"
+        },
+        {
+            "type": "INITIAL_SYNC_COMPLETE"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+                },
+                "createdAt": "2026-11-18T07:26:39.909606653",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2026-11-18T07:27:36.154258978",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-01c8f794-31f6-43ae-b759-5b61074b0e9c",
+                "responses": {
+                    "values": {
+                        "req-01c8f794-31f6-43ae-b759-5b61074b0e9c": {
+                            "status": "SUCCESS",
+                            "message": "Build req-01c8f794-31f6-43ae-b759-5b61074b0e9c finished successfully",
+                            "startTime": "2026-11-18T07:27:35.607963766",
+                            "endTime": "2026-11-18T07:27:35.907454722",
+                            "requestType": "START_BUILD"
+                        },
+                        "req-792f8bc7-3994-4844-ad57-07f2ed27248e": {
+                            "status": "SUCCESS",
+                            "message": "Build req-792f8bc7-3994-4844-ad57-07f2ed27248e finished successfully",
+                            "startTime": "2026-11-18T07:27:24.115068304",
+                            "endTime": "2026-11-18T07:27:24.620018869",
+                            "requestType": "START_BUILD"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "AVD_CI_PYTEST_WS_REBUILD",
+                "description": "",
+                "excludeNetworkProvisioning": false,
+                "decommissionRequestIds": {}
+            },
+            "time": "2026-11-18T07:27:36.154262748",
+            "type": "UPDATED"
+        }
+    ]
+}

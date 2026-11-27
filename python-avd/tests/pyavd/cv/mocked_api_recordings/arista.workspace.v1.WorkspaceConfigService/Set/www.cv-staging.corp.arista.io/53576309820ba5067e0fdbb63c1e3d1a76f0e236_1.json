@@ -1,0 +1,14 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-1740c9fa-3fc1-4bde-a979-9c40a3f33c16"
+            },
+            "request": "START_BUILD",
+            "requestParams": {
+                "requestId": "req-01c8f794-31f6-43ae-b759-5b61074b0e9c"
+            }
+        },
+        "time": "2026-11-18T07:27:35.465297368"
+    }
+}
