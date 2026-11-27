@@ -43,10 +43,6 @@ management_ssh:
   - name: VRF21
     enable: true
     ip_access_group_in: ACL-SSH
-  - name: VRF22
-    enable: false
-  - name: VRF23
-    enable: false
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
