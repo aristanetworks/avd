@@ -7,7 +7,7 @@ router_ospfv3:
   graceful_restart_helper: false
   address_family_ipv4:
     enabled: true
-    # A positive address-family setting can coexist with a negative shared setting.
+    # An enabled address-family helper setting takes precedence over the shared setting.
     graceful_restart:
       enabled: true
     graceful_restart_helper: true
@@ -78,6 +78,7 @@ router_ospfv3:
     # Test with IPv4 Address family
     - name: MGMT
       auto_cost_reference_bandwidth: 100
+      graceful_restart_helper: true
       address_family_ipv6:
         enabled: true
         redistribute:
@@ -127,6 +128,7 @@ router_ospfv3:
       router_id: 2.2.2.2
       auto_cost_reference_bandwidth: 100
       passive_interface_default: true
+      graceful_restart_helper: false
       address_family_ipv4:
         enabled: false
         passive_interface_default: false

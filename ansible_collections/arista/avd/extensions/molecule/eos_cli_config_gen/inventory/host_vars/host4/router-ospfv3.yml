@@ -7,6 +7,7 @@ router_ospfv3:
   graceful_restart_helper: true
   address_family_ipv4:
     enabled: true
+    graceful_restart_helper: false
     redistribute:
       bgp:
         enabled: true

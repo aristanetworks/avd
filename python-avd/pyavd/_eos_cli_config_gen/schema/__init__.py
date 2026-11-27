@@ -68022,9 +68022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Enable or disable graceful-restart helper for this OSPFv3 address family.
             If the router-level
-            setting has the same value, only the address-family command is rendered.
-            If the router-level setting
-            has the opposite value, both commands are rendered.
+            setting is also provided, this setting takes precedence when the address family is enabled.
             """
             redistribute: Redistribute
             """
@@ -68065,9 +68063,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         graceful_restart_helper:
                            Enable or disable graceful-restart helper for this OSPFv3 address family.
                            If the router-level
-                           setting has the same value, only the address-family command is rendered.
-                           If the router-level setting
-                           has the opposite value, both commands are rendered.
+                           setting is also provided, this setting takes precedence when the address family is enabled.
                         redistribute:
                            Redistribute routes into OSPFv3.
 
@@ -68460,9 +68456,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Enable or disable graceful-restart helper for this OSPFv3 address family.
             If the router-level
-            setting has the same value, only the address-family command is rendered.
-            If the router-level setting
-            has the opposite value, both commands are rendered.
+            setting is also provided, this setting takes precedence when the address family is enabled.
             """
 
             if TYPE_CHECKING:
@@ -68501,9 +68495,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         graceful_restart_helper:
                            Enable or disable graceful-restart helper for this OSPFv3 address family.
                            If the router-level
-                           setting has the same value, only the address-family command is rendered.
-                           If the router-level setting
-                           has the opposite value, both commands are rendered.
+                           setting is also provided, this setting takes precedence when the address family is enabled.
 
                     """
 
@@ -68890,9 +68882,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 Enable or disable graceful-restart helper for this OSPFv3 address family.
                 If the router-level
-                setting has the same value, only the address-family command is rendered.
-                If the router-level setting
-                has the opposite value, both commands are rendered.
+                setting is also provided, this setting takes precedence when the address family is enabled.
                 """
                 redistribute: Redistribute
                 """
@@ -68933,9 +68923,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             graceful_restart_helper:
                                Enable or disable graceful-restart helper for this OSPFv3 address family.
                                If the router-level
-                               setting has the same value, only the address-family command is rendered.
-                               If the router-level setting
-                               has the opposite value, both commands are rendered.
+                               setting is also provided, this setting takes precedence when the address family is enabled.
                             redistribute:
                                Redistribute routes into OSPFv3.
 
@@ -69333,9 +69321,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 Enable or disable graceful-restart helper for this OSPFv3 address family.
                 If the router-level
-                setting has the same value, only the address-family command is rendered.
-                If the router-level setting
-                has the opposite value, both commands are rendered.
+                setting is also provided, this setting takes precedence when the address family is enabled.
                 """
 
                 if TYPE_CHECKING:
@@ -69374,9 +69360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             graceful_restart_helper:
                                Enable or disable graceful-restart helper for this OSPFv3 address family.
                                If the router-level
-                               setting has the same value, only the address-family command is rendered.
-                               If the router-level setting
-                               has the opposite value, both commands are rendered.
+                               setting is also provided, this setting takes precedence when the address family is enabled.
 
                         """
 
@@ -69430,18 +69414,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             graceful_restart_helper: bool | None
             """
             Enable or disable graceful-restart helper at the router level for this VRF.
-            If an enabled address
-            family configures the same value, only the address-family command is rendered.
-            If an enabled address
-            family configures the opposite value, both commands are rendered.
+            This setting is mutually
+            exclusive with the address-family level graceful-restart helper settings.
+            If both are provided, the
+            enabled address-family level setting takes precedence.
             """
             address_family_ipv4: AddressFamilyIpv4
             """
             Address family IPv4 configuration.
             Common configurations defined at the router-level and address-
-            family level are mutually exclusive, except for graceful-restart helper.
-            If both are provided, the
-            address-family level configuration takes precedence.
+            family level are mutually exclusive.
+            If both are provided, the address-family level configuration
+            takes precedence.
 
             Subclass of AvdModel.
             """
@@ -69449,9 +69433,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Address family IPv6 configuration.
             Common configurations defined at the router-level and address-
-            family level are mutually exclusive, except for graceful-restart helper.
-            If both are provided, the
-            address-family level configuration takes precedence.
+            family level are mutually exclusive.
+            If both are provided, the address-family level configuration
+            takes precedence.
 
             Subclass of AvdModel.
             """
@@ -69508,24 +69492,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         graceful_restart_helper:
                            Enable or disable graceful-restart helper at the router level for this VRF.
-                           If an enabled address
-                           family configures the same value, only the address-family command is rendered.
-                           If an enabled address
-                           family configures the opposite value, both commands are rendered.
+                           This setting is mutually
+                           exclusive with the address-family level graceful-restart helper settings.
+                           If both are provided, the
+                           enabled address-family level setting takes precedence.
                         address_family_ipv4:
                            Address family IPv4 configuration.
                            Common configurations defined at the router-level and address-
-                           family level are mutually exclusive, except for graceful-restart helper.
-                           If both are provided, the
-                           address-family level configuration takes precedence.
+                           family level are mutually exclusive.
+                           If both are provided, the address-family level configuration
+                           takes precedence.
 
                            Subclass of AvdModel.
                         address_family_ipv6:
                            Address family IPv6 configuration.
                            Common configurations defined at the router-level and address-
-                           family level are mutually exclusive, except for graceful-restart helper.
-                           If both are provided, the
-                           address-family level configuration takes precedence.
+                           family level are mutually exclusive.
+                           If both are provided, the address-family level configuration
+                           takes precedence.
 
                            Subclass of AvdModel.
                         eos_cli: Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
@@ -69584,18 +69568,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         graceful_restart_helper: bool | None
         """
         Enable or disable graceful-restart helper at the router level.
-        If an enabled address family
-        configures the same value, only the address-family command is rendered.
-        If an enabled address family
-        configures the opposite value, both commands are rendered.
+        This setting is mutually exclusive
+        with the address-family level graceful-restart helper settings.
+        If both are provided, the enabled
+        address-family level setting takes precedence.
         """
         address_family_ipv4: AddressFamilyIpv4
         """
         Address family IPv4 configuration.
         Common configurations defined at the router-level and address-
-        family level are mutually exclusive, except for graceful-restart helper.
-        If both are provided, the
-        address-family level configuration takes precedence.
+        family level are mutually exclusive.
+        If both are provided, the address-family level configuration
+        takes precedence.
 
         Subclass of AvdModel.
         """
@@ -69603,9 +69587,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         Address family IPv6 configuration.
         Common configurations defined at the router-level and address-
-        family level are mutually exclusive, except for graceful-restart helper.
-        If both are provided, the
-        address-family level configuration takes precedence.
+        family level are mutually exclusive.
+        If both are provided, the address-family level configuration
+        takes precedence.
 
         Subclass of AvdModel.
         """
@@ -69661,24 +69645,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     graceful_restart_helper:
                        Enable or disable graceful-restart helper at the router level.
-                       If an enabled address family
-                       configures the same value, only the address-family command is rendered.
-                       If an enabled address family
-                       configures the opposite value, both commands are rendered.
+                       This setting is mutually exclusive
+                       with the address-family level graceful-restart helper settings.
+                       If both are provided, the enabled
+                       address-family level setting takes precedence.
                     address_family_ipv4:
                        Address family IPv4 configuration.
                        Common configurations defined at the router-level and address-
-                       family level are mutually exclusive, except for graceful-restart helper.
-                       If both are provided, the
-                       address-family level configuration takes precedence.
+                       family level are mutually exclusive.
+                       If both are provided, the address-family level configuration
+                       takes precedence.
 
                        Subclass of AvdModel.
                     address_family_ipv6:
                        Address family IPv6 configuration.
                        Common configurations defined at the router-level and address-
-                       family level are mutually exclusive, except for graceful-restart helper.
-                       If both are provided, the
-                       address-family level configuration takes precedence.
+                       family level are mutually exclusive.
+                       If both are provided, the address-family level configuration
+                       takes precedence.
 
                        Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).

@@ -112,26 +112,26 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
-| BFD Default | True |
+| BFD Default | - |
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 | Graceful Restart | - |
 | Grace Period | - |
-| Graceful Restart Helper | - |
+| Graceful Restart Helper | False |
 
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
-| BFD Default | - |
+| BFD Default | False |
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 | Graceful Restart | False |
 | Grace Period | - |
-| Graceful Restart Helper | False |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -150,7 +150,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
-| Graceful Restart | - |
+| Graceful Restart | False |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
@@ -167,7 +167,7 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```eos
 !
 router ospfv3
-   bfd default
+   no graceful-restart-helper
    !
    address-family ipv4
       router-id 2.2.2.2
@@ -176,7 +176,6 @@ router ospfv3
       redistribute ospfv3 leaked match internal
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
-      no graceful-restart-helper
    !
    address-family ipv6
       router-id 3.3.3.3

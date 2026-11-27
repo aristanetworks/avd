@@ -3,6 +3,8 @@ router_ospfv3:
   bfd_default: true
   bfd_adjacency_state_any: true
   passive_interface_default: true
+  graceful_restart:
+    enabled: true
   address_family_ipv4:
     enabled: true
     redistribute:
@@ -73,6 +75,9 @@ router_ospfv3:
         bfd_adjacency_state_any: true
         auto_cost_reference_bandwidth: 500
         passive_interface_default: true
+        graceful_restart:
+          enabled: false
+          grace_period: 28
         redistribute:
           bgp:
             enabled: true
@@ -196,6 +201,7 @@ router_ospfv3:
         router_id: 1.1.1.1
         graceful_restart:
           enabled: false
+          grace_period: 27
         graceful_restart_helper: true
         redistribute:
           ospfv3:

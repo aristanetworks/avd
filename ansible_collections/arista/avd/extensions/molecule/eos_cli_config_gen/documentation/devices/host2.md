@@ -1340,7 +1340,7 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
+| Graceful Restart | True |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
@@ -1404,7 +1404,7 @@ router ospf 701
 | BFD Adjacency State Any | True |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 500 |
-| Graceful Restart | - |
+| Graceful Restart | False |
 | Grace Period | - |
 | Graceful Restart Helper | - |
 
@@ -1480,17 +1480,6 @@ router ospf 701
 | static | - | - |
 
 #### VRF: Test
-
-| Parameter | Value |
-| --------- | ----- |
-| Router ID | - |
-| BFD Default | - |
-| BFD Adjacency State Any | - |
-| Passive Interface Default | - |
-| Auto Cost Reference Bandwidth | - |
-| Graceful Restart | - |
-| Grace Period | - |
-| Graceful Restart Helper | False |
 
 ##### Address Family IPv4
 
@@ -1675,8 +1664,6 @@ router ospfv3 vrf MGMT
       no graceful-restart-helper
 !
 router ospfv3 vrf Test
-   no graceful-restart-helper
-   !
    address-family ipv4
       router-id 1.1.1.1
       redistribute ospfv3 leaked
@@ -1726,6 +1713,7 @@ router ospfv3
    bfd default
    bfd adjacency state any
    passive-interface default
+   graceful-restart
    !
    address-family ipv4
       redistribute bgp

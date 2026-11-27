@@ -160,9 +160,20 @@ router ospf 703
 | Auto Cost Reference Bandwidth | 100 |
 | Graceful Restart | True |
 | Grace Period | 10 |
-| Graceful Restart Helper | True |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -198,7 +209,7 @@ router ospf 703
 | Auto Cost Reference Bandwidth | 100 |
 | Graceful Restart | - |
 | Grace Period | - |
-| Graceful Restart Helper | True |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -221,7 +232,6 @@ router ospfv3 vrf Test
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
    passive-interface default
-   graceful-restart-helper
    !
    address-family ipv4
       graceful-restart grace-period 21
@@ -230,7 +240,6 @@ router ospfv3 vrf Test
 router ospfv3
    auto-cost reference-bandwidth 100
    graceful-restart grace-period 10
-   graceful-restart-helper
    bfd default
    !
    address-family ipv4
@@ -239,6 +248,7 @@ router ospfv3
       redistribute isis include leaked level-1
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
+      no graceful-restart-helper
    !
    address-family ipv6
       redistribute bgp include leaked
