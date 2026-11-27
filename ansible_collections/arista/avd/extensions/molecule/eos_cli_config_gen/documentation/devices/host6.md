@@ -249,9 +249,20 @@ ipv6 unicast-routing vrf TENANT_C
 | Auto Cost Reference Bandwidth | 100 |
 | SPF Timers (initial/min hold/max wait, msec) | 200 / 1000 / 5000 |
 | LSA RX Min Interval (msec) | - |
-| LSA TX Delay (initial/min/max, msec) | 0 / 600 / 1200 |
+| LSA TX Delay (initial/min/max, msec) | - |
 
 ##### Address Family IPv6
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | 4500 |
+| LSA TX Delay (initial/min/max, msec) | 550 / 950 / 1800 |
 
 ###### Redistribution
 
@@ -347,7 +358,6 @@ router ospfv3 vrf MGMT
    auto-cost reference-bandwidth 100
    passive-interface default
    timers spf delay initial 200 1000 5000
-   timers lsa tx delay initial 0 600 1200
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -358,6 +368,8 @@ router ospfv3 vrf MGMT
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
       redistribute static include leaked route-map map1
+      timers lsa rx min interval 4500
+      timers lsa tx delay initial 550 950 1800
 !
 router ospfv3 vrf TEST
    auto-cost reference-bandwidth 100

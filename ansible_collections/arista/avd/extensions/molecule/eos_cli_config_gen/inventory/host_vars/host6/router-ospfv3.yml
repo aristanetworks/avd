@@ -143,6 +143,16 @@ router_ospfv3:
               max: 1200
       address_family_ipv6:
         enabled: true
+        # Exercise IPv6 address-family LSA timers and override the shared VRF TX timer.
+        timers:
+          lsa:
+            rx:
+              min_interval: 4500
+            tx:
+              delay:
+                initial: 550
+                min: 950
+                max: 1800
         redistribute:
           bgp:
             enabled: true
@@ -190,7 +200,7 @@ router_ospfv3:
       router_id: 2.2.2.2
       auto_cost_reference_bandwidth: 100
       passive_interface_default: true
-      # The enabled IPv6 address family overrides these VRF-level timers.
+      # The enabled IPv6 address family overrides these VRF-level SPF timers only.
       timers:
         spf:
           delay:
