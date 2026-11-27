@@ -1,0 +1,28 @@
+---
+type: l3leaf
+overlay_routing_protocol: none
+l3leaf:
+  nodes:
+    - name: connected-endpoints-routed-lacp-fallback-profile
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+
+port_profiles:
+  - profile: ROUTED
+    mode: routed
+
+servers:
+  # LACP fallback individual member interfaces using a routed port profile.
+  - name: L2_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-lacp-fallback-profile, connected-endpoints-routed-lacp-fallback-profile]
+        switch_ports: [Ethernet1, Ethernet2]
+        mode: trunk
+        port_channel:
+          mode: active
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: ROUTED

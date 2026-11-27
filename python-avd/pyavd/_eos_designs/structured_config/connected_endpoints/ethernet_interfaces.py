@@ -79,7 +79,11 @@ class EthernetInterfacesMixin(Protocol):
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
-            for ethernet_interface_name in range_expand(network_port.switch_ports):
+            if network_port.mode == "routed":
+                self._validate_routed_port_support(network_port_as_adapter)
+            switch_ports = range_expand(network_port.switch_ports)
+            switch_ipv4_addresses = self._get_network_port_switch_ipv4_addresses(network_port, switch_ports)
+            for port_index, ethernet_interface_name in enumerate(switch_ports):
                 # Skip the interface if it was already created by some other feature like connected endpoints or uplinks etc.
                 if ethernet_interface_name in self.structured_config.ethernet_interfaces:
                     continue
@@ -91,6 +95,12 @@ class EthernetInterfacesMixin(Protocol):
                 network_port_as_adapter.switches = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.Switches(
                     [self.shared_utils.hostname]
                 )
+                if switch_ipv4_addresses:
+                    network_port_as_adapter.switch_ipv4_addresses = (
+                        EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.SwitchIpv4Addresses(
+                            [switch_ipv4_addresses[port_index]]
+                        )
+                    )
 
                 # Using __setitem__ to replace any previous network_port.
                 ethernet_interface = self._get_ethernet_interface_cfg(network_port_as_adapter, 0, connected_endpoint)
@@ -124,6 +134,11 @@ class EthernetInterfacesMixin(Protocol):
         ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
+
+        if adapter.mode == "routed":
+            # L2 settings are rejected for routed adapters in shared_utils.get_merged_adapter_settings.
+            ethernet_interface.switchport.enabled = False
+            return
 
         if adapter.subinterfaces:
             # TODO: Consider checking for switchport related inputs and error if we have conflicts instead of silently ignoring.
@@ -243,6 +258,13 @@ class EthernetInterfacesMixin(Protocol):
                 validate_lldp=adapter.validate_lldp,
             ),
         )
+
+        if adapter.mode == "routed":
+            self._validate_routed_port_support(adapter)
+            if not adapter.switch_ipv4_addresses:
+                msg = f"'{adapter._internal_data.context}.switch_ipv4_addresses' is required with 'mode: routed'."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            ethernet_interface.ip_address = adapter.switch_ipv4_addresses[node_index]
 
         # 802.1x settings
         if adapter.dot1x:

@@ -195,6 +195,10 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
+        if adapter.mode == "routed":
+            msg = f"'{adapter._internal_data.context}.mode: routed' is not supported on port-channels."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
         else:

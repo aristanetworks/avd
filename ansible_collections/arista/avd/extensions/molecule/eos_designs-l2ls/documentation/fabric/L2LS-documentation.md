@@ -106,3 +106,32 @@
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
+
+## Connected Endpoints
+
+### Connected Endpoint Keys
+
+| Key | Default Type | Description |
+| --- | ------------ | ----------- |
+| firewalls | firewall | Firewall |
+
+### Firewalls
+
+| Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth0 | BGP-SPINE1 | Ethernet14 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth0 | False | - | - | - | - |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth1 | BGP-SPINE2 | Ethernet14 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth1 | False | - | - | - | - |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth2 | BGP-SPINE1 | Ethernet15 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth2 | False | - | - | - | campus_eggress |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth3 | BGP-SPINE2 | Ethernet15 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth3 | False | - | - | - | no_campus_eggress |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth4 | BGP-SPINE1 | Port-Channel16(Ethernet16) | FIREWALL_CAMPUS_EGRESS_FW_1 | False | - | - | - | - |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth5 | BGP-SPINE2 | Port-Channel16(Ethernet16) | FIREWALL_CAMPUS_EGRESS_FW_1 | False | - | - | - | - |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth6 | BGP-SPINE1 | Port-Channel17(Ethernet17) | FIREWALL_CAMPUS_EGRESS_FW_1 | False | - | - | - | campus_eggress |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth7 | BGP-SPINE2 | Port-Channel17(Ethernet17) | FIREWALL_CAMPUS_EGRESS_FW_1 | False | - | - | - | no_campus_eggress |
+| CAMPUS_EGRESS_FW_1 | firewall | Eth8 | BGP-SPINE1 | Ethernet19 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth8 | False | routed | - | - | - |
+
+### Port Profiles
+
+| Profile Name | Parent Profile |
+| ------------ | -------------- |
+| campus_eggress | - |
+| no_campus_eggress | - |

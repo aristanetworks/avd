@@ -1,0 +1,17 @@
+---
+type: l3leaf
+overlay_routing_protocol: none
+l3leaf:
+  nodes:
+    - name: network-ports-routed-length-mismatch
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+
+network_ports:
+  # Fewer 'switch_ipv4_addresses' than ports in the expanded range.
+  - switches: [network-ports-routed-length-mismatch]
+    switch_ports: [Ethernet1-3]
+    mode: routed
+    switch_ipv4_addresses: [10.0.0.0/31, 10.0.0.2/31]

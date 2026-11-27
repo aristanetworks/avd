@@ -1,0 +1,81 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_routed-endpoints-spine1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.200.0.5/31
+  metadata:
+    peer: routed-endpoints-spine1
+    peer_interface: Ethernet3
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: SERVER_ROUTED_SERVER_nic6
+  shutdown: false
+  ip_address: 10.30.2.0/31
+  metadata:
+    peer: ROUTED_SERVER
+    peer_interface: nic6
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: false
+hostname: routed-endpoints-leaf2
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.200.5/32
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+router_bgp:
+  as: '65102'
+  router_id: 192.168.200.5
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 10.200.0.4
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: routed-endpoints-spine1
+    description: routed-endpoints-spine1_Ethernet3
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

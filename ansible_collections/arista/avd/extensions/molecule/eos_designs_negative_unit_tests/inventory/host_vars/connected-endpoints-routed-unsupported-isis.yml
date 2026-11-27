@@ -1,0 +1,22 @@
+---
+type: l3leaf
+underlay_routing_protocol: isis
+overlay_routing_protocol: none
+isis_area_id: "49.0001"
+l3leaf:
+  nodes:
+    - name: connected-endpoints-routed-unsupported-isis
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+      isis_system_id_prefix: "0000.0000"
+
+servers:
+  # 'mode: routed' with an IS-IS underlay.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-unsupported-isis]
+        switch_ports: [Ethernet1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]

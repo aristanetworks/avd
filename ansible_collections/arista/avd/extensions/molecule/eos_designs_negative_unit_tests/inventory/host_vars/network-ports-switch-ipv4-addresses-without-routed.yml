@@ -1,0 +1,17 @@
+---
+type: l3leaf
+overlay_routing_protocol: none
+l3leaf:
+  nodes:
+    - name: network-ports-switch-ipv4-addresses-without-routed
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+
+network_ports:
+  # 'switch_ipv4_addresses' without 'mode: routed'.
+  - switches: [network-ports-switch-ipv4-addresses-without-routed]
+    switch_ports: [Ethernet1]
+    mode: access
+    switch_ipv4_addresses: [10.0.0.0/31]

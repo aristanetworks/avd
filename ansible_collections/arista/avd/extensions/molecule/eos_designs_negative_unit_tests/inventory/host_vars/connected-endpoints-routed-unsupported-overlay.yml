@@ -1,0 +1,19 @@
+---
+type: l3leaf
+overlay_routing_protocol: ebgp
+l3leaf:
+  nodes:
+    - name: connected-endpoints-routed-unsupported-overlay
+      id: 1
+      bgp_as: 65101
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+
+servers:
+  # 'mode: routed' with an EVPN overlay.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-unsupported-overlay]
+        switch_ports: [Ethernet1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]

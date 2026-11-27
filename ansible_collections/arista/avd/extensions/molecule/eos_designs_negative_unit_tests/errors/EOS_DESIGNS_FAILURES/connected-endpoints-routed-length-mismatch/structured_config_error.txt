@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdError: Length of lists 'switches' (1), 'switch_ports' (1), 'endpoint_ports' (-), 'switch_ipv4_addresses' (2) (if used) did not match on adapter 0 on connected_endpoint 'ROUTED_SERVER' under 'servers'. Notice that some or all of these variables could be inherited from 'port_profiles'

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'servers[name=ROUTED_SERVER].adapters[0].mode: routed' is not supported with 'vlans'.

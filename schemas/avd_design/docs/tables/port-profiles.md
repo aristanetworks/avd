@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>port_profiles</samp>](## "port_profiles") | List, items: Dictionary |  |  |  | Optional profiles to share common settings for connected_endpoints and/or network_ports.<br>Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.<br> |
+    | [<samp>port_profiles</samp>](## "port_profiles") | List, items: Dictionary |  |  |  | Optional profiles to share common settings for connected_endpoints and/or network_ports.<br>Profiles support the shared settings of connected endpoint adapters and network ports.<br>The per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions`, `switch_ipv4_addresses` and the adapter `subinterfaces` cannot be set in profiles.<br>Keys defined under connected endpoint adapters or network ports take precedence.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "port_profiles.[].profile") | String | Required, Unique |  |  | Port profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profiles.[].parent_profile") | String |  |  |  | Parent profile is optional.<br>By default, profile inheritance is limited to two levels: adapter -> profile -> parent_profile.<br>From AVD 6.5.0 onwards, setting `avd_design_future.allow_recursive_profile_inheritance` to true<br>allows profiles to inherit settings across any number of levels.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "port_profiles.[].port_channel") | Dictionary |  |  |  | Used for port-channel adapter. |
@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "port_profiles.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set adapter speed.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "port_profiles.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_profiles.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_profiles.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Interface mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_profiles.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>routed</code> | Interface mode.<br>`routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.<br>Routed ports are only supported on non-WAN nodes with:<br>  - `underlay_router: true`<br>  - `overlay_routing_protocol: none`<br>  - `underlay_routing_protocol` set to `ebgp` or `ospf`<br>  - `uplink_type` set to `p2p` or `p2p-vrfs`<br>  - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`<br>L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "port_profiles.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "port_profiles.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "port_profiles.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
@@ -197,7 +197,9 @@
 
     ```yaml
     # Optional profiles to share common settings for connected_endpoints and/or network_ports.
-    # Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
+    # Profiles support the shared settings of connected endpoint adapters and network ports.
+    # The per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions`, `switch_ipv4_addresses` and the adapter `subinterfaces` cannot be set in profiles.
+    # Keys defined under connected endpoint adapters or network ports take precedence.
     port_profiles:
 
         # Port profile name.
@@ -345,7 +347,15 @@
         enabled: <bool; default=True>
 
         # Interface mode.
-        mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
+        # `routed` configures a routed port in the default VRF with the addresses from `switch_ipv4_addresses`.
+        # Routed ports are only supported on non-WAN nodes with:
+        #   - `underlay_router: true`
+        #   - `overlay_routing_protocol: none`
+        #   - `underlay_routing_protocol` set to `ebgp` or `ospf`
+        #   - `uplink_type` set to `p2p` or `p2p-vrfs`
+        #   - `underlay_routing_protocol: ebgp` not combined with `underlay_ipv6_numbered: true`
+        # L3 port-channels, L3 subinterfaces, and L2 settings that do not apply to routed ports are not supported.
+        mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "routed">
         mtu: <int; 68-65535>
 
         # "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.

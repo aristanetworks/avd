@@ -1,0 +1,192 @@
+---
+# Routed connected endpoints and network ports with an eBGP underlay and no overlay.
+overlay_routing_protocol: none
+
+node_type_keys:
+  - key: spine
+    type: spine
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+
+sflow_settings:
+  destinations:
+    - destination: 10.0.0.10
+      vrf: default
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - "routed-endpoints-spine.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - "routed-endpoints-leaf.*"
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    bgp_as: 65100
+    loopback_ipv4_pool: 192.168.200.0/24
+  nodes:
+    - name: routed-endpoints-spine1
+      id: 1
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 192.168.200.0/24
+    loopback_ipv4_offset: 2
+    uplink_ipv4_pool: 10.200.0.0/24
+    uplink_switches: [routed-endpoints-spine1]
+    uplink_interfaces: [Ethernet1]
+    mlag_interfaces: [Ethernet3, Ethernet4]
+    mlag_peer_ipv4_pool: 10.200.1.0/24
+    mlag_peer_l3_ipv4_pool: 10.200.2.0/24
+    filter:
+      only_vlans_in_use: true
+  node_groups:
+    - group: routed-endpoints-leaf1
+      bgp_as: 65101
+      nodes:
+        - name: routed-endpoints-leaf1a
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          link_tracking:
+            enabled: true
+        - name: routed-endpoints-leaf1b
+          id: 2
+          platform: vEOS
+          uplink_switch_interfaces: [Ethernet2]
+  nodes:
+    # Standalone leaf with uplink_type p2p-vrfs.
+    - name: routed-endpoints-leaf2
+      id: 3
+      bgp_as: 65102
+      uplink_type: p2p-vrfs
+      uplink_switch_interfaces: [Ethernet3]
+
+port_profiles:
+  - profile: ROUTED
+    mode: routed
+    mtu: 9214
+    speed: forced 100gfull
+  - profile: L2_PARENT
+    mode: trunk
+    vlans: "10-20"
+    spanning_tree_portfast: edge
+    port_channel:
+      mode: active
+  # Routed child profile overriding the L2 keys of the parent profile with null.
+  - profile: ROUTED_CHILD
+    parent_profile: L2_PARENT
+    mode: routed
+    vlans: null
+    spanning_tree_portfast: null
+    port_channel: null
+  - profile: ACCESS
+    mode: access
+    vlans: "10"
+
+firewalls:
+  # Dual-homed firewall on the MLAG pair: two independent routed ports, without MLAG or EVPN multihoming.
+  - name: FW01
+    adapters:
+      - switches: [routed-endpoints-leaf1a, routed-endpoints-leaf1b]
+        switch_ports: [Ethernet10, Ethernet10]
+        endpoint_ports: [eth1, eth2]
+        mode: routed
+        switch_ipv4_addresses: [10.30.0.0/31, 10.30.0.2/31]
+
+servers:
+  - name: ROUTED_SERVER
+    adapters:
+      # Routed port profile.
+      - switches: [routed-endpoints-leaf1a]
+        switch_ports: [Ethernet11]
+        endpoint_ports: [nic1]
+        profile: ROUTED
+        switch_ipv4_addresses: [10.30.1.0/31]
+      # Routed child profile over an L2 parent profile.
+      - switches: [routed-endpoints-leaf1a]
+        switch_ports: [Ethernet12]
+        endpoint_ports: [nic2]
+        profile: ROUTED_CHILD
+        switch_ipv4_addresses: [10.30.1.2/31]
+      # Opt-out of the routed profile by setting another mode.
+      - switches: [routed-endpoints-leaf1a]
+        switch_ports: [Ethernet13]
+        endpoint_ports: [nic3]
+        profile: ROUTED
+        mode: access
+      # Routed connected endpoint on an interface also declared by an L2 network port.
+      - switches: [routed-endpoints-leaf1a]
+        switch_ports: [Ethernet30]
+        endpoint_ports: [nic4]
+        profile: ROUTED
+        switch_ipv4_addresses: [10.30.1.4/31]
+      # Routed port exercising L3-compatible adapter keys.
+      - switches: [routed-endpoints-leaf1a]
+        switch_ports: [Ethernet14]
+        endpoint_ports: [nic5]
+        mode: routed
+        switch_ipv4_addresses: [10.30.1.6/31]
+        ptp:
+          enabled: true
+        sflow: true
+        flow_tracking:
+          enabled: true
+          name: FLOW-TRACKER
+        link_tracking:
+          enabled: true
+        monitor_sessions:
+          - name: MON1
+            role: source
+        qos_profile: QOS_PROFILE
+        structured_config:
+          ip_proxy_arp: true
+        raw_eos_cli: "! custom routed cli"
+      # Routed port on a leaf with uplink_type p2p-vrfs.
+      - switches: [routed-endpoints-leaf2]
+        switch_ports: [Ethernet10]
+        endpoint_ports: [nic6]
+        mode: routed
+        switch_ipv4_addresses: [10.30.2.0/31]
+
+# L2 network services with 'only_vlans_in_use', so the routed adapters are parsed for endpoint VLANs.
+tenants:
+  - name: TENANT_A
+    l2vlans:
+      - id: 10
+        name: VLAN10
+
+network_ports:
+  # Routed network ports on a range, with one address per expanded port.
+  - switches: [routed-endpoints-leaf1a]
+    switch_ports: [Ethernet20-21]
+    endpoint: GPU_SERVERS
+    profile: ROUTED
+    switch_ipv4_addresses: [10.40.0.0/31, 10.40.0.2/31]
+  # L2 network ports on both switches.
+  - switches: [routed-endpoints-leaf1.*]
+    switch_ports: [Ethernet30-32]
+    profile: ACCESS
+  # Static routed override of one of the L2 network ports above.
+  - switches: [routed-endpoints-leaf1b]
+    switch_ports: [Ethernet31]
+    profile: ROUTED
+    switch_ipv4_addresses: [10.40.1.0/31]
+  # Routed network port matching a single switch through 'platforms'.
+  - platforms: [vEOS]
+    switch_ports: [Ethernet40]
+    profile: ROUTED
+    switch_ipv4_addresses: [10.40.2.0/31]
+  # Destination port for MON1 monitor session.
+  - switches: [routed-endpoints-leaf1a]
+    switch_ports: [Ethernet15]
+    monitor_sessions:
+      - name: MON1
+        role: destination

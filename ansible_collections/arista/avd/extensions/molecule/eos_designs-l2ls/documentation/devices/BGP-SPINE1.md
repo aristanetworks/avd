@@ -241,6 +241,7 @@ vlan 4094
 | Ethernet9 | - | - | 10.0.1.0/31 | default | - | False | - | - |
 | Ethernet18.100 | - | - | 10.0.1.4/31 | default | - | False | - | - |
 | Ethernet18.101 | - | - | 10.0.1.8/31 | New_VRF | - | False | - | - |
+| Ethernet19 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth8 | - | 10.0.2.0/31 | default | - | False | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -347,6 +348,12 @@ interface Ethernet18.101
    encapsulation dot1q vlan 101
    vrf New_VRF
    ip address 10.0.1.8/31
+!
+interface Ethernet19
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth8
+   no shutdown
+   no switchport
+   ip address 10.0.2.0/31
 ```
 
 ### Port-Channel Interfaces

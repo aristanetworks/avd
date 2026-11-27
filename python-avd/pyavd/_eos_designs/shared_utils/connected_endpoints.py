@@ -44,10 +44,16 @@ class ConnectedEndpointsMixin(Protocol):
                     # Verify that length of all lists are the same
                     nodes_length = len(adapter_settings.switches)
                     endpoint_ports = adapter_settings.endpoint_ports
-                    if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
+                    switch_ipv4_addresses = adapter_settings.switch_ipv4_addresses
+                    if (
+                        len(adapter_settings.switch_ports) != nodes_length
+                        or (endpoint_ports and len(endpoint_ports) != nodes_length)
+                        or (switch_ipv4_addresses and len(switch_ipv4_addresses) != nodes_length)
+                    ):
                         msg = (
                             f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
-                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
+                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}), 'switch_ipv4_addresses' ({len(switch_ipv4_addresses) or '-'}) "
+                            f"(if used) did not match on adapter {adapter_index} on"
                             f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )

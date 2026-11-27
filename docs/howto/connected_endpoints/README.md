@@ -31,7 +31,7 @@ Use `network_ports` instead when:
 
 ## Concepts
 
-**port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Keys are the same as those used under endpoint adapters. Keys defined under endpoint adapters take precedence.
+**port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Profiles support the shared settings of endpoint adapters, but not the per-port keys `switches`, `switch_ports`, `endpoint_ports`, `descriptions` and `switch_ipv4_addresses`, nor the adapter `subinterfaces`. Keys defined under endpoint adapters take precedence.
 
 **adapters**:  An adapter represents a network interface on the connected_endpoint.
 
@@ -43,7 +43,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 
 #### Key Settings for a Port Profile
 
-- `mode`: Can be `access` or `trunk`.
+- `mode`: Can be `access`, `trunk`, or `routed`. `routed` requires `switch_ipv4_addresses` on the adapter or network port.
 - `vlans`: For `access` mode, the single VLAN ID. For `trunk` mode, the list of allowed VLANs.
 - `port_channel`: Defines Port-Channel settings like `mode` (`active` for LACP) and `channel_id`.
 - `spanning_tree_portfast`: Set to `edge` for server ports.
@@ -68,7 +68,7 @@ Adapters define the physical mapping between the endpoint and the switch fabric:
 - `description`: A brief description of the interface function.
 
 !!! note
-    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+    The lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
 
 Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#connected-endpoints-settings) for all available keys.
 
@@ -120,7 +120,7 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 4. **Connected endpoints description**: AVD uses a default pattern to create the description `{endpoint_type}_{endpoint}_{endpoint_port(if defined)}`. To customize this pattern please refer to the [Custom Descriptions and Names](../../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md) documentation.
 
-5. **Validate list lengths**: Ensure `endpoint_ports`, `switch_ports`, and `switches` lists have the same length to avoid configuration errors.
+5. **Validate list lengths**: Ensure `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) lists have the same length to avoid configuration errors.
 
 6. **Test incrementally**: When adding new endpoints, test changes on a small subset before applying to the entire fabric.
 
@@ -148,9 +148,9 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 ### Adapter/switch list length mismatch
 
-**Error**: Lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+**Error**: Lists `endpoint_ports`, `switch_ports`, `switches`, and `switch_ipv4_addresses` (when used) must have the same length.
 
-**Solution**: Ensure all three lists have exactly the same number of elements. Each index represents one connection.
+**Solution**: Ensure all used lists have exactly the same number of elements. Each index represents one connection.
 
 ### Configuration not generated
 

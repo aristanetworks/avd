@@ -1,0 +1,14 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: connected-endpoints-routed-unsupported-l2leaf
+
+servers:
+  # 'mode: routed' on a node which is not an underlay router.
+  - name: ROUTED_SERVER
+    adapters:
+      - switches: [connected-endpoints-routed-unsupported-l2leaf]
+        switch_ports: [Ethernet1]
+        mode: routed
+        switch_ipv4_addresses: [10.0.0.0/31]

@@ -1,0 +1,218 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet3
+  description: MLAG_routed-endpoints-leaf1a_Ethernet3
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: routed-endpoints-leaf1a
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
+- name: Ethernet4
+  description: MLAG_routed-endpoints-leaf1a_Ethernet4
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: routed-endpoints-leaf1a
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
+- name: Ethernet1
+  description: P2P_routed-endpoints-spine1_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.200.0.3/31
+  metadata:
+    peer: routed-endpoints-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: FIREWALL_FW01_eth2
+  shutdown: false
+  ip_address: 10.30.0.2/31
+  metadata:
+    peer: FW01
+    peer_interface: eth2
+    peer_type: firewall
+    peer_key: firewalls
+  switchport:
+    enabled: false
+- name: Ethernet30
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: ACCESS
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 10
+- name: Ethernet31
+  shutdown: false
+  speed: forced 100gfull
+  mtu: 9214
+  ip_address: 10.40.1.0/31
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: ROUTED
+  switchport:
+    enabled: false
+- name: Ethernet32
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: ACCESS
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 10
+- name: Ethernet40
+  shutdown: false
+  speed: forced 100gfull
+  mtu: 9214
+  ip_address: 10.40.2.0/31
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: ROUTED
+  switchport:
+    enabled: false
+hostname: routed-endpoints-leaf1b
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.200.4/32
+metadata:
+  is_deployed: true
+  platform: vEOS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+mlag_configuration:
+  domain_id: routed-endpoints-leaf1
+  local_interface: Vlan4094
+  peer_address: 10.200.1.0
+  peer_link: Port-Channel3
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel3
+  description: MLAG_routed-endpoints-leaf1a_Port-Channel3
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
+router_bgp:
+  as: '65101'
+  router_id: 192.168.200.4
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65101'
+    description: routed-endpoints-leaf1a
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 10.200.2.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      peer: routed-endpoints-leaf1a
+    description: routed-endpoints-leaf1a_Vlan4093
+  - ip_address: 10.200.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: routed-endpoints-spine1
+    description: routed-endpoints-spine1_Ethernet2
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ip_address: 10.200.2.1/31
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.200.1.1/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 10
+  name: VLAN10
+  metadata:
+    tenants:
+    - TENANT_A
+vrfs:
+- name: MGMT
+  ip_routing: false

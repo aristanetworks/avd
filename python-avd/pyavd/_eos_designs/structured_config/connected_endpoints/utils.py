@@ -81,6 +81,67 @@ class UtilsMixin(Protocol):
 
         return short_esi
 
+    def _validate_routed_port_support(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> None:
+        """
+        Raise if routed ports are not supported on this device.
+
+        Routed ports are placed in the default VRF and advertised through the 'redistribute connected' of the underlay.
+        This is only the case for an 'ebgp' or 'ospf' underlay without overlay and outside of WAN.
+        The protocol names are compared on purpose, so new protocols are not supported until verified.
+        """
+        shared_utils = self.shared_utils
+        underlay_routing_protocol = shared_utils.underlay_routing_protocol
+        if not shared_utils.underlay_router:
+            reason = "on nodes with 'underlay_router: false'."
+        elif shared_utils.is_wan_router:
+            reason = "on WAN routers."
+        elif shared_utils.overlay_routing_protocol != "none":
+            reason = f"with 'overlay_routing_protocol: {shared_utils.overlay_routing_protocol}'. Only 'none' is supported."
+        elif underlay_routing_protocol not in ("ebgp", "ospf"):
+            reason = f"with 'underlay_routing_protocol: {underlay_routing_protocol}'. Only 'ebgp' and 'ospf' are supported."
+        elif shared_utils.uplink_type not in ("p2p", "p2p-vrfs"):
+            reason = f"with 'uplink_type: {shared_utils.uplink_type}'."
+        elif underlay_routing_protocol == "ebgp" and shared_utils.underlay_ipv6_numbered:
+            reason = "with 'underlay_ipv6_numbered: true'."
+        else:
+            return
+
+        msg = f"'{adapter._internal_data.context}.mode: routed' is not supported {reason}"
+        raise AristaAvdInvalidInputsError(msg, host=shared_utils.hostname)
+
+    def _get_network_port_switch_ipv4_addresses(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        network_port: EosDesigns.NetworkPortsItem,
+        switch_ports: list[str],
+    ) -> list[str]:
+        """
+        Return the validated 'switch_ipv4_addresses' of a routed network_port, aligned with the expanded switch_ports.
+
+        Returns an empty list for network_ports without 'mode: routed'.
+
+        Raises:
+            AristaAvdInvalidInputsError: If the addresses are missing or do not match the number of ports.
+        """
+        if network_port.mode != "routed":
+            return []
+
+        context = network_port._internal_data.context
+        if not (switch_ipv4_addresses := network_port.switch_ipv4_addresses._as_list()):
+            msg = f"'{context}.switch_ipv4_addresses' is required with 'mode: routed'."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        if len(switch_ipv4_addresses) != len(switch_ports):
+            msg = (
+                f"'{context}.switch_ipv4_addresses' must have one address per port in the expanded 'switch_ports'. "
+                f"Got {len(switch_ipv4_addresses)} addresses for {len(switch_ports)} ports."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        return switch_ipv4_addresses
+
     def _get_adapter_trunk_groups(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,

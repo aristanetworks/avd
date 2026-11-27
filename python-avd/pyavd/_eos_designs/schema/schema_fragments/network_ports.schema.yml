@@ -51,6 +51,16 @@ keys:
             For more details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../../../../docs/plugins/Filter_plugins/range_expand.md).
           items:
             type: str
+        switch_ipv4_addresses:
+          type: list
+          description: |-
+            List of IPv4 addresses for the switch ports.
+            Required with `mode: routed` and not supported with other modes.
+            The list must contain one address per port of the expanded `switch_ports`, in the same order.
+            The entry should target a single switch, because the same addresses are otherwise configured on every matching switch.
+          items:
+            type: str
+            description: IPv4 address with prefix length, for example `10.0.0.0/31`.
         description:
           type: str
           description: |-
