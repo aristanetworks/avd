@@ -1,0 +1,42 @@
+---
+ipv4_acls:
+  - name: acl-for-vrf-default
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
+  - name: acl-for-vrf-MGMT
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-vrf-ipv4-acl-future
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+avd_design_future:
+  configure_snmp_server_vrfs_ipv4_acl_from_catalog: true
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+snmp_settings:
+  vrfs:
+    - name: default
+      enable: false
+      ipv4_acl: acl-for-vrf-default
+    # Testing automatically picking up the oob VRF with the 'use_default_mgmt_method_vrf' keyword.
+    # This errors if mgmt_ip is missing.
+    - name: use_default_mgmt_method_vrf
+      enable: true
+      ipv4_acl: acl-for-vrf-MGMT

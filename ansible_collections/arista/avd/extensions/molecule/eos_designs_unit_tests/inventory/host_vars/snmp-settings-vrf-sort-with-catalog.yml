@@ -1,0 +1,31 @@
+---
+ipv4_acls:
+  - name: acl-for-vrf-MGMT
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: any
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-vrf-sort-with-catalog
+      id: 44
+      mgmt_ip: 10.10.10.44/26
+
+avd_design_future:
+  sort_snmp_acls_and_local_interfaces_by_vrf: true
+  configure_snmp_server_vrfs_ipv4_acl_from_catalog: true
+
+mgmt_interface_settings:
+  vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+snmp_settings:
+  vrfs:
+    - name: use_default_mgmt_method_vrf
+      enable: true
+      ipv4_acl: acl-for-vrf-MGMT
