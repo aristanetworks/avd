@@ -563,7 +563,7 @@ interface Ethernet1
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -583,7 +583,7 @@ interface Ethernet2
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -603,7 +603,7 @@ interface Ethernet3
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -623,7 +623,7 @@ interface Ethernet4
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -643,7 +643,7 @@ interface Ethernet5
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -663,7 +663,7 @@ interface Ethernet6
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -683,7 +683,7 @@ interface Ethernet7
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -703,7 +703,7 @@ interface Ethernet8
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -723,7 +723,7 @@ interface Ethernet9
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -743,7 +743,7 @@ interface Ethernet10
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -763,7 +763,7 @@ interface Ethernet11
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -783,7 +783,7 @@ interface Ethernet12
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -803,7 +803,7 @@ interface Ethernet13
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -823,7 +823,7 @@ interface Ethernet14
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -843,7 +843,7 @@ interface Ethernet15
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -863,7 +863,7 @@ interface Ethernet16
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -883,7 +883,7 @@ interface Ethernet17
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -903,7 +903,7 @@ interface Ethernet18
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -923,7 +923,7 @@ interface Ethernet19
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -943,7 +943,7 @@ interface Ethernet20
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -963,7 +963,7 @@ interface Ethernet21
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -983,7 +983,7 @@ interface Ethernet22
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1003,7 +1003,7 @@ interface Ethernet23
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1023,7 +1023,7 @@ interface Ethernet24
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1043,7 +1043,7 @@ interface Ethernet25
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1063,7 +1063,7 @@ interface Ethernet26
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1083,7 +1083,7 @@ interface Ethernet27
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1103,7 +1103,7 @@ interface Ethernet28
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1123,7 +1123,7 @@ interface Ethernet29
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1143,7 +1143,7 @@ interface Ethernet30
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1163,7 +1163,7 @@ interface Ethernet31
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1183,7 +1183,7 @@ interface Ethernet32
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1203,7 +1203,7 @@ interface Ethernet33
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1223,7 +1223,7 @@ interface Ethernet34
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1243,7 +1243,7 @@ interface Ethernet35
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1263,7 +1263,7 @@ interface Ethernet36
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1283,7 +1283,7 @@ interface Ethernet37
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1303,7 +1303,7 @@ interface Ethernet38
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1323,7 +1323,7 @@ interface Ethernet39
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1343,7 +1343,7 @@ interface Ethernet40
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1363,7 +1363,7 @@ interface Ethernet41
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1383,7 +1383,7 @@ interface Ethernet42
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1403,7 +1403,7 @@ interface Ethernet43
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1423,7 +1423,7 @@ interface Ethernet44
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1443,7 +1443,7 @@ interface Ethernet45
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1463,7 +1463,7 @@ interface Ethernet46
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1483,7 +1483,7 @@ interface Ethernet47
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1503,7 +1503,7 @@ interface Ethernet48
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1523,7 +1523,7 @@ interface Ethernet49
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1543,7 +1543,7 @@ interface Ethernet50
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1563,7 +1563,7 @@ interface Ethernet51
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1583,7 +1583,7 @@ interface Ethernet52
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1603,7 +1603,7 @@ interface Ethernet53
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1623,7 +1623,7 @@ interface Ethernet54
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1643,7 +1643,7 @@ interface Ethernet55
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1663,7 +1663,7 @@ interface Ethernet56
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1683,7 +1683,7 @@ interface Ethernet57
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1703,7 +1703,7 @@ interface Ethernet58
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1723,7 +1723,7 @@ interface Ethernet59
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1743,7 +1743,7 @@ interface Ethernet60
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1763,7 +1763,7 @@ interface Ethernet61
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1783,7 +1783,7 @@ interface Ethernet62
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1803,7 +1803,7 @@ interface Ethernet63
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1823,7 +1823,7 @@ interface Ethernet64
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1843,7 +1843,7 @@ interface Ethernet65
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1863,7 +1863,7 @@ interface Ethernet66
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1883,7 +1883,7 @@ interface Ethernet67
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1903,7 +1903,7 @@ interface Ethernet68
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1923,7 +1923,7 @@ interface Ethernet69
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1943,7 +1943,7 @@ interface Ethernet70
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1963,7 +1963,7 @@ interface Ethernet71
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -1983,7 +1983,7 @@ interface Ethernet72
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2003,7 +2003,7 @@ interface Ethernet73
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2023,7 +2023,7 @@ interface Ethernet74
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2043,7 +2043,7 @@ interface Ethernet75
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2063,7 +2063,7 @@ interface Ethernet76
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2083,7 +2083,7 @@ interface Ethernet77
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2103,7 +2103,7 @@ interface Ethernet78
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2123,7 +2123,7 @@ interface Ethernet79
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2143,7 +2143,7 @@ interface Ethernet80
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2163,7 +2163,7 @@ interface Ethernet81
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2183,7 +2183,7 @@ interface Ethernet82
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2203,7 +2203,7 @@ interface Ethernet83
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2223,7 +2223,7 @@ interface Ethernet84
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2243,7 +2243,7 @@ interface Ethernet85
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2263,7 +2263,7 @@ interface Ethernet86
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2283,7 +2283,7 @@ interface Ethernet87
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2303,7 +2303,7 @@ interface Ethernet88
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2323,7 +2323,7 @@ interface Ethernet89
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2343,7 +2343,7 @@ interface Ethernet90
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2363,7 +2363,7 @@ interface Ethernet91
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2383,7 +2383,7 @@ interface Ethernet92
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2403,7 +2403,7 @@ interface Ethernet93
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2423,7 +2423,7 @@ interface Ethernet94
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2443,7 +2443,7 @@ interface Ethernet95
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2463,7 +2463,7 @@ interface Ethernet96
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
-   spanning-tree portfast
+   spanning-tree portfast edge
    spanning-tree bpduguard enable
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 330
@@ -2626,6 +2626,7 @@ service routing protocols model multi-agent
 #### IP Routing Device Configuration
 
 ```eos
+!
 no ip routing vrf MGMT
 ```
 

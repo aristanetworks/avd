@@ -313,7 +313,7 @@ interface Ethernet1
    switchport mode trunk
    switchport
    flow tracker sampled FLOW-TRACKER
-   spanning-tree portfast
+   spanning-tree portfast edge
 ```
 
 ## Routing
@@ -339,6 +339,7 @@ service routing protocols model multi-agent
 #### IP Routing Device Configuration
 
 ```eos
+!
 no ip routing vrf MGMT
 ```
 

@@ -914,9 +914,6 @@ router bgp 65000
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor WAN-OVERLAY-PEERS encapsulation path-selection
    !
-   address-family ipv4
-      no neighbor WAN-OVERLAY-PEERS activate
-   !
    address-family ipv4 sr-te
       neighbor WAN-OVERLAY-PEERS activate
    !

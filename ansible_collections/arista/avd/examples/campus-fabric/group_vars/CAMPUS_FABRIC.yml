@@ -1,6 +1,9 @@
 ---
 ### group_vars/CAMPUS_FABRIC.yml
 
+# Opt in to behaviors introduced in AVD 6.5.0 and earlier.
+avd_version: 6.5.0
+
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)
 ansible_connection: ansible.netcommon.httpapi

@@ -12,6 +12,7 @@ ansible_httpapi_validate_certs: false
 
 # fabric_name needs to be the same for all devices
 fabric_name: WAN
+avd_version: 6.5.0
 
 management_eapi:
   enabled: true

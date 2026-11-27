@@ -1,6 +1,7 @@
 ---
 # Common AVD group variables
 fabric_name: FABRIC
+avd_version: 6.5.0
 
 # Fix known bugs where the fix was introduced after 6.0.
 avd_design_future:
