@@ -2,6 +2,10 @@
 # Tests for opsfv3 redistribution
 router_ospfv3:
   router_id: 1.1.1.1
+  graceful_restart:
+    enabled: true
+    grace_period: 30
+  graceful_restart_helper: true
   bfd_default: true
   bfd_adjacency_state_any: true
   passive_interface_default: true
@@ -28,6 +32,9 @@ router_ospfv3:
     bfd_adjacency_state_any: true
     auto_cost_reference_bandwidth: 2000
     passive_interface_default: true
+    graceful_restart:
+      enabled: true
+      grace_period: 4
     # Verify IPv4 timers suppress shared timers when IPv6 has no override.
     timers:
       spf:
@@ -61,6 +68,8 @@ router_ospfv3:
     bfd_default: true
     auto_cost_reference_bandwidth: 2000
     passive_interface_default: true
+    graceful_restart:
+      enabled: true
     redistribute:
       ospfv3:
         leaked:
@@ -73,3 +82,12 @@ router_ospfv3:
         leaked_match_nssa_external:
           enabled: true
           route_map: map1
+  vrfs:
+    - name: SAME_HELPER
+      graceful_restart:
+        enabled: true
+      graceful_restart_helper: true
+      address_family_ipv4:
+        enabled: true
+        # Duplicate positive helper configuration is rendered only at the address-family level.
+        graceful_restart_helper: true

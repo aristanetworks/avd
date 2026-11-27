@@ -33,6 +33,14 @@
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is not arista.avd.defined) %}
 {%     set default_timers = default_spf_timers_configured or default_lsa_rx_timer_configured or default_lsa_tx_timer_configured %}
+{%     set default_graceful_restart = router_ospfv3.graceful_restart.enabled is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.graceful_restart is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%     set default_graceful_restart_helper = router_ospfv3.graceful_restart_helper is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
 {%     set default_address_family_ipv4 = router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%     set default_address_family_ipv6 = router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%     if default_router_id
@@ -41,6 +49,8 @@
            or default_passive_interface_default
            or default_auto_cost_reference_bandwidth
            or default_timers
+           or default_graceful_restart
+           or default_graceful_restart_helper
            or default_address_family_ipv4
            or default_address_family_ipv6 %}
 
@@ -50,7 +60,9 @@
                or default_bfd_adjacency_state_any
                or default_passive_interface_default
                or default_auto_cost_reference_bandwidth
-               or default_timers %}
+               or default_timers
+               or default_graceful_restart
+               or default_graceful_restart_helper %}
 {%             set default_vrf_router_id = router_ospfv3.router_id | arista.avd.default('-') %}
 {%             set default_vrf_bfd_default = router_ospfv3.bfd_default | arista.avd.default('-') %}
 {%             set default_vrf_bfd_adjacency_state_any = router_ospfv3.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -59,6 +71,9 @@
 {%             set default_spf_timers = router_ospfv3.timers.spf.delay.initial ~ " / " ~ router_ospfv3.timers.spf.delay.min_hold_time ~ " / " ~ router_ospfv3.timers.spf.delay.max_wait_time if default_spf_timers_configured else '-' %}
 {%             set default_lsa_rx_min_interval = router_ospfv3.timers.lsa.rx.min_interval if default_lsa_rx_timer_configured else '-' %}
 {%             set default_lsa_tx_delay = router_ospfv3.timers.lsa.tx.delay.initial ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.min ~ " / " ~ router_ospfv3.timers.lsa.tx.delay.max if default_lsa_tx_timer_configured else '-' %}
+{%             set default_vrf_graceful_restart = router_ospfv3.graceful_restart.enabled | arista.avd.default('-') %}
+{%             set default_vrf_grace_period = router_ospfv3.graceful_restart.grace_period | arista.avd.default('-') %}
+{%             set default_vrf_graceful_restart_helper = router_ospfv3.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -70,6 +85,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ default_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ default_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ default_lsa_tx_delay }} |
+| Graceful Restart | {{ default_vrf_graceful_restart if default_graceful_restart else '-' }} |
+| Grace Period | {{ default_vrf_grace_period if default_graceful_restart else '-' }} |
+| Graceful Restart Helper | {{ default_vrf_graceful_restart_helper if default_graceful_restart_helper else '-' }} |
 {%         endif %}
 {%         if default_address_family_ipv4 %}
 
@@ -81,7 +99,10 @@
                    or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.timers.spf.delay is arista.avd.defined
                    or router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined
-                   or router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.graceful_restart is arista.avd.defined
+                   or router_ospfv3.address_family_ipv4.graceful_restart_helper is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -90,6 +111,10 @@
 {%                 set af_spf_timers = router_ospfv3.address_family_ipv4.timers.spf.delay.initial ~ " / " ~ router_ospfv3.address_family_ipv4.timers.spf.delay.min_hold_time ~ " / " ~ router_ospfv3.address_family_ipv4.timers.spf.delay.max_wait_time if router_ospfv3.address_family_ipv4.timers.spf.delay is arista.avd.defined else '-' %}
 {%                 set af_lsa_rx_min_interval = router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval if router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined else '-' %}
 {%                 set af_lsa_tx_delay = router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.initial ~ " / " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min ~ " / " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max if router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%                 set af_graceful_restart = router_ospfv3.address_family_ipv4.graceful_restart.enabled | arista.avd.default('-') %}
+{%                 set af_grace_period = router_ospfv3.address_family_ipv4.graceful_restart.grace_period | arista.avd.default('-')
+                       if router_ospfv3.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) else '-' %}
+{%                 set af_graceful_restart_helper = router_ospfv3.address_family_ipv4.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -101,6 +126,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ af_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ af_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ af_lsa_tx_delay }} |
+| Graceful Restart | {{ af_graceful_restart }} |
+| Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -158,7 +186,10 @@
                    or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.timers.spf.delay is arista.avd.defined
                    or router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined
-                   or router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined %}
+                   or router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.graceful_restart is arista.avd.defined
+                   or router_ospfv3.address_family_ipv6.graceful_restart_helper is arista.avd.defined %}
 {%                 set af_router_id = router_ospfv3.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                 set af_bfd_default = router_ospfv3.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                 set af_bfd_adjacency_state_any = router_ospfv3.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -167,6 +198,10 @@
 {%                 set af_spf_timers = router_ospfv3.address_family_ipv6.timers.spf.delay.initial ~ " / " ~ router_ospfv3.address_family_ipv6.timers.spf.delay.min_hold_time ~ " / " ~ router_ospfv3.address_family_ipv6.timers.spf.delay.max_wait_time if router_ospfv3.address_family_ipv6.timers.spf.delay is arista.avd.defined else '-' %}
 {%                 set af_lsa_rx_min_interval = router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval if router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined else '-' %}
 {%                 set af_lsa_tx_delay = router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.initial ~ " / " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min ~ " / " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max if router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%                 set af_graceful_restart = router_ospfv3.address_family_ipv6.graceful_restart.enabled | arista.avd.default('-') %}
+{%                 set af_grace_period = router_ospfv3.address_family_ipv6.graceful_restart.grace_period | arista.avd.default('-')
+                       if router_ospfv3.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) else '-' %}
+{%                 set af_graceful_restart_helper = router_ospfv3.address_family_ipv6.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -178,6 +213,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ af_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ af_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ af_lsa_tx_delay }} |
+| Graceful Restart | {{ af_graceful_restart }} |
+| Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%             endif %}
 {%             if router_ospfv3.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                 set has_redist = false %}
@@ -257,6 +295,14 @@
                and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.timers.lsa.tx.delay is not arista.avd.defined)
                and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.timers.lsa.tx.delay is not arista.avd.defined) %}
 {%         set vrf_timers = vrf_spf_timers_configured or vrf_lsa_rx_timer_configured or vrf_lsa_tx_timer_configured %}
+{%         set vrf_graceful_restart = vrf.graceful_restart.enabled is arista.avd.defined(true)
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.graceful_restart is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%         set vrf_graceful_restart_helper = vrf.graceful_restart_helper is arista.avd.defined
+               and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true)
+                    or vrf.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+               and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true)
+                    or vrf.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
 {%         set vrf_address_family_ipv4 = vrf.address_family_ipv4.enabled is arista.avd.defined(true) %}
 {%         set vrf_address_family_ipv6 = vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%         if vrf_router_id
@@ -265,6 +311,8 @@
                or vrf_passive_interface_default
                or vrf_auto_cost_reference_bandwidth
                or vrf_timers
+               or vrf_graceful_restart
+               or vrf_graceful_restart_helper
                or vrf_address_family_ipv4
                or vrf_address_family_ipv6 %}
 
@@ -274,7 +322,9 @@
                    or vrf_bfd_adjacency_state_any
                    or vrf_passive_interface_default
                    or vrf_auto_cost_reference_bandwidth
-                   or vrf_timers %}
+                   or vrf_timers
+                   or vrf_graceful_restart
+                   or vrf_graceful_restart_helper %}
 {%                 set vrf_summary_router_id = vrf.router_id | arista.avd.default('-') %}
 {%                 set vrf_summary_bfd_default = vrf.bfd_default | arista.avd.default('-') %}
 {%                 set vrf_summary_bfd_adjacency_state_any = vrf.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -283,6 +333,9 @@
 {%                 set vrf_spf_timers = vrf.timers.spf.delay.initial ~ " / " ~ vrf.timers.spf.delay.min_hold_time ~ " / " ~ vrf.timers.spf.delay.max_wait_time if vrf_spf_timers_configured else '-' %}
 {%                 set vrf_lsa_rx_min_interval = vrf.timers.lsa.rx.min_interval if vrf_lsa_rx_timer_configured else '-' %}
 {%                 set vrf_lsa_tx_delay = vrf.timers.lsa.tx.delay.initial ~ " / " ~ vrf.timers.lsa.tx.delay.min ~ " / " ~ vrf.timers.lsa.tx.delay.max if vrf_lsa_tx_timer_configured else '-' %}
+{%                 set vrf_summary_graceful_restart = vrf.graceful_restart.enabled | arista.avd.default('-') %}
+{%                 set vrf_summary_grace_period = vrf.graceful_restart.grace_period | arista.avd.default('-') %}
+{%                 set vrf_summary_graceful_restart_helper = vrf.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -294,6 +347,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ vrf_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ vrf_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ vrf_lsa_tx_delay }} |
+| Graceful Restart | {{ vrf_summary_graceful_restart if vrf_graceful_restart else '-' }} |
+| Grace Period | {{ vrf_summary_grace_period if vrf_graceful_restart else '-' }} |
+| Graceful Restart Helper | {{ vrf_summary_graceful_restart_helper if vrf_graceful_restart_helper else '-' }} |
 {%             endif %}
 {%             if vrf_address_family_ipv4 %}
 
@@ -305,7 +361,10 @@
                        or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
                        or vrf.address_family_ipv4.timers.spf.delay is arista.avd.defined
                        or vrf.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined
-                       or vrf.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined %}
+                       or vrf.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined
+                       or vrf.address_family_ipv4.auto_cost_reference_bandwidth is arista.avd.defined
+                       or vrf.address_family_ipv4.graceful_restart is arista.avd.defined
+                       or vrf.address_family_ipv4.graceful_restart_helper is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv4.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv4.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv4.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -314,6 +373,10 @@
 {%                     set af_spf_timers = vrf.address_family_ipv4.timers.spf.delay.initial ~ " / " ~ vrf.address_family_ipv4.timers.spf.delay.min_hold_time ~ " / " ~ vrf.address_family_ipv4.timers.spf.delay.max_wait_time if vrf.address_family_ipv4.timers.spf.delay is arista.avd.defined else '-' %}
 {%                     set af_lsa_rx_min_interval = vrf.address_family_ipv4.timers.lsa.rx.min_interval if vrf.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined else '-' %}
 {%                     set af_lsa_tx_delay = vrf.address_family_ipv4.timers.lsa.tx.delay.initial ~ " / " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.min ~ " / " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.max if vrf.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%                     set af_graceful_restart = vrf.address_family_ipv4.graceful_restart.enabled | arista.avd.default('-') %}
+{%                     set af_grace_period = vrf.address_family_ipv4.graceful_restart.grace_period | arista.avd.default('-')
+                           if vrf.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) else '-' %}
+{%                     set af_graceful_restart_helper = vrf.address_family_ipv4.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -325,6 +388,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ af_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ af_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ af_lsa_tx_delay }} |
+| Graceful Restart | {{ af_graceful_restart }} |
+| Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%                 endif %}
 {%                 if vrf.address_family_ipv4.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}
@@ -382,7 +448,10 @@
                        or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
                        or vrf.address_family_ipv6.timers.spf.delay is arista.avd.defined
                        or vrf.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined
-                       or vrf.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined %}
+                       or vrf.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined
+                       or vrf.address_family_ipv6.auto_cost_reference_bandwidth is arista.avd.defined
+                       or vrf.address_family_ipv6.graceful_restart is arista.avd.defined
+                       or vrf.address_family_ipv6.graceful_restart_helper is arista.avd.defined %}
 {%                     set af_router_id = vrf.address_family_ipv6.router_id | arista.avd.default('-') %}
 {%                     set af_bfd_default = vrf.address_family_ipv6.bfd_default | arista.avd.default('-') %}
 {%                     set af_bfd_adjacency_state_any = vrf.address_family_ipv6.bfd_adjacency_state_any | arista.avd.default('-') %}
@@ -391,6 +460,10 @@
 {%                     set af_spf_timers = vrf.address_family_ipv6.timers.spf.delay.initial ~ " / " ~ vrf.address_family_ipv6.timers.spf.delay.min_hold_time ~ " / " ~ vrf.address_family_ipv6.timers.spf.delay.max_wait_time if vrf.address_family_ipv6.timers.spf.delay is arista.avd.defined else '-' %}
 {%                     set af_lsa_rx_min_interval = vrf.address_family_ipv6.timers.lsa.rx.min_interval if vrf.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined else '-' %}
 {%                     set af_lsa_tx_delay = vrf.address_family_ipv6.timers.lsa.tx.delay.initial ~ " / " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.min ~ " / " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.max if vrf.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined else '-' %}
+{%                     set af_graceful_restart = vrf.address_family_ipv6.graceful_restart.enabled | arista.avd.default('-') %}
+{%                     set af_grace_period = vrf.address_family_ipv6.graceful_restart.grace_period | arista.avd.default('-')
+                           if vrf.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) else '-' %}
+{%                     set af_graceful_restart_helper = vrf.address_family_ipv6.graceful_restart_helper | arista.avd.default('-') %}
 
 | Parameter | Value |
 | --------- | ----- |
@@ -402,6 +475,9 @@
 | SPF Timers (initial/min hold/max wait, msec) | {{ af_spf_timers }} |
 | LSA RX Min Interval (msec) | {{ af_lsa_rx_min_interval }} |
 | LSA TX Delay (initial/min/max, msec) | {{ af_lsa_tx_delay }} |
+| Graceful Restart | {{ af_graceful_restart }} |
+| Grace Period | {{ af_grace_period }} |
+| Graceful Restart Helper | {{ af_graceful_restart_helper }} |
 {%                 endif %}
 {%                 if vrf.address_family_ipv6.redistribute is arista.avd.defined %}
 {%                     set has_redist = false %}

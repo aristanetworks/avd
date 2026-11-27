@@ -201,8 +201,25 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -226,6 +243,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | 2500 / 7000 / 30000 |
 | LSA RX Min Interval (msec) | 3000 |
 | LSA TX Delay (initial/min/max, msec) | 1500 / 3000 / 7000 |
+| Graceful Restart | True |
+| Grace Period | 26 |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -250,6 +270,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | 200 / 1000 / 5000 |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
 
 ##### Address Family IPv6
 
@@ -263,6 +286,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | 4500 |
 | LSA TX Delay (initial/min/max, msec) | 550 / 950 / 1800 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -289,6 +315,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 #### VRF: TEST_VRF
 
@@ -302,6 +331,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | 350 |
 | LSA TX Delay (initial/min/max, msec) | 400 / 700 / 1600 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ##### Address Family IPv6
 
@@ -315,6 +347,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | 800 / 2400 / 8000 |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -334,6 +369,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 #### VRF: data
 
@@ -349,6 +387,9 @@ ipv6 unicast-routing vrf TENANT_C
 | SPF Timers (initial/min hold/max wait, msec) | 1100 / 4000 / 16000 |
 | LSA RX Min Interval (msec) | 750 |
 | LSA TX Delay (initial/min/max, msec) | 700 / 1500 / 3500 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 #### Router OSPFv3 Device Configuration
 
@@ -358,6 +399,7 @@ router ospfv3 vrf MGMT
    auto-cost reference-bandwidth 100
    passive-interface default
    timers spf delay initial 200 1000 5000
+   graceful-restart-helper
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -379,6 +421,7 @@ router ospfv3 vrf TEST_VRF
    auto-cost reference-bandwidth 100
    timers lsa rx min interval 350
    timers lsa tx delay initial 400 700 1600
+   no graceful-restart-helper
    !
    address-family ipv6
       passive-interface default
@@ -414,6 +457,8 @@ router ospfv3
       redistribute isis include leaked level-1 route-map map1
       redistribute ospfv3 leaked
       redistribute static include leaked route-map map1
+      graceful-restart
+      graceful-restart-helper
    !
    address-family ipv6
       redistribute bgp include leaked route-map map1
@@ -425,6 +470,8 @@ router ospfv3
       timers spf delay initial 2500 7000 30000
       timers lsa rx min interval 3000
       timers lsa tx delay initial 1500 3000 7000
+      graceful-restart grace-period 26
+      graceful-restart-helper
 ```
 
 ### Router BGP

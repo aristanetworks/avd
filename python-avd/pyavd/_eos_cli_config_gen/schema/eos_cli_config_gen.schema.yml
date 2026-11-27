@@ -22653,6 +22653,32 @@ keys:
                         max: 600000
                         description: Maximum delay between originating the same LSA
                           in msecs.
+      graceful_restart:
+        type: dict
+        description: 'Graceful restart configuration.
+
+          This setting is mutually exclusive with the address-family level graceful-restart
+          settings.
+
+          If both are provided, the address-family level settings take precedence.'
+        keys:
+          enabled:
+            type: bool
+            required: true
+          grace_period:
+            type: int
+            min: 1
+            max: 1800
+            description: Specify maximum time in seconds to wait for graceful-restart
+              to complete.
+      graceful_restart_helper:
+        type: bool
+        description: 'Enable or disable graceful-restart helper at the router level.
+
+          This setting is mutually exclusive with the address-family level graceful-restart
+          helper settings.
+
+          If both are provided, the enabled address-family level setting takes precedence.'
       address_family_ipv4:
         type: dict
         description: 'Address family IPv4 configuration.
@@ -22686,6 +22712,25 @@ keys:
           timers:
             type: dict
             $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/timers
+          graceful_restart:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                required: true
+              grace_period:
+                type: int
+                min: 1
+                max: 1800
+                description: Specify maximum time in seconds to wait for graceful-restart
+                  to complete.
+          graceful_restart_helper:
+            type: bool
+            description: 'Enable or disable graceful-restart helper for this OSPFv3
+              address family.
+
+              If the router-level setting is also provided, this setting takes precedence
+              when the address family is enabled.'
           redistribute:
             type: dict
             description: Redistribute routes into OSPFv3.
@@ -22834,6 +22879,34 @@ keys:
             timers:
               type: dict
               $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/timers
+            graceful_restart:
+              type: dict
+              description: 'Graceful restart configuration.
+
+                This setting is mutually exclusive with the address-family level graceful-restart
+                settings.
+
+                If both are provided, the address-family level settings take precedence.'
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                grace_period:
+                  type: int
+                  min: 1
+                  max: 1800
+                  description: Specify maximum time in seconds to wait for graceful-restart
+                    to complete.
+            graceful_restart_helper:
+              type: bool
+              description: 'Enable or disable graceful-restart helper at the router
+                level for this VRF.
+
+                This setting is mutually exclusive with the address-family level graceful-restart
+                helper settings.
+
+                If both are provided, the enabled address-family level setting takes
+                precedence.'
             address_family_ipv4:
               type: dict
               $ref: eos_cli_config_gen#/keys/router_ospfv3/keys/address_family_ipv4

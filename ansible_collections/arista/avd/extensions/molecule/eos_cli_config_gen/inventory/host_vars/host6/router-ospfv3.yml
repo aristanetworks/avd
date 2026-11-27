@@ -19,8 +19,13 @@ router_ospfv3:
           initial: 1000
           min: 2000
           max: 5000
+  graceful_restart_helper: false
   address_family_ipv4:
     enabled: true
+    # An enabled address-family helper setting takes precedence over the shared setting.
+    graceful_restart:
+      enabled: true
+    graceful_restart_helper: true
     redistribute:
       bgp:
         enabled: true
@@ -59,6 +64,10 @@ router_ospfv3:
             initial: 1500
             min: 3000
             max: 7000
+    graceful_restart:
+      enabled: true
+      grace_period: 26
+    graceful_restart_helper: true
     redistribute:
       ospfv3:
         leaked:
@@ -141,6 +150,7 @@ router_ospfv3:
               initial: 0
               min: 600
               max: 1200
+      graceful_restart_helper: true
       address_family_ipv6:
         enabled: true
         # Exercise IPv6 address-family LSA timers and override the shared VRF TX timer.
@@ -215,6 +225,7 @@ router_ospfv3:
               initial: 400
               min: 700
               max: 1600
+      graceful_restart_helper: false
       address_family_ipv4:
         enabled: false
         passive_interface_default: false

@@ -1343,6 +1343,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1383,6 +1386,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1407,6 +1413,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | False |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1431,6 +1440,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1444,6 +1456,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1467,6 +1482,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -1493,6 +1511,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | False |
+| Grace Period | - |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -1514,6 +1535,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | 25 |
+| Graceful Restart Helper | True |
 
 ###### Redistribution
 
@@ -1535,6 +1559,25 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | 22 |
+| Graceful Restart Helper | - |
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 #### VRF: data
 
@@ -1548,6 +1591,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -1561,6 +1607,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1584,6 +1633,9 @@ router ospf 701
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -1637,6 +1689,7 @@ router ospfv3 vrf MGMT
       redistribute isis
       redistribute ospfv3 leaked
       redistribute static
+      graceful-restart
    !
    address-family ipv6
       passive-interface default
@@ -1646,6 +1699,8 @@ router ospfv3 vrf MGMT
       redistribute isis
       redistribute ospfv3 leaked
       redistribute static
+      graceful-restart
+      no graceful-restart-helper
 !
 router ospfv3 vrf Test
    address-family ipv4
@@ -1653,17 +1708,24 @@ router ospfv3 vrf Test
       redistribute ospfv3 leaked
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      graceful-restart-helper
    !
    address-family ipv6
       passive-interface default
       redistribute ospfv3 leaked
       redistribute ospfv3 leaked match external
       redistribute ospfv3 leaked match nssa-external
+      graceful-restart grace-period 25
+      graceful-restart-helper
 !
 router ospfv3 vrf Test_VRF
    router-id 1.1.1.1
    auto-cost reference-bandwidth 1000
    passive-interface default
+   graceful-restart grace-period 22
+   !
+   address-family ipv4
+      no graceful-restart-helper
 !
 router ospfv3 vrf data
    router-id 2.2.2.2
@@ -1690,6 +1752,7 @@ router ospfv3
    bfd default
    bfd adjacency state any
    passive-interface default
+   graceful-restart
    !
    address-family ipv4
       redistribute bgp

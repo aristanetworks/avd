@@ -62,6 +62,31 @@ router ospfv3 vrf {{ vrf.name }}
    {{ timer_ospfv3_lsa_tx_delay }}
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.graceful_restart.enabled is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.graceful_restart is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%         set graceful_restart_cli = "graceful-restart" %}
+{%         if vrf.graceful_restart.grace_period is arista.avd.defined %}
+{%             set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.graceful_restart.grace_period %}
+{%         endif %}
+   {{ graceful_restart_cli }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if vrf.graceful_restart_helper is arista.avd.defined(true)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
+   graceful-restart-helper
+{%         set use_delimiter = true %}
+{%     elif vrf.graceful_restart_helper is arista.avd.defined(false)
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or vrf.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
+   no graceful-restart-helper
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if vrf.eos_cli is arista.avd.defined %}
    {{ vrf.eos_cli | indent(3, false) }}
 {%         set use_delimiter = true %}
@@ -168,6 +193,18 @@ router ospfv3 vrf {{ vrf.name }}
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.min %}
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.max %}
       {{ timer_ospfv3_lsa_tx_delay }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if vrf.address_family_ipv4.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.address_family_ipv4.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.graceful_restart_helper is arista.avd.defined(true) %}
+      graceful-restart-helper
+{%         elif vrf.address_family_ipv4.graceful_restart_helper is arista.avd.defined(false) %}
+      no graceful-restart-helper
 {%         endif %}
 {%     endif %}
 {%     if use_delimiter and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -279,6 +316,18 @@ router ospfv3 vrf {{ vrf.name }}
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.max %}
       {{ timer_ospfv3_lsa_tx_delay }}
 {%         endif %}
+{%         if vrf.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if vrf.address_family_ipv6.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ vrf.address_family_ipv6.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
+{%         endif %}
+{%         if vrf.address_family_ipv6.graceful_restart_helper is arista.avd.defined(true) %}
+      graceful-restart-helper
+{%         elif vrf.address_family_ipv6.graceful_restart_helper is arista.avd.defined(false) %}
+      no graceful-restart-helper
+{%         endif %}
 {%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
@@ -289,6 +338,8 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.timers.spf.delay is arista.avd.defined
       or router_ospfv3.timers.lsa.rx.min_interval is arista.avd.defined
       or router_ospfv3.timers.lsa.tx.delay is arista.avd.defined
+      or router_ospfv3.graceful_restart.enabled is arista.avd.defined(true)
+      or router_ospfv3.graceful_restart_helper is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
       or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
       or router_ospfv3.eos_cli is arista.avd.defined %}
@@ -347,6 +398,31 @@ router ospfv3
 {%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.timers.lsa.tx.delay.min %}
 {%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.timers.lsa.tx.delay.max %}
    {{ timer_ospfv3_lsa_tx_delay }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.graceful_restart.enabled is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.graceful_restart is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.graceful_restart is not arista.avd.defined) %}
+{%         set graceful_restart_cli = "graceful-restart" %}
+{%         if router_ospfv3.graceful_restart.grace_period is arista.avd.defined %}
+{%             set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.graceful_restart.grace_period %}
+{%         endif %}
+   {{ graceful_restart_cli }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.graceful_restart_helper is arista.avd.defined(true)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
+   graceful-restart-helper
+{%         set use_delimiter = true %}
+{%     elif router_ospfv3.graceful_restart_helper is arista.avd.defined(false)
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv4.graceful_restart_helper is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true)
+                or router_ospfv3.address_family_ipv6.graceful_restart_helper is not arista.avd.defined) %}
+   no graceful-restart-helper
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.eos_cli is arista.avd.defined %}
@@ -455,6 +531,18 @@ router ospfv3
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min %}
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max %}
       {{ timer_ospfv3_lsa_tx_delay }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if router_ospfv3.address_family_ipv4.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.address_family_ipv4.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.graceful_restart_helper is arista.avd.defined(true) %}
+      graceful-restart-helper
+{%         elif router_ospfv3.address_family_ipv4.graceful_restart_helper is arista.avd.defined(false) %}
+      no graceful-restart-helper
 {%         endif %}
 {%     endif %}
 {%     if use_delimiter and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -565,6 +653,18 @@ router ospfv3
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min %}
 {%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max %}
       {{ timer_ospfv3_lsa_tx_delay }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             set graceful_restart_cli = "graceful-restart" %}
+{%             if router_ospfv3.address_family_ipv6.graceful_restart.grace_period is arista.avd.defined %}
+{%                 set graceful_restart_cli = graceful_restart_cli ~ " grace-period " ~ router_ospfv3.address_family_ipv6.graceful_restart.grace_period %}
+{%             endif %}
+      {{ graceful_restart_cli }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.graceful_restart_helper is arista.avd.defined(true) %}
+      graceful-restart-helper
+{%         elif router_ospfv3.address_family_ipv6.graceful_restart_helper is arista.avd.defined(false) %}
+      no graceful-restart-helper
 {%         endif %}
 {%     endif %}
 {% endif %}

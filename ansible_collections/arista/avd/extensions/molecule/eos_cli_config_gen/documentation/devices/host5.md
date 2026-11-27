@@ -112,26 +112,32 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | - |
-| BFD Default | True |
+| BFD Default | - |
 | BFD Adjacency State Any | - |
 | Passive Interface Default | - |
 | Auto Cost Reference Bandwidth | - |
 | SPF Timers (initial/min hold/max wait, msec) | 1000 / 5000 / 30000 |
 | LSA RX Min Interval (msec) | 2000 |
 | LSA TX Delay (initial/min/max, msec) | 1000 / 2000 / 5000 |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ##### Address Family IPv4
 
 | Parameter | Value |
 | --------- | ----- |
 | Router ID | 2.2.2.2 |
-| BFD Default | - |
+| BFD Default | False |
 | BFD Adjacency State Any | - |
 | Passive Interface Default | True |
 | Auto Cost Reference Bandwidth | 2000 |
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | False |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -153,6 +159,9 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | False |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -167,10 +176,10 @@ ipv6 unicast-routing vrf IPv6_ROUTING_ENABLED_VRF
 ```eos
 !
 router ospfv3
-   bfd default
    timers spf delay initial 1000 5000 30000
    timers lsa rx min interval 2000
    timers lsa tx delay initial 1000 2000 5000
+   no graceful-restart-helper
    !
    address-family ipv4
       router-id 2.2.2.2

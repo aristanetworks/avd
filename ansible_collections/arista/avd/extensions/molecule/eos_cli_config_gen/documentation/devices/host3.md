@@ -406,6 +406,20 @@ router ospf 702
 
 #### VRF: default
 
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
+
 ##### Address Family IPv4
 
 | Parameter | Value |
@@ -418,6 +432,9 @@ router ospf 702
 | SPF Timers (initial/min hold/max wait, msec) | 900 / 3000 / 9000 |
 | LSA RX Min Interval (msec) | 600 |
 | LSA TX Delay (initial/min/max, msec) | 700 / 1200 / 3000 |
+| Graceful Restart | True |
+| Grace Period | 4 |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -439,6 +456,9 @@ router ospf 702
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | - |
 
 ###### Redistribution
 
@@ -448,11 +468,51 @@ router ospf 702
 | ospfv3 leaked match external | True | map1 |
 | ospfv3 leaked match nssa-external | True | map1 |
 
+#### VRF: SAME_HELPER
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | - |
+| Graceful Restart Helper | - |
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | True |
+
 #### Router OSPFv3 Device Configuration
 
 ```eos
 !
+router ospfv3 vrf SAME_HELPER
+   graceful-restart
+   !
+   address-family ipv4
+      graceful-restart-helper
+!
 router ospfv3
+   graceful-restart-helper
+   !
    address-family ipv4
       router-id 2.2.2.2
       bfd default
@@ -465,6 +525,7 @@ router ospfv3
       timers spf delay initial 900 3000 9000
       timers lsa rx min interval 600
       timers lsa tx delay initial 700 1200 3000
+      graceful-restart grace-period 4
    !
    address-family ipv6
       router-id 3.3.3.3
@@ -474,6 +535,7 @@ router ospfv3
       redistribute ospfv3 leaked match internal route-map map1
       redistribute ospfv3 leaked match external route-map map1
       redistribute ospfv3 leaked match nssa-external route-map map1
+      graceful-restart
 ```
 
 ### Router ISIS

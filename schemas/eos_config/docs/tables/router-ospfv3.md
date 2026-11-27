@@ -27,6 +27,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.graceful_restart") | Dictionary |  |  |  | Graceful restart configuration.<br>This setting is mutually exclusive with the address-family level graceful-restart settings.<br>If both are provided, the address-family level settings take precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper at the router level.<br>This setting is mutually exclusive with the address-family level graceful-restart helper settings.<br>If both are provided, the enabled address-family level setting takes precedence. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -48,6 +52,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.address_family_ipv4.graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper for this OSPFv3 address family.<br>If the router-level setting is also provided, this setting takes precedence when the address family is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -130,6 +138,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.address_family_ipv6.graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper for this OSPFv3 address family.<br>If the router-level setting is also provided, this setting takes precedence when the address family is enabled. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_ospfv3.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_ospfv3.vrfs.[].name") | String | Required, Unique |  | Pattern: `(?!default$).+` | VRF name.<br>VRF 'default' must be configured directly under 'router_ospfv3'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -151,6 +163,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].graceful_restart") | Dictionary |  |  |  | Graceful restart configuration.<br>This setting is mutually exclusive with the address-family level graceful-restart settings.<br>If both are provided, the address-family level settings take precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper at the router level for this VRF.<br>This setting is mutually exclusive with the address-family level graceful-restart helper settings.<br>If both are provided, the enabled address-family level setting takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4") | Dictionary |  |  |  | Address family IPv4 configuration.<br>Common configurations defined at the router-level and address-family level are mutually exclusive.<br>If both are provided, the address-family level configuration takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.enabled") | Boolean | Required |  |  | Activate the address family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.router_id") | String |  |  |  | 32-bit OSPF router ID as an IP address. |
@@ -172,6 +188,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper for this OSPFv3 address family.<br>If the router-level setting is also provided, this setting takes precedence when the address family is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes into OSPFv3. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv4.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
@@ -254,6 +274,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.initial") | Integer | Required |  | Min: 0<br>Max: 600000 | Delay to generate first occurrence of LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.min") | Integer | Required |  | Min: 1<br>Max: 600000 | Min delay between originating the same LSA in msecs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.timers.lsa.tx.delay.max") | Integer | Required |  | Min: 1<br>Max: 600000 | Maximum delay between originating the same LSA in msecs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospfv3.vrfs.[].address_family_ipv6.graceful_restart_helper") | Boolean |  |  |  | Enable or disable graceful-restart helper for this OSPFv3 address family.<br>If the router-level setting is also provided, this setting takes precedence when the address family is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on this VRF OSPFv3 instance. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_ospfv3.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the default VRF OSPFv3 instance. |
 
@@ -312,6 +336,20 @@
               # Maximum delay between originating the same LSA in msecs.
               max: <int; 1-600000; required>
 
+      # Graceful restart configuration.
+      # This setting is mutually exclusive with the address-family level graceful-restart settings.
+      # If both are provided, the address-family level settings take precedence.
+      graceful_restart:
+        enabled: <bool; required>
+
+        # Specify maximum time in seconds to wait for graceful-restart to complete.
+        grace_period: <int; 1-1800>
+
+      # Enable or disable graceful-restart helper at the router level.
+      # This setting is mutually exclusive with the address-family level graceful-restart helper settings.
+      # If both are provided, the enabled address-family level setting takes precedence.
+      graceful_restart_helper: <bool>
+
       # Address family IPv4 configuration.
       # Common configurations defined at the router-level and address-family level are mutually exclusive.
       # If both are provided, the address-family level configuration takes precedence.
@@ -364,6 +402,15 @@
 
                 # Maximum delay between originating the same LSA in msecs.
                 max: <int; 1-600000; required>
+        graceful_restart:
+          enabled: <bool; required>
+
+          # Specify maximum time in seconds to wait for graceful-restart to complete.
+          grace_period: <int; 1-1800>
+
+        # Enable or disable graceful-restart helper for this OSPFv3 address family.
+        # If the router-level setting is also provided, this setting takes precedence when the address family is enabled.
+        graceful_restart_helper: <bool>
 
         # Redistribute routes into OSPFv3.
         redistribute:
@@ -498,6 +545,15 @@
 
                 # Maximum delay between originating the same LSA in msecs.
                 max: <int; 1-600000; required>
+        graceful_restart:
+          enabled: <bool; required>
+
+          # Specify maximum time in seconds to wait for graceful-restart to complete.
+          grace_period: <int; 1-1800>
+
+        # Enable or disable graceful-restart helper for this OSPFv3 address family.
+        # If the router-level setting is also provided, this setting takes precedence when the address family is enabled.
+        graceful_restart_helper: <bool>
       vrfs:
 
           # VRF name.
@@ -552,6 +608,20 @@
                   # Maximum delay between originating the same LSA in msecs.
                   max: <int; 1-600000; required>
 
+          # Graceful restart configuration.
+          # This setting is mutually exclusive with the address-family level graceful-restart settings.
+          # If both are provided, the address-family level settings take precedence.
+          graceful_restart:
+            enabled: <bool; required>
+
+            # Specify maximum time in seconds to wait for graceful-restart to complete.
+            grace_period: <int; 1-1800>
+
+          # Enable or disable graceful-restart helper at the router level for this VRF.
+          # This setting is mutually exclusive with the address-family level graceful-restart helper settings.
+          # If both are provided, the enabled address-family level setting takes precedence.
+          graceful_restart_helper: <bool>
+
           # Address family IPv4 configuration.
           # Common configurations defined at the router-level and address-family level are mutually exclusive.
           # If both are provided, the address-family level configuration takes precedence.
@@ -604,6 +674,15 @@
 
                     # Maximum delay between originating the same LSA in msecs.
                     max: <int; 1-600000; required>
+            graceful_restart:
+              enabled: <bool; required>
+
+              # Specify maximum time in seconds to wait for graceful-restart to complete.
+              grace_period: <int; 1-1800>
+
+            # Enable or disable graceful-restart helper for this OSPFv3 address family.
+            # If the router-level setting is also provided, this setting takes precedence when the address family is enabled.
+            graceful_restart_helper: <bool>
 
             # Redistribute routes into OSPFv3.
             redistribute:
@@ -738,6 +817,15 @@
 
                     # Maximum delay between originating the same LSA in msecs.
                     max: <int; 1-600000; required>
+            graceful_restart:
+              enabled: <bool; required>
+
+              # Specify maximum time in seconds to wait for graceful-restart to complete.
+              grace_period: <int; 1-1800>
+
+            # Enable or disable graceful-restart helper for this OSPFv3 address family.
+            # If the router-level setting is also provided, this setting takes precedence when the address family is enabled.
+            graceful_restart_helper: <bool>
 
           # Multiline EOS CLI rendered directly on this VRF OSPFv3 instance.
           eos_cli: <str>

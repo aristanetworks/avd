@@ -161,6 +161,9 @@ router ospf 703
 | SPF Timers (initial/min hold/max wait, msec) | 1000 / 5000 / 30000 |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | 10 |
+| Graceful Restart Helper | - |
 
 ##### Address Family IPv4
 
@@ -174,6 +177,9 @@ router ospf 703
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | 0 |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | False |
 
 ###### Redistribution
 
@@ -210,6 +216,25 @@ router ospf 703
 | SPF Timers (initial/min hold/max wait, msec) | - |
 | LSA RX Min Interval (msec) | - |
 | LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | - |
+| Grace Period | - |
+| Graceful Restart Helper | - |
+
+##### Address Family IPv4
+
+| Parameter | Value |
+| --------- | ----- |
+| Router ID | - |
+| BFD Default | - |
+| BFD Adjacency State Any | - |
+| Passive Interface Default | - |
+| Auto Cost Reference Bandwidth | - |
+| SPF Timers (initial/min hold/max wait, msec) | - |
+| LSA RX Min Interval (msec) | - |
+| LSA TX Delay (initial/min/max, msec) | - |
+| Graceful Restart | True |
+| Grace Period | 21 |
+| Graceful Restart Helper | False |
 
 #### Router OSPFv3 Device Configuration
 
@@ -219,10 +244,15 @@ router ospfv3 vrf Test
    router-id 2.2.2.2
    auto-cost reference-bandwidth 100
    passive-interface default
+   !
+   address-family ipv4
+      graceful-restart grace-period 21
+      no graceful-restart-helper
 !
 router ospfv3
    auto-cost reference-bandwidth 100
    timers spf delay initial 1000 5000 30000
+   graceful-restart grace-period 10
    bfd default
    !
    address-family ipv4
@@ -232,6 +262,7 @@ router ospfv3
       redistribute ospfv3 leaked route-map map1
       redistribute static route-map map1
       timers lsa rx min interval 0
+      no graceful-restart-helper
    !
    address-family ipv6
       redistribute bgp include leaked
