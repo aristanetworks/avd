@@ -75,6 +75,9 @@ dns_settings:
 underlay_ipv6: true
 underlay_ipv6_numbered: true
 
+# Exchange IPv4 routes with IPv6 next hops over the numbered IPv6 MLAG iBGP peerings.
+overlay_mlag_rfc5549: true
+
 fabric_ip_addressing:
   mlag:
     # Modifies the default MLAG peer-link prefix length of 64.
