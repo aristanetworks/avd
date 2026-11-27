@@ -1,0 +1,16 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: management-eapi-ipv4-conflicting-acls
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+management_eapi:
+  enabled: true
+  vrfs:
+    - name: management
+      enabled: true
+      ipv4_acl: EXTENDED
+      ipv4_standard_acl: STANDARD

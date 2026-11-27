@@ -101,6 +101,7 @@ class UtilsMixin(Protocol):
         raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _set_ipv4_standard_acl(self: StructuredConfigUtilsProtocol, acl_name: str) -> None:
+        """Validate and append an IPv4 standard ACL from the catalog."""
         if acl_name not in self.inputs.ipv4_standard_acls:
             msg = f"ipv4_standard_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)

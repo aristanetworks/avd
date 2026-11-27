@@ -96,6 +96,10 @@ class AvdBase(ABC):
         return new_instance
 
     @abstractmethod
+    def _has_data(self) -> bool:
+        """Return True if this instance holds any non-null, non-empty configured data without triggering schema defaults."""
+
+    @abstractmethod
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
 
