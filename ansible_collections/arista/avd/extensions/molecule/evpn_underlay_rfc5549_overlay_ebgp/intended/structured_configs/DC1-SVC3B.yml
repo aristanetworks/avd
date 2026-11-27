@@ -119,6 +119,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: server04_inherit_all_from_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -149,6 +150,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: server05_no_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -178,6 +180,7 @@ ethernet_interfaces:
   spanning_tree_portfast: network
   metadata:
     peer: server06_override_profile
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -194,6 +197,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server07_inherit_all_from_profile_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -206,6 +210,7 @@ ethernet_interfaces:
     mode: 'on'
   metadata:
     peer: server08_no_profile_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers
@@ -230,6 +235,7 @@ ethernet_interfaces:
   spanning_tree_portfast: network
   metadata:
     peer: server09_override_profile_no_port_channel
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers

@@ -50,6 +50,7 @@ ethernet_interfaces:
     peer: dc1-leaf2a
     peer_interface: Ethernet51/1
     peer_type: l3leaf
+    transceiver: Arista QSFP-100G-SR4
   switchport:
     enabled: false
 - name: Ethernet1/5/1

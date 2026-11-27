@@ -1,0 +1,41 @@
+---
+type: "l2leaf"
+use_cv_topology: true
+
+cv_topology_levels:
+  - type: "l2leaf"
+    level: 1
+
+cv_topology:
+  - hostname: "missing-cv-topology-mlag-peer-interface-leaf1"
+    platform: "vEOS-lab"
+    interfaces:
+      - name: "Ethernet7"
+        neighbor: "missing-cv-topology-mlag-peer-interface-leaf2"
+        neighbor_interface: "Ethernet3"
+      - name: "Ethernet8"
+        neighbor: "missing-cv-topology-mlag-peer-interface-leaf2"
+        neighbor_interface: "Ethernet4"
+  - hostname: "missing-cv-topology-mlag-peer-interface-leaf2"
+    platform: "vEOS-lab"
+    interfaces:
+      - name: "Ethernet3"
+        neighbor: "missing-cv-topology-mlag-peer-interface-leaf1"
+        # This port is not in the primary node's resolved MLAG interfaces
+        neighbor_interface: "Ethernet99"
+      - name: "Ethernet4"
+        neighbor: "missing-cv-topology-mlag-peer-interface-leaf1"
+        neighbor_interface: "Ethernet8"
+
+l2leaf:
+  defaults:
+    mlag_peer_ipv4_pool: "10.255.252.0/24"
+  node_groups:
+    - group: "MISSING_CV_TOPOLOGY_MLAG_PEER_INTERFACE"
+      nodes:
+        - name: "missing-cv-topology-mlag-peer-interface-leaf1"
+          id: 1
+          mlag_interfaces_metadata:
+            - cable_path: "A"
+        - name: "missing-cv-topology-mlag-peer-interface-leaf2"
+          id: 2

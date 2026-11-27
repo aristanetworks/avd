@@ -25,6 +25,10 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: ap_with_port_channel
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet2
   description: Ethernet2-AP1 with port_channel_Po2
   shutdown: false
@@ -36,6 +40,10 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: ap_with_port_channel
+    transceiver: Arista SFP-10G-LR
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet3
   description: PCs
   shutdown: false
@@ -46,6 +54,10 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: pc
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
   switchport:
     enabled: true
     mode: access
@@ -74,6 +86,9 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: pc
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
   switchport:
     enabled: true
     mode: access
@@ -780,6 +795,10 @@ ethernet_interfaces:
     peer: Checking port-channels
     peer_type: network_port
     peer_key: network_ports
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
 - name: Ethernet8
   description: Checking port-channels
   shutdown: false
@@ -800,6 +819,9 @@ ethernet_interfaces:
     peer: Checking port-channels
     peer_type: network_port
     peer_key: network_ports
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
 - name: Ethernet10
   description: Checking port-channels
   shutdown: false

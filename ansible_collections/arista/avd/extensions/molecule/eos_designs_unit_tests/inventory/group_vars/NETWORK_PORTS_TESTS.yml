@@ -44,6 +44,15 @@ port_profiles:
   - profile: pc
     parent_profile: common
     vlans: "100"
+    links_metadata:
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+      - {}
+      - peer_transceiver: "Arista SFP-10G-LRL"
+        media: "SM"
+        cable_path: "B"
 
     # Test phone_vlan with only_vlans_in_use
   - profile: phone_with_pc
@@ -63,6 +72,9 @@ network_ports:
     endpoint: PCs
     spanning_tree_link_type: shared
     speed: auto 10000full
+    links_metadata:
+      - media: "Cat6"
+        cable_path: "A"
 
   - switches:
       - network-ports-tests-2$
@@ -72,6 +84,15 @@ network_ports:
     description: "{interface}-{endpoint}{port_channel_id?<_Po}"
     profile: ap_with_port_channel
     endpoint: AP1 with port_channel
+    links_metadata:
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+      - transceiver: "Arista SFP-10G-LR"
+        peer_transceiver: "Arista SFP-10G-LRL"
+        media: "SM"
+        cable_path: "B"
 
   - switches:
       - network-ports-[est]{5}[-.].*
@@ -103,6 +124,15 @@ network_ports:
     switch_ports:
       - Ethernet7-10
     endpoint: "Checking port-channels"
+    links_metadata:
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+      - {}
+      - peer_transceiver: "Arista SFP-10G-LRL"
+        media: "SM"
+        cable_path: "B"
     port_channel:
       channel_id: 42
       mode: "active"
@@ -156,12 +186,38 @@ network_ports:
     switch_ports:
       - Ethernet11-14
     description: Base config which may be overwritten
+    links_metadata:
+      - media: "Cat6"
+        cable_path: "A"
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
+      - transceiver: "Arista SFP-10G-SR"
+        peer_transceiver: "Arista SFP-10G-SRL"
+        media: "OM4"
+        cable_path: "A"
 
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet12
     description: Config overwriting base config
+    links_metadata:
+      - cable_path: "C"
+
+  # Keep metadata aligned when a connected endpoint owns an earlier port in the list.
+  - switches: ["network-ports-tests.1"]
+    switch_ports: ["Ethernet14", "Ethernet13"]
+    description: "Base config which may be overwritten"
+    links_metadata:
+      - media: "Cat6"
+        cable_path: "A"
+      - peer_transceiver: "Arista SFP-10G-LRL"
 
   # Test no description
   - switches:

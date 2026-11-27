@@ -19,6 +19,10 @@ ethernet_interfaces:
     peer: uplink-p2p-vrfs-tests-leaf1
     peer_interface: Ethernet1
     peer_type: l3leaf
+    transceiver: Arista SFP-10G-LRL
+    peer_transceiver: Arista SFP-10G-LR
+    media: SM
+    cable_path: B
   switchport:
     enabled: false
 - name: Ethernet1.42

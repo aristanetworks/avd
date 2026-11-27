@@ -25,7 +25,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: dc1-cl1b
-    peer_interface: Ethernet1/15/1
+    peer_interface: Ethernet1/31/1
     peer_type: mlag_peer
 - name: Ethernet1/16/1
   description: MLAG_PEER_dc1-cl1b_Ethernet1/16/1
@@ -36,7 +36,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: dc1-cl1b
-    peer_interface: Ethernet1/16/1
+    peer_interface: Ethernet1/32/1
     peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet26

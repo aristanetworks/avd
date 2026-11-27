@@ -9,6 +9,29 @@ $defs:
   adapter_config:
     type: dict
     keys:
+      links_metadata:
+        type: list
+        description: |-
+          Physical link metadata.
+          For connected endpoints, entries follow the order of `switches` and `switch_ports` on the adapter.
+          For network ports, entries follow the order of the expanded `switch_ports` and are applied independently on each matched switch.
+          Use an empty dictionary to skip a link.
+          If this list contains fewer entries than the links, the remaining links receive no link metadata.
+        items:
+          type: dict
+          keys:
+            transceiver:
+              type: str
+              description: Transceiver on the fabric switch.
+            peer_transceiver:
+              type: str
+              description: Transceiver on the connected endpoint.
+            media:
+              type: str
+              description: Physical medium used for the link, such as SM, OM4, or Cat6.
+            cable_path:
+              type: str
+              description: Identifier of the physical route between the two interfaces.
       speed:
         type: str
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed

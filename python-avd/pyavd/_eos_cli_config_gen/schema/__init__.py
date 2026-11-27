@@ -12890,19 +12890,44 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "peer": {"type": str},
+                "peer_site": {"type": str},
+                "peer_location": {"type": str},
+                "peer_row": {"type": str},
+                "peer_rack": {"type": str},
+                "peer_rack_unit": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_type": {"type": str},
+                "peer_platform": {"type": str},
+                "peer_serial_number": {"type": str},
                 "peer_key": {"type": str},
                 "port_profile": {"type": str},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
+                "transceiver": {"type": str},
+                "peer_transceiver": {"type": str},
+                "media": {"type": str},
+                "cable_path": {"type": str},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
+            peer_site: str | None
+            """Physical building or data center facility where the peer is located."""
+            peer_location: str | None
+            """Room, floor, data hall, or cage within the site where the peer is located."""
+            peer_row: str | None
+            """Row within the location where the peer is located."""
+            peer_rack: str | None
+            """Rack within the row where the peer is located."""
+            peer_rack_unit: str | None
+            """Rack unit or range of rack units occupied by the peer."""
             peer_interface: str | None
             """Key only used for documentation or validation purposes."""
             peer_type: str | None
             """Key only used for documentation or validation purposes."""
+            peer_platform: str | None
+            """Hardware platform of the peer."""
+            peer_serial_number: str | None
+            """Serial number of the peer."""
             peer_key: str | None
             """Key only used for documentation or validation purposes."""
             port_profile: str | None
@@ -12924,6 +12949,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - `false`: Disables validation for
             the interface.
             """
+            transceiver: str | None
+            """Transceiver on the local interface."""
+            peer_transceiver: str | None
+            """Transceiver on the remote interface."""
+            media: str | None
+            """Physical medium used for the link, such as SM, OM4, or Cat6."""
+            cable_path: str | None
+            """Identifier of the physical route between the two interfaces."""
 
             if TYPE_CHECKING:
 
@@ -12931,12 +12964,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     peer: str | UndefinedType | None = Undefined,
+                    peer_site: str | UndefinedType | None = Undefined,
+                    peer_location: str | UndefinedType | None = Undefined,
+                    peer_row: str | UndefinedType | None = Undefined,
+                    peer_rack: str | UndefinedType | None = Undefined,
+                    peer_rack_unit: str | UndefinedType | None = Undefined,
                     peer_interface: str | UndefinedType | None = Undefined,
                     peer_type: str | UndefinedType | None = Undefined,
+                    peer_platform: str | UndefinedType | None = Undefined,
+                    peer_serial_number: str | UndefinedType | None = Undefined,
                     peer_key: str | UndefinedType | None = Undefined,
                     port_profile: str | UndefinedType | None = Undefined,
                     validate_state: bool | UndefinedType | None = Undefined,
                     validate_lldp: bool | UndefinedType | None = Undefined,
+                    transceiver: str | UndefinedType | None = Undefined,
+                    peer_transceiver: str | UndefinedType | None = Undefined,
+                    media: str | UndefinedType | None = Undefined,
+                    cable_path: str | UndefinedType | None = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -12946,8 +12990,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         peer: Key only used for documentation or validation purposes.
+                        peer_site: Physical building or data center facility where the peer is located.
+                        peer_location: Room, floor, data hall, or cage within the site where the peer is located.
+                        peer_row: Row within the location where the peer is located.
+                        peer_rack: Rack within the row where the peer is located.
+                        peer_rack_unit: Rack unit or range of rack units occupied by the peer.
                         peer_interface: Key only used for documentation or validation purposes.
                         peer_type: Key only used for documentation or validation purposes.
+                        peer_platform: Hardware platform of the peer.
+                        peer_serial_number: Serial number of the peer.
                         peer_key: Key only used for documentation or validation purposes.
                         port_profile: Key only used for documentation or validation purposes.
                         validate_state:
@@ -12963,6 +13014,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            validation. Use this for connected endpoints not managed by AVD.
                            - `false`: Disables validation for
                            the interface.
+                        transceiver: Transceiver on the local interface.
+                        peer_transceiver: Transceiver on the remote interface.
+                        media: Physical medium used for the link, such as SM, OM4, or Cat6.
+                        cable_path: Identifier of the physical route between the two interfaces.
 
                     """
 
@@ -30113,7 +30168,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "is_deployed": {"type": bool},
             "platform": {"type": str},
             "system_mac_address": {"type": str},
+            "site": {"type": str},
+            "location": {"type": str},
+            "row": {"type": str},
             "rack": {"type": str},
+            "rack_unit": {"type": str},
             "pod_name": {"type": str},
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
@@ -30132,7 +30191,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         platform: str | None
         system_mac_address: str | None
+        site: str | None
+        """Physical building or data center facility where the switch is located."""
+        location: str | None
+        """Room, floor, data hall, or cage within the site where the switch is located."""
+        row: str | None
+        """Row within the location where the switch is located."""
         rack: str | None
+        rack_unit: str | None
+        """Rack unit or range of rack units occupied by the switch."""
         pod_name: str | None
         dc_name: str | None
         fabric_name: str | None
@@ -30215,7 +30282,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 is_deployed: bool | UndefinedType | None = Undefined,
                 platform: str | UndefinedType | None = Undefined,
                 system_mac_address: str | UndefinedType | None = Undefined,
+                site: str | UndefinedType | None = Undefined,
+                location: str | UndefinedType | None = Undefined,
+                row: str | UndefinedType | None = Undefined,
                 rack: str | UndefinedType | None = Undefined,
+                rack_unit: str | UndefinedType | None = Undefined,
                 pod_name: str | UndefinedType | None = Undefined,
                 dc_name: str | UndefinedType | None = Undefined,
                 fabric_name: str | UndefinedType | None = Undefined,
@@ -30240,7 +30311,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     is_deployed: Key only used for documentation or validation purposes.
                     platform: platform
                     system_mac_address: system_mac_address
+                    site: Physical building or data center facility where the switch is located.
+                    location: Room, floor, data hall, or cage within the site where the switch is located.
+                    row: Row within the location where the switch is located.
                     rack: rack
+                    rack_unit: Rack unit or range of rack units occupied by the switch.
                     pod_name: pod_name
                     dc_name: dc_name
                     fabric_name: fabric_name

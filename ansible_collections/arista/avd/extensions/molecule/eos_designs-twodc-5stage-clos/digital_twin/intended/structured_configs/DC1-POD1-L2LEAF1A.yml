@@ -19,6 +19,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer: server-1
+    peer_rack: RackB
     peer_interface: Eth9
     peer_type: server
     peer_key: servers

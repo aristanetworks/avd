@@ -11,7 +11,11 @@
     | [<samp>&nbsp;&nbsp;is_deployed</samp>](## "metadata.is_deployed") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;platform</samp>](## "metadata.platform") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_mac_address</samp>](## "metadata.system_mac_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;site</samp>](## "metadata.site") | String |  |  |  | Physical building or data center facility where the switch is located. |
+    | [<samp>&nbsp;&nbsp;location</samp>](## "metadata.location") | String |  |  |  | Room, floor, data hall, or cage within the site where the switch is located. |
+    | [<samp>&nbsp;&nbsp;row</samp>](## "metadata.row") | String |  |  |  | Row within the location where the switch is located. |
     | [<samp>&nbsp;&nbsp;rack</samp>](## "metadata.rack") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;rack_unit</samp>](## "metadata.rack_unit") | String |  |  |  | Rack unit or range of rack units occupied by the switch. |
     | [<samp>&nbsp;&nbsp;pod_name</samp>](## "metadata.pod_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
@@ -164,7 +168,19 @@
       is_deployed: <bool>
       platform: <str>
       system_mac_address: <str>
+
+      # Physical building or data center facility where the switch is located.
+      site: <str>
+
+      # Room, floor, data hall, or cage within the site where the switch is located.
+      location: <str>
+
+      # Row within the location where the switch is located.
+      row: <str>
       rack: <str>
+
+      # Rack unit or range of rack units occupied by the switch.
+      rack_unit: <str>
       pod_name: <str>
       dc_name: <str>
       fabric_name: <str>

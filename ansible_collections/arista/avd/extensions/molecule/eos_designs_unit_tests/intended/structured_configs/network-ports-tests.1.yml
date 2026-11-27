@@ -35,6 +35,8 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: pc
+    media: Cat6
+    cable_path: A
   switchport:
     enabled: true
     mode: access
@@ -64,6 +66,10 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: pc
+    transceiver: Arista SFP-10G-SR
+    peer_transceiver: Arista SFP-10G-SRL
+    media: OM4
+    cable_path: A
   switchport:
     enabled: true
     mode: access
@@ -92,6 +98,9 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: pc
+    peer_transceiver: Arista SFP-10G-LRL
+    media: SM
+    cable_path: B
   switchport:
     enabled: true
     mode: access
@@ -782,6 +791,8 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
+    media: Cat6
+    cable_path: A
   switchport:
     enabled: true
 - name: Ethernet12
@@ -790,6 +801,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
+    cable_path: C
   switchport:
     enabled: true
 - name: Ethernet13
@@ -798,6 +810,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
+    peer_transceiver: Arista SFP-10G-LRL
   switchport:
     enabled: true
 - name: Ethernet51

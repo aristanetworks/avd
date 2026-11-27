@@ -32,9 +32,16 @@ cpes:
               vlan_id: 434
               encapsulation_vlan:
                 client_dot1q: 333
-    rack: Undefined
+    rack: "A04"
 
   - name: CPE2_TENANT_A_SITE1_SUBINTERFACES
+    site: "Burnaby Operations Centre"
+    location: "Network Room 2"
+    row: "A"
+    rack: "A05"
+    rack_unit: "08"
+    platform: "Arista DCS-7280SR3-48YC8"
+    serial_number: "JPE23456781"
     adapters:
       - endpoint_ports:
           - Ethernet1

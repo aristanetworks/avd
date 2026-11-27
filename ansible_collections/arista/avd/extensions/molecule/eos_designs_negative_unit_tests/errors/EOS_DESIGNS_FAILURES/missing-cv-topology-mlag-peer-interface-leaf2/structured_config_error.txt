@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'cv_topology' for MLAG interface 'Ethernet3' on node 'missing-cv-topology-mlag-peer-interface-leaf2' references peer interface 'Ethernet99' on MLAG primary node 'missing-cv-topology-mlag-peer-interface-leaf1', but that interface is not in the primary node's resolved MLAG interfaces. Check the CloudVision topology data for both nodes.

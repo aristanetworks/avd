@@ -3,8 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import cast
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
@@ -214,6 +217,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
     @structured_config_contributor
     def ethernet_interfaces(self) -> None:
         """Set list of Ethernet Interfaces used for MLAG Peer Link."""
+        is_primary = self.shared_utils.mlag_role == "primary"
+        mlag_interfaces_metadata = (
+            self.shared_utils.switch_facts.mlag_interfaces_metadata if is_primary else self.shared_utils.mlag_peer_facts.mlag_interfaces_metadata
+        )
         for index, mlag_interface in enumerate(self.shared_utils.mlag_interfaces):
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=mlag_interface,
@@ -221,6 +228,8 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
+                        # TODO: Use the CloudVision neighbor interface for MLAG descriptions on crossed links.
+                        # Positional pairing can name the wrong remote port
                         peer_interface=self.shared_utils.mlag_peer_interfaces[index],
                         # The description class has @property methods for other mlag related facts.
                     ),
@@ -230,7 +239,31 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed)
                 ),
             )
-            ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
+            mlag_peer_interface = self.shared_utils.mlag_peer_interfaces[index]
+            if self.shared_utils.cv_topology_config.mlag_interfaces and (cv_topology := self.shared_utils.cv_topology) is not None:
+                # Use the topology neighbor since local and peer ports are sorted separately.
+                mlag_peer_interface = cast("str", cv_topology.interfaces[mlag_interface].neighbor_interface)
+            ethernet_interface.metadata._update(peer_interface=mlag_peer_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
+            metadata_index = index
+            if mlag_interfaces_metadata and not is_primary and self.shared_utils.cv_topology_config.mlag_interfaces:
+                try:
+                    metadata_index = list(self.shared_utils.mlag_peer_facts.mlag_interfaces).index(mlag_peer_interface)
+                except ValueError as err:
+                    msg = (
+                        f"'cv_topology' for MLAG interface '{mlag_interface}' on node '{self.shared_utils.hostname}' "
+                        f"references peer interface '{mlag_peer_interface}' on MLAG primary node '{self.shared_utils.mlag_peer}', "
+                        "but that interface is not in the primary node's resolved MLAG interfaces. "
+                        "Check the CloudVision topology data for both nodes."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from err
+            if metadata_index in mlag_interfaces_metadata:
+                mlag_metadata = mlag_interfaces_metadata[metadata_index]
+                ethernet_interface.metadata._update(
+                    transceiver=mlag_metadata.transceiver if is_primary else mlag_metadata.peer_transceiver,
+                    peer_transceiver=mlag_metadata.peer_transceiver if is_primary else mlag_metadata.transceiver,
+                    media=mlag_metadata.media,
+                    cable_path=mlag_metadata.cable_path,
+                )
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
             if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
                 ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.mlag_peer_facts.inband_ztp_vlan)

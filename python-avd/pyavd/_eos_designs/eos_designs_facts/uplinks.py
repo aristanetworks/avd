@@ -159,10 +159,19 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self.uplink_switch_interfaces
+        uplink_interfaces_metadata = self.shared_utils.node_config.uplink_interfaces_metadata
         for uplink_index, uplink_interface, uplink_switch, uplink_switch_interface in zip(
             range(len(uplink_switches)), self.shared_utils.uplink_interfaces, uplink_switches, uplink_switch_interfaces, strict=True
         ):
             uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+            if uplink_index < len(uplink_interfaces_metadata):
+                uplink_metadata = uplink_interfaces_metadata[uplink_index]
+                uplink._update(
+                    transceiver=uplink_metadata.transceiver,
+                    peer_transceiver=uplink_metadata.peer_transceiver,
+                    media=uplink_metadata.media,
+                    cable_path=uplink_metadata.cable_path,
+                )
             uplinks.append(uplink)
 
         return uplinks

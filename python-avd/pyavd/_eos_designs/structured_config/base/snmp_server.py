@@ -163,6 +163,7 @@ class SnmpServerMixin(Protocol):
         self.structured_config.snmp_server.location = AvdStringFormatter().format(
             self.inputs.snmp_settings.location_template,
             **strip_null_from_data(
+                # TODO: Consider exposing site, location, row, and rack_unit in custom SNMP location template
                 {
                     "fabric_name": self.shared_utils.fabric_name,
                     "dc_name": self.inputs.dc_name,

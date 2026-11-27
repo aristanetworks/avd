@@ -480,12 +480,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ethernet_interfaces.[].ip_igmp_host_proxy.version") | Integer |  |  | Min: 1<br>Max: 3 | IGMP version on IGMP host-proxy interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "ethernet_interfaces.[].metadata") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "ethernet_interfaces.[].metadata.peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_site</samp>](## "ethernet_interfaces.[].metadata.peer_site") | String |  |  |  | Physical building or data center facility where the peer is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_location</samp>](## "ethernet_interfaces.[].metadata.peer_location") | String |  |  |  | Room, floor, data hall, or cage within the site where the peer is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_row</samp>](## "ethernet_interfaces.[].metadata.peer_row") | String |  |  |  | Row within the location where the peer is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_rack</samp>](## "ethernet_interfaces.[].metadata.peer_rack") | String |  |  |  | Rack within the row where the peer is located. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_rack_unit</samp>](## "ethernet_interfaces.[].metadata.peer_rack_unit") | String |  |  |  | Rack unit or range of rack units occupied by the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "ethernet_interfaces.[].metadata.peer_interface") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_type</samp>](## "ethernet_interfaces.[].metadata.peer_type") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_platform</samp>](## "ethernet_interfaces.[].metadata.peer_platform") | String |  |  |  | Hardware platform of the peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_serial_number</samp>](## "ethernet_interfaces.[].metadata.peer_serial_number") | String |  |  |  | Serial number of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_key</samp>](## "ethernet_interfaces.[].metadata.peer_key") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].metadata.port_profile") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver</samp>](## "ethernet_interfaces.[].metadata.transceiver") | String |  |  |  | Transceiver on the local interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "ethernet_interfaces.[].metadata.peer_transceiver") | String |  |  |  | Transceiver on the remote interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].metadata.media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "ethernet_interfaces.[].metadata.cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "ethernet_interfaces.[].sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "ethernet_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
@@ -1674,11 +1685,32 @@
           # Key only used for documentation or validation purposes.
           peer: <str>
 
+          # Physical building or data center facility where the peer is located.
+          peer_site: <str>
+
+          # Room, floor, data hall, or cage within the site where the peer is located.
+          peer_location: <str>
+
+          # Row within the location where the peer is located.
+          peer_row: <str>
+
+          # Rack within the row where the peer is located.
+          peer_rack: <str>
+
+          # Rack unit or range of rack units occupied by the peer.
+          peer_rack_unit: <str>
+
           # Key only used for documentation or validation purposes.
           peer_interface: <str>
 
           # Key only used for documentation or validation purposes.
           peer_type: <str>
+
+          # Hardware platform of the peer.
+          peer_platform: <str>
+
+          # Serial number of the peer.
+          peer_serial_number: <str>
 
           # Key only used for documentation or validation purposes.
           peer_key: <str>
@@ -1695,6 +1727,18 @@
           # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
           # - `false`: Disables validation for the interface.
           validate_lldp: <bool>
+
+          # Transceiver on the local interface.
+          transceiver: <str>
+
+          # Transceiver on the remote interface.
+          peer_transceiver: <str>
+
+          # Physical medium used for the link, such as SM, OM4, or Cat6.
+          media: <str>
+
+          # Identifier of the physical route between the two interfaces.
+          cable_path: <str>
         sflow:
           enable: <bool>
           egress:

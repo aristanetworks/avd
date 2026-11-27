@@ -23,6 +23,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.defaults.uplink_switches") | List, items: String |  |  |  |  |
@@ -69,6 +74,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switches") | List, items: String |  |  |  |  |
@@ -106,6 +116,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switches") | List, items: String |  |  |  |  |
@@ -150,6 +165,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.nodes.[].uplink_switches") | List, items: String |  |  |  |  |
@@ -189,6 +209,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "device_profiles.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "device_profiles.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "device_profiles.[].uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "device_profiles.[].uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "device_profiles.[].uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "device_profiles.[].uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "device_profiles.[].uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "device_profiles.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "device_profiles.[].uplink_switches") | List, items: String |  |  |  |  |
@@ -233,6 +258,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "devices.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "devices.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces_metadata</samp>](## "devices.[].uplink_interfaces_metadata") | List, items: Dictionary |  |  |  | Physical link metadata.<br>Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.<br>Use an empty dictionary to skip an interface.<br>If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;transceiver</samp>](## "devices.[].uplink_interfaces_metadata.[].transceiver") | String |  |  |  | Transceiver on the downstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_transceiver</samp>](## "devices.[].uplink_interfaces_metadata.[].peer_transceiver") | String |  |  |  | Transceiver on the upstream switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "devices.[].uplink_interfaces_metadata.[].media") | String |  |  |  | Physical medium used for the link, such as SM, OM4, or Cat6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cable_path</samp>](## "devices.[].uplink_interfaces_metadata.[].cable_path") | String |  |  |  | Identifier of the physical route between the two interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "devices.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "devices.[].uplink_switches") | List, items: String |  |  |  |  |
@@ -312,6 +342,24 @@
         # Please note that default_interfaces are not defined by default, you should define these yourself.
         uplink_interfaces:
           - <str>
+
+        # Physical link metadata.
+        # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+        # Use an empty dictionary to skip an interface.
+        # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+        uplink_interfaces_metadata:
+
+            # Transceiver on the downstream switch.
+          - transceiver: <str>
+
+            # Transceiver on the upstream switch.
+            peer_transceiver: <str>
+
+            # Physical medium used for the link, such as SM, OM4, or Cat6.
+            media: <str>
+
+            # Identifier of the physical route between the two interfaces.
+            cable_path: <str>
 
         # Interfaces located on uplink switches.
         uplink_switch_interfaces:
@@ -475,6 +523,24 @@
               uplink_interfaces:
                 - <str>
 
+              # Physical link metadata.
+              # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+              # Use an empty dictionary to skip an interface.
+              # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+              uplink_interfaces_metadata:
+
+                  # Transceiver on the downstream switch.
+                - transceiver: <str>
+
+                  # Transceiver on the upstream switch.
+                  peer_transceiver: <str>
+
+                  # Physical medium used for the link, such as SM, OM4, or Cat6.
+                  media: <str>
+
+                  # Identifier of the physical route between the two interfaces.
+                  cable_path: <str>
+
               # Interfaces located on uplink switches.
               uplink_switch_interfaces:
                 - <str>
@@ -608,6 +674,24 @@
           # Please note that default_interfaces are not defined by default, you should define these yourself.
           uplink_interfaces:
             - <str>
+
+          # Physical link metadata.
+          # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+          # Use an empty dictionary to skip an interface.
+          # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+          uplink_interfaces_metadata:
+
+              # Transceiver on the downstream switch.
+            - transceiver: <str>
+
+              # Transceiver on the upstream switch.
+              peer_transceiver: <str>
+
+              # Physical medium used for the link, such as SM, OM4, or Cat6.
+              media: <str>
+
+              # Identifier of the physical route between the two interfaces.
+              cable_path: <str>
 
           # Interfaces located on uplink switches.
           uplink_switch_interfaces:
@@ -764,6 +848,24 @@
           uplink_interfaces:
             - <str>
 
+          # Physical link metadata.
+          # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+          # Use an empty dictionary to skip an interface.
+          # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+          uplink_interfaces_metadata:
+
+              # Transceiver on the downstream switch.
+            - transceiver: <str>
+
+              # Transceiver on the upstream switch.
+              peer_transceiver: <str>
+
+              # Physical medium used for the link, such as SM, OM4, or Cat6.
+              media: <str>
+
+              # Identifier of the physical route between the two interfaces.
+              cable_path: <str>
+
           # Interfaces located on uplink switches.
           uplink_switch_interfaces:
             - <str>
@@ -903,6 +1005,24 @@
         # Please note that default_interfaces are not defined by default, you should define these yourself.
         uplink_interfaces:
           - <str>
+
+        # Physical link metadata.
+        # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+        # Use an empty dictionary to skip an interface.
+        # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+        uplink_interfaces_metadata:
+
+            # Transceiver on the downstream switch.
+          - transceiver: <str>
+
+            # Transceiver on the upstream switch.
+            peer_transceiver: <str>
+
+            # Physical medium used for the link, such as SM, OM4, or Cat6.
+            media: <str>
+
+            # Identifier of the physical route between the two interfaces.
+            cable_path: <str>
 
         # Interfaces located on uplink switches.
         uplink_switch_interfaces:
@@ -1058,6 +1178,24 @@
         # Please note that default_interfaces are not defined by default, you should define these yourself.
         uplink_interfaces:
           - <str>
+
+        # Physical link metadata.
+        # Entries correspond by position to the resolved uplink interfaces, after expanding ranges and applying interface defaults.
+        # Use an empty dictionary to skip an interface.
+        # If this list contains fewer entries than the resolved uplink interfaces, the remaining interfaces receive no link metadata.
+        uplink_interfaces_metadata:
+
+            # Transceiver on the downstream switch.
+          - transceiver: <str>
+
+            # Transceiver on the upstream switch.
+            peer_transceiver: <str>
+
+            # Physical medium used for the link, such as SM, OM4, or Cat6.
+            media: <str>
+
+            # Identifier of the physical route between the two interfaces.
+            cable_path: <str>
 
         # Interfaces located on uplink switches.
         uplink_switch_interfaces:

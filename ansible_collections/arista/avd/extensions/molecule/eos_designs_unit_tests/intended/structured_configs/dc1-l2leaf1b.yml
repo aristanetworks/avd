@@ -68,6 +68,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: server03_ESI_L2LEAF
+    peer_rack: RackC
     peer_interface: Eth2
     peer_type: server
     peer_key: servers

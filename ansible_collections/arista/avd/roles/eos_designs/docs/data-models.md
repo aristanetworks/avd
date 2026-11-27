@@ -622,6 +622,20 @@ Define your nodes, id, management and common configuration elements.
 schemas/avd_design/docs/tables/node-type-common-configuration.md
 --8<--
 
+### Node type location
+
+Define the physical location of a switch using `site`, `location`, `row`, `rack`, and `rack_unit` under its node configuration.
+These values are included under `metadata` in the structured configuration.
+
+Set `site` to record an additional physical facility or building identity, such as `Vancouver Campus - Building A` or `Burnaby Operations Centre`.
+
+The `site`, `location`, `row`, and `rack_unit` fields do not affect the generated EOS configuration.
+Use a string for `rack_unit` to describe a single rack unit or a range, such as `"42-43"`.
+
+--8<--
+schemas/avd_design/docs/tables/node-type-location.md
+--8<--
+
 ### Node type inband management
 
 --8<--
@@ -633,6 +647,14 @@ schemas/avd_design/docs/tables/node-type-inband-management-configuration.md
 Connectivity is defined from the child's device perspective.
 Source uplink interfaces and parent interfaces are defined on the child.
 
+Physical link properties can be set with `uplink_interfaces_metadata` on the child.
+Entries correspond to the resolved uplink interfaces after range expansion or platform default selection.
+Use an empty dictionary to skip an interface. Missing trailing entries leave metadata unset.
+The properties are exposed under `ethernet_interfaces[].metadata` on both switches.
+On the child, `transceiver` identifies the local transceiver and `peer_transceiver` identifies the parent's transceiver.
+On the parent, these two values are swapped. The `media` and `cable_path` values are the same at both ends.
+These properties apply to physical Ethernet interfaces, including port-channel members and parents of subinterfaces.
+
 !!! tip
     Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
 
@@ -641,6 +663,17 @@ schemas/avd_design/docs/tables/node-type-uplink-configuration.md
 --8<--
 
 ### Node type L2 and MLAG configuration
+
+Configure `mlag_interfaces_metadata` on the MLAG node group or the MLAG primary node, directly (`nodes[]` or `devices[]`) or through a device profile.
+The primary node's resolved metadata is used for both ends of the link.
+If metadata is also configured on the secondary node, it must match the primary node's metadata.
+Entries follow the order of the MLAG primary node's resolved `mlag_interfaces`.
+With CloudVision topology, metadata on the secondary node follows the discovered port connections.
+Use an empty dictionary to skip an interface.
+If the list contains fewer entries than the resolved MLAG interfaces, the remaining interfaces receive no link metadata.
+The properties are exposed under `ethernet_interfaces[].metadata` on the physical MLAG member interfaces.
+In the inputs, `transceiver` identifies the MLAG primary node's transceiver and `peer_transceiver` identifies the MLAG secondary node's transceiver.
+On the MLAG secondary node, these two values are swapped. The `media` and `cable_path` values are the same at both ends.
 
 !!! tip
     Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
@@ -1450,6 +1483,18 @@ Both data models support variable inheritance from profiles defined under [`port
   - `cameras`
   - `generic_devices`
 
+Endpoint identity fields `site`, `location`, `row`, `rack`, `rack_unit`, `platform`, and `serial_number` are copied to
+`ethernet_interfaces[].metadata` as `peer_site`, `peer_location`, `peer_row`, `peer_rack`, `peer_rack_unit`, `peer_platform`, and
+`peer_serial_number` on each connected switch port, including port-channel members. The endpoint `name` is exposed as `metadata.peer`.
+These identity fields apply to physical Ethernet interfaces. Logical port-channel interfaces and subinterfaces do not receive them.
+These fields are optional. Unset fields are omitted, with no fallback to the fabric switch's identity.
+
+Physical link properties can be set with `adapters[].links_metadata`, directly or through a port profile.
+Entries follow the order of `switches` and `switch_ports` on the adapter.
+The `transceiver` identifies the fabric switch's transceiver and `peer_transceiver` identifies the endpoint's transceiver.
+The properties are exposed under `ethernet_interfaces[].metadata` on physical Ethernet interfaces, including port-channel members and parents of subinterfaces.
+Use an empty dictionary to skip a link. If the list contains fewer entries than the adapter's links, the remaining links receive no link metadata.
+
 ??? example "Example with profiles"
 
     ```yaml
@@ -1616,6 +1661,12 @@ schemas/avd_design/docs/tables/default-connected-endpoints-description.md
 
 The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
 but all features and keys supported under `connected_endpoints.adapters` are also supported directly under `network_ports`.
+
+Physical link properties can be set with `links_metadata`, directly or through a port profile.
+Entries follow the order of the expanded `switch_ports`. The same metadata list is applied independently on each matched switch.
+The `transceiver` identifies the fabric switch's transceiver and `peer_transceiver` identifies the endpoint's transceiver.
+The properties are exposed under `ethernet_interfaces[].metadata` on physical Ethernet interfaces, including port-channel members.
+Use an empty dictionary to skip a link. If the list contains fewer entries than the expanded ports, the remaining ports receive no link metadata.
 
 To filter what switches to configure, match on a switch full hostname or platform type using regex patterns. When both criteria are used together, the switch must match both in order to generate the assigned port configuration.
 

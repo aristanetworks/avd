@@ -1242,6 +1242,8 @@ schemas/eos_config/docs/tables/kernel.md
 
 These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.
 
+The optional `site`, `location`, `row`, `rack`, and `rack_unit` fields describe the physical location of the device.
+
 --8<--
 schemas/eos_config/docs/tables/metadata.md
 --8<--
