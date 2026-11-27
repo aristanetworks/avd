@@ -9,6 +9,7 @@ ip_access_lists:
   entries:
   - sequence: 15
     action: deny
+    protocol: ip
     source: 10.0.0.1
     destination: any
 ip_igmp_snooping:

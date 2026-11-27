@@ -182,6 +182,7 @@ no ip routing vrf MGMT
 ```eos
 !
 ip access-list ssh_default_ipv4_acl_in
+   15 deny ip host 10.0.0.1 any
 ```
 
 ## VRF Instances
