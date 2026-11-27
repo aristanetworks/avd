@@ -41,6 +41,7 @@ dist/
 .envrc
 ## uv
 uv.lock
+!/uv.lock
 ## VSCode
 .vscode/
 
