@@ -1,8 +1,19 @@
 ---
 router_ospfv3:
   auto_cost_reference_bandwidth: 100
+  timers:
+    spf:
+      delay:
+        initial: 1000
+        min_hold_time: 5000
+        max_wait_time: 30000
   address_family_ipv4:
     enabled: true
+    # Exercise a standalone LSA RX timer and ensure a zero value renders.
+    timers:
+      lsa:
+        rx:
+          min_interval: 0
     redistribute:
       bgp:
         enabled: true

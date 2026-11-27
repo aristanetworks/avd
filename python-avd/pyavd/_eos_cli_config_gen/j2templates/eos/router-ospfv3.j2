@@ -38,6 +38,30 @@ router ospfv3 vrf {{ vrf.name }}
    passive-interface default
 {%         set use_delimiter = true %}
 {%     endif %}
+{%     if vrf.timers.spf.delay is arista.avd.defined
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.timers.spf.delay is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.timers.spf.delay is not arista.avd.defined) %}
+{%         set timer_ospfv3_spf_delay = "timers spf delay initial " ~ vrf.timers.spf.delay.initial %}
+{%         set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.timers.spf.delay.min_hold_time %}
+{%         set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.timers.spf.delay.max_wait_time %}
+   {{ timer_ospfv3_spf_delay }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if vrf.timers.lsa.rx.min_interval is arista.avd.defined
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.timers.lsa.rx.min_interval is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.timers.lsa.rx.min_interval is not arista.avd.defined) %}
+   timers lsa rx min interval {{ vrf.timers.lsa.rx.min_interval }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if vrf.timers.lsa.tx.delay is arista.avd.defined
+           and (vrf.address_family_ipv4.enabled is not arista.avd.defined(true) or vrf.address_family_ipv4.timers.lsa.tx.delay is not arista.avd.defined)
+           and (vrf.address_family_ipv6.enabled is not arista.avd.defined(true) or vrf.address_family_ipv6.timers.lsa.tx.delay is not arista.avd.defined) %}
+{%         set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ vrf.timers.lsa.tx.delay.initial %}
+{%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.timers.lsa.tx.delay.min %}
+{%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.timers.lsa.tx.delay.max %}
+   {{ timer_ospfv3_lsa_tx_delay }}
+{%         set use_delimiter = true %}
+{%     endif %}
 {%     if vrf.eos_cli is arista.avd.defined %}
    {{ vrf.eos_cli | indent(3, false) }}
 {%         set use_delimiter = true %}
@@ -129,6 +153,21 @@ router ospfv3 vrf {{ vrf.name }}
 {%                 set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~ vrf.address_family_ipv4.redistribute.static.route_map %}
 {%             endif %}
       {{ redistribute_static_cli }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.timers.spf.delay is arista.avd.defined %}
+{%             set timer_ospfv3_spf_delay = "timers spf delay initial " ~ vrf.address_family_ipv4.timers.spf.delay.initial %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.address_family_ipv4.timers.spf.delay.min_hold_time %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.address_family_ipv4.timers.spf.delay.max_wait_time %}
+      {{ timer_ospfv3_spf_delay }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined %}
+      timers lsa rx min interval {{ vrf.address_family_ipv4.timers.lsa.rx.min_interval }}
+{%         endif %}
+{%         if vrf.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined %}
+{%             set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.initial %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.min %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv4.timers.lsa.tx.delay.max %}
+      {{ timer_ospfv3_lsa_tx_delay }}
 {%         endif %}
 {%     endif %}
 {%     if use_delimiter and vrf.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -225,6 +264,21 @@ router ospfv3 vrf {{ vrf.name }}
 {%             endif %}
       {{ redistribute_static_cli }}
 {%         endif %}
+{%         if vrf.address_family_ipv6.timers.spf.delay is arista.avd.defined %}
+{%             set timer_ospfv3_spf_delay = "timers spf delay initial " ~ vrf.address_family_ipv6.timers.spf.delay.initial %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.address_family_ipv6.timers.spf.delay.min_hold_time %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ vrf.address_family_ipv6.timers.spf.delay.max_wait_time %}
+      {{ timer_ospfv3_spf_delay }}
+{%         endif %}
+{%         if vrf.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined %}
+      timers lsa rx min interval {{ vrf.address_family_ipv6.timers.lsa.rx.min_interval }}
+{%         endif %}
+{%         if vrf.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined %}
+{%             set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.initial %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.min %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ vrf.address_family_ipv6.timers.lsa.tx.delay.max %}
+      {{ timer_ospfv3_lsa_tx_delay }}
+{%         endif %}
 {%     endif %}
 {% endfor %}
 {% if router_ospfv3.router_id is arista.avd.defined
@@ -232,6 +286,9 @@ router ospfv3 vrf {{ vrf.name }}
       or router_ospfv3.bfd_adjacency_state_any is arista.avd.defined(true)
       or router_ospfv3.passive_interface_default is arista.avd.defined
       or router_ospfv3.auto_cost_reference_bandwidth is arista.avd.defined
+      or router_ospfv3.timers.spf.delay is arista.avd.defined
+      or router_ospfv3.timers.lsa.rx.min_interval is arista.avd.defined
+      or router_ospfv3.timers.lsa.tx.delay is arista.avd.defined
       or router_ospfv3.address_family_ipv4.enabled is arista.avd.defined(true)
       or router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true)
       or router_ospfv3.eos_cli is arista.avd.defined %}
@@ -266,6 +323,30 @@ router ospfv3
            and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.passive_interface_default is not arista.avd.defined)
            and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.passive_interface_default is not arista.avd.defined) %}
    passive-interface default
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.timers.spf.delay is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.timers.spf.delay is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.timers.spf.delay is not arista.avd.defined) %}
+{%         set timer_ospfv3_spf_delay = "timers spf delay initial " ~ router_ospfv3.timers.spf.delay.initial %}
+{%         set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.timers.spf.delay.min_hold_time %}
+{%         set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.timers.spf.delay.max_wait_time %}
+   {{ timer_ospfv3_spf_delay }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.timers.lsa.rx.min_interval is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval is not arista.avd.defined) %}
+   timers lsa rx min interval {{ router_ospfv3.timers.lsa.rx.min_interval }}
+{%         set use_delimiter = true %}
+{%     endif %}
+{%     if router_ospfv3.timers.lsa.tx.delay is arista.avd.defined
+           and (router_ospfv3.address_family_ipv4.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is not arista.avd.defined)
+           and (router_ospfv3.address_family_ipv6.enabled is not arista.avd.defined(true) or router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is not arista.avd.defined) %}
+{%         set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ router_ospfv3.timers.lsa.tx.delay.initial %}
+{%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.timers.lsa.tx.delay.min %}
+{%         set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.timers.lsa.tx.delay.max %}
+   {{ timer_ospfv3_lsa_tx_delay }}
 {%         set use_delimiter = true %}
 {%     endif %}
 {%     if router_ospfv3.eos_cli is arista.avd.defined %}
@@ -359,6 +440,21 @@ router ospfv3
 {%                 set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~ router_ospfv3.address_family_ipv4.redistribute.static.route_map %}
 {%             endif %}
       {{ redistribute_static_cli }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.timers.spf.delay is arista.avd.defined %}
+{%             set timer_ospfv3_spf_delay = "timers spf delay initial " ~ router_ospfv3.address_family_ipv4.timers.spf.delay.initial %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.spf.delay.min_hold_time %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.spf.delay.max_wait_time %}
+      {{ timer_ospfv3_spf_delay }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval is arista.avd.defined %}
+      timers lsa rx min interval {{ router_ospfv3.address_family_ipv4.timers.lsa.rx.min_interval }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv4.timers.lsa.tx.delay is arista.avd.defined %}
+{%             set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.initial %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.min %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv4.timers.lsa.tx.delay.max %}
+      {{ timer_ospfv3_lsa_tx_delay }}
 {%         endif %}
 {%     endif %}
 {%     if use_delimiter and router_ospfv3.address_family_ipv6.enabled is arista.avd.defined(true) %}
@@ -454,6 +550,21 @@ router ospfv3
 {%                 set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~ router_ospfv3.address_family_ipv6.redistribute.static.route_map %}
 {%             endif %}
       {{ redistribute_static_cli }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.timers.spf.delay is arista.avd.defined %}
+{%             set timer_ospfv3_spf_delay = "timers spf delay initial " ~ router_ospfv3.address_family_ipv6.timers.spf.delay.initial %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.spf.delay.min_hold_time %}
+{%             set timer_ospfv3_spf_delay = timer_ospfv3_spf_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.spf.delay.max_wait_time %}
+      {{ timer_ospfv3_spf_delay }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval is arista.avd.defined %}
+      timers lsa rx min interval {{ router_ospfv3.address_family_ipv6.timers.lsa.rx.min_interval }}
+{%         endif %}
+{%         if router_ospfv3.address_family_ipv6.timers.lsa.tx.delay is arista.avd.defined %}
+{%             set timer_ospfv3_lsa_tx_delay = "timers lsa tx delay initial " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.initial %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.min %}
+{%             set timer_ospfv3_lsa_tx_delay = timer_ospfv3_lsa_tx_delay ~ " " ~ router_ospfv3.address_family_ipv6.timers.lsa.tx.delay.max %}
+      {{ timer_ospfv3_lsa_tx_delay }}
 {%         endif %}
 {%     endif %}
 {% endif %}
