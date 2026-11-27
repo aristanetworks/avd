@@ -15,15 +15,9 @@ ipv4_acls:
     entries:
       - sequence: 15
         action: deny
+        protocol: ip
         source: 10.0.0.1
         destination: any
-
-ipv4_standard_acls:
-  - name: ssh_default_ipv4_std_acl
-    entries:
-      - sequence: 15
-        action: deny
-        source: any
 
 digital_twin:
   environment: act
