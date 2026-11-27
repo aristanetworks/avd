@@ -89,6 +89,6 @@ def _convert(text: str, ignore_case: bool) -> int | str:
     Returns:
         Converted string.
     """
-    if text.isdigit():
+    if text.isdecimal():
         return int(text)
     return text.lower() if ignore_case else text

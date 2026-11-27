@@ -29,6 +29,7 @@ class TestNaturalSortFilter:
     @pytest.mark.parametrize(
         ("item_to_natural_sort", "sort_key", "strict", "ignore_case", "default_value", "sorted_list", "expected_raise"),
         [
+            pytest.param(["²", "10", "2", "٢", "1"], None, True, True, None, ["1", "2", "٢", "10", "²"], does_not_raise(), id="unicode-digits"),
             pytest.param(None, None, False, True, None, [], does_not_raise(), id="None"),
             pytest.param([], None, False, True, None, [], does_not_raise(), id="empty-list"),
             pytest.param({}, "", False, True, None, [], does_not_raise(), id="empty-dict"),
