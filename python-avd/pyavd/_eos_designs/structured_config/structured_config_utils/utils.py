@@ -69,7 +69,7 @@ class UtilsMixin(Protocol):
         """Set OOB management VRF once when required."""
         vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
 
-        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
+        if self.shared_utils.ipv6_mgmt_ip is not None:
             vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
         self.structured_config.vrfs.append(vrf_settings)
 

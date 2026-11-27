@@ -74,16 +74,67 @@ class MgmtMixin(Protocol):
         return self.inputs.mgmt_interface_vrf
 
     @cached_property
+    def mgmt_ip(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv4 address.
+
+        Returns an IPv4 address, or "dhcp", or None if not configured
+        """
+        # TODO: There's inconsistent behaviour in terms of validating `mgmt_ip`
+        #       Ideally it should be `if self.node_config.mgmt_ip`, but it would break
+        #       `digital_twin_containerlab_negative_tests` due to it setting `mgmt_ip: ''`, which
+        #       existing code handles as a valid IP in multiple places, resulting in the different
+        #       error assertions. That should be fixed separately
+        if self.node_config.mgmt_ip is not None:
+            return self.node_config.mgmt_ip
+
+        if self.inputs.mgmt_interface_settings.ipv4.default_dhcp:
+            return "dhcp"
+
+        return None
+
+    @cached_property
     def oob_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
         """
         Management IPv4 address used for the generated OOB management interface.
 
         In ACT Digital Twin mode, `digital_twin.mgmt_ip` takes precedence over the regular node `mgmt_ip`.
         """
-        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
-            return default(self.node_config.digital_twin.mgmt_ip, self.node_config.mgmt_ip)
+        if self.is_act_digital_twin and self.mgmt_ip is not None:
+            return default(self.node_config.digital_twin.mgmt_ip, self.mgmt_ip)
 
-        return self.node_config.mgmt_ip
+        return self.mgmt_ip
+
+    @cached_property
+    def ipv6_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
+        """
+        Management IPv6 address.
+
+        Returns an IPv6 address, or "auto-config", or None if not configured
+        """
+        if self.node_config.ipv6_mgmt_ip:
+            return self.node_config.ipv6_mgmt_ip
+
+        if self.inputs.mgmt_interface_settings.ipv6.default_auto_config:
+            return "auto-config"
+
+        return None
+
+    @cached_property
+    def mgmt_ip_dhcp_accept_default_route(self: SharedUtilsProtocol) -> bool:
+        """Whether to accept the DHCP-provided default route for the generated OOB management interface."""
+        if self.node_config.mgmt_ip and not self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            return False
+
+        return self.inputs.mgmt_interface_settings.ipv4.dhcp_accept_default_route
+
+    @cached_property
+    def ipv6_mgmt_ip_auto_config_accept_default_route(self: SharedUtilsProtocol) -> bool:
+        """Whether to accept the router advertisement default route for the generated OOB management interface."""
+        if self.node_config.ipv6_mgmt_ip and not self.inputs.avd_design_future.accept_ra_default_route_for_ipv6_mgmt_ip_auto_config:
+            return False
+
+        return self.inputs.mgmt_interface_settings.ipv6.auto_config_accept_default_route
 
     @cached_property
     def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:
@@ -100,7 +151,7 @@ class MgmtMixin(Protocol):
         """
         regular_mgmt_gateway = default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
 
-        if self.is_act_digital_twin and self.node_config.mgmt_ip is not None:
+        if self.is_act_digital_twin and self.mgmt_ip is not None:
             return default(self.node_config.digital_twin.mgmt_gateway, regular_mgmt_gateway)
 
         return regular_mgmt_gateway
@@ -118,7 +169,7 @@ class MgmtMixin(Protocol):
         """
         default_mgmt_method = self.inputs.default_mgmt_method
         if default_mgmt_method == "oob":
-            if self.oob_mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
+            if not self.oob_mgmt_ip and not self.ipv6_mgmt_ip:
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."
                 raise AristaAvdInvalidInputsError(msg)
 
