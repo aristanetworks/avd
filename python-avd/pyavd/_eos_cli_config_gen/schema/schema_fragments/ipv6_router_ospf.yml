@@ -76,34 +76,42 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      description: Redistribute OSPFv3 routes.
+                      description: |-
+                        Redistribute all OSPFv3 leaked routes.
+                        Mutually exclusive with `match_internal.enabled`.
+                        If both are set to `true`, `ospfv3.enabled` takes precedence.
                     match_external:
-                      description: Redistribute OSPFv3 routes learned from external sources.
                       type: dict
                       keys:
                         enabled:
                           type: bool
+                          description: Redistribute OSPFv3 leaked routes learned from external sources.
                           required: true
                         route_map:
                           type: str
                         include_leaked:
-                          description: Include leaked routes while redistributing.
                           type: bool
+                          deprecation:
+                            warning: true
+                            removed: true
                     match_internal:
-                      description: Redistribute OSPFv3 routes learned from internal sources.
                       type: dict
                       keys:
                         enabled:
                           type: bool
+                          description: |-
+                            Redistribute OSPFv3 leaked routes learned from internal sources.
+                            Mutually exclusive with `ospfv3.enabled`.
+                            If both are set to `true`, `ospfv3.enabled` takes precedence.
                           required: true
                         route_map:
                           type: str
                     match_nssa_external:
-                      description: Redistribute OSPFv3 routes learned from external NSSA sources.
                       type: dict
                       keys:
                         enabled:
                           type: bool
+                          description: Redistribute OSPFv3 leaked routes learned from external NSSA sources.
                           required: true
                         route_map:
                           type: str
