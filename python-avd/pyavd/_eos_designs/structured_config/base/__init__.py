@@ -87,6 +87,14 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.hostname = self.shared_utils.hostname
 
     @structured_config_contributor
+    def avd_version(self) -> None:
+        """Carry versioned EOS Config defaults and explicit overrides into the structured config."""
+        if self.inputs.avd_version is not None:
+            self.structured_config.avd_version = self.inputs.avd_version
+        if isinstance(future_settings := self.inputs._get_defined_attr("eos_config_future"), EosCliConfigGen.EosConfigFuture):
+            self.structured_config.eos_config_future = future_settings._cast_as(EosCliConfigGen.EosConfigFuture)
+
+    @structured_config_contributor
     def static_routes(self) -> None:
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
         # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,

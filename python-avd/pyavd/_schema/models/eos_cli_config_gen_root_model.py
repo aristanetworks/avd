@@ -5,14 +5,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .avd_model import AvdModel
+from .avd_version_model import AvdVersionModel
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
     from typing import Self
 
 
-class EosCliConfigGenRootModel(AvdModel):
+class EosCliConfigGenRootModel(AvdVersionModel):
     @classmethod
     def _from_dict(cls, data: Mapping) -> Self:
         """

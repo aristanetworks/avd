@@ -124576,6 +124576,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
+        "avd_version": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -124652,6 +124653,7 @@ class EosDesigns(EosDesignsRootModel):
         "dns_settings_profiles": {"type": DnsSettingsProfiles},
         "dot1x_settings": {"type": Dot1xSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
+        "eos_config_future": {"type": EosCliConfigGen.EosConfigFuture},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "eos_designs_keep_tmp_files": {"type": bool, "default": False},
@@ -125934,6 +125936,19 @@ class EosDesigns(EosDesignsRootModel):
       * When `avd_vault_id` is
     specified, AVD uses the specified Vault ID for encryption.
     """
+    avd_version: str | None
+    """
+    Opt in to future behaviors introduced in the selected AVD release or earlier.
+    Specify a version
+    string in major.minor.patch format, for example "6.5.0".
+    Sets defaults for `avd_design_future` and
+    `eos_config_future` flags available in the installed AVD version.
+    Explicit values for individual
+    flags take precedence, including `false`.
+    Flags introduced after the selected version retain their
+    existing defaults.
+    When omitted, future behavior defaults are unchanged.
+    """
     bfd_multihop: BfdMultihop
     """
     BFD Multihop tuning.
@@ -126577,6 +126592,11 @@ class EosDesigns(EosDesignsRootModel):
     See "Details on enable_trunk_groups" below before enabling this feature.
 
     Default value: `False`
+    """
+    eos_config_future: EosCliConfigGen.EosConfigFuture
+    """
+    Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+    version.
     """
     eos_designs_custom_templates: EosDesignsCustomTemplates
     """Subclass of AvdList with `EosDesignsCustomTemplatesItem` items."""
@@ -128186,6 +128206,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | UndefinedType | None = Undefined,
+            avd_version: str | UndefinedType | None = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | UndefinedType | None = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -128240,6 +128261,7 @@ class EosDesigns(EosDesignsRootModel):
             dns_settings_profiles: DnsSettingsProfiles | UndefinedType = Undefined,
             dot1x_settings: Dot1xSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
+            eos_config_future: EosCliConfigGen.EosConfigFuture | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
@@ -128464,6 +128486,17 @@ class EosDesigns(EosDesignsRootModel):
                    specified, AVD uses the *first* Vault ID in the list for encryption.
                      * When `avd_vault_id` is
                    specified, AVD uses the specified Vault ID for encryption.
+                avd_version:
+                   Opt in to future behaviors introduced in the selected AVD release or earlier.
+                   Specify a version
+                   string in major.minor.patch format, for example "6.5.0".
+                   Sets defaults for `avd_design_future` and
+                   `eos_config_future` flags available in the installed AVD version.
+                   Explicit values for individual
+                   flags take precedence, including `false`.
+                   Flags introduced after the selected version retain their
+                   existing defaults.
+                   When omitted, future behavior defaults are unchanged.
                 bfd_multihop:
                    BFD Multihop tuning.
 
@@ -128965,6 +128998,9 @@ class EosDesigns(EosDesignsRootModel):
                    If trunk groups are not assigned to a trunk, no vlans will be
                    enabled on that trunk.
                    See "Details on enable_trunk_groups" below before enabling this feature.
+                eos_config_future:
+                   Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+                   version.
                 eos_designs_custom_templates: Subclass of AvdList with `EosDesignsCustomTemplatesItem` items.
                 eos_designs_documentation:
                    Control fabric documentation generation.

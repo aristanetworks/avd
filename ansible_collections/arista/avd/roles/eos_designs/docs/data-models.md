@@ -2378,6 +2378,30 @@ schemas/avd_design/docs/tables/devices.md
 
 Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
 
+### AVD version
+
+Set `avd_version` to a version string such as `"6.5.0"` to enable AVD Design and EOS CLI behaviors introduced in that release or earlier.
+Behaviors introduced after the selected version retain their existing defaults. Omitting `avd_version` preserves the existing defaults for all behaviors.
+
+--8<--
+schemas/avd_design/docs/tables/avd-version.md
+--8<--
+
+### Individual AVD Design behaviors
+
+Use `avd_design_future` to select individual design behaviors or override the defaults selected by `avd_version`.
+Explicit values, including `false`, take precedence over the version defaults.
+
 --8<--
 schemas/avd_design/docs/tables/avd-design-future.md
+--8<--
+
+### Individual EOS CLI behaviors
+
+Use `eos_config_future` to select individual EOS CLI behaviors or override the defaults selected by `avd_version`.
+Explicit values, including `false`, take precedence over the version defaults.
+AVD Design carries these settings into the generated structured configuration for use by `eos_cli_config_gen`.
+
+--8<--
+schemas/avd_design/docs/tables/eos-config-future.md
 --8<--
