@@ -89,6 +89,11 @@ keys:
                           required: true
                         route_map:
                           type: str
+                        include_leaked:
+                          type: bool
+                          deprecation:
+                            warning: true
+                            removed: true
                     match_internal:
                       type: dict
                       keys:
