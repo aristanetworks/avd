@@ -21485,21 +21485,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchExternal(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
+                        """Redistribute OSPFv3 leaked routes learned from external sources."""
                         route_map: str | None
-                        include_leaked: bool | None
-                        """Include leaked routes while redistributing."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self,
-                                *,
-                                enabled: bool | UndefinedType = Undefined,
-                                route_map: str | UndefinedType | None = Undefined,
-                                include_leaked: bool | UndefinedType | None = Undefined,
-                            ) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType | None = Undefined) -> None:
                                 """
                                 MatchExternal.
 
@@ -21507,9 +21500,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled: Redistribute OSPFv3 leaked routes learned from external sources.
                                     route_map: route_map
-                                    include_leaked: Include leaked routes while redistributing.
 
                                 """
 
@@ -21518,6 +21510,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
+                        """
+                        Redistribute OSPFv3 leaked routes learned from internal sources.
+                        Mutually exclusive with
+                        `ospfv3.enabled`.
+                        If both are set to `true`, `ospfv3.enabled` takes precedence.
+                        """
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -21530,7 +21528,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled:
+                                       Redistribute OSPFv3 leaked routes learned from internal sources.
+                                       Mutually exclusive with
+                                       `ospfv3.enabled`.
+                                       If both are set to `true`, `ospfv3.enabled` takes precedence.
                                     route_map: route_map
 
                                 """
@@ -21540,6 +21542,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool
+                        """Redistribute OSPFv3 leaked routes learned from external NSSA sources."""
                         route_map: str | None
 
                         if TYPE_CHECKING:
@@ -21552,7 +21555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled: Redistribute OSPFv3 leaked routes learned from external NSSA sources.
                                     route_map: route_map
 
                                 """
@@ -21565,25 +21568,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "route_map": {"type": str},
                     }
                     enabled: bool | None
-                    """Redistribute OSPFv3 routes."""
+                    """
+                    Redistribute all OSPFv3 leaked routes.
+                    Mutually exclusive with `match_internal.enabled`.
+                    If both are
+                    set to `true`, `ospfv3.enabled` takes precedence.
+                    """
                     match_external: MatchExternal
-                    """
-                    Redistribute OSPFv3 routes learned from external sources.
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     match_internal: MatchInternal
-                    """
-                    Redistribute OSPFv3 routes learned from internal sources.
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     match_nssa_external: MatchNssaExternal
-                    """
-                    Redistribute OSPFv3 routes learned from external NSSA sources.
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     route_map: str | None
 
                     if TYPE_CHECKING:
@@ -21604,19 +21600,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Redistribute OSPFv3 routes.
-                                match_external:
-                                   Redistribute OSPFv3 routes learned from external sources.
-
-                                   Subclass of AvdModel.
-                                match_internal:
-                                   Redistribute OSPFv3 routes learned from internal sources.
-
-                                   Subclass of AvdModel.
-                                match_nssa_external:
-                                   Redistribute OSPFv3 routes learned from external NSSA sources.
-
-                                   Subclass of AvdModel.
+                                enabled:
+                                   Redistribute all OSPFv3 leaked routes.
+                                   Mutually exclusive with `match_internal.enabled`.
+                                   If both are
+                                   set to `true`, `ospfv3.enabled` takes precedence.
+                                match_external: Subclass of AvdModel.
+                                match_internal: Subclass of AvdModel.
+                                match_nssa_external: Subclass of AvdModel.
                                 route_map: route_map
 
                             """

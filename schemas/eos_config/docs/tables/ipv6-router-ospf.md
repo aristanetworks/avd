@@ -27,16 +27,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.isis.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.isis.include_leaked") | Boolean |  |  |  | Include leaked routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute all OSPFv3 leaked routes.<br>Mutually exclusive with `match_internal.enabled`.<br>If both are set to `true`, `ospfv3.enabled` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_external.include_leaked") | Boolean |  |  |  | Include leaked routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_internal") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes learned from internal sources.<br>Mutually exclusive with `ospfv3.enabled`.<br>If both are set to `true`, `ospfv3.enabled` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  | Redistribute OSPFv3 leaked routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.ospfv3.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "ipv6_router_ospf.process_ids.[].redistribute.static") | Dictionary |  |  |  |  |
@@ -88,24 +87,25 @@
               include_leaked: <bool>
             ospfv3:
 
-              # Redistribute OSPFv3 routes.
+              # Redistribute all OSPFv3 leaked routes.
+              # Mutually exclusive with `match_internal.enabled`.
+              # If both are set to `true`, `ospfv3.enabled` takes precedence.
               enabled: <bool>
-
-              # Redistribute OSPFv3 routes learned from external sources.
               match_external:
+
+                # Redistribute OSPFv3 leaked routes learned from external sources.
                 enabled: <bool; required>
                 route_map: <str>
-
-                # Include leaked routes while redistributing.
-                include_leaked: <bool>
-
-              # Redistribute OSPFv3 routes learned from internal sources.
               match_internal:
+
+                # Redistribute OSPFv3 leaked routes learned from internal sources.
+                # Mutually exclusive with `ospfv3.enabled`.
+                # If both are set to `true`, `ospfv3.enabled` takes precedence.
                 enabled: <bool; required>
                 route_map: <str>
-
-              # Redistribute OSPFv3 routes learned from external NSSA sources.
               match_nssa_external:
+
+                # Redistribute OSPFv3 leaked routes learned from external NSSA sources.
                 enabled: <bool; required>
                 route_map: <str>
               route_map: <str>
