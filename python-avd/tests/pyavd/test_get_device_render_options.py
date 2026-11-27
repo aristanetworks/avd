@@ -5,12 +5,16 @@ from __future__ import annotations
 
 from collections import ChainMap
 from copy import deepcopy
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import pytest
 
 from pyavd import ConfigRenderConfiguration, DocRenderConfiguration, get_device_config, get_device_doc
 from pyavd.api.schemas import EOSConfig
+from pyavd.get_device_config import _get_templar
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class MockTemplar:
@@ -26,9 +30,12 @@ class MockTemplar:
 
 
 @pytest.fixture(autouse=True)
-def mock_templar(monkeypatch: pytest.MonkeyPatch) -> None:
+def mock_templar(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+    _get_templar.cache_clear()
     MockTemplar.rendered_template_vars = {}
     monkeypatch.setattr("pyavd.templater.Templar", MockTemplar)
+    yield
+    _get_templar.cache_clear()
 
 
 def get_rendered_template_vars() -> dict[str, Any] | ChainMap[str, Any]:
