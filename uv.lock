@@ -2,20 +2,51 @@ version = 1
 revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform == 'linux2'",
-    "python_full_version >= '3.14' and sys_platform == 'linux'",
-    "python_full_version >= '3.14' and sys_platform != 'linux' and sys_platform != 'linux2'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux'",
-    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2'",
-    "python_full_version < '3.12' and sys_platform == 'linux2'",
-    "python_full_version < '3.12' and sys_platform == 'linux'",
-    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform == 'linux' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.15' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.15' and sys_platform == 'linux' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
 ]
+conflicts = [[
+    { package = "avd-dev", group = "molecule" },
+    { package = "avd-dev", group = "molecule-legacy" },
+], [
+    { package = "avd-dev", group = "dev" },
+    { package = "avd-dev", group = "molecule-legacy" },
+]]
 
 [options]
-exclude-newer = "2026-11-11T16:34:01.972647Z"
+exclude-newer = "2026-11-20T14:39:01.589229Z"
 exclude-newer-span = "P7D"
+
+[options.exclude-newer-package]
+pyyaml = "2026-11-21T00:00:00Z"
 
 [manifest]
 members = [
@@ -34,19 +65,46 @@ wheels = [
 
 [[package]]
 name = "ansible-compat"
-version = "26.3.0"
+version = "26.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.17.14", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "jsonschema" },
     { name = "packaging" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "subprocess-tee" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/04/42/53ba59f8116e716ec0af8dc47ef65b15f5e3bc28131e8e6cbe87e50203f5/ansible_compat-26.3.0.tar.gz", hash = "sha256:15f0ea5ff6fcc5587b6b11a4a436fdeefd0fd4a46afe92d4e483c28370082ae0", size = 216754, upload-time = "2026-03-31T15:47:58.193Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/60/85/ff345c374486e6375f51e1e3629e2ebc28003229165b67cfcc93f24f5323/ansible_compat-26.6.0.tar.gz", hash = "sha256:ad00d3cff84a961165a7dd90f175fd9a4584e2e602e9d8af2062ce7c479dd350", size = 233940, upload-time = "2026-06-30T11:52:01.126Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/a1/3cf5e81f192a2ae4086f80d37d80e257c7552cd7f319b0160c78251bbfea/ansible_compat-26.3.0-py3-none-any.whl", hash = "sha256:4fb48f324383033cf24df5ccb63bca4da766cb4ebbd4bc9dbad91b108f512a73", size = 27723, upload-time = "2026-03-31T15:47:56.534Z" },
+    { url = "https://files.pythonhosted.org/packages/f5/be/0945639296ee8ecb282dc495a7e1bed06de476a65fa30cf2c715e4b28e42/ansible_compat-26.6.0-py3-none-any.whl", hash = "sha256:739c4d10c791000c4b353f5e725e9ebafb6384dbeb00b94c7c8ac3ee2c172337", size = 29176, upload-time = "2026-06-30T11:51:59.379Z" },
+]
+
+[[package]]
+name = "ansible-core"
+version = "2.17.14"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version < '3.15' and sys_platform == 'linux2'",
+    "python_full_version < '3.15' and sys_platform == 'linux'",
+    "python_full_version < '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+]
+dependencies = [
+    { name = "cryptography", marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "jinja2", marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "packaging", marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "resolvelib", version = "1.0.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/80/2925a0564f6f99a8002c3be3885b83c3a1dc5f57ebf00163f528889865f5/ansible_core-2.17.14.tar.gz", hash = "sha256:7c17fee39f8c29d70e3282a7e9c10bd70d5cd4fd13ddffc5dcaa52adbd142ff8", size = 3119687, upload-time = "2025-09-08T18:28:03.158Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/86/29/d694562f1a875b50aa74f691521fe493704f79cf1938cd58f28f7e2327d2/ansible_core-2.17.14-py3-none-any.whl", hash = "sha256:34a49582a57c2f2af17ede2cefd3b3602a2d55d22089f3928570d52030cafa35", size = 2189656, upload-time = "2025-09-08T18:28:00.375Z" },
 ]
 
 [[package]]
@@ -59,11 +117,11 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2'",
 ]
 dependencies = [
-    { name = "cryptography", marker = "python_full_version < '3.12'" },
-    { name = "jinja2", marker = "python_full_version < '3.12'" },
-    { name = "packaging", marker = "python_full_version < '3.12'" },
-    { name = "pyyaml", marker = "python_full_version < '3.12'" },
-    { name = "resolvelib", marker = "python_full_version < '3.12'" },
+    { name = "cryptography", marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "jinja2", marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "packaging", marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "resolvelib", version = "1.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/59/db/7d3c7be76df6fc3707db05a151b530a298bb37080fc9ecc669dbd7e82b28/ansible_core-2.19.11.tar.gz", hash = "sha256:e8d541720050fc0a7ddb568cde779cce25a9cf470aa489e63ee10d1c94df4248", size = 3430025, upload-time = "2026-06-18T19:37:36.721Z" }
 wheels = [
@@ -75,19 +133,23 @@ name = "ansible-core"
 version = "2.21.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform == 'linux2'",
-    "python_full_version >= '3.14' and sys_platform == 'linux'",
-    "python_full_version >= '3.14' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2'",
 ]
 dependencies = [
-    { name = "cryptography", marker = "python_full_version >= '3.12'" },
-    { name = "jinja2", marker = "python_full_version >= '3.12'" },
-    { name = "packaging", marker = "python_full_version >= '3.12'" },
-    { name = "pyyaml", marker = "python_full_version >= '3.12'" },
-    { name = "resolvelib", marker = "python_full_version >= '3.12'" },
+    { name = "cryptography", marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "jinja2", marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "packaging", marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and python_full_version < '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and python_full_version < '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "resolvelib", version = "1.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a3/f6/8da4912a93e1319292bada5e5185e82b1a12cf212da7a7cc4589064f3247/ansible_core-2.21.0.tar.gz", hash = "sha256:28ccd0e2d1849f1c7272cec39a74a8a5c83f3d51314658fa5ca57ea85a87f454", size = 3387206, upload-time = "2026-05-18T20:52:31.677Z" }
 wheels = [
@@ -101,7 +163,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "antsibull-docs-parser" },
     { name = "jinja2" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2a/13/8255e94554c3157ea3502ae4322cbb9ce909ad47fe20d5523541a75fd3d6/ansible-doc-extractor-0.1.11.tar.gz", hash = "sha256:65afdb030ab5e78cf30ef44c55b8202c761f6666f9cb340b7ac1813acb1c1d3f", size = 27897, upload-time = "2024-02-27T07:07:18.27Z" }
 wheels = [
@@ -114,8 +177,8 @@ version = "26.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat" },
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "black" },
     { name = "cffi" },
     { name = "cryptography" },
@@ -124,7 +187,8 @@ dependencies = [
     { name = "jsonschema" },
     { name = "packaging" },
     { name = "pathspec" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "referencing" },
     { name = "ruamel-yaml" },
     { name = "ruamel-yaml-clib", marker = "python_full_version < '3.14'" },
@@ -139,7 +203,7 @@ wheels = [
 
 [[package]]
 name = "anta"
-version = "1.10.0"
+version = "1.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncssh" },
@@ -149,14 +213,15 @@ dependencies = [
     { name = "pydantic" },
     { name = "pydantic-extra-types" },
     { name = "pydantic-settings" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "requests" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/8d/f51e415baf90d1ec013696b1bd67ced6aa0c7701e02507361fe0aa69ecdf/anta-1.10.0.tar.gz", hash = "sha256:21b75607e4f48e13565a037b7a46ce54e30f3fd0e4a9d9beca9a2e6fc32baf40", size = 312228, upload-time = "2026-09-10T00:53:42.223Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/49/737d976092bdc3a3e2e042cd4ca91f25e055a396bef77bcc95bb359e97b0/anta-1.11.0.tar.gz", hash = "sha256:fac7969fb4407448b5a5b3a11cdf17579e00c402d7b24fa1031778e0ebd12f5f", size = 373352, upload-time = "2026-11-10T22:05:32.733Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/d4/cc6d437cab98ce52d550d7d63bef082a05f10805c2f5823ab0236b561175/anta-1.10.0-py3-none-any.whl", hash = "sha256:5b6940553a40a54ca813a9168957ed7537e316e3d15e129929ac38a168df7c5c", size = 451410, upload-time = "2026-09-10T00:53:40.583Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/55/81683a9e4c07a7765af6adc7f09f4c431db8684543eb0867d6e2f37915cf/anta-1.11.0-py3-none-any.whl", hash = "sha256:eed4a18e3f847740fdc29c654d55aa38023996c940954e34b6ab0e2811c877b5", size = 564293, upload-time = "2026-11-10T22:05:30.91Z" },
 ]
 
 [[package]]
@@ -174,7 +239,7 @@ version = "4.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "idna" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1c/b5/001890774a9552aff22502b8da382593109ce0c95314abaebbb116567545/anyio-4.14.0.tar.gz", hash = "sha256:b47c1f9ccf73e67021df785332508f99379c68fa7d0684e8e3492cb1d4b23f89", size = 253586, upload-time = "2026-06-15T22:00:49.021Z" }
 wheels = [
@@ -203,11 +268,11 @@ compiler = [
 
 [[package]]
 name = "astroid"
-version = "4.0.4"
+version = "4.3.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/07/63/0adf26577da5eff6eb7a177876c1cfa213856be9926a000f65c4add9692b/astroid-4.0.4.tar.gz", hash = "sha256:986fed8bcf79fb82c78b18a53352a0b287a73817d6dbcfba3162da36667c49a0", size = 406358, upload-time = "2026-02-07T23:35:07.509Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2d/87/5732fa68bf100a095cfcbd108f919220d995db99e1a7502b8119a869fd62/astroid-4.3.4.tar.gz", hash = "sha256:d515a105722b72098bbe82d430d65e635f742b6cbac3bdfaf8b7c188b87c5e39", size = 444627, upload-time = "2026-10-08T09:36:44.122Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/cf/1c5f42b110e57bc5502eb80dbc3b03d256926062519224835ef08134f1f9/astroid-4.0.4-py3-none-any.whl", hash = "sha256:52f39653876c7dec3e3afd4c2696920e05c83832b9737afc21928f2d2eb7a753", size = 276445, upload-time = "2026-02-07T23:35:05.344Z" },
+    { url = "https://files.pythonhosted.org/packages/16/d4/f23c0ac6e6de33ba5686cb21c672c95e0c2d3d4c9351f16d3b5fed818652/astroid-4.3.4-py3-none-any.whl", hash = "sha256:2bcd0d02648a443a4b818c952c3550091989daefac3c12d3b83b2289482e0818", size = 288310, upload-time = "2026-10-08T09:36:42.284Z" },
 ]
 
 [[package]]
@@ -238,16 +303,19 @@ version = "0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
+benchmark = [
+    { name = "pytest-codspeed" },
+]
 coverage = [
     { name = "coverage" },
 ]
 dev = [
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "ansible-doc-extractor" },
     { name = "ansible-lint" },
     { name = "anta" },
-    { name = "aristaproto", extra = ["compiler"] },
+    { name = "aristaproto", extra = ["compiler"], marker = "extra == 'group-7-avd-dev-dev' or extra == 'group-7-avd-dev-molecule' or extra != 'group-7-avd-dev-molecule-legacy'" },
     { name = "codespell" },
     { name = "deepmerge" },
     { name = "docker" },
@@ -255,21 +323,20 @@ dev = [
     { name = "identify" },
     { name = "jsonschema-rs" },
     { name = "molecule" },
-    { name = "molecule-plugins", extra = ["docker"] },
+    { name = "molecule-plugins", extra = ["docker"], marker = "extra == 'group-7-avd-dev-dev' or extra == 'group-7-avd-dev-molecule' or extra != 'group-7-avd-dev-molecule-legacy'" },
     { name = "netaddr" },
-    { name = "pre-commit" },
-    { name = "pre-commit-hooks" },
+    { name = "prek" },
     { name = "pyavd-utils" },
     { name = "pyavd-utils-gen" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
-    { name = "python-socks" },
-    { name = "pyyaml" },
+    { name = "python-socks", marker = "extra == 'group-7-avd-dev-dev' or extra == 'group-7-avd-dev-molecule' or extra != 'group-7-avd-dev-molecule-legacy'" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "referencing" },
     { name = "ruff" },
     { name = "setuptools" },
-    { name = "tox" },
     { name = "uv" },
     { name = "yamllint" },
 ]
@@ -289,27 +356,41 @@ doc = [
     { name = "mkdocstrings", extra = ["python"] },
     { name = "pyavd-utils-gen" },
     { name = "pymdown-extensions" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "referencing" },
+    { name = "ruff" },
 ]
 lock = [
     { name = "uv" },
 ]
 molecule = [
     { name = "molecule" },
-    { name = "molecule-plugins", extra = ["docker"] },
+    { name = "molecule-plugins", extra = ["docker"], marker = "extra == 'group-7-avd-dev-molecule' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy')" },
+]
+molecule-legacy = [
+    { name = "ansible-compat" },
+    { name = "ansible-core", version = "2.17.14", source = { registry = "https://pypi.org/simple" } },
+    { name = "molecule" },
+    { name = "molecule-plugins", extra = ["docker"], marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+]
+prek = [
+    { name = "prek" },
 ]
 pytest = [
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.17.14", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "anta" },
     { name = "deepmerge" },
     { name = "jsonschema-rs" },
     { name = "pyavd-utils-gen" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "referencing" },
+    { name = "ruff" },
 ]
 release = [
     { name = "build" },
@@ -320,21 +401,24 @@ schema-tools = [
     { name = "deepmerge" },
     { name = "jsonschema-rs" },
     { name = "pyavd-utils-gen" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "referencing" },
+    { name = "ruff" },
 ]
 
 [package.metadata]
 
 [package.metadata.requires-dev]
+benchmark = [{ name = "pytest-codspeed", specifier = ">=5.0.4" }]
 coverage = [{ name = "coverage", extras = ["toml"], specifier = "==7.17.2" }]
 dev = [
     { name = "ansible-core", specifier = ">=2.16.0,<2.23.0" },
     { name = "ansible-doc-extractor", specifier = ">=0.1.11" },
     { name = "ansible-lint", specifier = ">=26.6.0" },
-    { name = "anta", specifier = "==1.10.0" },
+    { name = "anta", specifier = "==1.11.0" },
     { name = "aristaproto", extras = ["compiler"], specifier = "==0.1.5" },
-    { name = "codespell", specifier = ">=2.4.2" },
+    { name = "codespell", specifier = ">=2.4.3" },
     { name = "deepmerge", specifier = ">=1.1.0" },
     { name = "docker", specifier = ">=7.1.0" },
     { name = "gitpython", specifier = ">=3.1.57" },
@@ -343,19 +427,18 @@ dev = [
     { name = "molecule", specifier = ">=26.4.0" },
     { name = "molecule-plugins", extras = ["docker"], specifier = ">=25.8.12" },
     { name = "netaddr", specifier = ">=0.7.19" },
-    { name = "pre-commit", specifier = ">=4.5.1" },
-    { name = "pre-commit-hooks", specifier = ">=6.0.0" },
+    { name = "prek", specifier = "==0.5.11" },
     { name = "pyavd-utils", specifier = "==0.0.14" },
     { name = "pyavd-utils-gen", specifier = "==0.0.14" },
-    { name = "pylint", specifier = ">=4.0.5" },
+    { name = "pylint", specifier = ">=4.1.4" },
     { name = "pytest", specifier = ">=9.1.0" },
     { name = "pytest-asyncio", specifier = ">=1.3.0" },
     { name = "python-socks", extras = ["asyncio"], specifier = ">=2.7.2" },
     { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "pyyaml", marker = "python_full_version >= '3.15'", specifier = ">=6.0.4" },
     { name = "referencing", specifier = ">=0.37.0" },
-    { name = "ruff", specifier = "==0.17.4" },
+    { name = "ruff", specifier = "==0.17.6" },
     { name = "setuptools", specifier = ">=82.0.1" },
-    { name = "tox", specifier = ">=4.52.1,<=4.67.13" },
     { name = "uv", specifier = "==0.10.9" },
     { name = "yamllint", specifier = ">=1.38.0" },
 ]
@@ -376,23 +459,34 @@ doc = [
     { name = "pyavd-utils-gen", specifier = "==0.0.14" },
     { name = "pymdown-extensions" },
     { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "pyyaml", marker = "python_full_version >= '3.15'", specifier = ">=6.0.4" },
     { name = "referencing", specifier = ">=0.37.0" },
+    { name = "ruff", specifier = "==0.17.6" },
 ]
 lock = [{ name = "uv", specifier = "==0.10.9" }]
 molecule = [
     { name = "molecule", specifier = ">=26.4.0" },
     { name = "molecule-plugins", extras = ["docker"], specifier = ">=25.8.12" },
 ]
+molecule-legacy = [
+    { name = "ansible-compat", specifier = "==26.6.0" },
+    { name = "ansible-core", specifier = ">=2.16.0,<2.18.0" },
+    { name = "molecule", specifier = "==26.6.0" },
+    { name = "molecule-plugins", extras = ["docker"], specifier = ">=25.8.12" },
+]
+prek = [{ name = "prek", specifier = "==0.5.11" }]
 pytest = [
     { name = "ansible-core", specifier = ">=2.16.0,<2.23.0" },
-    { name = "anta", specifier = "==1.10.0" },
+    { name = "anta", specifier = "==1.11.0" },
     { name = "deepmerge", specifier = ">=1.1.0" },
     { name = "jsonschema-rs", specifier = ">=0.46.0" },
     { name = "pyavd-utils-gen", specifier = "==0.0.14" },
     { name = "pytest", specifier = ">=9.1.0" },
     { name = "pytest-asyncio", specifier = ">=1.3.0" },
     { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "pyyaml", marker = "python_full_version >= '3.15'", specifier = ">=6.0.4" },
     { name = "referencing", specifier = ">=0.37.0" },
+    { name = "ruff", specifier = "==0.17.6" },
 ]
 release = [
     { name = "build" },
@@ -404,7 +498,9 @@ schema-tools = [
     { name = "jsonschema-rs", specifier = ">=0.46.0" },
     { name = "pyavd-utils-gen", specifier = "==0.0.14" },
     { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "pyyaml", marker = "python_full_version >= '3.15'", specifier = ">=6.0.4" },
     { name = "referencing", specifier = ">=0.37.0" },
+    { name = "ruff", specifier = "==0.17.6" },
 ]
 
 [[package]]
@@ -489,7 +585,7 @@ name = "build"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "os_name == 'nt' and sys_platform != 'linux'" },
+    { name = "colorama", marker = "(os_name == 'nt' and sys_platform != 'linux') or (os_name != 'nt' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (os_name != 'nt' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy') or (sys_platform == 'linux' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "packaging" },
     { name = "pyproject-hooks" },
 ]
@@ -519,15 +615,6 @@ wheels = [
 ]
 
 [[package]]
-name = "cachetools"
-version = "7.1.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f4/8b/0d3945a13955303b81272f759a0331e54c5c793da455e6f5706b89d2639c/cachetools-7.1.4.tar.gz", hash = "sha256:437f55a4e0c1b01a4f3077cc470e6991d47430970e36fbcb77e2be0df4fc1cd6", size = 40085, upload-time = "2026-05-21T22:40:43.376Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8c/7b/1fc1c09cc0756cf25861a3be10565915953876da48bb228fb9a672b20a42/cachetools-7.1.4-py3-none-any.whl", hash = "sha256:323dc4127934744db5b54eb4924482d7edafbf9554e820d1531c2e08c0e4ef54", size = 16761, upload-time = "2026-05-21T22:40:41.845Z" },
-]
-
-[[package]]
 name = "certifi"
 version = "2026.6.17"
 source = { registry = "https://pypi.org/simple" }
@@ -541,7 +628,7 @@ name = "cffi"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/56/b1ba7935a17738ae8453301356628e8147c79dbb825bcbc73dc7401f9846/cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529", size = 523588, upload-time = "2025-09-08T23:24:04.541Z" }
 wheels = [
@@ -604,15 +691,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/1d/ec1a60bd1a10daa292d3cd6bb0b359a81607154fb8165f3ec95fe003b85c/cffi-2.0.0-cp314-cp314t-win32.whl", hash = "sha256:1fc9ea04857caf665289b7a75923f2c6ed559b8298a1b8c49e59f7dd95c8481e", size = 180487, upload-time = "2025-09-08T23:23:40.423Z" },
     { url = "https://files.pythonhosted.org/packages/bf/41/4c1168c74fac325c0c8156f04b6749c8b6a8f405bbf91413ba088359f60d/cffi-2.0.0-cp314-cp314t-win_amd64.whl", hash = "sha256:d68b6cef7827e8641e8ef16f4494edda8b36104d79773a334beaa1e3521430f6", size = 191726, upload-time = "2025-09-08T23:23:41.742Z" },
     { url = "https://files.pythonhosted.org/packages/ae/3a/dbeec9d1ee0844c679f6bb5d6ad4e9f198b1224f4e7a32825f47f6192b0c/cffi-2.0.0-cp314-cp314t-win_arm64.whl", hash = "sha256:0a1527a803f0a659de1af2e1fd700213caba79377e27e4693648c2923da066f9", size = 184195, upload-time = "2025-09-08T23:23:43.004Z" },
-]
-
-[[package]]
-name = "cfgv"
-version = "3.5.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4e/b5/721b8799b04bf9afe054a3899c6cf4e880fcf8563cc71c15610242490a0c/cfgv-3.5.0.tar.gz", hash = "sha256:d5b1034354820651caa73ede66a6294d6e95c1b00acc5e9b098e917404669132", size = 7334, upload-time = "2025-11-19T20:55:51.612Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/3c/33bac158f8ab7f89b2e59426d5fe2e4f63f7ed25df84c036890172b412b5/cfgv-3.5.0-py2.py3-none-any.whl", hash = "sha256:a8dc6b26ad22ff227d2634a65cb388215ce6cc96bbcc5cfde7641ae87e8dacc0", size = 7445, upload-time = "2025-11-19T20:55:50.744Z" },
 ]
 
 [[package]]
@@ -709,7 +787,7 @@ name = "click"
 version = "8.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/bb/63/f9e1ea081ce35720d8b92acde70daaedace594dc93b693c869e0d5910718/click-8.3.3.tar.gz", hash = "sha256:398329ad4837b2ff7cbe1dd166a4c0f8900c3ca3a218de04466f38f6497f18a2", size = 328061, upload-time = "2026-04-22T15:11:27.506Z" }
 wheels = [
@@ -718,11 +796,11 @@ wheels = [
 
 [[package]]
 name = "codespell"
-version = "2.4.2"
+version = "2.4.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2d/9d/1d0903dff693160f893ca6abcabad545088e7a2ee0a6deae7c24e958be69/codespell-2.4.2.tar.gz", hash = "sha256:3c33be9ae34543807f088aeb4832dfad8cb2dae38da61cac0a7045dd376cfdf3", size = 352058, upload-time = "2026-03-05T18:10:42.936Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/80/19/45e941380f69c042b43423513d201e6592346f992394347f5e7174c31407/codespell-2.4.3.tar.gz", hash = "sha256:cbe085e331227b37bb86ef8bddd08dc768c704ee9a07ca869852c093fa2793e2", size = 352773, upload-time = "2026-07-15T11:51:54.159Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/a1/52fa05533e95fe45bcc09bcf8a503874b1c08f221a4e35608017e0938f55/codespell-2.4.2-py3-none-any.whl", hash = "sha256:97e0c1060cf46bd1d5db89a936c98db8c2b804e1fdd4b5c645e82a1ec6b1f886", size = 353715, upload-time = "2026-03-05T18:10:41.398Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/bf/bdb951d34eb169140b546f44be9ec4525d1acefb9eb5572071f5492b19fc/codespell-2.4.3-py3-none-any.whl", hash = "sha256:af2505b335e8573dbd2d384d1c4ef498f4006f4ba2d6fceca01e55b91f52628a", size = 340736, upload-time = "2026-07-15T11:51:52.925Z" },
 ]
 
 [[package]]
@@ -865,7 +943,7 @@ name = "cryptography"
 version = "49.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1f/99/d1c90d6041656cc6ee229dc99cd67fd0cd5aec3c5f7d72fffc27cc750054/cryptography-49.0.0.tar.gz", hash = "sha256:f89660a348f4f78a92366240a61404e337586ef7f5909a2fef59ca88ef505493", size = 854345, upload-time = "2026-06-12T20:02:30.512Z" }
 wheels = [
@@ -948,15 +1026,6 @@ wheels = [
 ]
 
 [[package]]
-name = "distlib"
-version = "0.4.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c9/02/bd72be9134d25ed783ecbbc38a539ffaefbf90c78418c7fb7229600dbac7/distlib-0.4.3.tar.gz", hash = "sha256:f152097224a0ae24be5a0f6bae1b9359af82133bce63f98a95f86cae1aede9ed", size = 615141, upload-time = "2026-06-12T08:04:52.847Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/08/9c41fb51ab5b43eb21674aff13df270e8ba6c4b29c8624e328dc7a9482af/distlib-0.4.3-py2.py3-none-any.whl", hash = "sha256:4b0ce306c966eb73bc3a7b6abad017c556dadd92c44701562cd528ac7fde4d5b", size = 470628, upload-time = "2026-06-12T08:04:50.506Z" },
-]
-
-[[package]]
 name = "distro"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -970,7 +1039,7 @@ name = "docker"
 version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pywin32", marker = "sys_platform == 'win32'" },
+    { name = "pywin32", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "requests" },
     { name = "urllib3" },
 ]
@@ -1170,7 +1239,7 @@ name = "importlib-metadata"
 version = "9.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp", marker = "python_full_version < '3.12'" },
+    { name = "zipp", marker = "python_full_version < '3.12' or (python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a9/01/15bb152d77b21318514a96f43af312635eb2500c96b55398d020c93d86ea/importlib_metadata-9.0.0.tar.gz", hash = "sha256:a4f57ab599e6a2e3016d7595cfd72eb4661a5106e787a95bcc90c7105b831efc", size = 56405, upload-time = "2026-03-20T06:42:56.999Z" }
 wheels = [
@@ -1212,7 +1281,7 @@ name = "jaraco-context"
 version = "6.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "backports-tarfile", marker = "python_full_version < '3.12'" },
+    { name = "backports-tarfile", marker = "python_full_version < '3.12' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/af/50/4763cd07e722bb6285316d390a164bc7e479db9d90daa769f22578f698b4/jaraco_context-6.1.2.tar.gz", hash = "sha256:f1a6c9d391e661cc5b8d39861ff077a7dc24dc23833ccee564b234b81c82dfe3", size = 16801, upload-time = "2026-03-20T22:13:33.922Z" }
 wheels = [
@@ -1319,13 +1388,13 @@ name = "keyring"
 version = "25.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "importlib-metadata", marker = "python_full_version < '3.12'" },
+    { name = "importlib-metadata", marker = "python_full_version < '3.12' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "jaraco-classes" },
     { name = "jaraco-context" },
     { name = "jaraco-functools" },
-    { name = "jeepney", marker = "sys_platform == 'linux'" },
-    { name = "pywin32-ctypes", marker = "sys_platform == 'win32'" },
-    { name = "secretstorage", marker = "sys_platform == 'linux'" },
+    { name = "jeepney", marker = "sys_platform == 'linux' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pywin32-ctypes", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "secretstorage", marker = "sys_platform == 'linux' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/43/4b/674af6ef2f97d56f0ab5153bf0bfa28ccb6c3ed4d1babf4305449668807b/keyring-25.7.0.tar.gz", hash = "sha256:fe01bd85eb3f8fb3dd0405defdeac9a5b4f6f0439edbb3149577f244a2e8245b", size = 63516, upload-time = "2025-11-16T16:26:09.482Z" }
 wheels = [
@@ -1473,7 +1542,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "mkdocs" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "verspec" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2d/76/2d89ba71dcf8e7a74b5e152fc8e86fe7c1f37bd86563fa8dea927f521425/mike-1.1.2.tar.gz", hash = "sha256:56c3f1794c2d0b5fdccfa9b9487beb013ca813de2e3ad0744724e9d34d40b77b", size = 28626, upload-time = "2021-10-04T05:23:46.59Z" }
@@ -1487,7 +1557,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -1496,7 +1566,8 @@ dependencies = [
     { name = "mkdocs-get-deps" },
     { name = "packaging" },
     { name = "pathspec" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "pyyaml-env-tag" },
     { name = "watchdog" },
 ]
@@ -1535,7 +1606,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mergedeep" },
     { name = "platformdirs" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ce/25/b3cccb187655b9393572bde9b09261d267c3bf2f2cdabe347673be5976a6/mkdocs_get_deps-0.2.2.tar.gz", hash = "sha256:8ee8d5f316cdbbb2834bc1df6e69c08fe769a83e040060de26d3c19fad3599a1", size = 11047, upload-time = "2026-03-10T02:46:33.632Z" }
 wheels = [
@@ -1550,7 +1622,7 @@ dependencies = [
     { name = "babel" },
     { name = "gitpython" },
     { name = "mkdocs" },
-    { name = "tzdata", marker = "sys_platform == 'win32'" },
+    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/8e/99/8067eb7d1652767ee8e5474010647dd5a8e464e0ca8c783b5cac135a2043/mkdocs_git_revision_date_localized_plugin-1.5.3.tar.gz", hash = "sha256:873444b54cab4d47c69bd6e85da05ef5fbe81fee27e64508114c46a0e4f81e37", size = 451961, upload-time = "2026-06-01T08:32:09.416Z" }
 wheels = [
@@ -1664,25 +1736,27 @@ wheels = [
 
 [[package]]
 name = "molecule"
-version = "26.4.0"
+version = "26.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-compat" },
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.17.14", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "click" },
     { name = "enrich" },
     { name = "jinja2" },
     { name = "jsonschema" },
     { name = "packaging" },
     { name = "pluggy" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "rich" },
     { name = "wcmatch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/e0/f671b5b0742a60b6067cbe9e57720b600ded5e0fcabb837663dd21b57568/molecule-26.4.0.tar.gz", hash = "sha256:12e4c905079f67628ae765506c697d2b8a744a65f2d4cbf5a3b22cb09d0dafc4", size = 4699013, upload-time = "2026-04-06T09:01:33.016Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b6/81/7391315d9e10d7a37bb11d0d83d5d03303f698292465e3c1620028a3abf7/molecule-26.6.0.tar.gz", hash = "sha256:1870c5f5442403d77b5953d344382265a521eb4948885260c0cac084aa3dec02", size = 4717402, upload-time = "2026-06-30T11:59:11.328Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/11/9f8322de3674b6ac12d0d203d18f81eb9262af19d2b8122c08b11821af97/molecule-26.4.0-py3-none-any.whl", hash = "sha256:b231f4955f95240a8e2b8194c086d0b5e8ab998032a9411eafe85429442a3bd5", size = 158898, upload-time = "2026-04-06T09:01:31.287Z" },
+    { url = "https://files.pythonhosted.org/packages/80/15/cebabfd858a470e4497a7c4fa6edec16246a7b2c7cb6f937388ac4d76a59/molecule-26.6.0-py3-none-any.whl", hash = "sha256:e0d63011f1f044030a0c769178f4800271a2a8137f51124b18d673e576a88c52", size = 162387, upload-time = "2026-06-30T11:59:09.345Z" },
 ]
 
 [[package]]
@@ -1701,7 +1775,7 @@ wheels = [
 docker = [
     { name = "docker" },
     { name = "requests" },
-    { name = "selinux", marker = "sys_platform == 'linux' or sys_platform == 'linux2'" },
+    { name = "selinux", marker = "sys_platform == 'linux' or sys_platform == 'linux2' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 
 [[package]]
@@ -1883,15 +1957,6 @@ wheels = [
 ]
 
 [[package]]
-name = "nodeenv"
-version = "1.10.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/24/bf/d1bda4f6168e0b2e9e5958945e01910052158313224ada5ce1fb2e1113b8/nodeenv-1.10.0.tar.gz", hash = "sha256:996c191ad80897d076bdfba80a41994c2b47c68e224c542b48feba42ba00f8bb", size = 55611, upload-time = "2025-12-20T14:08:54.006Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/b2/d0896bdcdc8d28a7fc5717c305f1a861c26e18c05047949fb371034d98bd/nodeenv-1.10.0-py2.py3-none-any.whl", hash = "sha256:5bb13e3eed2923615535339b3c620e76779af4cb4c6a90deccc9e36b274d3827", size = 23438, upload-time = "2025-12-20T14:08:52.782Z" },
-]
-
-[[package]]
 name = "packaging"
 version = "26.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1937,31 +2002,20 @@ wheels = [
 ]
 
 [[package]]
-name = "pre-commit"
-version = "4.6.0"
+name = "prek"
+version = "0.5.11"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "cfgv" },
-    { name = "identify" },
-    { name = "nodeenv" },
-    { name = "pyyaml" },
-    { name = "virtualenv" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/8e/22/2de9408ac81acbb8a7d05d4cc064a152ccf33b3d480ebe0cd292153db239/pre_commit-4.6.0.tar.gz", hash = "sha256:718d2208cef53fdc38206e40524a6d4d9576d103eb16f0fec11c875e7716e9d9", size = 198525, upload-time = "2026-04-21T20:31:41.613Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/0d/8f661ef91334d8afe883a51f586628bb0a18c5077b39dc7c2754bc5335da/prek-0.5.11.tar.gz", hash = "sha256:99c8363ca07b881dc49cf71eb3c362670c95d0d554fc375ceee0245548081829", size = 619436, upload-time = "2026-11-16T06:42:02.693Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/80/6e/4b28b62ecb6aae56769c34a8ff1d661473ec1e9519e2d5f8b2c150086b26/pre_commit-4.6.0-py2.py3-none-any.whl", hash = "sha256:e2cf246f7299edcabcf15f9b0571fdce06058527f0a06535068a86d38089f29b", size = 226472, upload-time = "2026-04-21T20:31:40.092Z" },
-]
-
-[[package]]
-name = "pre-commit-hooks"
-version = "6.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "ruamel-yaml" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/36/4d/93e63e48f8fd16d6c1e4cef5dabadcade4d1325c7fd6f29f075a4d2284f3/pre_commit_hooks-6.0.0.tar.gz", hash = "sha256:76d8370c006f5026cdd638a397a678d26dda735a3c88137e05885a020f824034", size = 28293, upload-time = "2025-08-09T19:25:04.6Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/12/46/eba9be9daa403fa94854ce16a458c29df9a01c6c047931c3d8be6016cd9a/pre_commit_hooks-6.0.0-py2.py3-none-any.whl", hash = "sha256:76161b76d321d2f8ee2a8e0b84c30ee8443e01376121fd1c90851e33e3bd7ee2", size = 41338, upload-time = "2025-08-09T19:25:03.513Z" },
+    { url = "https://files.pythonhosted.org/packages/26/33/b56b4898fe9a81e250d31e39cce0ae5705ee07609aa5f013cd22cfd781bc/prek-0.5.11-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:95da482d8f1d3323beea219e95b6bbe31a27d3b14943148d3c4eac94e9f7d7ee", size = 5916762, upload-time = "2026-11-16T06:41:46.081Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/24/ef97844954e5a89c79de675d22fad0aa549db21c32226dde4a12eef5da6b/prek-0.5.11-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2e530bd4c8975c6ac6eae20c70fa54c50714d56279040cc3c2b0bce279c0c84e", size = 5565126, upload-time = "2026-11-16T06:41:48.031Z" },
+    { url = "https://files.pythonhosted.org/packages/15/53/57e487d315e1fe7b1b11b1df01233f3c9cda14502f61ba76c34991d80358/prek-0.5.11-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:1cce91fe6524e1b2dfc4e5f40353caa0b62e2db9ae4b2bab314958027663a712", size = 5699656, upload-time = "2026-11-16T06:41:49.768Z" },
+    { url = "https://files.pythonhosted.org/packages/19/25/96988fbaf7bb960028fc4161ed734d0950bfda720c37206b3c6d07e044c4/prek-0.5.11-py3-none-manylinux2014_ppc64le.manylinux_2_17_ppc64le.whl", hash = "sha256:c343b4e40e5aa5851fd0526c49ad8f52c4c688cde848fa95f57db91c15c67215", size = 6130515, upload-time = "2026-11-16T06:41:51.727Z" },
+    { url = "https://files.pythonhosted.org/packages/02/f0/35e94ecd6eab935705e68cfb33af06d27db4693a49214171a9adfcecb756/prek-0.5.11-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:ca78936abfb2793ba9d6b9b4ac0e4eb13189bcfabd16d94c29aa573963bac87f", size = 5991609, upload-time = "2026-11-16T06:41:53.625Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/44/a63b178a08d5bca1f4cfdef7305344195015fb6d5ff19be514b3a8a24f52/prek-0.5.11-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:c90b274d8eb35f28d6b70907b9d757072e20dccde1bdb7d19eeb85aac9c37ee3", size = 5682010, upload-time = "2026-11-16T06:41:55.592Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/d6/0c8f2770bf03408e6c35ebea6e858d2f33d0e4037562a8f6092f73fd4223/prek-0.5.11-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:e5cbd96ed40c04a7909d98a9b8cd1d38e8e63d52e97932f09e1733b9f51bd6ac", size = 6146351, upload-time = "2026-11-16T06:41:57.479Z" },
+    { url = "https://files.pythonhosted.org/packages/06/a5/88d4df7a4cd2d53626031beb3be69017b688a9e13828d0e8c6e1c1c3aae2/prek-0.5.11-py3-none-win_amd64.whl", hash = "sha256:96503d57ea00e3f2b10942b340031396c7956b602ebb3719d090a401653800da", size = 5570867, upload-time = "2026-11-16T06:41:59.119Z" },
+    { url = "https://files.pythonhosted.org/packages/ae/d1/e502bce18ae966dbf4c8a11ceb4157bde87da0bd0ee1d47bcecc0fe6cca0/prek-0.5.11-py3-none-win_arm64.whl", hash = "sha256:e74faafdaf9512580c5d0fefa2891d5a092f92a4ff4e996cae6869922d830e32", size = 5515058, upload-time = "2026-11-16T06:42:01.215Z" },
 ]
 
 [[package]]
@@ -1982,7 +2036,7 @@ version = "1.6.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -1990,7 +2044,8 @@ dependencies = [
     { name = "packaging" },
     { name = "pathspec" },
     { name = "platformdirs" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "pyyaml-env-tag" },
     { name = "watchdog" },
 ]
@@ -2010,14 +2065,16 @@ dependencies = [
     { name = "jinja2" },
     { name = "pyavd-utils" },
     { name = "python-socks" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "requests" },
 ]
 
 [package.optional-dependencies]
 ansible = [
-    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "ansible-core", version = "2.17.14", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-7-avd-dev-molecule-legacy'" },
+    { name = "ansible-core", version = "2.19.11", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "ansible-core", version = "2.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.12' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.12' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "netaddr" },
 ]
 ansible-collection = [
@@ -2042,6 +2099,7 @@ requires-dist = [
     { name = "pyavd-utils", specifier = "==0.0.14" },
     { name = "python-socks", extras = ["asyncio"], specifier = ">=2.7.2" },
     { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "pyyaml", marker = "python_full_version >= '3.15'", specifier = ">=6.0.4" },
     { name = "requests", specifier = ">=2.27.0" },
 ]
 provides-extras = ["ansible", "ansible-collection"]
@@ -2244,7 +2302,7 @@ wheels = [
 
 [[package]]
 name = "pylint"
-version = "4.0.6"
+version = "4.1.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "astroid" },
@@ -2255,9 +2313,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/1d/3bb57f303701549550d74bf7ced2b07412be97125c167a0c9d216aa9f762/pylint-4.0.6.tar.gz", hash = "sha256:52f19191bee08bf103f9705ad1a0ece4aa5a0a4ef2bdcbd969375a1e6f6579d5", size = 1585588, upload-time = "2026-06-14T14:43:26.772Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/d7/bfea980ba1ea5666c7f774627f3a7159b98a21426a081dd2f05db8eb93b3/pylint-4.1.4.tar.gz", hash = "sha256:4c9176dc6c9f1b98b742195f01899b290369d5a27b4b41d1014c17f2f96b26f1", size = 1768302, upload-time = "2026-11-14T21:41:51.625Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ab/da/acb2e7d4dbd2dfb792d38c0d850481f29ad7049b356d23f56c687d35203b/pylint-4.0.6-py3-none-any.whl", hash = "sha256:d11a0e1fdb7b1cd46ec5d6fc78fee8b95f28695b2d6140e5809925f61e32ea54", size = 538389, upload-time = "2026-06-14T14:43:24.873Z" },
+    { url = "https://files.pythonhosted.org/packages/b4/89/5235509abac00f5c470d5d8edae908bcec79d1c09803485ce57c25ccbed1/pylint-4.1.4-py3-none-any.whl", hash = "sha256:b39fcc762ec4a7fe385d01b8e170fd996847297cdc0e3850bdda1435c74cfd95", size = 591735, upload-time = "2026-11-14T21:41:49.56Z" },
 ]
 
 [[package]]
@@ -2266,23 +2324,12 @@ version = "10.21.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9e/26/d1015444da4d952a1ca487a236b522eb979766f0295a0bd0c5fc089989a9/pymdown_extensions-10.21.3.tar.gz", hash = "sha256:72cfcf55f07aea0d4af2c4f11dd4e52466ddfb1bb819673146398e0bd3a77354", size = 854140, upload-time = "2026-05-13T12:57:32.267Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7e/85/545a951eecc270fcd688288c600017e2050a1aacb56c711d208586d3e470/pymdown_extensions-10.21.3-py3-none-any.whl", hash = "sha256:d7a5d08014fc571e80ca21dd6f854e31f94c489800350564d55d15b3c41e76b6", size = 269002, upload-time = "2026-05-13T12:57:30.296Z" },
-]
-
-[[package]]
-name = "pyproject-api"
-version = "1.10.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/62/62/0fe346fe380b1aafaf819c8cb195d3241bb4f355f908e6339814131a830b/pyproject_api-1.10.1.tar.gz", hash = "sha256:c2b2726bd7aa9217b6c50b621fef5b2ae5def4d55b779c9e0694c15e0a8517ba", size = 23477, upload-time = "2026-05-28T14:22:14.049Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/d7/29e1e5e882f79133631f7bcace42d23db493f616463c157a1ab614bf69dd/pyproject_api-1.10.1-py3-none-any.whl", hash = "sha256:fa9e6f66c35b5017e909825d8f2b5d5482ea699d7be809d21c03bd1f7317f36a", size = 12992, upload-time = "2026-05-28T14:22:12.711Z" },
 ]
 
 [[package]]
@@ -2308,7 +2355,7 @@ name = "pytest"
 version = "9.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -2325,11 +2372,45 @@ version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/43/7c/d36d04db312ecf4298932ef77e6e4a9e8ad017906e24e34f0b0c361a2473/pytest_asyncio-1.4.0.tar.gz", hash = "sha256:c6c0d2259945122819f171a32ecea2c349ead889ee28176caaf492143424be42", size = 58514, upload-time = "2026-05-26T09:56:04.083Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/03/e2/08a497ef684b88559c9cc5f4ad53a37e7b99e727094a86d6ea32536d5d3c/pytest_asyncio-1.4.0-py3-none-any.whl", hash = "sha256:933ca923a23075a87fb7070c0ec272a6848489824d887c85c812670932835aa1", size = 16930, upload-time = "2026-05-26T09:56:02.576Z" },
+]
+
+[[package]]
+name = "pytest-codspeed"
+version = "5.0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/34/ef/b7c82bcb823e0d08cf78e518efd8dee2ef6f34b67c4ec82bb250e707b414/pytest_codspeed-5.0.4.tar.gz", hash = "sha256:5098065fb9f91d80a7a81752d1970153e44036fe36ce0b6a7afa6bf7881b9d3e", size = 325049, upload-time = "2026-10-31T08:35:41.932Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/53/cf/f34c713063c2817bdb0f553b59de0b20e8d28004a1972c9e12d51da26684/pytest_codspeed-5.0.4-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:60e3797f68bd0de741eedeb755f71bad1f7927384fe89305c5a49fdff052452a", size = 366758, upload-time = "2026-10-31T08:35:20.841Z" },
+    { url = "https://files.pythonhosted.org/packages/de/d6/00b51102b21f78bd5828a3ffeb023cf79994f5b2c624e6e92ecd1a494af3/pytest_codspeed-5.0.4-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:7b6bf8579fb6a2428cee9f065a7c15694c06281e8de815b183c60cd39d72b50e", size = 933188, upload-time = "2026-10-31T08:35:44.069Z" },
+    { url = "https://files.pythonhosted.org/packages/96/c0/47010e742c664e059a4d3348747cd0e3b9bf1b16a1f2fe24cadbde198c04/pytest_codspeed-5.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:96d1f622b2700220c6d28f972bfb4f6840045578c17bc93cbb2d4c8eb13cd719", size = 935589, upload-time = "2026-10-31T08:35:32.356Z" },
+    { url = "https://files.pythonhosted.org/packages/6e/3c/d4102d26388c6b37b8911d42e1b961250c0b3e6f107b8b453087bf01a26a/pytest_codspeed-5.0.4-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:0d340c88b74cc9eb6df277cec7ad0d480c7796a495bac00f2a1d0cdb239e14e1", size = 366803, upload-time = "2026-10-31T08:35:45.196Z" },
+    { url = "https://files.pythonhosted.org/packages/51/8f/ebf8d33bf2fff8e089d887f89ef3fe450f7eaa5ba71d16900f05e0e69593/pytest_codspeed-5.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:289b0f4422058220639add8320958381c51dfc775822082463fc4dce157e12a4", size = 933051, upload-time = "2026-10-31T08:35:27.868Z" },
+    { url = "https://files.pythonhosted.org/packages/26/7d/6b3d8ed57862e5a6959e684aa8b2776e7cbad68e9ad235e15f826225a052/pytest_codspeed-5.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:049e0d3ed0c2d75bdf20c839ce6d97b9ea47fd9cab3b32de3cff8575dd2785c5", size = 935538, upload-time = "2026-10-31T08:35:40.805Z" },
+    { url = "https://files.pythonhosted.org/packages/20/fa/9d604b2f541868fd0510d4d34f9d379eef69c651c4fa037db3dc1438e617/pytest_codspeed-5.0.4-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:176592b496d7233121b0bb3549cb9ce803c5f808fa2376730c0b6f6744cb1731", size = 366797, upload-time = "2026-10-31T08:35:57.935Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/5f/88e763a4f4e247782bffcbf97a3a83a9c641d896905647f89b0e4752d201/pytest_codspeed-5.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5aa863bcb6a5bc3bac189c893a6b5a172782b7c7a309fbf353217c3a3d9a526b", size = 933085, upload-time = "2026-10-31T08:35:55.57Z" },
+    { url = "https://files.pythonhosted.org/packages/48/58/136bc814c73ffb8116b41a4e5d75e6b0b725ad332677201d775feddb453c/pytest_codspeed-5.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6c1260cda28c6ccdc1e4af6cb32c76a99d3468aa296ea8b2966a1ab05cceb600", size = 935585, upload-time = "2026-10-31T08:35:42.889Z" },
+    { url = "https://files.pythonhosted.org/packages/12/27/e6be7e61b279e96e90c4365cd446511ec0f1a5f9c4d8c45ca565292cdf9e/pytest_codspeed-5.0.4-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:594572725abf57cc784f88412d896fc63c99577e5b07c0f5886e49ed83d9c4d8", size = 366795, upload-time = "2026-10-31T08:35:47.73Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/e0/e512c9277ff86361f6fa17406808426f1d4c4b7af67df9644899e2fd0e61/pytest_codspeed-5.0.4-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:dad9df0043554312be85e6051a4c1920dc010480e7eb8a3f353eb114632a087d", size = 933140, upload-time = "2026-10-31T08:35:29.408Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/b0/c95fe0476897b521375294526d05a667841dbaa25a61f055dd5f41c58c09/pytest_codspeed-5.0.4-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:0feffc3b94b597752177b8d1668b60bc6e3832a98b769c5a9408b1c76cf23a29", size = 935652, upload-time = "2026-10-31T08:36:00.277Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/f3/6fd97d751945e9c52740106fbf4934d959f841177eb8cb10be908d3dc5dc/pytest_codspeed-5.0.4-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:33d8709bbd529a13a7728c9178130c292598ef2ee8f689e763db82fdaa171d37", size = 366867, upload-time = "2026-10-31T08:35:23.913Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/7c/dba888101c28e3ec34b9356ae06d606e4a7862901d37da7379e2dca72dc9/pytest_codspeed-5.0.4-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:14ccc21832d2c77d9fa17ae404e10cde16122ea69d7366eaa7453677faaad0aa", size = 933917, upload-time = "2026-10-31T08:35:26.388Z" },
+    { url = "https://files.pythonhosted.org/packages/8c/47/d3fe7d7c2cf97e7528ef326a2e85c7ea8e9c4d6059276d07c097752adf99/pytest_codspeed-5.0.4-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:32ecf78bf8e23bc948aa143556a0ebf5849b478cf4d093258d0c3515dbc87ce7", size = 936168, upload-time = "2026-10-31T08:35:50.886Z" },
+    { url = "https://files.pythonhosted.org/packages/34/25/3518fedaeac7287c80e1ccb1af15e395eb8e6662e0be4e4828f0c24a38d9/pytest_codspeed-5.0.4-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:88bd2fff9433ac423f43b49ba4e4cd1bef8cd97bb547d9f80ff5c5e2ca34f79b", size = 366797, upload-time = "2026-10-31T08:35:46.434Z" },
+    { url = "https://files.pythonhosted.org/packages/c9/95/1e8400d8914322fdab968ec6e4dcda4779185b5c2132c38529e6dfa8e0bc/pytest_codspeed-5.0.4-cp315-cp315-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0185ec6b4d043ff4583cf4673a6d4c2c3a58e954f2bc278bc59a60da5ca32076", size = 933232, upload-time = "2026-10-31T08:35:49.734Z" },
+    { url = "https://files.pythonhosted.org/packages/1d/26/0f835bafab4795ae293588d62241f303de1a33b6f921c04e1d2fcb126563/pytest_codspeed-5.0.4-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:b2a0590c0ae775dd75619c7f4303d4ade65b397a9802bd6d51722a7a593eb9ea", size = 934646, upload-time = "2026-10-31T08:35:56.817Z" },
+    { url = "https://files.pythonhosted.org/packages/70/c0/72b51b7158c73715b0234fcda08d4f79965ee30149d65be70f9743857349/pytest_codspeed-5.0.4-cp315-cp315t-macosx_11_0_arm64.whl", hash = "sha256:2608f8ac34e22a7af1a96af01be488097f9a7ce1470a6bc32c9d6df00ef7fa81", size = 366882, upload-time = "2026-10-31T08:36:01.467Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/69/d40d498e54ff9844c2e91f6a1f006156875685b27b822d99c7f000a33692/pytest_codspeed-5.0.4-cp315-cp315t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:d793f5dc33a8bc89650ee3217080553b900c9bca4d910d112db938813f3efce6", size = 933746, upload-time = "2026-10-31T08:35:22.64Z" },
+    { url = "https://files.pythonhosted.org/packages/90/67/c4bd3c6124c37182bebd32cb7a788e4c38bbc0c2399498019849bc5f48cb/pytest_codspeed-5.0.4-cp315-cp315t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:d122d6a5ffa1c6665f5e8582cdf1ab0a71f3c956fc45a10efa1dc68b0c03953f", size = 934980, upload-time = "2026-10-31T08:35:53.252Z" },
+    { url = "https://files.pythonhosted.org/packages/3a/13/0856162295ae7c46f7dd7998c51f1634a0fd5bf0e25ff82a93e23ff1feda/pytest_codspeed-5.0.4-py3-none-any.whl", hash = "sha256:9ff6d29a5bf3cbaebea71163d899aa67bb1cd57fe168de0b5e984d05ec2463d8", size = 74574, upload-time = "2026-10-31T08:35:48.754Z" },
 ]
 
 [[package]]
@@ -2342,19 +2423,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
-]
-
-[[package]]
-name = "python-discovery"
-version = "1.4.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "filelock" },
-    { name = "platformdirs" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/0b/1a/cbbaf13b730abb0a16b964d984e19f2fe520c21a4dc664051359a3f5a9e7/python_discovery-1.4.2.tar.gz", hash = "sha256:8f3746c4b4968d22afbb97d36e1a0e5b66e6c0f297290f2e95f05b9b8bf18690", size = 70277, upload-time = "2026-06-11T16:10:42.383Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1a/82/a70006589557f267f15bd384c0642ad49f0d97b690c3a05b166b9dcbad3b/python_discovery-1.4.2-py3-none-any.whl", hash = "sha256:475803f53b7b2ed6e490e27373f9d8340f7d2eebf9acdaf645d7d714c97bb500", size = 33886, upload-time = "2026-06-11T16:10:41.192Z" },
 ]
 
 [[package]]
@@ -2444,6 +2512,29 @@ wheels = [
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.15' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.15' and sys_platform == 'linux' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-dev' and extra != 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2' and extra == 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform == 'linux' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2' and extra != 'group-7-avd-dev-molecule' and extra != 'group-7-avd-dev-molecule-legacy'",
+]
 sdist = { url = "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz", hash = "sha256:d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f", size = 130960, upload-time = "2025-09-25T21:33:16.546Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6d/16/a95b6757765b7b031c9374925bb718d55e0a9ba8a1b6a12d25962ea44347/pyyaml-6.0.3-cp311-cp311-macosx_10_13_x86_64.whl", hash = "sha256:44edc647873928551a01e7a563d7452ccdebee747728c1080d881d68af7b997e", size = 185826, upload-time = "2025-09-25T21:31:58.655Z" },
@@ -2496,11 +2587,90 @@ wheels = [
 ]
 
 [[package]]
+name = "pyyaml"
+version = "6.0.4"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/76/b8/c0b780928e2fb1c87e9e375818c6f121da2398b071012d1747be300b83f4/pyyaml-6.0.4.tar.gz", hash = "sha256:e24bf71af8a432d7808fabff134d38dfe16d3cbb41f2873bb4b1e42422de0a1a", size = 136336, upload-time = "2026-11-20T23:37:05.977Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e1/ba/fb2aad330bc4f31041f989630ceae5f32e307d3ba9819573d35b71e078fa/pyyaml-6.0.4-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:180ac792c958c2173f6e4467c55ae5f73ab1a9a624ee29fc7095c56d5e3a4055", size = 190856, upload-time = "2026-11-20T23:34:50.753Z" },
+    { url = "https://files.pythonhosted.org/packages/16/da/1b8397614250ec63bb7ef1cbb0aa5878367ff729ef35a4abf2accbf48a18/pyyaml-6.0.4-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:730788375056c43d3ac15bd894c9cd2fb7a931a38b302f408620c64b3ef176ed", size = 180950, upload-time = "2026-11-20T23:34:51.629Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/88/d99fc8f2cfb33ab7786fb3f6da90eddc1ed9709196bffcb4a487d7f53844/pyyaml-6.0.4-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:71bb5b87465d88d1dfc577115af6d435bff9b26f2512936f610c26aa55966028", size = 810905, upload-time = "2026-11-20T23:34:52.77Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/7f/500e5ec119990d1784c72b64197cee8a4f2982f6bc76c572af7f8df02385/pyyaml-6.0.4-cp311-cp311-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:b9fe0b8c65a1611053eb7fcaa7c022f655b7eebeb0ea034572615453cae6b843", size = 914779, upload-time = "2026-11-20T23:34:54.086Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/3e/c1c307b6c03e4ea7d86f166f14920ead07aecc35e88d873814d12aa2da66/pyyaml-6.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:622aa875fa6533f25fedcffe23079357d65a690d462200afed5d8e9d0e01ebee", size = 828016, upload-time = "2026-11-20T23:34:55.213Z" },
+    { url = "https://files.pythonhosted.org/packages/03/49/dc931722d7de757596c1c3b944287e4f7d3f419655cd8f5fae382c6179e6/pyyaml-6.0.4-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:49e38a95e24738908ea852e61df0abc58d1e4d4f974ccdb2386eaee412bedc67", size = 799807, upload-time = "2026-11-20T23:34:56.589Z" },
+    { url = "https://files.pythonhosted.org/packages/bf/8b/2b7ad9af1c6c5b147c3c860a31586737034a83693d7ae86f854036c6aeb4/pyyaml-6.0.4-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:4d3bbc5e8a84a5a6775adecac786f489510a7159b1c343d6f31426d888cfdd6e", size = 836213, upload-time = "2026-11-20T23:34:57.655Z" },
+    { url = "https://files.pythonhosted.org/packages/8c/d8/ebdc04bbf7c00a3c78ea577322239534556418a958d2242af8c0c6ef9093/pyyaml-6.0.4-cp311-cp311-win32.whl", hash = "sha256:c0d68d972f6f6417b4e85e9522f3d57bb4fbc924379766ccd87254a31009c1cd", size = 146012, upload-time = "2026-11-20T23:34:58.75Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/c6/ffe94f3159f3543b1ea1702519e1e0a74a67f3a255c286c1f00d51780b82/pyyaml-6.0.4-cp311-cp311-win_amd64.whl", hash = "sha256:0db75f402e99c25239003a499c214a61947b4ef5312af34711d4c63e5c179318", size = 161819, upload-time = "2026-11-20T23:34:59.853Z" },
+    { url = "https://files.pythonhosted.org/packages/86/df/5aec8a8c65e4c11fab31b55d53029d8013e5ccfcf409c20f8175e3e267c7/pyyaml-6.0.4-cp312-cp312-macosx_10_15_x86_64.whl", hash = "sha256:1088ad740f50c13178dad16fbc2fa1f634c791d42c7009fdb390e38e5b90b788", size = 187835, upload-time = "2026-11-20T23:35:00.829Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/30/efaabf2d135d11f32cbd4752f3b7df0d592894ee3ca252bbba013a7d5891/pyyaml-6.0.4-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4d30c2f186612bd2f9f07c08a4c96721af59cfc8da3ec7cb27dfa2834e8bb019", size = 179510, upload-time = "2026-11-20T23:35:01.826Z" },
+    { url = "https://files.pythonhosted.org/packages/af/fb/d5ff6957db5c843151ff13196277bb8e20b2d5db2e2db3e8d051038d888b/pyyaml-6.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:45e37dd647db9d67b757444c74060c064ace5fdaa08f42bf4fda3812275d423e", size = 814700, upload-time = "2026-11-20T23:35:02.923Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/de/569b907a281bbc49b934bcdad881486b7a476b011cf733f936ca85a8b37d/pyyaml-6.0.4-cp312-cp312-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:9e7ec9dc75cadd392fd687cc9b8ccf7dd59ada0a991e0d14ae0fad9ecdba00c3", size = 879806, upload-time = "2026-11-20T23:35:04.34Z" },
+    { url = "https://files.pythonhosted.org/packages/94/80/1d27f7084b983b7cfd1fb35e65a38276d9eddfdcdabc0922bb26cf9521bc/pyyaml-6.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:93bfb2459195406a518e2f487a9bbf01df240175f31e06f5a252ac6734c7bbf0", size = 849249, upload-time = "2026-11-20T23:35:05.457Z" },
+    { url = "https://files.pythonhosted.org/packages/53/37/9b49dff68570bedf27a05ff447e9a281d75bbdfa4d08dc1ee100a844c612/pyyaml-6.0.4-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:84e97378010f3da8daf673b82d39ed638098d236a1b760d61c0c1348a642bd70", size = 799796, upload-time = "2026-11-20T23:35:06.566Z" },
+    { url = "https://files.pythonhosted.org/packages/05/bb/f7df529541b98113bea84129a78f93c3889acb08385ca25f9786823dce67/pyyaml-6.0.4-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:f5c410f9e2ffc9286279a46f2e8c107edaf3b1123510af59c828a9c15b23c9db", size = 825424, upload-time = "2026-11-20T23:35:07.783Z" },
+    { url = "https://files.pythonhosted.org/packages/44/00/fc5d40087cc55bf3d7bb5ef55cc3e6513e6946afe33a188680fe1d846eb0/pyyaml-6.0.4-cp312-cp312-win32.whl", hash = "sha256:60e9da2772e259307650e03c24f50e3bc2d9fa5ed1ba44c47582e13b0e7708d1", size = 140667, upload-time = "2026-11-20T23:35:08.846Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/95/307a6ceafbad9a08300743d19329c31726224e583e05c4fe5358522ba283/pyyaml-6.0.4-cp312-cp312-win_amd64.whl", hash = "sha256:131d11bd9b60d705a6388366d77ed67850995a4d2be85fe149785a257c17e531", size = 154452, upload-time = "2026-11-20T23:35:09.792Z" },
+    { url = "https://files.pythonhosted.org/packages/62/81/15c300b14cca818cb9ee27d8cb61cc124229d04f4f7f7bc4e3fca8e2e8d8/pyyaml-6.0.4-cp312-cp312-win_arm64.whl", hash = "sha256:69380d4bae12aab2a2c9532deff6a2841bc9fda47c333691bd2368b696301768", size = 147167, upload-time = "2026-11-20T23:35:10.763Z" },
+    { url = "https://files.pythonhosted.org/packages/95/22/b445c43210fe7f466fcf5a38bcbe850fd3db31b85594db22b5a43e63c482/pyyaml-6.0.4-cp313-cp313-macosx_10_15_x86_64.whl", hash = "sha256:61eef2f08e977b725f37a8d1663f5a222c6f09207ac0794030d5fca062e7c96e", size = 188392, upload-time = "2026-11-20T23:35:11.776Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/c3/1536ad41fd962d3915f3f8252ecc7f91192ab15c3120ba72ff45e76b7077/pyyaml-6.0.4-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:9d4211f080920629a90c9e31c51e326fb70cfae38f18d4128b9913c23642bace", size = 179961, upload-time = "2026-11-20T23:35:12.722Z" },
+    { url = "https://files.pythonhosted.org/packages/40/fd/c5297cc6370e4ab63d0c44d2e63510cc53354f5e8e74bcff047e2a384698/pyyaml-6.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:41b4669c3a8fd5750e594dff59d3e62d40e321fec467b50449603710ed0a68f3", size = 804464, upload-time = "2026-11-20T23:35:14.066Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/2e/20385f63727a6c08df1adad34a88bde90e2bcc1146d1c8588a83190d53b8/pyyaml-6.0.4-cp313-cp313-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:efe68ed09903cca9ab4117c2b9ea6ee8d369818808945bb5a7fa8009b5630b45", size = 875357, upload-time = "2026-11-20T23:35:15.537Z" },
+    { url = "https://files.pythonhosted.org/packages/70/f2/f280d52f22f6d9853517d02495c02fbf4c80214fae8ca498efa8605013da/pyyaml-6.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:50588147ab2c6a59b5f990a4905db80899a6c2bd197e046a6201f1e67587e794", size = 838459, upload-time = "2026-11-20T23:35:16.681Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/ee/5f7142110583686e94ab4492e3724ed0869cd9fe26ba8293ec25a47ee223/pyyaml-6.0.4-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:4d1e8d6e345b4b4424a05a11e699e999e65a88f422f73636f8a0b354bf219ffa", size = 789384, upload-time = "2026-11-20T23:35:17.734Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/ab/1fd22df5305561cbefb85363182a0af5e81d219e8b8b8dfd73f20eb70859/pyyaml-6.0.4-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:a56491babf0d976625807953bd192dd9de973fccb3270e77b1a795b152a26175", size = 814502, upload-time = "2026-11-20T23:35:19.171Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/5a/6b53e1711a78fcc14619a341618c36b862ad8c634e7bc43ae18e6a7376b2/pyyaml-6.0.4-cp313-cp313-win32.whl", hash = "sha256:1631d566655f3af7d6c4a4485267830f6b680d3dc9704b659b3c3f4541b5a3fe", size = 140447, upload-time = "2026-11-20T23:35:20.134Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/09/e785d2a9d64de2449cc3aecaa03f1c34670d7a688dc00da7246a858b7e8f/pyyaml-6.0.4-cp313-cp313-win_amd64.whl", hash = "sha256:0a3a351f04dc124f9357512bdb80ac37cd1750cf1371da33e7cbb96d80ac865f", size = 154298, upload-time = "2026-11-20T23:36:22.105Z" },
+    { url = "https://files.pythonhosted.org/packages/94/44/0ed649c2c1cc37b342042c3a4609247b74201c23a6f7f01f5dd222eae2bd/pyyaml-6.0.4-cp313-cp313-win_arm64.whl", hash = "sha256:f617e4e5c619fef5284335b24e3af3a77ce08dc5c389ff4b25033bb2749032b7", size = 146938, upload-time = "2026-11-20T23:36:23.305Z" },
+    { url = "https://files.pythonhosted.org/packages/70/90/a2d37db959cb771389bb6171eff83905776e5aead12a985a5118a587d6eb/pyyaml-6.0.4-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:4a329472db6c8858ebd94f2214a54c8bff8f035a6cc7af1ab39cc1b33a5f0e56", size = 189727, upload-time = "2026-11-20T23:36:24.518Z" },
+    { url = "https://files.pythonhosted.org/packages/71/40/de4380acb2bcc733f502a7c8562b08f741890741dcaa8a7f018c87acc060/pyyaml-6.0.4-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:7335809813ec838d9cd334b1744cda33deb141c9ef23a9c0df371c37980d3851", size = 181969, upload-time = "2026-11-20T23:36:25.675Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/a1/88baf9d84981ea723fc1dd5cb534548caebff3071939f899509ab7c62d2f/pyyaml-6.0.4-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ed9b957abb12f6ffcd92d5db32fa3ffd4e4a8423d80ddd51b4efa63b42f6a76b", size = 804091, upload-time = "2026-11-20T23:36:26.979Z" },
+    { url = "https://files.pythonhosted.org/packages/b8/d4/ce94fe5b0e3cc04834d4a30237c1b5388a13ff5a383b919e857898834857/pyyaml-6.0.4-cp314-cp314-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:b525488d5addf5d59ff4610cd8b1deab9dc97fe0fb3fb74533d7f65e9792bd92", size = 869794, upload-time = "2026-11-20T23:36:28.069Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/1b/54ce11b40c8fa1883f14eef46525c3c329509dcc268164074fbe60add8ed/pyyaml-6.0.4-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c604dc2613c417130479cdd6e55c2faa691b6365aa82b3dafddfcecc2eaf1ac7", size = 819491, upload-time = "2026-11-20T23:36:29.189Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/d2/6202ffb5d61667c993211a9231836b5d9be5e34165efd1714ac68ea76029/pyyaml-6.0.4-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:f1a4a85b419f5cb6470dd4be5f766bc59532f11b9c22c076b58a0348f05dca5f", size = 790345, upload-time = "2026-11-20T23:36:30.597Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/39/d62587fae4a9a32197ea43182c38f221f3f173a09c6f4380254533bdd89e/pyyaml-6.0.4-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:132c3c7c37a8e6f334921b05cfea5d26e241d792dcbb4db0462129d25ca53b43", size = 824626, upload-time = "2026-11-20T23:36:31.9Z" },
+    { url = "https://files.pythonhosted.org/packages/b4/b5/e5cf6ca786f8a5b9bd91e01fe8f2113300bc5628fcfdd3ca02d271970824/pyyaml-6.0.4-cp314-cp314-win_amd64.whl", hash = "sha256:1d2f08c122727c86f8303bb1dd45159ca1de1f2d68798e671ec46974e321008e", size = 157525, upload-time = "2026-11-20T23:36:44.254Z" },
+    { url = "https://files.pythonhosted.org/packages/75/9c/d78ce9adda3f7db933f73bb2b17ede76f5786fff747a2b73f6e8a6b7bab5/pyyaml-6.0.4-cp314-cp314-win_arm64.whl", hash = "sha256:33506a2620f0e7c49858f09cb44e99f144878d03af3d9c10aa136e9a1d103bcd", size = 151175, upload-time = "2026-11-20T23:36:45.191Z" },
+    { url = "https://files.pythonhosted.org/packages/83/f0/e48b8e9736380a039a17506200c4c3080ef181ee86b0e8e2cd6c345ae78a/pyyaml-6.0.4-cp314-cp314t-macosx_10_15_x86_64.whl", hash = "sha256:1db4d51d3c2c9545dd44c614febc4594240754f74b30d8e501415b118347f0d1", size = 193903, upload-time = "2026-11-20T23:36:33.086Z" },
+    { url = "https://files.pythonhosted.org/packages/98/ba/682030d1e08f2e4bbd57f164b9085d37560386cf54f6299825e754b32d1a/pyyaml-6.0.4-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:93da48af92c84c4236578e330a514ca324362c0bb62894d8d2343363ed57ff03", size = 188971, upload-time = "2026-11-20T23:36:34.034Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/2b/4b29107aae981b4d4575945a73d6c73ebd407d27934dcf35a7daa8fbeb43/pyyaml-6.0.4-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3c7129bcee5c88c1450802cc6a95b690ee7c51bfcc7a9b60bbd9549a7a4fcbe6", size = 851356, upload-time = "2026-11-20T23:36:35.21Z" },
+    { url = "https://files.pythonhosted.org/packages/12/d4/2b05dddc8f59c3762e67c8d5ac01c1759767ee6ea4aba183a01950644668/pyyaml-6.0.4-cp314-cp314t-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:2018fda285d1289527a389e1b4ace1e2d3af410930f949136b55ecb0747744d1", size = 887294, upload-time = "2026-11-20T23:36:36.484Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/2a/ce3e0ff674c67b9e1706912aae61063581b3dba22142e60ccdaa64b25c75/pyyaml-6.0.4-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:15c52bb238a15bb4fd7e6342a5ac71d594507667c7fe0e5a5abbc0f6875d1e91", size = 850982, upload-time = "2026-11-20T23:36:38.247Z" },
+    { url = "https://files.pythonhosted.org/packages/7e/ad/701d83221865b2512067a9ab2b8e062145af2d362cc2451e72c146ef34cf/pyyaml-6.0.4-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:ab874ebcc5c12c31c859a9e9fe159d688df1f7a099818ef8a35906264a8f5d6b", size = 822547, upload-time = "2026-11-20T23:36:39.852Z" },
+    { url = "https://files.pythonhosted.org/packages/61/d1/d88b389313be382ddabd1bca86dbf5da31ac02ecbf29c893588aafb6e11f/pyyaml-6.0.4-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:62c5b5669b05dabf991a705f3a3601f57b65e95121a1d3e3a4ae4446c8632865", size = 845538, upload-time = "2026-11-20T23:36:41.285Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/a6/c25ff1b5ebc8bfb11a783a5fde40435f0459629af6f56f9487479bca9766/pyyaml-6.0.4-cp314-cp314t-win_amd64.whl", hash = "sha256:609e8efaffa5662da16b7d53eef76fc4eedbbe56fce5829b67ba808a6e35d399", size = 164060, upload-time = "2026-11-20T23:36:42.238Z" },
+    { url = "https://files.pythonhosted.org/packages/08/ad/25d2ac566f0e2f4eb822c9c5e8d9a053406cbfff142273a072b194856823/pyyaml-6.0.4-cp314-cp314t-win_arm64.whl", hash = "sha256:a266cf55ee5cf63c1803432a61c6386e750e0012ca49d12d26ccb0ffd80b343a", size = 157379, upload-time = "2026-11-20T23:36:43.181Z" },
+    { url = "https://files.pythonhosted.org/packages/e5/29/fb680bd299c2c6e004c1cc1914f8bad276c6014fe8debd5d6d61ea4c4ff4/pyyaml-6.0.4-cp315-cp315-macosx_10_15_x86_64.whl", hash = "sha256:12a155bc41509d71a2eb73e2191d9e400c1345ea99ac3d9946c31f40a4c840f8", size = 189560, upload-time = "2026-11-20T23:36:46.145Z" },
+    { url = "https://files.pythonhosted.org/packages/af/6c/2ffdab56d7afeb039d957479a305516ddbaa08d0162d1e9165fb928e3aeb/pyyaml-6.0.4-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:070c22b6f490d6cc30912be9fb9ab1af9c752769b39b53616f6510c3f038ee6a", size = 181949, upload-time = "2026-11-20T23:36:47.065Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/07/3a20ed31a60084206ac20449583b0d1a42116b3c530d6857918e4ddbe4b6/pyyaml-6.0.4-cp315-cp315-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:872d2a592289061c1b987e335b3568a2616b474be02bd0608d8f551a385441cd", size = 803806, upload-time = "2026-11-20T23:36:48.145Z" },
+    { url = "https://files.pythonhosted.org/packages/26/5b/3dd56027457b96e7e5ea2f4f5976e530d699884b4fd4e360e99e57fa6cca/pyyaml-6.0.4-cp315-cp315-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:914b19e17814315fbcca52031bf79b68237f3d87a948c584a667b18b468e4df7", size = 876808, upload-time = "2026-11-20T23:36:49.294Z" },
+    { url = "https://files.pythonhosted.org/packages/b0/51/096a5495b33ff2da32f0c84f5bf8e042cf76f72641cba06ee9618ad01f4d/pyyaml-6.0.4-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c57e40928738c4a202852759f9e1ee2c7063429a9469ee1ac15651bbf7d69963", size = 833052, upload-time = "2026-11-20T23:36:50.505Z" },
+    { url = "https://files.pythonhosted.org/packages/da/75/b4e86b5a27fcb9a9cf88e3b81d1b0c12cae2734311e508af18b93ff56286/pyyaml-6.0.4-cp315-cp315-musllinux_1_2_aarch64.whl", hash = "sha256:8e0cd755ce5e9009fd95f9c553e5942478feb8f7dffa19435641fcdc3c20e8ca", size = 788983, upload-time = "2026-11-20T23:36:51.821Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/00/2a2cdad68237bcd416bd01688ecfb0e3fa1e68a841b74193db97ffd1c716/pyyaml-6.0.4-cp315-cp315-musllinux_1_2_x86_64.whl", hash = "sha256:2c11be5ab4d9f603a598b5ce93a2064ae38087bdf1b384c5397170054cda4e36", size = 828806, upload-time = "2026-11-20T23:36:52.959Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/15/39efefc88dd6fbc3be23cef08a819f5e8bf9a6c0bcf003fc09d38dd0010e/pyyaml-6.0.4-cp315-cp315-win_amd64.whl", hash = "sha256:67da066ca12eb60114ea87f2ecbcca622fff0c205c743cc900437127564fabf6", size = 157467, upload-time = "2026-11-20T23:37:04.171Z" },
+    { url = "https://files.pythonhosted.org/packages/40/1d/fddc53420d9c12e7d27c36a59fabf186ba1f6117314da4927dc40b2da19b/pyyaml-6.0.4-cp315-cp315-win_arm64.whl", hash = "sha256:573debb9fe3075423d4f823795a678580e597218c25baef178d532b124a25a25", size = 151203, upload-time = "2026-11-20T23:37:05.079Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/ea/48e62a25084fc4b317f8bcc5c9823ddaaa73a0c7769ca451dda6919ff491/pyyaml-6.0.4-cp315-cp315t-macosx_10_15_x86_64.whl", hash = "sha256:c680622f85979f2ff59b4ae44c1ecb5566b2f0f0ffe5d0dc8b4bb6a0e916dabb", size = 193500, upload-time = "2026-11-20T23:36:54.416Z" },
+    { url = "https://files.pythonhosted.org/packages/49/dd/8c4df6becc936125261607073fbcd55e1d902a8d53ae4e4893d53b9df0ef/pyyaml-6.0.4-cp315-cp315t-macosx_11_0_arm64.whl", hash = "sha256:18ea9bda247857fc0de05181675dc116b54c1b04ca3db71de5d2108c882823b7", size = 188474, upload-time = "2026-11-20T23:36:55.651Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/63/b60236ef09cbab7c5ce174aff59d49a3425b9a8e9bbe4690bd3b9b7d4fba/pyyaml-6.0.4-cp315-cp315t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:6ac167ebebc0c387290406a337b9b5c8c343fa5f7928d5941e45a94b8ba3aa39", size = 848311, upload-time = "2026-11-20T23:36:56.961Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/3b/4b14f064ae5d6f69638a86bb7bf1a46d02bb4de083798e693a4a83b1418a/pyyaml-6.0.4-cp315-cp315t-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:4a2a8f27d24d4cdc05aa11df5f4c08e13f30d9e6674809b6a5ddcfcba49a653a", size = 891181, upload-time = "2026-11-20T23:36:58.077Z" },
+    { url = "https://files.pythonhosted.org/packages/01/36/4e0b01e380bf3695d34a4bf6b9272c529f4c8d3195c733687d64fb9f8f06/pyyaml-6.0.4-cp315-cp315t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:e956541cc7a3fff2bb5b17aeb6c5bb42c86c8e6dafb5ebdd41a05e72e702076b", size = 855715, upload-time = "2026-11-20T23:36:59.165Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/a8/2784a29e687fa7a5882d47c925a98d1dbdd60ead521be14a9342c6a74ff9/pyyaml-6.0.4-cp315-cp315t-musllinux_1_2_aarch64.whl", hash = "sha256:8708f6ab9c2581ffa05f66dae3206bb0385949650537d7295fc7ab0d6454dd70", size = 818754, upload-time = "2026-11-20T23:37:00.248Z" },
+    { url = "https://files.pythonhosted.org/packages/bb/85/62d54e223b4bc89ff85f087a5ce2648e5d929d3214d64613dbae17d5e045/pyyaml-6.0.4-cp315-cp315t-musllinux_1_2_x86_64.whl", hash = "sha256:a65339c24f2fb8d4419e06ceec1bda98bdcff727b3b533a81d5af6bb2dd34520", size = 845763, upload-time = "2026-11-20T23:37:01.331Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/40/6bd9090368664be984a83fd7fe64f8e044b067a52449679c309706e3199d/pyyaml-6.0.4-cp315-cp315t-win_amd64.whl", hash = "sha256:a3cc63af3d639d1609143711837b926183418260aae89ed95193c07b25b99d33", size = 163170, upload-time = "2026-11-20T23:37:02.3Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/22/468d36762a0c650cf2295052998eb1d419053335ea9ff48a043f5ae4d578/pyyaml-6.0.4-cp315-cp315t-win_arm64.whl", hash = "sha256:d276f23e2371deb5ee68dd252cc9c2402b806b54d8d2cc7efbb6c34c3a78d886", size = 156942, upload-time = "2026-11-20T23:37:03.209Z" },
+]
+
+[[package]]
 name = "pyyaml-env-tag"
 version = "1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.15' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/2e/79c822141bfd05a853236b504869ebc6b70159afc570e1d5a20641782eaa/pyyaml_env_tag-1.1.tar.gz", hash = "sha256:2eb38b75a2d21ee0475d6d97ec19c63287a7e140231e4214969d0eac923cd7ff", size = 5737, upload-time = "2025-05-13T15:24:01.64Z" }
 wheels = [
@@ -2540,7 +2710,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
     { name = "rpds-py" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/22/f5/df4e9027acead3ecc63e50fe1e36aca1523e1719559c499951bb4b53188f/referencing-0.37.0.tar.gz", hash = "sha256:44aefc3142c5b842538163acb373e24cce6632bd54bdb01b21ad5863489f50d8", size = 78036, upload-time = "2025-10-13T15:30:48.871Z" }
 wheels = [
@@ -2581,8 +2751,39 @@ wheels = [
 
 [[package]]
 name = "resolvelib"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version < '3.15' and sys_platform == 'linux2'",
+    "python_full_version < '3.15' and sys_platform == 'linux'",
+    "python_full_version < '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ce/10/f699366ce577423cbc3df3280063099054c23df70856465080798c6ebad6/resolvelib-1.0.1.tar.gz", hash = "sha256:04ce76cbd63fded2078ce224785da6ecd42b9564b1390793f64ddecbe997b309", size = 21065, upload-time = "2023-03-09T05:10:38.292Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/fc/e9ccf0521607bcd244aa0b3fbd574f71b65e9ce6a112c83af988bbbe2e23/resolvelib-1.0.1-py2.py3-none-any.whl", hash = "sha256:d2da45d1a8dfee81bdd591647783e340ef3bcb104b54c383f70d422ef5cc7dbf", size = 17194, upload-time = "2023-03-09T05:10:36.214Z" },
+]
+
+[[package]]
+name = "resolvelib"
 version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'linux2'",
+    "python_full_version >= '3.15' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux2'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'linux'",
+    "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'linux' and sys_platform != 'linux2'",
+    "python_full_version < '3.12' and sys_platform == 'linux2'",
+    "python_full_version < '3.12' and sys_platform == 'linux'",
+    "python_full_version < '3.12' and sys_platform != 'linux' and sys_platform != 'linux2'",
+]
 sdist = { url = "https://files.pythonhosted.org/packages/1d/14/4669927e06631070edb968c78fdb6ce8992e27c9ab2cde4b3993e22ac7af/resolvelib-1.2.1.tar.gz", hash = "sha256:7d08a2022f6e16ce405d60b68c390f054efcfd0477d4b9bd019cc941c28fad1c", size = 24575, upload-time = "2025-10-11T01:07:44.582Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e2/23/c941a0d0353681ca138489983c4309e0f5095dfd902e1357004f2357ddf2/resolvelib-1.2.1-py3-none-any.whl", hash = "sha256:fb06b66c8da04172d9e72a21d7d06186d8919e32ae5ab5cdf5b9d920be805ac2", size = 18737, upload-time = "2025-10-11T01:07:43.081Z" },
@@ -2616,7 +2817,7 @@ version = "1.9.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "rich" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f7/ea/21e4867ea0ef881ffd4c0550fc21a061435e50d6324bcd034396633cbc18/rich_click-1.9.8.tar.gz", hash = "sha256:4008f921da88b5d91646c134ec881c1500e5a6b3f093e90e8f29400e09608371", size = 75363, upload-time = "2026-05-28T19:54:59.144Z" }
@@ -2820,27 +3021,27 @@ wheels = [
 
 [[package]]
 name = "ruff"
-version = "0.17.4"
+version = "0.17.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/84/0e/3d154514b5bad104f7e1c13169c2d09aa9959fccdc06eb47610ccdfa83ed/ruff-0.17.4.tar.gz", hash = "sha256:f32d178b50e826e00f6c6c1be3f56333068acb9b67fe167143527fa9b81e890d", size = 5357750, upload-time = "2026-11-05T18:52:17.638Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/df/8e/6929d337aa5380aafc7355f3149f3ccfe55cba5fdd34a045697ebaceb5a0/ruff-0.17.6.tar.gz", hash = "sha256:2b04276561331300325040bdca21460770029ec574d4c479099e39e8ad1ed43c", size = 5374388, upload-time = "2026-11-19T15:56:27.106Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/61/c83c78bbb6108f6c6270a106cf12b54175f4f42da088b9bb880f18e31289/ruff-0.17.4-py3-none-linux_armv6l.whl", hash = "sha256:2b08c4ff98dc234f4a3871a3105353b922fa875ea1073ca31001eb8c06bb4d89", size = 10252195, upload-time = "2026-11-05T18:51:36.594Z" },
-    { url = "https://files.pythonhosted.org/packages/0a/12/dd158708378866e8b53e145a465dbc51a7cccb9fa197a74d67eaedde7234/ruff-0.17.4-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:13e781c3c5f663e7fba737eaaeb70dd943dd55171daf316afb25cd5268cfe0c7", size = 10266044, upload-time = "2026-11-05T18:51:39.502Z" },
-    { url = "https://files.pythonhosted.org/packages/28/32/89a94a8eb11fd505a381ae6f04e190d038d9958695209dc1786ce5cfcda3/ruff-0.17.4-py3-none-macosx_11_0_arm64.whl", hash = "sha256:7ed2f416349944f908f9574215994602242b0836844eba48eec61473033afca0", size = 9432227, upload-time = "2026-11-05T18:51:41.968Z" },
-    { url = "https://files.pythonhosted.org/packages/58/de/a392dc38b215798ae72e639d228b7f6c02d826a95d1c0ad7c4c0ee49ef5b/ruff-0.17.4-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8ea6e0017c785f7282092b11e46338e4ebed1b9e575ebf2e55a8a1eda968241a", size = 10136900, upload-time = "2026-11-05T18:51:44.562Z" },
-    { url = "https://files.pythonhosted.org/packages/b7/8f/a880f60f42005f6ffdf58f77af34c7ee327000b5607f48a2f6a69d8b242c/ruff-0.17.4-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:7e061dcc0933c7031a616ac8d66ac540309b2aa21ab558101a8f53e9ac7a1185", size = 10051245, upload-time = "2026-11-05T18:51:46.7Z" },
-    { url = "https://files.pythonhosted.org/packages/09/55/98844264108af7d5ec27ca3a9cd5a989094ca657a14599c4b69a537a0e9a/ruff-0.17.4-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f99e95a1515161138be3cbd1b06c06e739d8feb38ade35564556999fffc3686e", size = 10704341, upload-time = "2026-11-05T18:51:49.228Z" },
-    { url = "https://files.pythonhosted.org/packages/28/a2/5edf97659c3ac7c73f978003bd314936f671037fdac6b978e9de3e4b2b65/ruff-0.17.4-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:5f28cf0dd37cb172fa5a8d2e92e6ada3a9dbd0609f094ed24039929eef0b7524", size = 11394465, upload-time = "2026-11-05T18:51:51.534Z" },
-    { url = "https://files.pythonhosted.org/packages/f2/8f/51371ae856b2bef4d15a044a574695fbc0f6ae63aafa42a2a22428070fb6/ruff-0.17.4-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:6b21c771b296888e8a35c6f48555f4b44e4483f61675d6ed51810a5203469ce6", size = 10988262, upload-time = "2026-11-05T18:51:53.91Z" },
-    { url = "https://files.pythonhosted.org/packages/af/1b/62874f14c7873f27c7887d2b1ea41de990e14ba9518801ffe8eacb5d51a6/ruff-0.17.4-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2cd025509b2e15721b426fc70fd946d71f43b3db3b08e946dfec2d696d911690", size = 10572829, upload-time = "2026-11-05T18:51:56.129Z" },
-    { url = "https://files.pythonhosted.org/packages/98/30/860b9dae67432b16b88558a9cb2d3194825fa62838f8b9cc49f5d9022095/ruff-0.17.4-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:49b77f7b3921669466882a4881168801bdb06ec2cd83fb936049016cf5fdece1", size = 10617545, upload-time = "2026-11-05T18:51:58.172Z" },
-    { url = "https://files.pythonhosted.org/packages/0f/08/781a4b41a1c83fd6e30fea610d6502a6f94e49cf94693fd37bdcbc6bfe11/ruff-0.17.4-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:e3b84eb74f260d1c2dbd236fd9d4c011d4fdd0a52bdf8aea57a10e3a1b71fca5", size = 10111955, upload-time = "2026-11-05T18:52:00.59Z" },
-    { url = "https://files.pythonhosted.org/packages/3c/e9/94b1c7b677120f30839254518924f73a8157e9bcfa200edcd5796fecdb99/ruff-0.17.4-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:20e43d7a08e712e33067ba887e6574546c79bd4831596ce8f16803ac7ff9ad90", size = 10058355, upload-time = "2026-11-05T18:52:03.61Z" },
-    { url = "https://files.pythonhosted.org/packages/27/5f/a825910b9f309336dc33cb8c0774126662c1d2f765699b3e0a1bd538d01f/ruff-0.17.4-py3-none-musllinux_1_2_i686.whl", hash = "sha256:0d1f4848fd2ec0499be4046db9b7dfcc952666885f00233cc7033515282556a8", size = 10415932, upload-time = "2026-11-05T18:52:06.264Z" },
-    { url = "https://files.pythonhosted.org/packages/8b/b8/0796468423413ea4df1a6e2442ae26cf49b8f7dda0eecf246e0d5d0dde54/ruff-0.17.4-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:6007e7f3a0e55b0fbdb947af69cf24c21b4928df6be8ef3e767c69b5ccccf496", size = 10826033, upload-time = "2026-11-05T18:52:08.675Z" },
-    { url = "https://files.pythonhosted.org/packages/b9/ab/d8e407669ffe5014429baf780c2df47e001968a6e4c17f615e2e7b13a9ba/ruff-0.17.4-py3-none-win32.whl", hash = "sha256:3971a78cba76298b284c8321e6d40d93045ed348bec5c369d85099efc97fb7cf", size = 9931993, upload-time = "2026-11-05T18:52:11.169Z" },
-    { url = "https://files.pythonhosted.org/packages/bd/15/42af8a72d8946e3c9efd2bbf6641e462b6832783b0d043d63ef5b280ba7f/ruff-0.17.4-py3-none-win_amd64.whl", hash = "sha256:67c5a894fc054cf41f75f7afa24815de5a74329d97634126c2a1015740ff4e8c", size = 10292922, upload-time = "2026-11-05T18:52:13.436Z" },
-    { url = "https://files.pythonhosted.org/packages/68/9e/f1dbffcfb8ff25dadbc21f87a8b73c3848abe4abada9d4b08ccef8bec40c/ruff-0.17.4-py3-none-win_arm64.whl", hash = "sha256:181ae38a9a8fb94925bf7d0794327b48d7fd7f4b50cfd84c0e999cc09ef8d131", size = 9889396, upload-time = "2026-11-05T18:52:15.549Z" },
+    { url = "https://files.pythonhosted.org/packages/12/5d/38ef6310c22cacb094e9ae0ff7964062e04ffeecb45ee296894c2b1acc54/ruff-0.17.6-py3-none-linux_armv6l.whl", hash = "sha256:084d9c8f5ec718e7eba007dba339e7cb4f7571d2f267558ae080bf428fb6a69b", size = 10174693, upload-time = "2026-11-19T15:55:52.414Z" },
+    { url = "https://files.pythonhosted.org/packages/a2/ed/fd35261049920a4888ef7c787a5c27089502077a4910f6ca8f1213157d6d/ruff-0.17.6-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:9d44ef2140402043fd6f689ef541858b80883a8b0a02e38539ef0614ebe57d0c", size = 10221650, upload-time = "2026-11-19T15:55:54.962Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/d4/c31391b36c729cd9fafa65b7a52a58850b99afb2b65da6be4263a53302f2/ruff-0.17.6-py3-none-macosx_11_0_arm64.whl", hash = "sha256:9fbddc08577592e283c265d865e0182de6e33db185494db7b06290d989d888e5", size = 9580986, upload-time = "2026-11-19T15:55:57.391Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/11/f3032684dcb3a676d7924545153d76fb56f76753e038f2ea650b99c71bdf/ruff-0.17.6-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:435241c61af5909a022f76219d3d1bf24730dc1bf0acabb5ddf4b569ab3cbb30", size = 10271368, upload-time = "2026-11-19T15:55:59.654Z" },
+    { url = "https://files.pythonhosted.org/packages/08/30/c1e024eeb5bae99ae78c6b896ed108f64c9c845a03b56eaeff098e99b6e6/ruff-0.17.6-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d006bbb2945edb17b0ce6a0c1b5f5a8d81ba11dbac294a0a925effa22ce34feb", size = 9981564, upload-time = "2026-11-19T15:56:01.807Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/a5/da3e0c2d4bf02b3ca6c1d7fa4bb04d0081e340b1dd03c4f83b1bec3e15c1/ruff-0.17.6-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:fd661702202a89c00a4c9d0339008805fa5876bfa1c57e165495c2e62230dfbf", size = 10641991, upload-time = "2026-11-19T15:56:03.981Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/c1/6d7f981e86201c9db457cca99fd2c09b77574ebab37dff3e9239b218603c/ruff-0.17.6-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:6a12c50a33936dc00db2be21ba25fb168a8b95c55eda2a3ac85005af69885e4b", size = 11403484, upload-time = "2026-11-19T15:56:05.778Z" },
+    { url = "https://files.pythonhosted.org/packages/c3/92/8182f07b94998541d5f8f38f53da465aa28062afce24ecc398f45bfc62f1/ruff-0.17.6-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:b5aba93b3db4b70c5697e4fee6e0d5b9c8452a9a3a03679611cadc25915a2173", size = 10892316, upload-time = "2026-11-19T15:56:08.016Z" },
+    { url = "https://files.pythonhosted.org/packages/be/48/3df7d81249fd69ee6a49519b149fb5d11e13118fd7d0e8d65329a237087b/ruff-0.17.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aa3b08254a732acba246891089a152c47c5733dc36b8ecb76ce8602f8326e5e4", size = 10645279, upload-time = "2026-11-19T15:56:09.785Z" },
+    { url = "https://files.pythonhosted.org/packages/71/80/4d232281544345d7beb98d1d32c24dae804ed360780a6f7753738b81225e/ruff-0.17.6-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:0692088e6b33455572fb18465e891b443f196e98dc1986825685c77ff6f4c5ac", size = 10534501, upload-time = "2026-11-19T15:56:11.718Z" },
+    { url = "https://files.pythonhosted.org/packages/98/0a/b477f075a4a94eb541bf1c759a3e72b2a3d6390af7a13a5be0887229f67c/ruff-0.17.6-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:fb589e032806bb942e4fb526f30b80a1a64112147ed9f1d38cc3de2e255b6f45", size = 10136036, upload-time = "2026-11-19T15:56:13.779Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/d8/cf32fbfeb1fcda1470fb5c3bee50c69ee6bca257d487ec1eb17a0387edb4/ruff-0.17.6-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:1939b3d701c7b6981b7cf93473de5bf88b129b9ba84efaed5154cc517c44634d", size = 9969640, upload-time = "2026-11-19T15:56:15.738Z" },
+    { url = "https://files.pythonhosted.org/packages/a7/22/bb9f9752f7fcdfdc8b9c51576cc142bb377ade745290e35085173963c7be/ruff-0.17.6-py3-none-musllinux_1_2_i686.whl", hash = "sha256:1a0bea6aa1216e0ec4cd35d3dbccec0d772a7c2aad28ec9c6e82571dff2c20b0", size = 10389427, upload-time = "2026-11-19T15:56:17.617Z" },
+    { url = "https://files.pythonhosted.org/packages/81/c7/e09d220818ab146b736d62e0676dad215215d7de0884bbdad9fa075dc7d2/ruff-0.17.6-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:3db61f5015600543a581b07fa7f6f64afa0eeedefe16034cadd88c4074087582", size = 10760296, upload-time = "2026-11-19T15:56:19.463Z" },
+    { url = "https://files.pythonhosted.org/packages/2e/09/28329441dfa2c463e2d377a69d4ebbe4d51665e9dbd49fb421f3bc80d775/ruff-0.17.6-py3-none-win32.whl", hash = "sha256:c2f4af6670b7a0501904e881bb3f1f24bd0d964dec1eedbd85f0eb73786e1128", size = 9966266, upload-time = "2026-11-19T15:56:21.581Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/9d/18ba9730addfc7554c70d6f171fb8dc2c08e774d9fb2b98e7946ef845c59/ruff-0.17.6-py3-none-win_amd64.whl", hash = "sha256:9cd2fd9923e9806b8b6b67a3469e2258e84bd4d21e45d5a1a690afdfb9c8e57d", size = 10365847, upload-time = "2026-11-19T15:56:23.582Z" },
+    { url = "https://files.pythonhosted.org/packages/70/8a/59c33e2a64a4f9672f7f842a0dc522915cfbbaffd13d37d0cec57d1c5c5d/ruff-0.17.6-py3-none-win_arm64.whl", hash = "sha256:d8b14e1473dc86ab9069cf7a2ba5041dc012f59110201844ed04cfddf07055a0", size = 9926224, upload-time = "2026-11-19T15:56:25.269Z" },
 ]
 
 [[package]]
@@ -2848,8 +3049,8 @@ name = "secretstorage"
 version = "3.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cryptography", marker = "sys_platform == 'linux'" },
-    { name = "jeepney", marker = "sys_platform == 'linux'" },
+    { name = "cryptography", marker = "sys_platform == 'linux' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "jeepney", marker = "sys_platform == 'linux' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1c/03/e834bcd866f2f8a49a85eaff47340affa3bfa391ee9912a952a1faa68c7b/secretstorage-3.5.0.tar.gz", hash = "sha256:f04b8e4689cbce351744d5537bf6b1329c6fc68f91fa666f60a380edddcd11be", size = 19884, upload-time = "2025-11-23T19:02:53.191Z" }
 wheels = [
@@ -2861,7 +3062,7 @@ name = "selinux"
 version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "distro", marker = "sys_platform == 'linux' or sys_platform == 'linux2'" },
+    { name = "distro", marker = "sys_platform == 'linux' or sys_platform == 'linux2' or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/25/07/51acd62e1e15e1172d46f7e32faf138725b147f8c08dbf2d512159d7a310/selinux-0.3.0.tar.gz", hash = "sha256:2a88b337ac46ad0f06f557b2806c3df62421972f766673dd8bf26732fb75a9ea", size = 13479, upload-time = "2022-12-24T16:42:13.163Z" }
 wheels = [
@@ -2905,15 +3106,6 @@ wheels = [
 ]
 
 [[package]]
-name = "tomli-w"
-version = "1.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/19/75/241269d1da26b624c0d5e110e8149093c759b7a286138f4efd61a60e75fe/tomli_w-1.2.0.tar.gz", hash = "sha256:2dd14fac5a47c27be9cd4c976af5a12d87fb1f0b4512f81d69cce3b35ae25021", size = 7184, upload-time = "2025-01-15T12:07:24.262Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c7/18/c86eb8e0202e32dd3df50d43d7ff9854f8e0603945ff398974c1d91ac1ef/tomli_w-1.2.0-py3-none-any.whl", hash = "sha256:188306098d013b691fcadc011abd66727d3c414c571bb01b1a174ba8c983cf90", size = 6675, upload-time = "2025-01-15T12:07:22.074Z" },
-]
-
-[[package]]
 name = "tomlkit"
 version = "0.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2923,33 +3115,12 @@ wheels = [
 ]
 
 [[package]]
-name = "tox"
-version = "4.55.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "cachetools" },
-    { name = "colorama" },
-    { name = "filelock" },
-    { name = "packaging" },
-    { name = "platformdirs" },
-    { name = "pluggy" },
-    { name = "pyproject-api" },
-    { name = "python-discovery" },
-    { name = "tomli-w" },
-    { name = "virtualenv" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/79/5b/4f09156a3f7bf3c4fa23212717f097c59126d81e2c557e6fd872a62db38a/tox-4.55.1.tar.gz", hash = "sha256:0678fbf26dd5b559b1ef128fa4388325920219322ebc8cc5f3497627c00f4472", size = 280676, upload-time = "2026-06-03T20:01:03.487Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/fd/394f00f3d3e23d87eb7b20276d88fe835e48780d3eb30e6f362428bb80c8/tox-4.55.1-py3-none-any.whl", hash = "sha256:e2084be6dfdef96ba1bed4948e6a1f73613d6952e1477be5dca45653d4c053c8", size = 215360, upload-time = "2026-06-03T20:01:01.967Z" },
-]
-
-[[package]]
 name = "twine"
 version = "6.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "id" },
-    { name = "keyring", marker = "platform_machine != 'ppc64le' and platform_machine != 's390x'" },
+    { name = "keyring", marker = "(platform_machine != 'ppc64le' and platform_machine != 's390x') or (platform_machine == 'ppc64le' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (platform_machine == 'ppc64le' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy') or (platform_machine == 's390x' and extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (platform_machine == 's390x' and extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
     { name = "packaging" },
     { name = "readme-renderer" },
     { name = "requests" },
@@ -3037,21 +3208,6 @@ wheels = [
 ]
 
 [[package]]
-name = "virtualenv"
-version = "21.5.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "distlib" },
-    { name = "filelock" },
-    { name = "platformdirs" },
-    { name = "python-discovery" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f1/a5/81f987504738e6defeed61ec1c47e2aefab3c35d8eeb87e1b3f38cf28254/virtualenv-21.5.1.tar.gz", hash = "sha256:dca3bf98275a59c652b69d68e73433e597d977c2da9198882479d1a7188009c8", size = 4578798, upload-time = "2026-06-16T16:23:58.603Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2c/02/3623e6169bed617ed1e2d372f7c69f92ec28d54c4dfc997055c8578ec148/virtualenv-21.5.1-py3-none-any.whl", hash = "sha256:55aa670b67bbfb991b03fda39bd3276d92c419d702376e98c5df1c9989a26783", size = 4558820, upload-time = "2026-06-16T16:23:56.963Z" },
-]
-
-[[package]]
 name = "watchdog"
 version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3105,7 +3261,8 @@ version = "1.38.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pathspec" },
-    { name = "pyyaml" },
+    { name = "pyyaml", version = "6.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version < '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version < '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
+    { name = "pyyaml", version = "6.0.4", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.15' and extra == 'group-7-avd-dev-dev') or (python_full_version >= '3.15' and extra == 'group-7-avd-dev-molecule') or (python_full_version >= '3.15' and extra != 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-dev' and extra == 'group-7-avd-dev-molecule-legacy') or (extra == 'group-7-avd-dev-molecule' and extra == 'group-7-avd-dev-molecule-legacy')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/28/a0/8fc2d68e132cf918f18273fdc8a1b8432b60d75ac12fdae4b0ef5c9d2e8d/yamllint-1.38.0.tar.gz", hash = "sha256:09e5f29531daab93366bb061e76019d5e91691ef0a40328f04c927387d1d364d", size = 142446, upload-time = "2026-01-13T07:47:53.276Z" }
 wheels = [
