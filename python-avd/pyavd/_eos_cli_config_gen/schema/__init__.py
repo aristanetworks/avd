@@ -29945,6 +29945,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
+                "act_legacy_eos_versioning": {"type": bool},
                 "ztp": {"type": bool},
             }
             environment: Environment | None
@@ -29974,6 +29975,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             types.
             ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
+            act_legacy_eos_versioning: bool | None
+            """ACT legacy EOS versioning fabric setting."""
             ztp: bool | None
             """
             Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
@@ -29995,6 +29998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
+                    act_legacy_eos_versioning: bool | UndefinedType | None = Undefined,
                     ztp: bool | UndefinedType | None = Undefined,
                 ) -> None:
                     """
@@ -30021,6 +30025,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+                        act_legacy_eos_versioning: ACT legacy EOS versioning fabric setting.
                         ztp:
                            Enable ZTP (Zero Touch Provisioning) mode for the Digital Twin device when supported by the Digital
                            Twin environment.

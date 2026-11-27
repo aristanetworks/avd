@@ -15,6 +15,7 @@ from pyavd.api.fabric_documentation import (
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
+    ActSettings,
     ContainerlabDefaults,
     ContainerlabDigitalTwin,
     ContainerlabKind,
@@ -295,6 +296,13 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             for device_structured_config in fabric_documentation_facts.structured_configs.values()
         ),
     )
+    act_legacy_eos_versioning = next(
+        (
+            get(device_structured_config, "metadata.digital_twin.act_legacy_eos_versioning")
+            for device_structured_config in fabric_documentation_facts.structured_configs.values()
+        ),
+    )
+    digital_twin_settings = ActSettings(legacy_eos_versioning=act_legacy_eos_versioning) if act_legacy_eos_versioning is not None else None
 
     digital_twin_node_types: dict[str, ActNodeTypeSettings | None] = {
         "cloudeos": None,
@@ -357,6 +365,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         )
 
     return ACTDigitalTwin(
+        settings=digital_twin_settings,
         nodes=tuple(digital_twin_devices),
         links=tuple(
             ActLinkSettings(

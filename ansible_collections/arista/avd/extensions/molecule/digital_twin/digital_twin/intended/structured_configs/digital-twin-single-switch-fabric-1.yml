@@ -26,6 +26,7 @@ metadata:
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
+    act_legacy_eos_versioning: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
