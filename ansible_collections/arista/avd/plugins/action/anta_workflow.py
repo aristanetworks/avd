@@ -299,7 +299,7 @@ class ActionModule(AVDActionPlugin):
             test_execution_end_time=test_execution_end_time,
         )
         anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"), run_overview_data=run_overview_data)
-        update_ansible_result(self.result, anta_tests_summary)
+        update_ansible_result(self.result, anta_tests_summary, dry_run=get(PLUGIN_ARGS, "runner.dry_run"))
 
 
 def run_anta(devices: list[str]) -> ResultManager:
@@ -445,7 +445,7 @@ def sort_result_manager(result_manager: ResultManager, status_priority: list[str
     result_manager.results = sorted(result_manager.results, key=sort_key)
 
 
-def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any]) -> dict[str, Any]:
+def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], *, dry_run: bool = False) -> dict[str, Any]:
     """
     Update the Ansible result dictionary from aggregated ANTA test results.
 
@@ -456,6 +456,7 @@ def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, 
     Args:
         result: The Ansible result dictionary to update.
         anta_tests_summary: The dictionary created from `build_reports` containing aggregated test statistics.
+        dry_run: Whether ANTA is running in dry-run mode.
 
     Returns:
         dict: The updated Ansible result dictionary.
@@ -463,8 +464,9 @@ def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, 
     has_test_issues = anta_tests_summary["tests_failed"] > 0 or anta_tests_summary["tests_error"] > 0
     no_tests_run = anta_tests_summary["total_tests"] == 0
 
-    # Fail the task if no tests were run
-    if no_tests_run:
+    if no_tests_run and dry_run and not has_test_issues:
+        result["msg"] = "ANTA dry-run completed with no tests to preview."
+    elif no_tests_run:
         result["failed"] = True
         result["msg"] = "No ANTA tests were run."
     # Fail the task if tests have issues

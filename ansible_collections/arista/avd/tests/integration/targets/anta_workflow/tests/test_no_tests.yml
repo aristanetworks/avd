@@ -21,9 +21,19 @@
 - name: Validate no deployed devices results
   ansible.builtin.assert:
     that:
-      - item is failed
-      - item.msg == 'No ANTA tests were run.'
-      - item.anta_tests_summary.total_tests == 0
+      - (item is success) == item.item
+      - item.msg == ('ANTA dry-run completed with no tests to preview.' if item.item else 'No ANTA tests were run.')
+      - item.anta_tests_summary == expected_summary
+  vars:
+    expected_summary:
+      total_tests: 0
+      tests_passed: 0
+      tests_failed: 0
+      tests_error: 0
+      tests_skipped: 0
+      tests_unset: 0
+      devices_with_test_failures: []
+      devices_with_test_errors: []
   loop: "{{ undeployed_results.results }}"
   loop_control:
     label: "dry_run={{ item.item }}"
@@ -47,9 +57,19 @@
 - name: Validate device without eAPI results
   ansible.builtin.assert:
     that:
-      - item is failed
-      - item.msg == 'No ANTA tests were run.'
-      - item.anta_tests_summary.total_tests == 0
+      - (item is success) == item.item
+      - item.msg == ('ANTA dry-run completed with no tests to preview.' if item.item else 'No ANTA tests were run.')
+      - item.anta_tests_summary == expected_summary
+  vars:
+    expected_summary:
+      total_tests: 0
+      tests_passed: 0
+      tests_failed: 0
+      tests_error: 0
+      tests_skipped: 0
+      tests_unset: 0
+      devices_with_test_failures: []
+      devices_with_test_errors: []
   loop: "{{ no_eapi_results.results }}"
   loop_control:
     label: "dry_run={{ item.item }}"
