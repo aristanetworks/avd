@@ -50,8 +50,8 @@ class MiscMixin(Protocol):
             Use 'id' from EosDesignsFacts or None
 
         If running under eos_designs_facts and pool manager is activated:
-            Use pool manager requesting the value of 'self.node_config.id' if set.
-            If the 'id' field is set but not available in the pool, an error will be raised.
+            Use 'self.node_config.id' if set, since explicit IDs have already been reserved
+            and validated during pool preparation. Otherwise obtain a dynamic ID from the pool manager.
 
         If running under eos_designs_facts and pool manager is _not_ activated:
             Use 'self.node_config.id' which is the ID defined in the node type config or None.
@@ -63,30 +63,18 @@ class MiscMixin(Protocol):
 
         # We are running from eos_designs_facts.
         # Check if pool manager is activated.
-        node_id = self.node_config.id
         if self.inputs.fabric_numbering.node_id.algorithm == "pool_manager":
             if not isinstance(self.pool_manager, PoolManager):
                 msg = "'fabric_numbering.id.algorithm' is set to 'pool_manager' but no PoolManager instance is available."
                 raise AristaAvdError(msg)
 
-            id_from_pool = self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self, requested_value=node_id)
+            if (node_id := self.node_config.id) is not None:
+                return node_id
 
-            if node_id is not None and node_id != id_from_pool:
-                pool = self.pool_manager.get_pool(pool_type="node_id_pools", shared_utils=self)
-                msg = "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible."
-                if (assignment := pool.get_assignment_by_value(node_id)) is None:
-                    msg += f" The given 'id: {node_id}' is not a valid Node ID for the Pool Manager."
-                else:
-                    msg += f" The given 'id: {node_id}' is already assigned to '{assignment.key}'."
-                msg += (
-                    f" The 'id' setting must either be removed or changed. If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
-            return id_from_pool
+            return self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self)
 
         # Pool manager is not activated. Return 'id' from node settings or None.
-        return node_id
+        return self.node_config.id
 
     @cached_property
     def filter_tags(self: SharedUtilsProtocol) -> list:

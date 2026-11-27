@@ -9,5 +9,6 @@ fabric_numbering:
 l2leaf:
   nodes:
     - name: id-static-and-pool-manager-collision-a
+      id: 1
     - name: id-static-and-pool-manager-collision-b
       id: 1

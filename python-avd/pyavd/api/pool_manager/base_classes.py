@@ -12,11 +12,15 @@ from yaml import CSafeDumper, CSafeLoader, dump, load
 
 from pyavd.j2filters import natural_sort
 
+from ._errors import InvalidPoolValueError, PoolAssignmentConflictError
+
 if TYPE_CHECKING:
+    from collections.abc import Mapping
     from pathlib import Path
     from typing import Any
 
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
+    from pyavd._errors import AristaAvdInvalidInputsError
 
 T_ValueType = TypeVar("T_ValueType", int, str)
 
@@ -41,15 +45,15 @@ class Pool(Generic[T_ValueType]):
     pool_key: str
     assignments: dict[str, PoolAssignment[T_ValueType]]
 
-    def _is_value_available(self, value: T_ValueType) -> bool:
+    def _is_value_valid(self, value: T_ValueType) -> bool:
         if self.collection.value_type is int and isinstance(value, int):
-            existing_ids = {assignment.value for assignment in self.assignments.values()}
-            return not (
-                value in existing_ids or value < self.collection.min_value or (self.collection.max_value is not None and value > self.collection.max_value)
-            )
+            return not (value < self.collection.min_value or (self.collection.max_value is not None and value > self.collection.max_value))
 
         # currently we only support int pools
         return False
+
+    def _is_value_available(self, value: T_ValueType) -> bool:
+        return self._is_value_valid(value) and all(assignment.value != value for assignment in self.assignments.values())
 
     def _next_available(self) -> T_ValueType:
         if self.collection.value_type is int:
@@ -73,6 +77,34 @@ class Pool(Generic[T_ValueType]):
 
         msg = f"Currently we only support pools of Integers. Got {self.collection.value_type}."
         raise NotImplementedError(msg)
+
+    def prepare_assignments(self, requested_assignments: Mapping[str, T_ValueType]) -> dict[str, PoolAssignment[T_ValueType]]:
+        """
+        Build assignments with explicit requests reserved, without modifying the pool.
+
+        Retain requests matching existing assignments without revalidating them.
+        Release the previous assignments of all changed requests together to allow swaps and cycles.
+        All other assignments are retained, including stale entries until they are pruned when saving.
+        New and changed requests are validated against the retained assignments and each other.
+        """
+        changed_requests = {key: value for key, value in requested_assignments.items() if key not in self.assignments or self.assignments[key].value != value}
+        if not changed_requests:
+            return self.assignments
+
+        assignments = {key: assignment for key, assignment in self.assignments.items() if key not in changed_requests}
+        assigned_values = {assignment.value: assignment.key for assignment in assignments.values()}
+
+        for key, value in changed_requests.items():
+            if not self._is_value_valid(value):
+                raise InvalidPoolValueError(key, value, self.pool_key)
+
+            if value in assigned_values:
+                raise PoolAssignmentConflictError(key, value, self.pool_key, assigned_values[value])
+
+            assignments[key] = self.collection.assignment_cls(key=key, value=value)
+            assigned_values[value] = key
+
+        return assignments
 
     def get_assignment(self, key: str, requested_value: T_ValueType | None = None) -> PoolAssignment[T_ValueType]:
         """
@@ -311,6 +343,10 @@ class PoolCollection(ABC, Generic[T_ValueType]):
 
         self.changed = False
         return True
+
+    @abstractmethod
+    def _assignment_error(self, error: InvalidPoolValueError | PoolAssignmentConflictError) -> AristaAvdInvalidInputsError:
+        """Translate a reservation failure into an input error with user-facing text and host context."""
 
     @staticmethod
     @abstractmethod

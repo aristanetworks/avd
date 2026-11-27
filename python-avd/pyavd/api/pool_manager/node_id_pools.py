@@ -5,11 +5,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.default import default
 from pyavd._utils.format_string import AvdStringFormatter
 
+from ._errors import InvalidPoolValueError, PoolAssignmentConflictError
 from .base_classes import Pool, PoolAssignment, PoolCollection
 
 if TYPE_CHECKING:
@@ -18,11 +20,25 @@ if TYPE_CHECKING:
 
 @dataclass()
 class NodeIdPoolCollection(PoolCollection[int]):
+    assignment_error_prefix: ClassVar[str] = (
+        "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', "
+        "any explicitly configured 'id' is reserved in the pool to prevent duplicate allocations. "
+    )
     pools_key: str = "node_id_pools"
     pool_cls: type[Pool[int]] = Pool[int]
     assignment_cls: type[PoolAssignment[int]] = PoolAssignment[int]
     value_type: type = int
     min_value: int = 1
+
+    def _assignment_error(self, error: InvalidPoolValueError | PoolAssignmentConflictError) -> AristaAvdInvalidInputsError:
+        if isinstance(error, InvalidPoolValueError):
+            valid_range = f"at least {self.min_value}" if self.max_value is None else f"between {self.min_value} and {self.max_value}"
+            message = f"The given 'id: {error.value}' is not a valid Node ID. The 'id' setting must be {valid_range}."
+        else:
+            assigned_hostname = error.assigned_key.removeprefix("hostname=")
+            message = f"The given 'id: {error.value}' is already assigned to '{assigned_hostname}'. The 'id' setting must either be removed or changed."
+
+        return AristaAvdInvalidInputsError(self.assignment_error_prefix + message, host=error.key.removeprefix("hostname="))
 
     @staticmethod
     def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
