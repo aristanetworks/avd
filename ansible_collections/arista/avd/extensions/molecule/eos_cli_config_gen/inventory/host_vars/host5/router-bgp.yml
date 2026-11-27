@@ -31,3 +31,7 @@ router_bgp:
         activate: true
       - name: IPV4-UNDERLAY-PEERS
         activate: true
+  address_family_ipv6_labeled_unicast:
+    bgp:
+      additional_paths:
+        send: any

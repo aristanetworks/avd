@@ -323,6 +323,14 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+| Label local-termination | implicit-null |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |
@@ -420,6 +428,10 @@ router bgp 65001
    !
    address-family ipv4 labeled-unicast
       bgp additional-paths send limit 10
+   !
+   address-family ipv6 labeled-unicast
+      bgp additional-paths send limit 10
+      label local-termination implicit-null
    !
    address-family ipv6
       bgp additional-paths send limit 20

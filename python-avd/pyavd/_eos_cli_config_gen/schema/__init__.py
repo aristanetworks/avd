@@ -52859,6 +52859,1298 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class AddressFamilyIpv6LabeledUnicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AigpSession(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"confederation": {"type": bool}, "ebgp": {"type": bool}, "ibgp": {"type": bool}}
+                confederation: bool | None
+                ebgp: bool | None
+                ibgp: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        confederation: bool | UndefinedType | None = Undefined,
+                        ebgp: bool | UndefinedType | None = Undefined,
+                        ibgp: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        AigpSession.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            confederation: confederation
+                            ebgp: ebgp
+                            ibgp: ibgp
+
+                        """
+
+            class Bgp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdditionalPaths(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
+                    _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
+                    receive: bool | None
+                    """Enable or disable reception of additional-paths."""
+                    send: Send | None
+                    """
+                    Select an option to send multiple paths for same prefix through bgp updates.
+                    any: Send any eligible
+                    path.
+                    backup: Best path and installed backup path.
+                    ecmp: All paths in best path ECMP group.
+                    limit:
+                    Limit to n eligible paths.
+                    disabled: Disable sending any paths.
+                    """
+                    send_limit: int | None
+                    """
+                    Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                    `ecmp`.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            receive: bool | UndefinedType | None = Undefined,
+                            send: Send | UndefinedType | None = Undefined,
+                            send_limit: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AdditionalPaths.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                receive: Enable or disable reception of additional-paths.
+                                send:
+                                   Select an option to send multiple paths for same prefix through bgp updates.
+                                   any: Send any eligible
+                                   path.
+                                   backup: Best path and installed backup path.
+                                   ecmp: All paths in best path ECMP group.
+                                   limit:
+                                   Limit to n eligible paths.
+                                   disabled: Disable sending any paths.
+                                send_limit:
+                                   Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                                   `ecmp`.
+
+                            """
+
+                class MissingPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class DirectionIn(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionIn.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    class DirectionOut(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionOut.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"direction_in": {"type": DirectionIn}, "direction_out": {"type": DirectionOut}}
+                    direction_in: DirectionIn
+                    """
+                    Missing policy inbound direction.
+
+                    Subclass of AvdModel.
+                    """
+                    direction_out: DirectionOut
+                    """
+                    Missing policy outbound direction.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, direction_in: DirectionIn | UndefinedType = Undefined, direction_out: DirectionOut | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            MissingPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                direction_in:
+                                   Missing policy inbound direction.
+
+                                   Subclass of AvdModel.
+                                direction_out:
+                                   Missing policy outbound direction.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "additional_paths": {"type": AdditionalPaths},
+                    "missing_policy": {"type": MissingPolicy},
+                    "next_hop_unchanged": {"type": bool},
+                }
+                additional_paths: AdditionalPaths
+                """Subclass of AvdModel."""
+                missing_policy: MissingPolicy
+                """
+                Missing policy configuration for all address-families.
+
+                Subclass of AvdModel.
+                """
+                next_hop_unchanged: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        missing_policy: MissingPolicy | UndefinedType = Undefined,
+                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        Bgp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            additional_paths: Subclass of AvdModel.
+                            missing_policy:
+                               Missing policy configuration for all address-families.
+
+                               Subclass of AvdModel.
+                            next_hop_unchanged: next_hop_unchanged
+
+                        """
+
+            LabelLocalTermination: TypeAlias = Literal["explicit-null", "implicit-null"]
+
+            class NeighborDefault(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"next_hop_self": {"type": bool}}
+                next_hop_self: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, next_hop_self: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NeighborDefault.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            next_hop_self: next_hop_self
+
+                        """
+
+            class PeerGroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdditionalPaths(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
+                    _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
+                    receive: bool | None
+                    """Enable or disable reception of additional-paths."""
+                    send: Send | None
+                    """
+                    Select an option to send multiple paths for same prefix through bgp updates.
+                    any: Send any eligible
+                    path.
+                    backup: Best path and installed backup path.
+                    ecmp: All paths in best path ECMP group.
+                    limit:
+                    Limit to n eligible paths.
+                    disabled: Disable sending any paths.
+                    """
+                    send_limit: int | None
+                    """
+                    Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                    `ecmp`.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            receive: bool | UndefinedType | None = Undefined,
+                            send: Send | UndefinedType | None = Undefined,
+                            send_limit: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AdditionalPaths.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                receive: Enable or disable reception of additional-paths.
+                                send:
+                                   Select an option to send multiple paths for same prefix through bgp updates.
+                                   any: Send any eligible
+                                   path.
+                                   backup: Best path and installed backup path.
+                                   ecmp: All paths in best path ECMP group.
+                                   limit:
+                                   Limit to n eligible paths.
+                                   disabled: Disable sending any paths.
+                                send_limit:
+                                   Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                                   `ecmp`.
+
+                            """
+
+                class GracefulRestartHelper(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"stale_route_map": {"type": str}}
+                    stale_route_map: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, stale_route_map: str | UndefinedType | None = Undefined) -> None:
+                            """
+                            GracefulRestartHelper.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                stale_route_map: stale_route_map
+
+                            """
+
+                class MaximumAdvertisedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                        exclusive with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                        exclusive with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                       exclusive with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                       exclusive with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of advertised routes (0 means unlimited)."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of advertised routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAdvertisedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of advertised routes (0 means unlimited).
+                                warning_limit:
+                                   Warning threshold for the maximum number of advertised routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                class MissingPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class DirectionIn(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionIn.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    class DirectionOut(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionOut.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"direction_in": {"type": DirectionIn}, "direction_out": {"type": DirectionOut}}
+                    direction_in: DirectionIn
+                    """
+                    Missing policy inbound direction.
+
+                    Subclass of AvdModel.
+                    """
+                    direction_out: DirectionOut
+                    """
+                    Missing policy outbound direction.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, direction_in: DirectionIn | UndefinedType = Undefined, direction_out: DirectionOut | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            MissingPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                direction_in:
+                                   Missing policy inbound direction.
+
+                                   Subclass of AvdModel.
+                                direction_out:
+                                   Missing policy outbound direction.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "activate": {"type": bool},
+                    "additional_paths": {"type": AdditionalPaths},
+                    "aigp_session": {"type": bool},
+                    "graceful_restart": {"type": bool},
+                    "graceful_restart_helper": {"type": GracefulRestartHelper},
+                    "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
+                    "missing_policy": {"type": MissingPolicy},
+                    "multi_path": {"type": bool},
+                    "next_hop_self": {"type": bool},
+                    "next_hop_self_source_interface": {"type": str},
+                    "next_hop_unchanged": {"type": bool},
+                    "rcf_in": {"type": str},
+                    "rcf_out": {"type": str},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
+                name: str
+                """Peer-group name."""
+                activate: bool | None
+                additional_paths: AdditionalPaths
+                """Subclass of AvdModel."""
+                aigp_session: bool | None
+                graceful_restart: bool | None
+                graceful_restart_helper: GracefulRestartHelper
+                """Subclass of AvdModel."""
+                maximum_advertised_routes: MaximumAdvertisedRoutes
+                """Subclass of AvdModel."""
+                missing_policy: MissingPolicy
+                """
+                Missing policy configuration for BGP Labeled-Unicast neighbor.
+
+                Subclass of AvdModel.
+                """
+                multi_path: bool | None
+                next_hop_self: bool | None
+                next_hop_self_source_interface: str | None
+                """Source interface name."""
+                next_hop_unchanged: bool | None
+                rcf_in: str | None
+                """
+                Inbound RCF function name with parenthesis.
+                Example: MyFunction(myarg).
+                """
+                rcf_out: str | None
+                """
+                Outbound RCF function name with parenthesis.
+                Example: MyFunction(myarg).
+                """
+                route_map_in: str | None
+                """Inbound route-map name."""
+                route_map_out: str | None
+                """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        activate: bool | UndefinedType | None = Undefined,
+                        additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        aigp_session: bool | UndefinedType | None = Undefined,
+                        graceful_restart: bool | UndefinedType | None = Undefined,
+                        graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
+                        maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
+                        missing_policy: MissingPolicy | UndefinedType = Undefined,
+                        multi_path: bool | UndefinedType | None = Undefined,
+                        next_hop_self: bool | UndefinedType | None = Undefined,
+                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
+                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
+                        rcf_in: str | UndefinedType | None = Undefined,
+                        rcf_out: str | UndefinedType | None = Undefined,
+                        route_map_in: str | UndefinedType | None = Undefined,
+                        route_map_out: str | UndefinedType | None = Undefined,
+                        peer_tag_in: str | UndefinedType | None = Undefined,
+                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        PeerGroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Peer-group name.
+                            activate: activate
+                            additional_paths: Subclass of AvdModel.
+                            aigp_session: aigp_session
+                            graceful_restart: graceful_restart
+                            graceful_restart_helper: Subclass of AvdModel.
+                            maximum_advertised_routes: Subclass of AvdModel.
+                            missing_policy:
+                               Missing policy configuration for BGP Labeled-Unicast neighbor.
+
+                               Subclass of AvdModel.
+                            multi_path: multi_path
+                            next_hop_self: next_hop_self
+                            next_hop_self_source_interface: Source interface name.
+                            next_hop_unchanged: next_hop_unchanged
+                            rcf_in:
+                               Inbound RCF function name with parenthesis.
+                               Example: MyFunction(myarg).
+                            rcf_out:
+                               Outbound RCF function name with parenthesis.
+                               Example: MyFunction(myarg).
+                            route_map_in: Inbound route-map name.
+                            route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
+
+                        """
+
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
+                """Subclass of AvdIndexedList with `PeerGroupsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            PeerGroups._item_type = PeerGroupsItem
+
+            class NeighborsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdditionalPaths(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
+                    _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
+                    receive: bool | None
+                    """Enable or disable reception of additional-paths."""
+                    send: Send | None
+                    """
+                    Select an option to send multiple paths for same prefix through bgp updates.
+                    any: Send any eligible
+                    path.
+                    backup: Best path and installed backup path.
+                    ecmp: All paths in best path ECMP group.
+                    limit:
+                    Limit to n eligible paths.
+                    disabled: Disable sending any paths.
+                    """
+                    send_limit: int | None
+                    """
+                    Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                    `ecmp`.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            receive: bool | UndefinedType | None = Undefined,
+                            send: Send | UndefinedType | None = Undefined,
+                            send_limit: int | UndefinedType | None = Undefined,
+                        ) -> None:
+                            """
+                            AdditionalPaths.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                receive: Enable or disable reception of additional-paths.
+                                send:
+                                   Select an option to send multiple paths for same prefix through bgp updates.
+                                   any: Send any eligible
+                                   path.
+                                   backup: Best path and installed backup path.
+                                   ecmp: All paths in best path ECMP group.
+                                   limit:
+                                   Limit to n eligible paths.
+                                   disabled: Disable sending any paths.
+                                send_limit:
+                                   Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or
+                                   `ecmp`.
+
+                            """
+
+                class GracefulRestartHelper(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"stale_route_map": {"type": str}}
+                    stale_route_map: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, stale_route_map: str | UndefinedType | None = Undefined) -> None:
+                            """
+                            GracefulRestartHelper.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                stale_route_map: stale_route_map
+
+                            """
+
+                class MaximumAdvertisedRoutes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class WarningLimit(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"count": {"type": int}, "percent": {"type": int}}
+                        count: int | None
+                        """
+                        Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                        exclusive with `percent`. `count` takes precedence.
+                        """
+                        percent: int | None
+                        """
+                        Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                        exclusive with `count`. `count` takes precedence.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, count: int | UndefinedType | None = Undefined, percent: int | UndefinedType | None = Undefined) -> None:
+                                """
+                                WarningLimit.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    count:
+                                       Maximum number of advertised routes after which a warning is issued (0 means never warn). Mutually
+                                       exclusive with `percent`. `count` takes precedence.
+                                    percent:
+                                       Percentage of the maximum number of advertised routes at which a warning is issued. Mutually
+                                       exclusive with `count`. `count` takes precedence.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning_limit": {"type": WarningLimit}}
+                    limit: int
+                    """Maximum number of advertised routes (0 means unlimited)."""
+                    warning_limit: WarningLimit
+                    """
+                    Warning threshold for the maximum number of advertised routes.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, limit: int | UndefinedType = Undefined, warning_limit: WarningLimit | UndefinedType = Undefined) -> None:
+                            """
+                            MaximumAdvertisedRoutes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of advertised routes (0 means unlimited).
+                                warning_limit:
+                                   Warning threshold for the maximum number of advertised routes.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                class MissingPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class DirectionIn(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionIn.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    class DirectionOut(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
+                        _fields: ClassVar[dict] = {
+                            "action": {"type": str},
+                            "include_community_list": {"type": bool},
+                            "include_prefix_list": {"type": bool},
+                            "include_sub_route_map": {"type": bool},
+                        }
+                        action: Action
+                        """Missing policy action."""
+                        include_community_list: bool | None
+                        """Include community-list references in missing policy decision."""
+                        include_prefix_list: bool | None
+                        """Include prefix-list references in missing policy decision."""
+                        include_sub_route_map: bool | None
+                        """Include sub-route-map references in missing policy decision."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                action: Action | UndefinedType = Undefined,
+                                include_community_list: bool | UndefinedType | None = Undefined,
+                                include_prefix_list: bool | UndefinedType | None = Undefined,
+                                include_sub_route_map: bool | UndefinedType | None = Undefined,
+                            ) -> None:
+                                """
+                                DirectionOut.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    action: Missing policy action.
+                                    include_community_list: Include community-list references in missing policy decision.
+                                    include_prefix_list: Include prefix-list references in missing policy decision.
+                                    include_sub_route_map: Include sub-route-map references in missing policy decision.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"direction_in": {"type": DirectionIn}, "direction_out": {"type": DirectionOut}}
+                    direction_in: DirectionIn
+                    """
+                    Missing policy inbound direction.
+
+                    Subclass of AvdModel.
+                    """
+                    direction_out: DirectionOut
+                    """
+                    Missing policy outbound direction.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, direction_in: DirectionIn | UndefinedType = Undefined, direction_out: DirectionOut | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            MissingPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                direction_in:
+                                   Missing policy inbound direction.
+
+                                   Subclass of AvdModel.
+                                direction_out:
+                                   Missing policy outbound direction.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "ip_address": {"type": str},
+                    "activate": {"type": bool},
+                    "additional_paths": {"type": AdditionalPaths},
+                    "aigp_session": {"type": bool},
+                    "graceful_restart": {"type": bool},
+                    "graceful_restart_helper": {"type": GracefulRestartHelper},
+                    "maximum_advertised_routes": {"type": MaximumAdvertisedRoutes},
+                    "missing_policy": {"type": MissingPolicy},
+                    "multi_path": {"type": bool},
+                    "next_hop_self": {"type": bool},
+                    "next_hop_self_source_interface": {"type": str},
+                    "next_hop_unchanged": {"type": bool},
+                    "rcf_in": {"type": str},
+                    "rcf_out": {"type": str},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
+                ip_address: str
+                activate: bool | None
+                additional_paths: AdditionalPaths
+                """Subclass of AvdModel."""
+                aigp_session: bool | None
+                graceful_restart: bool | None
+                graceful_restart_helper: GracefulRestartHelper
+                """Subclass of AvdModel."""
+                maximum_advertised_routes: MaximumAdvertisedRoutes
+                """Subclass of AvdModel."""
+                missing_policy: MissingPolicy
+                """
+                Missing policy configuration for BGP Labeled-Unicast neighbor.
+
+                Subclass of AvdModel.
+                """
+                multi_path: bool | None
+                next_hop_self: bool | None
+                next_hop_self_source_interface: str | None
+                """Source interface name."""
+                next_hop_unchanged: bool | None
+                rcf_in: str | None
+                """
+                Inbound RCF function name with parenthesis.
+                Example: MyFunction(myarg).
+                """
+                rcf_out: str | None
+                """
+                Outbound RCF function name with parenthesis.
+                Example: MyFunction(myarg).
+                """
+                route_map_in: str | None
+                """Inbound route-map name."""
+                route_map_out: str | None
+                """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ip_address: str | UndefinedType = Undefined,
+                        activate: bool | UndefinedType | None = Undefined,
+                        additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        aigp_session: bool | UndefinedType | None = Undefined,
+                        graceful_restart: bool | UndefinedType | None = Undefined,
+                        graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
+                        maximum_advertised_routes: MaximumAdvertisedRoutes | UndefinedType = Undefined,
+                        missing_policy: MissingPolicy | UndefinedType = Undefined,
+                        multi_path: bool | UndefinedType | None = Undefined,
+                        next_hop_self: bool | UndefinedType | None = Undefined,
+                        next_hop_self_source_interface: str | UndefinedType | None = Undefined,
+                        next_hop_unchanged: bool | UndefinedType | None = Undefined,
+                        rcf_in: str | UndefinedType | None = Undefined,
+                        rcf_out: str | UndefinedType | None = Undefined,
+                        route_map_in: str | UndefinedType | None = Undefined,
+                        route_map_out: str | UndefinedType | None = Undefined,
+                        peer_tag_in: str | UndefinedType | None = Undefined,
+                        peer_tag_out_discard: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        NeighborsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: ip_address
+                            activate: activate
+                            additional_paths: Subclass of AvdModel.
+                            aigp_session: aigp_session
+                            graceful_restart: graceful_restart
+                            graceful_restart_helper: Subclass of AvdModel.
+                            maximum_advertised_routes: Subclass of AvdModel.
+                            missing_policy:
+                               Missing policy configuration for BGP Labeled-Unicast neighbor.
+
+                               Subclass of AvdModel.
+                            multi_path: multi_path
+                            next_hop_self: next_hop_self
+                            next_hop_self_source_interface: Source interface name.
+                            next_hop_unchanged: next_hop_unchanged
+                            rcf_in:
+                               Inbound RCF function name with parenthesis.
+                               Example: MyFunction(myarg).
+                            rcf_out:
+                               Outbound RCF function name with parenthesis.
+                               Example: MyFunction(myarg).
+                            route_map_in: Inbound route-map name.
+                            route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
+
+                        """
+
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
+                """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            Neighbors._item_type = NeighborsItem
+
+            class NetworksItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
+                prefix: str
+                """IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                route_map: str | None
+                """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | UndefinedType | None = Undefined,
+                        rcf: str | UndefinedType | None = Undefined,
+                    ) -> None:
+                        """
+                        NetworksItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                            route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
+
+                        """
+
+            class Networks(AvdIndexedList[str, NetworksItem]):
+                """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
+
+            Networks._item_type = NetworksItem
+
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
+            class NextHopsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ip_address": {"type": str}, "lfib_backup_ip_forwarding": {"type": bool}}
+                ip_address: str
+                lfib_backup_ip_forwarding: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, ip_address: str | UndefinedType = Undefined, lfib_backup_ip_forwarding: bool | UndefinedType | None = Undefined
+                    ) -> None:
+                        """
+                        NextHopsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: ip_address
+                            lfib_backup_ip_forwarding: lfib_backup_ip_forwarding
+
+                        """
+
+            class NextHops(AvdIndexedList[str, NextHopsItem]):
+                """Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            NextHops._item_type = NextHopsItem
+
+            class NextHopResolutionRibsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                RibType: TypeAlias = Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"]
+                _fields: ClassVar[dict] = {"rib_type": {"type": str}, "rib_name": {"type": str}}
+                rib_type: RibType
+                """Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use."""
+                rib_name: str | None
+                """The name of the tunnel-rib to use when using 'tunnel-rib' type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | UndefinedType | None = Undefined) -> None:
+                        """
+                        NextHopResolutionRibsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rib_type: Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.
+                            rib_name: The name of the tunnel-rib to use when using 'tunnel-rib' type.
+
+                        """
+
+            class NextHopResolutionRibs(AvdList[NextHopResolutionRibsItem]):
+                """Subclass of AvdList with `NextHopResolutionRibsItem` items."""
+
+            NextHopResolutionRibs._item_type = NextHopResolutionRibsItem
+
+            _fields: ClassVar[dict] = {
+                "aigp_session": {"type": AigpSession},
+                "bgp": {"type": Bgp},
+                "graceful_restart": {"type": bool},
+                "label_local_termination": {"type": str},
+                "lfib_entry_installation_skipped": {"type": bool},
+                "neighbor_default": {"type": NeighborDefault},
+                "peer_groups": {"type": PeerGroups},
+                "neighbors": {"type": Neighbors},
+                "networks": {"type": Networks},
+                "next_hop": {"type": NextHop},
+                "next_hops": {"type": NextHops},
+                "next_hop_resolution_ribs": {"type": NextHopResolutionRibs},
+                "update_wait_for_convergence": {"type": bool},
+            }
+            aigp_session: AigpSession
+            """Subclass of AvdModel."""
+            bgp: Bgp
+            """Subclass of AvdModel."""
+            graceful_restart: bool | None
+            label_local_termination: LabelLocalTermination | None
+            lfib_entry_installation_skipped: bool | None
+            """Skip LFIB entry installation and next hop self route advertisements."""
+            neighbor_default: NeighborDefault
+            """Subclass of AvdModel."""
+            peer_groups: PeerGroups
+            """Subclass of AvdIndexedList with `PeerGroupsItem` items. Primary key is `name` (`str`)."""
+            neighbors: Neighbors
+            """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
+            networks: Networks
+            """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
+            next_hop: NextHop
+            """Subclass of AvdModel."""
+            next_hops: NextHops
+            """Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`)."""
+            next_hop_resolution_ribs: NextHopResolutionRibs
+            """
+            Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB
+            lookups.
+
+            Subclass of AvdList with `NextHopResolutionRibsItem` items.
+            """
+            update_wait_for_convergence: bool | None
+            """Wait for BGP to converge before sending out any route updates."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    aigp_session: AigpSession | UndefinedType = Undefined,
+                    bgp: Bgp | UndefinedType = Undefined,
+                    graceful_restart: bool | UndefinedType | None = Undefined,
+                    label_local_termination: LabelLocalTermination | UndefinedType | None = Undefined,
+                    lfib_entry_installation_skipped: bool | UndefinedType | None = Undefined,
+                    neighbor_default: NeighborDefault | UndefinedType = Undefined,
+                    peer_groups: PeerGroups | UndefinedType = Undefined,
+                    neighbors: Neighbors | UndefinedType = Undefined,
+                    networks: Networks | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
+                    next_hops: NextHops | UndefinedType = Undefined,
+                    next_hop_resolution_ribs: NextHopResolutionRibs | UndefinedType = Undefined,
+                    update_wait_for_convergence: bool | UndefinedType | None = Undefined,
+                ) -> None:
+                    """
+                    AddressFamilyIpv6LabeledUnicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        aigp_session: Subclass of AvdModel.
+                        bgp: Subclass of AvdModel.
+                        graceful_restart: graceful_restart
+                        label_local_termination: label_local_termination
+                        lfib_entry_installation_skipped: Skip LFIB entry installation and next hop self route advertisements.
+                        neighbor_default: Subclass of AvdModel.
+                        peer_groups: Subclass of AvdIndexedList with `PeerGroupsItem` items. Primary key is `name` (`str`).
+                        neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
+                        networks: Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`).
+                        next_hop: Subclass of AvdModel.
+                        next_hops: Subclass of AvdIndexedList with `NextHopsItem` items. Primary key is `ip_address` (`str`).
+                        next_hop_resolution_ribs:
+                           Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB
+                           lookups.
+
+                           Subclass of AvdList with `NextHopResolutionRibsItem` items.
+                        update_wait_for_convergence: Wait for BGP to converge before sending out any route updates.
+
+                    """
+
         class AddressFamilyIpv4Multicast(AvdModel):
             """Subclass of AvdModel."""
 
@@ -63599,6 +64891,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "address_family_rtc": {"type": AddressFamilyRtc},
             "address_family_ipv4": {"type": AddressFamilyIpv4},
             "address_family_ipv4_labeled_unicast": {"type": AddressFamilyIpv4LabeledUnicast},
+            "address_family_ipv6_labeled_unicast": {"type": AddressFamilyIpv6LabeledUnicast},
             "address_family_ipv4_multicast": {"type": AddressFamilyIpv4Multicast},
             "address_family_ipv4_sr_te": {"type": AddressFamilyIpv4SrTe},
             "address_family_ipv6": {"type": AddressFamilyIpv6},
@@ -63692,6 +64985,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         address_family_ipv4_labeled_unicast: AddressFamilyIpv4LabeledUnicast
         """Subclass of AvdModel."""
+        address_family_ipv6_labeled_unicast: AddressFamilyIpv6LabeledUnicast
+        """Subclass of AvdModel."""
         address_family_ipv4_multicast: AddressFamilyIpv4Multicast
         """Subclass of AvdModel."""
         address_family_ipv4_sr_te: AddressFamilyIpv4SrTe
@@ -63753,6 +65048,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 address_family_rtc: AddressFamilyRtc | UndefinedType = Undefined,
                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                 address_family_ipv4_labeled_unicast: AddressFamilyIpv4LabeledUnicast | UndefinedType = Undefined,
+                address_family_ipv6_labeled_unicast: AddressFamilyIpv6LabeledUnicast | UndefinedType = Undefined,
                 address_family_ipv4_multicast: AddressFamilyIpv4Multicast | UndefinedType = Undefined,
                 address_family_ipv4_sr_te: AddressFamilyIpv4SrTe | UndefinedType = Undefined,
                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
@@ -63819,6 +65115,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     address_family_rtc: Subclass of AvdModel.
                     address_family_ipv4: Subclass of AvdModel.
                     address_family_ipv4_labeled_unicast: Subclass of AvdModel.
+                    address_family_ipv6_labeled_unicast: Subclass of AvdModel.
                     address_family_ipv4_multicast: Subclass of AvdModel.
                     address_family_ipv4_sr_te: Subclass of AvdModel.
                     address_family_ipv6: Subclass of AvdModel.

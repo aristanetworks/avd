@@ -1806,6 +1806,13 @@ ASN Notation: asplain
 | -------- | ----- |
 | Graceful-restart | Enabled |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |
@@ -1877,6 +1884,9 @@ router bgp 65101
    address-family ipv4 labeled-unicast
       bgp additional-paths send any
       graceful-restart
+   !
+   address-family ipv6 labeled-unicast
+      no bgp additional-paths send
    !
    address-family ipv4 multicast
       redistribute ospf match internal route-map AFIPV4M_OSPF_INTERNAL

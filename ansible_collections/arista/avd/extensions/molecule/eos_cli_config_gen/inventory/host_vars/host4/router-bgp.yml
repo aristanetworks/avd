@@ -111,6 +111,12 @@ router_bgp:
       additional_paths:
         send: limit
         send_limit: 10
+  address_family_ipv6_labeled_unicast:
+    bgp:
+      additional_paths:
+        send: limit
+        send_limit: 10
+    label_local_termination: implicit-null
   address_family_path_selection:
     bgp:
       additional_paths:

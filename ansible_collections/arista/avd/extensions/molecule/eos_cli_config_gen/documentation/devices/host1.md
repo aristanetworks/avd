@@ -10452,6 +10452,39 @@ ASN Notation: asdot
 | 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
 | 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+| Next-hop Unchanged | True |
+| LFIB entry installation skipped | True |
+| Label local-termination | explicit-null |
+| Graceful-restart | Enabled |
+| Neighbor default next-hop-self | True |
+| Next-hop resolution | Disabled |
+
+##### IPv6 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| IPV6-LU-ANY | True | - | - | - | - | - | - |
+| IPV6-LU-ECMP | False | - | - | - | - | - | - |
+| IPV6-LU-LIMIT | True | - | - | - | - | - | - |
+| IPV6-LU-LIMIT-NO-LIMIT | True | - | - | - | - | - | - |
+| IPV6-UNDERLAY | True | RM-V6-LU-IN | RM-V6-LU-OUT | RCF-V6-LU-IN() | RCF-V6-LU-OUT() | V6-LU-IN | V6-LU-OUT |
+
+##### IPv6 BGP-LU Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 2001:db8:ffff::1 | True | RM-V6-LU-N-IN | RM-V6-LU-N-OUT | RCF-V6-LU-N-IN() | RCF-V6-LU-N-OUT() | V6-LU-N-IN | V6-LU-N-OUT |
+| 2001:db8:ffff::2 | False | - | - | - | - | - | - |
+| 2001:db8:ffff::3 | True | - | - | - | - | - | - |
+| 2001:db8:ffff::4 | True | - | - | - | - | - | - |
+| 2001:db8:ffff::5 | True | - | - | - | - | - | - |
+
 ##### BGP LU RIB
 
 | RIB | Enabled | Route-map |
@@ -11280,6 +11313,80 @@ router bgp 65101
       label local-termination implicit-null
       tunnel source-protocol isis segment-routing
       tunnel source-protocol ldp rcf TEST()
+      aigp-session confederation
+      aigp-session ebgp
+   !
+   address-family ipv6 labeled-unicast
+      bgp missing-policy include community-list prefix-list sub-route-map direction in action deny
+      bgp missing-policy direction out action permit
+      bgp additional-paths receive
+      bgp additional-paths send ecmp limit 3
+      bgp next-hop-unchanged
+      neighbor default next-hop-self
+      next-hop resolution disabled
+      next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
+      neighbor IPV6-LU-ANY activate
+      neighbor IPV6-LU-ANY additional-paths send any
+      no neighbor IPV6-LU-ECMP activate
+      neighbor IPV6-LU-ECMP additional-paths send ecmp limit 2
+      neighbor IPV6-LU-LIMIT activate
+      neighbor IPV6-LU-LIMIT additional-paths send limit 2
+      neighbor IPV6-LU-LIMIT-NO-LIMIT activate
+      neighbor IPV6-UNDERLAY activate
+      neighbor IPV6-UNDERLAY additional-paths receive
+      neighbor IPV6-UNDERLAY graceful-restart
+      neighbor IPV6-UNDERLAY graceful-restart-helper stale-route route-map RM-V6-LU-STALE
+      neighbor IPV6-UNDERLAY route-map RM-V6-LU-IN in
+      neighbor IPV6-UNDERLAY route-map RM-V6-LU-OUT out
+      neighbor IPV6-UNDERLAY rcf in RCF-V6-LU-IN()
+      neighbor IPV6-UNDERLAY rcf out RCF-V6-LU-OUT()
+      no neighbor IPV6-UNDERLAY additional-paths send
+      neighbor IPV6-UNDERLAY next-hop-unchanged
+      neighbor IPV6-UNDERLAY next-hop-self
+      neighbor IPV6-UNDERLAY next-hop-self source-interface Loopback0
+      neighbor IPV6-UNDERLAY maximum-advertised-routes 1200 warning-limit 10
+      neighbor IPV6-UNDERLAY missing-policy include community-list prefix-list sub-route-map direction in action deny
+      neighbor IPV6-UNDERLAY missing-policy direction out action permit
+      neighbor IPV6-UNDERLAY peer-tag in V6-LU-IN
+      neighbor IPV6-UNDERLAY peer-tag out discard V6-LU-OUT
+      neighbor IPV6-UNDERLAY aigp-session
+      neighbor IPV6-UNDERLAY multi-path
+      neighbor 2001:db8:ffff::1 activate
+      neighbor 2001:db8:ffff::1 additional-paths receive
+      neighbor 2001:db8:ffff::1 graceful-restart
+      neighbor 2001:db8:ffff::1 graceful-restart-helper stale-route route-map RM-V6-LU-N-STALE
+      neighbor 2001:db8:ffff::1 route-map RM-V6-LU-N-IN in
+      neighbor 2001:db8:ffff::1 route-map RM-V6-LU-N-OUT out
+      neighbor 2001:db8:ffff::1 rcf in RCF-V6-LU-N-IN()
+      neighbor 2001:db8:ffff::1 rcf out RCF-V6-LU-N-OUT()
+      no neighbor 2001:db8:ffff::1 additional-paths send
+      neighbor 2001:db8:ffff::1 next-hop-unchanged
+      neighbor 2001:db8:ffff::1 next-hop-self
+      neighbor 2001:db8:ffff::1 next-hop-self source-interface Loopback1
+      neighbor 2001:db8:ffff::1 maximum-advertised-routes 1000 warning-limit 10 percent
+      neighbor 2001:db8:ffff::1 missing-policy  include community-list prefix-list sub-route-map direction in action deny
+      neighbor 2001:db8:ffff::1 missing-policy  direction out action permit
+      neighbor 2001:db8:ffff::1 peer-tag in V6-LU-N-IN
+      neighbor 2001:db8:ffff::1 peer-tag out discard V6-LU-N-OUT
+      neighbor 2001:db8:ffff::1 aigp-session
+      neighbor 2001:db8:ffff::1 multi-path
+      no neighbor 2001:db8:ffff::2 activate
+      neighbor 2001:db8:ffff::2 additional-paths send ecmp limit 2
+      neighbor 2001:db8:ffff::3 activate
+      neighbor 2001:db8:ffff::3 additional-paths send limit 2
+      neighbor 2001:db8:ffff::4 activate
+      neighbor 2001:db8:ffff::4 additional-paths send any
+      neighbor 2001:db8:ffff::5 activate
+      network 2001:db8:1::/64 route-map RM-V6-LU
+      network 2001:db8:2::/64 rcf RCF-V6-LU-NETWORK()
+      next-hop 2001:db8::3 originate
+      next-hop 2001:db8::4 originate
+      next-hop 2001:db8::1 originate lfib-backup ip-forwarding
+      next-hop 2001:db8::2 originate lfib-backup ip-forwarding
+      lfib entry installation skipped
+      label local-termination explicit-null
+      graceful-restart
+      aigp-session ibgp
       aigp-session confederation
       aigp-session ebgp
    !

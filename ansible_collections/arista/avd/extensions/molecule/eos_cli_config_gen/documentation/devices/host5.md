@@ -223,6 +223,13 @@ ASN Notation: asplain
 | evpn-overlay-peers | True | - | - | - | - | - | - |
 | IPV4-UNDERLAY-PEERS | True | - | - | - | - | - | - |
 
+#### Router BGP IPv6 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
 #### Router BGP Device Configuration
 
 ```eos
@@ -244,6 +251,9 @@ router bgp 65005
    address-family ipv4 labeled-unicast
       neighbor IPV4-UNDERLAY-PEERS activate
       neighbor evpn-overlay-peers activate
+   !
+   address-family ipv6 labeled-unicast
+      bgp additional-paths send any
    !
    address-family ipv6
       neighbor IPV4-UNDERLAY-PEERS activate
