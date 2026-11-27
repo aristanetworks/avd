@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires 'bgp_cluster_id' to be a nonzero IPv4 address in dotted-quad notation on all route reflectors, like '2.2.2.2', but got '' for host 'underlay-ibgp-invalid-cluster-id-empty-spine1'.

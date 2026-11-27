@@ -1,0 +1,13 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_NO_RFC5549
+
+underlay_rfc5549: false
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-no-rfc5549-leaf1
+      id: 1

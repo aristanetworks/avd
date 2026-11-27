@@ -1,0 +1,25 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_MISSING_CLUSTER_ID
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.0.0/24
+  nodes:
+    - name: underlay-ibgp-missing-cluster-id-spine1
+      id: 1
+      bgp_cluster_id: 2.2.2.2
+    # No 'bgp_cluster_id'.
+    - name: underlay-ibgp-missing-cluster-id-spine2
+      id: 2
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-missing-cluster-id-leaf1
+      id: 1
+      uplink_switches: [underlay-ibgp-missing-cluster-id-spine1, underlay-ibgp-missing-cluster-id-spine2]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]

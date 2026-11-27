@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' is not supported on WAN routers; remove 'wan_role'.

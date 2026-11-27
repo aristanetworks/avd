@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' does not support inband management or 'inband_ztp'; remove the inband management settings from this node and its downlink switches.

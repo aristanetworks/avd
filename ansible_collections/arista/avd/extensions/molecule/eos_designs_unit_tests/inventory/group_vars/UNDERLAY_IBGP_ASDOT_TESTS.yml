@@ -1,0 +1,47 @@
+---
+# Testing 'underlay_routing_protocol: ibgp' with an asdot BGP AS, a single route reflector and a cleartext password.
+# - leaf1 has a single uplink.
+# - leaf2 has two parallel links to the same spine.
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - underlay-ibgp-asdot-spine\d
+  - node_type: l3leaf
+    match_hostnames:
+      - underlay-ibgp-asdot-leaf\d
+
+underlay_routing_protocol: ibgp
+underlay_rfc5549: true
+overlay_routing_protocol: none
+bgp_as: "65000.10"
+bgp_as_notation: asdot
+
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    cleartext_password: arista123
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.254.40.0/24
+    bgp_cluster_id: 10.255.1.1
+  nodes:
+    - name: underlay-ibgp-asdot-spine1
+      id: 1
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.41.0/24
+    vtep_loopback_ipv4_pool: 10.254.42.0/24
+    mlag: false
+    uplink_switches: [underlay-ibgp-asdot-spine1]
+  nodes:
+    - name: underlay-ibgp-asdot-leaf1
+      id: 1
+      uplink_interfaces: [Ethernet1]
+      uplink_switch_interfaces: [Ethernet1]
+    - name: underlay-ibgp-asdot-leaf2
+      id: 2
+      uplink_switches: [underlay-ibgp-asdot-spine1, underlay-ibgp-asdot-spine1]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet2, Ethernet3]

@@ -1,0 +1,22 @@
+---
+fabric_name: FABRIC_UNDERLAY_IBGP_NETWORK_SERVICES_VRF
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/24
+    vtep_loopback_ipv4_pool: 10.254.2.0/24
+    mlag: false
+  nodes:
+    - name: underlay-ibgp-network-services-vrf-leaf1
+      id: 1
+
+tenants:
+  - name: UNDERLAY_IBGP_TENANT
+    vrfs:
+      - name: UNDERLAY_IBGP_VRF
+        vrf_id: 10
+        svis:
+          - id: 10
+            name: SVI_10
+            enabled: true
+            ip_address: 10.0.10.1/24

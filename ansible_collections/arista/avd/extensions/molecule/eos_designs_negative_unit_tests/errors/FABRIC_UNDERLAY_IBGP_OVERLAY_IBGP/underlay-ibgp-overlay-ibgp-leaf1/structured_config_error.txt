@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: Invalid combination of inputs. 'underlay_routing_protocol: ibgp' requires 'overlay_routing_protocol: none', but got 'ibgp'.
