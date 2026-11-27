@@ -4,11 +4,22 @@
 from __future__ import annotations
 
 from collections import ChainMap
+from functools import cache
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from .api.eos_cli_config_gen import ConfigRenderConfiguration
     from .api.schemas import EOSConfig
+    from .templater import Templar
+
+
+@cache
+def _get_templar() -> Templar:
+    """Reuse the template environment across configuration renders in this process."""
+    from .constants import EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH  # noqa: PLC0415
+    from .templater import Templar  # noqa: PLC0415
+
+    return Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
 
 
 def get_device_config(structured_config: EOSConfig | dict, *, configuration: ConfigRenderConfiguration | None = None) -> str:
@@ -31,6 +42,9 @@ def get_device_config(structured_config: EOSConfig | dict, *, configuration: Con
         Device configuration in EOS CLI format.
 
     Notes:
+        The template environment is cached for reuse within each process. Device data and render options
+        are supplied separately for every render.
+
         Currently the `get_device_config` and `get_device_doc` functions need the validated data as a dict,
         so they will dump the loaded class if given.
         For now it is more efficient to use the `validate_structured_config` function and give the returned dict
@@ -39,8 +53,7 @@ def get_device_config(structured_config: EOSConfig | dict, *, configuration: Con
         you can just use that instance directly without further validation.
     """
     from .api.schemas import EOSConfig  # noqa: PLC0415
-    from .constants import EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH  # noqa: PLC0415
-    from .templater import Templar  # noqa: PLC0415
+    from .constants import EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE  # noqa: PLC0415
 
     if isinstance(structured_config, EOSConfig):
         structured_config = structured_config._as_dict()
@@ -51,5 +64,5 @@ def get_device_config(structured_config: EOSConfig | dict, *, configuration: Con
         # internal _eos_cli_config_gen_hide_passwords key would take precedence over the render option.
         template_vars = ChainMap(structured_config, {"_eos_cli_config_gen_hide_passwords": configuration.hide_passwords})
 
-    templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
+    templar = _get_templar()
     return templar.render_template_from_file(template_file=EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, template_vars=template_vars)
