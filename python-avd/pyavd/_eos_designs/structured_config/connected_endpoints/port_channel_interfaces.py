@@ -195,6 +195,7 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
+        self._validate_adapter_vlan_tags(adapter)
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
         else:

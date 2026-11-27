@@ -214,7 +214,10 @@ class FilteredTenantsMixin(Protocol):
             return set()
         return {int(vlan) for vlan in range_expand(switch_vlans)}
 
-    def is_accepted_vrf(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> bool:
+    def is_accepted_vrf(
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | EosDesigns.NetworkServicesItem.VrfsItem,
+    ) -> bool:
         """
         Returns True if.
 

@@ -1,0 +1,1 @@
+pyavd._errors.AristaAvdInvalidInputsError: 'vlan_tags' requires 'mode: trunk'. Found 'mode: access' under 'servers[name=server_1].adapters[0]'.

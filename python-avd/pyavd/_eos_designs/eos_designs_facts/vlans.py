@@ -57,6 +57,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         # Update vlans set if adapter_settings.vlans is an actual range of vlan(s)
         if adapter_settings.vlans and adapter_settings.vlans not in ["all", "defined_vlans"]:
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
+        elif adapter_settings.mode == "trunk" and adapter_settings.vlan_tags and not adapter_settings.vlans:
+            # Allowed VLANs are resolved from vlan_tags below, so this trunk does not allow all VLANs.
+            pass
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
             # Both "all" and "defined_vlans" effectively make all network services VLANs scoped for the switch to be presented towards the endpoint
@@ -74,6 +77,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             vlans.add(adapter_settings.native_vlan)
         if adapter_settings.phone_vlan:
             vlans.add(adapter_settings.phone_vlan)
+        if adapter_settings.mode == "trunk" and adapter_settings.vlan_tags:
+            # VLANs carrying any of the vlan_tags are allowed on the trunk, so they are considered in use.
+            vlans.update(self.shared_utils.get_vlans_from_vlan_tags(adapter_settings.vlan_tags))
 
         if isinstance(adapter_settings, EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem):
             for subinterface in adapter_settings.port_channel.subinterfaces:
