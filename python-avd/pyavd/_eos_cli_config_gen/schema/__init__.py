@@ -29937,11 +29937,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Environment: TypeAlias = Literal["act", "containerlab"]
+            ActInstanceType: TypeAlias = Literal["medium", "large", "xlarge"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
                 "ip_addr": {"type": str},
                 "version": {"type": str},
+                "act_instance_type": {"type": str},
                 "username": {"type": str},
                 "password": {"type": str},
                 "internet_access": {"type": bool},
@@ -29962,6 +29964,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             version: str | None
             """OS version used for deploying a replica of the fabric device within the Digital Twin environment."""
+            act_instance_type: ActInstanceType | None
+            """
+            ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+            types.
+            """
             username: str | None
             """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
             password: str | None
@@ -29992,6 +29999,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     node_type: str | UndefinedType | None = Undefined,
                     ip_addr: str | UndefinedType | None = Undefined,
                     version: str | UndefinedType | None = Undefined,
+                    act_instance_type: ActInstanceType | UndefinedType | None = Undefined,
                     username: str | UndefinedType | None = Undefined,
                     password: str | UndefinedType | None = Undefined,
                     internet_access: bool | UndefinedType | None = Undefined,
@@ -30013,6 +30021,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
                            environment.
                         version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+                        act_instance_type:
+                           ACT instance type to use for the ACT `instance_type`. ACT uses `medium` by default for all node
+                           types.
                         username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
                         password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
                         internet_access:
