@@ -21,7 +21,7 @@ one full-scenario facts case, and one 15-device synthetic workflow:
   the full scenario.
 - `test_large_fabric_scaling.py` benchmarks a deterministic synthetic full
   workflow. The 15-device case runs in the default suite; the 150-device case is
-  marked `benchmark_scale` and runs only in local scale-inclusive runs.
+  marked `benchmark_scale` so it can be excluded from smaller runs.
   Adjacent L3 leaves form MLAG pairs; each L2 leaf has a port-channel to both
   members of one pair. Access ports, uplinks, MLAG peer links, and downlinks use
   separate interfaces.
@@ -56,17 +56,20 @@ pool state.
 
 ## GitHub Actions
 
-The standalone `Benchmarks` workflow runs on `ubuntu-24.04` with Python 3.14.9,
+The standalone `Memory stack-budget experiment` workflow runs on `ubuntu-24.04` with Python 3.14.9,
 tokenless CodSpeed upload, and no write-capable checkout token. It runs on:
 
 - Pushes to `devel` affecting PyAVD, benchmark, molecule fixture, dependency, or
   benchmark workflow files.
 - Pull requests with the `benchmark` label.
 
-There is no scheduled or manually dispatched GitHub Actions run. The 150-device
-case is available through the local commands below.
+There is no scheduled or manually dispatched GitHub Actions run.
 
-CI runs all 15 default cases in two parallel jobs: simulation and memory.
+This diagnostic branch includes the 150-device case in CI, using three parallel
+jobs: simulation of the 15 default cases, simulation of only the 150-device case,
+and memory profiling of all 16 cases. Splitting simulation gives the 150-device
+case its own execution-time budget. The memory profiler uses
+`CODSPEED_MEMTRACK_STACK_BUDGET=32768` to test 32 KiB stack captures.
 Each job uploads results separately. The memory job installs `libc6-dbg` for
 native symbol resolution and also reports peak physical memory on supported
 runners.
@@ -105,5 +108,5 @@ make benchmark-scaling
 - Use assertions inside the timed path so the benchmark cannot silently skip the
   work.
 - Batch very small operations instead of adding noisy micro-benchmarks.
-- Keep default CI benchmark count and runtime low; reserve larger scale tests for
-  manual full-suite runs.
+- Keep default CI benchmark count and runtime low. This diagnostic branch
+  temporarily includes the 150-device scale case in both CI modes.

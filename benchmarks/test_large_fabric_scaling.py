@@ -43,7 +43,7 @@ def test_large_fabric_full_workflow_benchmark(
     L3 leaves form MLAG pairs; each L2 leaf uplinks to both members of one pair.
     Compare the results to assess scaling; linear runtime is not assumed.
 
-    The 150-device test is marked for local full benchmark runs only.
+    The 150-device test is marked so smaller runs can exclude it with ``-m "not benchmark_scale"``.
     """
     # Generate synthetic inventory (outside benchmark).
     fabric_scale = device_count // 15
