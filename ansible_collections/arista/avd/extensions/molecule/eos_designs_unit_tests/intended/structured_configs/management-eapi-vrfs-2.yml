@@ -21,6 +21,8 @@ management_api_http:
   enable_vrfs:
   - name: use_inband_mgmt_vrf
     access_group: ACL_EAPI_IPv4_3
+  - name: default
+    access_group: ACL_EAPI_IPv4_STANDARD
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -65,6 +67,11 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
 service_routing_protocols_model: multi-agent
+standard_access_lists:
+- name: ACL_EAPI_IPv4_STANDARD
+  entries:
+  - action: permit
+    source: 192.0.2.0/24
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
