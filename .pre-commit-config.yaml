@@ -139,7 +139,7 @@ repos:
           - 'pyavd-utils-gen==0.0.14'
           - 'pytest>=9.2.0'
           - 'pytest-codspeed>=5.0.4'
-          - 'pyyaml>=6.0.3'
+          - 'pyyaml>=6.0.4'
           - 'referencing>=0.37.0'
           - 'ruff==0.17.6'
           - 'setuptools>=82.0.1'
@@ -302,7 +302,7 @@ repos:
         additional_dependencies:
           - deepmerge>=1.1.1
           - jsonschema-rs>=0.61.2
-          - PyYAML>=6.0.3
+          - PyYAML>=6.0.4
           - pyavd-utils-gen==0.0.14
           - referencing>=0.37.0
           - ruff==0.17.6
